@@ -15,6 +15,24 @@ well as their service documentation. The pull-request impact gate checks that
 requirement before deciding which expensive checks are needed; Pages checks it
 again before publication.
 
+## Source preparation for service 0.7.0
+
+The 0.7.0 change admits the newer evidence-connect corpus at immutable DWP
+revision `7eeded763042ddd0070f4fed834c6074149e8e2f` with a separately pinned,
+compatible context engine. Existing source/engine combinations remain
+available for historical replay. Build and test results are preparation;
+the shared publication record below identifies what has actually been
+published and observed.
+
+The remote service and the [workbench page tools](workbench-page-tools.md)
+are separate connections. A remote call assembles evidence from an admitted
+corpus; a workbench call inspects a saved case or changes its displayed view.
+Neither a newer Pages release nor a successful page-tool invocation updates
+the remote service. Check source and engine identities before comparing
+results. Follow evidence continuations without shrinking the assembly budget
+merely to fit a chat message: assembly selects evidence; delivery controls
+how much of that evidence crosses the connection at once.
+
 <!-- ask-okf-publication:start -->
 ## Recorded public deployment: 0.6.0
 

@@ -4,11 +4,11 @@ import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 import { gunzipSync } from 'node:zlib';
 import { boundedFile } from '../scripts/replay-observation-files.ts';
-import { CURRENT_ENGINE_ID, PREVIOUS_ENGINE_ID } from '../src/engines.ts';
+import { PRIOR_ENGINE_ID, PREVIOUS_ENGINE_ID } from '../src/engines.ts';
 import { canonicalJson } from '../../../apps/okf-explorer/src/lib/context/index.ts';
-import { APPROVED_VERSIONS, BUNDLE_VERSION } from '../src/registry.ts';
+import { APPROVED_VERSIONS, BUNDLE_VERSION, PRIOR_BUNDLE_VERSION } from '../src/registry.ts';
 
-const historicalVersions = APPROVED_VERSIONS.filter(version => version !== BUNDLE_VERSION);
+const historicalVersions = APPROVED_VERSIONS.filter(version => version !== BUNDLE_VERSION && version !== PRIOR_BUNDLE_VERSION);
 const base = new URL('../validation/candidates/versioned-replay-2026-09-21/', import.meta.url);
 const sha = (raw: string | Uint8Array) => createHash('sha256').update(raw).digest('hex');
 const read = async (path: string) => boundedFile(fileURLToPath(new URL(path, base)));
@@ -29,7 +29,7 @@ test('preserved versioned candidate binds its retained actual build, frozen engi
   }
   assert.equal(receipt.cases.length, 8);
   assert.deepEqual(receipt.cases.map((row: any) => row.source_version), historicalVersions.flatMap(version => [version, version]));
-  assert.deepEqual(receipt.cases.map((row: any) => row.engine_id), historicalVersions.flatMap(() => [CURRENT_ENGINE_ID, PREVIOUS_ENGINE_ID]));
+  assert.deepEqual(receipt.cases.map((row: any) => row.engine_id), historicalVersions.flatMap(() => [PRIOR_ENGINE_ID, PREVIOUS_ENGINE_ID]));
   const oldRaw = await boundedFile(fileURLToPath(new URL('../validation/approved-versions-0.5.0.json', import.meta.url)));
   assert.equal(sha(oldRaw), receipt.original_receipt_sha256);
   const original = JSON.parse(oldRaw.toString());

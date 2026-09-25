@@ -1,5 +1,15 @@
 # Changelog
 
+## Remote evidence-connect admission and connection guidance — 25 September 2026
+
+- Prepare service 0.7.0 to admit the newer, immutable DWP evidence-connect
+  corpus with a compatible pinned engine and retain historical replay pairs.
+- Distinguish remote assembly, saved workbench inspection and browser-host
+  support in the connection guides. Record the successful developer-assisted
+  Edge sidebar observation without upgrading it to automatic discovery.
+- Keep deployment and public verification tied to the shared DWP receipt
+  record, separate from implementation and local test results.
+
 ## Cross-repository rich-runtime reconciliation — 24 September 2026
 
 - Require the reviewed `okf-uk-government-apis` producer to declare its

@@ -2,9 +2,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { canonicalJson, contextSha256 } from '../../../apps/okf-explorer/src/lib/context/index.ts';
-import { CURRENT_ENGINE_ID, PREVIOUS_ENGINE_ID, ENGINES, type EngineAdapter } from '../src/engines.ts';
+import { CURRENT_ENGINE_ID, PRIOR_ENGINE_ID, PREVIOUS_ENGINE_ID, ENGINES, type EngineAdapter } from '../src/engines.ts';
 import { resolveReplay, ReplayError, createReplayFetcher, REPLAY_LIMITS } from '../src/replay.ts';
-import { verifyBundledContext, LEGACY_BUNDLE_VERSION, type ApprovedCorpus } from '../src/registry.ts';
+import { verifyBundledContext, APPROVED_VERSIONS, LEGACY_BUNDLE_VERSION, type ApprovedCorpus } from '../src/registry.ts';
+import { reviewScriptResponse } from '../src/review.ts';
 import { readContextEvidence } from '../../../apps/okf-explorer/src/lib/context/delivery.ts';
 import { bindEvidenceRead } from '../src/replayDelivery.ts';
 import { createAskService } from '../src/service.ts';
@@ -20,13 +21,26 @@ const code = (value: string) => (error: unknown) => error instanceof ReplayError
 const fake = (engine_id: string, assemble: EngineAdapter['assemble']): EngineAdapter => ({ engine_id,
   source_commit: '0'.repeat(40), source_versions: [LEGACY_BUNDLE_VERSION], assemble });
 
+test('review page default engines match replay selection for every approved source', async () => {
+  const script = await reviewScriptResponse().text();
+  const config = script.match(/\)\((\{"versions":.+\})\);$/s);
+  assert.ok(config, 'Review script embeds its approved engine configuration');
+  const defaultEngines = JSON.parse(config[1]).defaultEngines as Record<string, string>;
+  assert.deepEqual(Object.keys(defaultEngines), APPROVED_VERSIONS);
+  const adapters = ENGINES.map(engine => ({ ...engine, assemble: async () => expected }));
+  for (const version of APPROVED_VERSIONS) {
+    const replay = await resolveReplay(source, { ...input, version }, noFetch, adapters);
+    assert.equal(defaultEngines[version], replay.identity.engine_id, version);
+  }
+});
+
 test('frozen adapters refuse the new corpus family before reading any files', () => {
   const value = { manifest: { schema: 'okf-context-corpus.v2' }, binding: source.binding } as ApprovedCorpus;
-  for (const adapter of ENGINES) assert.throws(() => adapter.assemble(value, 'question', {}, noFetch), /Frozen engines/);
+  for (const adapter of ENGINES) assert.throws(() => adapter.assemble(value, 'question', {}, noFetch), /Frozen engines|Evidence Connect requires/);
 });
 
 test('new and explicit assemblies disclose exact engines without altering package bytes or family', async () => {
-  assert.equal(initial.identity.engine_id, CURRENT_ENGINE_ID);
+  assert.equal(initial.identity.engine_id, PRIOR_ENGINE_ID);
   assert.equal(initial.identity.mode, 'current-default');
   assert.equal(initial.context.engine, 'okf-context-assembly.v1');
   assert.equal(initial.identity.package_sha256, await contextSha256(canonicalJson(expected)));

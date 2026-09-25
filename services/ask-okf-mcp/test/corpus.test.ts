@@ -11,13 +11,14 @@ import { assembleContext, canonicalJson, contextSha256 } from '../../../apps/okf
 import { assembleCorpusContext, corpusBucket, validateContextCorpusManifest } from '../../../apps/okf-explorer/src/lib/context/corpus.ts';
 import { createAskService, PUBLIC_ORIGIN, type Diagnostic } from '../src/service.ts';
 import { createCorpusFetcher } from '../src/corpusFetch.ts';
-import { BUNDLE_VERSION, HOUSEHOLD_BUNDLE_VERSION, HOUSEHOLD_APPROVED_BUNDLE, LEGACY_BUNDLE_VERSION, STAFF_BUNDLE_VERSION, PREVIOUS_BUNDLE_VERSION, APPROVED_BUNDLE, STAFF_APPROVED_BUNDLE,
+import { BUNDLE_VERSION, PRIOR_BUNDLE_VERSION, PRIOR_APPROVED_BUNDLE, HOUSEHOLD_BUNDLE_VERSION, HOUSEHOLD_APPROVED_BUNDLE, LEGACY_BUNDLE_VERSION, STAFF_BUNDLE_VERSION, PREVIOUS_BUNDLE_VERSION, APPROVED_BUNDLE, STAFF_APPROVED_BUNDLE,
   PREVIOUS_APPROVED_BUNDLE, APPROVED_VERSIONS, verifyBundledCorpus, verifyBundledContext } from '../src/registry.ts';
 import type { ContextRecord } from '../../../apps/okf-explorer/src/lib/context/types.ts';
 
 const indexText = await readFile(new URL('../vendor/okf-dwp-assembly-index.json', import.meta.url), 'utf8');
 const descriptorText = await readFile(new URL('../vendor/okf-dwp-descriptor.json', import.meta.url), 'utf8');
 const manifestText = await readFile(new URL('../vendor/okf-dwp-corpus-manifest.json', import.meta.url), 'utf8');
+const evidenceConnectManifestText = await readFile(new URL('../vendor/okf-dwp-evidence-connect-corpus-manifest.json', import.meta.url), 'utf8');
 const staffManifestText = await readFile(new URL('../vendor/okf-dwp-staff-corpus-manifest.json', import.meta.url), 'utf8');
 const previousManifestText = await readFile(new URL('../vendor/okf-dwp-previous-corpus-manifest.json', import.meta.url), 'utf8');
 const legacy = await verifyBundledContext(indexText, descriptorText);
@@ -71,15 +72,15 @@ async function fixture(transportRedirect: 'error' | 'manual' = 'error') {
 }
 
 test('vendored corpus identity verifies, and modified manifest bytes fail closed', async () => {
-  const approved = await verifyBundledCorpus(manifestText);
-  assert.equal(approved.manifest.records.count, 18197);
+  const approved = await verifyBundledCorpus(evidenceConnectManifestText);
+  assert.equal(approved.manifest.records.count, 53737);
   assert.equal(approved.manifest.counts.pages, 19090);
   assert.equal(approved.binding.index_sha256, APPROVED_BUNDLE.index_sha256);
-  await assert.rejects(verifyBundledCorpus(manifestText + ' '), /integrity/);
+  await assert.rejects(verifyBundledCorpus(evidenceConnectManifestText + ' '), /integrity/);
 });
 
 test('current and earlier corpus versions retain separate immutable identities', async () => {
-  const current = await verifyBundledCorpus(manifestText);
+  const current = await verifyBundledCorpus(manifestText, PRIOR_BUNDLE_VERSION);
   const householdText = await readFile(new URL('../vendor/okf-dwp-household-corpus-manifest.json', import.meta.url), 'utf8');
   const household = await verifyBundledCorpus(householdText, HOUSEHOLD_BUNDLE_VERSION);
   assert.equal(household.binding.index_sha256, HOUSEHOLD_APPROVED_BUNDLE.index_sha256);
@@ -91,8 +92,8 @@ test('current and earlier corpus versions retain separate immutable identities',
   assert.equal(PREVIOUS_BUNDLE_VERSION, 'bf50ef8d91b9f1ccc2cbdb354198eae74c9ed752');
   assert.equal(PREVIOUS_APPROVED_BUNDLE.index_sha256, 'aa9726ba72b7495323b031f149fa13cffeae0aa8fc868af63b7af3cac0e6be95');
   assert.equal(previous.binding.index_url, `https://raw.githubusercontent.com/chris-page-gov/okf-dwp/${PREVIOUS_BUNDLE_VERSION}/full-dmg/context/corpus/manifest.json`);
-  assert.equal(current.binding.index_url, `https://raw.githubusercontent.com/chris-page-gov/okf-dwp/${BUNDLE_VERSION}/combined/context/corpus/manifest.json`);
-  assert.deepEqual(APPROVED_VERSIONS, [BUNDLE_VERSION, HOUSEHOLD_BUNDLE_VERSION, STAFF_BUNDLE_VERSION, PREVIOUS_BUNDLE_VERSION, LEGACY_BUNDLE_VERSION]);
+  assert.equal(current.binding.index_url, `https://raw.githubusercontent.com/chris-page-gov/okf-dwp/${PRIOR_BUNDLE_VERSION}/combined/context/corpus/manifest.json`);
+  assert.deepEqual(APPROVED_VERSIONS, [BUNDLE_VERSION, PRIOR_BUNDLE_VERSION, HOUSEHOLD_BUNDLE_VERSION, STAFF_BUNDLE_VERSION, PREVIOUS_BUNDLE_VERSION, LEGACY_BUNDLE_VERSION]);
   assert.equal(STAFF_BUNDLE_VERSION, '9de52acf1db84b27f8933d80480eaa850e74fa33');
   assert.equal(staff.binding.index_sha256, STAFF_APPROVED_BUNDLE.index_sha256);
   assert.notEqual(current.manifest.base_index.sha256, staff.manifest.base_index.sha256);
@@ -129,7 +130,7 @@ for (const protocol of ['current', 'legacy'] as const) test(`official ${protocol
     : new LegacyTransport(endpoint, { fetch: fetcher });
   try {
     await client.connect(transport as never);
-    const result = await client.callTool({ name: 'ask_okf', arguments: { bundle: 'okf-dwp', question } });
+    const result = await client.callTool({ name: 'ask_okf', arguments: { bundle: 'okf-dwp', version: PRIOR_BUNDLE_VERSION, question } });
     assert.equal(result.isError, undefined);
     assert.equal(canonicalJson(result.structuredContent), canonicalJson(expected));
     const blocks = result.content as Array<{ type: string; text?: string }>;
@@ -141,8 +142,8 @@ for (const protocol of ['current', 'legacy'] as const) test(`official ${protocol
     assert.deepEqual((result._meta as any)['okf/replay'], identity);
     assert.equal(expected.evidence_status, 'insufficient');
     assert.equal(expected.selected[0].record.text, 'Synthetic hospital source passage used only to test transport parity. This is not legal guidance.');
-    assert.equal(versions.at(-1), BUNDLE_VERSION);
-    assert.ok(log.some(row => row.corpus_records_available === 1 && row.bundle_version === BUNDLE_VERSION));
+    assert.equal(versions.at(-1), PRIOR_BUNDLE_VERSION);
+    assert.ok(log.some(row => row.corpus_records_available === 1 && row.bundle_version === PRIOR_BUNDLE_VERSION));
     assert.ok(!JSON.stringify(log).includes(question));
     const before = f.requested.length;
     const historical = await client.callTool({ name: 'ask_okf', arguments: { bundle: 'okf-dwp', version: LEGACY_BUNDLE_VERSION, question } });
@@ -163,7 +164,7 @@ test('unverified corpus asset never falls back to historical evidence or model k
   try {
     const response = await service.fetch(new Request(`${PUBLIC_ORIGIN}/okf/mcp`, { method: 'POST',
       headers: { 'content-type': 'application/json', accept: 'application/json, text/event-stream' },
-      body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'tools/call', params: { name: 'ask_okf', arguments: { bundle: 'okf-dwp', question } } }) }));
+      body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'tools/call', params: { name: 'ask_okf', arguments: { bundle: 'okf-dwp', version: PRIOR_BUNDLE_VERSION, question } } }) }));
     const raw = await response.text();
     const result = JSON.parse(raw.startsWith('event:') ? raw.split('\n').find(line => line.startsWith('data: '))!.slice(6) : raw).result;
     assert.equal(result.isError, true); assert.equal(result.structuredContent, undefined);
@@ -197,7 +198,7 @@ for (const stage of ['source_load', 'source_transport', 'source_decode', 'contex
       const response = await service.fetch(new Request(`${PUBLIC_ORIGIN}/okf/mcp`, { method: 'POST',
         headers: { 'content-type': 'application/json', accept: 'application/json, text/event-stream' },
         body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'tools/call', params: {
-          name: 'ask_okf', arguments: { bundle: 'okf-dwp', question: 'SYNTHETIC_QUERY_MARKER' }
+          name: 'ask_okf', arguments: { bundle: 'okf-dwp', version: PRIOR_BUNDLE_VERSION, question: 'SYNTHETIC_QUERY_MARKER' }
         } }) }));
       const raw = await response.text();
       const result = JSON.parse(raw.startsWith('event:') ? raw.split('\n').find(line => line.startsWith('data: '))!.slice(6) : raw).result;

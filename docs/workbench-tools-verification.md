@@ -1,7 +1,8 @@
 # Workbench page-tool verification
 
-Recorded on 24 September 2026. Local checks and public browser observations are
-reported separately; neither proves AI-host compatibility. The [design](adr-workbench-page-tools.md) and
+Recorded on 24 September 2026, with a later sidebar observation below. Local
+checks, public browser observations and actual sidebar calls have separate
+scopes. The [design](adr-workbench-page-tools.md) and
 [user guide](workbench-page-tools.md) explain the boundaries.
 
 ## Reproducible application measurement
@@ -114,7 +115,7 @@ JSON string. This concerns developer invocation syntax in that browser build;
 the registered application handler receives an object. Do not silently apply
 examples from a different draft/browser version.
 
-The current assistant connection advertises `pageAssets` and `cdp`, with no
+In that initial observation, the assistant connection advertised `pageAssets` and `cdp`, with no
 dedicated `webmcp` capability. These native developer calls therefore do **not**
 prove integrated assistant-host invocation. No host setting was changed and no
 panel renderer was invoked. The tested fallbacks are typed data, ordinary page
@@ -150,10 +151,58 @@ contexts remain insufficient.
 
 ## Remaining gates
 
-- Actual assistant-host discovery, invocation and panel rendering.
+- Automatic Site-tools discovery in the Edge extension, fresh-conversation
+  repeatability and custom panel rendering. The developer-assisted sidebar
+  invocation below is a narrower, successful observation.
 - Specialist acceptance, complete legal applicability and source closure for
   the staff questions.
 - Reviewed dated rate and executable calculation contracts; the newly identified
   GOV.UK adviser calculation guide is a source lead outside the frozen packages.
 - A later application release requires a new public observation. Earlier PR145
   receipts and the PR146 observation above retain their own exact builds.
+
+## Later Edge sidebar observation
+
+On 24 September 2026, the actual ChatGPT sidebar used the page's native
+registered tools through its authorised CDP developer connection. CDP means
+Chrome DevTools Protocol: a browser developer interface, broader than these
+seven workbench tools. It called `okf_get_state`, `okf_get_view_data` and
+`okf_show_view`, displayed staff-016 **Requirements**, and explained the
+returned gaps. A plain-English follow-up displayed staff-039 **Interactions**
+and explained rows 1–3 of 4 with the partial-coverage and unreviewed notices.
+The page changes were independently checked.
+
+The [DWP sidebar record and starter](https://github.com/chris-page-gov/okf-dwp/blob/42cea5e79e19bd28dce7fccf7b7fe792e3714ce3/docs/workbench-sidebar-demo.md)
+retain the manifest hash, result identifiers, observed calling convention and
+boundaries. Restricted page inspection returned `undefined` for
+`document.modelContext` while native inspection in the same tab found the
+registered tools. That restricted result alone was therefore not evidence of
+broken registration.
+
+No replacement registry was injected and no browser flag or extension setting
+was changed by the coordinating task. This proves the recorded sidebar route;
+it does not prove automatic dedicated WebMCP discovery, remote MCP source
+admission or correct benefits answers. A fresh conversation must discover its
+own supported interface and respect its own permissions.
+
+### Fresh conversation on 25 September 2026
+
+A fresh Edge sidebar conversation repeated the Requirements journey using the
+published starter. After native clipboard interaction failed, entering the
+same public prompt through the accessibility text field succeeded. The sidebar
+used the existing authorised developer connection, discovered the native
+registered tools and called `okf_get_state`, `okf_get_view_data` and
+`okf_show_view`. It displayed result
+`v-8a0d7bd9-e5c8-44d0-9c4d-8d2002d3b43a` and verified revision 3.
+
+The coordinating task independently observed the page change from Calculation
+stages to Requirements for `staff-016`, showing rows 1–3 of six. The sidebar
+explained the returned gaps, retained `insufficient` and the absence of supplied
+source references, and calculated no award. The displayed model was
+`5.6 Sol Medium`. This was one actual sidebar request, not an answer-quality
+comparison. No browser setting, permission or existing user draft was changed.
+
+This demonstrates a second, fresh-session use of the developer-connection
+route. Automatic dedicated Site-tools discovery and other hosts remain separate
+acceptance checks. The [DWP connection guide](https://chris-page-gov.github.io/okf-dwp/docs/chatgpt-connection.html)
+keeps the saved workbench, fresh browser assembly and remote MCP routes distinct.

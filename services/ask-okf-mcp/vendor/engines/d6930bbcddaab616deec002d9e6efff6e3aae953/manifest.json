@@ -1,0 +1,36 @@
+{
+  "schema": "okf-context-engine-manifest.v2",
+  "source_commit": "d6930bbcddaab616deec002d9e6efff6e3aae953",
+  "family": "okf-context-assembly.v1",
+  "corpus_schemas": [
+    "okf-context-corpus.v3"
+  ],
+  "files": {
+    "corpus.ts": {
+      "bytes": 20561,
+      "sha256": "a770352c6e4628f0c391b0c12bbdaf185b476a714ca212e99459d135f8f57f6f",
+      "source_path": "apps/okf-explorer/src/lib/context/corpus.ts"
+    },
+    "corpusV3.ts": {
+      "bytes": 48466,
+      "sha256": "944617e1630362b7a41d60da92651007b96252eff3075eb4c4b852f420f5a5c0",
+      "source_path": "apps/okf-explorer/src/lib/context/corpusV3.ts"
+    },
+    "index.ts": {
+      "bytes": 47433,
+      "sha256": "689f8b8ab1cfb5ccc21b6dd9b5527fcad04de01f5876b44cbb2dc0240fceb010",
+      "source_path": "apps/okf-explorer/src/lib/context/index.ts"
+    },
+    "types.ts": {
+      "bytes": 7704,
+      "sha256": "febf83b5c65153fd2e49ac070b6117525463034fb1b33534a086a1cc7bbb42cc",
+      "source_path": "apps/okf-explorer/src/lib/context/types.ts"
+    },
+    "unit.ts": {
+      "bytes": 6121,
+      "sha256": "7cd989c00564ad2e0469073c66685ffb5111809e7f598dc42b6f3df1bf693aa6",
+      "source_path": "apps/okf-explorer/src/lib/context/unit.ts"
+    }
+  },
+  "engine_id": "urn:okf:context-engine:sha256:256b19d6d8a2e16191866ead0ffd48d9edb7f705143bd8a91597b19f242c0968"
+}

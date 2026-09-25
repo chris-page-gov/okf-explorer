@@ -9,12 +9,15 @@ official DWP service or individual benefits advice.
 [Publication procedure](../../docs/remote-mcp-publication.md). Software preparation
 and recorded public deployment are separate states.
 
-Service 0.6.1 changes only the advertised non-blank question pattern and version
-bookkeeping. Some connected clients match a regex against the entire question;
-the equivalent anchored pattern accepts complete questions there too. All three
-tools share the constraint. The source registry, frozen engines and evidence
-selection remain unchanged. Refresh installed tool metadata after publication
-and test the intended client session using the
+Service 0.7.0 defaults to the immutable Evidence Connect DMG and ADM source
+`7eeded763042ddd0070f4fed834c6074149e8e2f` with the compatible Explorer
+engine `d6930bbcddaab616deec002d9e6efff6e3aae953`. Its corpus manifest
+and descriptor are vendored by exact byte hash. Discovery cards, source units
+and relationship navigation remain separate from legal applicability and answer
+quality. All five earlier source revisions and their historical replay paths
+remain explicitly available. A new question uses the engine paired with its
+selected source; an omitted source selects Evidence Connect. Refresh installed
+tool metadata after publication and test the intended client session using the
 [connection guide](../../docs/remote-mcp.md#connect-in-chatgpt).
 
 <!-- ask-okf-publication:start -->
@@ -45,9 +48,10 @@ particular ChatGPT, Data agent or Voice client. This observation includes no new
 public browser journey. Earlier failures and observations retain their own scope.
 <!-- ask-okf-publication:end -->
 
-The default source retains all four sources available in 0.5.0. It uses the c4f
-assembler; the older sources retain both frozen assemblers, giving nine approved
-pairs. The build checks the exact manifest and both engine archives. Historical
+The earlier 0.6.1 source retains all four sources available in 0.5.0. It uses the c4f
+assembler; the older sources retain both frozen assemblers. The new default adds
+a third pinned engine and gives ten approved source/engine pairs. The build checks
+the exact manifests and all three engine archives. Historical
 context IDs and complete-package hashes remain enforced. See the
 [local preparation observation](validation/candidates/release-0.6.0-2026-09-21/README.md),
 [versioned replay decision](../../docs/adr-versioned-evidence-replay.md) and
@@ -119,7 +123,7 @@ and 50 relationships; the newer engine's same-source package contains 35 records
 and 61 relationships. Both remain insufficient. Preserving their bytes does not
 upgrade their evidence status.
 
-The build verifies both frozen implementation manifests and every declared module.
+The build verifies all three frozen implementation manifests and every declared module.
 It also keeps logical dependency paths stable across real and symlinked locked
 installations; a regression compares Worker, Node and receipt bytes. An earlier
 path-dependent build remains [historical evidence](validation/history/0.4.0-symlink/classification.json).
@@ -196,9 +200,11 @@ Release observations distinguish candidate checks from actual deployment.
 }
 ```
 
-`version` is optional. Omission selects the combined
-staff-semantic corpus: 513 PDFs, 19,090 measured DMG/ADM pages and 18,197 non-empty
-evidence records. The 893 empty extractions remain accounted for. Its additive
+`version` is optional. Omission selects Evidence Connect: 513 PDFs, 19,090
+measured DMG/ADM pages and 18,197 non-empty extracted pages. The 893 empty
+extractions remain accounted for. Its 53,737 source-led records are discovery
+units and separately authored profiles; discovery cards are navigation aids,
+not legal summaries. The preceding combined corpus's additive
 semantic base has 903 records and 1,482 assertions, including 51 authored
 concepts, 40 staff-task profiles, legislative reference metadata and 20 selected
 statutory units linked by 43 source-backed references. Machine extraction and
@@ -208,7 +214,8 @@ in the 18,197 PDF-page evidence records or the 513-PDF source count.
 
 | Source selection | Behaviour |
 | --- | --- |
-| Omit `version`, or `723bcc5b015ab38a026625c2148edbd784edf7c7` | Partner/household qualifications with 39 required-support relationships; current engine only |
+| Omit `version`, or `7eeded763042ddd0070f4fed834c6074149e8e2f` | Evidence Connect DMG/ADM source units and task profiles; v3 engine only |
+| `723bcc5b015ab38a026625c2148edbd784edf7c7` | Preceding combined partner/household qualifications; 0.6.1 engine only |
 | `3ef0e786e9a18e76fa17c7d925ff509d6d6c9f84` | Combined DMG and ADM corpus with household/care-home concepts, proposed staff-task requirements and selected statutory bodies |
 | `9de52acf1db84b27f8933d80480eaa850e74fa33` | Earlier staff semantic corpus with metadata-only legal references, retained with its own manifest and binding |
 | `bf50ef8d91b9f1ccc2cbdb354198eae74c9ed752` | Earlier full-source discovery corpus, retained byte for byte with its own manifest and binding |

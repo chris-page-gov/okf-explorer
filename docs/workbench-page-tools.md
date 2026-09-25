@@ -5,6 +5,24 @@ open web page. WebMCP is the browser interface for these tools. It is separate
 from the remote Ask OKF MCP server. The workbench remains usable with ordinary
 links and buttons when page tools are unavailable.
 
+## Choose the connection
+
+| Route | What it does | Verification boundary |
+| --- | --- | --- |
+| Open workbench page tools | Inspect a saved case and display the returned view on that page | The Edge sidebar developer-assisted route was observed on 24 September; automatic Site-tools discovery is separate |
+| Reader Search / Ask OKF | Search the loaded corpus or assemble a new context | Uses the Reader's admitted source descriptor and engine |
+| Remote Ask OKF MCP service | Assemble evidence and return a small catalogue followed by exact reads | Uses its separately released source and engine; it does not control the open workbench |
+
+Use the [sidebar starter and recorded test](https://github.com/chris-page-gov/okf-dwp/blob/main/docs/workbench-sidebar-demo.md)
+for Edge. OpenAI documents automatic [Site tools](https://help.openai.com/en/articles/20001423-using-site-tools-in-the-chatgpt-desktop-app)
+in its desktop app's built-in browser. Browser side chat and automatic Site
+tools are different capabilities. A page's registration message does not prove
+that the current AI client can call its tools.
+
+Publishing Pages does not update the remote service. Before combining outputs,
+compare their source, snapshot and engine identities. For the latest retained
+service observation, use the [shared publication record](https://github.com/chris-page-gov/okf-dwp/blob/main/docs/service-publication.md).
+
 Load a workbench manifest first. It is a catalogue which names the public
 questions and the checksums of their saved evidence packages. A checksum lets
 the loader reject changed bytes. Opening a saved package does not rerun Ask OKF

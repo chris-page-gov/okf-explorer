@@ -1,6 +1,6 @@
 # Remote Ask OKF transport
 
-Decision: 19 September 2026; updated 21 September 2026 for service 0.6.0.
+Decision: 19 September 2026; updated 25 September 2026 for service 0.7.0.
 For the latest recorded deployment and separate verification, see the
 [shared publication status](https://github.com/chris-page-gov/okf-dwp/blob/main/docs/service-publication.md).
 The original full-source HTTPS deployment and official SDK package parity were
@@ -10,10 +10,10 @@ household/statutory-evidence implementation has separate local verification.
 Hosting, SDK and client acceptance each require their own receipts. See the
 [initial execution record](../../docs/remote-mcp.md#initial-full-source-https-verification).
 
-The remote service is a tool-only adapter. It statically
-imports two frozen versions of Explorer's deterministic `assembleContext` and
-`assembleCorpusContext` implementations. Their manifests bind exact modules from
-commits `c4f2de0a99b7bc2f8b8c8a06a3c715fb56b66d8e` and
+The remote service is a tool-only adapter. It statically imports three frozen
+versions of Explorer's deterministic context assembly. Their manifests bind
+exact modules from commits `d6930bbcddaab616deec002d9e6efff6e3aae953`,
+`c4f2de0a99b7bc2f8b8c8a06a3c715fb56b66d8e` and
 `b9a3b68b6dbf222f9a73cc8f450dd53f126e1b55`. It does not
 implement search, retrieval, interpretation or model answering. The existing
 `okf-governed-context.v1` package remains the full-package output contract.
@@ -30,7 +30,8 @@ exact verified slices. Anonymous access exposes only allow-listed immutable
 public source versions; it does not confer source authority or give individual
 advice. Compact delivery changes transfer size, not evidence selection.
 
-At build time, verify all four vendored OKF-DWP corpus manifests and historical descriptor/context-index bytes
+At build time, verify all five vendored OKF-DWP corpus manifests, the new
+Evidence Connect descriptor and historical descriptor/context-index bytes
 against fixed SHA-256 values and compose the existing canonical package schema
 from local references. At request time, accept only a logical bundle identifier
 and allow-listed immutable version. No request can supply a URL. Default corpus
@@ -56,7 +57,7 @@ responses, including every 3xx status, without following `Location`. This
 preserves the core's redirect rejection on runtimes which reject the `error`
 mode itself. Source integrity checks and package contents remain unchanged.
 
-The default combined DMG/ADM corpus includes 40 proposed staff-task evidence
+The preceding combined DMG/ADM corpus includes 40 proposed staff-task evidence
 profiles and 203 explicit open obligations. Its contexts remain insufficient
 while scope, evidence closure, legal version, applicability and independent
 review are unresolved. Its 19,090 measured pages include 893 explicit empty-text
@@ -68,13 +69,19 @@ specialist-approved interpretation. Unresolved extent, amendments, applicability
 and citation dependencies remain explicit. The additional bodies do not close
 the 203 obligations or establish a complete legal dependency set.
 
-The candidate default is pinned to `723bcc5b015ab38a026625c2148edbd784edf7c7`.
+The default Evidence Connect corpus is pinned to
+`7eeded763042ddd0070f4fed834c6074149e8e2f` and only the d693 engine is
+approved for its v3 weighted discovery manifest. It retains the complete
+DMG/ADM source inventory, with 53,737 source-led records and explicit discovery
+cards, source references and task profiles. These are bounded research routes,
+not legal conclusions. The earlier combined corpus is pinned to
+`723bcc5b015ab38a026625c2148edbd784edf7c7`.
 It adds partner/household qualifications, 98 selected guidance pages and
-39 required-support relationships. Only the current c4f engine is approved for
+39 required-support relationships. Only the preceding c4f engine is approved for
 this source. The original household/statutory source at
 `3ef0e786e9a18e76fa17c7d925ff509d6d6c9f84` remains separately vendored, with
-both historical engines available. Five sources and these explicit compatibility
-choices give nine supported source/engine pairs.
+both historical engines available. Six sources and these explicit compatibility
+choices give ten supported source/engine pairs.
 The preceding `9de52acf1db84b27f8933d80480eaa850e74fa33` staff semantic
 corpus remains separately available, including its original metadata-only legal
 references, manifest bytes and binding.

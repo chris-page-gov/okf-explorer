@@ -25,11 +25,18 @@ export type EngineAdapter = {
   readonly engine_id: string; readonly source_commit: string; readonly source_versions: readonly string[];
   assemble(source: ApprovedSource, question: string, budget: Partial<ContextBudget> | undefined, fetcher: typeof fetch): Promise<ContextPackage>;
 };
-export const CURRENT_ENGINE_ID = currentManifest.engine_id;
+export const CURRENT_ENGINE_ID = evidenceConnectEngine.engine_id;
+export const PRIOR_ENGINE_ID = currentManifest.engine_id;
 export const PREVIOUS_ENGINE_ID = previousManifest.engine_id;
 // Static imports only: no caller URL, executable selection or dynamic imports.
 export const ENGINES: readonly EngineAdapter[] = Object.freeze([
-  Object.freeze({ engine_id: CURRENT_ENGINE_ID, source_commit: currentManifest.source_commit, source_versions: Object.freeze(['723bcc5b015ab38a026625c2148edbd784edf7c7', ...historicalVersions]),
+  Object.freeze({ engine_id: CURRENT_ENGINE_ID, source_commit: evidenceConnectEngine.source_commit,
+    source_versions: Object.freeze(['7eeded763042ddd0070f4fed834c6074149e8e2f']),
+    assemble: (source: ApprovedSource, question: string, budget: Partial<ContextBudget> | undefined, fetcher: typeof fetch) => {
+      if (!('manifest' in source) || source.manifest.schema !== 'okf-context-corpus.v3') throw new Error('Evidence Connect requires its v3 corpus.');
+      return evidenceConnectCorpus.assembleCorpusContext(source.manifest, source.binding, question, budget, fetcher);
+    } }),
+  Object.freeze({ engine_id: PRIOR_ENGINE_ID, source_commit: currentManifest.source_commit, source_versions: Object.freeze(['723bcc5b015ab38a026625c2148edbd784edf7c7', ...historicalVersions]),
     assemble: (source: ApprovedSource, question: string, budget: Partial<ContextBudget> | undefined, fetcher: typeof fetch) =>
       'manifest' in source ? currentCorpus.assembleCorpusContext(legacyManifest(source.manifest), source.binding, question, budget, fetcher)
         : current.assembleContext(source.index, question, budget, source.binding) }),
@@ -41,3 +48,5 @@ export const ENGINES: readonly EngineAdapter[] = Object.freeze([
 export const APPROVED_ENGINE_IDS = Object.freeze(ENGINES.map(engine => engine.engine_id));
 export const ENGINE_CATALOGUE = Object.freeze(ENGINES.map(({ engine_id, source_commit, source_versions }) =>
   Object.freeze({ engine_id, source_commit, source_versions })));
+import * as evidenceConnectCorpus from '../vendor/engines/d6930bbcddaab616deec002d9e6efff6e3aae953/corpus.ts';
+import evidenceConnectEngine from '../vendor/engines/d6930bbcddaab616deec002d9e6efff6e3aae953/manifest.json' with { type: 'json' };
