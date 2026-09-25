@@ -1,5 +1,6 @@
 import { APPROVED_VERSIONS, BUNDLE_VERSION } from './registry.ts';
-import { APPROVED_ENGINE_IDS, CURRENT_ENGINE_ID } from './engines.ts';
+import { APPROVED_ENGINE_IDS, ENGINES } from './engines.ts';
+import { defaultEngineForVersion } from './replay.ts';
 
 /** Static shell. The URL fragment is inert until the user explicitly invokes replay. */
 export function reviewResponse(): Response {
@@ -15,7 +16,7 @@ body{font:1.05rem/1.6 system-ui,sans-serif;max-width:68rem;margin:2rem auto;padd
 <form id="review-form"><label for="question">General question</label><textarea id="question" maxlength="2000" required></textarea>
 <label for="version">Approved source version</label><select id="version"></select>
 <p id="recipe-info">Use a link returned by Ask OKF, or enter a new general question.</p>
-<p id="engine-info">A new question uses the current approved assembler. Historical links retain their expected evidence identity.</p>
+<p id="engine-info">A new question uses the approved assembler for its selected source version. Historical links retain their expected evidence identity.</p>
 <button type="submit">Recreate evidence</button></form>
 <p id="status" role="status" aria-live="polite"></p>
 <section id="context" hidden><h2>Verified context</h2><p id="identity"></p><p id="boundary"></p>
@@ -28,7 +29,7 @@ body{font:1.05rem/1.6 system-ui,sans-serif;max-width:68rem;margin:2rem auto;padd
 }
 
 /** Standalone, dependency-free browser code; render all returned content as text. */
-function reviewApp(config: { versions: string[]; defaultVersion: string; engines: readonly string[]; currentEngine: string }) {
+function reviewApp(config: { versions: string[]; defaultVersion: string; engines: readonly string[]; defaultEngines: Record<string, string> }) {
   const element = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
   const question = element<HTMLTextAreaElement>('question');
   const version = element<HTMLSelectElement>('version');
@@ -83,7 +84,7 @@ function reviewApp(config: { versions: string[]; defaultVersion: string; engines
     recipe = null; question.value = ''; version.value = config.defaultVersion;
     status.textContent = '';
     element('recipe-info').textContent = 'Use a link returned by Ask OKF, or enter a new general question.';
-    element('engine-info').textContent = 'New context assembler: ' + config.currentEngine;
+    element('engine-info').textContent = 'New context assembler: ' + config.defaultEngines[version.value];
     if (location.hash.length > 1) {
     try {
       const encoded = location.hash.slice(1);
@@ -113,7 +114,7 @@ function reviewApp(config: { versions: string[]; defaultVersion: string; engines
     element('replay-link').replaceChildren();
     status.textContent = 'Question or version changed. Recreate evidence to make a new context.';
     element('recipe-info').textContent = 'This will create a new context, rather than replay the shared identity.';
-    element('engine-info').textContent = 'New context assembler: ' + config.currentEngine;
+    element('engine-info').textContent = 'New context assembler: ' + config.defaultEngines[version.value];
   };
   question.addEventListener('input', invalidate); version.addEventListener('change', invalidate);
   // A different replay link in the same tab is a new inert recipe. Never leave
@@ -182,7 +183,7 @@ function reviewApp(config: { versions: string[]; defaultVersion: string; engines
     event.preventDefault(); const run = ++generation;
     output.hidden = true; current = null; records.replaceChildren(); recordSummaries.clear(); clearRead(); status.textContent = 'Verifying source files and recreating evidence…';
     element('replay-link').replaceChildren();
-    const request = recipe ?? { bundle: 'okf-dwp', question: question.value, version: version.value, engine_id: config.currentEngine };
+    const request = recipe ?? { bundle: 'okf-dwp', question: question.value, version: version.value, engine_id: config.defaultEngines[version.value] };
     try {
       const result = await call('ask_okf_manifest', request);
       if (generation !== run) return;
@@ -212,6 +213,12 @@ function reviewApp(config: { versions: string[]; defaultVersion: string; engines
 }
 
 export function reviewScriptResponse(): Response {
-  return new Response(`(${reviewApp.toString()})(${JSON.stringify({ versions: APPROVED_VERSIONS, defaultVersion: BUNDLE_VERSION, engines: APPROVED_ENGINE_IDS, currentEngine: CURRENT_ENGINE_ID })});`,
+  const defaultEngines = Object.fromEntries(APPROVED_VERSIONS.map(version => {
+    const engine = ENGINES.find(candidate => candidate.engine_id === defaultEngineForVersion(version)
+      && candidate.source_versions.includes(version));
+    if (!engine) throw new Error(`No approved assembler for source version ${version}.`);
+    return [version, engine.engine_id];
+  }));
+  return new Response(`(${reviewApp.toString()})(${JSON.stringify({ versions: APPROVED_VERSIONS, defaultVersion: BUNDLE_VERSION, engines: APPROVED_ENGINE_IDS, defaultEngines })});`,
     { headers: { 'Content-Type': 'text/javascript; charset=utf-8' } });
 }

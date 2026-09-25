@@ -7,6 +7,8 @@
   from Explorer commit `d6930bbcddaab616deec002d9e6efff6e3aae953`.
 - Make Evidence Connect the default source while retaining all earlier source
   versions, frozen engine pairs and engine-specific replay identities.
+- Make new questions on the review page use the assembler approved for the
+  selected source version, including historical sources.
 - Bind discovery and relationship assets to the manifest allow-list and shared
   per-request resource limits. Verify actual local source text and cursor
   rejection without making model calls.

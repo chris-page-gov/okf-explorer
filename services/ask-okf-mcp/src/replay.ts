@@ -29,6 +29,11 @@ export function replayFailure(cause: unknown): string | undefined {
     replay_budget: 'Replay exceeded its shared bounded resource allowance. No evidence was returned.' })[cause.code];
 }
 
+/** Keep new-question engine selection aligned across MCP and the review page. */
+export function defaultEngineForVersion(version: string): string {
+  return version === BUNDLE_VERSION ? CURRENT_ENGINE_ID : PRIOR_ENGINE_ID;
+}
+
 /** Per invocation only; cache contains verified public files, never questions.
  * Transfer counts unique files; files/decoded bytes count every decode, including
  * a second engine. Reservations happen before await and share the old ceilings.
@@ -82,7 +87,7 @@ export async function resolveReplay(source: ApprovedSource, input: ReplayInput, 
   if (!adapters.length || adapters.length > ENGINE_CATALOGUE_LIMIT || new Set(adapters.map(e => e.engine_id)).size !== adapters.length) throw new ReplayError('engine_unavailable');
   const compatible = adapters.filter(e => e.source_versions.includes(input.version));
   const historical = !input.engine_id && !!input.context_id;
-  const defaultEngine = input.version === BUNDLE_VERSION ? CURRENT_ENGINE_ID : PRIOR_ENGINE_ID;
+  const defaultEngine = defaultEngineForVersion(input.version);
   const candidates = historical ? compatible : compatible.filter(e => e.engine_id === (input.engine_id ?? defaultEngine));
   if (!candidates.length) throw new ReplayError(historical ? 'historical_unavailable' : 'engine_unavailable');
   if (candidates.length > REPLAY_LIMITS.attempts) throw new ReplayError('replay_budget');
