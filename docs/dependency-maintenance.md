@@ -102,6 +102,14 @@ its results as evidence for this candidate. The full browser command uses that
 port for the application and then the generated Site in sequence. Set
 `PLAYWRIGHT_FOUNDRY_PORT` if the Site needs a different free port.
 
+An application rebuild also invalidates the current Heritage browser receipt's
+application identity. Follow the [receipt refresh procedure](okf-explorer-evaluation.md)
+to run its 100 questions and three local journeys, then materialise a new
+receipt from those results. Preserve the previous receipt and result files;
+do not change identity hashes by hand or weaken the receipt tests. The
+25 September security repair retains its preceding evidence under
+`validation/dependency-updates/2026-09-25/pre-security/`.
+
 ## Build and deployment actions
 
 GitHub Actions updates can affect code running during builds or deployment.

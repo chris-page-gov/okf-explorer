@@ -24,6 +24,8 @@
   workflow permissions. Document the review, inventory and validation steps.
 - Make local browser tests own their server, with an explicit port for parallel
   worktrees, so an older checkout cannot silently satisfy a new candidate's tests.
+- Preserve the preceding Heritage receipt and refresh its 100-question and
+  three-journey browser results against the exact repaired application build.
 
 ## Remote service 0.7.0 public observation — 25 September 2026
 
