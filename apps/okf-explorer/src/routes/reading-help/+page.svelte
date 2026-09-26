@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, tick } from 'svelte';
   import { loadReadingHelp, parts, type Loaded, type Occurrence, type Passage } from '$lib/evidence/readingHelp';
 
   let input = $state('');
@@ -43,7 +43,15 @@
   }
   function roleLabel(role: string) { return ({ abbreviation: 'Abbreviation', source_marker: 'Source reference', word: 'Reading explanation', manual_pointer: 'Manual reference', unresolved_reference_marker: 'Unclear source reference' } as Record<string, string>)[role] ?? 'Reading help'; }
   function kindLabel(kind: string) { return ({ expansion: 'Abbreviation', source_definition_pointer: 'Meaning and source', model_explanation: 'Reading explanation', citation_navigation: 'Source reference', unresolved_reference: 'Unclear source reference' } as Record<string, string>)[kind] ?? 'Reading help'; }
-  function goToTarget(id: string) { const found = loaded?.manifest.passages.find(row => row.id === id); if (found) { selectPassage(found); document.querySelector('main h2')?.scrollIntoView({ block: 'start' }); } }
+  async function goToTarget(id: string) {
+    const found = loaded?.manifest.passages.find(row => row.id === id);
+    if (!found) return;
+    selectPassage(found);
+    await tick();
+    const heading = document.getElementById('passage-heading');
+    heading?.focus({ preventScroll: true });
+    heading?.scrollIntoView({ block: 'start' });
+  }
   onMount(() => {
     const raw = new URLSearchParams(window.location.search).get('manifest');
     if (raw) void open(raw);
@@ -66,7 +74,7 @@
       <nav aria-label="Source passages"><h2>Source passages</h2><ol>{#each loaded.manifest.passages as row}<li><button type="button" class:current={row.id === selectedId} aria-current={row.id === selectedId ? 'page' : undefined} onclick={() => selectPassage(row)}>{row.label}</button></li>{/each}</ol></nav>
       <main>
         {#if passage}
-          <h2>{passage.label}</h2><p>This is the frozen machine extraction. Its wording and page boundaries are unchanged. Select an underlined occurrence to read help beside it.</p>
+          <h2 id="passage-heading" tabindex="-1">{passage.label}</h2><p>This is the frozen machine extraction. Its wording and page boundaries are unchanged. Select an underlined occurrence to read help beside it.</p>
           <div class="reading-grid"><div class="source-column">{#each passage.spans as span}
             <section class="source-page" aria-label={`Source page ${span.page}`}><h3>Source PDF page {span.page}</h3><p><a href={sourceLink(passage.source_id, span.page)} target="_blank" rel="noopener noreferrer">Open the source PDF at page {span.page}</a></p>
               <pre class="source-text">{#each parts(loaded, passage, span) as part}{#if part.occurrence && loaded.manifest.cards.some(card => card.occurrence_ids.includes(part.occurrence!.id))}<button type="button" class="term" aria-label={`${roleLabel(part.occurrence.role)}: ${part.text}. Read help`} aria-expanded={selectedOccurrence?.id === part.occurrence.id} aria-controls="reading-help-panel" onclick={(event) => selectOccurrence(part.occurrence!, event.currentTarget)}>{part.text}</button>{:else}{part.text}{/if}{/each}</pre>
@@ -78,7 +86,7 @@
               <p><strong>{selectedOccurrence.literal}</strong> · {roleLabel(selectedOccurrence.role)} · source PDF page {selectedOccurrence.page}</p>
               <button type="button" onclick={closeCard}>Close reading help</button>
               {#each cards as card}<article><p class="eyebrow">{kindLabel(card.kind)}</p><h4>{card.title}</h4><p>{card.body}</p><p class="small">Project reading help · {card.review_status}. The source quotations below are reproduced separately.</p>
-                {#if card.target.status === 'unresolved'}<p class="unresolved"><strong>Meaning or target not included:</strong> {card.target.label}. The cited destination text has not been checked here.</p>{:else if card.target.id}<p><button type="button" onclick={() => goToTarget(card.target.id!)}>Read {card.target.label}</button></p>{:else if card.target.url}<p><a href={card.target.url} target="_blank" rel="noopener noreferrer">{card.target.label}</a></p>{/if}
+                {#if card.target.status === 'unresolved'}<p class="unresolved"><strong>Not established here:</strong> {card.target.label}. The cited destination text has not been checked here.</p>{:else if card.target.id}<p><button type="button" onclick={() => goToTarget(card.target.id!)}>Read {card.target.label}</button></p>{:else if card.target.url}<p><a href={card.target.url} target="_blank" rel="noopener noreferrer">{card.target.label}</a></p>{/if}
                 <details><summary>Show exact source support</summary><ul>{#each card.source_support as support}<li><a href={sourceLink(support.source_id, support.page)} target="_blank" rel="noopener noreferrer">{support.source_id}, PDF page {support.page}</a>: <q>{support.quote}</q></li>{/each}</ul><p class="small">Authority: {card.authority}. Proposal IDs: {card.proposal_ids.join(', ') || 'None'}.</p></details>
               </article>{/each}
             {:else}<p>Select an underlined source occurrence. Help appears here without changing the passage text.</p>{/if}
