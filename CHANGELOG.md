@@ -1,5 +1,11 @@
 # Changelog
 
+## Legislation passage Reader repair — 26 September 2026
+
+- Keep complete normalised CLML passage text, including nested numbering, table and formula wording, repeated wording and endings beyond the 2,400-character excerpt. Add a keyboard-operable control to show the full text.
+- Place dated, enacted and made versions after the selected provision in official links; prefer a safe source-native `DocumentURI` and retain source IDs, hierarchy and version markers.
+- Bound on-demand CLML download and parsing, reject redirected or credentialled requests, retain the exact source bytes and hash for download, and direct readers to the official source when a limit is reached.
+
 ## Curated bounded evidence package research — 26 September 2026
 
 - Add the September BEP briefs, reports and reconstructed Research A package as
