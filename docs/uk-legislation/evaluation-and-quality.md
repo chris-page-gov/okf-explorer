@@ -7,7 +7,7 @@
 The legislation publication has three assurance layers:
 
 1. **Corpus checks** — unique work IDs, minimum count, representative type coverage, chunk/search consistency, required facets and documentation.
-2. **Explorer checks** — static search, compressed-chunk handling, legislation detail rendering, CLML normalization and Pages build.
+2. **Explorer checks** — static search, compressed-chunk handling, legislation detail rendering, CLML normalisation and Pages build. The impacted browser plan includes the focused CLML structure suite.
 3. **Answer checks** — a 100-question barrister-oriented suite covering legal correctness, provenance, pinpoint passages, temporal/jurisdictional context, completeness and clarity.
 
 ## AI-answer rubric
