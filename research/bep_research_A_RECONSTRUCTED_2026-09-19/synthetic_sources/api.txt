@@ -1,0 +1,2 @@
+FICTIONAL TEST SOURCE — not a live API.
+The example catalogue exposes read-only resource descriptions using an illustrative HTTP JSON contract version 1.

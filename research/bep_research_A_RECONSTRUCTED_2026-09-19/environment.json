@@ -1,0 +1,9 @@
+{
+  "python": "3.13.5",
+  "node": "v22.16.0",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+  "docker_available": false,
+  "requirements_file": "requirements.txt",
+  "container_image_digest": null,
+  "image_status": "not acquired; no invented digest"
+}

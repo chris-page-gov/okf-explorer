@@ -2,6 +2,12 @@
 
 The tool-use and federated-learning research lineage.
 
+## Bounded evidence package research
+
+- [Curated BEP research and provenance](../docs/bep-research.html) explains the
+  retained 19 September briefs, reports and reconstructed examples. These are
+  research proposals, not source evidence or a deployed BEP standard.
+
 ## OKF Authoring Research
 
 - [Open data for the Explore OKF pilot](explore-okf-open-data-test-candidates.md)

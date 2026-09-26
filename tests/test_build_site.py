@@ -110,12 +110,18 @@ class BuildSiteTests(unittest.TestCase):
             output = Path(directory) / "published"
             source.mkdir()
             (source / "private-draft.docx").write_bytes(b"local draft")
+            archive = source / "bep_research_A_RECONSTRUCTED_2026-09-19"
+            archive.mkdir()
+            (archive / "REPORT.html").write_text("original archival HTML")
+            (source / "other.html").write_text("other public HTML")
             (source / "diagram.svg").write_text("<svg/>")
             build_site.copy_public_tree(
                 source, output,
                 include=lambda path: build_site.is_component_source_allowed(Path("research") / path),
             )
             self.assertFalse((output / "private-draft.docx").exists())
+            self.assertFalse((output / archive.name / "REPORT.html").exists())
+            self.assertEqual((output / "other.html").read_text(), "other public HTML")
             self.assertEqual((output / "diagram.svg").read_text(), "<svg/>")
 
     def test_publication_identity_binds_commit_and_control_materials(self) -> None:

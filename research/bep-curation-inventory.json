@@ -1,0 +1,375 @@
+{
+  "schema": "okf-curated-bep-research-inventory.v1",
+  "captured_at": "2026-09-26T18:46:23Z",
+  "origin": "Files were untracked in the Explorer checkout at 72626cb7e75b614a6b478cd9ab2ea2889985a878; this commit does not identify their contents.",
+  "authority": "Research and reconstructed examples for review; not an OKF standard, source evidence, model evaluation, or entitlement guidance.",
+  "packages": [
+    {
+      "original_root": "research/bep-research-2026-09-19/",
+      "curated_root": "research/bep-research-2026-09-19/",
+      "file_count": 12,
+      "total_bytes": 1469140,
+      "copy_rule": "byte-for-byte; original and curated SHA-256 equal for every listed file",
+      "files": [
+        {
+          "path": "00_START_HERE.md",
+          "bytes": 7742,
+          "sha256": "2219d1328269fdac911e624d47080248cdd7243582020a9e31ebcf1eef301e8c"
+        },
+        {
+          "path": "A_BEP_SEMANTICS_AND_EVALUATION.md",
+          "bytes": 13948,
+          "sha256": "5fb7862baf105aeff3fe1db18489becdc75acbbc37a8b44e91cc49796c9f2cd1"
+        },
+        {
+          "path": "B_STORAGE_DBOS_AND_SERVING.md",
+          "bytes": 15633,
+          "sha256": "64cc7965fab2b183b5d42468c86d82de052f13bad14ea4d8981ebb472c5e864f"
+        },
+        {
+          "path": "MANIFEST.json",
+          "bytes": 948,
+          "sha256": "90bbe2926cb0f0ca2758ff98a3fd661afb359a37c57e58b6e29cad677c1c2d9c"
+        },
+        {
+          "path": "SOURCES.md",
+          "bytes": 8306,
+          "sha256": "5b07111250eb2b0c5e5caebf3eacdf4f8d8ad9567440291cb36bd0fb8d7e7f8a"
+        },
+        {
+          "path": "outputs/Deep Research Report_ Ask OKF, Bounded Evidence Packages, and DWP Imprisonment_Hospital Guidance.docx",
+          "bytes": 125364,
+          "sha256": "f14022925da9dedcab8cd73740a9ed56dfb4a453aba6cfbf8ca52eee9fcd4dbd"
+        },
+        {
+          "path": "outputs/Deep Research Report_ Ask OKF, Bounded Evidence Packages, and DWP Imprisonment_Hospital Guidance.md",
+          "bytes": 55463,
+          "sha256": "f04f3330fea70437e40d8081ebed5630402d9526b395b6181692197a9131de1c"
+        },
+        {
+          "path": "outputs/Deep Research Report_ Ask OKF, Bounded Evidence Packages, and DWP Imprisonment_Hospital Guidance.pdf",
+          "bytes": 668127,
+          "sha256": "edac2b2d0ea9da4257869ca2d6f91f0b55832e2a344eb7d8d55c1ac41a7838c3"
+        },
+        {
+          "path": "outputs/Research B \u2014 Storage, deterministic compilation and efficient BEP serving.docx",
+          "bytes": 120126,
+          "sha256": "a20e5a8e45abad2d8298818e6781da4bc348ab231f4e700848eac58ec661f7bb"
+        },
+        {
+          "path": "outputs/Research B \u2014 Storage, deterministic compilation and efficient BEP serving.md",
+          "bytes": 62325,
+          "sha256": "9c3f2257ff358ebd4d3abe767912e9d9ef4180b56e3a101b445e900cb513949a"
+        },
+        {
+          "path": "outputs/Research B \u2014 Storage, deterministic compilation and efficient BEP serving.pdf",
+          "bytes": 379526,
+          "sha256": "c1c03b4103c95e0b1515d794d19b8b660c88631c63b2306d2e8d808ba7ffc2c8"
+        },
+        {
+          "path": "sources.json",
+          "bytes": 11632,
+          "sha256": "3e2489e0b46286fa4e4dc1a36e9114feb4ce85080097037b57cf67c486efc6a2"
+        }
+      ]
+    },
+    {
+      "original_root": "research/bep_research_A_RECONSTRUCTED_2026-09-19/",
+      "curated_root": "research/bep_research_A_RECONSTRUCTED_2026-09-19/",
+      "file_count": 54,
+      "total_bytes": 265996,
+      "copy_rule": "byte-for-byte; original and curated SHA-256 equal for every listed file",
+      "files": [
+        {
+          "path": ".github/workflows/research-artifact-integrity.yml",
+          "bytes": 1004,
+          "sha256": "98fb3f33aefa0f763d7808853cfb2da2480dfcb358d662a6558370cbde0c7e7e"
+        },
+        {
+          "path": "BEP_PROFILE.md",
+          "bytes": 3487,
+          "sha256": "a9c0036c950332dfab1c5ba6cbfe76dd41b14bea3e87ee00d4c645f9c01b00bb"
+        },
+        {
+          "path": "DELIVERY_AUDIT.html",
+          "bytes": 6979,
+          "sha256": "d66ea756e823136218bf43d327281684a29658ba65e878fa60e506e186dc1616"
+        },
+        {
+          "path": "DELIVERY_AUDIT.md",
+          "bytes": 4799,
+          "sha256": "b034ea09fb17437cc457f9b2d751cbd1abeb235222ef107d98c1194ea5cbd9ce"
+        },
+        {
+          "path": "Dockerfile.example",
+          "bytes": 335,
+          "sha256": "8c0a926c808e79d9c55fd2640ca9911d10b2f6ce988effbb7cca8c38ae191e9b"
+        },
+        {
+          "path": "EXECUTION.md",
+          "bytes": 3267,
+          "sha256": "1c042ad23c2cb3c86a4fed0c6a7867b344987e0a09532442d83580e20aa7f475"
+        },
+        {
+          "path": "README.md",
+          "bytes": 2140,
+          "sha256": "b9f334cf5580a05fddf3d1f0836326a9ee9ef9263808d399840dc6a2a3d8211c"
+        },
+        {
+          "path": "RECOVERY_DIAGNOSIS.md",
+          "bytes": 1551,
+          "sha256": "cea0618904a2c42d8b69703de626c52bd7122e634e1abdc806ccf29d1e99b46c"
+        },
+        {
+          "path": "REPORT.html",
+          "bytes": 27875,
+          "sha256": "05afb2c88be33ea1e92918a562474296827ac142755921a9cecf5f1275361fcd"
+        },
+        {
+          "path": "REPORT.md",
+          "bytes": 23392,
+          "sha256": "07ee7d507ce0f50d0fb8b32f2c5fde24290e39476ca2b0894ee25c2e1ad675b1"
+        },
+        {
+          "path": "bep-core-v0.1-reconstructed.schema.json",
+          "bytes": 21269,
+          "sha256": "77b63dd5598525ce7711ee22955ee02e8b0b90716976eb9ddb17b4faecb57918"
+        },
+        {
+          "path": "canonicalisation-vectors.json",
+          "bytes": 2087,
+          "sha256": "29e9ecc7c104f9931ba335ab9996bd0e691a781d9bc47218f5f0fcd9451148a7"
+        },
+        {
+          "path": "checksums.sha256",
+          "bytes": 4827,
+          "sha256": "6991c08c3c91d9b88ad0558b0c22d7142daddbca3d84615ee31e2f124bcad36a"
+        },
+        {
+          "path": "citation-map-recovery.json",
+          "bytes": 8687,
+          "sha256": "37f346af0332e4b9387d823fb73a54f94200e30478268310073d7d960bee3e62"
+        },
+        {
+          "path": "compatibility_migration.md",
+          "bytes": 1717,
+          "sha256": "32054c44c94d49bb85455841297fd1c5ffb59348469e218f9a10257543cf6277"
+        },
+        {
+          "path": "delivery-audit.json",
+          "bytes": 9324,
+          "sha256": "3ee92708a7556d885c77a02589d4129fd695cede91783588dba79aa1f92240e3"
+        },
+        {
+          "path": "environment.json",
+          "bytes": 260,
+          "sha256": "ae5b01794cca52d88cca2f195f8cb70ee6de9dcba78689ed8038b667bacd5cba"
+        },
+        {
+          "path": "evaluation_spec.json",
+          "bytes": 3378,
+          "sha256": "0da55a0e6dd500f8c2754c5a9b8a8a1e1bb06e8a89f40577d4932e848e4c3602"
+        },
+        {
+          "path": "examples/invalid-missing-provenance.json",
+          "bytes": 4191,
+          "sha256": "a2334e86436262973f613d3142111ef500bf3e7e5f35d6bc2474ad2eed1d90c6"
+        },
+        {
+          "path": "examples/valid-api-capability.json",
+          "bytes": 3607,
+          "sha256": "603bbf7ace9db2d6e4bc895b276bf1a3a5e8120067af5c2b2dc76ce42623c8c8"
+        },
+        {
+          "path": "examples/valid-insufficient.json",
+          "bytes": 3965,
+          "sha256": "99e919ee53fe2e00d94429d1dcf7ac06a7b9baa111ca3a19327df58a28b40503"
+        },
+        {
+          "path": "examples/valid-minimal.json",
+          "bytes": 4326,
+          "sha256": "e3b08641e88f9c10bf2296bd9fe70c13b06b768cbe8e1a009c35d50224425aac"
+        },
+        {
+          "path": "examples/valid-numeric-observation.json",
+          "bytes": 3658,
+          "sha256": "37460a001642573ba2a9b20a8345cec2c67dea147a9c5e0ffa19b9a21ffe8f13"
+        },
+        {
+          "path": "git-filter-example.md",
+          "bytes": 780,
+          "sha256": "ecc0d8923de5544b14f1aa691cea98ea31fc943e11fd3ec8674690d96fd650c8"
+        },
+        {
+          "path": "historical_search_log_status.json",
+          "bytes": 240,
+          "sha256": "1ec324b22b570c17db93d9cb274899dc9c88ed5dad4d1e42291bfd47478edab9"
+        },
+        {
+          "path": "hypothesis_ledger.csv",
+          "bytes": 2041,
+          "sha256": "7520fa61c9c8e0e8b852e843c3f3598fdb9b57261c44d118e4612b9515d46d97"
+        },
+        {
+          "path": "inputs/00_START_HERE.md",
+          "bytes": 7742,
+          "sha256": "2219d1328269fdac911e624d47080248cdd7243582020a9e31ebcf1eef301e8c"
+        },
+        {
+          "path": "inputs/A_BEP_SEMANTICS_AND_EVALUATION(1).md",
+          "bytes": 13948,
+          "sha256": "5fb7862baf105aeff3fe1db18489becdc75acbbc37a8b44e91cc49796c9f2cd1"
+        },
+        {
+          "path": "inputs/sources.json",
+          "bytes": 11632,
+          "sha256": "3e2489e0b46286fa4e4dc1a36e9114feb4ce85080097037b57cf67c486efc6a2"
+        },
+        {
+          "path": "manifest.json",
+          "bytes": 8631,
+          "sha256": "fef52fc815b91e813a211e1e1f902d9d008c3b297871f973a8ba6588396afc71"
+        },
+        {
+          "path": "original-attachment-inventory.json",
+          "bytes": 2277,
+          "sha256": "4ef6ff138698bfdb4a0f4ba198abcdf4bd74429e2fe80614dd907f1e57c5a02f"
+        },
+        {
+          "path": "prior_art_matrix.csv",
+          "bytes": 3624,
+          "sha256": "2af773ee27027497ebdba61a94e48b91a1b8b3b2199f3b456a84faddac5c098e"
+        },
+        {
+          "path": "provenance-map.json",
+          "bytes": 2466,
+          "sha256": "a6f2f676d0e12d1e2ca385f3440056ec6069d25f76b538f9925b152b1e44b290"
+        },
+        {
+          "path": "requirements.txt",
+          "bytes": 347,
+          "sha256": "190c93b69bde8e2e2fa2eb4f9e8f8b940665a1902331e08e4cc9bf35d2dd6969"
+        },
+        {
+          "path": "results/unittest.stderr.txt",
+          "bytes": 4804,
+          "sha256": "e259f8a043309a8ae3f0fa98dc87da70487eb2817b1bee286a9f47e389a67a37"
+        },
+        {
+          "path": "results/unittest.stdout.txt",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "sample_corpus.jsonl",
+          "bytes": 5520,
+          "sha256": "9fb563ecadbe15515edeece636de1f25f7825938488e007c91e4939ee104a3f8"
+        },
+        {
+          "path": "scripts/build_clean_package.sh",
+          "bytes": 207,
+          "sha256": "1d64f27b0196a9eaa50fde7fcd8a8508da0ef6c91f99db2c155b056d4f42aaf3"
+        },
+        {
+          "path": "scripts/canonical_json.mjs",
+          "bytes": 3117,
+          "sha256": "daeecf954dc64e18c7c082c88f6ad20f0722dd56e04747eab6e7f74e6fe10578"
+        },
+        {
+          "path": "scripts/check_no_ui_tokens.py",
+          "bytes": 2800,
+          "sha256": "4e8fc4fab0cd50062a877f4ca3f0cf59a956742c8060e68bdc8ac80d7840291c"
+        },
+        {
+          "path": "scripts/git_clean_check.py",
+          "bytes": 337,
+          "sha256": "015c1af9cf47f59674441c6bd4382e0d179f5ca601a38c0ebc235f1219c26f14"
+        },
+        {
+          "path": "scripts/package_release.py",
+          "bytes": 2845,
+          "sha256": "b4c54e53c3a730a642f6a4097828e6eaacbd230ab79046dea572488a50bad376"
+        },
+        {
+          "path": "scripts/rewrite_citations.py",
+          "bytes": 1279,
+          "sha256": "8c72fa097587fcb4a4ddd8620059e749ab90b94f34b0bc77ed520a47f83881df"
+        },
+        {
+          "path": "scripts/run_checks.py",
+          "bytes": 2645,
+          "sha256": "eccff1ea79275268f73bcc93daa31c89e6523651fd1b54a060682e19f7a09dff"
+        },
+        {
+          "path": "scripts/validate_bep.py",
+          "bytes": 4236,
+          "sha256": "b7dbaf6d4ffa00f548205bfab9eb11f8da38199d22efd3ca202925f0602eebe2"
+        },
+        {
+          "path": "scripts/verify_package.py",
+          "bytes": 3036,
+          "sha256": "c87d58413b3944a2d7c473dd1015d24d594295ea94d18e77d1f863b7786370b1"
+        },
+        {
+          "path": "search_log.csv",
+          "bytes": 927,
+          "sha256": "b155d339e79489a34311a0f38a61b4ed9504e3290018188038e240d2e62a4d5d"
+        },
+        {
+          "path": "sources-expanded.json",
+          "bytes": 18845,
+          "sha256": "32d48d741bd0f29acb5d8bf52c8520590d0819f71834e00b5f69426dbdaf9d0f"
+        },
+        {
+          "path": "synthetic_sources/api.txt",
+          "bytes": 156,
+          "sha256": "e27e5c2abd6f1a0eafe60d249717ffb160068e1f3b9cf11f4d364238f05e56a1"
+        },
+        {
+          "path": "synthetic_sources/club.txt",
+          "bytes": 157,
+          "sha256": "5afeed261fbd43db5fe03c95e30f02b667f08fa62688109ea04b5a98ecc25239"
+        },
+        {
+          "path": "synthetic_sources/observations.txt",
+          "bytes": 128,
+          "sha256": "0f668db71295a2a127733f456b88ef509d9a613f9c35ecef6ec79e1158f652d4"
+        },
+        {
+          "path": "tests/test_reconstruction.py",
+          "bytes": 8104,
+          "sha256": "9599e98bb47cdbb75b09666f08e9c4d19e081963b195708bf63d1bcd380cb2ba"
+        },
+        {
+          "path": "threat_model.csv",
+          "bytes": 2887,
+          "sha256": "eb4428a19068dca7d5bb55a75574cad5cfe2eff699d7f00acde7d062e744a3b6"
+        },
+        {
+          "path": "verification.json",
+          "bytes": 4113,
+          "sha256": "3ed1ff4fbd682d1cbb8816ecd6d5c68949988aefe50c039ff3373da9251d6bd0"
+        }
+      ]
+    }
+  ],
+  "excluded": [
+    {
+      "path": "research/bep_research_A_RECONSTRUCTED_2026-09-19.zip",
+      "bytes": 100062,
+      "sha256": "825bbc093a38ab03cf3c02fb24bb600e004ae3cf399a20a993ded64480104b17",
+      "reason": "ZIP duplicates all 54 curated directory files byte for byte."
+    },
+    {
+      "path": "research/evidence-workbench-webmcp-codex-handover.md",
+      "bytes": 24249,
+      "sha256": "c3c117687d091b22926818c9a374bf7136eee5ce5682bfa08c1b732bc3a79eac",
+      "reason": "Historical task prompt retained outside this publication; not research evidence."
+    },
+    {
+      "path": "research/jev+jev-mem/",
+      "reason": "Explicitly deferred from this publication."
+    }
+  ],
+  "originals_retention": "Original paths identify the historical intake locations. After hash verification the owner retained all original files in a private external-drive archive; this public inventory is not a public mirror of excluded material."
+}

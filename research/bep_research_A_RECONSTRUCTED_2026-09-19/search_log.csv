@@ -1,0 +1,7 @@
+run,date,operation,query_or_url,outcome
+reconstruction-only,2026-09-19,open,https://www.researchobject.org/ro-crate/specification/1.3/,direct directory URL inaccessible; no conclusion from failure
+reconstruction-only,2026-09-19,search,"site.researchobject.org/ro-crate ""1.3"" ""2026""","Found primary specification, release announcement and deposit"
+reconstruction-only,2026-09-19,search,"site.researchobject.org/ro-crate specification ""Recommendation"" ""June""",Confirmed 1.3; 22 June 2026; Recommendation
+reconstruction-only,2026-09-19,open,https://www.researchobject.org/ro-crate/specification/1.3/index.html,Primary page read; version and date verified
+reconstruction-only,2026-09-19,open,https://www.rfc-editor.org/rfc/rfc8785,"Primary specification read, including serialisation and test-vector sections"
+reconstruction-only,2026-09-19,open,https://json-schema.org/draft/2020-12,Primary specification index read

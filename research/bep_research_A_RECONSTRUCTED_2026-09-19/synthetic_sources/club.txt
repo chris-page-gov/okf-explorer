@@ -1,0 +1,4 @@
+FICTIONAL TEST SOURCE — not a real service.
+Members may book the study room.
+A valid membership is required.
+The room cannot be booked during maintenance.
