@@ -1,0 +1,32 @@
+{
+  "original_zip_sha256_as_reported_not_verified": "ecd882ce2a6f0ccc4355af10ebd4ac3191fc1d41970b25dc7224222b8f277648",
+  "originals_recovered": false,
+  "paths": [
+    "sandbox:/mnt/data/bep_research_A_clean_2026-09-19.zip",
+    "sandbox:/mnt/data/bep_research_A_clean_2026-09-19/.github/workflows/research-artifact-integrity.yml",
+    "sandbox:/mnt/data/bep_research_A_clean_2026-09-19/EXECUTION.md",
+    "sandbox:/mnt/data/bep_research_A_clean_2026-09-19/REPORT.md",
+    "sandbox:/mnt/data/bep_research_A_clean_2026-09-19/bep-core-v0.1-proposal.schema.json",
+    "sandbox:/mnt/data/bep_research_A_clean_2026-09-19/canonicalisation-vectors.json",
+    "sandbox:/mnt/data/bep_research_A_clean_2026-09-19/checksums.sha256",
+    "sandbox:/mnt/data/bep_research_A_clean_2026-09-19/compatibility_migration.md",
+    "sandbox:/mnt/data/bep_research_A_clean_2026-09-19/evaluation_spec.json",
+    "sandbox:/mnt/data/bep_research_A_clean_2026-09-19/examples/invalid-missing-provenance.json",
+    "sandbox:/mnt/data/bep_research_A_clean_2026-09-19/examples/valid-minimal.json",
+    "sandbox:/mnt/data/bep_research_A_clean_2026-09-19/examples/valid-numeric-observation.json",
+    "sandbox:/mnt/data/bep_research_A_clean_2026-09-19/hypothesis_ledger.csv",
+    "sandbox:/mnt/data/bep_research_A_clean_2026-09-19/manifest.json",
+    "sandbox:/mnt/data/bep_research_A_clean_2026-09-19/prior_art_matrix.csv",
+    "sandbox:/mnt/data/bep_research_A_clean_2026-09-19/provenance-map.json",
+    "sandbox:/mnt/data/bep_research_A_clean_2026-09-19/sample_corpus.jsonl",
+    "sandbox:/mnt/data/bep_research_A_clean_2026-09-19/scripts/build_clean_package.sh",
+    "sandbox:/mnt/data/bep_research_A_clean_2026-09-19/scripts/check_no_ui_tokens.py",
+    "sandbox:/mnt/data/bep_research_A_clean_2026-09-19/scripts/rewrite_citations.py",
+    "sandbox:/mnt/data/bep_research_A_clean_2026-09-19/scripts/verify_package.py",
+    "sandbox:/mnt/data/bep_research_A_clean_2026-09-19/search_log.csv",
+    "sandbox:/mnt/data/bep_research_A_clean_2026-09-19/sources-expanded.json",
+    "sandbox:/mnt/data/bep_research_A_clean_2026-09-19/threat_model.csv",
+    "sandbox:/mnt/data/bep_research_A_clean_2026-09-19/verification.json",
+    "sandbox:/mnt/data/bep_research_A_clean_2026-09-19_FINAL_VERIFICATION.json"
+  ]
+}

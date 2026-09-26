@@ -1,0 +1,77 @@
+{
+  "schema": "bep-evaluation-spec.reconstructed.1",
+  "status": "experimental specification, not a completed benchmark",
+  "baseline_repo": "chris-page-gov/okf-explorer",
+  "baseline_revision": "905e680f6d3ad385de9b8effc351566eba0ab2b3",
+  "independence": {
+    "rule": "Assessor expectations must not be supplied to the assembler as hidden seeds",
+    "gold_authoring": "Independent domain reviewers required for acceptance; included synthetic starter cases are not independent expert gold",
+    "splits": [
+      "held-out domain",
+      "held-out bundle version",
+      "held-out question family"
+    ],
+    "blind_review": "Reviewers inspect source evidence before system outputs"
+  },
+  "comparisons": [
+    "lexical top-k",
+    "graph and text without requirement closure",
+    "pinned Ask OKF",
+    "dependency-aware packing",
+    "exact optimisation for tiny fixtures"
+  ],
+  "oracle_conditions": [
+    "ordinary request and ordinary evidence",
+    "oracle request only",
+    "oracle evidence only",
+    "both oracles"
+  ],
+  "controls": {
+    "selection": "Freeze sources, requests, model, limits and runtime",
+    "representation": "Hold exact evidence set constant",
+    "storage": "Require byte-identical canonical packages",
+    "voice": "Start primary comparison at accepted transcript; ASR separate"
+  },
+  "metrics": [
+    {
+      "id": "critical_evidence_recall",
+      "definition": "Required assessor evidence atoms retained / required assessor atoms; report per case and macro-average; allow explicitly enumerated alternative support sets"
+    },
+    {
+      "id": "exception_recall",
+      "definition": "Applicable required exceptions retained / applicable assessor exceptions; report no-exception cases separately"
+    },
+    {
+      "id": "unsupported_sufficiency",
+      "definition": "Packages marked sufficient but failing independent support or scope criteria / packages marked sufficient; also report numerator / all cases"
+    },
+    {
+      "id": "false_abstention",
+      "definition": "Independently answerable cases marked insufficient or unknown / independently answerable cases"
+    },
+    {
+      "id": "answer_attribution",
+      "definition": "Supported substantive answer claims / assessed substantive answer claims; human-calibrated evaluator"
+    },
+    {
+      "id": "exact_replay",
+      "definition": "Same explicit inputs produce identical canonical bytes and content identifier across named runs"
+    },
+    {
+      "id": "payload_cost",
+      "definition": "UTF-8 bytes of complete package and complete transport envelope reported separately; token counts require named tokeniser"
+    },
+    {
+      "id": "latency",
+      "definition": "Separate assembly, retrieval, transport and time-to-useful-spoken-answer; p50/p95/p99 with sample size and failures"
+    }
+  ],
+  "statistical_plan": {
+    "unit": "Question family clustered within domain",
+    "sample_size": "Determine prospectively by pilot variance and predeclared effect; not invented here",
+    "intervals": "Cluster bootstrap intervals or a preregistered suitable alternative",
+    "critical_failures": "Report each unauthorised disclosure and omitted required exception, not only averages",
+    "abstention": "Report accuracy and coverage jointly; always-abstain is not success"
+  },
+  "execution_status": "not run against real Ask OKF, a model, or a voice client"
+}

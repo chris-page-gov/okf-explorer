@@ -1,0 +1,221 @@
+{
+  "kind": "delivery_correction",
+  "original_produced_table_accepted": false,
+  "rows": [
+    {
+      "artefact": "Completed cited analytical report",
+      "original_claim_status": "not independently substantiated; original artefact/receipt not recovered",
+      "replacement_files": [
+        "REPORT.md",
+        "REPORT.html"
+      ],
+      "replacement_status": "Recovered analytical text, edited delivery claims; source associations restored; not a fresh full source audit"
+    },
+    {
+      "artefact": "File-integrity verification",
+      "original_claim_status": "not independently substantiated; original artefact/receipt not recovered",
+      "replacement_files": [
+        "verification.json"
+      ],
+      "replacement_status": "New test receipt; final archive independently checked in external FINAL_VERIFICATION.json"
+    },
+    {
+      "artefact": "Root-cause analysis with confidence/limitations",
+      "original_claim_status": "not independently substantiated; original artefact/receipt not recovered",
+      "replacement_files": [
+        "RECOVERY_DIAGNOSIS.md"
+      ],
+      "replacement_status": "Reconstructed diagnosis; exact cause remains unknown"
+    },
+    {
+      "artefact": "Clean input copies",
+      "original_claim_status": "not independently substantiated; original artefact/receipt not recovered",
+      "replacement_files": [
+        "inputs/00_START_HERE.md",
+        "inputs/A_BEP_SEMANTICS_AND_EVALUATION(1).md",
+        "inputs/sources.json"
+      ],
+      "replacement_status": "Three actual source files copied byte-identically; hashes recorded"
+    },
+    {
+      "artefact": "Machine-readable provenance original to clean",
+      "original_claim_status": "not independently substantiated; original artefact/receipt not recovered",
+      "replacement_files": [
+        "provenance-map.json"
+      ],
+      "replacement_status": "Actual input-copy and report-transformation mapping; not the missing original mapping"
+    },
+    {
+      "artefact": "Expanded stable source register",
+      "original_claim_status": "not independently substantiated; original artefact/receipt not recovered",
+      "replacement_files": [
+        "sources-expanded.json"
+      ],
+      "replacement_status": "Recovered seed plus saved report references and new checks; verification status explicit"
+    },
+    {
+      "artefact": "Prior-art/novelty matrix",
+      "original_claim_status": "not independently substantiated; original artefact/receipt not recovered",
+      "replacement_files": [
+        "prior_art_matrix.csv"
+      ],
+      "replacement_status": "Reconstructed from saved analysis; not a newly executed systematic review"
+    },
+    {
+      "artefact": "Proposed versioned BEP profile",
+      "original_claim_status": "not independently substantiated; original artefact/receipt not recovered",
+      "replacement_files": [
+        "BEP_PROFILE.md"
+      ],
+      "replacement_status": "Newly reconstructed proposal with unique version"
+    },
+    {
+      "artefact": "Draft 2020-12 JSON Schema",
+      "original_claim_status": "not independently substantiated; original artefact/receipt not recovered",
+      "replacement_files": [
+        "bep-core-v0.1-reconstructed.schema.json"
+      ],
+      "replacement_status": "New schema checked and exercised locally"
+    },
+    {
+      "artefact": "Valid prose example",
+      "original_claim_status": "not independently substantiated; original artefact/receipt not recovered",
+      "replacement_files": [
+        "examples/valid-minimal.json"
+      ],
+      "replacement_status": "New synthetic fixture; validated locally"
+    },
+    {
+      "artefact": "Valid numeric observation example",
+      "original_claim_status": "not independently substantiated; original artefact/receipt not recovered",
+      "replacement_files": [
+        "examples/valid-numeric-observation.json"
+      ],
+      "replacement_status": "New synthetic fixture; validated locally"
+    },
+    {
+      "artefact": "Invalid missing-provenance example",
+      "original_claim_status": "not independently substantiated; original artefact/receipt not recovered",
+      "replacement_files": [
+        "examples/invalid-missing-provenance.json"
+      ],
+      "replacement_status": "New fixture; rejected for provenance minItems as intended"
+    },
+    {
+      "artefact": "Canonicalisation test vectors",
+      "original_claim_status": "not independently substantiated; original artefact/receipt not recovered",
+      "replacement_files": [
+        "canonicalisation-vectors.json"
+      ],
+      "replacement_status": "16 new bounded vectors exercised; not full RFC certification"
+    },
+    {
+      "artefact": "Independent evaluation specification",
+      "original_claim_status": "not independently substantiated; original artefact/receipt not recovered",
+      "replacement_files": [
+        "evaluation_spec.json"
+      ],
+      "replacement_status": "New experimental specification; no independent domain review or system benchmark executed"
+    },
+    {
+      "artefact": "Synthetic sample evaluation corpus",
+      "original_claim_status": "not independently substantiated; original artefact/receipt not recovered",
+      "replacement_files": [
+        "sample_corpus.jsonl"
+      ],
+      "replacement_status": "12 synthetic starter cases; separate assessor expectations; not complete real-engine runs"
+    },
+    {
+      "artefact": "Threat model",
+      "original_claim_status": "not independently substantiated; original artefact/receipt not recovered",
+      "replacement_files": [
+        "threat_model.csv"
+      ],
+      "replacement_status": "Reconstructed controls, test ideas and explicit residual limitations"
+    },
+    {
+      "artefact": "Compatibility/migration note",
+      "original_claim_status": "not independently substantiated; original artefact/receipt not recovered",
+      "replacement_files": [
+        "compatibility_migration.md"
+      ],
+      "replacement_status": "New compatibility guidance; no adapter or migration implemented"
+    },
+    {
+      "artefact": "Ranked hypothesis ledger",
+      "original_claim_status": "not independently substantiated; original artefact/receipt not recovered",
+      "replacement_files": [
+        "hypothesis_ledger.csv"
+      ],
+      "replacement_status": "Six proposed priorities and falsification criteria; hypotheses unmeasured"
+    },
+    {
+      "artefact": "Reproducible search log",
+      "original_claim_status": "not independently substantiated; original artefact/receipt not recovered",
+      "replacement_files": [
+        "search_log.csv",
+        "historical_search_log_status.json"
+      ],
+      "replacement_status": "New reconstruction search log only; original historical log not recovered"
+    },
+    {
+      "artefact": "Reproducible Docker/offline execution specification",
+      "original_claim_status": "not independently substantiated; original artefact/receipt not recovered",
+      "replacement_files": [
+        "EXECUTION.md",
+        "Dockerfile.example"
+      ],
+      "replacement_status": "Recipe supplied; Docker unavailable and unexecuted; image/wheelhouse still require acquisition and pinning"
+    },
+    {
+      "artefact": "Runtime citation-marker scanner",
+      "original_claim_status": "not independently substantiated; original artefact/receipt not recovered",
+      "replacement_files": [
+        "scripts/check_no_ui_tokens.py"
+      ],
+      "replacement_status": "New utility executed on files and uncompressed ZIP members; does not extract PDF text"
+    },
+    {
+      "artefact": "Mapping-driven legacy remediation script",
+      "original_claim_status": "not independently substantiated; original artefact/receipt not recovered",
+      "replacement_files": [
+        "scripts/rewrite_citations.py"
+      ],
+      "replacement_status": "New fail-closed utility; mapped and unmapped cases tested"
+    },
+    {
+      "artefact": "CI workflow",
+      "original_claim_status": "not independently substantiated; original artefact/receipt not recovered",
+      "replacement_files": [
+        ".github/workflows/research-artifact-integrity.yml"
+      ],
+      "replacement_status": "Unexecuted public-repository example; not deployed"
+    },
+    {
+      "artefact": "Git filter example",
+      "original_claim_status": "not independently substantiated; original artefact/receipt not recovered",
+      "replacement_files": [
+        "git-filter-example.md",
+        "scripts/git_clean_check.py"
+      ],
+      "replacement_status": "Pass-through rejecting filter supplied; no Git configuration changed"
+    },
+    {
+      "artefact": "File manifest and checksums",
+      "original_claim_status": "not independently substantiated; original artefact/receipt not recovered",
+      "replacement_files": [
+        "manifest.json",
+        "checksums.sha256"
+      ],
+      "replacement_status": "New hashes of actual delivered bytes; self-reference rules explicit"
+    },
+    {
+      "artefact": "Final ZIP",
+      "original_claim_status": "not independently substantiated; original artefact/receipt not recovered",
+      "replacement_files": [
+        "../bep_research_A_RECONSTRUCTED_2026-09-19.zip"
+      ],
+      "replacement_status": "New reconstruction archive; original ZIP not recovered; CRC/member hashes and marker scan executed"
+    }
+  ]
+}

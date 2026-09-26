@@ -1,0 +1,124 @@
+{
+  "core": {
+    "schema": "bep-core.v0.1-reconstructed.1",
+    "compiler": {
+      "name": "reconstruction-fixture-builder",
+      "version": "1; not Ask OKF"
+    },
+    "bindings": {
+      "bundle_id": "bundle:synthetic",
+      "bundle_sha256": "47ad0228c08a87e637c08b065408175c2ac569c9853d3107c49446cb9d523ca1",
+      "index_sha256": "b8be5dee61d532570a779101b4340959fa4a2cc7faad6a6fa799ded8e618d05a",
+      "requirements_sha256": "3e10aaeb6fe792680a5450883b208757d1867f0462df4fdc5755ab9071f2ff44",
+      "access_view": "public-synthetic-or-public-source-view",
+      "policy_version": "fixture-policy.1",
+      "canonicalisation": "rfc8785-candidate.node.reconstructed.1"
+    },
+    "request": {
+      "accepted_text": "What evidence governs booking the fictional study room?",
+      "interpretation_version": "manual-fixture.1",
+      "concepts": [
+        "concept:booking"
+      ],
+      "ambiguities": [],
+      "unresolved": [],
+      "scope": "Fictional test; no advice or eligibility decision",
+      "as_of": "2026-09-19"
+    },
+    "sources": [
+      {
+        "id": "source:1",
+        "url": "https://example.invalid/bep-tests/club.txt",
+        "source_sha256": "5afeed261fbd43db5fe03c95e30f02b667f08fa62688109ea04b5a98ecc25239",
+        "captured_at": "2026-09-19T00:00:00Z",
+        "source_date": "2026-09-19",
+        "source_date_kind": "synthetic",
+        "authority": {
+          "class": "synthetic",
+          "label": "Fictional test publisher; no real-world authority"
+        },
+        "rights": "Newly generated synthetic test text; research fixture",
+        "access": "public"
+      }
+    ],
+    "evidence": [
+      {
+        "id": "e:rule",
+        "kind": "passage",
+        "text": "Members may book the study room.",
+        "literal_sha256": "91533cd5799a589c7b54b44ec7abf3ed493397209c4225113f98a954be56cd49",
+        "assertion_status": "normalized",
+        "scope": "Fictional research fixture only",
+        "provenance": [
+          {
+            "source_id": "source:1",
+            "locator": "Exact literal in local synthetic source"
+          }
+        ]
+      },
+      {
+        "id": "e:condition",
+        "kind": "passage",
+        "text": "A valid membership is required.",
+        "literal_sha256": "8ca0ef2c059d393aa6f80821f643058afa61adb7d8b0bbad4555dc16dac6aa43",
+        "assertion_status": "normalized",
+        "scope": "Fictional research fixture only",
+        "provenance": [
+          {
+            "source_id": "source:1",
+            "locator": "Exact literal in local synthetic source"
+          }
+        ]
+      }
+    ],
+    "relationships": [],
+    "requirements": [
+      {
+        "id": "r:booking",
+        "scope": "Fictional room booking; include condition and exception",
+        "alternatives": [
+          {
+            "all_of": [
+              "e:rule",
+              "e:condition",
+              "e:exception"
+            ]
+          }
+        ],
+        "provenance": [
+          {
+            "source_id": "source:1",
+            "locator": "All three fixture statements"
+          }
+        ],
+        "review_status": "synthetic"
+      }
+    ],
+    "coverage": {
+      "declared_requirements": "incomplete",
+      "evidential_status": "insufficient"
+    },
+    "omissions": [
+      {
+        "code": "budget_omitted",
+        "detail": "The synthetic exception was not retained.",
+        "blocking": true
+      }
+    ],
+    "conflicts": [],
+    "limitations": [
+      "Entirely synthetic; not real guidance.",
+      "Declared requirement coverage is not real-world completeness.",
+      "The reconstructed validator does not implement retrieval, authorisation or specialist truth assessment."
+    ],
+    "budget": {
+      "max_records": 64,
+      "max_relationships": 128,
+      "max_depth": 6,
+      "max_operations": 500000,
+      "max_bytes": 524288
+    },
+    "ai_answer": null
+  },
+  "package_id": "sha256:db7a36b41b113e97adacef6bf7d01700ce385617477d482b00ced5a2be125442"
+}

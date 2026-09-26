@@ -1,0 +1,125 @@
+{
+  "kind": "fresh_reconstruction_execution_receipt",
+  "started_at_utc": "2026-09-19T11:51:21.215399+00:00",
+  "finished_at_utc": "2026-09-19T11:51:27.108400+00:00",
+  "command": [
+    "/opt/pyvenv/bin/python",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-p",
+    "test_*.py",
+    "-v"
+  ],
+  "exit_code": 0,
+  "tests_run": 53,
+  "tests_passed": true,
+  "citation_scan_scope": "UTF-8 text and bounded ZIP members; no PDF conversion performed",
+  "citation_scan_findings": [],
+  "python": "3.13.5",
+  "node": "v22.16.0",
+  "dependencies": {
+    "jsonschema": "4.26.0",
+    "referencing": "0.37.0",
+    "attrs": "26.1.0",
+    "jsonschema-specifications": "2025.9.1",
+    "rpds-py": "2026.5.1"
+  },
+  "files_under_test": [
+    {
+      "path": "bep-core-v0.1-reconstructed.schema.json",
+      "sha256": "77b63dd5598525ce7711ee22955ee02e8b0b90716976eb9ddb17b4faecb57918"
+    },
+    {
+      "path": "canonicalisation-vectors.json",
+      "sha256": "29e9ecc7c104f9931ba335ab9996bd0e691a781d9bc47218f5f0fcd9451148a7"
+    },
+    {
+      "path": "examples/invalid-missing-provenance.json",
+      "sha256": "a2334e86436262973f613d3142111ef500bf3e7e5f35d6bc2474ad2eed1d90c6"
+    },
+    {
+      "path": "examples/valid-api-capability.json",
+      "sha256": "603bbf7ace9db2d6e4bc895b276bf1a3a5e8120067af5c2b2dc76ce42623c8c8"
+    },
+    {
+      "path": "examples/valid-insufficient.json",
+      "sha256": "99e919ee53fe2e00d94429d1dcf7ac06a7b9baa111ca3a19327df58a28b40503"
+    },
+    {
+      "path": "examples/valid-minimal.json",
+      "sha256": "e3b08641e88f9c10bf2296bd9fe70c13b06b768cbe8e1a009c35d50224425aac"
+    },
+    {
+      "path": "examples/valid-numeric-observation.json",
+      "sha256": "37460a001642573ba2a9b20a8345cec2c67dea147a9c5e0ffa19b9a21ffe8f13"
+    },
+    {
+      "path": "scripts/build_clean_package.sh",
+      "sha256": "1d64f27b0196a9eaa50fde7fcd8a8508da0ef6c91f99db2c155b056d4f42aaf3"
+    },
+    {
+      "path": "scripts/canonical_json.mjs",
+      "sha256": "daeecf954dc64e18c7c082c88f6ad20f0722dd56e04747eab6e7f74e6fe10578"
+    },
+    {
+      "path": "scripts/check_no_ui_tokens.py",
+      "sha256": "4e8fc4fab0cd50062a877f4ca3f0cf59a956742c8060e68bdc8ac80d7840291c"
+    },
+    {
+      "path": "scripts/git_clean_check.py",
+      "sha256": "015c1af9cf47f59674441c6bd4382e0d179f5ca601a38c0ebc235f1219c26f14"
+    },
+    {
+      "path": "scripts/package_release.py",
+      "sha256": "b4c54e53c3a730a642f6a4097828e6eaacbd230ab79046dea572488a50bad376"
+    },
+    {
+      "path": "scripts/rewrite_citations.py",
+      "sha256": "8c72fa097587fcb4a4ddd8620059e749ab90b94f34b0bc77ed520a47f83881df"
+    },
+    {
+      "path": "scripts/run_checks.py",
+      "sha256": "eccff1ea79275268f73bcc93daa31c89e6523651fd1b54a060682e19f7a09dff"
+    },
+    {
+      "path": "scripts/validate_bep.py",
+      "sha256": "b7dbaf6d4ffa00f548205bfab9eb11f8da38199d22efd3ca202925f0602eebe2"
+    },
+    {
+      "path": "scripts/verify_package.py",
+      "sha256": "c87d58413b3944a2d7c473dd1015d24d594295ea94d18e77d1f863b7786370b1"
+    },
+    {
+      "path": "synthetic_sources/api.txt",
+      "sha256": "e27e5c2abd6f1a0eafe60d249717ffb160068e1f3b9cf11f4d364238f05e56a1"
+    },
+    {
+      "path": "synthetic_sources/club.txt",
+      "sha256": "5afeed261fbd43db5fe03c95e30f02b667f08fa62688109ea04b5a98ecc25239"
+    },
+    {
+      "path": "synthetic_sources/observations.txt",
+      "sha256": "0f668db71295a2a127733f456b88ef509d9a613f9c35ecef6ec79e1158f652d4"
+    },
+    {
+      "path": "tests/test_reconstruction.py",
+      "sha256": "9599e98bb47cdbb75b09666f08e9c4d19e081963b195708bf63d1bcd380cb2ba"
+    }
+  ],
+  "not_executed": [
+    "Original missing historical tests",
+    "Real Ask OKF engine tests",
+    "Production deployment",
+    "MCP or voice invocation",
+    "Human/LLM consumption benchmark",
+    "Performance benchmark",
+    "Docker execution",
+    "GitHub Actions execution",
+    "Full RFC 8785 conformance certification"
+  ],
+  "scope_warning": "These tests validate newly reconstructed fixtures and selected invariants; not the missing original artefacts or full BEP semantics."
+}

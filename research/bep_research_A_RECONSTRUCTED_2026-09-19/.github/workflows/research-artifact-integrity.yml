@@ -1,0 +1,28 @@
+# Unexecuted example for a PUBLIC repository; adapt provisioning before adoption.
+name: Research artefact integrity example
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch exact public workflow commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git init .
+          git remote add origin "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}.git"
+          git fetch --no-tags --depth=1 origin "$GITHUB_SHA"
+          git checkout --detach FETCH_HEAD
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+      - name: Show environment and install declared dependencies
+        run: |
+          python --version
+          node --version
+          python -m pip install -r requirements.txt
+      - name: Verify delivered files, then execute fresh checks
+        run: |
+          python -B scripts/verify_package.py .
+          python -B scripts/run_checks.py --output-dir "$RUNNER_TEMP/bep-check-results"

@@ -7,3 +7,7 @@
 *.jpeg binary
 *.gif binary
 *.webp binary
+
+# Imported checksummed research must retain exact supplied line endings.
+research/bep-research-2026-09-19/** -text
+research/bep_research_A_RECONSTRUCTED_2026-09-19/** -text

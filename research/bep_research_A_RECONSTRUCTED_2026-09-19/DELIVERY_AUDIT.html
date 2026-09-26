@@ -1,0 +1,154 @@
+<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BEP Research A — DELIVERY_AUDIT</title><style>body{font-family:system-ui,-apple-system,Segoe UI,sans-serif;max-width:1060px;margin:2.8rem auto;padding:0 1.5rem;line-height:1.65;color:#192b38}h1,h2,h3{line-height:1.25;margin-top:1.8em}h1{font-size:2.2rem}h2{border-bottom:1px solid #d4dfe6;padding-bottom:.3em}a{color:#075985;overflow-wrap:anywhere}pre{background:#f2f5f7;padding:1rem;overflow:auto;font-size:.86rem;line-height:1.45}table{display:block;overflow:auto;width:100%;border-collapse:collapse;font-size:.92rem}td,th{border:1px solid #d4dfe6;text-align:left;vertical-align:top;padding:.5em .7em}th{background:#eef3f7}blockquote{margin:1em 0;border-left:4px solid #9d7930;padding:.4em 1em;background:#fffaf0}code{overflow-wrap:anywhere}</style></head><body><h1>Delivery audit — replacement, not recovered original</h1>
+<p><strong>The old “Produced / validated / rescanned” table is not accepted as verified delivery.</strong>
+The original supplementary files and run receipts were not recovered. Nothing in this
+replacement proves those earlier operations took place, nor proves the originals never existed.</p>
+<p>This table records what is now present and the scope of the new evidence. The new archive
+has a distinct name and hash. Three supplied inputs are byte-identical copies; the report
+analysis is recovered and edited; all other files are reconstructed or freshly generated.</p>
+<table>
+<thead>
+<tr>
+<th>Promised artefact</th>
+<th>Current files</th>
+<th>Current, qualified status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Completed cited analytical report</td>
+<td><code>REPORT.md</code>, <code>REPORT.html</code></td>
+<td>Recovered analytical text, edited delivery claims; source associations restored; not a fresh full source audit</td>
+</tr>
+<tr>
+<td>File-integrity verification</td>
+<td><code>verification.json</code></td>
+<td>New test receipt; final archive independently checked in external FINAL_VERIFICATION.json</td>
+</tr>
+<tr>
+<td>Root-cause analysis with confidence/limitations</td>
+<td><code>RECOVERY_DIAGNOSIS.md</code></td>
+<td>Reconstructed diagnosis; exact cause remains unknown</td>
+</tr>
+<tr>
+<td>Clean input copies</td>
+<td><code>inputs/00_START_HERE.md</code>, <code>inputs/A_BEP_SEMANTICS_AND_EVALUATION(1).md</code>, <code>inputs/sources.json</code></td>
+<td>Three actual source files copied byte-identically; hashes recorded</td>
+</tr>
+<tr>
+<td>Machine-readable provenance original to clean</td>
+<td><code>provenance-map.json</code></td>
+<td>Actual input-copy and report-transformation mapping; not the missing original mapping</td>
+</tr>
+<tr>
+<td>Expanded stable source register</td>
+<td><code>sources-expanded.json</code></td>
+<td>Recovered seed plus saved report references and new checks; verification status explicit</td>
+</tr>
+<tr>
+<td>Prior-art/novelty matrix</td>
+<td><code>prior_art_matrix.csv</code></td>
+<td>Reconstructed from saved analysis; not a newly executed systematic review</td>
+</tr>
+<tr>
+<td>Proposed versioned BEP profile</td>
+<td><code>BEP_PROFILE.md</code></td>
+<td>Newly reconstructed proposal with unique version</td>
+</tr>
+<tr>
+<td>Draft 2020-12 JSON Schema</td>
+<td><code>bep-core-v0.1-reconstructed.schema.json</code></td>
+<td>New schema checked and exercised locally</td>
+</tr>
+<tr>
+<td>Valid prose example</td>
+<td><code>examples/valid-minimal.json</code></td>
+<td>New synthetic fixture; validated locally</td>
+</tr>
+<tr>
+<td>Valid numeric observation example</td>
+<td><code>examples/valid-numeric-observation.json</code></td>
+<td>New synthetic fixture; validated locally</td>
+</tr>
+<tr>
+<td>Invalid missing-provenance example</td>
+<td><code>examples/invalid-missing-provenance.json</code></td>
+<td>New fixture; rejected for provenance minItems as intended</td>
+</tr>
+<tr>
+<td>Canonicalisation test vectors</td>
+<td><code>canonicalisation-vectors.json</code></td>
+<td>16 new bounded vectors exercised; not full RFC certification</td>
+</tr>
+<tr>
+<td>Independent evaluation specification</td>
+<td><code>evaluation_spec.json</code></td>
+<td>New experimental specification; no independent domain review or system benchmark executed</td>
+</tr>
+<tr>
+<td>Synthetic sample evaluation corpus</td>
+<td><code>sample_corpus.jsonl</code></td>
+<td>12 synthetic starter cases; separate assessor expectations; not complete real-engine runs</td>
+</tr>
+<tr>
+<td>Threat model</td>
+<td><code>threat_model.csv</code></td>
+<td>Reconstructed controls, test ideas and explicit residual limitations</td>
+</tr>
+<tr>
+<td>Compatibility/migration note</td>
+<td><code>compatibility_migration.md</code></td>
+<td>New compatibility guidance; no adapter or migration implemented</td>
+</tr>
+<tr>
+<td>Ranked hypothesis ledger</td>
+<td><code>hypothesis_ledger.csv</code></td>
+<td>Six proposed priorities and falsification criteria; hypotheses unmeasured</td>
+</tr>
+<tr>
+<td>Reproducible search log</td>
+<td><code>search_log.csv</code>, <code>historical_search_log_status.json</code></td>
+<td>New reconstruction search log only; original historical log not recovered</td>
+</tr>
+<tr>
+<td>Reproducible Docker/offline execution specification</td>
+<td><code>EXECUTION.md</code>, <code>Dockerfile.example</code></td>
+<td>Recipe supplied; Docker unavailable and unexecuted; image/wheelhouse still require acquisition and pinning</td>
+</tr>
+<tr>
+<td>Runtime citation-marker scanner</td>
+<td><code>scripts/check_no_ui_tokens.py</code></td>
+<td>New utility executed on files and uncompressed ZIP members; does not extract PDF text</td>
+</tr>
+<tr>
+<td>Mapping-driven legacy remediation script</td>
+<td><code>scripts/rewrite_citations.py</code></td>
+<td>New fail-closed utility; mapped and unmapped cases tested</td>
+</tr>
+<tr>
+<td>CI workflow</td>
+<td><code>.github/workflows/research-artifact-integrity.yml</code></td>
+<td>Unexecuted public-repository example; not deployed</td>
+</tr>
+<tr>
+<td>Git filter example</td>
+<td><code>git-filter-example.md</code>, <code>scripts/git_clean_check.py</code></td>
+<td>Pass-through rejecting filter supplied; no Git configuration changed</td>
+</tr>
+<tr>
+<td>File manifest and checksums</td>
+<td><code>manifest.json</code>, <code>checksums.sha256</code></td>
+<td>New hashes of actual delivered bytes; self-reference rules explicit</td>
+</tr>
+<tr>
+<td>Final ZIP</td>
+<td><code>../bep_research_A_RECONSTRUCTED_2026-09-19.zip</code></td>
+<td>New reconstruction archive; original ZIP not recovered; CRC/member hashes and marker scan executed</td>
+</tr>
+</tbody>
+</table>
+<h2>Acceptance boundary</h2>
+<p>Read <code>verification.json</code> for the exact local tests, outputs, versions and file hashes.
+The external final verification receipt binds the final ZIP, avoiding a self-hash cycle.
+A fresh fixture pass does not establish real Ask OKF correctness, full literature coverage,
+permission safety, production readiness, useful model responses or voice support.</p>
+</body></html>

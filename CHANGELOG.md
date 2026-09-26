@@ -1,5 +1,20 @@
 # Changelog
 
+## Curated bounded evidence package research — 26 September 2026
+
+- Add the September BEP briefs, reports and reconstructed Research A package as
+  byte-preserved research records, with an exact curation inventory and one
+  reader index. Retain original package manifests and archival formats; omit the
+  duplicate ZIP and incidental macOS metadata. Preserve original line endings
+  in Git so imported checksum manifests remain valid after checkout. Keep original HTML in Git and
+  serve the same-stem Markdown reading pages at its Site routes.
+- Keep package Markdown outside the default OKF semantic bundle. Label the
+  reports as research proposals with unverified citation and execution limits;
+  defer Jev-Mem and the historical WebMCP task prompt.
+- Record a source-linked code audit of what the current BEP-related engine and
+  service implement, and which research schema, storage and assurance proposals
+  remain unadopted.
+
 ## Occurrence-scoped reading help — 26 September 2026
 
 - Add a generic `/reading-help/` view for a separately governed manifest. It

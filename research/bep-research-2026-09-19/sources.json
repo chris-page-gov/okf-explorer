@@ -1,0 +1,278 @@
+{
+  "register_version": "1",
+  "purpose": "Research source register, not an OKF or BEP conformance claim",
+  "sources": [
+    {
+      "id": "S01",
+      "title": "Ask OKF architecture decision",
+      "url": "https://github.com/chris-page-gov/okf-explorer/blob/905e680f6d3ad385de9b8effc351566eba0ab2b3/docs/adr-ask-okf-context-assembly.md",
+      "kind": "Pinned project architecture",
+      "scope_note": "Scope and boundaries of deterministic context assembly.",
+      "checked_on": "2026-09-19"
+    },
+    {
+      "id": "S02",
+      "title": "Ask OKF context types",
+      "url": "https://github.com/chris-page-gov/okf-explorer/blob/905e680f6d3ad385de9b8effc351566eba0ab2b3/apps/okf-explorer/src/lib/context/types.ts",
+      "kind": "Pinned implementation",
+      "scope_note": "The existing package, record, assertion and requirement types.",
+      "checked_on": "2026-09-19"
+    },
+    {
+      "id": "S03",
+      "title": "Ask OKF context engine",
+      "url": "https://github.com/chris-page-gov/okf-explorer/blob/905e680f6d3ad385de9b8effc351566eba0ab2b3/apps/okf-explorer/src/lib/context/index.ts",
+      "kind": "Pinned implementation",
+      "scope_note": "Inspected definitions include budgets, validation, canonicalisation and phrase resolution; not a completed code audit.",
+      "checked_on": "2026-09-19"
+    },
+    {
+      "id": "S04",
+      "title": "Ask OKF interface and page-tool verification",
+      "url": "https://github.com/chris-page-gov/okf-explorer/blob/905e680f6d3ad385de9b8effc351566eba0ab2b3/docs/ask-okf-ui-verification.md",
+      "kind": "Project test receipt",
+      "scope_note": "Reports local verification; explicitly separates deployment and actual AI-host invocation.",
+      "checked_on": "2026-09-19"
+    },
+    {
+      "id": "S05",
+      "title": "Ask OKF pre-implementation gap analysis",
+      "url": "https://github.com/chris-page-gov/okf-explorer/blob/905e680f6d3ad385de9b8effc351566eba0ab2b3/docs/ask-okf-gap-analysis-2026-09-16.md",
+      "kind": "Historical project analysis",
+      "scope_note": "The recorded producer-modelling gap must not be mistaken for a present-day benefits ruling.",
+      "checked_on": "2026-09-19"
+    },
+    {
+      "id": "S06",
+      "title": "Mike Stonebraker interview — publisher transcript",
+      "url": "https://www.developing.dev/p/turing-award-winner-postgres-disagreeing",
+      "kind": "Primary interview transcript",
+      "scope_note": "Published 20 April 2026. Interview opinions require evaluation, not automatic adoption.",
+      "checked_on": "2026-09-19"
+    },
+    {
+      "id": "S07",
+      "title": "DBOS academic project",
+      "url": "https://dbos-project.github.io/",
+      "kind": "Research programme",
+      "scope_note": "Academic publications and code, distinct from the product ecosystem.",
+      "checked_on": "2026-09-19"
+    },
+    {
+      "id": "S08",
+      "title": "DBOS architecture",
+      "url": "https://docs.dbos.dev/architecture",
+      "kind": "Current supplier documentation",
+      "scope_note": "Workflow architecture, recovery, versioning and storage considerations.",
+      "checked_on": "2026-09-19"
+    },
+    {
+      "id": "S09",
+      "title": "DBOS steps",
+      "url": "https://docs.dbos.dev/python/tutorials/step-tutorial",
+      "kind": "Current supplier documentation",
+      "scope_note": "Python step behaviour. Verify TypeScript equivalents before implementation.",
+      "checked_on": "2026-09-19"
+    },
+    {
+      "id": "S10",
+      "title": "DBOS datasource transactions",
+      "url": "https://docs.dbos.dev/python/tutorials/transaction-tutorial",
+      "kind": "Current supplier documentation",
+      "scope_note": "Atomic recording of supported database transactions; not arbitrary external effects.",
+      "checked_on": "2026-09-19"
+    },
+    {
+      "id": "S11",
+      "title": "Benchmarking How Workflow Execution Scales on Postgres",
+      "url": "https://www.dbos.dev/blog/benchmarking-workflow-execution-scalability-on-postgres",
+      "kind": "Supplier benchmark",
+      "scope_note": "No-op workflow and queue experiments, not BEP assembly or service-capacity measurements.",
+      "checked_on": "2026-09-19"
+    },
+    {
+      "id": "S12",
+      "title": "Consistency and Correctness in Data-Oriented Workflow Systems",
+      "url": "https://www.vldb.org/cidrdb/papers/2026/p9-stonebraker.pdf",
+      "kind": "CIDR 2026 research paper",
+      "scope_note": "Workflow guarantees and a prototype. Not a blanket statement of released product functionality.",
+      "checked_on": "2026-09-19"
+    },
+    {
+      "id": "S13",
+      "title": "OLTP Through the Looking Glass 16 Years Later: Communication is the New Bottleneck",
+      "url": "https://vldb.org/cidrdb/papers/2025/p17-zhou.pdf",
+      "kind": "CIDR 2025 research paper",
+      "scope_note": "End-to-end communication and isolation overheads in studied transaction workloads.",
+      "checked_on": "2026-09-19"
+    },
+    {
+      "id": "S14",
+      "title": "Nanopublications",
+      "url": "https://nanopub.net/",
+      "kind": "Project specification overview",
+      "scope_note": "Atomic assertions with provenance and publication metadata.",
+      "checked_on": "2026-09-19"
+    },
+    {
+      "id": "S15",
+      "title": "PROV-DM: The PROV Data Model",
+      "url": "https://www.w3.org/TR/prov-dm/",
+      "kind": "W3C Recommendation",
+      "scope_note": "Interoperable provenance modelling.",
+      "checked_on": "2026-09-19"
+    },
+    {
+      "id": "S16",
+      "title": "Trusty URIs: Verifiable, Immutable, and Permanent Digital Artifacts for Linked Data",
+      "url": "https://arxiv.org/abs/1401.5775",
+      "kind": "Research paper",
+      "scope_note": "Hash-bound linked artefacts; integrity and identity are not truth.",
+      "checked_on": "2026-09-19"
+    },
+    {
+      "id": "S17",
+      "title": "RO-Crate 1.2",
+      "url": "https://www.researchobject.org/ro-crate/specification/1.2/",
+      "kind": "Community specification",
+      "scope_note": "Research-object packaging and linked metadata.",
+      "checked_on": "2026-09-19"
+    },
+    {
+      "id": "S18",
+      "title": "ProvSQL",
+      "url": "https://provsql.org/",
+      "kind": "Primary project documentation",
+      "scope_note": "Database query lineage; not automatic semantic validation of source assertions.",
+      "checked_on": "2026-09-19"
+    },
+    {
+      "id": "S19",
+      "title": "Sufficient Context: A New Lens on Retrieval Augmented Generation Systems",
+      "url": "https://arxiv.org/abs/2411.06037",
+      "kind": "Research paper; version 3, April 2025",
+      "scope_note": "Separates insufficient evidence from failures to use available context.",
+      "checked_on": "2026-09-19"
+    },
+    {
+      "id": "S20",
+      "title": "Measuring Attribution in Natural Language Generation Models",
+      "url": "https://arxiv.org/abs/2112.12870",
+      "kind": "Research paper",
+      "scope_note": "Attributable to Identified Sources (AIS), including human-evaluation guidance.",
+      "checked_on": "2026-09-19"
+    },
+    {
+      "id": "S21",
+      "title": "Enabling Large Language Models to Generate Text with Citations",
+      "url": "https://arxiv.org/abs/2305.14627",
+      "kind": "Research paper",
+      "scope_note": "ALCE citation and generation evaluation.",
+      "checked_on": "2026-09-19"
+    },
+    {
+      "id": "S22",
+      "title": "ChatGPT Voice",
+      "url": "https://help.openai.com/en/articles/20001274",
+      "kind": "Current OpenAI product documentation",
+      "scope_note": "Distinguishes voice experiences and their capabilities; no Ask OKF invocation was tested.",
+      "checked_on": "2026-09-19"
+    },
+    {
+      "id": "S23",
+      "title": "Connected apps in ChatGPT",
+      "url": "https://help.openai.com/en/articles/11487775-connectors-in-chatgpt",
+      "kind": "Current OpenAI product documentation",
+      "scope_note": "Voice support depends on the app and available features.",
+      "checked_on": "2026-09-19"
+    },
+    {
+      "id": "S24",
+      "title": "GraphRAG local search",
+      "url": "https://microsoft.github.io/graphrag/query/local_search/",
+      "kind": "Primary project documentation",
+      "scope_note": "Combines graph and text context; not equivalent to the proposed BEP guarantees.",
+      "checked_on": "2026-09-19"
+    },
+    {
+      "id": "S25",
+      "title": "Lost in the Middle: How Language Models Use Long Contexts",
+      "url": "https://arxiv.org/abs/2307.03172",
+      "kind": "Research paper",
+      "scope_note": "A reason to test evidence order and length on the actual consumer model.",
+      "checked_on": "2026-09-19"
+    },
+    {
+      "id": "S26",
+      "title": "RECOMP: Improving Retrieval-Augmented LMs with Compression and Selective Augmentation",
+      "url": "https://arxiv.org/abs/2310.04408",
+      "kind": "Research paper",
+      "scope_note": "Context compression and selective use as experimental comparators.",
+      "checked_on": "2026-09-19"
+    },
+    {
+      "id": "S27",
+      "title": "From OKE Alerts to RCA Drafts: Building a Guardrailed OpenClaw Incident Assistant on OCI",
+      "url": "https://blogs.oracle.com/cloud-infrastructure/oke-incident-postmortem-autopilot-openclaw-genai",
+      "kind": "Supplier reference implementation",
+      "scope_note": "An explicit use of bounded evidence packages; not an interoperability standard.",
+      "checked_on": "2026-09-19"
+    },
+    {
+      "id": "S28",
+      "title": "RFC 8785: JSON Canonicalization Scheme",
+      "url": "https://www.rfc-editor.org/rfc/rfc8785",
+      "kind": "IETF-stream informational RFC",
+      "scope_note": "Canonical JSON representation; application-level array semantics still need definition.",
+      "checked_on": "2026-09-19"
+    },
+    {
+      "id": "S29",
+      "title": "MCP Tools specification, 2026-07-28",
+      "url": "https://modelcontextprotocol.io/specification/2026-07-28/server/tools",
+      "kind": "Protocol specification",
+      "scope_note": "Structured results and output schemas; client support remains a separate question.",
+      "checked_on": "2026-09-19"
+    },
+    {
+      "id": "S30",
+      "title": "PostgreSQL: Sorting Rows",
+      "url": "https://www.postgresql.org/docs/current/queries-order.html",
+      "kind": "PostgreSQL official documentation",
+      "scope_note": "Explicit ordering is required where result order matters.",
+      "checked_on": "2026-09-19"
+    },
+    {
+      "id": "S31",
+      "title": "PostgreSQL: Transaction Isolation",
+      "url": "https://www.postgresql.org/docs/current/transaction-iso.html",
+      "kind": "PostgreSQL official documentation",
+      "scope_note": "Read consistency and snapshot semantics.",
+      "checked_on": "2026-09-19"
+    },
+    {
+      "id": "S32",
+      "title": "PostgreSQL: Materialized Views",
+      "url": "https://www.postgresql.org/docs/current/rules-materializedviews.html",
+      "kind": "PostgreSQL official documentation",
+      "scope_note": "Stored query results and refresh behaviour.",
+      "checked_on": "2026-09-19"
+    },
+    {
+      "id": "S33",
+      "title": "Appropriate Uses For SQLite",
+      "url": "https://www.sqlite.org/whentouse.html",
+      "kind": "SQLite official documentation",
+      "scope_note": "Embedded storage and deployment trade-offs.",
+      "checked_on": "2026-09-19"
+    },
+    {
+      "id": "S34",
+      "title": "DBOS TypeScript library",
+      "url": "https://github.com/dbos-inc/dbos-transact-ts",
+      "kind": "Product source repository",
+      "scope_note": "Repository metadata inspected; no library benchmark or comprehensive code audit performed.",
+      "checked_on": "2026-09-19"
+    }
+  ]
+}

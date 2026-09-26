@@ -1,0 +1,5 @@
+{
+  "original_search_log_recovered": false,
+  "replacement_log": "search_log.csv",
+  "limitation": "A repeatable query record cannot reproduce the historical search engine index. No historical queries or timestamps have been fabricated."
+}
