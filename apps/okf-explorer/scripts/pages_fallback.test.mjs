@@ -4,6 +4,7 @@ import { access, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
+import { runInNewContext } from 'node:vm';
 
 import {
   BUILD_MANIFEST_FILENAME,
@@ -61,4 +62,18 @@ test('production build emits a project-root-safe GitHub Pages 404', async () => 
   assert.doesNotMatch(document, /(?:href|src)="\/(?!okf-explorer(?:\/|"))/i);
   assert.doesNotMatch(document, /(?:import\(|modulepreload|\/_app\/)/i);
   await access(path.join(BUILD_ROOT, 'favicon.svg'));
+
+  const readingHelp = await readFile(path.join(BUILD_ROOT, 'reading-help', 'index.html'), 'utf8');
+  const redirectScript = readingHelp.match(/<script>([\s\S]*?)<\/script>/)?.[1];
+  assert.ok(redirectScript, 'reading-help route keeps the shared landing redirect script');
+  const replaced = [];
+  runInNewContext(redirectScript, {
+    location: {
+      pathname: '/okf-explorer/reading-help/',
+      search: '?manifest=https%3A%2F%2Fexample.test%2Freading-help.json',
+      hash: '',
+      replace: (url) => replaced.push(url)
+    }
+  });
+  assert.deepEqual(replaced, [], 'manifest URLs on reading-help must stay on that route');
 });
