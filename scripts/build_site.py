@@ -1876,6 +1876,13 @@ def is_component_source_allowed(relative: Path) -> bool:
         or relative.suffix.lower() in FORBIDDEN_SUFFIXES
         # Research drafts are local working documents, not Site transport assets.
         or (relative.parts[:1] == ("research",) and relative.suffix.lower() == ".docx")
+        # The reconstructed archive keeps original HTML in Git; the Site renders
+        # the same-stem Markdown at these routes instead.
+        or (
+            relative.parts[:2]
+            == ("research", "bep_research_A_RECONSTRUCTED_2026-09-19")
+            and relative.suffix.lower() == ".html"
+        )
         or is_ephemeral_evaluation_result(relative)
         or is_mutable_evaluation_evidence(relative)
         or relative == PROMOTION_ENVELOPE

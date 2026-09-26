@@ -48,6 +48,11 @@ guides for today's interface.
 
 ## Research Basis
 
+[Curated bounded evidence package research](bep-research.md) retains the
+research briefs, reports and reconstructed examples with their provenance and
+limits. The [BEP implementation status](bep-implementation-status.md) separates
+existing code from research proposals and remaining gaps.
+
 [Research and public-service references](reference/index.md#research-basis)
 explain the method. The [documentation style guide](documentation-style.md)
 sets British English and plain-language conventions.

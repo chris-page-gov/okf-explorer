@@ -1,0 +1,31 @@
+{
+  "created_on": "2026-09-19",
+  "files": [
+    {
+      "path": "00_START_HERE.md",
+      "bytes": 7742,
+      "sha256": "2219d1328269fdac911e624d47080248cdd7243582020a9e31ebcf1eef301e8c"
+    },
+    {
+      "path": "A_BEP_SEMANTICS_AND_EVALUATION.md",
+      "bytes": 13948,
+      "sha256": "5fb7862baf105aeff3fe1db18489becdc75acbbc37a8b44e91cc49796c9f2cd1"
+    },
+    {
+      "path": "B_STORAGE_DBOS_AND_SERVING.md",
+      "bytes": 15633,
+      "sha256": "64cc7965fab2b183b5d42468c86d82de052f13bad14ea4d8981ebb472c5e864f"
+    },
+    {
+      "path": "SOURCES.md",
+      "bytes": 8306,
+      "sha256": "5b07111250eb2b0c5e5caebf3eacdf4f8d8ad9567440291cb36bd0fb8d7e7f8a"
+    },
+    {
+      "path": "sources.json",
+      "bytes": 11632,
+      "sha256": "3e2489e0b46286fa4e4dc1a36e9114feb4ce85080097037b57cf67c486efc6a2"
+    }
+  ],
+  "note": "This manifest describes the research handover files, not a BEP standard. It intentionally excludes itself."
+}

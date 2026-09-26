@@ -1,0 +1,108 @@
+{
+  "core": {
+    "schema": "bep-core.v0.1-reconstructed.1",
+    "compiler": {
+      "name": "reconstruction-fixture-builder",
+      "version": "1; not Ask OKF"
+    },
+    "bindings": {
+      "bundle_id": "bundle:synthetic",
+      "bundle_sha256": "47ad0228c08a87e637c08b065408175c2ac569c9853d3107c49446cb9d523ca1",
+      "index_sha256": "0f245672d21c170754ff0edbf36cb560bfd031da49811e15f7829e9c57e8b8ad",
+      "requirements_sha256": "0e9d8e2ff5e6bd643e4957a7fe7ea5a0445c7d63d1dd42f572b3cfd31ba5f1be",
+      "access_view": "public-synthetic-or-public-source-view",
+      "policy_version": "fixture-policy.1",
+      "canonicalisation": "rfc8785-candidate.node.reconstructed.1"
+    },
+    "request": {
+      "accepted_text": "What evidence governs booking the fictional study room?",
+      "interpretation_version": "manual-fixture.1",
+      "concepts": [
+        "concept:booking"
+      ],
+      "ambiguities": [],
+      "unresolved": [],
+      "scope": "Fictional test; no advice or eligibility decision",
+      "as_of": "2026-09-19"
+    },
+    "sources": [
+      {
+        "id": "source:3",
+        "url": "https://example.invalid/bep-tests/api.txt",
+        "source_sha256": "e27e5c2abd6f1a0eafe60d249717ffb160068e1f3b9cf11f4d364238f05e56a1",
+        "captured_at": "2026-09-19T00:00:00Z",
+        "source_date": "2026-09-19",
+        "source_date_kind": "synthetic",
+        "authority": {
+          "class": "synthetic",
+          "label": "Fictional test publisher; no real-world authority"
+        },
+        "rights": "Newly generated synthetic test text; research fixture",
+        "access": "public"
+      }
+    ],
+    "evidence": [
+      {
+        "id": "e:api",
+        "kind": "api-capability",
+        "text": "The example catalogue exposes read-only resource descriptions using an illustrative HTTP JSON contract version 1.",
+        "literal_sha256": "a9a29cb0a6f4bb3b83dcbda9674b4bf743dc0207d2c3ff924e49d0709e888005",
+        "assertion_status": "normalized",
+        "scope": "Fictional research fixture only",
+        "provenance": [
+          {
+            "source_id": "source:3",
+            "locator": "Exact literal in local synthetic source"
+          }
+        ],
+        "api_capability": {
+          "protocol": "illustrative HTTP JSON",
+          "schema_version": "1",
+          "access_assumptions": "Fictional read-only interface; no real endpoint is asserted",
+          "observed_at": "2026-09-19T00:00:00Z"
+        }
+      }
+    ],
+    "relationships": [],
+    "requirements": [
+      {
+        "id": "r:api",
+        "scope": "Synthetic API description",
+        "alternatives": [
+          {
+            "all_of": [
+              "e:api"
+            ]
+          }
+        ],
+        "provenance": [
+          {
+            "source_id": "source:3",
+            "locator": "Second line"
+          }
+        ],
+        "review_status": "synthetic"
+      }
+    ],
+    "coverage": {
+      "declared_requirements": "complete",
+      "evidential_status": "sufficient-within-declared-scope"
+    },
+    "omissions": [],
+    "conflicts": [],
+    "limitations": [
+      "Entirely synthetic; not real guidance.",
+      "Declared requirement coverage is not real-world completeness.",
+      "The reconstructed validator does not implement retrieval, authorisation or specialist truth assessment."
+    ],
+    "budget": {
+      "max_records": 64,
+      "max_relationships": 128,
+      "max_depth": 6,
+      "max_operations": 500000,
+      "max_bytes": 524288
+    },
+    "ai_answer": null
+  },
+  "package_id": "sha256:96e8124de282bc6565c54506e2671a2e1dd64e9e6ddca0e7d4c00ad27ce38f21"
+}

@@ -1,0 +1,88 @@
+{
+  "status": "newly reconstructed bounded test set; not full RFC conformance certification",
+  "source_ids": [
+    "S28"
+  ],
+  "vectors": [
+    {
+      "id": "V01",
+      "input_json": "{\"b\":2,\"a\":1}",
+      "expected_utf8": "{\"a\":1,\"b\":2}"
+    },
+    {
+      "id": "V02",
+      "input_json": "[3,1,2]",
+      "expected_utf8": "[3,1,2]"
+    },
+    {
+      "id": "V03",
+      "input_json": "{\"x\":-0}",
+      "expected_utf8": "{\"x\":0}"
+    },
+    {
+      "id": "V04",
+      "input_json": "{\"n\":[1E30,4.50,2e-3,1e-27]}",
+      "expected_utf8": "{\"n\":[1e+30,4.5,0.002,1e-27]}"
+    },
+    {
+      "id": "V05",
+      "input_json": "{\"\\ufb33\":\"last\",\"\\ud83d\\ude00\":\"second\",\"\\u20ac\":\"first\"}",
+      "expected_utf8": "{\"€\":\"first\",\"😀\":\"second\",\"דּ\":\"last\"}"
+    },
+    {
+      "id": "V06",
+      "input_json": "{\"x\":\"e\\u0301\"}",
+      "expected_utf8": "{\"x\":\"é\"}"
+    },
+    {
+      "id": "V07",
+      "input_json": "{\"x\":\"\\u00e9\"}",
+      "expected_utf8": "{\"x\":\"é\"}"
+    },
+    {
+      "id": "V08",
+      "input_json": "{\"10\":1,\"2\":2}",
+      "expected_utf8": "{\"10\":1,\"2\":2}"
+    },
+    {
+      "id": "V09",
+      "input_json": "{\"x\":1,\"x\":2}",
+      "expected_error": "DUPLICATE_KEY"
+    },
+    {
+      "id": "V10",
+      "input_json": "{\"x\":\"\\ud800\"}",
+      "expected_error": "LONE_SURROGATE"
+    },
+    {
+      "id": "V11",
+      "input_json": "{\"x\":1e400}",
+      "expected_error": "NON_FINITE"
+    },
+    {
+      "id": "V12",
+      "input_json": "{\"x\":NaN}",
+      "expected_error": "JSON_VALUE"
+    },
+    {
+      "id": "V13",
+      "input_json": "[1,]",
+      "expected_error": "JSON_VALUE"
+    },
+    {
+      "id": "V14",
+      "input_json": "{\"a\":1} false",
+      "expected_error": "TRAILING_INPUT"
+    },
+    {
+      "id": "V15",
+      "input_json": "{\"__proto__\":1,\"a\":2}",
+      "expected_utf8": "{\"__proto__\":1,\"a\":2}"
+    },
+    {
+      "id": "V16",
+      "input_json": "{\"x\":\"\\u000f\\n\\\\\\\"\"}",
+      "expected_utf8": "{\"x\":\"\\u000f\\n\\\\\\\"\"}"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "reconstruction_started_at_utc": "2026-09-19T11:47:27.446523+00:00",
+  "original_zip_recovered": false,
+  "input_copies": [
+    {
+      "file_id": "file_000000007aa48243b882476303af9e05",
+      "original_name": "00_START_HERE.md",
+      "output_path": "inputs/00_START_HERE.md",
+      "input_sha256": "2219d1328269fdac911e624d47080248cdd7243582020a9e31ebcf1eef301e8c",
+      "output_sha256": "2219d1328269fdac911e624d47080248cdd7243582020a9e31ebcf1eef301e8c",
+      "transformation": "byte-identical copy",
+      "observed_at_utc": "2026-09-19T11:47:27.446523+00:00"
+    },
+    {
+      "file_id": "file_00000000bd388243a18bbd2be98e3bde",
+      "original_name": "A_BEP_SEMANTICS_AND_EVALUATION(1).md",
+      "output_path": "inputs/A_BEP_SEMANTICS_AND_EVALUATION(1).md",
+      "input_sha256": "5fb7862baf105aeff3fe1db18489becdc75acbbc37a8b44e91cc49796c9f2cd1",
+      "output_sha256": "5fb7862baf105aeff3fe1db18489becdc75acbbc37a8b44e91cc49796c9f2cd1",
+      "transformation": "byte-identical copy",
+      "observed_at_utc": "2026-09-19T11:47:27.446523+00:00"
+    },
+    {
+      "file_id": "file_00000000f6a8821083c03b301656d8ef",
+      "original_name": "sources.json",
+      "output_path": "inputs/sources.json",
+      "input_sha256": "3e2489e0b46286fa4e4dc1a36e9114feb4ce85080097037b57cf67c486efc6a2",
+      "output_sha256": "3e2489e0b46286fa4e4dc1a36e9114feb4ce85080097037b57cf67c486efc6a2",
+      "transformation": "byte-identical copy",
+      "observed_at_utc": "2026-09-19T11:47:27.446523+00:00"
+    }
+  ],
+  "recovered_report": {
+    "source_library_file_id": "file_00000000c868820ab87746d4c976ef60",
+    "source_object_sha256": "1fd3400557111d89e9b362ad6fd901ae565b95ad0455fc4cc03e45264cbc4bf8",
+    "original_final_text_sha256": "20a1f1b453e559f5cd740dcdfd4f2c62c12ce8e9ed32dba630e603bd660a63dc",
+    "output": "REPORT.md",
+    "transformation": [
+      "Recover analytical sections; remove unsubstantiated delivery and execution assertions",
+      "Map citations through saved metadata; unresolved malformed reference not promoted",
+      "Replace links with paths to explicitly reconstructed artefacts",
+      "Substitute honest local/offline execution instructions; record scope and limitations"
+    ]
+  },
+  "new_artefact_policy": "Every output other than the three input copies is recovered-and-edited prose, reconstructed metadata, newly authored code/schema/fixtures, or a fresh execution receipt. No missing original file hash has been guessed."
+}

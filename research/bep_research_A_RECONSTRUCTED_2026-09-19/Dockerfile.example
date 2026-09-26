@@ -1,0 +1,8 @@
+# UNEXECUTED EXAMPLE. Supply an existing digest-pinned Python + Node base image.
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE}
+WORKDIR /work
+COPY . /work
+RUN python -m pip install --no-index --find-links=/work/wheelhouse -r /work/requirements.txt
+ENV PYTHONDONTWRITEBYTECODE=1
+CMD ["python", "-B", "scripts/run_checks.py", "--output-dir", "/out"]

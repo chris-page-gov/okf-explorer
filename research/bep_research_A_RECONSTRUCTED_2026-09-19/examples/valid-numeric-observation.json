@@ -1,0 +1,113 @@
+{
+  "core": {
+    "schema": "bep-core.v0.1-reconstructed.1",
+    "compiler": {
+      "name": "reconstruction-fixture-builder",
+      "version": "1; not Ask OKF"
+    },
+    "bindings": {
+      "bundle_id": "bundle:synthetic",
+      "bundle_sha256": "47ad0228c08a87e637c08b065408175c2ac569c9853d3107c49446cb9d523ca1",
+      "index_sha256": "7155446c94381a8b4c31e82272cda2e0e12ab99b544d0d5c243d90d872dcff57",
+      "requirements_sha256": "aee8e8ad7cb1abcb7a4a1e5a1c9d51c397a7009acfb1a9950fcf8aa03564f7ed",
+      "access_view": "public-synthetic-or-public-source-view",
+      "policy_version": "fixture-policy.1",
+      "canonicalisation": "rfc8785-candidate.node.reconstructed.1"
+    },
+    "request": {
+      "accepted_text": "What is the fictional occupancy observation?",
+      "interpretation_version": "manual-fixture.1",
+      "concepts": [
+        "concept:booking"
+      ],
+      "ambiguities": [],
+      "unresolved": [],
+      "scope": "Fictional test; no advice or eligibility decision",
+      "as_of": "2026-09-19"
+    },
+    "sources": [
+      {
+        "id": "source:2",
+        "url": "https://example.invalid/bep-tests/observations.txt",
+        "source_sha256": "0f668db71295a2a127733f456b88ef509d9a613f9c35ecef6ec79e1158f652d4",
+        "captured_at": "2026-09-19T00:00:00Z",
+        "source_date": "2026-09-19",
+        "source_date_kind": "synthetic",
+        "authority": {
+          "class": "synthetic",
+          "label": "Fictional test publisher; no real-world authority"
+        },
+        "rights": "Newly generated synthetic test text; research fixture",
+        "access": "public"
+      }
+    ],
+    "evidence": [
+      {
+        "id": "e:observation",
+        "kind": "observation",
+        "text": "At the example centre in synthetic release R1, 12 of 20 seats were occupied.",
+        "literal_sha256": "a9a4ce08feba9c1a974084d0bbd8ab6684ec917aa88cc00fa748f9956168d7c2",
+        "assertion_status": "normalized",
+        "scope": "Fictional research fixture only",
+        "provenance": [
+          {
+            "source_id": "source:2",
+            "locator": "Exact literal in local synthetic source"
+          }
+        ],
+        "observation": {
+          "value": "12",
+          "unit": "occupied seats",
+          "denominator": "20 seats",
+          "dimensions": {
+            "centre": "fictional example centre",
+            "period": "synthetic day"
+          },
+          "source_release": "synthetic-R1",
+          "transformation": null
+        }
+      }
+    ],
+    "relationships": [],
+    "requirements": [
+      {
+        "id": "r:occupancy",
+        "scope": "Synthetic observation",
+        "alternatives": [
+          {
+            "all_of": [
+              "e:observation"
+            ]
+          }
+        ],
+        "provenance": [
+          {
+            "source_id": "source:2",
+            "locator": "Second line"
+          }
+        ],
+        "review_status": "synthetic"
+      }
+    ],
+    "coverage": {
+      "declared_requirements": "complete",
+      "evidential_status": "sufficient-within-declared-scope"
+    },
+    "omissions": [],
+    "conflicts": [],
+    "limitations": [
+      "Entirely synthetic; not real guidance.",
+      "Declared requirement coverage is not real-world completeness.",
+      "The reconstructed validator does not implement retrieval, authorisation or specialist truth assessment."
+    ],
+    "budget": {
+      "max_records": 64,
+      "max_relationships": 128,
+      "max_depth": 6,
+      "max_operations": 500000,
+      "max_bytes": 524288
+    },
+    "ai_answer": null
+  },
+  "package_id": "sha256:d2fa754a744d1969267583d407043bd921040606064d0a6d4ab272d018654f08"
+}

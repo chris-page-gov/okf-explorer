@@ -1,0 +1,338 @@
+<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BEP Research A — REPORT</title><style>body{font-family:system-ui,-apple-system,Segoe UI,sans-serif;max-width:1060px;margin:2.8rem auto;padding:0 1.5rem;line-height:1.65;color:#192b38}h1,h2,h3{line-height:1.25;margin-top:1.8em}h1{font-size:2.2rem}h2{border-bottom:1px solid #d4dfe6;padding-bottom:.3em}a{color:#075985;overflow-wrap:anywhere}pre{background:#f2f5f7;padding:1rem;overflow:auto;font-size:.86rem;line-height:1.45}table{display:block;overflow:auto;width:100%;border-collapse:collapse;font-size:.92rem}td,th{border:1px solid #d4dfe6;text-align:left;vertical-align:top;padding:.5em .7em}th{background:#eef3f7}blockquote{margin:1em 0;border-left:4px solid #9d7930;padding:.4em 1em;background:#fffaf0}code{overflow-wrap:anywhere}</style></head><body><h1>Research A — bounded evidence packages</h1>
+<h2>Recovered analysis with reconstructed supporting artefacts</h2>
+<p><strong>Delivery correction dated 19 September 2026.</strong> This is not the missing original ZIP.
+The analytical sections below are recovered from the saved final report. Its source
+associations were translated using saved citation metadata. No complete fresh literature
+review or claim-by-claim source audit has been performed. Source-specific current checking
+in this reconstruction is recorded in <code>sources-expanded.json</code> and <code>search_log.csv</code>.</p>
+<p>The earlier table of “Produced”, “validated” and “rescanned” statuses is withdrawn as an
+accepted delivery record: the linked original artefacts and execution receipts were not
+recovered. New files and new tests are documented in <a href="DELIVERY_AUDIT.md">DELIVERY_AUDIT.md</a>
+and <a href="verification.json">verification.json</a>. These do not prove the earlier claimed runs occurred.</p>
+<p>The RO-Crate version/date statement was rechecked: version 1.3, Recommendation,
+22 June 2026. [S36] Draft 2020-12 and RFC 8785 were also consulted for the replacement
+schema and bounded canonicalisation tests. [S43, S28]</p>
+<h3>Executive synthesis</h3>
+<p>A BEP should be treated as a version-bound evidence contract, not a generated answer.
+The recovered research proposes explicit request interpretation, dependency and qualification
+preservation, bounded work and payload, visible omissions and conflicts, and reproducible
+identity. These compose substantial prior art rather than establish novelty merely by naming
+a package. Evaluate source modelling, assembly and consumer use separately.</p>
+<p>The supplied replacement profile is deliberately labelled <code>bep-core.v0.1-reconstructed.1</code>.
+It is an experimental proposal, not the original missing schema, not an OKF standard and
+not a change to the existing Ask OKF contract. The fixtures are fictional and the validator
+checks shape and selected integrity/coverage invariants; it cannot certify truth, permission,
+complete domain modelling, successful retrieval or useful model answers.</p>
+<h2>BEP research findings and proposed semantic contract</h2>
+<h3>Prior art and novelty</h3>
+<p>The research supports a <strong>composition/integration claim</strong>, not a “nothing like this existed before” claim.</p>
+<p>Database provenance established long ago that the derivation and origin of an answer can be modelled separately from the answer itself; W3C PROV subsequently standardised a general model of entities, activities, agents and provenance relationships. Nanopublication and Trusty URI work add small attributable assertions and content-verifiable linked artefacts. RO-Crate packages aggregated research objects and metadata; the current RO-Crate recommendation is <strong>1.3, published 22 June 2026</strong>, so the brief's 1.2 reference should be retained as historical input rather than silently treated as current. [S36]</p>
+<p>RAG research supplies another part of the picture: GraphRAG performs graph-plus-text context construction; “Sufficient Context” separates retrieval/context insufficiency from a model's failure to use adequate context; AIS and ALCE study attribution/citation quality; “Lost in the Middle” demonstrates that supplying relevant material does not guarantee effective use; and RECOMP experiments with selective and compressed contexts. These address neighbouring problems, but do not collectively amount to the proposed deterministic, provenance-bound BEP contract. [S24, S19, S20, S21, S25, S26]</p>
+<p>Proof-carrying code is also a useful negative comparison: it demonstrates what “proof-carrying” genuinely means—a consumer checks a formal safety proof against a policy. A BEP traversal path explaining why evidence was selected is <strong>not</strong> thereby a logical proof of a legal, factual or statistical conclusion. [S37]</p>
+<p>A reconstructed prior-art matrix derived from this analysis is:</p>
+<p><strong><a href="prior_art_matrix.csv">Download <code>prior_art_matrix.csv</code></a></strong></p>
+<p>The resulting novelty position is:</p>
+<blockquote>
+<p>A BEP is not novel because it contains evidence, provenance, hashes, graphs or bounded context. The research proposition is the integration of those techniques into a request-bound, deterministic, omission-aware evidence contract that can be inspected by humans and delivered unchanged to heterogeneous AI consumers.</p>
+</blockquote>
+<p>That proposition remains to be experimentally validated.</p>
+<h3>Proposed definition — retained research proposal</h3>
+<p>The proposed definition is:</p>
+<blockquote>
+<p><strong>A bounded evidence package is a version-bound, access-bound and resource-bounded machine-readable artefact for an explicitly represented request. It preserves selected evidence, its source/provenance/authority metadata, declared dependencies and qualifications, and explicit ambiguity, conflict and omission states. Its immutable core can be deterministically rebuilt from identified inputs. It is not itself a model answer, an exhaustive archive or a formal proof.</strong></p>
+</blockquote>
+<p>“Bounded” must cover more than byte size:</p>
+<table>
+<thead>
+<tr>
+<th>Boundary</th>
+<th>Required meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Task and scope</td>
+<td>What request, domain, jurisdiction and represented interpretation the package addresses</td>
+</tr>
+<tr>
+<td>Authority</td>
+<td>Which classes of source are admissible and how their authority is represented</td>
+</tr>
+<tr>
+<td>Time</td>
+<td>Source publication/release, capture date, effective/as-of date and bundle snapshot</td>
+</tr>
+<tr>
+<td>Access</td>
+<td>The caller's permitted evidence view, without leaking restricted records</td>
+</tr>
+<tr>
+<td>Payload</td>
+<td>Bytes, records, relationships and consumer projection</td>
+</tr>
+<tr>
+<td>Computational work</td>
+<td>Deterministic traversal/selection limits, separately from infrastructure timeout</td>
+</tr>
+</tbody>
+</table>
+<h3>Deterministic request boundary</h3>
+<p>End-to-end voice interaction need not be deterministic. Speech recognition, conversational reference resolution and an LLM-generated plan may vary.</p>
+<p>The defensible boundary is:</p>
+<pre><code class="language-text">spoken utterance
+    ↓  potentially non-deterministic
+accepted transcript / request interpretation
+    ↓
+explicit immutable compiler input
+    ↓  deterministic boundary begins
+resolve → traverse → requirements → select → package
+</code></pre>
+<p>The accepted request should therefore capture, where relevant, concepts, negation, temporal scope, jurisdiction, unresolved ambiguity and preceding conversational context.</p>
+<h3>Coverage rather than an unqualified “sufficient”</h3>
+<p>Three distinct claims need separate fields:</p>
+<table>
+<thead>
+<tr>
+<th>Claim</th>
+<th>Question it answers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Schema/integrity validity</td>
+<td>Is the object well formed and are its content/hash bindings intact?</td>
+</tr>
+<tr>
+<td>Declared-requirement coverage</td>
+<td>Are the applicable producer-authored support and qualification requirements represented?</td>
+</tr>
+<tr>
+<td>Evidential status</td>
+<td>Given those declared requirements and scope, is evidence sufficient, insufficient, conflicting or unknown?</td>
+</tr>
+</tbody>
+</table>
+<p>The pinned implementation's semantics already limit sufficiency to declared producer requirements. The proposed projection makes that explicit as:</p>
+<pre><code class="language-json">{
+  &quot;coverage&quot;: {
+    &quot;schema_valid&quot;: true,
+    &quot;integrity_valid&quot;: &quot;valid&quot;,
+    &quot;declared_requirements&quot;: &quot;complete&quot;,
+    &quot;evidential_status&quot;: &quot;sufficient-within-declared-scope&quot;
+  }
+}
+</code></pre>
+<p>That does <strong>not</strong> assert that all facts or exceptions in the world have been modelled.</p>
+<p>Producer requirements themselves need provenance and review status. They should permit AND/OR structures because valid evidence can involve either alternative support sets or mandatory combinations such as:</p>
+<pre><code class="language-text">rule
+AND condition
+AND qualification
+AND applicable exception
+</code></pre>
+<p>Omission also requires types rather than one undifferentiated “missing” state:</p>
+<pre><code class="language-text">absent_source
+not_modelled
+ambiguous
+unsupported
+out_of_scope
+budget_omitted
+inaccessible
+operational_failure
+</code></pre>
+<p>An access-controlled system must be able to report “not available in this access view” without revealing a restricted record's identity or even existence where policy forbids that disclosure.</p>
+<h3>Identity and canonicalisation</h3>
+<p>Four different guarantees should be named:</p>
+<p><strong>semantic reproducibility</strong> → same represented meaning and coverage;</p>
+<p><strong>selection reproducibility</strong> → same selected evidence and relations;</p>
+<p><strong>byte reproducibility</strong> → same canonical immutable bytes and hash;</p>
+<p><strong>replay reproducibility</strong> → ability to rerun execution, although timing/telemetry can change.</p>
+<p>A request/cache key and package content hash serve different purposes and should remain separate.</p>
+<p>For canonical JSON, RFC 8785 JCS is a reasonable candidate profile because it defines invariant serialization using the I-JSON subset and deterministic property sorting. It prohibits duplicate member names and requires Unicode strings to be preserved as supplied rather than Unicode-normalised during canonicalisation. [S38, S39]</p>
+<p>The proposed content-hash preimage is domain-separated:</p>
+<pre><code class="language-text">UTF8(&quot;BEP\0core\0v0.1\0&quot;)
+    ||
+JCS(immutable_core_without_package_id_or_execution_receipt)
+</code></pre>
+<p>followed by SHA-256.</p>
+<p>This avoids self-referential hashing and prevents a hash used for another object type/version from silently becoming a BEP identity.</p>
+<p>The pinned Ask OKF engine's custom <code>canonicalJson()</code> recursively sorts object keys and uses JavaScript serialization. That is an <strong>inspected implementation fact</strong>, but the research did not find evidence that the function has passed the RFC 8785 conformance corpus. It therefore should not be labelled “JCS” without further tests.</p>
+<p>JSON canonicalisation and RDF canonicalisation are separate matters. W3C's RDFC-1.0 is a 2024 Recommendation for canonicalising RDF datasets and warns explicitly that adversarial graph structures can make canonicalisation computationally expensive, so implementations need resource-exhaustion defences. [S40] A JSON-LD/RDF projection should consequently have its own profile and identifier rather than sharing the JSON core's byte identity.</p>
+<p>The following are newly reconstructed replacements, not recovered original artefacts:</p>
+<p><strong><a href="bep-core-v0.1-reconstructed.schema.json">Download the proposed BEP JSON Schema</a></strong><br />
+<strong><a href="examples/valid-minimal.json">Download the valid minimal example</a></strong><br />
+<strong><a href="examples/valid-numeric-observation.json">Download the valid numeric-observation example</a></strong><br />
+<strong><a href="examples/invalid-missing-provenance.json">Download the deliberately invalid example</a></strong><br />
+<strong><a href="canonicalisation-vectors.json">Download the canonicalisation test vectors</a></strong></p>
+<p>The schema is explicitly labelled <strong><code>bep-core.v0.1-reconstructed.1</code></strong>. It is research output, not a published standard.</p>
+<h3>Heterogeneous evidence</h3>
+<p>BEP evidence should not assume that every source is prose.</p>
+<p>A statistical observation needs at least its value, unit, denominator where applicable, dimensions, source release and any transformation formula. A legal or guidance passage needs exact authority, locator, scope and effective/version information. An API-capability record needs protocol/schema version, relevant access assumptions and observation time. A model-generated summary remains a <strong>derived artefact</strong> and must not silently inherit the source's “official” assertion status.</p>
+<p>This is particularly relevant to MCP. The July 2026 MCP revision expanded tool schemas to full JSON Schema 2020-12 and widened structured tool results, strengthening the case for a genuine machine-readable BEP rather than a large Markdown string. [S41, S42] A transport envelope, however, is not evidence that the downstream model actually read or understood every supplied field.</p>
+<h2>Reproducible experiment, evaluation and threat model</h2>
+<h3>Safe rerun without touching production</h3>
+<p>The reconstructed execution procedure is in <a href="EXECUTION.md">EXECUTION.md</a>. Local schema,
+semantic-integrity and canonicalisation tests are distinct from tests of the real Ask OKF
+engine. Docker, production deployment, model consumption and voice interoperability have
+not been executed in this reconstruction. The earlier Docker fragment is not retained as
+an allegedly tested implementation.</p>
+<h3>Independent evaluation</h3>
+<p>The reconstructed specification and synthetic starter corpus are:</p>
+<p><strong><a href="evaluation_spec.json">Download <code>evaluation_spec.json</code></a></strong><br />
+<strong><a href="sample_corpus.jsonl">Download <code>sample_corpus.jsonl</code></a></strong></p>
+<p>The benchmark deliberately does <strong>not</strong> use the compiler's own producer requirements as its sole answer key. Gold cases independently describe acceptable evidence sets, required qualifications, forbidden conclusions, source/version constraints and unanswerable cases.</p>
+<p>The controlled system comparison is:</p>
+<table>
+<thead>
+<tr>
+<th>System</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lexical top-k</td>
+<td>Basic relevance baseline</td>
+</tr>
+<tr>
+<td>Graph + text, no declared closure</td>
+<td>Separates graph retrieval from requirement closure</td>
+</tr>
+<tr>
+<td>Pinned Ask OKF</td>
+<td>Existing implementation baseline</td>
+</tr>
+<tr>
+<td>Dependency-aware greedy packing</td>
+<td>Main selection hypothesis</td>
+</tr>
+<tr>
+<td>Exact optimisation on small cases</td>
+<td>Selection-quality oracle rather than production design</td>
+</tr>
+</tbody>
+</table>
+<p>The corpus then varies four diagnostic conditions:</p>
+<pre><code class="language-text">ordinary request + ordinary evidence
+oracle request interpretation
+oracle evidence
+oracle request + oracle evidence
+</code></pre>
+<p>This localises whether a failure occurred in interpretation, retrieval/traversal, assembly or downstream reasoning.</p>
+<p>Primary metrics include critical-evidence recall, exception recall, unsupported-sufficiency rate, false abstention, conflict handling, citation correctness/completeness, unsupported claims, temporal/scope conflation, exact canonical replay, complete wire bytes, named-tokeniser counts and per-stage latency.</p>
+<p>An always-abstaining system must not “win” merely because it makes no unsupported assertions: report both correctness <strong>and coverage</strong>, or a predeclared utility measure. Sufficient-context research supports separating context adequacy from model-use failure, while attribution work likewise shows that answer correctness and source support are different dimensions. [S19, S20, S21]</p>
+<p>For voice, the primary BEP comparison starts from an accepted transcript. ASR errors are a separate condition. The crucial voice metrics are whether mandatory qualifications and unresolved uncertainty survive into spoken output—not simply whether the response is shorter. Position-sensitive long-context behaviour is itself a reason to test exact consumer projections rather than assume that putting more evidence into the context always helps. [S25]</p>
+<h3>Threat model</h3>
+<p><strong><a href="threat_model.csv">Download <code>threat_model.csv</code></a></strong></p>
+<p>The highest-priority threats are:</p>
+<table>
+<thead>
+<tr>
+<th>Threat</th>
+<th>Principal control</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Prompt injection embedded in evidence</td>
+<td>Evidence remains inert/untrusted data; no source instructions executed</td>
+</tr>
+<tr>
+<td>Forged authority</td>
+<td>Authority registry/binding plus provenance; never trust a textual label alone</td>
+</tr>
+<tr>
+<td>Stale or revoked source</td>
+<td>Explicit source/effective/capture dates and version constraints</td>
+</tr>
+<tr>
+<td>Restricted-evidence leakage</td>
+<td>Access-view-bound packages and non-disclosing diagnostics</td>
+</tr>
+<tr>
+<td>Cache/access confusion</td>
+<td>Cache key includes access view, policy, time, request and source/index versions</td>
+</tr>
+<tr>
+<td>Canonicalisation ambiguity</td>
+<td>Versioned canonicalisation profile and conformance vectors</td>
+</tr>
+<tr>
+<td>Mutable JSON-LD context</td>
+<td>Pin context content/version; no unrestricted run-time dereference</td>
+</tr>
+<tr>
+<td>Graph/canonicalisation denial of service</td>
+<td>Deterministic work bounds and abort semantics; RDFC-1.0 itself warns about adversarial datasets [S40]</td>
+</tr>
+<tr>
+<td>Omission laundering</td>
+<td>Distinguish missing source, not modelled, inaccessible and budget omitted</td>
+</tr>
+<tr>
+<td>Runtime citation-token leakage</td>
+<td>Stable source references plus post-conversion scanner and release gate</td>
+</tr>
+<tr>
+<td>MCP structured/text drift</td>
+<td>Derive duplicate projections from one canonical source</td>
+</tr>
+<tr>
+<td>Model summary inheriting official authority</td>
+<td>Keep summaries explicitly derived/model-generated</td>
+</tr>
+</tbody>
+</table>
+<h3>Hypothesis ledger</h3>
+<p><strong><a href="hypothesis_ledger.csv">Download <code>hypothesis_ledger.csv</code></a></strong></p>
+<p>The highest-priority falsifiable hypothesis remains:</p>
+<blockquote>
+<p>At equal payload budget, dependency-aware selection of atomic evidence groups will reduce critical-evidence/exception omission and unsupported “sufficient” outcomes relative to relevance-only top-k retrieval.</p>
+</blockquote>
+<p>It is falsified if held-out evaluation shows no material and statistically credible improvement under controlled payload and consumer conditions.</p>
+<p>The next most important hypothesis for your intended voice use is that <strong>qualification retention predicts useful/safe spoken answers better than byte reduction alone</strong>. That, too, is empirical rather than an architectural assumption.</p>
+<h2>Source register</h2>
+<p>The full status of each source is recorded in <a href="sources-expanded.json">sources-expanded.json</a>.</p>
+<p><strong>S01.</strong> <a href="https://github.com/chris-page-gov/okf-explorer/blob/905e680f6d3ad385de9b8effc351566eba0ab2b3/docs/adr-ask-okf-context-assembly.md">Ask OKF architecture decision</a> — recovered seed not rechecked in reconstruction.</p>
+<p><strong>S02.</strong> <a href="https://github.com/chris-page-gov/okf-explorer/blob/905e680f6d3ad385de9b8effc351566eba0ab2b3/apps/okf-explorer/src/lib/context/types.ts">Ask OKF context types</a> — recovered seed not rechecked in reconstruction.</p>
+<p><strong>S03.</strong> <a href="https://github.com/chris-page-gov/okf-explorer/blob/905e680f6d3ad385de9b8effc351566eba0ab2b3/apps/okf-explorer/src/lib/context/index.ts">Ask OKF context engine</a> — recovered seed not rechecked in reconstruction.</p>
+<p><strong>S04.</strong> <a href="https://github.com/chris-page-gov/okf-explorer/blob/905e680f6d3ad385de9b8effc351566eba0ab2b3/docs/ask-okf-ui-verification.md">Ask OKF interface and page-tool verification</a> — recovered seed not rechecked in reconstruction.</p>
+<p><strong>S05.</strong> <a href="https://github.com/chris-page-gov/okf-explorer/blob/905e680f6d3ad385de9b8effc351566eba0ab2b3/docs/ask-okf-gap-analysis-2026-09-16.md">Ask OKF pre-implementation gap analysis</a> — recovered seed not rechecked in reconstruction.</p>
+<p><strong>S06.</strong> <a href="https://www.developing.dev/p/turing-award-winner-postgres-disagreeing">Mike Stonebraker interview — publisher transcript</a> — recovered seed not rechecked in reconstruction.</p>
+<p><strong>S07.</strong> <a href="https://dbos-project.github.io/">DBOS academic project</a> — recovered seed not rechecked in reconstruction.</p>
+<p><strong>S08.</strong> <a href="https://docs.dbos.dev/architecture">DBOS architecture</a> — recovered seed not rechecked in reconstruction.</p>
+<p><strong>S09.</strong> <a href="https://docs.dbos.dev/python/tutorials/step-tutorial">DBOS steps</a> — recovered seed not rechecked in reconstruction.</p>
+<p><strong>S10.</strong> <a href="https://docs.dbos.dev/python/tutorials/transaction-tutorial">DBOS datasource transactions</a> — recovered seed not rechecked in reconstruction.</p>
+<p><strong>S11.</strong> <a href="https://www.dbos.dev/blog/benchmarking-workflow-execution-scalability-on-postgres">Benchmarking How Workflow Execution Scales on Postgres</a> — recovered seed not rechecked in reconstruction.</p>
+<p><strong>S12.</strong> <a href="https://www.vldb.org/cidrdb/papers/2026/p9-stonebraker.pdf">Consistency and Correctness in Data-Oriented Workflow Systems</a> — recovered seed not rechecked in reconstruction.</p>
+<p><strong>S13.</strong> <a href="https://vldb.org/cidrdb/papers/2025/p17-zhou.pdf">OLTP Through the Looking Glass 16 Years Later: Communication is the New Bottleneck</a> — recovered seed not rechecked in reconstruction.</p>
+<p><strong>S14.</strong> <a href="https://nanopub.net/">Nanopublications</a> — recovered seed not rechecked in reconstruction.</p>
+<p><strong>S15.</strong> <a href="https://www.w3.org/TR/prov-dm/">PROV-DM: The PROV Data Model</a> — recovered seed not rechecked in reconstruction.</p>
+<p><strong>S16.</strong> <a href="https://arxiv.org/abs/1401.5775">Trusty URIs: Verifiable, Immutable, and Permanent Digital Artifacts for Linked Data</a> — recovered seed not rechecked in reconstruction.</p>
+<p><strong>S17.</strong> <a href="https://www.researchobject.org/ro-crate/specification/1.2/">RO-Crate 1.2</a> — recovered seed not rechecked in reconstruction.</p>
+<p><strong>S18.</strong> <a href="https://provsql.org/">ProvSQL</a> — recovered seed not rechecked in reconstruction.</p>
+<p><strong>S19.</strong> <a href="https://arxiv.org/abs/2411.06037">Sufficient Context: A New Lens on Retrieval Augmented Generation Systems</a> — recovered seed not rechecked in reconstruction.</p>
+<p><strong>S20.</strong> <a href="https://arxiv.org/abs/2112.12870">Measuring Attribution in Natural Language Generation Models</a> — recovered seed not rechecked in reconstruction.</p>
+<p><strong>S21.</strong> <a href="https://arxiv.org/abs/2305.14627">Enabling Large Language Models to Generate Text with Citations</a> — recovered seed not rechecked in reconstruction.</p>
+<p><strong>S22.</strong> <a href="https://help.openai.com/en/articles/20001274">ChatGPT Voice</a> — recovered seed not rechecked in reconstruction.</p>
+<p><strong>S23.</strong> <a href="https://help.openai.com/en/articles/11487775-connectors-in-chatgpt">Connected apps in ChatGPT</a> — recovered seed not rechecked in reconstruction.</p>
+<p><strong>S24.</strong> <a href="https://microsoft.github.io/graphrag/query/local_search/">GraphRAG local search</a> — recovered seed not rechecked in reconstruction.</p>
+<p><strong>S25.</strong> <a href="https://arxiv.org/abs/2307.03172">Lost in the Middle: How Language Models Use Long Contexts</a> — recovered seed not rechecked in reconstruction.</p>
+<p><strong>S26.</strong> <a href="https://arxiv.org/abs/2310.04408">RECOMP: Improving Retrieval-Augmented LMs with Compression and Selective Augmentation</a> — recovered seed not rechecked in reconstruction.</p>
+<p><strong>S27.</strong> <a href="https://blogs.oracle.com/cloud-infrastructure/oke-incident-postmortem-autopilot-openclaw-genai">From OKE Alerts to RCA Drafts: Building a Guardrailed OpenClaw Incident Assistant on OCI</a> — recovered seed not rechecked in reconstruction.</p>
+<p><strong>S28.</strong> <a href="https://www.rfc-editor.org/rfc/rfc8785">RFC 8785: JSON Canonicalization Scheme</a> — primary page read during reconstruction.</p>
+<p><strong>S29.</strong> <a href="https://modelcontextprotocol.io/specification/2026-07-28/server/tools">MCP Tools specification, 2026-07-28</a> — recovered seed not rechecked in reconstruction.</p>
+<p><strong>S30.</strong> <a href="https://www.postgresql.org/docs/current/queries-order.html">PostgreSQL: Sorting Rows</a> — recovered seed not rechecked in reconstruction.</p>
+<p><strong>S31.</strong> <a href="https://www.postgresql.org/docs/current/transaction-iso.html">PostgreSQL: Transaction Isolation</a> — recovered seed not rechecked in reconstruction.</p>
+<p><strong>S32.</strong> <a href="https://www.postgresql.org/docs/current/rules-materializedviews.html">PostgreSQL: Materialized Views</a> — recovered seed not rechecked in reconstruction.</p>
+<p><strong>S33.</strong> <a href="https://www.sqlite.org/whentouse.html">Appropriate Uses For SQLite</a> — recovered seed not rechecked in reconstruction.</p>
+<p><strong>S34.</strong> <a href="https://github.com/dbos-inc/dbos-transact-ts">DBOS TypeScript library</a> — recovered seed not rechecked in reconstruction.</p>
+<p><strong>S35.</strong> <a href="https://help.openai.com/fil-ph/articles/10500283-deep-research">Malalimang pananaliksik sa ChatGPT | OpenAI Help Center</a> — recovered reference not rechecked.</p>
+<p><strong>S36.</strong> <a href="https://www.researchobject.org/ro-crate/specification/1.3/index.html">RO-Crate 1.3 | Research Object Crate (RO-Crate)</a> — primary page read during reconstruction.</p>
+<p><strong>S37.</strong> <a href="https://doi.org/10.1145/263699.263712">https://doi.org/10.1145/263699.263712</a> — recovered reference not rechecked.</p>
+<p><strong>S38.</strong> <a href="https://www.rfc-editor.org/info/rfc8785/">RFC 8785: JSON Canonicalization Scheme (JCS) | RFC Editor</a> — recovered reference not rechecked.</p>
+<p><strong>S39.</strong> <a href="https://www.rfc-editor.org/rfc/rfc8785.html">RFC 8785: JSON Canonicalization Scheme (JCS)</a> — recovered reference not rechecked.</p>
+<p><strong>S40.</strong> <a href="https://www.w3.org/TR/rdf-canon/">RDF Dataset Canonicalization</a> — recovered reference not rechecked.</p>
+<p><strong>S41.</strong> <a href="https://blog.modelcontextprotocol.io/posts/2026-07-28-release-candidate/">The 2026-07-28 MCP Specification Release Candidate | Model Context Protocol Blog</a> — recovered reference not rechecked.</p>
+<p><strong>S42.</strong> <a href="https://blog.modelcontextprotocol.io/posts/2026-07-28/">The 2026-07-28 Specification | Model Context Protocol Blog</a> — recovered reference not rechecked.</p>
+<p><strong>S43.</strong> <a href="https://json-schema.org/draft/2020-12">JSON Schema Draft 2020-12</a> — primary page read during reconstruction.</p>
+</body></html>
