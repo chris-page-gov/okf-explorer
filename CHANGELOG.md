@@ -1,5 +1,17 @@
 # Changelog
 
+## Occurrence-scoped reading help — 26 September 2026
+
+- Add a generic `/reading-help/` view for a separately governed manifest. It
+  verifies frozen page JSON and exact source, occurrence and support spans,
+  keeps cross-page text in labelled sections, and opens project-authored help
+  only at declared occurrences.
+- Distinguish abbreviations from adjoining source markers, retain unresolved
+  references and support local passage navigation. Keep byte identities and
+  limitations available in folded details. Add links from the Evidence
+  workbench and passage-review pages.
+
+
 ## Passage-boundary Evidence workbench — 25 September 2026
 
 - Add the generic `/evidence/passages/` review route and versioned, closed

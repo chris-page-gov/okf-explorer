@@ -19,6 +19,7 @@ workers as well as contributors.
 - [Inspect a retained evidence example](retained-evidence-demo.md): a seven-step demonstration of a fixed package, its source links and its limits.
 - [AI Infrastructure walkthrough](ai-infrastructure-knowledge-graph-walkthrough.md): one concept across Markdown and Explorer.
 - [Beginner reference](beginners/index.md): explanations when you need them, without required sequential reading.
+- [Reading help for source passages](reading-help.md): check exact source wording and open help at declared occurrences.
 - [Optional project studio](project-studio/index.md): research and create a larger bundle; app creation is optional.
 - [Map manual](geospatial-map-manual.md) and [legislation guide](uk-legislation/index.md): specialist journeys and their limits.
 

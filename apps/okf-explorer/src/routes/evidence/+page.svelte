@@ -374,7 +374,7 @@
 <a class="skip-link" href="#evidence-main">Skip to evidence</a>
 <div class="workbench">
   <header class="masthead">
-    <div><a href="../explore/">← Explorer</a><h1>Evidence workbench</h1><p>Trace a staff question back to source pages, passages and declared evidence needs.</p><p><a href="./passages/">Review passage boundaries →</a></p></div>
+    <div><a href="../explore/">← Explorer</a><h1>Evidence workbench</h1><p>Trace a staff question back to source pages, passages and declared evidence needs.</p><p><a href="./passages/">Review passage boundaries →</a> · <a href="../reading-help/">Open reading help →</a></p></div>
     <form onsubmit={(event) => { event.preventDefault(); void openManifest(input); }}>
       <label for="manifest-url">Review manifest URL</label>
       <div><input id="manifest-url" type="url" bind:value={input} oninput={() => stateRevision++} required /><button type="submit">Load</button></div>

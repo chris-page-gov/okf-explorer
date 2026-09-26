@@ -127,7 +127,7 @@
 
 <svelte:head><title>Passage boundaries | Evidence workbench</title><meta name="description" content="Inspect source-bound passage proposals and export local review records." /></svelte:head>
 <div class="shell">
-  <header><p><a href="../">← Evidence workbench</a></p><h1>Passage boundaries</h1><p>Inspect exact extracted source bytes and proposed structure. This is an experimental review view; preview does not adopt a change.</p></header>
+  <header><p><a href="../">← Evidence workbench</a> · <a href="../../reading-help/">Reading help</a></p><h1>Passage boundaries</h1><p>Inspect exact extracted source bytes and proposed structure. This is an experimental review view; preview does not adopt a change.</p></header>
   <form class="loader" onsubmit={(event) => { event.preventDefault(); void open(input); }}>
     <label for="manifest">Passage review manifest URL</label><input id="manifest" type="url" bind:value={input} placeholder="https://…/manifest.json" required /><button type="submit">Load</button>
   </form>
