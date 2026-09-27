@@ -492,13 +492,13 @@
                   {#if selected.record.evidence_unit}
                     <dl class="facts"><dt>Unit kind</dt><dd>{selected.record.evidence_unit.kind}</dd><dt>Boundary</dt><dd>{selected.record.evidence_unit.boundary_status}</dd><dt>Completeness</dt><dd>{selected.record.evidence_unit.completeness}</dd><dt>Offset unit</dt><dd>{selected.record.evidence_unit.offset_unit}</dd></dl>
                     <h5>Ordered source spans</h5>
-                    <ol>{#each selected.record.evidence_unit.spans as span}<li><strong>{span.locator}</strong> · source text bytes {span.source_start}–{span.source_end}; passage bytes {span.unit_start}–{span.unit_end}.<br />Extraction SHA-256: <code>{span.extraction_sha256}</code>{#if isHttpUrl(span.extraction_url)} · <a href={span.extraction_url} target="_blank" rel="noopener noreferrer">Open extraction file ↗</a>{/if}{#if unitSpanText(selected.record, span.unit_start, span.unit_end)}<pre>{unitSpanText(selected.record, span.unit_start, span.unit_end)}</pre>{:else}<p>Span text could not be displayed from the declared passage offsets.</p>{/if}</li>{/each}</ol>
+                    <ol>{#each selected.record.evidence_unit.spans as span}<li><strong>{span.locator}</strong> · source text bytes {span.source_start}–{span.source_end}; passage bytes {span.unit_start}–{span.unit_end}.<br />Extraction SHA-256: <code>{span.extraction_sha256}</code>{#if isHttpUrl(span.extraction_url)} · <a href={span.extraction_url} target="_blank" rel="noopener noreferrer">Open extraction file ↗</a>{/if}{#if unitSpanText(selected.record, span.unit_start, span.unit_end)}<!-- svelte-ignore a11y_no_noninteractive_tabindex --> <pre tabindex="0" aria-label={`Extracted source span at ${span.locator}`}>{unitSpanText(selected.record, span.unit_start, span.unit_end)}</pre>{:else}<p>Span text could not be displayed from the declared passage offsets.</p>{/if}</li>{/each}</ol>
                   {:else}<p>No logical passage boundary was supplied for this record.</p>{/if}
-                  <pre>{selected.record.text}</pre>
-                  <details><summary>Record machine data</summary><pre>{JSON.stringify(selected.record, null, 2)}</pre></details>
+                  <!-- svelte-ignore a11y_no_noninteractive_tabindex --> <pre tabindex="0" aria-label="Extracted record text">{selected.record.text}</pre>
+                  <details><summary>Record machine data</summary><!-- svelte-ignore a11y_no_noninteractive_tabindex --> <pre tabindex="0" aria-label="Record machine data">{JSON.stringify(selected.record, null, 2)}</pre></details>
                 {:else}<p>Select a record to inspect extracted text.</p>{/if}
               {:else if tab === 'passage'}
-                {#if selected}<h4>Complete logical passage</h4><p>{selected.record.evidence_unit ? `${selected.record.evidence_unit.kind}; ${selected.record.evidence_unit.completeness}.` : 'No declared logical passage boundary. This is record text only.'}</p><pre>{selected.record.text}</pre><p class="note">Read the full passage with its dependencies and the original source before drawing a conclusion.</p>{:else}<p>No passage was selected.</p>{/if}
+                {#if selected}<h4>Complete logical passage</h4><p>{selected.record.evidence_unit ? `${selected.record.evidence_unit.kind}; ${selected.record.evidence_unit.completeness}.` : 'No declared logical passage boundary. This is record text only.'}</p><!-- svelte-ignore a11y_no_noninteractive_tabindex --> <pre tabindex="0" aria-label="Complete logical passage text">{selected.record.text}</pre><p class="note">Read the full passage with its dependencies and the original source before drawing a conclusion.</p>{:else}<p>No passage was selected.</p>{/if}
               {:else if tab === 'ontology'}
                 <h4>Concepts and relationships</h4><p>These are declared or derived connections for navigation. Their status and authority do not inherit from a source mention.</p>
                 <h5>Concepts resolved for this question</h5><ul>{#each context.resolved_concepts as concept}<li><strong>{concept.label}</strong> — matched “{concept.matched.join(', ')}” by {concept.method}</li>{:else}<li>No concept was resolved.</li>{/each}</ul>
@@ -582,6 +582,7 @@
   .facts dt { font-weight: 700; }
   .facts dd { margin: 0; overflow-wrap: anywhere; }
   pre { background: #f2f5f7; border: 1px solid #d0dce4; padding: 1rem; white-space: pre-wrap; overflow-wrap: anywhere; max-height: 55dvh; overflow: auto; }
+  pre:focus-visible { outline: 3px solid #ffdd00; outline-offset: 2px; }
   code { overflow-wrap: anywhere; }
   iframe { width: 100%; height: 60dvh; border: 1px solid #a9bdce; }
   .note { padding: .65rem; background: #f0f5fa; border-left: 4px solid #075aa6; }

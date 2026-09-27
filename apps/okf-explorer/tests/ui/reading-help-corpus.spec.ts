@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
 // @ts-ignore -- Node-only browser fixture; no application dependency on Node types.
 import { createHash } from 'node:crypto';
 // @ts-ignore -- Node-only browser fixture.
@@ -54,7 +55,11 @@ test('opens a bound paragraph and restores occurrence focus from the keyboard', 
   const params = new URLSearchParams({ catalogue: catalogueUrl, catalogue_sha256: digest(source.catalogue), catalogue_bytes: String(source.catalogue.byteLength), family: 'dmg', document: 'dmg-ch60', unit: source.unitId });
   await page.goto(`/reading-help/corpus/?${params}`);
   await page.getByText('Machine-extraction gaps (1)').click();
-  await expect(page.getByRole('link', { name: 'Open source PDF at page 2' })).toHaveAttribute('href', 'https://reading-help-corpus.fixture.test/source.pdf#page=2');
+  const gapLink = page.getByRole('link', { name: 'Open source PDF at page 2' });
+  await expect(gapLink).toHaveAttribute('href', 'https://reading-help-corpus.fixture.test/source.pdf#page=2');
+  expect(await gapLink.evaluate(element => element.getBoundingClientRect().height)).toBeGreaterThanOrEqual(24);
+  const gapAxe = await new AxeBuilder({ page }).withTags(['wcag22aa']).analyze();
+  expect(gapAxe.violations.filter(violation => violation.id === 'target-size')).toEqual([]);
   await page.getByLabel('Exact abbreviation occurrence in this document').fill('CA');
   await expect(page.getByRole('button', { name: /60025 — Carer’s Allowance/ })).toBeVisible();
   const marker = page.locator('[data-occurrence-id="occ-ca"]');

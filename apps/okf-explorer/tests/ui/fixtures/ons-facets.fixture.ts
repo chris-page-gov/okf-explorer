@@ -546,6 +546,7 @@ export type OnsFacetFixtureOptions = {
   withoutSearch?: boolean;
   responseBytes?: number[];
   filterPaddingBytes?: number;
+  skewedCounts?: boolean;
 };
 
 async function json(route: Route, body: unknown, status = 200, responseBytes?: number[]) {
@@ -564,6 +565,12 @@ export async function installOnsFacetFixture(
   requestLog: string[] = [],
   options: OnsFacetFixtureOptions = {}
 ) {
+  const fixtureRecords = options.skewedCounts ? records.map((record, ordinal) => {
+    const populationType = populationTypes[ordinal < 411 ? 0 : ordinal - 410];
+    return { ...record, population_type: populationType, fixtureFacetValues: { ...record.fixtureFacetValues, population_type: populationType } };
+  }) : records;
+  const populationPostings = options.skewedCounts ? Object.fromEntries(populationTypes.slice(0, 10).map(value => [value, fixtureRecords.filter(record => record.population_type === value).map(record => record.ordinal)])) : facetPostings.population_type;
+  const fixtureFacetRows = options.skewedCounts ? { ...facetRows, population_type: Object.entries(populationPostings).map(([value, ordinals]) => ({ value, count: ordinals.length })).sort((left, right) => right.count - left.count || left.value.localeCompare(right.value)) } : facetRows;
   providerDatapackManifest.packs[0]!.sha256 = await compactJsonSha256(providerDatapack);
   descriptor.entrypoint_integrity.provider_datapacks.sha256 =
     await compactJsonSha256(providerDatapackManifest);
@@ -591,8 +598,8 @@ export async function installOnsFacetFixture(
     if (url.pathname === '/data/presentation.json') return respond(presentation);
     if (url.pathname === '/data/providers/manifest.json') return respond(providerDatapackManifest);
     if (url.pathname === '/data/providers/ons-explore-local-statistics.json') return respond(providerDatapack);
-    if (url.pathname === '/data/facets.json') return respond(facetRows);
-    if (url.pathname === '/data/datasets.json') return respond(records);
+    if (url.pathname === '/data/facets.json') return respond(fixtureFacetRows);
+    if (url.pathname === '/data/datasets.json') return respond(fixtureRecords);
     if (url.pathname === '/data/resources.json') return respond(resources);
     if (url.pathname === '/data/publishers.json') {
       return respond([{
@@ -605,14 +612,14 @@ export async function installOnsFacetFixture(
     }
     if (url.pathname === '/data/graph.json') return respond({});
     if (url.pathname === '/search/manifest.json') return respond(searchManifest);
-    if (url.pathname === '/search/result-docs.json') return respond(records.map(searchDocument));
+    if (url.pathname === '/search/result-docs.json') return respond(fixtureRecords.map(searchDocument));
     if (url.pathname === '/search/doc-map.json') return respond({});
     const filterKey = url.pathname.match(/^\/search\/filter-(.+)\.json$/)?.[1];
     if (filterKey && facetPostings[filterKey]) {
       return respond({
         schema: 'okf-static-filter-postings.v1',
         key: filterKey,
-        values: facetPostings[filterKey],
+        values: filterKey === 'population_type' ? populationPostings : facetPostings[filterKey],
         ...(options.filterPaddingBytes ? { padding: 'x'.repeat(options.filterPaddingBytes) } : {})
       });
     }

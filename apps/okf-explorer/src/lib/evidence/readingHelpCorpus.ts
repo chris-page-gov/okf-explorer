@@ -19,7 +19,7 @@ export type CorpusSpan = { page: number; start_utf8: number; end_utf8: number; l
 export type CorpusOccurrence = { id: string; passage_id: string; page: number; start_utf8: number; end_utf8: number; literal: string; literal_sha256: string; role: string; status: string };
 export type CorpusCard = { id: string; occurrence_id: string; kind: string; status: string; target?: { manual?: string; target_kind?: string; target_label?: string }; scope?: { source_table_document_ids?: string[]; target_document_id?: string }; source_table_rows?: Array<{ document_id: string; page: number; literal: string; expansion?: string; status: string; start_utf8: number; end_utf8: number; literal_sha256: string }> };
 export type CorpusSegment = { ordinal: number; start_utf8: number; end_utf8: number; text: string; sha256: string };
-export type CorpusReferenceRow = { occurrence_id: string; passage_id: string; marker: string; page: number; start_utf8: number; end_utf8: number; literal: string; literal_sha256: string; status: string; body_occurrence_ids: string[]; document_id?: string; leaf_url?: string; leaf_sha256?: string };
+export type CorpusReferenceRow = { occurrence_id: string; passage_id: string; marker: string; page: number; start_utf8: number; end_utf8: number; literal: string; literal_sha256: string; status: string; body_occurrence_ids: string[]; target?: CrossTarget };
 export type CorpusPassage = { id: string; unit_sha256: string; role: string; status: string; text_sha256: string; paragraph_labels: string[]; source_spans: CorpusSpan[]; segment: CorpusSegment; segment_count: number; passage_complete: boolean; occurrences: CorpusOccurrence[]; cards: CorpusCard[]; reference_list_segments: CorpusReferenceRow[] };
 export type LoadedCatalogue = { catalogue: Catalogue; url: URL; sha256: string; bytes: number };
 export type LoadedDocument = { index: DocumentIndex; document: CorpusDocument; catalogue: LoadedCatalogue; url: URL };
@@ -27,6 +27,11 @@ export type LoadedPassage = { document: LoadedDocument; id: string; text: string
 export type LoadMetrics = { fetched_bytes: number; fetched_files: number; cache_hits: number };
 export type CorpusPart = { text: string; occurrence?: CorpusOccurrence };
 export type CrossTarget = { document_id: string; passage_id: string; occurrence_id: string; leaf_url: string; leaf_sha256: string };
+
+function validCrossTarget(value: unknown, catalogueUrl: URL): value is CrossTarget {
+  if (!object(value) || !string(value.document_id, 160) || !string(value.passage_id, 1000) || !string(value.occurrence_id, 160) || !string(value.leaf_url, 1000) || !digest(value.leaf_sha256)) return false;
+  try { corpusUrl(value.leaf_url, catalogueUrl); return true; } catch { return false; }
+}
 
 const object = (value: unknown): value is Record<string, unknown> => !!value && typeof value === 'object' && !Array.isArray(value);
 const string = (value: unknown, max = 2000): value is string => typeof value === 'string' && value.length > 0 && value.length <= max;
@@ -204,7 +209,7 @@ export async function loadCorpusPassage(document: LoadedDocument, unitId: string
       cards.push(card);
     }
     for (const reference of row.reference_list_segments) {
-      assert(object(reference) && string(reference.occurrence_id, 160) && reference.passage_id === unitId && string(reference.marker, 100) && natural(reference.page) && pages.has(reference.page) && string(reference.literal, 1000) && digest(reference.literal_sha256) && string(reference.status, 100) && Array.isArray(reference.body_occurrence_ids) && reference.body_occurrence_ids.length <= 100 && reference.body_occurrence_ids.every(id => string(id, 160)) && sourceSpans.some(span => span.page === reference.page && reference.start_utf8 >= span.start_utf8 && reference.end_utf8 <= span.end_utf8), 'Printed reference row is outside its selected source span.');
+      assert(object(reference) && string(reference.occurrence_id, 160) && reference.passage_id === unitId && string(reference.marker, 100) && natural(reference.page) && pages.has(reference.page) && string(reference.literal, 1000) && digest(reference.literal_sha256) && string(reference.status, 100) && Array.isArray(reference.body_occurrence_ids) && reference.body_occurrence_ids.length <= 100 && reference.body_occurrence_ids.every(id => string(id, 160)) && (reference.target === undefined || validCrossTarget(reference.target, document.catalogue.url)) && sourceSpans.some(span => span.page === reference.page && reference.start_utf8 >= span.start_utf8 && reference.end_utf8 <= span.end_utf8), 'Printed reference row is outside its selected source span or has an invalid target.');
       assert(sourceSlice(pages.get(reference.page)!, reference.start_utf8, reference.end_utf8) === reference.literal && await sha256Hex(encoder.encode(reference.literal)) === reference.literal_sha256, 'Printed reference row differs from the frozen page.');
     }
     text += row.segment.text;
@@ -237,17 +242,19 @@ export function corpusParts(loaded: LoadedPassage, span: CorpusSpan): CorpusPart
 export function crossTargets(passage: LoadedPassage): CrossTarget[] {
   const result: CrossTarget[] = [];
   for (const segment of passage.segments) for (const item of segment.reference_list_segments) {
-    if (object(item) && string(item.document_id, 160) && string(item.passage_id, 1000) && string(item.occurrence_id, 160) && string(item.leaf_url, 1000) && digest(item.leaf_sha256)) result.push(item as CrossTarget);
+    if (item.target) result.push(item.target);
   }
   return result;
 }
 
 export async function loadCrossTarget(catalogue: LoadedCatalogue, target: CrossTarget, signal?: AbortSignal): Promise<LoadedPassage> {
+  assert(validCrossTarget(target, catalogue.url), 'Cross-document target is invalid or unsafe.');
   const documents = catalogue.catalogue.documents.filter(item => item.document_id === target.document_id);
   assert(documents.length === 1, 'Cross-document target is ambiguous or unavailable.');
   const document = await loadDocument(catalogue, documents[0].family, target.document_id, signal);
-  assert(document.index.passages.some(row => row.unit_id === target.passage_id && row.leaf_url === target.leaf_url && row.leaf_sha256 === target.leaf_sha256), 'Cross-document target leaf does not match its index.');
+  const refs = document.index.passages.filter(row => row.unit_id === target.passage_id && row.leaf_url === target.leaf_url && row.leaf_sha256 === target.leaf_sha256);
+  assert(refs.length > 0, 'Cross-document target leaf does not match its index.');
   const passage = await loadCorpusPassage(document, target.passage_id, signal);
-  assert(passage.occurrences.some(row => row.id === target.occurrence_id), 'Cross-document target occurrence is unavailable.');
+  assert(passage.segments.some(row => refs.some(ref => ref.segment_ordinal === row.segment.ordinal) && row.occurrences.some(item => item.id === target.occurrence_id)), 'Cross-document target occurrence is unavailable in its bound leaf.');
   return passage;
 }

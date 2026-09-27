@@ -435,6 +435,7 @@ test('SMALL-E2E-11 pairs facets and details at medium width with compact control
 
 test('SMALL-E2E-12 toggles colour and row selections, keeps summaries folded and supports keyboard OR', async ({ page }) => {
   const type = page.locator('[data-facet-key="type"]');
+  await type.locator('.facet-quick-values summary').click();
   const dataset = type.locator('[data-facet-colour="Dataset"]');
   const report = type.locator('[data-facet-colour="Report"]');
   await dataset.click();
@@ -470,8 +471,10 @@ for (const initiallySelected of [false, true]) {
   test(`SMALL-E2E-13 keeps a ${initiallySelected ? 'selected' : 'clear'} colour without moving its target`, async ({ page }) => {
     await page.setViewportSize({ width: 724, height: 705 });
     await page.getByRole('button', { name: 'Search & details', exact: true }).click();
+    await page.locator('[data-facet-key="type"] .facet-quick-values summary').click();
     const colour = page.locator('[data-facet-key="type"] [data-facet-colour="Dataset"]');
     if (initiallySelected) await colour.click();
+    await colour.scrollIntoViewIfNeeded();
     const before = (await colour.boundingBox())!;
     await colour.dblclick();
     const state = JSON.parse(new URL(page.url()).searchParams.get('explore') || '{}');

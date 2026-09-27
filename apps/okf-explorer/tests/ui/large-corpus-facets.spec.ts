@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
 
 import {
   ELS_ALIGNED_RECORD_NAME,
@@ -203,6 +204,41 @@ async function installHugeNoPostingsFixture(page: Page, requestLog: string[]) {
 }
 
 test.describe('large-corpus facet interaction contract', () => {
+  for (const width of [1440, 800]) {
+    test(`FACET-E2E-TOUCH keeps skewed proportional bars and usable controls at ${width}px`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 1000 });
+      await openOnsFacetFixture(page, [], { skewedCounts: true });
+      if (width < 1100) await page.getByRole('navigation', { name: 'Workspace panels' }).getByRole('button', { name: 'Search & details' }).click();
+      const facet = facetSection(page, 'population_type');
+      await expect(facet).toBeVisible();
+      const visual = facet.locator('.proportional-bar .bar-segment');
+      await expect(visual).toHaveCount(10);
+      const widths = await visual.evaluateAll(elements => elements.map(element => element.getBoundingClientRect().width));
+      expect(widths[0] / widths.reduce((sum, value) => sum + value, 0)).toBeGreaterThan(0.95);
+      const summary = facet.locator('.facet-quick-values summary');
+      const summarySize = await summary.evaluate(element => ({ width: element.getBoundingClientRect().width, height: element.getBoundingClientRect().height }));
+      expect(summarySize.width).toBeGreaterThanOrEqual(24);
+      expect(summarySize.height).toBeGreaterThanOrEqual(24);
+      await summary.click();
+      const controls = facet.locator('.facet-quick-values .quick-value');
+      await expect(controls).toHaveCount(10);
+      const sizes = await controls.evaluateAll(elements => elements.map(element => {
+        const bounds = element.getBoundingClientRect();
+        return { width: bounds.width, height: bounds.height };
+      }));
+      expect(sizes.every(size => size.width >= 24 && size.height >= 24)).toBe(true);
+      expect(await facet.evaluate(element => element.scrollWidth - element.clientWidth)).toBeLessThanOrEqual(1);
+      const tiny = controls.filter({ has: page.getByText('10', { exact: true }) });
+      await tiny.focus();
+      await page.keyboard.press('Enter');
+      await expect(tiny).toHaveAttribute('aria-pressed', 'true');
+      await facetToggle(page, 'population_type').click();
+      await expect(facet.locator('.facet-values .facet-value')).toHaveCount(10);
+      const axe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze();
+      expect(axe.violations.filter(violation => violation.id === 'target-size').flatMap(violation => violation.nodes.map(node => node.target))).toEqual([]);
+    });
+  }
+
   test('FACET-E2E-01 retains provider inventory and bounded selectable facet summaries', async ({ page }) => {
     const requests: string[] = []; await openOnsFacetFixture(page, requests);
     await expect(page.getByText('ONS facet interaction fixture', { exact: true }).first()).toBeVisible();
@@ -1136,6 +1172,7 @@ test('FACET-E2E-19 opens with all facets folded despite saved or provider pins',
 
 test('FACET-E2E-20 toggles bounded indexed colours without opening the facet or loading records', async ({ page }) => {
   const requests: string[] = []; await openOnsFacetFixture(page, requests);
+  await facetSection(page, 'geography_level').locator('.facet-quick-values summary').click();
   const region = facetSection(page, 'geography_level').locator('[data-facet-colour="region"]');
   await region.click();
   await expect(region).toHaveAttribute('aria-pressed', 'true');
