@@ -22,9 +22,11 @@ their `index.html` is present in the inspected build snapshot. Unknown routes
 return 404, and a request containing path traversal fails the server gate.
 Failure evidence records the journey phase alongside the bounded error digest
 to locate a failed step without publishing unbounded browser diagnostics.
-Facet colour evidence counts visible `.bar-segment` buttons in their compact
-distribution bars and reads each button's computed background colour. The
-inventory, multicolour and layout thresholds remain release gates.
+Facet colour evidence counts visible proportional `.bar-segment` spans and
+reads each span's computed background colour. Those spans retain the source
+count proportions; the adjacent, full-size colour control lets a reader open
+keyboard-operable selection buttons. The inventory, multicolour and layout
+thresholds remain release gates.
 
 1. load the Whole-Law federation and confirm its 36 source classes;
 2. open the declared UK Legislation child and wait for static search to finish
