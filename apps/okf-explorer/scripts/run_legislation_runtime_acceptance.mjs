@@ -1564,9 +1564,9 @@ async function facetEvidence(page) {
   const available = Number(match[2].replaceAll(',', ''));
   const sections = page.locator('.facet-section:visible');
   const sectionCount = await sections.count();
-  const segmentCount = await page.locator('.facet-distribution-segment:visible').count();
-  const colours = await page.locator('.facet-distribution-segment:visible').evaluateAll((elements) =>
-    [...new Set(elements.map((element) => getComputedStyle(element, '::before').backgroundColor))]
+  const segmentCount = await page.locator('.facet-distribution .bar-segment:visible').count();
+  const colours = await page.locator('.facet-distribution .bar-segment:visible').evaluateAll((elements) =>
+    [...new Set(elements.map((element) => getComputedStyle(element).backgroundColor))]
   );
   const layout = await page.evaluate(() => {
     const workspace = document.querySelector('.workspace');

@@ -9,6 +9,8 @@
 - Show exact source PDF links for extraction-blocked pages and accept complete source-verified abbreviation tables within a tested 512-literal bound.
 - Bind declared sibling child descriptors to the fetched federation location, retaining local and pinned raw commits and stopping when a bound child is missing.
 - Serve nested application routes from their own inventoried files in the legislation runtime harness, reject unknown and traversal paths, and retain the failing journey phase in bounded diagnostics.
+- Match the legislation acceptance facet checks to the visible coloured bar buttons used by the current Reader, preserving the multicolour and layout thresholds.
+- Archive the preceding Heritage receipt and both browser results byte for byte, then refresh the current-build 100-question and three-journey browser evidence.
 
 ## Legislation passage Reader repair — 26 September 2026
 
