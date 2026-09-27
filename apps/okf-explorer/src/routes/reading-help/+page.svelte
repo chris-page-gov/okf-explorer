@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount, tick } from 'svelte';
+  import { replaceState } from '$app/navigation';
   import { loadReadingHelp, parts, type Loaded, type Occurrence, type Passage } from '$lib/evidence/readingHelp';
 
   let input = $state('');
@@ -24,13 +25,13 @@
       const wanted = new URLSearchParams(window.location.search).get('passage');
       selectedId = next.manifest.passages.find(row => row.id === wanted)?.id ?? next.manifest.passages[0].id;
       const params = new URLSearchParams({ manifest: next.url.href, passage: selectedId });
-      history.replaceState({}, '', `${window.location.pathname}?${params}`);
+      replaceState(`${window.location.pathname}?${params}`, {});
     } catch (cause) { if (controller === request && !request.signal.aborted) error = cause instanceof Error ? cause.message : String(cause); }
     finally { if (controller === request) loading = false; }
   }
   function selectPassage(row: Passage) {
     selectedId = row.id; selectedOccurrence = null;
-    if (loaded) history.replaceState({}, '', `${window.location.pathname}?${new URLSearchParams({ manifest: loaded.url.href, passage: row.id })}`);
+    if (loaded) replaceState(`${window.location.pathname}?${new URLSearchParams({ manifest: loaded.url.href, passage: row.id })}`, {});
   }
   function selectOccurrence(row: Occurrence, button: HTMLButtonElement) {
     selectedOccurrence = row; opener = button;
@@ -52,6 +53,18 @@
     heading?.focus({ preventScroll: true });
     heading?.scrollIntoView({ block: 'start' });
   }
+  async function goToOccurrence(id: string) {
+    const found = loaded?.manifest.occurrences.find(row => row.id === id);
+    const targetPassage = loaded?.manifest.passages.find(row => row.id === found?.passage_id);
+    if (!found || !targetPassage) return;
+    selectPassage(targetPassage);
+    await tick();
+    const button = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-occurrence-id]')).find(row => row.dataset.occurrenceId === id);
+    if (!button) return;
+    selectOccurrence(found, button);
+    button.focus({ preventScroll: true });
+    button.scrollIntoView({ block: 'center' });
+  }
   onMount(() => {
     const raw = new URLSearchParams(window.location.search).get('manifest');
     if (raw) void open(raw);
@@ -62,7 +75,7 @@
 <svelte:window onkeydown={(event) => { if (event.key === 'Escape' && selectedOccurrence) closeCard(); }} />
 <svelte:head><title>Reading help | OKF Explorer</title><meta name="description" content="Inspect exact source passages with occurrence-scoped reading help." /></svelte:head>
 <div class="shell">
-  <header><p><a href="../evidence/">← Evidence workbench</a></p><h1>Reading help</h1><p>Read the source wording, then select an underlined term or reference for help. This independent demonstration does not give official guidance or individual advice.</p></header>
+  <header><p><a href="../evidence/">← Evidence workbench</a> · <a href="corpus/">Browse a reading-help corpus</a></p><h1>Reading help</h1><p>Read the source wording, then select an underlined term or reference for help. This independent demonstration does not give official guidance or individual advice.</p></header>
   <form class="loader" onsubmit={(event) => { event.preventDefault(); void open(input); }}>
     <label for="manifest">Reading-help manifest URL</label><input id="manifest" type="url" bind:value={input} placeholder="https://…/reading-help-ch60.json" required /><button type="submit">Load</button>
   </form>
@@ -77,7 +90,7 @@
           <h2 id="passage-heading" tabindex="-1">{passage.label}</h2><p>This is the frozen machine extraction. Its wording and page boundaries are unchanged. Select an underlined occurrence to read help beside it.</p>
           <div class="reading-grid"><div class="source-column">{#each passage.spans as span}
             <section class="source-page" aria-label={`Source page ${span.page}`}><h3>Source PDF page {span.page}</h3><p><a href={sourceLink(passage.source_id, span.page)} target="_blank" rel="noopener noreferrer">Open the source PDF at page {span.page}</a></p>
-              <pre class="source-text">{#each parts(loaded, passage, span) as part}{#if part.occurrence && loaded.manifest.cards.some(card => card.occurrence_ids.includes(part.occurrence!.id))}<button type="button" class="term" aria-label={`${roleLabel(part.occurrence.role)}: ${part.text}. Read help`} aria-expanded={selectedOccurrence?.id === part.occurrence.id} aria-controls="reading-help-panel" onclick={(event) => selectOccurrence(part.occurrence!, event.currentTarget)}>{part.text}</button>{:else}{part.text}{/if}{/each}</pre>
+              <pre class="source-text">{#each parts(loaded, passage, span) as part}{#if part.occurrence && loaded.manifest.cards.some(card => card.occurrence_ids.includes(part.occurrence!.id))}<button type="button" class="term" data-occurrence-id={part.occurrence.id} aria-label={`${roleLabel(part.occurrence.role)}: ${part.text}. Read help`} aria-expanded={selectedOccurrence?.id === part.occurrence.id} aria-controls="reading-help-panel" onclick={(event) => selectOccurrence(part.occurrence!, event.currentTarget)}>{part.text}</button>{:else}{part.text}{/if}{/each}</pre>
               <details class="source-details"><summary>Source text identity</summary><p>Page {span.page}, UTF-8 bytes {span.page_start_utf8}–{span.page_end_utf8}; SHA-256 {span.literal_sha256}.</p></details>
             </section>
           {/each}</div>
@@ -86,6 +99,7 @@
               <p><strong>{selectedOccurrence.literal}</strong> · {roleLabel(selectedOccurrence.role)} · source PDF page {selectedOccurrence.page}</p>
               <button type="button" onclick={closeCard}>Close reading help</button>
               {#each cards as card}<article><p class="eyebrow">{kindLabel(card.kind)}</p><h4>{card.title}</h4><p>{card.body}</p><p class="small">Project reading help · {card.review_status}. The source quotations below are reproduced separately.</p>
+                {#if card.occurrence_ids.length > 1}<p>Other occurrences for this reference:</p><ul>{#each card.occurrence_ids.filter(id => id !== selectedOccurrence?.id) as relatedId}{@const related = loaded.manifest.occurrences.find(row => row.id === relatedId)}{#if related}<li><button type="button" onclick={() => goToOccurrence(related.id)}>{roleLabel(related.role)} on source PDF page {related.page}: {related.literal}</button></li>{/if}{/each}</ul>{/if}
                 {#if card.target.status === 'unresolved'}<p class="unresolved"><strong>Not established here:</strong> {card.target.label}. The cited destination text has not been checked here.</p>{:else if card.target.id}<p><button type="button" onclick={() => goToTarget(card.target.id!)}>Read {card.target.label}</button></p>{:else if card.target.url}<p><a href={card.target.url} target="_blank" rel="noopener noreferrer">{card.target.label}</a></p>{/if}
                 <details><summary>Show exact source support</summary><ul>{#each card.source_support as support}<li><a href={sourceLink(support.source_id, support.page)} target="_blank" rel="noopener noreferrer">{support.source_id}, PDF page {support.page}</a>: <q>{support.quote}</q></li>{/each}</ul><p class="small">Authority: {card.authority}. Proposal IDs: {card.proposal_ids.join(', ') || 'None'}.</p></details>
               </article>{/each}

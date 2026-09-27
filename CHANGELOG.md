@@ -1,5 +1,12 @@
 # Changelog
 
+## Reading-help corpus consumer — 27 September 2026
+
+- Add a catalogue-led reading-help view that selects one document and passage, verifies bound gzip leaves and ordered continuations against exact frozen page spans, and keeps candidate explanations separate from source wording.
+- Link related body and reference-row occurrences in the existing bounded reading aid only through their shared card occurrence IDs. Preserve its v1 manifest route and source checks.
+- Let readers find source-declared paragraph labels, topics and proposed abbreviations within the selected document; expose exact but unresolved printed reference rows, candidate citation labels and browser-session fetch/cache counts.
+- Add optional, byte-bound workbench case sidecars that link exact selected record IDs to corpus passages without fetching the corpus until the reader follows the link. Register Chrome, Firefox and WebKit coverage for the new routes and keep diverted CLML responses rejected across browsers.
+
 ## Legislation passage Reader repair — 26 September 2026
 
 - Register the focused CLML browser suite in the impacted browser test plan so Reader and source changes exercise it in CI.

@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { loadManifest, loadPackage, manifestUrl, packageUrl, parseManifest, parsePackage, reviewDownload, sourcePageUrl, unitSpanText } from './workbench';
+import { loadManifest, loadPackage, loadReadingHelpTargets, manifestUrl, packageUrl, parseManifest, parsePackage, reviewDownload, sourcePageUrl, unitSpanText } from './workbench';
 import { sha256Hex } from '$lib/sources/releaseDataPlane';
 
 const url = new URL('https://example.test/review/manifest.json');
@@ -31,6 +31,24 @@ describe('evidence workbench manifest', () => {
     for (const invalid of ['not an array', [''], [3], Array.from({ length: 31 }, () => 'gap'), ['x'.repeat(2001)]]) {
       expect(() => parseManifest({ ...manifest, questions: [{ ...reviewCase, scope_gaps: invalid }] }, url)).toThrow('scope_gaps');
     }
+  });
+
+  it('loads only a bound current-case reading-help target map with exact selected record IDs', async () => {
+    const sidecar = JSON.stringify({ schema: 'okf-reading-help-workbench-targets.v1', case_id: entry.id, targets: [{ record_id: 'record-1', family: 'dmg', document_id: 'dmg-ch60', unit_id: 'https://example.test/id/unit/1' }] });
+    const sidecarHash = await sha256Hex(sidecar);
+    const augmented = parseManifest({ ...manifest, reading_help: { catalogue: { url: 'https://example.test/reading-help-corpus/manifest.json', sha256: hash, bytes: 1000 }, targets_by_case: [{ case_id: entry.id, url: 'reading-help/question-01.json', sha256: sidecarHash, bytes: new TextEncoder().encode(sidecar).byteLength }] } }, url);
+    const targetUrl = packageUrl('reading-help/question-01.json', url);
+    const mocked = vi.spyOn(globalThis, 'fetch').mockImplementation(async requested => {
+      expect(String(requested)).toBe(targetUrl.href);
+      const response = new Response(sidecar);
+      Object.defineProperty(response, 'url', { value: targetUrl.href });
+      return response;
+    });
+    try {
+      expect(await loadReadingHelpTargets(augmented, entry.id, url, new Set(['record-1']))).toMatchObject([{ record_id: 'record-1', document_id: 'dmg-ch60' }]);
+      await expect(loadReadingHelpTargets(augmented, entry.id, url, new Set(['another-record']))).rejects.toThrow('selected record');
+    } finally { mocked.mockRestore(); }
+    expect(() => parseManifest({ ...manifest, reading_help: { ...augmented.reading_help, targets_by_case: [{ case_id: entry.id, url: '../escape.json', sha256: hash, bytes: 100 }] } }, url)).toThrow();
   });
 
   it('requires the selected question to match its package', () => {

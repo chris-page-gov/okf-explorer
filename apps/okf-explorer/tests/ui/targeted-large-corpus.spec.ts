@@ -1069,12 +1069,13 @@ test.describe('targeted large-corpus relationship hydration', () => {
     await expect(page.getByRole('button', { name: 'Show excerpt' })).toHaveAttribute('aria-expanded', 'true');
   });
 
-  test('legislation detail rejects a redirected CLML response', async ({ page }) => {
+  test('legislation detail rejects a diverted or unavailable CLML response', async ({ page, browserName }) => {
     const requests: string[] = [];
     await installTargetedFixture(page.context(), requests);
-    await page.context().route('https://www.legislation.gov.uk/ukpga/1998/42/data.xml', (route) => route.fulfill({
-      status: 302, headers: { location: 'https://redirected-source.example.test/data.xml', 'access-control-allow-origin': '*' }
-    }));
+    await page.context().route('https://www.legislation.gov.uk/ukpga/1998/42/data.xml', (route) => browserName === 'webkit'
+      // WebKit interception cannot fulfil a 3xx response. A refused source must leave the same empty, alerted state.
+      ? route.abort('blockedbyclient')
+      : route.fulfill({ status: 302, headers: { location: 'https://redirected-source.example.test/data.xml', 'access-control-allow-origin': '*' } }));
     await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}#overview`);
     await page.getByPlaceholder('Search targeted legislation').fill('Target Act');
     await page.locator('.result-list button').filter({ hasText: 'Target Act 1998' }).first().click();

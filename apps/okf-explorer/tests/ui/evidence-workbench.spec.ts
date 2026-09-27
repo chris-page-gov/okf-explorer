@@ -65,6 +65,32 @@ test('loads one hash-bound case lazily, inspects source and exports a local revi
   expect(accessibility.violations).toEqual([]);
 });
 
+test('links only an exact selected record through a verified case sidecar', async ({ page }) => {
+  const packageJson = await canonicalPackage(packageValue);
+  const catalogueUrl = 'https://reading-help-corpus.fixture.test/reading-help-corpus/manifest.json';
+  const sidecar = JSON.stringify({ schema: 'okf-reading-help-workbench-targets.v1', case_id: 'q-01', targets: [{ record_id: recordId, family: 'dmg', document_id: 'dmg-ch60', unit_id: 'https://example.test/id/unit/60025' }] });
+  const manifest = {
+    schema: 'okf-evidence-workbench.v1', title: 'Exact reading-help link', publication: { label: 'Experimental' },
+    questions: [{ id: 'q-01', label: 'Question 1', question, package: { url: 'q-01.json', sha256: await hash(packageJson) } }],
+    reading_help: { catalogue: { url: catalogueUrl, sha256: 'a'.repeat(64), bytes: 1234 }, targets_by_case: [{ case_id: 'q-01', url: 'reading-help/q-01.json', sha256: await hash(sidecar), bytes: new TextEncoder().encode(sidecar).byteLength }] }
+  };
+  let corpusRequests = 0;
+  await page.route(url => url.href.startsWith('https://reading-help-corpus.fixture.test/'), route => { corpusRequests++; return route.abort(); });
+  await page.route(url => new URL(url).pathname === '/evaluation/evidence-workbench/manifest.json', route => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(manifest) }));
+  await page.route(url => new URL(url).pathname === '/evaluation/evidence-workbench/q-01.json', route => route.fulfill({ status: 200, contentType: 'application/json', body: packageJson }));
+  await page.route(url => new URL(url).pathname === '/evaluation/evidence-workbench/reading-help/q-01.json', route => route.fulfill({ status: 200, contentType: 'application/json', body: sidecar }));
+  await page.goto('/evidence/?manifest=/evaluation/evidence-workbench/manifest.json&case=q-01');
+  const link = page.getByRole('link', { name: 'Read this passage in the source-linked reading help →' });
+  await expect(link).toBeVisible();
+  const target = new URL((await link.getAttribute('href'))!, page.url());
+  expect(target.pathname).toBe('/reading-help/corpus/');
+  expect(target.searchParams.get('catalogue')).toBe(catalogueUrl);
+  expect(target.searchParams.get('catalogue_sha256')).toBe('a'.repeat(64));
+  expect(target.searchParams.get('catalogue_bytes')).toBe('1234');
+  expect(target.searchParams.get('unit')).toBe('https://example.test/id/unit/60025');
+  expect(corpusRequests).toBe(0);
+});
+
 test('reports a package hash mismatch without displaying content', async ({ page }) => {
   const manifest = { schema: 'okf-evidence-workbench.v1', title: 'Staff evidence review', publication: { label: 'Experimental' }, questions: [{ id: 'q-01', label: 'Question 1', question, package: { url: 'q.json', sha256: '0'.repeat(64) } }] };
   await page.route(requestUrl => new URL(requestUrl).pathname === '/evaluation/evidence-workbench/manifest.json', route => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(manifest) }));
