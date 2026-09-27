@@ -252,8 +252,9 @@ export async function loadCrossTarget(catalogue: LoadedCatalogue, target: CrossT
   const documents = catalogue.catalogue.documents.filter(item => item.document_id === target.document_id);
   assert(documents.length === 1, 'Cross-document target is ambiguous or unavailable.');
   const document = await loadDocument(catalogue, documents[0].family, target.document_id, signal);
-  assert(document.index.passages.some(row => row.unit_id === target.passage_id && row.leaf_url === target.leaf_url && row.leaf_sha256 === target.leaf_sha256), 'Cross-document target leaf does not match its index.');
+  const refs = document.index.passages.filter(row => row.unit_id === target.passage_id && row.leaf_url === target.leaf_url && row.leaf_sha256 === target.leaf_sha256);
+  assert(refs.length > 0, 'Cross-document target leaf does not match its index.');
   const passage = await loadCorpusPassage(document, target.passage_id, signal);
-  assert(passage.occurrences.some(row => row.id === target.occurrence_id), 'Cross-document target occurrence is unavailable.');
+  assert(passage.segments.some(row => refs.some(ref => ref.segment_ordinal === row.segment.ordinal) && row.occurrences.some(item => item.id === target.occurrence_id)), 'Cross-document target occurrence is unavailable in its bound leaf.');
   return passage;
 }

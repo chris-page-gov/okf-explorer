@@ -5,6 +5,7 @@
 - Keep the compact facet bar proportional to declared counts while moving colour selection into a folded set of full-size, keyboard-operable controls. Preserve highlighted and unknown states, every labelled value in the expanded facet, and the existing multicolour release gate.
 - Accept an optional nested, byte-bound reference target with exact destination document, passage, occurrence and leaf identity. Do not infer a destination from the printed row's own IDs or matching numbers.
 - Test a skewed distribution with nine one-record values at desktop and medium widths, including the WCAG 2.2 target-size rule, and retain the prior build-bound Heritage evidence before refresh.
+- Increase extraction-gap PDF link targets and make scrollable evidence passage text keyboard-focusable after public Reader accessibility checks.
 
 ## Reading-help corpus consumer — 27 September 2026
 

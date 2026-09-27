@@ -1172,6 +1172,7 @@ test('FACET-E2E-19 opens with all facets folded despite saved or provider pins',
 
 test('FACET-E2E-20 toggles bounded indexed colours without opening the facet or loading records', async ({ page }) => {
   const requests: string[] = []; await openOnsFacetFixture(page, requests);
+  await facetSection(page, 'geography_level').locator('.facet-quick-values summary').click();
   const region = facetSection(page, 'geography_level').locator('[data-facet-colour="region"]');
   await region.click();
   await expect(region).toHaveAttribute('aria-pressed', 'true');

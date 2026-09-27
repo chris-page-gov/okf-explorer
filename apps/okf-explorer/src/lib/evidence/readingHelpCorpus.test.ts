@@ -60,7 +60,7 @@ async function fixture() {
   return { files, index, catalogue, unitId, extractionRef, leafRef0, leafRef1 };
 }
 
-async function pairedFixture(withTarget = true, targetOverride: Partial<{ document_id: string; passage_id: string; occurrence_id: string; leaf_url: string; leaf_sha256: string }> = {}) {
+async function pairedFixture(withTarget = true, targetOverride: Partial<{ document_id: string; passage_id: string; occurrence_id: string; leaf_url: string; leaf_sha256: string }> = {}, sharedLeafSegments = false) {
   const rulesSha = hash(json('paired rules'));
   const unitA = 'https://example.test/id/unit/doc-a/reference';
   const unitB = 'https://example.test/id/unit/doc-b/answer';
@@ -86,11 +86,15 @@ async function pairedFixture(withTarget = true, targetOverride: Partial<{ docume
       occurrences: documentId === 'doc-b' ? [{ id: targetOccurrence, passage_id: unitId, page: 1, start_utf8: occurrenceStart, end_utf8: occurrenceStart + 6, literal: 'Target', literal_sha256: hash(new TextEncoder().encode('Target')), role: 'word', status: 'source_verified' }] : [],
       cards: [], reference_list_segments: documentId === 'doc-a' ? [{ occurrence_id: 'footer-a', passage_id: unitId, marker: '7', page: 1, start_utf8: referenceStart, end_utf8: referenceStart + 1, literal: '7', literal_sha256: hash(new TextEncoder().encode('7')), status: 'unresolved', body_occurrence_ids: [], document_id: 'doc-b', leaf_url: target.leaf_url, leaf_sha256: target.leaf_sha256, ...(withTarget ? { target: { ...target, ...targetOverride } } : {}) }] : []
     };
-    const decoded = json({ schema: 'okf-reading-help.v2', family: 'dmg', document_id: documentId, source_sha256: sourceSha, extraction_sha256: hash(extraction), rules_sha256: rulesSha, passages: [passage] });
+    const passages = documentId === 'doc-b' && sharedLeafSegments ? [
+      { ...passage, segment: { ordinal: 0, start_utf8: 0, end_utf8: 2, text: '7 ', sha256: hash(new TextEncoder().encode('7 ')) }, segment_count: 2, passage_complete: false, occurrences: [] },
+      { ...passage, segment: { ordinal: 1, start_utf8: 2, end_utf8: textBytes.byteLength, text: text.slice(2), sha256: hash(new TextEncoder().encode(text.slice(2))) }, segment_count: 2 }
+    ] : [passage];
+    const decoded = json({ schema: 'okf-reading-help.v2', family: 'dmg', document_id: documentId, source_sha256: sourceSha, extraction_sha256: hash(extraction), rules_sha256: rulesSha, passages });
     const compressed = gzipSync(decoded);
     const leafRef = { ...reference(`documents/dmg/${documentId}/leaves/0000.json.gz`, compressed), decoded_bytes: decoded.byteLength, decoded_sha256: hash(decoded), encoding: 'gzip' };
     if (documentId === 'doc-b') target = { ...target, leaf_url: leafRef.url, leaf_sha256: leafRef.sha256 };
-    const index = json({ schema: 'okf-reading-help-document.v1', family: 'dmg', document_id: documentId, rules_sha256: rulesSha, source: { url: `https://example.test/${documentId}.pdf`, sha256: sourceSha }, extraction: extractionRef, review: { specialist_accepted: false, legal_answerability: 'not-established' }, extraction_blocked_pages: [], leaves: [leafRef], passages: [{ unit_id: unitId, unit_sha256: unitSha, role: 'paragraph', status: 'processed', pages: [1], segment_ordinal: 0, segment_count: 1, leaf_url: leafRef.url, leaf_sha256: leafRef.sha256, leaf_bytes: leafRef.bytes }] });
+    const index = json({ schema: 'okf-reading-help-document.v1', family: 'dmg', document_id: documentId, rules_sha256: rulesSha, source: { url: `https://example.test/${documentId}.pdf`, sha256: sourceSha }, extraction: extractionRef, review: { specialist_accepted: false, legal_answerability: 'not-established' }, extraction_blocked_pages: [], leaves: [leafRef], passages: passages.map(row => ({ unit_id: unitId, unit_sha256: unitSha, role: 'paragraph', status: 'processed', pages: [1], segment_ordinal: row.segment.ordinal, segment_count: passages.length, leaf_url: leafRef.url, leaf_sha256: leafRef.sha256, leaf_bytes: leafRef.bytes })) });
     const indexRef = reference(`documents/dmg/${documentId}/index.json`, index);
     entries.push({ ...indexRef, family: 'dmg', document_id: documentId, status: 'processed', counts: { passages: 1 } });
     files.set(`${origin}${indexRef.url}`, index);
@@ -186,6 +190,7 @@ describe('reading-help corpus consumer', () => {
     source.files.set(`${root}manifest.json`, json(source.catalogue));
     const catalogue = await loadCatalogue(`${root}manifest.json`, root);
     await expect(loadCrossTarget(catalogue, { document_id: 'doc-1', passage_id: source.unitId, occurrence_id: 'occ-1', leaf_url: source.leafRef0.url, leaf_sha256: '0'.repeat(64) })).rejects.toThrow(/target leaf does not match/);
+    await expect(loadCrossTarget(catalogue, { document_id: 'doc-1', passage_id: source.unitId, occurrence_id: 'occ-1', leaf_url: source.leafRef1.url, leaf_sha256: source.leafRef1.sha256 })).rejects.toThrow(/unavailable in its bound leaf/);
   });
 
   it('opens only a nested, exact target in another document and rejects absent or altered bindings', async () => {
@@ -213,6 +218,14 @@ describe('reading-help corpus consumer', () => {
     const unsafeCatalogue = await loadCatalogue(`${root}manifest.json`, root);
     const unsafeDocument = await loadDocument(unsafeCatalogue, 'dmg', 'doc-a');
     await expect(loadCorpusPassage(unsafeDocument, source.unitA)).rejects.toThrow(/invalid target/);
+  });
+
+  it('accepts an occurrence in a later segment of the same bound leaf', async () => {
+    const source = await pairedFixture(true, {}, true);
+    const catalogue = await loadCatalogue(`${root}manifest.json`, root);
+    const destination = await loadCrossTarget(catalogue, source.target);
+    expect(destination.segments.map(row => row.segment.ordinal)).toEqual([0, 1]);
+    expect(destination.segments[1].occurrences.map(row => row.id)).toEqual([source.target.occurrence_id]);
   });
 
   it('rejects altered frozen source pages', async () => {

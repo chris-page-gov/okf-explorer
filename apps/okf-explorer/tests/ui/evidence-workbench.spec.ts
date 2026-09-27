@@ -43,7 +43,13 @@ test('loads one hash-bound case lazily, inspects source and exports a local revi
   await page.getByRole('link', { name: 'Extracted text and structure' }).click();
   await expect(page.getByText('source text bytes 0–40')).toBeVisible();
   await page.getByRole('link', { name: 'Complete passage' }).click();
-  await expect(page.locator('pre').getByText('Original extracted words about capital.')).toBeVisible();
+  const passageText = page.getByLabel('Complete logical passage text');
+  await expect(passageText).toContainText('Original extracted words about capital.');
+  await passageText.evaluate(element => { element.style.width = '120px'; element.style.maxHeight = '24px'; });
+  await passageText.focus();
+  await expect(passageText).toBeFocused();
+  const passageAxe = await new AxeBuilder({ page }).analyze();
+  expect(passageAxe.violations.filter(violation => violation.id === 'scrollable-region-focusable')).toEqual([]);
   await page.getByRole('link', { name: 'Retrieval trace' }).focus();
   await page.keyboard.press('Enter');
   await expect(page.getByText('Qualification not found')).toBeVisible();
