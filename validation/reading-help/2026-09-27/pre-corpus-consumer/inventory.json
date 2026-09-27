@@ -1,0 +1,17 @@
+[
+  {
+    "path": "local-candidate-receipt.json",
+    "bytes": 6430,
+    "sha256": "4c5828c6e2f2b8c9fcbf444f18ed2a1bb8a580417f683c76b96548173c8fd2d1"
+  },
+  {
+    "path": "question-suite-results.json.gz",
+    "bytes": 12158,
+    "sha256": "e48a881fd4dccf63bf7e807ebe95e4338ddb26818607357c454e625606b31848"
+  },
+  {
+    "path": "local-journey-results.json.gz",
+    "bytes": 6321,
+    "sha256": "495bc2575d91c8badf7f2763e263485a00418e6f2bf72650069df251c5ce29a8"
+  }
+]
