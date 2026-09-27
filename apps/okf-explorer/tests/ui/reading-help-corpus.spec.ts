@@ -36,8 +36,8 @@ function fixture() {
   const index = bytes({
     schema: 'okf-reading-help-document.v1', family: 'dmg', document_id: 'dmg-ch60', rules_sha256: rulesSha,
     source: { url: 'https://reading-help-corpus.fixture.test/source.pdf', sha256: sourceSha }, extraction: extractionRef,
-    review: { specialist_accepted: false, legal_answerability: 'not-established' }, extraction_blocked_pages: [], leaves: [leafRef],
-    passages: [{ unit_id: unitId, unit_sha256: passage.unit_sha256, role: 'paragraph', status: 'processed', label: '60025 — Carer’s Allowance', paragraph_labels: ['60025'], abbreviations: ['CA'], pages: [1], segment_ordinal: 0, segment_count: 1, leaf_url: leafRef.url, leaf_sha256: leafRef.sha256, leaf_bytes: leafRef.bytes }]
+    review: { specialist_accepted: false, legal_answerability: 'not-established' }, extraction_blocked_pages: [2], leaves: [leafRef],
+    passages: [{ unit_id: unitId, unit_sha256: passage.unit_sha256, role: 'paragraph', status: 'processed', label: '60025 — Carer’s Allowance', paragraph_labels: ['60025'], abbreviations: ['CA', ...Array.from({ length: 165 }, (_, index) => `AB${index}`)], pages: [1], segment_ordinal: 0, segment_count: 1, leaf_url: leafRef.url, leaf_sha256: leafRef.sha256, leaf_bytes: leafRef.bytes }]
   });
   const indexRef = ref('reading-help-corpus/documents/dmg/dmg-ch60/index.json', index);
   const catalogue = bytes({ schema: 'okf-reading-help-catalogue.v1', rules_sha256: rulesSha, status: 'machine-proposed-unreviewed', limitations: ['Specialist review outstanding'], counts: { extraction_blocked_pages: 0 }, documents: [{ ...indexRef, family: 'dmg', document_id: 'dmg-ch60', status: 'processed', counts: { passages: 1 } }] });
@@ -53,6 +53,8 @@ test('opens a bound paragraph and restores occurrence focus from the keyboard', 
   });
   const params = new URLSearchParams({ catalogue: catalogueUrl, catalogue_sha256: digest(source.catalogue), catalogue_bytes: String(source.catalogue.byteLength), family: 'dmg', document: 'dmg-ch60', unit: source.unitId });
   await page.goto(`/reading-help/corpus/?${params}`);
+  await page.getByText('Machine-extraction gaps (1)').click();
+  await expect(page.getByRole('link', { name: 'Open source PDF at page 2' })).toHaveAttribute('href', 'https://reading-help-corpus.fixture.test/source.pdf#page=2');
   await page.getByLabel('Exact abbreviation occurrence in this document').fill('CA');
   await expect(page.getByRole('button', { name: /60025 — Carer’s Allowance/ })).toBeVisible();
   const marker = page.locator('[data-occurrence-id="occ-ca"]');

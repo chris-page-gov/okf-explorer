@@ -188,6 +188,33 @@ function fixture() {
 }
 
 describe('federation overview loader', () => {
+  it('binds a relative child to the fetched local or raw-SHA parent, not canonical public main', () => {
+    const candidate = fixture() as ReturnType<typeof fixture> & { '@id'?: string };
+    candidate['@id'] = 'https://example.test/whole-law/okf-explorer.json';
+    const child = candidate.children[0] as typeof candidate.children[0] & { semantic_descriptor?: string; extensions?: Record<string, unknown> };
+    child.descriptor = 'https://example.test/okf-explorer.json';
+    child.semantic_descriptor = 'https://example.test/okf-bundle.yamlld';
+    child.extensions = { 'okf-federation-relative-child.v1': { descriptor: '../okf-explorer.json', semantic_descriptor: '../okf-bundle.yamlld' } };
+    for (const fetched of ['http://127.0.0.1:8002/whole-law/okf-explorer.json', 'https://raw.example.test/sha256-pinned/bundle/whole-law/okf-explorer.json']) {
+      const loaded = loadFederationOverview(candidate, fetched, fetched);
+      const selected = loaded.overview.descriptor.children[0];
+      expect(selected.descriptor).toBe('https://example.test/okf-explorer.json');
+      expect(selected.bound_relative_descriptor).toBe(new URL('../okf-explorer.json', fetched).href);
+      expect(selected.bound_relative_semantic_descriptor).toBe(new URL('../okf-bundle.yamlld', fetched).href);
+    }
+  });
+
+  it('rejects hostile or canonically mismatched relative child transport', () => {
+    const candidate = fixture() as ReturnType<typeof fixture> & { '@id'?: string };
+    candidate['@id'] = 'https://example.test/whole-law/okf-explorer.json';
+    const child = candidate.children[0] as typeof candidate.children[0] & { semantic_descriptor?: string; extensions?: Record<string, unknown> };
+    child.descriptor = 'https://example.test/okf-explorer.json';
+    child.semantic_descriptor = 'https://example.test/okf-bundle.yamlld';
+    for (const path of ['https://evil.example/child.json', '../../child.json', '../%2e%2e/child.json', '//evil.example/child.json', '../child.json?token=1', '../child.json#fragment', '../different.json']) {
+      child.extensions = { 'okf-federation-relative-child.v1': { descriptor: path, semantic_descriptor: '../okf-bundle.yamlld' } };
+      expect(() => loadFederationOverview(candidate, 'https://example.test/whole-law/okf-explorer.json')).toThrow(/relative descriptor|relative child transport/);
+    }
+  });
   it('normalizes only the federation control plane and keeps child access declarative', () => {
     const document = fixture();
     expect(isFederationDescriptor(document)).toBe(true);

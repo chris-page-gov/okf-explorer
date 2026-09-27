@@ -29,6 +29,7 @@ const AUTHORITY = new Set(['official', 'derived', 'model-assisted', 'synthetic',
 const ASSERTION_STATUS = new Set(['official', 'normalized', 'inferred', 'model-derived']);
 const ASSERTION_SCOPE = new Set(['real-world', 'synthetic-fixture']);
 const FRESHNESS = new Set(['current', 'stale', 'unknown']);
+const RELATIVE_CHILD_EXTENSION = 'okf-federation-relative-child.v1';
 
 function recordValue(value: unknown, label: string): Record<string, unknown> {
   if (!value || typeof value !== 'object' || Array.isArray(value)) {
@@ -79,6 +80,21 @@ function safeResolvedUrl(value: string, baseUrl: string, label: string): string 
     throw new Error(`${label} must use HTTP(S) without embedded credentials`);
   }
   return url.toString();
+}
+
+function boundRelativeChild(value: unknown, resolvedParentUrl: string, canonicalParentUrl: string, canonicalChildUrl: string, label: string): string {
+  if (typeof value !== 'string' || !/^\.\.\/[A-Za-z0-9][A-Za-z0-9._-]*\.(?:json|yamlld)$/.test(value)) {
+    throw new Error(`${label} must be one safe sibling descriptor path.`);
+  }
+  const canonical = new URL(value, canonicalParentUrl);
+  if (canonical.href !== canonicalChildUrl) throw new Error(`${label} differs from the declared canonical child descriptor.`);
+  const parent = new URL(resolvedParentUrl);
+  const local = new URL(value, parent);
+  const siblingRoot = new URL('../', parent);
+  if (local.origin !== parent.origin || local.protocol !== parent.protocol || local.username || local.password || local.search || local.hash || !local.pathname.startsWith(siblingRoot.pathname) || local.pathname.slice(siblingRoot.pathname.length).includes('/')) {
+    throw new Error(`${label} escapes the fetched parent publication.`);
+  }
+  return local.href;
 }
 
 function normalizedRoute(value: unknown, baseUrl: string, label: string): FederationAccessRoute {
@@ -203,7 +219,7 @@ function normalizedFreshness(value: unknown, label: string): FederationFreshness
   return freshness;
 }
 
-function normalizedChild(value: unknown, baseUrl: string, index: number): FederationChild {
+function normalizedChild(value: unknown, baseUrl: string, canonicalParentUrl: string, index: number): FederationChild {
   const label = `children[${index}]`;
   const record = recordValue(value, label);
   const status = stringValue(record, 'status', label) as FederationAvailability;
@@ -235,6 +251,15 @@ function normalizedChild(value: unknown, baseUrl: string, index: number): Federa
   }
   if (record.counts !== undefined) child.counts = normalizedCounts(record.counts, `${label}.counts`);
   if (record.extensions !== undefined) child.extensions = recordValue(record.extensions, `${label}.extensions`);
+  const transport = child.extensions?.[RELATIVE_CHILD_EXTENSION];
+  if (transport !== undefined) {
+    const declared = recordValue(transport, `${label}.extensions.${RELATIVE_CHILD_EXTENSION}`);
+    if (Object.keys(declared).sort().join(',') !== 'descriptor,semantic_descriptor' || !child.descriptor || !child.semantic_descriptor) {
+      throw new Error(`${label} has an incomplete relative child transport.`);
+    }
+    child.bound_relative_descriptor = boundRelativeChild(declared.descriptor, baseUrl, canonicalParentUrl, child.descriptor, `${label}.relative descriptor`);
+    child.bound_relative_semantic_descriptor = boundRelativeChild(declared.semantic_descriptor, baseUrl, canonicalParentUrl, child.semantic_descriptor, `${label}.relative semantic descriptor`);
+  }
   const hasLoadableDescriptor = Boolean(
     child.descriptor ||
     discovery.routes.some((route) =>
@@ -542,7 +567,8 @@ export function loadFederationOverview(
   if (!Array.isArray(childrenValue) || !childrenValue.length) {
     throw new Error('Federation descriptor children must be a non-empty array');
   }
-  const children = childrenValue.map((child, index) => normalizedChild(child, resolvedUrl, index));
+  const canonicalParentUrl = optionalString(record, '@id');
+  const children = childrenValue.map((child, index) => normalizedChild(child, resolvedUrl, canonicalParentUrl || resolvedUrl, index));
   const childIds = children.map((child) => child.id);
   if (new Set(childIds).size !== childIds.length) throw new Error('Federation child IDs must be unique');
   const relationshipsValue = record.relationships;

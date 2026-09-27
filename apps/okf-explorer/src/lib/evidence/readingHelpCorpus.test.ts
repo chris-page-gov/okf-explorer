@@ -105,6 +105,30 @@ describe('reading-help corpus consumer', () => {
     await expect(loadCorpusPassage(document, source.unitId)).resolves.toMatchObject({ text: 'First note. Second note.' });
   });
 
+  it('accepts printed abbreviation tables and rejects a reference above the bounded cap', async () => {
+    const source = await fixture();
+    const indexUrl = `${origin}${source.catalogue.documents[0].url}`;
+    const passage = source.index.passages[0];
+    Object.assign(passage, { abbreviations: Array.from({ length: 166 }, (_, n) => `AB${n}`) });
+    let indexBytes = json(source.index);
+    source.catalogue.documents[0].sha256 = hash(indexBytes);
+    source.catalogue.documents[0].bytes = indexBytes.byteLength;
+    source.files.set(indexUrl, indexBytes);
+    source.files.set(`${root}manifest.json`, json(source.catalogue));
+    let catalogue = await loadCatalogue(`${root}manifest.json`, root);
+    await expect(loadDocument(catalogue, 'dmg', 'doc-1')).resolves.toBeDefined();
+
+    clearReadingHelpCorpusCache();
+    Object.assign(passage, { abbreviations: Array.from({ length: 513 }, (_, n) => `AB${n}`) });
+    indexBytes = json(source.index);
+    source.catalogue.documents[0].sha256 = hash(indexBytes);
+    source.catalogue.documents[0].bytes = indexBytes.byteLength;
+    source.files.set(indexUrl, indexBytes);
+    source.files.set(`${root}manifest.json`, json(source.catalogue));
+    catalogue = await loadCatalogue(`${root}manifest.json`, root);
+    await expect(loadDocument(catalogue, 'dmg', 'doc-1')).rejects.toThrow(/Invalid reading-help passage reference/);
+  });
+
   it('rejects unsafe document paths and missing exact cross-target leaves', async () => {
     const source = await fixture();
     source.catalogue.documents[0].url = '../outside/index.json';

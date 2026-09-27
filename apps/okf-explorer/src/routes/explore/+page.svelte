@@ -1574,7 +1574,7 @@
   }
 
   function loadFederationChild(child: FederationChild) {
-    const primary = child.descriptor || child.discovery.routes.find((route) =>
+    const primary = child.bound_relative_descriptor || child.descriptor || child.discovery.routes.find((route) =>
       route.purpose === 'descriptor' ||
       (!route.purpose && ['published', 'raw'].includes(route.kind))
     )?.url;
@@ -1592,7 +1592,9 @@
     activeView = 'reader';
     replaceState(next, {});
     bundleInputUrl = primary;
-    void loadSource(primary, child.discovery.routes, child.discovery.raw_subpath);
+    // A relative child is bound to the fetched parent, including its raw commit
+    // or local preview. A public fallback would silently replace that identity.
+    void loadSource(primary, child.bound_relative_descriptor ? [] : child.discovery.routes, child.discovery.raw_subpath);
   }
 
   async function initialiseLargeSearch(

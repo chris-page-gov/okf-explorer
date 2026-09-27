@@ -6,6 +6,8 @@
 - Link related body and reference-row occurrences in the existing bounded reading aid only through their shared card occurrence IDs. Preserve its v1 manifest route and source checks.
 - Let readers find source-declared paragraph labels, topics and proposed abbreviations within the selected document; expose exact but unresolved printed reference rows, candidate citation labels and browser-session fetch/cache counts.
 - Add optional, byte-bound workbench case sidecars that link exact selected record IDs to corpus passages without fetching the corpus until the reader follows the link. Register Chrome, Firefox and WebKit coverage for the new routes and keep diverted CLML responses rejected across browsers.
+- Show exact source PDF links for extraction-blocked pages and accept complete source-verified abbreviation tables within a tested 512-literal bound.
+- Bind declared sibling child descriptors to the fetched federation location, retaining local and pinned raw commits and stopping when a bound child is missing.
 
 ## Legislation passage Reader repair — 26 September 2026
 

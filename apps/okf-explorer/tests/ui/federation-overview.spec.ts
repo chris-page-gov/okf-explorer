@@ -186,6 +186,51 @@ const childBundle = {
   relationships: []
 };
 
+function boundChildFederation() {
+  return {
+    ...federation,
+    '@id': FEDERATION_URL,
+    children: [{
+      ...federation.children[0],
+      descriptor: 'https://federation.fixture.test/okf-explorer.json',
+      semantic_descriptor: 'https://federation.fixture.test/okf-bundle.yamlld',
+      extensions: { 'okf-federation-relative-child.v1': { descriptor: '../okf-explorer.json', semantic_descriptor: '../okf-bundle.yamlld' } }
+    }, federation.children[1]]
+  };
+}
+
+for (const scenario of ['local', 'raw-SHA'] as const) {
+  test(`bound relative child follows fetched ${scenario} parent identity`, async ({ context, page }) => {
+    await page.goto('/');
+    const parentUrl = scenario === 'local'
+      ? new URL('/whole-law/okf-explorer.json', page.url()).href
+      : 'https://raw.fixture.test/sha256-pinned/bundle/whole-law/okf-explorer.json';
+    const childUrl = new URL('../okf-explorer.json', parentUrl).href;
+    let publicRequests = 0;
+    await context.route(parentUrl, route => route.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify(boundChildFederation()) }));
+    await context.route(childUrl, route => route.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify(childBundle) }));
+    await context.route('https://federation.fixture.test/okf-explorer.json', route => { publicRequests++; return route.fulfill({ status: 200, body: JSON.stringify(childBundle) }); });
+    await page.goto(`?bundle=${encodeURIComponent(parentUrl)}#overview`);
+    await page.getByRole('region', { name: 'Federated child bundles' }).getByRole('button', { name: 'Open Legislation child' }).click();
+    await expect(page.locator('.title-block')).toContainText('Recovered legislation child');
+    expect(new URL(page.url()).searchParams.get('bundle')).toBe(childUrl);
+    expect(publicRequests).toBe(0);
+  });
+}
+
+test('missing bound relative child cannot fall back to public main', async ({ context, page }) => {
+  const parentUrl = 'https://raw.fixture.test/sha256-pinned/bundle/whole-law/okf-explorer.json';
+  const childUrl = new URL('../okf-explorer.json', parentUrl).href;
+  let publicRequests = 0;
+  await context.route(parentUrl, route => route.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify(boundChildFederation()) }));
+  await context.route(childUrl, route => route.fulfill({ status: 404, body: 'missing' }));
+  await context.route('https://federation.fixture.test/okf-explorer.json', route => { publicRequests++; return route.fulfill({ status: 200, body: JSON.stringify(childBundle) }); });
+  await page.goto(`?bundle=${encodeURIComponent(parentUrl)}#overview`);
+  await page.getByRole('region', { name: 'Federated child bundles' }).getByRole('button', { name: 'Open Legislation child' }).click();
+  await expect(page.getByRole('alert')).toContainText('No declared descriptor route succeeded');
+  expect(publicRequests).toBe(0);
+});
+
 test('FEDERATION-E2E-01 loads only the overview and labels relationship authority', async ({ context, page }) => {
   let childRequests = 0;
   await context.route(FEDERATION_URL, async (route) => {

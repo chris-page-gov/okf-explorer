@@ -190,6 +190,8 @@ export type FederationChild = {
   status: FederationAvailability;
   descriptor?: string;
   semantic_descriptor?: string;
+  bound_relative_descriptor?: string;
+  bound_relative_semantic_descriptor?: string;
   authority: FederationAuthority;
   coverage: FederationCoverage;
   freshness: FederationFreshness;

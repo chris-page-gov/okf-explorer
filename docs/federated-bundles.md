@@ -18,6 +18,17 @@ role, status, authority, coverage and discovery metadata. `Load child bundle`
 is the explicit data-plane boundary. The selected child then uses the existing
 small- or large-bundle loader and its static search.
 
+For a child in the same publication, the optional
+`okf-federation-relative-child.v1` child extension declares `descriptor` and
+`semantic_descriptor` as single `../filename.json` or `../filename.yamlld`
+sibling paths. Explorer checks that each path resolves from the federation's
+canonical `@id` to its declared canonical child URL. It then resolves the same
+path against the fetched federation URL, preserving a local preview or pinned
+raw commit. If that bound child is missing, loading stops; a public-main route
+cannot silently replace it. The canonical child URLs remain visible as source
+identity. The extension does not change the v1 schema or the routes of a child
+without this declaration.
+
 At v0.5, record-level search remains inside the selected child. A federation
 must not imply corpus-wide record search until it publishes a governed
 federated search index; v1 deliberately has no field that could overstate that
