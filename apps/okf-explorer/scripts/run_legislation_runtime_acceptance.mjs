@@ -971,13 +971,14 @@ function verifyRepositoryStateStable(before, after, label) {
   );
 }
 
-function sanitisedFailure(error, browser) {
+function sanitisedFailure(error, browser, phase) {
   const raw = error instanceof Error ? error.stack || error.message : String(error);
   const retained = raw.slice(0, ACCEPTANCE_LIMITS.max_retained_string_bytes);
   const detail = Buffer.from(retained, 'utf8');
   return {
     browser,
     status: 'failed',
+    phase,
     error: {
       kind: 'acceptance-error',
       detail_bytes: detail.length,
@@ -1160,6 +1161,7 @@ function compressible(filePath) {
 function safeRelativePath(urlPath, prefix = '/') {
   const decoded = decodeURIComponent(urlPath);
   const relative = decoded.startsWith(prefix) ? decoded.slice(prefix.length) : decoded.replace(/^\/+/, '');
+  invariant(!relative.split('/').some((part) => part === '..' || part === '.'), `Unsafe request path: ${urlPath}`);
   const normalized = path.posix.normalize(relative);
   if (!normalized || normalized === '.') return '';
   invariant(!normalized.startsWith('../') && !path.posix.isAbsolute(normalized), `Unsafe request path: ${urlPath}`);
@@ -1371,7 +1373,8 @@ export function createAcceptanceServer(
       const tree = fromBundle ? roots.bundle : roots.build;
       if (!relative) relative = 'index.html';
       if (!tree.materialByPath.has(relative) && !fromBundle && !path.extname(relative)) {
-        relative = 'index.html';
+        const nested = `${relative.replace(/\/$/, '')}/index.html`;
+        if (tree.materialByPath.has(nested)) relative = nested;
       }
       if (!tree.materialByPath.has(relative)) {
         const body = Buffer.from('Not found', 'utf8');
@@ -2215,7 +2218,7 @@ async function main() {
         retainTelemetry(telemetry, run, `${name} browser evidence`);
         runs.push(run);
       } catch (error) {
-        const failure = sanitisedFailure(error, name);
+        const failure = sanitisedFailure(error, name, currentRun.phase);
         retainTelemetry(telemetry, failure, `${name} failure evidence`);
         runs.push(failure);
         failures.push(`${name}:acceptance-error:${failure.error.detail_sha256}`);

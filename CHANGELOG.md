@@ -8,6 +8,7 @@
 - Add optional, byte-bound workbench case sidecars that link exact selected record IDs to corpus passages without fetching the corpus until the reader follows the link. Register Chrome, Firefox and WebKit coverage for the new routes and keep diverted CLML responses rejected across browsers.
 - Show exact source PDF links for extraction-blocked pages and accept complete source-verified abbreviation tables within a tested 512-literal bound.
 - Bind declared sibling child descriptors to the fetched federation location, retaining local and pinned raw commits and stopping when a bound child is missing.
+- Serve nested application routes from their own inventoried files in the legislation runtime harness, reject unknown and traversal paths, and retain the failing journey phase in bounded diagnostics.
 
 ## Legislation passage Reader repair — 26 September 2026
 

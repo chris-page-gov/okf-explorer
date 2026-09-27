@@ -17,6 +17,12 @@ same-origin server serves only the snapshots, with real gzip transfer and the
 byte ranges used by release datapacks. It executes the same journey in Chrome,
 Firefox and WebKit:
 
+The server resolves `/explore/` and other nested application routes only when
+their `index.html` is present in the inspected build snapshot. Unknown routes
+return 404, and a request containing path traversal fails the server gate.
+Failure evidence records the journey phase alongside the bounded error digest
+to locate a failed step without publishing unbounded browser diagnostics.
+
 1. load the Whole-Law federation and confirm its 36 source classes;
 2. open the declared UK Legislation child and wait for static search to finish
    initialising;

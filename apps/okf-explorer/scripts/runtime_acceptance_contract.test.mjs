@@ -704,7 +704,7 @@ test('server limit failures are sticky and range and gzip paths remain distinct'
     }
   );
   const failedUrl = await listenEphemeral(failedServer);
-  const failedResponse = await fetch(`${failedUrl}/optional-resource`, {
+  const failedResponse = await fetch(`${failedUrl}/index.html`, {
     headers: { 'accept-encoding': 'identity' }
   });
   assert.equal(failedResponse.status, 500);
@@ -764,6 +764,45 @@ test('server limit failures are sticky and range and gzip paths remain distinct'
   assert.equal(transfers[1].content_encoding, 'gzip');
   assert.equal(transfers[2].status, 404);
   assert.equal(transfers[2].wire_bytes, Buffer.byteLength('Not found'));
+});
+
+test('acceptance server serves only inventoried nested routes and rejects traversal', async (context) => {
+  const directory = await mkdtemp(path.join(tmpdir(), 'okf-runtime-routes-'));
+  context.after(async () => { await rm(directory, { recursive: true, force: true }); });
+  const home = Buffer.from('<script>location.replace("./explore/")</script>');
+  const explore = Buffer.from('<p>explore</p>');
+  await mkdir(path.join(directory, 'explore'));
+  await writeFile(path.join(directory, 'index.html'), home);
+  await writeFile(path.join(directory, 'explore/index.html'), explore);
+  const tree = { root: directory, materialByPath: new Map([
+    ['index.html', { path: 'index.html', bytes: home.length, sha256: sha256(home) }],
+    ['explore/index.html', { path: 'explore/index.html', bytes: explore.length, sha256: sha256(explore) }]
+  ]) };
+  const transfers = [];
+  const telemetry = { telemetry_bytes: 0, transfer_wire_bytes: 0, transfer_decoded_bytes: 0 };
+  const state = freshServerState();
+  const server = createAcceptanceServer(transfers, { browser: 'test', phase: 'federation-overview' }, { build: tree, bundle: tree }, telemetry, Date.now() + 10_000, state);
+  const base = await listenEphemeral(server);
+  const landing = await (await fetch(`${base}/?bundle=fixture#overview`)).text();
+  assert.equal(landing, home.toString());
+  const redirect = /location\.replace\("([^"]+)"\)/.exec(landing)?.[1];
+  assert.equal(redirect, './explore/');
+  assert.equal(await (await fetch(new URL(redirect, `${base}/`))).text(), explore.toString());
+  assert.equal(await (await fetch(`${base}/explore`)).text(), explore.toString());
+  const unknown = await fetch(`${base}/unknown/`);
+  assert.equal(unknown.status, 404);
+  assert.equal(await unknown.text(), 'Not found');
+  assert.equal(transfers.at(-1).status, 404);
+  await closeServer(server);
+  assert.doesNotThrow(() => assertAcceptanceServerHealthy(state));
+
+  const traversalState = freshServerState();
+  const traversalServer = createAcceptanceServer([], { browser: 'test', phase: 'federation-overview' }, { build: tree, bundle: tree }, { telemetry_bytes: 0, transfer_wire_bytes: 0, transfer_decoded_bytes: 0 }, Date.now() + 10_000, traversalState);
+  const traversalBase = await listenEphemeral(traversalServer);
+  const traversal = await fetch(`${traversalBase}/nested/%2e%2e%2fexplore/`);
+  assert.equal(traversal.status, 500);
+  await closeServer(traversalServer);
+  assert.throws(() => assertAcceptanceServerHealthy(traversalState), /governed failure/);
 });
 
 test('holds the request reservation until a queued response finishes', async (context) => {
