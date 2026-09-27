@@ -1,5 +1,24 @@
 # Changelog
 
+## Reading-help corpus consumer — 27 September 2026
+
+- Add a catalogue-led reading-help view that selects one document and passage, verifies bound gzip leaves and ordered continuations against exact frozen page spans, and keeps candidate explanations separate from source wording.
+- Link related body and reference-row occurrences in the existing bounded reading aid only through their shared card occurrence IDs. Preserve its v1 manifest route and source checks.
+- Let readers find source-declared paragraph labels, topics and proposed abbreviations within the selected document; expose exact but unresolved printed reference rows, candidate citation labels and browser-session fetch/cache counts.
+- Add optional, byte-bound workbench case sidecars that link exact selected record IDs to corpus passages without fetching the corpus until the reader follows the link. Register Chrome, Firefox and WebKit coverage for the new routes and keep diverted CLML responses rejected across browsers.
+- Show exact source PDF links for extraction-blocked pages and accept complete source-verified abbreviation tables within a tested 512-literal bound.
+- Bind declared sibling child descriptors to the fetched federation location, retaining local and pinned raw commits and stopping when a bound child is missing.
+- Serve nested application routes from their own inventoried files in the legislation runtime harness, reject unknown and traversal paths, and retain the failing journey phase in bounded diagnostics.
+- Match the legislation acceptance facet checks to the visible coloured bar buttons used by the current Reader, preserving the multicolour and layout thresholds.
+- Archive the preceding Heritage receipt and both browser results byte for byte, then refresh the current-build 100-question and three-journey browser evidence.
+
+## Legislation passage Reader repair — 26 September 2026
+
+- Register the focused CLML browser suite in the impacted browser test plan so Reader and source changes exercise it in CI.
+- Keep complete normalised CLML passage text, including nested numbering, table and formula wording, repeated wording and endings beyond the 2,400-character excerpt. Add a keyboard-operable control to show the full text.
+- Place dated, enacted and made versions after the selected provision in official links; prefer a safe source-native `DocumentURI` and retain source IDs, hierarchy and version markers.
+- Bound on-demand CLML download and parsing, reject redirected or credentialled requests, retain the exact source bytes and hash for download, and direct readers to the official source when a limit is reached.
+
 ## Curated bounded evidence package research — 26 September 2026
 
 - Add the September BEP briefs, reports and reconstructed Research A package as

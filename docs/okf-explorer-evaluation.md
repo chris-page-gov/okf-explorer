@@ -32,6 +32,13 @@ both fresh result files, the current Site candidate receipt and an observation
 time after both executions. The materialiser checks scores, journey outcomes,
 source roots, app identity and timestamps before writing evidence.
 
+The reading-help corpus update preserved the preceding receipt and both
+compressed browser results byte for byte under the repository path
+`validation/reading-help/2026-09-27/pre-corpus-consumer/`.
+The current receipt is regenerated only from fresh runs against the assembled
+Site and its exact Explorer build. The 100 questions are deterministic browser
+checks, not model-authored legal answers.
+
 With the Site and `/publication/` alias served at `http://127.0.0.1:8002/`, the
 browser commands are:
 

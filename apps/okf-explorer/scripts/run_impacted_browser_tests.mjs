@@ -54,6 +54,18 @@ const SUITES = {
     family: 'ui',
     file: 'tests/ui/targeted-large-corpus.spec.ts'
   },
+  legislation_structure: {
+    family: 'ui',
+    file: 'tests/ui/legislation-structure.spec.ts'
+  },
+  reading_help_corpus: {
+    family: 'ui',
+    file: 'tests/ui/reading-help-corpus.spec.ts'
+  },
+  reading_help_related: {
+    family: 'ui',
+    file: 'tests/ui/reading-help-related.spec.ts'
+  },
   endpoint_labels: {
     family: 'ui',
     file: 'tests/ui/endpoint-label-index.spec.ts'
@@ -107,7 +119,7 @@ export const JOURNEY_GROUP_SUITES = Object.freeze({
     'beginner_navigation',
     'foundry_pages'
   ],
-  reader: ['learning_path', 'ask_okf', 'conceptual_navigation', 'small_bundle', 'facets', 'large_corpus', 'endpoint_labels', 'exploratory_publication'],
+  reader: ['learning_path', 'ask_okf', 'conceptual_navigation', 'small_bundle', 'facets', 'large_corpus', 'legislation_structure', 'reading_help_corpus', 'reading_help_related', 'endpoint_labels', 'exploratory_publication'],
   search: ['ask_okf', 'conceptual_navigation', 'small_bundle', 'facets', 'large_corpus'],
   timeline: ['timeline_provenance', 'conceptual_navigation', 'small_bundle', 'large_corpus']
 });
@@ -167,7 +179,7 @@ export const TEST_TAG_SUITES = Object.freeze({
   runtime: ALL_UI,
   search: ['small_bundle', 'facets', 'large_corpus'],
   site: ['learner_hub', 'beginner_navigation', 'foundry_pages'],
-  source: ['small_bundle', 'large_corpus'],
+  source: ['small_bundle', 'large_corpus', 'legislation_structure', 'reading_help_corpus', 'reading_help_related'],
   validator: ['foundry_pages'],
   workflow: ['foundry_pages'],
   'yaml-ld': ['small_bundle', 'federation', 'foundry_pages']

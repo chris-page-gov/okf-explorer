@@ -233,6 +233,11 @@ test.describe('large-corpus facet interaction contract', () => {
     expect(requests.filter((path) => path.startsWith('/search/filter-'))).toEqual([]);
     expect(responseBytes.reduce((total, bytes) => total + bytes, 0)).toBeLessThan(1_048_576);
     await expect(facetSection(page, 'derivation_mode').locator('.facet-distribution')).toBeVisible();
+    const bars = page.locator('.facet-distribution .bar-segment:visible');
+    expect(await bars.count()).toBeGreaterThan(0);
+    const colours = await bars.evaluateAll(elements => [...new Set(elements.map(element => getComputedStyle(element).backgroundColor))]);
+    expect(colours.length).toBeGreaterThanOrEqual(2);
+    expect(colours.every(colour => colour !== 'rgba(0, 0, 0, 0)')).toBe(true);
   });
 
   test('FACET-E2E-12 opens complete facet indexes without hydrating a huge record plane', async ({ page }) => {

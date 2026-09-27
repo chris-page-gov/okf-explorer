@@ -6,6 +6,7 @@ import { validateWorkbenchModels, type WorkbenchModelling } from './modelValidat
 
 export const MAX_MANIFEST_BYTES = 256 * 1024;
 export const MAX_PACKAGE_BYTES = 512 * 1024;
+export const MAX_READING_HELP_TARGET_BYTES = 32 * 1024;
 const SHA256 = /^[a-f0-9]{64}$/;
 const CASE_ID = /^[a-z0-9][a-z0-9._-]*$/;
 
@@ -23,7 +24,9 @@ export type WorkbenchManifest = WorkbenchModelling & {
   title: string;
   publication: { label: string; source_date?: string; captured_at?: string };
   questions: WorkbenchCase[];
+  reading_help?: { catalogue: { url: string; sha256: string; bytes: number }; targets_by_case: Array<{ case_id: string; url: string; sha256: string; bytes: number }> };
 };
+export type ReadingHelpTarget = { record_id: string; family: string; document_id: string; unit_id: string };
 
 function object(value: unknown): value is Record<string, unknown> {
   return !!value && typeof value === 'object' && !Array.isArray(value);
@@ -96,7 +99,32 @@ export function parseManifest(value: unknown, source: URL): WorkbenchManifest {
     ids.add(item.id);
   }
   validateWorkbenchModels(value, ids);
+  if (value.reading_help !== undefined) {
+    const help = value.reading_help;
+    if (!object(help) || !object(help.catalogue) || !nonempty(help.catalogue.url, 1000) || !SHA256.test(String(help.catalogue.sha256)) || !Number.isSafeInteger(help.catalogue.bytes) || Number(help.catalogue.bytes) < 1 || Number(help.catalogue.bytes) > 1024 * 1024 || !Array.isArray(help.targets_by_case) || help.targets_by_case.length > ids.size) throw new Error('Invalid reading-help references.');
+    const catalogueUrl = manifestUrl(String(help.catalogue.url), source.href);
+    if (catalogueUrl.protocol !== 'https:' && !['localhost', '127.0.0.1', '[::1]'].includes(catalogueUrl.hostname)) throw new Error('Reading-help catalogue requires HTTPS.');
+    const cases = new Set<string>();
+    for (const ref of help.targets_by_case) {
+      if (!object(ref) || !ids.has(String(ref.case_id)) || cases.has(String(ref.case_id)) || !nonempty(ref.url, 1000) || !SHA256.test(String(ref.sha256)) || !Number.isSafeInteger(ref.bytes) || Number(ref.bytes) < 1 || Number(ref.bytes) > MAX_READING_HELP_TARGET_BYTES) throw new Error('Invalid reading-help case reference.');
+      packageUrl(String(ref.url), source); cases.add(String(ref.case_id));
+    }
+  }
   return value as WorkbenchManifest;
+}
+
+export async function loadReadingHelpTargets(manifest: WorkbenchManifest, caseId: string, source: URL, recordIds: Set<string>, signal?: AbortSignal): Promise<ReadingHelpTarget[]> {
+  const ref = manifest.reading_help?.targets_by_case.find(item => item.case_id === caseId);
+  if (!ref) return [];
+  const { value, bytes } = await boundedJson(packageUrl(ref.url, source), MAX_READING_HELP_TARGET_BYTES, signal);
+  if (bytes.byteLength !== ref.bytes || await sha256Hex(bytes) !== ref.sha256) throw new Error('Reading-help case targets differ from their bound SHA-256.');
+  if (!object(value) || value.schema !== 'okf-reading-help-workbench-targets.v1' || value.case_id !== caseId || !Array.isArray(value.targets) || value.targets.length > 64) throw new Error('Invalid reading-help case targets.');
+  const seen = new Set<string>();
+  for (const target of value.targets) {
+    if (!object(target) || !nonempty(target.record_id, 500) || !recordIds.has(target.record_id) || seen.has(target.record_id) || !nonempty(target.family, 40) || !nonempty(target.document_id, 160) || !nonempty(target.unit_id, 1000)) throw new Error('Reading-help target does not match a selected record.');
+    seen.add(target.record_id);
+  }
+  return value.targets as ReadingHelpTarget[];
 }
 
 async function boundedJson(url: URL, maxBytes: number, signal?: AbortSignal): Promise<{ value: unknown; bytes: Uint8Array }> {

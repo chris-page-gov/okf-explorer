@@ -2,7 +2,7 @@
   import { onMount, tick } from 'svelte';
   import { pushState, replaceState } from '$app/navigation';
   import type { ContextPackage, ContextRecord, ContextSelection } from '$lib/context/types';
-  import { loadManifestWithIdentity, loadPackage, manifestUrl, reviewDownload, sourcePageUrl, unitSpanText, type WorkbenchCase, type WorkbenchManifest } from '$lib/evidence/workbench';
+  import { loadManifestWithIdentity, loadPackage, loadReadingHelpTargets, manifestUrl, reviewDownload, sourcePageUrl, unitSpanText, type ReadingHelpTarget, type WorkbenchCase, type WorkbenchManifest } from '$lib/evidence/workbench';
   import { isHttpUrl } from '$lib/viewer/helpers';
   import WorkbenchDataView from '$lib/evidence/WorkbenchDataView.svelte';
   import { WorkbenchSession } from '$lib/evidence/session';
@@ -35,6 +35,8 @@
   let requestGeneration = 0;
   let stateRevision = $state(0);
   let manifestDigest = $state<string | null>(null);
+  let readingHelpTargets = $state<ReadingHelpTarget[]>([]);
+  let readingHelpError = $state('');
   let dataPayload = $state<ViewPayload | null>(null);
   let dataNextCursor = $state<string | null>(null);
   let dataPartial = $state(false);
@@ -114,6 +116,8 @@
     advanceRevision();
     selectedCase = item;
     context = loaded;
+    readingHelpTargets = [];
+    readingHelpError = '';
     selectedRecordId = selection.record_id ?? loaded.selected[0]?.record.id ?? '';
     tab = selection.view;
     error = ''; loading = false;
@@ -123,6 +127,14 @@
       dataPartial = !visual.coverage?.complete;
     }
     syncAddress(item.id, selectedRecordId, tab);
+    if (manifest.reading_help) {
+      try {
+        const targets = await loadReadingHelpTargets(manifest, item.id, source, new Set(loaded.selected.map(row => row.record.id)), signal);
+        if (!signal.aborted && selectedCase?.id === item.id && context === loaded) readingHelpTargets = targets;
+      } catch (cause) {
+        if (!signal.aborted && selectedCase?.id === item.id && context === loaded) readingHelpError = cause instanceof Error ? cause.message : String(cause);
+      }
+    }
     if (isDataView(tab) && !visual) {
       await loadDataView();
       if (dataError) throw new Error(dataError);
@@ -146,6 +158,13 @@
   const selected = $derived(records.find(item => item.record.id === selectedRecordId) ?? records[0] ?? null);
   const visibleCases = $derived(manifest?.questions.filter(item => `${item.label} ${item.question}`.toLocaleLowerCase('en-GB').includes(filter.toLocaleLowerCase('en-GB'))) ?? []);
   const sourceLink = $derived(selected ? sourcePageUrl(selected.record) : null);
+  const readingHelpTarget = $derived(readingHelpTargets.find(item => item.record_id === selected?.record.id) ?? null);
+  function readingHelpLink(target: ReadingHelpTarget): string {
+    const catalogue = manifest?.reading_help?.catalogue;
+    if (!catalogue) return '';
+    const params = new URLSearchParams({ catalogue: catalogue.url, catalogue_sha256: catalogue.sha256, catalogue_bytes: String(catalogue.bytes), family: target.family, document: target.document_id, unit: target.unit_id });
+    return `../reading-help/corpus/?${params.toString()}`;
+  }
 
   function link(caseId: string, recordId = '', chosenTab: Tab = tab): string {
     const params = new URLSearchParams();
@@ -178,6 +197,8 @@
     if (selectedCase?.id !== item.id) clearReviewDraft();
     selectedCase = item;
     context = null;
+    readingHelpTargets = [];
+    readingHelpError = '';
     selectedRecordId = '';
     error = '';
     loading = true;
@@ -188,6 +209,14 @@
       selectedRecordId = loaded.selected.some(row => row.record.id === wantedRecord) ? wantedRecord : loaded.selected[0]?.record.id ?? '';
       syncAddress(item.id, selectedRecordId, tab, historyMode);
       if (isDataView(tab)) void loadDataView();
+      if (manifest?.reading_help && sourceUrl) {
+        try {
+          const targets = await loadReadingHelpTargets(manifest, item.id, sourceUrl, new Set(loaded.selected.map(row => row.record.id)), request.active.signal);
+          if (request.current()) readingHelpTargets = targets;
+        } catch (cause) {
+          if (request.current()) readingHelpError = cause instanceof Error ? cause.message : String(cause);
+        }
+      }
     } catch (cause) {
       if (request.current()) error = cause instanceof Error ? cause.message : String(cause);
     } finally {
@@ -202,6 +231,8 @@
     sourceUrl = null;
     manifest = null;
     manifestDigest = null;
+    readingHelpTargets = [];
+    readingHelpError = '';
     selectedCase = null;
     context = null;
     error = '';
@@ -428,6 +459,8 @@
             <section class="inspector" aria-labelledby="inspector-title">
               {#if selected}
                 <header><p class="eyebrow">{selected.record.kind} · {selected.record.assertion_status}</p><h3 id="inspector-title">{selected.record.label}</h3><p>{selected.record.authority?.label || 'Authority not supplied'} · {selected.record.review_status || 'Review status not supplied'}</p></header>
+                {#if readingHelpTarget}<p><a href={readingHelpLink(readingHelpTarget)}>Read this passage in the source-linked reading help →</a></p>{/if}
+                {#if readingHelpError}<p role="status">Reading-help link unavailable: {readingHelpError}</p>{/if}
               {:else}<h3 id="inspector-title">Question evidence</h3>{/if}
               <nav class="tab-list" aria-label="Evidence views">
                 {#each tabs as item}<a href={link(selectedCase.id, selected?.record.id ?? '', item.id)} class:active={tab === item.id} aria-current={tab === item.id ? 'page' : undefined} onclick={(event) => chooseTab(event, item.id)}>{item.label}</a>{/each}
