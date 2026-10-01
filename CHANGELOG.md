@@ -5,6 +5,7 @@
 - Open occurrence and printed-reference help beside the passage on wide screens and in a dismissible bottom drawer on narrower or zoomed screens, without scrolling the main page after selection.
 - Keep the selected literal and exact source location clear, preserve candidate notices and empty states, and scroll long help independently beneath a visible close control.
 - Support keyboard selection, Escape, focus return, switching occurrences and direct occurrence links; test wide, narrow, zoomed and Codex-panel layouts.
+- Preserve the preceding Heritage browser receipt and results, then refresh the 100-question suite and three local journeys against the exact updated Explorer build.
 
 ## Facet touch targets and explicit reference destinations — 27 September 2026
 
