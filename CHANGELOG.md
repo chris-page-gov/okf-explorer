@@ -1,5 +1,11 @@
 # Changelog
 
+## Reading help visible on selection — 1 October 2026
+
+- Open occurrence and printed-reference help beside the passage on wide screens and in a dismissible bottom drawer on narrower or zoomed screens, without scrolling the main page after selection.
+- Keep the selected literal and exact source location clear, preserve candidate notices and empty states, and scroll long help independently beneath a visible close control.
+- Support keyboard selection, Escape, focus return, switching occurrences and direct occurrence links; test wide, narrow, zoomed and Codex-panel layouts.
+
 ## Facet touch targets and explicit reference destinations — 27 September 2026
 
 - Keep the compact facet bar proportional to declared counts while moving colour selection into a folded set of full-size, keyboard-operable controls. Preserve highlighted and unknown states, every labelled value in the expanded facet, and the existing multicolour release gate.
