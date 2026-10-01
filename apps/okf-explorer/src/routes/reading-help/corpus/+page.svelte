@@ -18,6 +18,25 @@
   let controller: AbortController | null = null;
   let occurrenceOpener: HTMLButtonElement | null = null;
   let referenceOpener: HTMLButtonElement | null = null;
+  let helpClose = $state<HTMLButtonElement | undefined>();
+  const helpOpen = $derived(!!selectedOccurrence || !!selectedReference);
+
+  async function focusHelp() {
+    const identity = selectedOccurrence?.id ?? selectedReference?.occurrence_id;
+    await tick();
+    if (!identity || identity !== (selectedOccurrence?.id ?? selectedReference?.occurrence_id)) return;
+    helpClose?.focus({ preventScroll: true });
+  }
+
+  function closeHelp() {
+    const opener = selectedReference ? referenceOpener : occurrenceOpener;
+    selectedOccurrence = null;
+    selectedReference = null;
+    address();
+    opener?.focus({ preventScroll: true });
+    occurrenceOpener = null;
+    referenceOpener = null;
+  }
   let expectedCatalogueSha = $state('');
   let expectedCatalogueBytes = $state<number | null>(null);
   const documents = $derived(catalogue?.catalogue.documents.filter(row => (!familyFilter || row.family === familyFilter) && row.document_id.toLowerCase().includes(documentFilter.trim().toLowerCase())).slice(0, 50) ?? []);
@@ -99,6 +118,7 @@
         occurrenceOpener = Array.from(window.document.querySelectorAll<HTMLButtonElement>('[data-occurrence-id]')).find(item => item.dataset.occurrenceId === wantedOccurrence) ?? null;
         occurrenceOpener?.focus({ preventScroll: true });
         occurrenceOpener?.scrollIntoView({ block: 'center' });
+        await focusHelp();
       }
     } catch (cause) { failure(request, cause); }
     finally { finish(request); }
@@ -114,14 +134,28 @@
       address();
       await tick();
       occurrenceOpener = Array.from(window.document.querySelectorAll<HTMLButtonElement>('[data-occurrence-id]')).find(item => item.dataset.occurrenceId === target.occurrence_id) ?? null;
-      occurrenceOpener?.focus({ preventScroll: true });
+      occurrenceOpener?.scrollIntoView({ block: 'center' });
+      await focusHelp();
     } catch (cause) { failure(request, cause); }
     finally { finish(request); }
   }
-  function selectOccurrence(row: CorpusOccurrence, button: HTMLButtonElement) { selectedOccurrence = row; selectedReference = null; occurrenceOpener = button; address(); }
-  function selectReference(row: CorpusReferenceRow, button: HTMLButtonElement) { selectedReference = row; selectedOccurrence = null; referenceOpener = button; address(); }
-  function closeReference() { selectedReference = null; referenceOpener?.focus(); referenceOpener = null; }
-  function closeOccurrence() { selectedOccurrence = null; address(); occurrenceOpener?.focus(); occurrenceOpener = null; }
+  function selectOccurrence(row: CorpusOccurrence, button: HTMLButtonElement) {
+    selectedOccurrence = row;
+    selectedReference = null;
+    occurrenceOpener = button;
+    referenceOpener = null;
+    address();
+    void focusHelp();
+  }
+
+  function selectReference(row: CorpusReferenceRow, button: HTMLButtonElement) {
+    selectedReference = row;
+    selectedOccurrence = null;
+    referenceOpener = button;
+    occurrenceOpener = null;
+    address();
+    void focusHelp();
+  }
   function sourceUrl(page: number) { return document ? `${document.index.source.url}#page=${page}` : ''; }
   function pageLabel(span: CorpusSpan) { return `Page ${span.page}, UTF-8 bytes ${span.start_utf8}–${span.end_utf8}`; }
   function segmentLabel(row: CorpusPassage) { return `${row.role} · segment ${row.segment.ordinal + 1} of ${row.segment_count}`; }
@@ -133,6 +167,8 @@
     return () => controller?.abort();
   });
 </script>
+
+<svelte:window onkeydown={(event) => { if (event.key === 'Escape' && helpOpen) { event.preventDefault(); closeHelp(); } }} />
 
 <svelte:head><title>Reading-help corpus | OKF Explorer</title><meta name="description" content="Inspect one source-bound reading-help passage from a governed catalogue." /></svelte:head>
 <div class="shell">
@@ -155,14 +191,28 @@
     <section class="passage" aria-label="Selected source passage"><h2>Selected source passage</h2><p>Exact unit ID: <code>{passage.id}</code>. {passage.leafCount} bound leaf file{passage.leafCount === 1 ? '' : 's'} loaded. The complete text joins {passage.segments.length} verified segment{passage.segments.length === 1 ? '' : 's'}.</p><p>Selected load: {passage.metrics.fetched_files} files and {passage.metrics.fetched_bytes.toLocaleString()} bytes fetched; {passage.metrics.cache_hits} verified cache hits. The cache is limited to this browser session.</p>{#if passage.segments[0].paragraph_labels.length}<p>Declared paragraph label{passage.segments[0].paragraph_labels.length === 1 ? '' : 's'}: {passage.segments[0].paragraph_labels.join(', ')}.</p>{/if}
       <details class="segment"><summary>Ordered segment receipts</summary><ol>{#each passage.segments as segment}<li>{segmentLabel(segment)} · UTF-8 bytes {segment.segment.start_utf8}–{segment.segment.end_utf8} · SHA-256 <code>{segment.segment.sha256}</code></li>{/each}</ol></details>
       {#if !passage.segments[0].source_spans.length}<p class="boundary">Machine extraction is blocked for this passage. The PDF page has not been shown to be blank.</p>{/if}
-      {#each passage.segments[0].source_spans as span}<div class="source-page"><p><a href={sourceUrl(span.page)} target="_blank" rel="noopener noreferrer">Open source PDF at page {span.page}</a> · {pageLabel(span)}</p><pre>{#each corpusParts(passage, span) as part}{#if part.occurrence}<button type="button" class="term" data-occurrence-id={part.occurrence.id} aria-expanded={selectedOccurrence?.id === part.occurrence.id} onclick={(event) => selectOccurrence(part.occurrence!, event.currentTarget)}>{part.text}</button>{:else}{part.text}{/if}{/each}</pre></div>{/each}
+      {#each passage.segments[0].source_spans as span}<div class="source-page"><p><a href={sourceUrl(span.page)} target="_blank" rel="noopener noreferrer">Open source PDF at page {span.page}</a> · {pageLabel(span)}</p><!-- svelte-ignore a11y_no_noninteractive_tabindex (The source region scrolls from the keyboard.) -->
+        <pre tabindex="0" role="region" aria-label={`Source passage on page ${span.page}`}>{#each corpusParts(passage, span) as part}{#if part.occurrence}<button type="button" class="term" data-occurrence-id={part.occurrence.id} aria-controls={helpOpen ? 'reading-help-panel' : undefined} aria-expanded={selectedOccurrence?.id === part.occurrence.id} onclick={(event) => selectOccurrence(part.occurrence!, event.currentTarget)}>{part.text}</button>{:else}{part.text}{/if}{/each}</pre></div>{/each}
       <p class="boundary">The displayed source spans and occurrence literals match the frozen page extraction and joined passage hash. Candidate meanings and legal applicability remain unreviewed.</p>
       {#if targets.length}<h3>Exact cross-document references</h3><ul>{#each targets as target}<li><button type="button" onclick={() => openTarget(target)}>Open bound occurrence {target.occurrence_id} in {target.document_id}</button></li>{/each}</ul>{:else}<p>There is no exact cross-document occurrence target in this passage. Similar numbers or words are not linked by inference.</p>{/if}
-      {#if passage.segments.some(row => row.reference_list_segments.length)}<h3>Printed reference rows</h3><p>These rows are unresolved unless an exact bound body occurrence is named. Matching digits alone do not establish a link.</p><ul>{#each passage.segments.flatMap(row => row.reference_list_segments) as row}<li><button type="button" aria-expanded={selectedReference?.occurrence_id === row.occurrence_id} onclick={(event) => selectReference(row, event.currentTarget)}>{row.literal} · page {row.page}</button></li>{/each}</ul>{/if}
+      {#if passage.segments.some(row => row.reference_list_segments.length)}<h3>Printed reference rows</h3><p>These rows are unresolved unless an exact bound body occurrence is named. Matching digits alone do not establish a link.</p><ul>{#each passage.segments.flatMap(row => row.reference_list_segments) as row}<li><button type="button" data-reference-id={row.occurrence_id} aria-controls={helpOpen ? 'reading-help-panel' : undefined} aria-expanded={selectedReference?.occurrence_id === row.occurrence_id} onclick={(event) => selectReference(row, event.currentTarget)}>{row.literal} · page {row.page}</button></li>{/each}</ul>{/if}
     </section>
-    <aside class="help" aria-live="polite"><h2>Occurrence-scoped reading help</h2>{#if selectedReference}<p><strong>Printed reference row:</strong> {selectedReference.literal}</p><p>Page {selectedReference.page}, UTF-8 bytes {selectedReference.start_utf8}–{selectedReference.end_utf8}. Row status: {selectedReference.status}.</p><p>{selectedReference.body_occurrence_ids.length ? `${selectedReference.body_occurrence_ids.length} body occurrence IDs are declared; this view does not infer an unbound destination.` : 'Body pairing unresolved. No exact body occurrence ID is declared.'}</p>{#if selectedReference.target}<button type="button" onclick={() => openTarget(selectedReference!.target!)}>Open exact bound occurrence {selectedReference.target.occurrence_id} in {selectedReference.target.document_id}</button>{/if}<button type="button" onclick={closeReference}>Close reference row</button>{:else if selectedOccurrence}<p><strong>{selectedOccurrence.literal}</strong> · source page {selectedOccurrence.page} · {selectedOccurrence.role}. Literal status: {selectedOccurrence.status}.</p><button type="button" onclick={closeOccurrence}>Close reading help</button>{#if cards.length}{#each cards as card}<article><h3>{card.kind}</h3><p>Candidate status: <strong>{card.status}</strong>. This is not reviewed guidance.</p>{#if card.target}<p>Proposed citation destination: {card.target.manual || 'Manual not declared'} · {card.target.target_kind || 'target kind not declared'} {card.target.target_label || 'label not declared'}. This is a label for review, not a verified link or legal applicability finding.</p>{/if}{#if card.scope}<p>Proposed scope: {card.scope.target_document_id || 'Target document not declared'}; printed abbreviation source: {card.scope.source_table_document_ids?.join(', ') || 'not declared'}.</p>{/if}{#if cardExpansions(card).length}<p>Proposed expansion from the named printed table: {cardExpansions(card).join('; ')}. This meaning remains a candidate for the declared document scope.</p>{/if}{#if card.source_table_rows?.length}<details><summary>Proposed printed-table support</summary><ul>{#each card.source_table_rows as row}<li>{row.document_id}, page {row.page}: <q>{row.literal}</q>{#if row.expansion} → {row.expansion}{/if}. Table row status: {row.status}. This view has not independently loaded that table page.</li>{/each}</ul></details>{/if}</article>{/each}{:else}<p>No candidate card is attached to this exact occurrence.</p>{/if}{:else}<p>Select an underlined occurrence or a printed reference row.</p>{/if}</aside>
+    {#if helpOpen}
+    <div id="reading-help-panel" class="help" role="dialog" aria-modal="false" aria-labelledby="help-title">
+      <div class="help-heading"><h2 id="help-title">Occurrence-scoped reading help</h2><p aria-live="polite"><strong>{selectedOccurrence?.literal ?? selectedReference?.literal}</strong></p><button type="button" bind:this={helpClose} onclick={closeHelp}>{selectedReference ? 'Close reference row' : 'Close reading help'}</button></div>
+      {#key selectedOccurrence?.id ?? selectedReference?.occurrence_id}
+      <!-- svelte-ignore a11y_no_noninteractive_tabindex (The help region scrolls from the keyboard.) -->
+      <div class="help-body" tabindex="0" role="region" aria-label="Selected reference details">{#if selectedReference}<p><strong>Printed reference row:</strong> {selectedReference.literal}</p><p>Printed row ID: <code>{selectedReference.occurrence_id}</code>.</p><p>Page {selectedReference.page}, UTF-8 bytes {selectedReference.start_utf8}–{selectedReference.end_utf8}. Row status: {selectedReference.status}.</p><p>{selectedReference.body_occurrence_ids.length ? `${selectedReference.body_occurrence_ids.length} body occurrence IDs are declared; this view does not infer an unbound destination.` : 'Body pairing unresolved. No exact body occurrence ID is declared.'}</p>{#if selectedReference.target}<button type="button" onclick={() => openTarget(selectedReference!.target!)}>Open exact bound occurrence {selectedReference.target.occurrence_id} in {selectedReference.target.document_id}</button>{/if}{:else if selectedOccurrence}<p><strong>{selectedOccurrence.literal}</strong> · source page {selectedOccurrence.page} · {selectedOccurrence.role}. Literal status: {selectedOccurrence.status}.</p>{#if cards.length}{#each cards as card}<article><h3>{card.kind}</h3><p>Candidate status: <strong>{card.status}</strong>. This is not reviewed guidance.</p>{#if card.target}<p>Proposed citation destination: {card.target.manual || 'Manual not declared'} · {card.target.target_kind || 'target kind not declared'} {card.target.target_label || 'label not declared'}. This is a label for review, not a verified link or legal applicability finding.</p>{/if}{#if cardExpansions(card).length}<p>Proposed expansion from the named printed table: {cardExpansions(card).join('; ')}. This meaning remains a candidate for the declared document scope.</p>{/if}{#if card.scope}<p>Proposed scope: {card.scope.target_document_id || 'Target document not declared'}; printed abbreviation source: {card.scope.source_table_document_ids?.join(', ') || 'not declared'}.</p>{/if}{#if card.source_table_rows?.length}<details><summary>Proposed printed-table support</summary><ul>{#each card.source_table_rows as row}<li>{row.document_id}, page {row.page}: <q>{row.literal}</q>{#if row.expansion} → {row.expansion}{/if}. Table row status: {row.status}. This view has not independently loaded that table page.</li>{/each}</ul></details>{/if}</article>{/each}{:else}<p>No candidate card is attached to this exact occurrence.</p>{/if}<p>Occurrence ID: <code>{selectedOccurrence.id}</code> · UTF-8 bytes {selectedOccurrence.start_utf8}–{selectedOccurrence.end_utf8}.</p>{/if}</div>
+      {/key}
+    </div>
+    {/if}
+    <p class="help-prompt">Select an underlined occurrence or a printed reference row to open reading help.</p>
   {/if}
 </div>
 <style>
   :global(body){margin:0;font-family:system-ui,sans-serif;color:#173047;background:#f7fafc}:global(*){box-sizing:border-box}.shell{max-width:1200px;margin:auto;padding:1rem 1.5rem 4rem}a{color:#145a91}button,input,select{font:inherit}button{cursor:pointer;border:1px solid #315a72;border-radius:4px;background:#fff;padding:.4rem .6rem;color:#173047;text-align:left}button:hover,button[aria-current]{background:#d9edf7}button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid #e68720;outline-offset:2px}.loader{display:flex;flex-wrap:wrap;gap:.5rem;align-items:end;margin:1.25rem 0}.loader label{width:100%;font-weight:700}.loader input{width:min(100%,44rem)}input,select{border:1px solid #708b9c;border-radius:3px;padding:.45rem;background:white;max-width:100%}.picker,.passage,.help,details{border:1px solid #ccd7de;background:white;padding:1rem;margin:1rem 0}.picker ul{max-height:16rem;overflow:auto;list-style:none;padding:0}.picker li{margin:.35rem 0}.gap-pages li{margin:.4rem 0}.gap-pages a{display:inline-flex;align-items:center;min-height:32px;padding:4px 6px}.picker label{display:block;margin-top:.5rem;font-weight:700}.picker input{width:min(100%,35rem)}.segment{border-top:1px solid #ccd7de}.source-page{margin:1rem 0}.source-page pre{white-space:pre-wrap;overflow-wrap:anywhere;font:1rem/1.6 ui-monospace,monospace;background:#f0f4f6;padding:1rem;max-height:38rem;overflow:auto}.term{display:inline;border:0;border-bottom:2px dotted #005a9c;border-radius:0;background:#e8f3fa;padding:0 .05rem;font:inherit;white-space:inherit}.term[aria-expanded=true]{background:#ffdd00}.boundary{border-left:4px solid #1d70b8;padding:.6rem;background:#eef5fa}.error{border-left:4px solid #b12b2b;padding:.8rem;background:#fff1f0}code{overflow-wrap:anywhere}.help article{border-top:1px solid #ccd7de;margin-top:1rem}q{white-space:pre-wrap}
+  .help{position:fixed;z-index:10;display:flex;flex-direction:column;bottom:0;left:0;right:0;max-height:50vh;max-height:50dvh;margin:0;padding:0;border:2px solid #315a72;border-radius:8px 8px 0 0;box-shadow:0 -3px 18px #17304733;overflow:hidden;overflow-wrap:anywhere}.help-heading{flex:none;padding:.75rem 1rem;border-bottom:1px solid #ccd7de;background:#eef5fa}.help-heading h2{font-size:1.15rem;margin:0}.help-heading p{margin:.4rem 0;max-height:2.6em;overflow:hidden}.help-heading button{min-height:44px}.help-body{min-height:0;overflow:auto;overscroll-behavior:contain;padding:0 1rem 1rem}.help-body:focus-visible,.source-page pre:focus-visible{outline:3px solid #e68720;outline-offset:-3px}button[data-reference-id][aria-expanded=true]{background:#ffdd00}
+  @media(min-width:1100px){.shell{max-width:1440px}.passage,.help-prompt{margin-right:26rem}.help{top:1rem;bottom:auto;left:auto;right:max(1.5rem,calc((100vw - 1440px)/2 + 1.5rem));width:25rem;max-height:calc(100vh - 2rem);max-height:calc(100dvh - 2rem);border-radius:8px;box-shadow:0 3px 18px #17304733}}
+  @media(max-width:1099px){.term{scroll-margin-bottom:50vh}}
+  @media(max-width:600px){.shell{padding:1rem .75rem 4rem}.passage{padding:.75rem}.source-page pre{padding:.75rem}.help-heading{padding:.5rem .75rem}.help-body{padding:0 .75rem .75rem}}
 </style>
