@@ -9,10 +9,38 @@ export type LearningPresentation = {
   groups: { title: string; description: string; routes: string[] }[];
 };
 
+export type SemanticFacetPresentation = {
+  schema: 'okf-semantic-facets.v1';
+  facets: { key: string; label: string }[];
+};
+
 const plain = (value: unknown, max = 240): string =>
   typeof value === 'string' ? value.trim().slice(0, max) : '';
 const object = (value: unknown): Record<string, unknown> | null =>
   value && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : null;
+
+/** Facets are explicit bundle data; Explorer does not classify records. */
+export function semanticFacetPresentation(corpus: NormalizedCorpus | null): SemanticFacetPresentation | null {
+  const raw = object(corpus?.meta?.semantic_facet_presentation);
+  if (raw?.schema !== 'okf-semantic-facets.v1') return null;
+  const seen = new Set<string>();
+  const facets = (Array.isArray(raw.facets) ? raw.facets : []).slice(0, 12).flatMap(value => {
+    const entry = object(value), key = plain(entry?.key, 40), label = plain(entry?.label, 80);
+    if (!/^[a-z][a-z0-9_-]*$/.test(key) || ['type', 'trust', 'lifecycle', 'section', 'constructor', 'prototype'].includes(key) || !label || seen.has(key)) return [];
+    seen.add(key);
+    return [{ key, label }];
+  });
+  return facets.length ? { schema: 'okf-semantic-facets.v1', facets } : null;
+}
+
+export function semanticFacetValues(node: OkfNode, key: string): string[] {
+  const facets = object(node.semantic_facets);
+  if (!facets || !Object.hasOwn(facets, key)) return [];
+  const raw = facets[key];
+  return [...new Set((Array.isArray(raw) ? raw : [raw])
+    .filter((value): value is string => typeof value === 'string')
+    .map(value => plain(value, 160)).filter(Boolean))].slice(0, 40);
+}
 
 /** Opt-in presentation only: never infer domain meaning from paths or labels. */
 export function learningPresentation(corpus: NormalizedCorpus | null): LearningPresentation | null {
