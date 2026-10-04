@@ -1,5 +1,10 @@
 # Changelog
 
+## Declared semantic facets for small bundles — 4 October 2026
+
+- Let a small bundle supply explicit semantic facet labels and per-node values. Show them before source and review filters while keeping the existing learning presentation and default facets intact.
+- Keep classification with the producer and reject malformed or reserved facet keys and values.
+
 ## Facet touch targets and explicit reference destinations — 27 September 2026
 
 - Keep the compact facet bar proportional to declared counts while moving colour selection into a folded set of full-size, keyboard-operable controls. Preserve highlighted and unknown states, every labelled value in the expanded facet, and the existing multicolour release gate.
