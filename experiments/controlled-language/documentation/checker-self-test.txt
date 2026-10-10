@@ -1,0 +1,1 @@
+self-test OK: 12 violations in slop fixture, 0 in clean

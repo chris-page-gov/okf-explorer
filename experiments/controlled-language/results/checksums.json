@@ -1,0 +1,16 @@
+{
+  "baseline.txt": "76b790cfba4de056ada5ad2cecb5a824974845bf6ab97bcc7448bfe17e2b6590",
+  "baseline.request.json": "fca3b9c7c816662ff285171243bc777c0d27bbeec3ce90132a6d0fe86e84a5fc",
+  "baseline.checker.raw.json": "2534c71d44e2d68f6a50ade806fd1d29e8f4c593b0f8440f81a34f5d93613bcc",
+  "baseline.evaluation.json": "fe9ddc977864a8ebe915330f2aacffe553c4888f33e0c4293f955c83df18abce",
+  "ste-inspired.txt": "df1e54433f5ea8d476e07299d1a8d10f54c454e8795661334a00e5f0bea402fa",
+  "ste-inspired.request.json": "8620dc42303dc311edd726ae61444643fe040ed285ecb397ad8bbe78967df65b",
+  "ste-inspired.checker.raw.json": "a45d3894152e405223d7d8d309598f78942ec8fc072abe25e31bf8967cfbb63c",
+  "ste-inspired.evaluation.json": "325a503bad8ccc1370fa0e4b2cf853cecd3ac1b8681c2d75bbd509da40a549c4",
+  "controlled.txt": "b9b895a288ed5bda6b77735cd6c3e9ce3bdd5e64dc896d144090055508e5747d",
+  "controlled.request.json": "c70250c97779176f8c07ad60a96a2aea6983ed1b10519aa340c330a25c627136",
+  "controlled.checker.raw.json": "15ad327189c3b3abfc1e6026fa3bd982a5ac7458bf1e10489168a91348eaf1e2",
+  "controlled.evaluation.json": "f1b2c05eca884d116bf905e5c1fc09bcc7bb3fcb54ded350661b8b78f45fa384",
+  "loop.json": "ae692692203b1fc6444784b19c06e620db9d8314588a54e74a12fd1f102b5d00",
+  "summary.json": "503ae57f9642dcff44d86e58be6aa1403eece3acb8a5e96342b46a78868a8d83"
+}
