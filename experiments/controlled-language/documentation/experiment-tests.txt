@@ -1,0 +1,19 @@
+✔ all three requests bind identical whole evidence and leave the source untouched (2.291709ms)
+✔ real Explorer assembly and A–H assessment remain unchanged by the optional adapter (11.803083ms)
+✔ changed evidence cannot enter the same revision loop (1.298167ms)
+✔ clean heuristic output can coexist with failed semantic development checks (82.9275ms)
+✔ qualification, dates, care component, negation and citations have independent mutation controls (0.51525ms)
+✔ signal coverage never becomes semantic or legal acceptance (0.083042ms)
+✔ checker flags legal may as a heuristic finding and bounds input (62.649125ms)
+✔ offline feedback replay stops at a harmful revision and never accepts an explanation (95.74425ms)
+✔ frozen inputs verify and full experiment reproduces the retained receipts byte for byte (106.96ms)
+✔ source or checker tampering is rejected before measurements (2.65875ms)
+✔ imported responses bind prompt, evidence and output bytes without inventing model trials (72.858958ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 514.747208

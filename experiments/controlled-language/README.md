@@ -6,6 +6,12 @@ retains source and transformation provenance. Read the
 [findings and limits](../../docs/controlled-language-experiment.md) and the
 [recovered handover](CODEX_HANDOVER_ASD_STE100_OKF.md).
 
+The [illustrated report](documentation/report.md) covers every deliverable,
+evaluation and next steps. A [Word copy](documentation/controlled-language-experiment-report.docx)
+embeds all 17 screenshots. The [capture manifest](documentation/screenshots/manifest.json)
+retains image and source-view hashes. Screenshots show a local documentation
+viewer, with unimplemented proposals labelled clearly.
+
 The retained explanations are offline illustrative fixtures with
 model-assisted authorship. No live model trial or human comprehension test
 was run. No explanation has independent semantic acceptance.

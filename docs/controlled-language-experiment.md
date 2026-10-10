@@ -4,6 +4,13 @@ Status: isolated research prototype, 10 October 2026. The DWP example is an
 independent experiment. It is not official guidance or an individual
 entitlement decision.
 
+The [screenshot report](../experiments/controlled-language/documentation/report.md)
+documents all 14 deliverables and the terminology, MCP and extraction proposals,
+with 17 real Chrome screenshots, an overall evaluation and sequenced next steps.
+Download the [Word report](../experiments/controlled-language/documentation/controlled-language-experiment-report.docx)
+for an illustrated review copy. The screenshots show retained files in a local
+documentation viewer; they do not imply a shipped Explorer feature.
+
 The prototype separates language measurements from evidence fidelity. It
 prepares three optional rendering requests after Explorer or Ask OKF has
 assembled evidence. Each request contains the same complete evidence and a

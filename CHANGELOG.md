@@ -5,6 +5,7 @@
 - Add an isolated, optional request adapter for frozen Explorer/Ask OKF evidence, using the existing DWP disabled-child/date scenario and unchanged source provenance.
 - Retain a pinned MIT heuristic checker, three explicitly illustrative explanations, raw measurements, independent development checks and a bounded feedback replay. Keep complete semantic acceptance and human comprehension unverified.
 - Provide request preparation and response import for later trials, with exact input/output identities, mutation controls and CI reproduction. See the [findings and limits](docs/controlled-language-experiment.md).
+- Document all 14 deliverables and three research proposals in an [illustrated report](experiments/controlled-language/documentation/report.md), with 17 browser screenshots, a Word review copy, capture provenance, evaluation and sequenced next steps.
 
 ## Declared semantic facets for small bundles — 4 October 2026
 

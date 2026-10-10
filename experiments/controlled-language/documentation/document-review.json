@@ -1,0 +1,23 @@
+{
+  "schema": "okf-experiment-document-review.v1",
+  "reviewed_on": "2026-10-10",
+  "document": "controlled-language-experiment-report.docx",
+  "document_sha256": "e32da50f60bcd5a2c2ffd323223e94a637a78ff4fe10d5c10cb4c41cb8c1221c",
+  "markdown": "report.md",
+  "markdown_sha256": "e7846ef41d79d12e7df9cda18cdf88d3266bbb4608db8544494c25dbc53e8cc8",
+  "rendered_pages": 20,
+  "screenshots": 17,
+  "visual_review": "All 20 rendered page PNGs inspected; no clipping, overlap, missing screenshots or broken pagination observed.",
+  "capture_hash_validation": "passed for all 17 PNG and HTML pairs",
+  "british_english": "passed for report and affected prose",
+  "experiment_tests": {
+    "passed": 11,
+    "failed": 0
+  },
+  "publication_checks": "all eight required checks passed",
+  "site_audit": {
+    "reading_pages": 388,
+    "links": 9469
+  },
+  "limits": "No independent semantic acceptance, live model trial, human comprehension study, merge or deployment."
+}
