@@ -94,6 +94,10 @@ jobs:
         run: pnpm exec vitest run src/lib/context/context.test.ts src/lib/context/allocation.test.ts
       - name: Execute independent contract and assessor controls
         run: uv run --locked python -m unittest tests.test_context_assembly -v
+      - name: Check the isolated controlled-language experiment and retained measurements
+        run: |
+          uv run --locked python experiments/controlled-language/vendor/ste_lint.py --self-test
+          node --test tests/controlled_language.test.mjs
       - name: Reject modified or unbounded archived comparison inputs
         run: node --test validation/context-allocation/2026-09-21/admission.test.mjs
       - name: Verify retained evidence archives and fail-closed delivery

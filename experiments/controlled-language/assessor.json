@@ -1,0 +1,137 @@
+{
+  "schema": "okf-controlled-language-assessor.v1",
+  "status": "authored unreviewed development checks; never supplied to renderer",
+  "method": "case-insensitive regex signals in derived prose; not a semantic proof",
+  "requirements": [
+    {
+      "id": "event_dates",
+      "dimension": "dates",
+      "stage": "B",
+      "all": [
+        "26 January 2025",
+        "28 March 2026"
+      ],
+      "basis": "participant question uc-dla-001"
+    },
+    {
+      "id": "care_component",
+      "dimension": "actors-actions",
+      "stage": "B",
+      "all": [
+        "highest.rate.*care",
+        "not highest.rate mobility|not merely.*mobility"
+      ],
+      "basis": "F1123 [F1-18] and case scope"
+    },
+    {
+      "id": "conditional_scope",
+      "dimension": "conditions-modality",
+      "stage": "G",
+      "all": [
+        "If[^.]*UC[^.]*responsibility[^.]*other[^.]*conditions[^.]*A4361 governs"
+      ],
+      "basis": "existing out-of-sample conditional_source_reading; no unconditional legal conclusion"
+    },
+    {
+      "id": "event_period",
+      "dimension": "temporal-relationships",
+      "stage": "B",
+      "all": [
+        "first day of the assessment period containing 26 January 2025"
+      ],
+      "basis": "conditional source-guided interpretation, not independent legal review"
+    },
+    {
+      "id": "late_exception",
+      "dimension": "exceptions",
+      "stage": "B",
+      "all": [
+        "A4352|ordinary late.notification",
+        "exceptions",
+        "A4361 covers another relevant benefit|A4361[^.]*another relevant benefit"
+      ],
+      "basis": "A4352 and A4361 [A4-34] [A4-36]"
+    },
+    {
+      "id": "unknown_boundaries",
+      "dimension": "uncertainty",
+      "stage": "H",
+      "all": [
+        "assessment.period boundaries[^.]*unknown",
+        "award history"
+      ],
+      "basis": "missing facts in participant question"
+    },
+    {
+      "id": "carer_examples",
+      "dimension": "qualifications",
+      "stage": "G",
+      "all": [
+        "examples concern the carer element",
+        "do not establish a disabled.child determination"
+      ],
+      "basis": "case limitations; A4361 examples concern carer element"
+    },
+    {
+      "id": "historical_review",
+      "dimension": "qualifications",
+      "stage": "G",
+      "all": [
+        "Historical statutory applicability and independent specialist review remain unestablished"
+      ],
+      "basis": "existing DWP acceptance boundary"
+    },
+    {
+      "id": "historical_amount",
+      "dimension": "amounts",
+      "stage": "G",
+      "all": [
+        "rates table does not establish the amount applicable in January 2025",
+        "Do not calculate arrears"
+      ],
+      "basis": "F1-18 rates table cannot establish historical rates"
+    },
+    {
+      "id": "authority",
+      "dimension": "negation",
+      "stage": "G",
+      "all": [
+        "unreviewed machine extraction and project interpretation",
+        "not an individual entitlement decision"
+      ],
+      "basis": "DWP working agreements and extraction review status"
+    }
+  ],
+  "citations": [
+    "A4-34",
+    "A4-36",
+    "A4-37",
+    "F1-17",
+    "F1-18"
+  ],
+  "forbidden": [
+    {
+      "id": "notification_substitution",
+      "pattern": "(?:start|effective date|first assessment period)[^.]{0,35}(?:is|from|begins|starts)[^.]{0,20}28 March 2026",
+      "basis": "critical error: substituting notification date without exception"
+    },
+    {
+      "id": "invented_period",
+      "pattern": "assessment period (?:starts|begins|runs) (?:on |from )?[0-9]",
+      "basis": "question does not supply AP boundaries"
+    },
+    {
+      "id": "rate_calculation",
+      "pattern": "(?:pay|receive|entitled to)[^.]{0,30}£[0-9]",
+      "basis": "no individual award calculation or historical rates established"
+    }
+  ],
+  "not_measured": [
+    "complete semantic preservation",
+    "human comprehension",
+    "causal relationships",
+    "general machine interpretation",
+    "independent legal correctness",
+    "unsupported claims outside these declared patterns"
+  ]
+}
