@@ -49,7 +49,7 @@
     }
   },
   "dependencies": {
-    "pdfjs-dist": "6.3.289",
+    "pdfjs-dist": "6.4.299",
     "yaml": "^2.9.1"
   }
 }
