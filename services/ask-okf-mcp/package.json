@@ -19,7 +19,7 @@
     "zod": "4.6.5"
   },
   "devDependencies": {
-    "@modelcontextprotocol/client": "2.0.0",
+    "@modelcontextprotocol/client": "2.3.0",
     "@modelcontextprotocol/sdk": "1.30.0",
     "@types/node": "22.18.6",
     "esbuild": "0.28.2",
