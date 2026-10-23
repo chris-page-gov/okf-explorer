@@ -17,7 +17,7 @@ PACKAGE_BUILD_PROOF = (
     / "scripts"
     / "check_deterministic_build.mjs"
 )
-SVELTE_CONFIG = ROOT / "apps" / "okf-explorer" / "svelte.config.js"
+SVELTE_CONFIG = ROOT / "apps" / "okf-explorer" / "vite.config.ts"
 CI_WORKFLOW = ROOT / ".github" / "workflows" / "okf-explorer-ci.yml"
 PAGES_WORKFLOW = ROOT / ".github" / "workflows" / "pages.yml"
 SEMANTIC_CONTRACT = ROOT / "okf.semantic.json"

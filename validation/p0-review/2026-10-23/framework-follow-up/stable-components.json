@@ -1,0 +1,241 @@
+{
+  "observed_at": "2026-10-23T22:37:51Z",
+  "scope": "Bounded direct framework, browser, test, transport and toolchain release-currency review. Stable registry tags and official release indexes; not a claim that every transitive package or historical research pin is current.",
+  "rows": [
+    {
+      "component": "SvelteKit",
+      "baseline": "2.70.3",
+      "selected": "3.1.0",
+      "latest": "3.1.0",
+      "disposition": "Update",
+      "reason": "Current stable release; retain the reviewed Kit 3 migration.",
+      "source": "https://registry.npmjs.org/%40sveltejs%2Fkit"
+    },
+    {
+      "component": "Svelte",
+      "baseline": "5.57.1",
+      "selected": "5.57.2",
+      "latest": "5.57.2",
+      "disposition": "Update",
+      "reason": "Compatible patch in the existing major line.",
+      "source": "https://registry.npmjs.org/svelte"
+    },
+    {
+      "component": "Static adapter",
+      "baseline": "3.0.10",
+      "selected": "4.0.0",
+      "latest": "4.0.0",
+      "disposition": "Update",
+      "reason": "Required compatible adapter for Kit 3.",
+      "source": "https://registry.npmjs.org/%40sveltejs%2Fadapter-static"
+    },
+    {
+      "component": "Svelte Vite plugin",
+      "baseline": "7.3.1",
+      "selected": "7.3.1",
+      "latest": "7.3.1",
+      "disposition": "Retain",
+      "reason": "Already current stable.",
+      "source": "https://registry.npmjs.org/%40sveltejs%2Fvite-plugin-svelte"
+    },
+    {
+      "component": "Vite",
+      "baseline": "8.3.3",
+      "selected": "8.3.5",
+      "latest": "8.3.5",
+      "disposition": "Update",
+      "reason": "Compatible patch in the existing major line.",
+      "source": "https://registry.npmjs.org/vite"
+    },
+    {
+      "component": "Svelte checker",
+      "baseline": "4.7.6",
+      "selected": "4.7.7",
+      "latest": "4.7.7",
+      "disposition": "Update",
+      "reason": "Compatible patch; published TypeScript peers remain 5.x or 6.x.",
+      "source": "https://registry.npmjs.org/svelte-check"
+    },
+    {
+      "component": "Vitest and coverage",
+      "baseline": "4.1.12",
+      "selected": "4.1.12",
+      "latest": "5.0.5",
+      "disposition": "Proposed",
+      "reason": "Retain the supported V4 tag; assess the coupled major upgrade separately.",
+      "source": "https://registry.npmjs.org/vitest"
+    },
+    {
+      "component": "Application TypeScript",
+      "baseline": "6.0.3",
+      "selected": "6.0.3",
+      "latest": "7.0.2",
+      "disposition": "Proposed",
+      "reason": "Kit 3.1 and the current checker require TypeScript 6; do not force a peer-incompatible major.",
+      "source": "https://registry.npmjs.org/typescript"
+    },
+    {
+      "component": "Service TypeScript",
+      "baseline": "7.0.2",
+      "selected": "7.0.2",
+      "latest": "7.0.2",
+      "disposition": "Retain",
+      "reason": "Already current stable in its separate service toolchain.",
+      "source": "https://registry.npmjs.org/typescript"
+    },
+    {
+      "component": "PDF.js",
+      "baseline": "6.4.299",
+      "selected": "6.4.299",
+      "latest": "6.4.299",
+      "disposition": "Retain",
+      "reason": "Already current stable.",
+      "source": "https://registry.npmjs.org/pdfjs-dist"
+    },
+    {
+      "component": "Playwright",
+      "baseline": "1.64.1",
+      "selected": "1.64.1",
+      "latest": "1.64.1",
+      "disposition": "Retain",
+      "reason": "Already current stable; do not select next or beta tags.",
+      "source": "https://registry.npmjs.org/%40playwright%2Ftest"
+    },
+    {
+      "component": "axe browser checks",
+      "baseline": "4.14.0",
+      "selected": "4.14.0",
+      "latest": "4.14.0",
+      "disposition": "Retain",
+      "reason": "Already current stable.",
+      "source": "https://registry.npmjs.org/%40axe-core%2Fplaywright"
+    },
+    {
+      "component": "YAML parser",
+      "baseline": "2.9.1",
+      "selected": "2.9.1",
+      "latest": "2.9.1",
+      "disposition": "Retain",
+      "reason": "Already current stable; 3.0.0-2 is a prerelease.",
+      "source": "https://registry.npmjs.org/yaml"
+    },
+    {
+      "component": "MCP Node adapter",
+      "baseline": "2.0.0",
+      "selected": "2.0.0",
+      "latest": "2.1.2",
+      "disposition": "Proposed",
+      "reason": "Assess with the server/client pair as one transport update.",
+      "source": "https://registry.npmjs.org/%40modelcontextprotocol%2Fnode"
+    },
+    {
+      "component": "MCP server",
+      "baseline": "2.3.1",
+      "selected": "2.3.1",
+      "latest": "2.4.0",
+      "disposition": "Proposed",
+      "reason": "Retain the reviewed adapter and replay baseline during P0; assess the coupled pair separately.",
+      "source": "https://registry.npmjs.org/%40modelcontextprotocol%2Fserver"
+    },
+    {
+      "component": "MCP client",
+      "baseline": "2.3.0",
+      "selected": "2.3.0",
+      "latest": "2.4.0",
+      "disposition": "Proposed",
+      "reason": "Keep paired transport regression evidence before adopting this release.",
+      "source": "https://registry.npmjs.org/%40modelcontextprotocol%2Fclient"
+    },
+    {
+      "component": "Legacy MCP test SDK",
+      "baseline": "1.32.0",
+      "selected": "1.32.0",
+      "latest": "1.32.2",
+      "disposition": "Proposed",
+      "reason": "Include in the bounded transport refresh; its vulnerable URI dependency is corrected now.",
+      "source": "https://registry.npmjs.org/%40modelcontextprotocol%2Fsdk"
+    },
+    {
+      "component": "Zod",
+      "baseline": "4.6.7",
+      "selected": "4.6.7",
+      "latest": "4.6.7",
+      "disposition": "Retain",
+      "reason": "Already patched and current stable.",
+      "source": "https://registry.npmjs.org/zod"
+    },
+    {
+      "component": "Service esbuild",
+      "baseline": "0.28.2",
+      "selected": "0.28.2",
+      "latest": "0.28.2",
+      "disposition": "Retain",
+      "reason": "Already current stable.",
+      "source": "https://registry.npmjs.org/esbuild"
+    },
+    {
+      "component": "fast-uri",
+      "baseline": "3.1.8",
+      "selected": "3.1.9",
+      "latest": "4.2.3",
+      "disposition": "Update",
+      "reason": "Use the current patched three tag, compatible with Ajv; the latest major is not required.",
+      "source": "https://registry.npmjs.org/fast-uri"
+    },
+    {
+      "component": "Rolldown",
+      "baseline": "1.2.9",
+      "selected": "1.2.9",
+      "latest": "1.2.15",
+      "disposition": "Proposed",
+      "reason": "Retain the explicitly reviewed native bundler override; assess a dedicated patch change.",
+      "source": "https://registry.npmjs.org/rolldown"
+    },
+    {
+      "component": "pnpm",
+      "baseline": "10 / local 10.33.2",
+      "selected": "10.34.7",
+      "latest": "12.15.0",
+      "disposition": "Update",
+      "reason": "Pin the current latest-10 patch; retain the governed major and lockfile format.",
+      "source": "https://registry.npmjs.org/pnpm"
+    },
+    {
+      "component": "Node LTS",
+      "baseline": "24 (floating)",
+      "selected": "24.22.1",
+      "latest": "24.22.1 in 24.x",
+      "disposition": "Update",
+      "reason": "Pin the current security release in the existing LTS line.",
+      "source": "https://nodejs.org/dist/index.json"
+    },
+    {
+      "component": "Node Current test jobs",
+      "baseline": "26.7.0",
+      "selected": "26.12.1",
+      "latest": "26.12.1 in 26.x",
+      "disposition": "Update",
+      "reason": "Replace the older explicit pin with the current security release; retain the existing two-line CI coverage.",
+      "source": "https://nodejs.org/dist/index.json"
+    },
+    {
+      "component": "CPython",
+      "baseline": "3.12.11",
+      "selected": "3.12.11",
+      "latest": "3.15.1 overall; 3.12.15 in 3.12",
+      "disposition": "Proposed",
+      "reason": "The supplied repository instructions require the exact governed runtime. Prioritise a separate patch-policy transaction to 3.12.15 before considering another minor.",
+      "source": "https://www.python.org/doc/versions/"
+    },
+    {
+      "component": "uv",
+      "baseline": "0.12.2",
+      "selected": "0.12.2",
+      "latest": "0.13.5 overall; 0.12.24 in 0.12",
+      "disposition": "Proposed",
+      "reason": "Retain the explicit required-version and setup contract. Assess the 0.12.24 patch with the governed Python transaction; a 0.13 upgrade can change behaviour.",
+      "source": "https://pypi.org/pypi/uv/json"
+    }
+  ],
+  "baseline_commit": "abc26ef2fef55bcc63f5e6ceb04d781f13c01654"
+}

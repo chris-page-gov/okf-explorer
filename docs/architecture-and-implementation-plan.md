@@ -114,7 +114,8 @@ An Explorer merge does not update a separately hosted MCP service. Use its
 ## Priorities and delivery order
 
 The [P0 review](p0-implementation-review-2026-10-23.md) has completed its source
-review and implemented six corrections; exact-candidate assurance and
+review and implemented six initial corrections, followed by three dependency/toolchain
+corrections from the post-merge refresh and stable-component check; exact-candidate assurance and
 publication use required CI and deployment gates. B–F remain **proposed**.
 Owner roles below are responsibilities to assign, not named appointments.
 P1 establishes one dependable domain and client journey. P2
@@ -132,6 +133,9 @@ tests reuse and authoring usability. P3 retains bounded research options.
 ### A. Review the whole implementation through its boundaries
 
 **Source review completed:** see the [findings, corrections and limits](p0-implementation-review-2026-10-23.md).
+The [stable component review](stable-component-review-2026-10-23.md) records
+the selected stable releases and the separately proposed toolchain and
+transport maintenance. Those proposals do not extend this P0 implementation.
 The following scope and gates govern the baseline review. Review the whole first-party
 implementation in bounded workstreams, then test the interfaces between them.
 Recent PR reviews and green checks are useful inputs; they do not replace a

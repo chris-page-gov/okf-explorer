@@ -1,0 +1,24 @@
+{
+  "candidate": "ef185bd514bfaa7fb342016d7d888f12a1eac987",
+  "status": "Unmerged Kit 3.0 candidate superseded by stable Kit 3.1; local evidence passed, incomplete CI cancelled.",
+  "preserved": [
+    {
+      "source": "evaluation-foundry/fixtures/heritage-warwickshire/evidence/local-candidate-receipt.json",
+      "destination": "validation/p0-review/2026-10-23/framework-follow-up/superseded-kit-3.0.0/local-candidate-receipt.json",
+      "bytes": 6430,
+      "sha256": "d9a97eb51caa02a2078a151bfec7fada9a2a53b21c90af00754b061e4c1a0733"
+    },
+    {
+      "source": "evaluation-foundry/fixtures/heritage-warwickshire/evidence/receipts/local-journey-results.json.gz",
+      "destination": "validation/p0-review/2026-10-23/framework-follow-up/superseded-kit-3.0.0/local-journey-results.json.gz",
+      "bytes": 6433,
+      "sha256": "9872d472406059ee5a98f4b01766584dc2597f64b24d8b0cd108525ac593a28f"
+    },
+    {
+      "source": "evaluation-foundry/fixtures/heritage-warwickshire/evidence/receipts/question-suite-results.json.gz",
+      "destination": "validation/p0-review/2026-10-23/framework-follow-up/superseded-kit-3.0.0/question-suite-results.json.gz",
+      "bytes": 12181,
+      "sha256": "a03937cb9886fc73bc9c0719dd76d1036e300602d01f16882cf850bd81bb4b9e"
+    }
+  ]
+}

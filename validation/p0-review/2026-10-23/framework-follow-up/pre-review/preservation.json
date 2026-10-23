@@ -1,0 +1,24 @@
+{
+  "baseline": "abc26ef2fef55bcc63f5e6ceb04d781f13c01654",
+  "algorithm": "sha256",
+  "preserved": [
+    {
+      "source": "evaluation-foundry/fixtures/heritage-warwickshire/evidence/local-candidate-receipt.json",
+      "destination": "validation/p0-review/2026-10-23/framework-follow-up/pre-review/local-candidate-receipt.json",
+      "bytes": 6430,
+      "sha256": "a4698294f073fa5f1bd15fb6152e2bd7639f17b0cdc935ab10573c689db788bb"
+    },
+    {
+      "source": "evaluation-foundry/fixtures/heritage-warwickshire/evidence/receipts/local-journey-results.json.gz",
+      "destination": "validation/p0-review/2026-10-23/framework-follow-up/pre-review/local-journey-results.json.gz",
+      "bytes": 6437,
+      "sha256": "9f1065196512a96e77038a3efa029b95ae2ab1cad8dc7b04074c913d30a6e90e"
+    },
+    {
+      "source": "evaluation-foundry/fixtures/heritage-warwickshire/evidence/receipts/question-suite-results.json.gz",
+      "destination": "validation/p0-review/2026-10-23/framework-follow-up/pre-review/question-suite-results.json.gz",
+      "bytes": 12189,
+      "sha256": "38a4ff3ab4b9be6dad8281d64202d652f4a26ea8f734817d7953605c65835c16"
+    }
+  ]
+}
