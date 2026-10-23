@@ -114,7 +114,7 @@ An Explorer merge does not update a separately hosted MCP service. Use its
 ## Priorities and delivery order
 
 The [P0 review](p0-implementation-review-2026-10-23.md) has completed its source
-review and implemented five corrections; exact-candidate assurance and
+review and implemented six corrections; exact-candidate assurance and
 publication use required CI and deployment gates. B–F remain **proposed**.
 Owner roles below are responsibilities to assign, not named appointments.
 P1 establishes one dependable domain and client journey. P2

@@ -4,6 +4,9 @@ The [P0 implementation review](p0-implementation-review-2026-10-23.md) records
 the October baseline and corrections. Compatibility-app caches are isolated by
 worker registration scope; invalid saved pins fall back to an empty selection.
 The viewer generator escapes source text before embedding its graph in HTML.
+The Python lock also retains reviewed security floors for Pillow, certifi,
+multidict and urllib3; update the constraints and evidence together when those
+dependencies change. Pillow 13 is a development-tool dependency.
 
 For contributors maintaining this repository. For a personal learning collection,
 use [the separate teaching builder](onboarding/first-bundle.md).

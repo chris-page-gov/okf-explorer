@@ -17,6 +17,16 @@ from ruamel.yaml import YAML  # noqa: E402
 
 
 class UvToolchainTests(unittest.TestCase):
+    def test_resolved_dependencies_meet_reviewed_security_floors(self) -> None:
+        lock = tomllib.loads((ROOT / "uv.lock").read_text(encoding="utf-8"))
+        versions = {item["name"]: item["version"] for item in lock["package"] if "version" in item}
+        floors = {"pillow": (13, 0, 0), "certifi": (2026, 10, 19),
+                  "multidict": (6, 9, 1), "urllib3": (2, 8, 0)}
+        for name, minimum in floors.items():
+            with self.subTest(package=name):
+                actual = tuple(int(part) for part in versions[name].split("."))
+                self.assertGreaterEqual(actual, minimum)
+
     def test_governed_versions_and_lock_are_exact(self) -> None:
         project = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
         self.assertEqual("3.12.11", (ROOT / ".python-version").read_text().strip())

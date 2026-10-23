@@ -45,7 +45,8 @@
       "reviewers": "lead and independent input/build reviewer",
       "depth": "central parser/generator/cache/receipt/CI boundary review; deterministic contracts",
       "finding_ids": [
-        "R4"
+        "R4",
+        "R6"
       ],
       "files": 94,
       "lines": 55977

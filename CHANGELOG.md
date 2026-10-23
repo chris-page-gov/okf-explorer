@@ -2,13 +2,16 @@
 
 ## P0 implementation review and corrections — 23 October 2026
 
-- Record the whole-implementation boundary review, coverage inventory and five
+- Record the whole-implementation boundary review, coverage inventory and six
   validated findings alongside the updated architecture plan.
 - Reject evidence redirects before following them, bound workbench requests
   and preserve caller cancellation. Isolate compatibility worker caches and
   tolerate malformed or unavailable saved pins.
 - Escape embedded viewer JSON without changing its source graph, and pin the
   service's patched Zod 4.6.7 dependency.
+- Address the 44 Python lockfile alerts with targeted Pillow, certifi,
+  multidict and urllib3 updates, resolution constraints and rollback guards.
+  Keep the governed Python and uv versions unchanged.
 - Add regression controls and preserve the previous build-bound Heritage
   evidence before refreshing candidate assurance. Independent service hosting,
   domain acceptance and AI-client compatibility retain separate gates.

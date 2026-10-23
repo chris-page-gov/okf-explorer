@@ -4,7 +4,7 @@ Review date: 23 October 2026. Executable baseline:
 `460f7245352e5d1e407d37e9d40a9b2b6b55ee0a`.
 Architecture-plan commit `d1fceb23` changes documentation only.
 
-Status: source review completed; five validated findings corrected. Candidate
+Status: source review completed; six validated findings corrected. Candidate
 acceptance and publication remain bound to exact pull-request checks and
 deployment receipts. This is a risk-based integration review of the whole
 implementation, not an exhaustive line-by-line audit or certification.
@@ -34,7 +34,7 @@ every line.
 | Workbench, reading help, passage review and PDF | Fetch/parse/render/export boundaries and source-bound negative controls; R1; proposal adoption remains separate |
 | Reader, navigation, persistence and specialist views | Rendering sinks, URL/state and storage boundaries, existing component/browser coverage; R3; human accessibility and comprehension excluded |
 | Compatibility app, service worker and generated viewer | Startup, cache lifecycle and embedded-graph serialisation review; R2–R4 |
-| Semantic generators, Foundry, evaluation and publication | Central parser/validators, source/projection boundaries, cache/receipt/promotion logic, impact routing and CI; existing deterministic contracts; no additional validated finding |
+| Semantic generators, Foundry, evaluation and publication | Central parser/validators, source/projection boundaries, cache/receipt/promotion logic, impact routing and CI; existing deterministic contracts; R6 in the governed Python dependency lock |
 | Isolated controlled-language research | Reuse the unchanged #163 review boundary and reproduce its offline controls; no live model or compliance claim |
 
 ## Findings and corrections
@@ -109,6 +109,28 @@ identities, rebuild and run both SDK generations and Worker checks. The
 post-update audit reports no known vulnerabilities. This source merge does not
 redeploy the independently hosted service; its [deployment record](remote-mcp-publication.md)
 retains its original scope.
+
+### R6 — Python lockfile retains versions affected by 44 alerts
+
+Priority: P1 dependency remediation. GitHub reported 44 open version alerts
+against `uv.lock`, covering Pillow, certifi, multidict and urllib3, including
+critical and high severities. These are dependency advisories, not a claim that
+this review exploited the application. See the bounded
+[alert and version comparison](../validation/p0-review/2026-10-23/python-advisories.json).
+
+Correction: allow Pillow 13 in the development dependency group and update
+only those four locked packages. Retain CPython 3.12.11, uv 0.12.2 and the
+other resolved dependencies. Keep multidict on its patched 6.x line. Declare
+resolution constraints and test the reviewed minimum versions so a later lock
+refresh cannot silently reintroduce these versions. Rerun deterministic Python
+and publication checks; current-head CI remains the merge gate.
+
+The [Pillow 13 release notes](https://pillow.readthedocs.io/en/stable/releasenotes/13.0.0.html)
+and the [certifi](https://github.com/advisories/GHSA-6q48-6c7w-9gw2),
+[multidict](https://github.com/advisories/GHSA-54p9-h82j-f925) and
+[urllib3](https://github.com/advisories/GHSA-vxq7-64xx-v4gw) advisories support
+the reviewed update boundaries. The comparison covers the retained alert set;
+GitHub's default-branch alert state updates separately after merge.
 
 ## Assurance and release gate
 
