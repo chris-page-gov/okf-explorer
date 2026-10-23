@@ -1,0 +1,68 @@
+{
+  "okf_version": "0.2",
+  "meta": {
+    "default_corpus": "example",
+    "title": "Foundry facet regression fixture",
+    "learning_presentation": {
+      "schema": "okf-learning-presentation.v1",
+      "start_route": "records/access.md",
+      "title": "Find a record",
+      "introduction": "Synthetic facet validation fixture.",
+      "facets": [
+        {
+          "key": "topic",
+          "label": "Topic"
+        },
+        {
+          "key": "audience",
+          "label": "For whom"
+        }
+      ],
+      "groups": [
+        {
+          "title": "Records",
+          "description": "Two synthetic records.",
+          "routes": [
+            "records/access.md",
+            "records/provenance.md"
+          ]
+        }
+      ]
+    }
+  },
+  "corpora": {
+    "example": {
+      "id": "example",
+      "title": "Foundry facet regression fixture",
+      "nodes": {
+        "records/access.md": {
+          "id": "records/access.md",
+          "type": "Note",
+          "title": "Access",
+          "learning_facets": {
+            "topic": [
+              "Access"
+            ],
+            "audience": [
+              "Reader"
+            ]
+          }
+        },
+        "records/provenance.md": {
+          "id": "records/provenance.md",
+          "type": "Note",
+          "title": "Provenance",
+          "learning_facets": {
+            "topic": [
+              "Provenance"
+            ],
+            "audience": [
+              "Steward"
+            ]
+          }
+        }
+      },
+      "relationships": []
+    }
+  }
+}

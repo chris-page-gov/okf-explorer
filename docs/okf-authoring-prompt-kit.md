@@ -295,6 +295,16 @@ The evidence and decision record for the new label, linkability and
 exploratory-stage controls is
 [Review of the OKF authoring methodology](okf-authoring-methodology-review-2026-08-12.md).
 
+## Required domain facets
+
+Every new Foundry bundle must pass the [facet contract and build
+gate](foundry-facets.md), including prototypes. The warm-up defines at least two
+task-based dimensions in `presentation_contract.domain_facets`; the builder
+classifies every record, emits supported consumer declarations and runs
+`scripts/check_foundry_facets.py` on actual producer bytes. Generic Reader fields
+alone are insufficient. Retain its digest-bound receipt and actual-consumer
+filtering evidence before accepting the build.
+
 ## Quick Start
 
 1. Copy the warm-up prompt and fill in its run inputs.

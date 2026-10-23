@@ -52,6 +52,20 @@ The builder consumes an approved, hash-locked profile and:
 
 This keeps research decisions reviewable and prevents implementation drift.
 
+## Useful facets are required
+
+Every new Foundry bundle needs at least two useful ways to narrow its records,
+including a small workshop pack. Choose dimensions that answer readers'
+questions, such as support topic and next action. Type, Trust tier, Lifecycle
+and Section alone do not meet this requirement.
+
+Record the facet design in the domain profile. The builder must classify every
+record, declare the facets in the intended Reader and run the
+[facet validation gate](../foundry-facets.md). Missing or constant values,
+incorrect counts and wrong filter results block build completion. Test the
+actual Reader too, including combined filters, no matches, reset and reload.
+This Foundry requirement does not prevent Explorer opening older OKF bundles.
+
 ## Domain Profile
 
 The profile records:

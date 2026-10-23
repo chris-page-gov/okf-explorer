@@ -2416,7 +2416,8 @@
         "identifier_fallback",
         "compact_label_index",
         "relationship_display_rule",
-        "citizen_checks"
+        "citizen_checks",
+        "domain_facets"
       ],
       "properties": {
         "default_language": {
@@ -2475,6 +2476,9 @@
         },
         "citizen_checks": {
           "$ref": "#/$defs/nonEmptyStringArray"
+        },
+        "domain_facets": {
+          "$ref": "#/$defs/domainFacetContract"
         }
       },
       "additionalProperties": false
@@ -3065,6 +3069,288 @@
         },
         "rights_ref": {
           "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "domainFacetDefinition": {
+      "type": "object",
+      "required": [
+        "key",
+        "label",
+        "description",
+        "user_question",
+        "task_refs",
+        "value_path",
+        "cardinality",
+        "vocabulary",
+        "allowed_values",
+        "examples",
+        "missing_value"
+      ],
+      "properties": {
+        "key": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]{0,39}$",
+          "not": {
+            "enum": [
+              "type",
+              "trust",
+              "trust_tier",
+              "lifecycle",
+              "status",
+              "section",
+              "id",
+              "record_id",
+              "constructor",
+              "prototype"
+            ]
+          }
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": ".*\\S.*"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": ".*\\S.*"
+        },
+        "user_question": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": ".*\\S.*"
+        },
+        "task_refs": {
+          "$ref": "#/$defs/nonEmptyIdArray"
+        },
+        "value_path": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 12,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "not": {
+              "enum": [
+                "__proto__",
+                "prototype",
+                "constructor"
+              ]
+            }
+          }
+        },
+        "cardinality": {
+          "enum": [
+            "single",
+            "multiple"
+          ]
+        },
+        "vocabulary": {
+          "enum": [
+            "closed",
+            "source-declared"
+          ]
+        },
+        "allowed_values": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": ".*\\S.*"
+          }
+        },
+        "examples": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": ".*\\S.*"
+          }
+        },
+        "missing_value": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": ".*\\S.*"
+        }
+      },
+      "additionalProperties": false
+    },
+    "facetAcceptanceCase": {
+      "type": "object",
+      "required": [
+        "key",
+        "kind",
+        "selection",
+        "expected_record_ids"
+      ],
+      "properties": {
+        "key": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": ".*\\S.*"
+        },
+        "kind": {
+          "enum": [
+            "single-value",
+            "or-within-facet",
+            "and-across-facets",
+            "no-match"
+          ]
+        },
+        "selection": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": ".*\\S.*"
+            }
+          }
+        },
+        "expected_record_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": ".*\\S.*"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "domainFacetContract": {
+      "type": "object",
+      "required": [
+        "definitions",
+        "record_path",
+        "declaration_path",
+        "emitted_counts_required",
+        "counts_path",
+        "validation_refs",
+        "browser_checks",
+        "acceptance_cases",
+        "consumer_adapter",
+        "consumer_ref"
+      ],
+      "properties": {
+        "definitions": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 12,
+          "items": {
+            "$ref": "#/$defs/domainFacetDefinition"
+          }
+        },
+        "record_path": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 12,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "not": {
+              "enum": [
+                "__proto__",
+                "prototype",
+                "constructor"
+              ]
+            }
+          }
+        },
+        "declaration_path": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 12,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "not": {
+              "enum": [
+                "__proto__",
+                "prototype",
+                "constructor"
+              ]
+            }
+          }
+        },
+        "emitted_counts_required": {
+          "type": "boolean"
+        },
+        "counts_path": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 12,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "not": {
+              "enum": [
+                "__proto__",
+                "prototype",
+                "constructor"
+              ]
+            }
+          }
+        },
+        "validation_refs": {
+          "$ref": "#/$defs/nonEmptyIdArray"
+        },
+        "browser_checks": {
+          "type": "array",
+          "uniqueItems": true,
+          "allOf": [
+            {
+              "contains": {
+                "const": "labelled-values-and-counts"
+              }
+            },
+            {
+              "contains": {
+                "const": "keep-and-reset"
+              }
+            },
+            {
+              "contains": {
+                "const": "empty-state"
+              }
+            },
+            {
+              "contains": {
+                "const": "reload-restores-selection"
+              }
+            }
+          ],
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": ".*\\S.*"
+          }
+        },
+        "acceptance_cases": {
+          "type": "array",
+          "minItems": 4,
+          "items": {
+            "$ref": "#/$defs/facetAcceptanceCase"
+          }
+        },
+        "consumer_adapter": {
+          "enum": [
+            "explorer-small-learning-v1",
+            "profile-defined"
+          ]
+        },
+        "consumer_ref": {
+          "$ref": "#/$defs/nonEmpty"
         }
       },
       "additionalProperties": false
