@@ -1,5 +1,31 @@
 # Maintaining Explorer dependencies
 
+## Reviewed integration on 23 October 2026
+
+The reading-help candidate combines the overlapping Explorer updates from
+PRs #160, #165, #168, #169, #170, #171 and #173. The reviewed versions are
+Svelte 5.57.1, the Svelte Vite plugin 7.3.1, Vite 8.3.3, PDF.js 6.4.299,
+Playwright 1.64.1, axe 4.14.0, devalue 5.9.4 and source-map-js 1.2.2.
+Vitest and its matching coverage package move together to 4.1.12, which
+addresses the follow-up [manual mock registration](https://github.com/vitest-dev/vitest/security/advisories/GHSA-qxg6-89mg-rqv8)
+and [Windows path validation](https://github.com/vitest-dev/vitest/security/advisories/GHSA-xp26-3454-mjgp)
+advisories. The dependency guard rejects the earlier 4.1.11 floor.
+The newer axe check also exposed label/name mismatches in the learning-hub
+link, graph zoom, authority counts and relationship drawer. Their accessible
+names now include the visible wording and counts. Graph stack counts already
+included in the complete node name are decorative duplicates.
+The changed direct dependencies are pinned to those versions. Keep pnpm 10,
+the cookie and nanoid controls and the reviewed Rolldown pin. The conditional
+devalue override now selects 5.9.4 for older copies.
+
+The bot lockfiles lost the override declarations and omitted the regenerated
+SBOM and required documentation. Regenerate their combined lockfile with pnpm,
+check the full resolved inventory and rebuild the SBOM. Preserve the preceding
+main and reading-help browser receipts under
+`validation/dependency-updates/2026-10-23/` before refreshing the current
+100-question suite and three local journeys. Browser results remain bound to
+their exact application; GitHub CI and deployed identity are separate gates.
+
 A dependency is a library or tool that Explorer uses. `package.json` declares
 which versions are permitted; `pnpm-lock.yaml` records the exact versions and
 package integrity values selected for a build. Both files matter when reviewing
@@ -19,15 +45,15 @@ Some older bot updates removed this override from the lockfile and selected
 `cookie` 0.6.0. `@types/cookie` is a separate type-definition package and must
 not be confused with the affected runtime package.
 
-Vitest and its coverage package must resolve to the same version. The repaired
-baseline uses 4.1.11, including the transitive `@vitest/mocker` fix for
+Vitest and its coverage package must resolve to the same version. The September
+baseline used 4.1.11, including the transitive `@vitest/mocker` fix for
 [GHSA-82fw-gwwq-j7x9](https://github.com/advisories/GHSA-82fw-gwwq-j7x9).
 That advisory concerns development-server file access; a dependency alert is
 not evidence that the static Pages site has been exploited. Keep development
 servers local and review any change that exposes them to a network.
 
-The combined audit also found older transitive copies of `devalue` and `nanoid`.
-Conditional overrides select devalue 5.9.2 for
+The September audit also found older transitive copies of `devalue` and `nanoid`.
+It introduced conditional overrides selecting devalue 5.9.2 for
 [GHSA-9rgm-9g3h-6x36](https://github.com/sveltejs/devalue/security/advisories/GHSA-9rgm-9g3h-6x36)
 and nanoid 3.3.18 for
 [GHSA-2v37-7h3g-55p8](https://github.com/advisories/GHSA-2v37-7h3g-55p8).
@@ -45,8 +71,9 @@ review rather than silently passing the stable-version checks.
 
 ## Framework and bundler baseline
 
-The reviewed framework set uses SvelteKit 2.70.3, the Svelte Vite plugin 7.3.0,
-Svelte 5.57.0, svelte-check 4.7.6 and Vite 8.3.0. Vite uses Rolldown to produce
+The September framework baseline used SvelteKit 2.70.3, the Svelte Vite plugin
+7.3.0, Svelte 5.57.0, svelte-check 4.7.6 and Vite 8.3.0. The reviewed October
+versions are listed above. Vite uses Rolldown to produce
 the static application. The `rolldown: 1.2.9` override keeps its native bindings
 on the reviewed version while Vite's permitted range also admits later releases.
 Remove or change that pin only after reviewing the new Rolldown release and
@@ -59,7 +86,7 @@ then run the deterministic build, Site checks and the full Chrome, Firefox and
 WebKit browser contract before accepting a candidate. Local checks do not
 establish the identity of a later Pages deployment.
 
-For this update, the 100-question Heritage suite and three local journeys were
+For the 25 September update, the 100-question Heritage suite and three local journeys were
 run against the rebuilt application. The preceding receipt and results are
 retained under `validation/dependency-updates/2026-09-25/pre-framework/`.
 The final receipt also binds those browser results to the assembled Site after

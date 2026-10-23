@@ -1,0 +1,24 @@
+{
+  "schema": "okf-heritage-receipt-archive.v1",
+  "reason": "Pre-visible-reading-help release",
+  "files": [
+    {
+      "name": "local-candidate-receipt.json",
+      "source": "evaluation-foundry/fixtures/heritage-warwickshire/evidence/local-candidate-receipt.json",
+      "bytes": 6430,
+      "sha256": "44943b80580514dd982b5df576b03a515feabb198ff622ce6d682c0b28eef968"
+    },
+    {
+      "name": "question-suite-results.json.gz",
+      "source": "evaluation-foundry/fixtures/heritage-warwickshire/evidence/receipts/question-suite-results.json.gz",
+      "bytes": 12164,
+      "sha256": "b977cd0332deec2517f4bfc43868475086f96cf42ebc062f56c6beaf6c99ff23"
+    },
+    {
+      "name": "local-journey-results.json.gz",
+      "source": "evaluation-foundry/fixtures/heritage-warwickshire/evidence/receipts/local-journey-results.json.gz",
+      "bytes": 6436,
+      "sha256": "7bf60d0d623dcc48310b0dea7289b0788dcc79164ad600e177efd63ad4138c77"
+    }
+  ]
+}

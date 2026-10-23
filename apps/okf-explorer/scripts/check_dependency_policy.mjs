@@ -7,7 +7,7 @@ import YAML from 'yaml';
 const APP = resolve(import.meta.dirname, '..');
 const COOKIE_OVERRIDE = '^0.7.2';
 const MIN_COOKIE = [0, 7, 2];
-const MIN_VITEST = [4, 1, 11];
+const MIN_VITEST = [4, 1, 12];
 
 function version(value, label) {
   const match = /^(\d+)\.(\d+)\.(\d+)$/.exec(value);

@@ -15,6 +15,22 @@ well as their service documentation. The pull-request impact gate checks that
 requirement before deciding which expensive checks are needed; Pages checks it
 again before publication.
 
+## Dependency review on 23 October 2026
+
+The reviewed service candidate combines PRs #172, #174, #175 and #176:
+MCP server 2.3.1, client 2.3.0, legacy SDK 1.32.0 and Hono 4.13.13. The pinned
+node adapter remains 2.0.0; its server peer accepts the reviewed 2.x release.
+The client and server carry their compatible core packages separately, so
+validation exercises both SDK generations against the built service.
+The lockfile also selects ip-address 10.7.4 for the
+[IPv6 parsing advisory](https://github.com/advisories/GHSA-rxp7-6hxx-x8q5).
+
+The updated v2 MCP packages declare Apache-2.0 licences in the lockfile;
+the legacy SDK and Hono retain MIT. Keep those package notices when distributing
+a service build. This dependency change keeps the governed source snapshots,
+engine identities and historical replay claims. Local test and browser results
+do not establish a new hosted service deployment.
+
 ## Source preparation for service 0.7.0
 
 The 0.7.0 change admits the newer evidence-connect corpus at immutable DWP

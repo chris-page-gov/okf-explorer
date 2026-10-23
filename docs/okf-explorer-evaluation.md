@@ -35,6 +35,8 @@ source roots, app identity and timestamps before writing evidence.
 The reading-help corpus update preserved the preceding receipt and both
 compressed browser results byte for byte under the repository path
 `validation/reading-help/2026-09-27/pre-corpus-consumer/`.
+The visible-help update also preserves the preceding receipt and both compressed results byte for byte under `validation/reading-help/2026-10-01/pre-visible-help/`. Its refreshed 100-question suite and three local journeys bind the application that displays help on selection.
+
 The current receipt is regenerated only from fresh runs against the assembled
 Site and its exact Explorer build. The 100 questions are deterministic browser
 checks, not model-authored legal answers.
