@@ -93,3 +93,6 @@ behaviour. Those require content review and actual-consumer checks.
 The [synthetic regression fixture](../tests/fixtures/foundry-facets/bundle.json)
 and [tests](../tests/test_foundry_facets.py) exercise the gate in repository CI.
 They are checker examples, not evidence that a newly built domain pack passed.
+
+Explorer CI pins Ubuntu 24.04 alongside the governed Python 3.12.11 toolchain;
+the moving Ubuntu latest image does not provide this Python version on 26.04.

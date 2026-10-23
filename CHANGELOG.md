@@ -9,6 +9,8 @@
   digests and failure receipts. Require separate actual-Reader evidence.
 - Add positive and negative regression checks to CI. Preserve permissive OKF
   core and existing Reader loading.
+- Pin the Explorer CI runner to Ubuntu 24.04 so the governed Python 3.12.11
+  remains available after the Ubuntu latest-image change.
 
 ## Declared semantic facets for small bundles — 4 October 2026
 
