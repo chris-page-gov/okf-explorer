@@ -90,6 +90,17 @@ Use these rules:
 
 ## Browser policy
 
+All GitHub Actions workflows use the pinned Ubuntu 24.04 runner. The governed
+CPython 3.12.11 build is available through `actions/setup-python` on that image;
+it is unavailable on Ubuntu 26.04. Keep Pages, scheduled assurance and link
+observation aligned with PR CI when reviewing runner changes. The workflow
+topology check rejects a shared Python setup on an incompatible runner.
+
+The 23 October workflow review also updates `actions/upload-artifact` to 7.0.2,
+`actions/download-artifact` to 8.0.2 and `actions/setup-node` to 7.1.0. These
+remain pinned by full commit hash. Candidate upload, download, deployment and
+post-deployment identity checks keep their separate jobs and permissions.
+
 Ordinary Chromium acceptance uses a compatible browser already installed on
 the governed runner where possible. Do not run
 `playwright install --with-deps chromium` merely to obtain a browser that the

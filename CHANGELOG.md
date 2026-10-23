@@ -1,5 +1,14 @@
 # Changelog
 
+## Pages and scheduled runner recovery — 23 October 2026
+
+- Pin Pages, nightly Foundry assurance and link observation to Ubuntu 24.04,
+  matching PR CI, so their governed CPython 3.12.11 setup can complete.
+- Check every workflow using the shared Python setup for runner compatibility.
+  Keep exact-candidate deployment and live-browser verification gates intact.
+- Update the pinned upload/download artefact actions to 7.0.2/8.0.2 and Node
+  setup to 7.1.0, retaining the existing workflow permissions and triggers.
+
 ## Required Foundry domain facets — 23 October 2026
 
 - Require task-based facets for every new Foundry bundle, including prototypes,

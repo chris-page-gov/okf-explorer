@@ -23,6 +23,14 @@ class CiPublicationTopologyTests(unittest.TestCase):
         needs = job.get("needs", [])
         return {needs} if isinstance(needs, str) else set(needs)
 
+    def test_governed_python_jobs_use_a_compatible_pinned_runner(self) -> None:
+        for path in sorted((ROOT / ".github/workflows").glob("*.yml")):
+            for name, job in self.workflow_jobs(str(path.relative_to(ROOT))).items():
+                if any(step.get("uses") == "./.github/actions/setup-locked-python"
+                       for step in job.get("steps", [])):
+                    with self.subTest(workflow=path.name, job=name):
+                        self.assertEqual("ubuntu-24.04", job["runs-on"])
+
     def test_remote_mcp_is_required_and_independent_of_heritage_app(self) -> None:
         jobs = self.workflow_jobs(".github/workflows/okf-explorer-ci.yml")
         remote = jobs["remote-mcp"]

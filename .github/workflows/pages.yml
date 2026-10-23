@@ -11,7 +11,7 @@ concurrency:
 
 jobs:
   impact:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:
       contents: read
@@ -44,7 +44,7 @@ jobs:
           uv run --locked python -m unittest tests.test_remote_release_docs -v
 
   adversarial-gate:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:
       contents: read
@@ -56,14 +56,14 @@ jobs:
         run: >-
           uv run --locked python scripts/check_heritage_adversarial.py
           --output "$RUNNER_TEMP/adversarial-results.json"
-      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
           name: pages-adversarial-gate-results
           path: ${{ runner.temp }}/adversarial-results.json
 
   app:
     needs: [impact, adversarial-gate]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     permissions:
       contents: read
@@ -72,7 +72,7 @@ jobs:
       - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
         with:
           version: 10
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 24
           cache: pnpm
@@ -86,14 +86,14 @@ jobs:
         working-directory: apps/okf-explorer
         run: pnpm build:determinism
       - name: Upload exact app build
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
           name: pages-app-build
           path: apps/okf-explorer/build
 
   build:
     needs: [impact, adversarial-gate, app]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 45
     permissions:
       contents: read
@@ -103,7 +103,7 @@ jobs:
       - name: Set up locked Python toolchain
         uses: ./.github/actions/setup-locked-python
       - name: Download exact app build
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
         with:
           name: pages-app-build
           path: apps/okf-explorer/build
@@ -159,7 +159,7 @@ jobs:
           path: _site
           include-hidden-files: true
       - name: Upload pre-deploy candidate identity separately
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
           name: pages-site-candidate-receipt
           path: ${{ runner.temp }}/site-candidate-receipt.json
@@ -171,7 +171,7 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     needs: build
     steps:
@@ -181,7 +181,7 @@ jobs:
 
   verify:
     needs: deploy
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     permissions:
       contents: read
@@ -190,7 +190,7 @@ jobs:
       - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
         with:
           version: 10
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 24
           cache: pnpm
@@ -199,7 +199,7 @@ jobs:
         working-directory: apps/okf-explorer
         run: pnpm install --frozen-lockfile
       - name: Download the exact pre-deploy candidate identity
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
         with:
           name: pages-site-candidate-receipt
           path: ${{ runner.temp }}/candidate
@@ -213,7 +213,7 @@ jobs:
           --output "$RUNNER_TEMP/live-deployment-receipt.json"
       - name: Upload exact live-browser evidence
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
           name: pages-live-deployment-receipt
           path: ${{ runner.temp }}/live-deployment-receipt.json
