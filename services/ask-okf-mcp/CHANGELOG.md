@@ -1,5 +1,12 @@
 # Ask OKF service changelog
 
+## Development dependency follow-up — 23 October 2026
+
+- Update only fast-uri 3.1.8 to 3.1.9 in the lockfile to address four newly
+  reported URI parsing advisories. It remains a development dependency of the
+  legacy SDK through Ajv; production source and immutable engine pairs remain
+  unchanged. Recheck both clients and the Worker build.
+
 ## Dependency correction — 23 October 2026
 
 - Pin Zod 4.6.7 for the newly reported constrained-collection resource advisory.

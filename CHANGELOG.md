@@ -1,5 +1,17 @@
 # Changelog
 
+## P0 advisory follow-up — 23 October 2026
+
+- Correct the eight additional low/moderate JavaScript alerts exposed by the
+  post-merge dependency refresh: adopt SvelteKit 3.0.0 with static adapter 4.0.0
+  and update the service's development-only fast-uri to 3.1.9.
+- Move framework settings into Vite, preserve deterministic versioning,
+  prerender handling and relative paths, and declare the existing source alias
+  explicitly. Retain disabled deployment polling and the static delivery model.
+- Make the cookie security override conditional so it cannot downgrade Kit 3's
+  required cookie 2 dependency. Add dependency-floor regression controls and
+  regenerate the software inventory and build-bound browser evidence.
+
 ## P0 implementation review and corrections — 23 October 2026
 
 - Record the whole-implementation boundary review, coverage inventory and six

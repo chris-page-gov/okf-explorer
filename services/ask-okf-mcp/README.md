@@ -12,6 +12,9 @@ and recorded public deployment are separate states.
 The 23 October P0 review updates the source dependency pin to Zod 4.6.7 for
 [GHSA-mrhx-c7xc-m3w5](https://github.com/advisories/GHSA-mrhx-c7xc-m3w5).
 Frozen source/engine pairs and recorded deployments remain unchanged.
+The follow-up lockfile selects patched fast-uri 3.1.9 for the legacy SDK's
+development-only Ajv chain. It is not imported by production service source;
+the Worker build continues to exclude the Ajv provider.
 
 Service 0.7.0 defaults to the immutable Evidence Connect DMG and ADM source
 `7eeded763042ddd0070f4fed834c6074149e8e2f` with the compatible Explorer

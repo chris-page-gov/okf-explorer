@@ -6,12 +6,13 @@ import { checkDependencyPolicy } from './check_dependency_policy.mjs';
 function fixture() {
   return {
     manifest: {
-      devDependencies: { vitest: '^4.1.12', '@vitest/coverage-v8': '^4.1.12' },
-      pnpm: { overrides: { cookie: '^0.7.2' } }
+      devDependencies: { '@sveltejs/kit': '3.0.0', vitest: '^4.1.12', '@vitest/coverage-v8': '^4.1.12' },
+      pnpm: { overrides: { 'cookie@<0.7.2': '0.7.2' } }
     },
     lock: {
-      overrides: { cookie: '^0.7.2' },
+      overrides: { 'cookie@<0.7.2': '0.7.2' },
       importers: { '.': { devDependencies: {
+        '@sveltejs/kit': { specifier: '3.0.0', version: '3.0.0' },
         vitest: { specifier: '^4.1.12', version: '4.1.12(@vitest/coverage-v8@4.1.12)' },
         '@vitest/coverage-v8': { specifier: '^4.1.12', version: '4.1.12(vitest@4.1.12)' }
       } } },
@@ -19,7 +20,9 @@ function fixture() {
         'devalue@5.9.2': {},
         'nanoid@3.3.18': {},
         'cookie@0.7.2': {},
+        'cookie@2.0.1': {},
         '@types/cookie@0.6.0': {},
+        '@sveltejs/kit@3.0.0': {},
         'vitest@4.1.12': {},
         '@vitest/mocker@4.1.12': {},
         '@vitest/coverage-v8@4.1.12': {}
@@ -28,7 +31,8 @@ function fixture() {
         'devalue@5.9.2': {},
         'nanoid@3.3.18': {},
         'cookie@0.7.2': {},
-        '@sveltejs/kit@2.70.2': { dependencies: { cookie: '0.7.2' } },
+        'cookie@2.0.1': {},
+        '@sveltejs/kit@3.0.0': { dependencies: { cookie: '2.0.1' } },
         'vitest@4.1.12(@vitest/coverage-v8@4.1.12)': {
           dependencies: { '@vitest/mocker': '4.1.12' },
           optionalDependencies: { '@vitest/coverage-v8': '4.1.12(vitest@4.1.12)' }
@@ -65,20 +69,20 @@ for (const [name, vulnerable, safe] of [['devalue', '5.9.0', '5.9.2'], ['nanoid'
 
 test('rejects a lost manifest override', () => {
   const { manifest, lock } = fixture();
-  delete manifest.pnpm.overrides.cookie;
+  delete manifest.pnpm.overrides['cookie@<0.7.2'];
   assert.throws(() => checkDependencyPolicy(manifest, lock), /cookie override/);
 });
 
 test('rejects the lost lockfile override from the automated update', () => {
   const { manifest, lock } = fixture();
-  delete lock.overrides.cookie;
+  delete lock.overrides['cookie@<0.7.2'];
   assert.throws(() => checkDependencyPolicy(manifest, lock), /cookie override/);
 });
 
 test('rejects both overrides removed even if the importer would otherwise match', () => {
   const { manifest, lock } = fixture();
-  delete manifest.pnpm.overrides.cookie;
-  delete lock.overrides.cookie;
+  delete manifest.pnpm.overrides['cookie@<0.7.2'];
+  delete lock.overrides['cookie@<0.7.2'];
   assert.throws(() => checkDependencyPolicy(manifest, lock), /cookie override/);
 });
 
@@ -91,7 +95,7 @@ test('rejects an alternate vulnerable cookie snapshot', () => {
 
 test('rejects a vulnerable cookie dependency reference', () => {
   const { manifest, lock } = fixture();
-  lock.snapshots['@sveltejs/kit@2.70.2'].dependencies.cookie = '0.6.0';
+  lock.snapshots['@sveltejs/kit@3.0.0'].dependencies.cookie = '0.6.0';
   assert.throws(() => checkDependencyPolicy(manifest, lock), /cookie dependency/);
 });
 
@@ -164,4 +168,19 @@ test('rejects a patched alternate coverage copy with a mismatched Vitest peer', 
     dependencies: { vitest: '4.1.12(@vitest/coverage-v8@4.1.12)' }
   };
   assert.throws(() => checkDependencyPolicy(manifest, lock), /Every coverage-v8 snapshot/);
+});
+
+test('rejects an older framework and a cookie override that downgrades Kit 3', () => {
+  const { manifest, lock } = fixture();
+  manifest.devDependencies['@sveltejs/kit'] = '2.70.3';
+  assert.throws(() => checkDependencyPolicy(manifest, lock), /manifest minimum/);
+  manifest.devDependencies['@sveltejs/kit'] = '3.0.0';
+  lock.packages['@sveltejs/kit@2.70.3'] = {};
+  assert.throws(() => checkDependencyPolicy(manifest, lock), /below the reviewed minimum/);
+  delete lock.packages['@sveltejs/kit@2.70.3'];
+  lock.snapshots['@sveltejs/kit@3.0.0'].dependencies.cookie = '0.7.2';
+  assert.throws(() => checkDependencyPolicy(manifest, lock), /cookie dependency/);
+  lock.snapshots['@sveltejs/kit@3.0.0'].dependencies.cookie = '2.0.1';
+  manifest.pnpm.overrides.cookie = '^0.7.2';
+  assert.throws(() => checkDependencyPolicy(manifest, lock), /cookie override/);
 });

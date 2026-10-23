@@ -152,7 +152,13 @@ pnpm build
 ```
 
 `pnpm sbom:check` verifies that the committed CycloneDX inventory still
-matches the exact lockfile dependency versions and integrity hashes. It is an
+matches the reviewed framework and supporting packages. The P0 follow-up uses
+SvelteKit 3.0.0 and static adapter 4.0.0, with configuration in `vite.config.ts`
+and `tsconfig.json` extending `$app/tsconfig`. The explicit Vite/TypeScript
+`$lib` alias preserves existing source imports; deployment polling remains
+disabled. Node 24 satisfies the framework's minimum of 22.17.
+
+The inventory matches the exact lockfile dependency versions and integrity hashes. It is an
 inventory and reproducibility check, not a vulnerability scan; use
 `pnpm audit --audit-level=moderate` and review GitHub Dependabot alerts before
 accepting dependency updates. For Playwright updates, run the affected Chrome

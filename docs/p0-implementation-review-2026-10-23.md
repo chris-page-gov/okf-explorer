@@ -4,7 +4,8 @@ Review date: 23 October 2026. Executable baseline:
 `460f7245352e5d1e407d37e9d40a9b2b6b55ee0a`.
 Architecture-plan commit `d1fceb23` changes documentation only.
 
-Status: source review completed; six validated findings corrected. Candidate
+Status: source review completed; six initial findings corrected in #178, with
+two additional dependency corrections from the post-merge alert refresh. Candidate
 acceptance and publication remain bound to exact pull-request checks and
 deployment receipts. This is a risk-based integration review of the whole
 implementation, not an exhaustive line-by-line audit or certification.
@@ -133,6 +134,45 @@ the reviewed update boundaries. The comparison covers the retained alert set;
 GitHub's default-branch alert state updates separately after merge.
 
 ## Assurance and release gate
+
+### Post-merge dependency refresh
+
+GitHub closed all 44 Python alerts after #178 merged as
+`abc26ef2fef55bcc63f5e6ceb04d781f13c01654`. Its refreshed graph then exposed
+eight additional low/moderate JavaScript alert records. These represent two
+SvelteKit advisories duplicated across the manifest and lockfile, and four
+fast-uri advisories. They are recorded separately from the initial inventory.
+
+**R7 — SvelteKit dependency, P2:** upgrade 2.70.3 to patched 3.0.0 and static
+adapter 4.0.0. The [enhanced-form redirect advisory](https://github.com/sveltejs/kit/security/advisories/GHSA-pfhg-q3qv-9q6r)
+and [prerender header advisory](https://github.com/sveltejs/kit/security/advisories/GHSA-27mw-82g8-phjj)
+have no established trigger in authored Explorer code: it uses neither
+enhanced form actions nor untrusted cache-control headers. Apply the upstream
+package correction regardless. Follow the [official migration guide](https://svelte.dev/docs/kit/migrating-to-sveltekit-3):
+move settings into Vite, extend the framework type configuration and declare
+the existing source alias explicitly. Preserve adapter settings, relative paths,
+prerender exceptions and deterministic version identity. Set deployment polling
+to zero to preserve the earlier behaviour. Keep Node 24 and existing Svelte,
+Vite and TypeScript versions. Replace the broad cookie override with a
+conditional floor so Kit 3 uses its required cookie 2.0.1 dependency.
+
+**R8 — fast-uri dependency, P2:** update only the service lockfile's
+development-only 3.1.8 to patched 3.1.9. The legacy test SDK reaches it through
+Ajv; production service source does not import it, and the Worker build excludes
+that provider. The upstream advisories cover
+[scheme decoding](https://github.com/fastify/fast-uri/security/advisories/GHSA-w74x-v6f9-j3xg),
+[relative paths](https://github.com/fastify/fast-uri/security/advisories/GHSA-xhq7-xmqj-769h),
+[host canonicalisation](https://github.com/fastify/fast-uri/security/advisories/GHSA-wjr9-j795-jxcr)
+and [suffix references](https://github.com/fastify/fast-uri/security/advisories/GHSA-333x-w4r6-6crp).
+Preserve its development-only scope and existing immutable engine/source pairs.
+
+An independent read-only pass checked applicability and migration boundaries.
+The follow-up retains the same current-head checks and exact-deployment gate.
+Retain its [eight alert records](../validation/p0-review/2026-10-23/framework-follow-up/advisories.json)
+and [preceding browser evidence](../validation/p0-review/2026-10-23/framework-follow-up/pre-review/preservation.json)
+alongside the refreshed application-bound receipt.
+
+### Candidate validation
 
 Targeted regressions cover all corrections. Engine controls, archive tests,
 application and Python contracts, deterministic builds, service tests and the

@@ -39,11 +39,14 @@ authorised update, regenerate the lockfile with pnpm, review every changed
 package, then return to frozen installation. Never hand-edit integrity values
 or remove a security override to bypass a failing install.
 
-The `cookie: ^0.7.2` override preserves the reviewed fix for
+The conditional `cookie@<0.7.2: 0.7.2` override preserves the reviewed fix for
 [GHSA-pxg6-pf52-xh8x](https://github.com/advisories/GHSA-pxg6-pf52-xh8x).
 Some older bot updates removed this override from the lockfile and selected
 `cookie` 0.6.0. `@types/cookie` is a separate type-definition package and must
 not be confused with the affected runtime package.
+The P0 follow-up replaces the earlier broad override: Kit 3 requires cookie
+2.0.1, which must never be downgraded to 0.7.2. The dependency guard checks both
+the shared security floor and the framework's required API version.
 
 Vitest and its coverage package must resolve to the same version. The September
 baseline used 4.1.11, including the transitive `@vitest/mocker` fix for
@@ -73,7 +76,14 @@ review rather than silently passing the stable-version checks.
 
 The September framework baseline used SvelteKit 2.70.3, the Svelte Vite plugin
 7.3.0, Svelte 5.57.0, svelte-check 4.7.6 and Vite 8.3.0. The reviewed October
-versions are listed above. Vite uses Rolldown to produce
+versions are listed above. The P0 advisory follow-up adopts SvelteKit 3.0.0 and
+static adapter 4.0.0, moves framework settings into Vite and extends the Kit 3
+type configuration. Existing `$lib` imports use explicit Vite and TypeScript
+aliases. Deployment polling remains disabled; routes, prerender exceptions and
+deterministic versioning are preserved. Node 24 and the existing Svelte, Vite
+and TypeScript versions satisfy the new framework's requirements.
+
+Vite uses Rolldown to produce
 the static application. The `rolldown: 1.2.9` override keeps its native bindings
 on the reviewed version while Vite's permitted range also admits later releases.
 Remove or change that pin only after reviewing the new Rolldown release and

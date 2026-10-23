@@ -1,5 +1,4 @@
 import { describe,it,expect } from 'vitest';
-// @ts-expect-error -- Node-only test harness; browser application has no Node type dependency.
 import { generateKeyPairSync,sign } from 'node:crypto';
 import { canonical,sha256,verifyAssessment,passedPaths,meetsRubric,type Submission,type Assessment } from './learningAssessment';
 const pair=generateKeyPairSync('ed25519');

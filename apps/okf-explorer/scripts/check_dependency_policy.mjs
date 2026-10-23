@@ -5,7 +5,8 @@ import { resolve } from 'node:path';
 import YAML from 'yaml';
 
 const APP = resolve(import.meta.dirname, '..');
-const COOKIE_OVERRIDE = '^0.7.2';
+const COOKIE_OVERRIDE_KEY = 'cookie@<0.7.2';
+const COOKIE_OVERRIDE = '0.7.2';
 const MIN_COOKIE = [0, 7, 2];
 const MIN_VITEST = [4, 1, 12];
 
@@ -54,16 +55,17 @@ function requireResolution(lock, name, reference) {
   }
 }
 
-function checkManifestRange(value, name) {
+function checkManifestRange(value, name, minimum = MIN_VITEST) {
   if (typeof value !== 'string') throw new Error(`${name} is absent from the manifest`);
   const match = /^(?:\^|~)?(\d+\.\d+\.\d+)$/.exec(value);
   if (!match) throw new Error(`${name} has an unsupported or prerelease range: ${value}`);
-  atLeast(match[1], MIN_VITEST, `${name} manifest minimum`);
+  atLeast(match[1], minimum, `${name} manifest minimum`);
 }
 
 export function checkDependencyPolicy(manifest, lock) {
-  if (manifest?.pnpm?.overrides?.cookie !== COOKIE_OVERRIDE ||
-      lock?.overrides?.cookie !== COOKIE_OVERRIDE) {
+  if (manifest?.pnpm?.overrides?.[COOKIE_OVERRIDE_KEY] !== COOKIE_OVERRIDE ||
+      lock?.overrides?.[COOKIE_OVERRIDE_KEY] !== COOKIE_OVERRIDE ||
+      manifest?.pnpm?.overrides?.cookie || lock?.overrides?.cookie) {
     throw new Error(`manifest and lockfile must retain cookie override ${COOKIE_OVERRIDE}`);
   }
   if (!lock.packages || !lock.snapshots || !lock.importers?.['.']) {
@@ -84,6 +86,9 @@ export function checkDependencyPolicy(manifest, lock) {
       if (dependencies && Object.hasOwn(dependencies, 'cookie')) {
         const found = resolved(dependencies.cookie, `${key} cookie dependency`);
         atLeast(found, MIN_COOKIE, `${key} cookie dependency`);
+        if (key.startsWith('@sveltejs/kit@')) {
+          atLeast(found, [2, 0, 1], `${key} cookie dependency`);
+        }
         requireResolution(lock, 'cookie', dependencies.cookie);
       }
     }
@@ -91,7 +96,7 @@ export function checkDependencyPolicy(manifest, lock) {
 
   // Guard the resolved packages, so a future native upstream fix can replace
   // the temporary conditional overrides without relaxing the security floor.
-  for (const [name, minimum] of [['devalue', [5, 9, 2]], ['nanoid', [3, 3, 18]]]) {
+  for (const [name, minimum] of [['devalue', [5, 9, 2]], ['nanoid', [3, 3, 18]], ['@sveltejs/kit', [3, 0, 0]]]) {
     const packages = entriesFor(lock.packages, name);
     const snapshots = entriesFor(lock.snapshots, name);
     if (!packages.length || !snapshots.length) throw new Error(`${name} inventory or snapshot is missing`);
@@ -110,14 +115,15 @@ export function checkDependencyPolicy(manifest, lock) {
   }
 
   const importer = lock.importers['.'];
-  for (const name of ['vitest', '@vitest/coverage-v8']) {
-    checkManifestRange(manifest?.devDependencies?.[name], name);
+  for (const name of ['vitest', '@vitest/coverage-v8', '@sveltejs/kit']) {
+    const minimum = name === '@sveltejs/kit' ? [3, 0, 0] : MIN_VITEST;
+    checkManifestRange(manifest?.devDependencies?.[name], name, minimum);
     const direct = importer.devDependencies?.[name];
     if (direct?.specifier !== manifest.devDependencies[name]) {
       throw new Error(`${name} importer specifier differs from the manifest`);
     }
     const found = resolved(direct.version, `${name} importer version`);
-    atLeast(found, MIN_VITEST, `${name} importer version`);
+    atLeast(found, minimum, `${name} importer version`);
     requireInventory(lock, name, found);
     if (!Object.hasOwn(lock.snapshots, `${name}@${direct.version}`)) {
       throw new Error(`${name} importer resolution has no matching snapshot`);

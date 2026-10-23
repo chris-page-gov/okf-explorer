@@ -1,0 +1,94 @@
+{
+  "scope": "Eight GitHub alert records newly reported after the initial P0 merge; package version comparison, not proof of an application exploit or an ecosystem-wide scan.",
+  "baseline": "abc26ef2fef55bcc63f5e6ceb04d781f13c01654",
+  "alerts": [
+    {
+      "number": 89,
+      "id": "GHSA-w74x-v6f9-j3xg",
+      "package": "fast-uri",
+      "manifest": "services/ask-okf-mcp/package-lock.json",
+      "baseline_version": "3.1.8",
+      "range": ">= 3.0.0, < 3.1.9",
+      "first_patched": "3.1.9",
+      "candidate_version": "3.1.9",
+      "severity": "medium"
+    },
+    {
+      "number": 88,
+      "id": "GHSA-xhq7-xmqj-769h",
+      "package": "fast-uri",
+      "manifest": "services/ask-okf-mcp/package-lock.json",
+      "baseline_version": "3.1.8",
+      "range": ">= 3.0.0, < 3.1.9",
+      "first_patched": "3.1.9",
+      "candidate_version": "3.1.9",
+      "severity": "low"
+    },
+    {
+      "number": 87,
+      "id": "GHSA-wjr9-j795-jxcr",
+      "package": "fast-uri",
+      "manifest": "services/ask-okf-mcp/package-lock.json",
+      "baseline_version": "3.1.8",
+      "range": ">= 3.1.3, < 3.1.9",
+      "first_patched": "3.1.9",
+      "candidate_version": "3.1.9",
+      "severity": "medium"
+    },
+    {
+      "number": 86,
+      "id": "GHSA-333x-w4r6-6crp",
+      "package": "fast-uri",
+      "manifest": "services/ask-okf-mcp/package-lock.json",
+      "baseline_version": "3.1.8",
+      "range": ">= 3.0.0, < 3.1.9",
+      "first_patched": "3.1.9",
+      "candidate_version": "3.1.9",
+      "severity": "low"
+    },
+    {
+      "number": 84,
+      "id": "GHSA-pfhg-q3qv-9q6r",
+      "package": "@sveltejs/kit",
+      "manifest": "apps/okf-explorer/pnpm-lock.yaml",
+      "baseline_version": "2.70.3",
+      "range": "< 3.0.0",
+      "first_patched": "3.0.0",
+      "candidate_version": "3.0.0",
+      "severity": "low"
+    },
+    {
+      "number": 83,
+      "id": "GHSA-27mw-82g8-phjj",
+      "package": "@sveltejs/kit",
+      "manifest": "apps/okf-explorer/pnpm-lock.yaml",
+      "baseline_version": "2.70.3",
+      "range": "< 3.0.0",
+      "first_patched": "3.0.0",
+      "candidate_version": "3.0.0",
+      "severity": "low"
+    },
+    {
+      "number": 82,
+      "id": "GHSA-pfhg-q3qv-9q6r",
+      "package": "@sveltejs/kit",
+      "manifest": "apps/okf-explorer/package.json",
+      "baseline_version": "^2.70.3",
+      "range": "< 3.0.0",
+      "first_patched": "3.0.0",
+      "candidate_version": "3.0.0",
+      "severity": "low"
+    },
+    {
+      "number": 81,
+      "id": "GHSA-27mw-82g8-phjj",
+      "package": "@sveltejs/kit",
+      "manifest": "apps/okf-explorer/package.json",
+      "baseline_version": "^2.70.3",
+      "range": "< 3.0.0",
+      "first_patched": "3.0.0",
+      "candidate_version": "3.0.0",
+      "severity": "low"
+    }
+  ]
+}

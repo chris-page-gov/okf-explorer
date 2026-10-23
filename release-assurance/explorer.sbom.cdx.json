@@ -19,7 +19,7 @@
     "properties": [
       {
         "name": "okf:pnpm-lock-sha256",
-        "value": "ac45af0c2cd50b79901a0c830c6cc16247708d7f4bd32aa8a6d4fca2040b90aa"
+        "value": "f9f6fde1a774ae95733edab62c545faee7d0baa0e3bbd16deef0acd5337745d6"
       }
     ],
     "tools": {
@@ -619,28 +619,28 @@
       ]
     },
     {
-      "bom-ref": "pkg:npm/%40sveltejs/adapter-static@3.0.10",
+      "bom-ref": "pkg:npm/%40sveltejs/adapter-static@4.0.0",
       "name": "@sveltejs/adapter-static",
-      "purl": "pkg:npm/%40sveltejs/adapter-static@3.0.10",
+      "purl": "pkg:npm/%40sveltejs/adapter-static@4.0.0",
       "type": "library",
-      "version": "3.0.10",
+      "version": "4.0.0",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "ec3f65605589981ef3c59c9313fab18e4b2f32acccb98aebb328757f802566a79978008f4724a36c2dda162639e706f5b5651a28e406f4f55b9bbe0970dd887b"
+          "content": "685d49db747579b2aa531438fea2ebfcbc6eeb734598b02d83c5199771c52f16a80350ff9e14d519c0fd953ab1eb98946e3351da238bd1380ec525fcdb1e8f6b"
         }
       ]
     },
     {
-      "bom-ref": "pkg:npm/%40sveltejs/kit@2.70.3",
+      "bom-ref": "pkg:npm/%40sveltejs/kit@3.0.0",
       "name": "@sveltejs/kit",
-      "purl": "pkg:npm/%40sveltejs/kit@2.70.3",
+      "purl": "pkg:npm/%40sveltejs/kit@3.0.0",
       "type": "library",
-      "version": "2.70.3",
+      "version": "3.0.0",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "503bc462e66a00c6df07fa17228a8abdb29c6fb61cccae7362bce6b06575cd1264d378e7b70a7c757898a08268b7102776c2af70f16dc7d1f519148a15d48782"
+          "content": "7663fa823cf8d43013edeace3465bc15d4d68e6b26389fd2696544b2e11cd4c5c37291fa615f8fb7df1b89914fba29c7e0b95d24f9927310ea887c020cb442ae"
         }
       ]
     },
@@ -684,19 +684,6 @@
       ]
     },
     {
-      "bom-ref": "pkg:npm/%40types/cookie@0.6.0",
-      "name": "@types/cookie",
-      "purl": "pkg:npm/%40types/cookie@0.6.0",
-      "type": "library",
-      "version": "0.6.0",
-      "hashes": [
-        {
-          "alg": "SHA-512",
-          "content": "e0a87d6ba0766d07220217fb152b8c45191459e709809bbd9cf9f1df2ce9b1f5d7fdce7444422aa476380bcd9b5cff74aab2ed5ed903c53668b183b75293b094"
-        }
-      ]
-    },
-    {
       "bom-ref": "pkg:npm/%40types/deep-eql@4.0.2",
       "name": "@types/deep-eql",
       "purl": "pkg:npm/%40types/deep-eql@4.0.2",
@@ -719,6 +706,19 @@
         {
           "alg": "SHA-512",
           "content": "1a174f832d5e978fc898fd395f4e54c38730dbf33ddc10949a712f599352b650b310a304e05924f98a680393a21cd426a12ec269f6fc5dadcfc9af26d50af37a"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:npm/%40types/node@24.19.2",
+      "name": "@types/node",
+      "purl": "pkg:npm/%40types/node@24.19.2",
+      "type": "library",
+      "version": "24.19.2",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "f77778f700962640b237ceccc4ba4d37a2973c2c05c3b6d5520efd986515d4e4b8d09196c150abf27eb50d7092ab3ec257afd57cf91bef179ceee3f633e40759"
         }
       ]
     },
@@ -957,15 +957,15 @@
       ]
     },
     {
-      "bom-ref": "pkg:npm/cookie@0.7.2",
+      "bom-ref": "pkg:npm/cookie@2.0.1",
       "name": "cookie",
-      "purl": "pkg:npm/cookie@0.7.2",
+      "purl": "pkg:npm/cookie@2.0.1",
       "type": "library",
-      "version": "0.7.2",
+      "version": "2.0.1",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "ca48b95e72ae7fbe74979d2e193965b7a90a20b6389d0d5e34841ab685c40726797568272aa6e7aa64eb044e41e0dee5acc24a436cad58c8933b6a34bfa130ff"
+          "content": "cae4e8a95bd1ae3ea97c35d113240002ff12900124ffc192de34114e250c9bae9356d0589aa41ea048cbd8b9aaf11a68eb6ef5bc7efa2274c28538ad1009bae7"
         }
       ]
     },
@@ -1191,19 +1191,6 @@
       ]
     },
     {
-      "bom-ref": "pkg:npm/kleur@4.1.5",
-      "name": "kleur",
-      "purl": "pkg:npm/kleur@4.1.5",
-      "type": "library",
-      "version": "4.1.5",
-      "hashes": [
-        {
-          "alg": "SHA-512",
-          "content": "a3e34efbc5ab462404138ffb9f044984dd475a9566266e75d690475313cbb69d015084b3941a653916129937250a726f42adad2aefec825df156991ced95ae41"
-        }
-      ]
-    },
-    {
       "bom-ref": "pkg:npm/lightningcss-android-arm64@1.33.0",
       "name": "lightningcss-android-arm64",
       "purl": "pkg:npm/lightningcss-android-arm64@1.33.0",
@@ -1395,6 +1382,19 @@
         {
           "alg": "SHA-512",
           "content": "bc6fab8c5463d4fa9d201a332310063233e53a16957be197a5bb6d63f8922bbac670944c9703493bb75c530994aa4ca6b052c988d188d3ab780fb16bef2442f6"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:npm/magic-string@1.4.3",
+      "name": "magic-string",
+      "purl": "pkg:npm/magic-string@1.4.3",
+      "type": "library",
+      "version": "1.4.3",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "cf5d8ec6668f184d05e3196919d8ee0147248a92e94254c0b809b21a13680fb383a58533bc37efb7151b8ccfe3c339f23f5efca23bbf2837728b6db4c0d27445"
         }
       ]
     },
@@ -1633,19 +1633,6 @@
       ]
     },
     {
-      "bom-ref": "pkg:npm/set-cookie-parser@3.1.2",
-      "name": "set-cookie-parser",
-      "purl": "pkg:npm/set-cookie-parser@3.1.2",
-      "type": "library",
-      "version": "3.1.2",
-      "hashes": [
-        {
-          "alg": "SHA-512",
-          "content": "e7faff953c1b277cd0faac1d50565879136a75aecfe470fccd02aa9528dd1add7f4b47232c0a611eeb23e18e7c6a10ed5a7fe0df6c6b212e7cfe290ebf09742f"
-        }
-      ]
-    },
-    {
       "bom-ref": "pkg:npm/siginfo@2.0.0",
       "name": "siginfo",
       "purl": "pkg:npm/siginfo@2.0.0",
@@ -1828,6 +1815,19 @@
       ]
     },
     {
+      "bom-ref": "pkg:npm/undici-types@7.24.6",
+      "name": "undici-types",
+      "purl": "pkg:npm/undici-types@7.24.6",
+      "type": "library",
+      "version": "7.24.6",
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "591356fac2608f9381378ff42691c5aadab38696e75741ae07e3a8cc0f6008bedaf7ddd2994fb5241642ccb37162c6cc7c87832fe953b29843e6337937e9f4ce"
+        }
+      ]
+    },
+    {
       "bom-ref": "pkg:npm/vite@8.3.3",
       "name": "vite",
       "purl": "pkg:npm/vite@8.3.3",
@@ -1912,9 +1912,10 @@
       "dependsOn": [
         "pkg:npm/%40axe-core/playwright@4.14.0",
         "pkg:npm/%40playwright/test@1.64.1",
-        "pkg:npm/%40sveltejs/adapter-static@3.0.10",
-        "pkg:npm/%40sveltejs/kit@2.70.3",
+        "pkg:npm/%40sveltejs/adapter-static@4.0.0",
+        "pkg:npm/%40sveltejs/kit@3.0.0",
         "pkg:npm/%40sveltejs/vite-plugin-svelte@7.3.1",
+        "pkg:npm/%40types/node@24.19.2",
         "pkg:npm/%40vitest/coverage-v8@4.1.12",
         "pkg:npm/pdfjs-dist@6.4.299",
         "pkg:npm/svelte-check@4.7.6",
