@@ -42,6 +42,14 @@ async function loaded(item: PassageCase) {
 }
 
 describe('passage boundary review', () => {
+  test('rejects a redirect before requesting an unadmitted source destination', async () => {
+    vi.stubGlobal('fetch', async (_input: URL, options: RequestInit) => {
+      expect(options.redirect).toBe('error');
+      throw new TypeError('Redirect rejected');
+    });
+    try { await expect(loadPassageCase(fixture(), base)).rejects.toThrow('Redirect rejected'); }
+    finally { vi.unstubAllGlobals(); }
+  });
   test('reconstructs a true cross-page passage and previews an exact split', async () => {
     const item = fixture(), data = await loaded(item);
     expect(data.before[0].text).toBe('Alpha\nBeta');

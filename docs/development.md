@@ -1,5 +1,10 @@
 # Develop, build and publish Explorer
 
+The [P0 implementation review](p0-implementation-review-2026-10-23.md) records
+the October baseline and corrections. Compatibility-app caches are isolated by
+worker registration scope; invalid saved pins fall back to an empty selection.
+The viewer generator escapes source text before embedding its graph in HTML.
+
 For contributors maintaining this repository. For a personal learning collection,
 use [the separate teaching builder](onboarding/first-bundle.md).
 Read [repository roles](repository-guide.md) and the semantic/publication contracts

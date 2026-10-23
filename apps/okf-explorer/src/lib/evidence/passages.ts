@@ -129,7 +129,7 @@ export function parsePassageCase(value: unknown, source: URL): PassageCase {
 
 async function boundedBytes(url: URL, max: number, signal?: AbortSignal): Promise<Uint8Array> {
   const boundedSignal = signal ? AbortSignal.any([signal, AbortSignal.timeout(15000)]) : AbortSignal.timeout(15000);
-  const response = await fetch(url, { signal: boundedSignal, cache: 'no-store', credentials: 'omit' });
+  const response = await fetch(url, { signal: boundedSignal, cache: 'no-store', credentials: 'omit', redirect: 'error' });
   if (!response.ok || response.url !== url.href) { await response.body?.cancel(); throw new Error('Source request failed or redirected.'); }
   if (Number(response.headers.get('content-length') || 0) > max) { await response.body?.cancel(); throw new Error('Source exceeds byte limit.'); }
   const reader = response.body?.getReader();

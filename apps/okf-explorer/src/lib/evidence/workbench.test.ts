@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { loadManifest, loadPackage, loadReadingHelpTargets, manifestUrl, packageUrl, parseManifest, parsePackage, reviewDownload, sourcePageUrl, unitSpanText } from './workbench';
+import { EVIDENCE_FETCH_TIMEOUT_MS, loadManifest, loadPackage, loadReadingHelpTargets, manifestUrl, packageUrl, parseManifest, parsePackage, reviewDownload, sourcePageUrl, unitSpanText } from './workbench';
 import { sha256Hex } from '$lib/sources/releaseDataPlane';
 
 const url = new URL('https://example.test/review/manifest.json');
@@ -8,6 +8,33 @@ const entry = { id: 'question-01', label: 'Question 1', question: 'What applies?
 const manifest = { schema: 'okf-evidence-workbench.v1', title: 'Review', publication: { label: 'Experimental publication' }, questions: [entry] };
 
 describe('evidence workbench manifest', () => {
+  it('rejects redirects before following them and retains a timeout without a caller signal', async () => {
+    const deadline = new AbortController();
+    const timeout = vi.spyOn(AbortSignal, 'timeout').mockReturnValue(deadline.signal);
+    const fetch = vi.spyOn(globalThis, 'fetch').mockImplementation(async (_input, options) => {
+      expect(options?.redirect).toBe('error');
+      expect(options?.credentials).toBe('omit');
+      return new Promise<Response>((_resolve, reject) => options?.signal?.addEventListener('abort', () => reject(options.signal?.reason), { once: true }));
+    });
+    try {
+      const pending = loadManifest(url);
+      const rejected = expect(pending).rejects.toThrow('Evidence deadline');
+      deadline.abort(new Error('Evidence deadline'));
+      await rejected;
+      expect(timeout).toHaveBeenCalledWith(EVIDENCE_FETCH_TIMEOUT_MS);
+    } finally { fetch.mockRestore(); timeout.mockRestore(); }
+  });
+
+  it('preserves caller cancellation when composing the fetch deadline', async () => {
+    const caller = new AbortController();
+    const fetch = vi.spyOn(globalThis, 'fetch').mockImplementation(async (_input, options) => new Promise<Response>((_resolve, reject) => options?.signal?.addEventListener('abort', () => reject(options.signal?.reason), { once: true })));
+    try {
+      const rejected = expect(loadManifest(url, caller.signal)).rejects.toThrow('Cancelled selection');
+      caller.abort(new Error('Cancelled selection'));
+      await rejected;
+    } finally { fetch.mockRestore(); }
+  });
+
   it('accepts a bounded relative package and rejects traversal, credentials and unsafe schemes', () => {
     expect(parseManifest(manifest, url).questions).toHaveLength(1);
     expect(packageUrl(entry.package.url, url).href).toBe('https://example.test/review/packages/question-01.json');

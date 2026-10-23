@@ -53,7 +53,15 @@ let labelLayerCount = 1;
 let resizeDrag = null;
 let leftCollapsed = false;
 let rightCollapsed = false;
-let pins = new Set(JSON.parse(localStorage.getItem(PIN_STORAGE_KEY) || "[]"));
+function loadPins() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(PIN_STORAGE_KEY) || "[]");
+    return new Set(Array.isArray(saved) ? saved.filter(item => typeof item === "string") : []);
+  } catch (_error) {
+    return new Set();
+  }
+}
+let pins = loadPins();
 let bundleHistory = loadBundleHistory();
 let bundleRegistry = [];
 let bundleSuggestionsOpen = false;

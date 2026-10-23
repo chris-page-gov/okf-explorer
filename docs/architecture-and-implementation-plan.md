@@ -113,9 +113,11 @@ An Explorer merge does not update a separately hosted MCP service. Use its
 
 ## Priorities and delivery order
 
-Each work item starts as **proposed**. The owner roles below are responsibilities
-to assign before work begins, not named appointments. P0 is the immediate
-baseline review. P1 establishes one dependable domain and client journey. P2
+The [P0 review](p0-implementation-review-2026-10-23.md) has completed its source
+review and implemented five corrections; exact-candidate assurance and
+publication use required CI and deployment gates. B–F remain **proposed**.
+Owner roles below are responsibilities to assign, not named appointments.
+P1 establishes one dependable domain and client journey. P2
 tests reuse and authoring usability. P3 retains bounded research options.
 
 | Item | Priority | Accountable role | Depends on | Completion evidence |
@@ -129,11 +131,11 @@ tests reuse and authoring usability. P3 retains bounded research options.
 
 ### A. Review the whole implementation through its boundaries
 
-**Recommendation: conduct this review now.** Review the whole first-party
+**Source review completed:** see the [findings, corrections and limits](p0-implementation-review-2026-10-23.md).
+The following scope and gates govern the baseline review. Review the whole first-party
 implementation in bounded workstreams, then test the interfaces between them.
 Recent PR reviews and green checks are useful inputs; they do not replace a
-current integration review. This plan defines the review; it does not report
-that the whole implementation has been reviewed.
+current integration review. Keep reported coverage and exclusions visible.
 
 Start with a frozen commit and an inventory covering application routes,
 workers and persistence, context assembly, source loaders, workbench and reading

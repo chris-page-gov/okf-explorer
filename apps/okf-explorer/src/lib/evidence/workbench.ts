@@ -7,6 +7,7 @@ import { validateWorkbenchModels, type WorkbenchModelling } from './modelValidat
 export const MAX_MANIFEST_BYTES = 256 * 1024;
 export const MAX_PACKAGE_BYTES = 512 * 1024;
 export const MAX_READING_HELP_TARGET_BYTES = 32 * 1024;
+export const EVIDENCE_FETCH_TIMEOUT_MS = 15_000;
 const SHA256 = /^[a-f0-9]{64}$/;
 const CASE_ID = /^[a-z0-9][a-z0-9._-]*$/;
 
@@ -128,7 +129,9 @@ export async function loadReadingHelpTargets(manifest: WorkbenchManifest, caseId
 }
 
 async function boundedJson(url: URL, maxBytes: number, signal?: AbortSignal): Promise<{ value: unknown; bytes: Uint8Array }> {
-  const response = await fetch(url, { signal, cache: 'no-store', redirect: 'follow', credentials: 'omit' });
+  const deadline = AbortSignal.timeout(EVIDENCE_FETCH_TIMEOUT_MS);
+  const active = signal ? AbortSignal.any([signal, deadline]) : deadline;
+  const response = await fetch(url, { signal: active, cache: 'no-store', redirect: 'error', credentials: 'omit' });
   async function reject(message: string): Promise<never> {
     await response.body?.cancel().catch(() => {});
     throw new Error(message);

@@ -35,6 +35,9 @@ workers as well as contributors.
 
 ## Quality and review
 
+The [P0 whole-implementation review](p0-implementation-review-2026-10-23.md)
+records the October baseline, validated findings, corrections and coverage limits.
+
 Use [conformance](okf-conformance.md), the
 [evaluation harness](okf-explorer-evaluation.md) and the
 [technical reference map](reference/index.md#quality-and-review).

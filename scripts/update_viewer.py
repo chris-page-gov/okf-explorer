@@ -635,6 +635,11 @@ def rendered_viewer(graph: dict[str, object]) -> str:
     if end == -1:
         raise ValueError("viewer.html does not contain const COL= after const G")
     graph_json = json.dumps(graph, ensure_ascii=False, separators=(",", ":"))
+    # JSON lives in an HTML script element. Keep source text inert even when a
+    # Markdown body contains an HTML closing tag or a JavaScript line separator.
+    graph_json = (graph_json.replace("&", "\\u0026").replace("<", "\\u003c")
+                  .replace(">", "\\u003e").replace("\u2028", "\\u2028")
+                  .replace("\u2029", "\\u2029"))
     return text[:start] + graph_json + text[end:]
 
 
