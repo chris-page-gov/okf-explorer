@@ -90,11 +90,16 @@ Use these rules:
 
 ## Browser policy
 
-All GitHub Actions workflows use the pinned Ubuntu 24.04 runner. The governed
-CPython 3.12.11 build is available through `actions/setup-python` on that image;
-it is unavailable on Ubuntu 26.04. Keep Pages, scheduled assurance and link
-observation aligned with PR CI when reviewing runner changes. The workflow
-topology check rejects a shared Python setup on an incompatible runner.
+All GitHub Actions workflows use `ubuntu-latest`, including Pages, PR CI,
+scheduled assurance and link observation. The shared setup action installs the
+pinned uv 0.12.2 first, then runs `uv python install` to obtain the CPython
+3.12.11 version declared in `.python-version`, followed by `uv sync --locked`.
+This uses uv-managed Python builds instead of GitHub's Ubuntu-specific
+`actions/setup-python` inventory, which lacks 3.12.11 on Ubuntu 26.04.
+The [uv Actions guidance](https://docs.astral.sh/uv/guides/integration/github/#setting-up-python)
+documents that the install command respects the project's pinned version.
+Workflow topology checks retain the latest runner and require Python installation
+before the locked environment is synchronised.
 
 The 23 October workflow review also updates `actions/upload-artifact` to 7.0.2,
 `actions/download-artifact` to 8.0.2 and `actions/setup-node` to 7.1.0. These

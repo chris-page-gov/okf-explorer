@@ -11,7 +11,7 @@ concurrency:
 
 jobs:
   impact:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
       contents: read
@@ -44,7 +44,7 @@ jobs:
           uv run --locked python -m unittest tests.test_remote_release_docs -v
 
   adversarial-gate:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
       contents: read
@@ -63,7 +63,7 @@ jobs:
 
   app:
     needs: [impact, adversarial-gate]
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:
       contents: read
@@ -93,7 +93,7 @@ jobs:
 
   build:
     needs: [impact, adversarial-gate, app]
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     timeout-minutes: 45
     permissions:
       contents: read
@@ -171,7 +171,7 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     timeout-minutes: 10
     needs: build
     steps:
@@ -181,7 +181,7 @@ jobs:
 
   verify:
     needs: deploy
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
       contents: read
