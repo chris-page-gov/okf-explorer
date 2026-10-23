@@ -1,5 +1,11 @@
 # Ask OKF service changelog
 
+## Dependency correction — 23 October 2026
+
+- Pin Zod 4.6.7 for the newly reported constrained-collection resource advisory.
+  Recheck both SDK clients and the Worker build, preserving source/engine
+  identities and the separately recorded public deployment.
+
 ## 0.7.0 public observation — 25 September 2026
 
 - Bind the service guide to the retained hosting and public SDK receipts:

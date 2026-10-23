@@ -60,6 +60,8 @@ The loader requires HTTPS, with HTTP allowed only for local development.
 Evidence references stay within the manifest's origin and directory. It rejects
 path escapes, credentials, unexpected redirects, mismatched checksums and
 malformed packages. Source links are untrusted data, never instructions.
+Requests reject redirects before following them and have a 15-second deadline
+combined with selection cancellation, as well as the existing byte ceilings.
 
 `packageContextForDelivery` reuses the context delivery primitives. It exports
 catalogues and exact package slices with a maximum response body of 32 KiB.

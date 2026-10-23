@@ -1,0 +1,2626 @@
+{
+  "schema": "okf-p0-review-coverage.v1",
+  "review_date": "2026-10-23",
+  "implementation_baseline": "460f7245352e5d1e407d37e9d40a9b2b6b55ee0a",
+  "inventory_revision": "d1fceb2362914f5db88c0444927e269e44cf2d11",
+  "method": "whole-implementation inventory and risk-based component boundary review; not independent line-by-line audit",
+  "components": [
+    {
+      "id": "assembly-delivery",
+      "risk": "high",
+      "reviewers": "lead and independent context/transport reviewer",
+      "depth": "source/control-flow and focused engine/archive/service regressions",
+      "finding_ids": [
+        "R5"
+      ],
+      "files": 58,
+      "lines": 8613
+    },
+    {
+      "id": "input-evidence",
+      "risk": "high",
+      "reviewers": "lead and independent input/build reviewer",
+      "depth": "entry-point, URL/digest/budget boundaries and existing negative controls",
+      "finding_ids": [
+        "R1"
+      ],
+      "files": 36,
+      "lines": 13968
+    },
+    {
+      "id": "reader-search-ui",
+      "risk": "medium",
+      "reviewers": "lead and independent input/build reviewer",
+      "depth": "risk-based rendering/storage/worker boundary review; component and browser regression coverage",
+      "finding_ids": [
+        "R2",
+        "R3"
+      ],
+      "files": 124,
+      "lines": 32920
+    },
+    {
+      "id": "build-evaluation-release",
+      "risk": "high",
+      "reviewers": "lead and independent input/build reviewer",
+      "depth": "central parser/generator/cache/receipt/CI boundary review; deterministic contracts",
+      "finding_ids": [
+        "R4",
+        "R6"
+      ],
+      "files": 94,
+      "lines": 55977
+    },
+    {
+      "id": "retained-or-vendored-evidence",
+      "risk": "historical",
+      "reviewers": "lead",
+      "depth": "inventory only; frozen execution evidence excluded from current runtime review",
+      "finding_ids": [],
+      "files": 7,
+      "lines": 669
+    }
+  ],
+  "exclusions": [
+    "Generated corpora and independently owned producer implementations",
+    "Vendor internals and frozen historical engine bytes (pins/adapters checked)",
+    "Historical validation code except retained regression controls",
+    "Lines outside selected source/control-flow paths; inventory membership is not a claim of exhaustive inspection",
+    "Live providers, model calls, current hosted-service or AI-client/Voice acceptance",
+    "Domain/legal correctness, restricted-data deployment and human assistive-technology acceptance"
+  ],
+  "materials": [
+    {
+      "path": ".github/actions/setup-locked-python/action.yml",
+      "group": "build-evaluation-release",
+      "bytes": 553,
+      "lines": 18,
+      "sha256": "1bb4d35413a4ceaa2659f150133da66327a2efbfb7ec492b8b254e125fd6c320",
+      "test": false
+    },
+    {
+      "path": ".github/dependabot.yml",
+      "group": "build-evaluation-release",
+      "bytes": 780,
+      "lines": 36,
+      "sha256": "ee942cce4f31dc528ca87a511de2553d7201a25336a00352ab1a199b1093017f",
+      "test": false
+    },
+    {
+      "path": ".github/workflows/foundry-full-shadow.yml",
+      "group": "build-evaluation-release",
+      "bytes": 4317,
+      "lines": 111,
+      "sha256": "043c0fffc2ed42e2d7e31b7c33f1e5fbee3fb1c8f2183b23a89d49e1bed38c8f",
+      "test": false
+    },
+    {
+      "path": ".github/workflows/link-observation.yml",
+      "group": "build-evaluation-release",
+      "bytes": 2096,
+      "lines": 54,
+      "sha256": "bd4fcafc4ceec3c61f9d4167dc22764f51e890f43e875d7135aa4f0a1193fa9b",
+      "test": false
+    },
+    {
+      "path": ".github/workflows/okf-explorer-ci.yml",
+      "group": "build-evaluation-release",
+      "bytes": 19631,
+      "lines": 439,
+      "sha256": "58e91881d7d6d7c005aea76df17e4d6e3b09d30d06a54fab4e2907f2c65c7e80",
+      "test": false
+    },
+    {
+      "path": ".github/workflows/pages.yml",
+      "group": "build-evaluation-release",
+      "bytes": 9259,
+      "lines": 220,
+      "sha256": "c9bbe4405b82c910f8bd7f41722731fef7d3fc7a665c9a3177bb7cfd6cc51308",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/scripts/acceptance_invocation_lock.mjs",
+      "group": "build-evaluation-release",
+      "bytes": 30724,
+      "lines": 899,
+      "sha256": "1f4741365c3a61c4d11f0e3844aff05bdc8aa3e9e71ff0b426667abe6050e4e7",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/scripts/acceptance_invocation_lock.test.mjs",
+      "group": "build-evaluation-release",
+      "bytes": 20660,
+      "lines": 591,
+      "sha256": "0a445f94412ca49b01ab5c0247536ad3cd99b3641f39956bb50b2d232c96b674",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/scripts/app_build_manifest.mjs",
+      "group": "build-evaluation-release",
+      "bytes": 22932,
+      "lines": 793,
+      "sha256": "6750dfe9ab09eeea945525473c9919e4d308e7f9a87f748244cbcd13e8b1d867",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/scripts/app_build_manifest.test.mjs",
+      "group": "build-evaluation-release",
+      "bytes": 11187,
+      "lines": 369,
+      "sha256": "991d85a4bda0dcb12fc3653232cc774a38dab652d33a6bf98088018c9b700ca6",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/scripts/build_sbom.mjs",
+      "group": "build-evaluation-release",
+      "bytes": 4026,
+      "lines": 130,
+      "sha256": "ef1433c69f6beafe4062f568fbd3d2216cbafab8a6a5abb27e3a602916d7ce14",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/scripts/check_dependency_policy.mjs",
+      "group": "build-evaluation-release",
+      "bytes": 7845,
+      "lines": 175,
+      "sha256": "302b9a0aa9556765863658fece927a586a513578c9f2269ce006ae976f399fcc",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/scripts/check_dependency_policy.test.mjs",
+      "group": "build-evaluation-release",
+      "bytes": 7122,
+      "lines": 167,
+      "sha256": "4b136d4b73bab4db5718e46b8d9b70b621da3f363c0e3920e06de5c6c3cc8647",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/scripts/check_deterministic_build.mjs",
+      "group": "build-evaluation-release",
+      "bytes": 3309,
+      "lines": 115,
+      "sha256": "a4ee3e440aef1732da4e8b2de277c4cfe11573e4f35d16cb4c4348e84a6ff3e6",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/scripts/external_bundle_acceptance_contract.mjs",
+      "group": "build-evaluation-release",
+      "bytes": 21747,
+      "lines": 501,
+      "sha256": "5d2ead8e09fd62e63addf5fc0cec3b1912831f215f7d1b43325a29fcd120960e",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/scripts/external_bundle_acceptance_contract.test.mjs",
+      "group": "build-evaluation-release",
+      "bytes": 19044,
+      "lines": 521,
+      "sha256": "e2a070b71d54fa1c5b4fea5e2789cec3aed647c748656b562bb3a571b15f9fc0",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/scripts/learner_hub_contract.test.mjs",
+      "group": "build-evaluation-release",
+      "bytes": 2893,
+      "lines": 43,
+      "sha256": "d77b912614d9825a926d512cb8c32c5b9762598157b348585a62daec6d78ab9f",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/scripts/learning_assessor.mjs",
+      "group": "build-evaluation-release",
+      "bytes": 2557,
+      "lines": 33,
+      "sha256": "3b0262fc5684a2619bab6beeb27c56605e16991e5cf72ddf0984f81376c2f597",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/scripts/observe_protected_links.mjs",
+      "group": "build-evaluation-release",
+      "bytes": 25736,
+      "lines": 731,
+      "sha256": "2b11b1a3ed839bc1ca0e91a8cc79158c58d95aa559010392dd57970102b71cbc",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/scripts/observe_protected_links.test.mjs",
+      "group": "build-evaluation-release",
+      "bytes": 8384,
+      "lines": 257,
+      "sha256": "885758b230eb7b87aef14fbc0afd62ac2bad5ac71c040c969cd79997b180b126",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/scripts/pages_fallback.test.mjs",
+      "group": "build-evaluation-release",
+      "bytes": 3213,
+      "lines": 79,
+      "sha256": "36d9c09f15ea7cf15e7232d7c9b5ce13df1f39a34b0b92b36c3ea00727eefb8b",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/scripts/run_acceptance_invocation.mjs",
+      "group": "build-evaluation-release",
+      "bytes": 2489,
+      "lines": 84,
+      "sha256": "95b2d3287f16698f221221b615392421b5654c17c98b909b205727dfa55c3772",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/scripts/run_external_bundle_acceptance.mjs",
+      "group": "build-evaluation-release",
+      "bytes": 42509,
+      "lines": 1118,
+      "sha256": "8584977b57e3a683f859efeaf34b1f1b63ce33931e9c14878b68133020a4828a",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/scripts/run_impacted_browser_tests.mjs",
+      "group": "build-evaluation-release",
+      "bytes": 12393,
+      "lines": 379,
+      "sha256": "48ab6e981ed181445a6b35cf5ad1f567fa63ad28273936f4f993c18da19bd435",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/scripts/run_impacted_browser_tests.test.mjs",
+      "group": "build-evaluation-release",
+      "bytes": 8614,
+      "lines": 217,
+      "sha256": "fde67bd0e9720e7f9d2dfd84c4e786a3d06afaab857653287f17711e64bb58ff",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/scripts/run_legislation_runtime_acceptance.mjs",
+      "group": "build-evaluation-release",
+      "bytes": 98093,
+      "lines": 2571,
+      "sha256": "d4558927e4038b2b76c76ea18ae6e4d4bb6366bf62562acd857888f3238db6cd",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/scripts/runtime_acceptance_contract.mjs",
+      "group": "build-evaluation-release",
+      "bytes": 25697,
+      "lines": 773,
+      "sha256": "cba47c29c83922113eef46f732b41d76513cfdede1a7d859fec4ba0470b18c46",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/scripts/runtime_acceptance_contract.test.mjs",
+      "group": "build-evaluation-release",
+      "bytes": 31489,
+      "lines": 947,
+      "sha256": "3c83d25c0e1948ef96acc4204d1606fd7a657f03b80643fdc10848cb0988dec9",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/scripts/verify_assembled_site.mjs",
+      "group": "build-evaluation-release",
+      "bytes": 1435,
+      "lines": 57,
+      "sha256": "68f32b4f4f1bc1c048dd4bb35572c673a87bb6448cef0bc6afc50430f014b565",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/scripts/verify_okf_deployment.mjs",
+      "group": "build-evaluation-release",
+      "bytes": 15806,
+      "lines": 386,
+      "sha256": "2c25c446332cc8982f1deb5c653d7ee93815d1cfbe84308aeef21f289bfbd914",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/scripts/verify_okf_deployment.test.mjs",
+      "group": "build-evaluation-release",
+      "bytes": 5126,
+      "lines": 178,
+      "sha256": "ac8b490b9a239d9c82ef744b2fafc2100ce24efaaf898bd939f154954e75cab4",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/app.html",
+      "group": "reader-search-ui",
+      "bytes": 999,
+      "lines": 22,
+      "sha256": "f7265cacc02784e14932e6a993de3766a45c92efab052a4afde26cfa75541ca5",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/components/AskOkf.svelte",
+      "group": "reader-search-ui",
+      "bytes": 21322,
+      "lines": 323,
+      "sha256": "2072b7942e52bf757669e7d47ca8f1b09302d4b0ac8cbca9cbc1ce6c6d474c94",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/components/BookmarkShelf.svelte",
+      "group": "reader-search-ui",
+      "bytes": 1366,
+      "lines": 25,
+      "sha256": "5c57e9d931309a943e5b16094e9d1feec72e554873e04cf0d67e06465472517c",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/components/ExplorationToolbar.svelte",
+      "group": "reader-search-ui",
+      "bytes": 5157,
+      "lines": 44,
+      "sha256": "bcbe729bb6ff45b5a23bfcd0ab4ee3b1590d83d2f406ffd60658e090f4b51c34",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/components/FacetPanel.svelte",
+      "group": "reader-search-ui",
+      "bytes": 13862,
+      "lines": 136,
+      "sha256": "686841b9c20e05510b7139fc736b998d1db0c79f8f691ce4cd5154862ccb8b8f",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/components/InspectorSections.svelte",
+      "group": "reader-search-ui",
+      "bytes": 2399,
+      "lines": 31,
+      "sha256": "2eb98d62e77d0fd2297dc01c4ff6a4c15e4744d7f88689da03dbd321d4242ee0",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/components/LargeLearningReader.svelte",
+      "group": "reader-search-ui",
+      "bytes": 3613,
+      "lines": 41,
+      "sha256": "f111bc40137a73252d92bc2c55741ce94e64f1899d0120253b6cee311de64445",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/components/LearningAssessment.svelte",
+      "group": "reader-search-ui",
+      "bytes": 8634,
+      "lines": 95,
+      "sha256": "11961bd54a1ffdb1bfee1954acd8140509ee0d2d195c59a2c798df7b7abda187",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/components/LearningReader.svelte",
+      "group": "reader-search-ui",
+      "bytes": 4793,
+      "lines": 62,
+      "sha256": "3d819857ec5c2c7fd858d84c1dd797d57b16cbd8e4a4e5dd916edbd6d1727eb2",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/components/ResultList.svelte",
+      "group": "reader-search-ui",
+      "bytes": 3174,
+      "lines": 29,
+      "sha256": "62d16c6c299194273ab2a3b2b01da31b9eebd895e99dea37b8e77cd2b22c767d",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/components/SmallRecordInspector.svelte",
+      "group": "reader-search-ui",
+      "bytes": 9477,
+      "lines": 143,
+      "sha256": "fd1321872f2921491cff8900a1a6a53ca93f0c7916ccb3932b2e56c16727785d",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/components/WorkspaceShell.svelte",
+      "group": "reader-search-ui",
+      "bytes": 10552,
+      "lines": 138,
+      "sha256": "2521075faa643db5499e7cfec962b049ac7ce2b5d05a5c19464e012547ecdf88",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/context/allocation.test.ts",
+      "group": "assembly-delivery",
+      "bytes": 12112,
+      "lines": 165,
+      "sha256": "402fd6370e0419cb162a1509f9c436d4e5ddcd132fa38bb294fe74afe261e203",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/context/compact-issues.test.ts",
+      "group": "assembly-delivery",
+      "bytes": 5088,
+      "lines": 78,
+      "sha256": "85f036dc9baaf84cd08696ecc472ba4e05b97612f6d8c0321db693f926a3b4cf",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/context/context-guards.test.ts",
+      "group": "assembly-delivery",
+      "bytes": 8851,
+      "lines": 124,
+      "sha256": "a52644cd2bd7ba979e08dd637e1526db451486c31ee5f5385e0f03752a599eb7",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/context/context.test.ts",
+      "group": "assembly-delivery",
+      "bytes": 26411,
+      "lines": 382,
+      "sha256": "a739f741639961e0363dcbe28f11b4591de131ef53f1fcf98ded7c5784b80784",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/context/corpus.test.ts",
+      "group": "assembly-delivery",
+      "bytes": 19384,
+      "lines": 276,
+      "sha256": "b818e2c7aedb6d67da2489729b226a0a1a24a6cf5d01c8ed95c3a7314298b7e9",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/context/corpus.ts",
+      "group": "assembly-delivery",
+      "bytes": 20561,
+      "lines": 276,
+      "sha256": "a770352c6e4628f0c391b0c12bbdaf185b476a714ca212e99459d135f8f57f6f",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/context/corpusV3.ts",
+      "group": "assembly-delivery",
+      "bytes": 48466,
+      "lines": 590,
+      "sha256": "944617e1630362b7a41d60da92651007b96252eff3075eb4c4b852f420f5a5c0",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/context/delivery.test.ts",
+      "group": "assembly-delivery",
+      "bytes": 6243,
+      "lines": 113,
+      "sha256": "30197ce01716751d7afea6866f7f046698ba74afeec3d8b0ed25f3d8b291853b",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/context/delivery.ts",
+      "group": "assembly-delivery",
+      "bytes": 9182,
+      "lines": 145,
+      "sha256": "5df92c0e7edf437f9ff23b25b9a812e947930dd2369f2e954104962f04c91d90",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/context/discovery-corpus.test.ts",
+      "group": "assembly-delivery",
+      "bytes": 42217,
+      "lines": 554,
+      "sha256": "ea64e0f4de201c9ecb3e81dee6667d23111e20cbf09e94ba3d582f7d83f67e1a",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/context/index.ts",
+      "group": "assembly-delivery",
+      "bytes": 47433,
+      "lines": 723,
+      "sha256": "689f8b8ab1cfb5ccc21b6dd9b5527fcad04de01f5876b44cbb2dc0240fceb010",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/context/logical-corpus.test.ts",
+      "group": "assembly-delivery",
+      "bytes": 11631,
+      "lines": 143,
+      "sha256": "f8b76ccb39ca2350a904f0e283b57833be80bd9eb7e0e9d51eac2c6b97c9d8a9",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/context/packageDelivery.test.ts",
+      "group": "assembly-delivery",
+      "bytes": 4550,
+      "lines": 68,
+      "sha256": "f3233c1d60ce7debe0cc1d4b66bb83fbff3843e1eb1356d80028eae7b1233750",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/context/packageDelivery.ts",
+      "group": "assembly-delivery",
+      "bytes": 7095,
+      "lines": 98,
+      "sha256": "f05cd5cf6378ecb9e33f5c8a4d43a6bd74d7c6983413316d3663b5bd733f7b35",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/context/source.test.ts",
+      "group": "assembly-delivery",
+      "bytes": 10599,
+      "lines": 154,
+      "sha256": "63e210949772343f9ca5fa80133be7e7e0f75a5d3a36445d180474463baa8932",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/context/types.ts",
+      "group": "assembly-delivery",
+      "bytes": 7704,
+      "lines": 210,
+      "sha256": "febf83b5c65153fd2e49ac070b6117525463034fb1b33534a086a1cc7bbb42cc",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/context/unit.test.ts",
+      "group": "assembly-delivery",
+      "bytes": 7066,
+      "lines": 101,
+      "sha256": "e70189d0fe16a60789958219ae5fa9c295a440933586216938d1b32146422c2b",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/context/unit.ts",
+      "group": "assembly-delivery",
+      "bytes": 6121,
+      "lines": 73,
+      "sha256": "7cd989c00564ad2e0469073c66685ffb5111809e7f598dc42b6f3df1bf693aa6",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/context/webmcp.test.ts",
+      "group": "assembly-delivery",
+      "bytes": 12069,
+      "lines": 202,
+      "sha256": "8ae6e011d0a611136f6d10bc2d404bd7849ee66e0fd04a8de37cc9a3c2c8b633",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/context/webmcp.ts",
+      "group": "assembly-delivery",
+      "bytes": 12283,
+      "lines": 226,
+      "sha256": "455a8cebf9e4f184e19cb6f12d45d02ca00d3a2c2d85501e9536c3c1437756ca",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/evidence/PdfCanvas.svelte",
+      "group": "input-evidence",
+      "bytes": 3790,
+      "lines": 69,
+      "sha256": "114203727ef8475fa382e6e9f390ac518997610d18644a73568730737474eb8c",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/evidence/WorkbenchDataView.svelte",
+      "group": "input-evidence",
+      "bytes": 13396,
+      "lines": 208,
+      "sha256": "97d1ab66f97f9269709985b965a2533a7557b31a75cc92d9ce62b304000529b7",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/evidence/WorkbenchDataView.test.ts",
+      "group": "input-evidence",
+      "bytes": 6754,
+      "lines": 103,
+      "sha256": "5261cd0f3ead9def5d1a6ba2c10dd2885cb213a0cc23c65b2641c4a86d6d209e",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/evidence/modelValidation.test.ts",
+      "group": "input-evidence",
+      "bytes": 5233,
+      "lines": 71,
+      "sha256": "4efe42d98da79d41dd1ed99f5e9afa473b508a6f7213343eacdb3d943d7d6274",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/evidence/modelValidation.ts",
+      "group": "input-evidence",
+      "bytes": 5210,
+      "lines": 81,
+      "sha256": "e2607809e308908b8518dded72bacdcd66e585320beb9e69b268c91a2b3b91f0",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/evidence/passages.test.ts",
+      "group": "input-evidence",
+      "bytes": 14315,
+      "lines": 160,
+      "sha256": "1ea420f67865456776cf7ac4e09253cd5d8c6b841122b7aeca866dc6180e508d",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/evidence/passages.ts",
+      "group": "input-evidence",
+      "bytes": 35345,
+      "lines": 304,
+      "sha256": "321c22e30e65ce4a90a1473303bd58372a1b3547ae8891c1510a3c6aa9c3f6fa",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/evidence/readingHelp.test.ts",
+      "group": "input-evidence",
+      "bytes": 6857,
+      "lines": 87,
+      "sha256": "16a26f5e93bfefa8ff37a4004af6d8df2465200227812bf833740f1bf8f7f0c5",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/evidence/readingHelp.ts",
+      "group": "input-evidence",
+      "bytes": 14393,
+      "lines": 123,
+      "sha256": "5bb1617b288c172b37d30cddee851e0f08c4d2d463cd6a53a3ff799edc64276f",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/evidence/readingHelpCorpus.test.ts",
+      "group": "input-evidence",
+      "bytes": 18350,
+      "lines": 238,
+      "sha256": "b5b44b5b517ff9d2d8f0d4804274fde82599d91fc59b6fa979f49d5d00236f58",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/evidence/readingHelpCorpus.ts",
+      "group": "input-evidence",
+      "bytes": 24717,
+      "lines": 260,
+      "sha256": "bd58ce4d93f31057c976b1e35ea963c4dc248c62e158dce7780e10d6e2fe85a6",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/evidence/session.test.ts",
+      "group": "input-evidence",
+      "bytes": 19805,
+      "lines": 269,
+      "sha256": "1eec90deabbac5f0ef916c6adecafe49ebbf66dcce7fdfcd7fb3c5acf890305e",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/evidence/session.ts",
+      "group": "input-evidence",
+      "bytes": 35273,
+      "lines": 416,
+      "sha256": "1e137af2922e933b857ad23b9969482bf43e024a8af05113aa175ebb7a143ced",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/evidence/toolContracts.ts",
+      "group": "input-evidence",
+      "bytes": 8736,
+      "lines": 66,
+      "sha256": "0761fca881dcb5e3627c80abe5cf5d9e4246fd39ea3dc0424ab8f7979b3ca658",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/evidence/toolTypes.ts",
+      "group": "input-evidence",
+      "bytes": 3578,
+      "lines": 56,
+      "sha256": "a3f4cf9d5bee88bcddcb48f68eff06fb4b0e50474e9cc451f7c2b26bbaf50633",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/evidence/webmcp.test.ts",
+      "group": "input-evidence",
+      "bytes": 6089,
+      "lines": 100,
+      "sha256": "28121ca381a3e8b2ed54574ff119122d375d3ab20bcfdef33868bde0006c4c79",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/evidence/webmcp.ts",
+      "group": "input-evidence",
+      "bytes": 3633,
+      "lines": 76,
+      "sha256": "177ff473a6ad10fbe6c6bfa8e6be448f254df00b333f8e6a482377b94b07c307",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/evidence/workbench.test.ts",
+      "group": "input-evidence",
+      "bytes": 8022,
+      "lines": 101,
+      "sha256": "ccaa4533f6855e4aaf66022d9b74c676629bb5fbdef62614bcee621167ed2bc2",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/evidence/workbench.ts",
+      "group": "input-evidence",
+      "bytes": 17053,
+      "lines": 233,
+      "sha256": "a0fac04ebcd678ee06df706aa01725bafc0ddc021f938b5593530036f6a94152",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/geospatial/MapView.svelte",
+      "group": "reader-search-ui",
+      "bytes": 24143,
+      "lines": 469,
+      "sha256": "3c06b75d7b22c77c49e93ad8bb43c6cb8780f21c0661d3c393fdc4efb1d7d5f3",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/geospatial/geospatial.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 8215,
+      "lines": 182,
+      "sha256": "ca8318f305032372899a0f8b1b20c8995d966a79c38a9109efc41046822b04d7",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/geospatial/geospatial.ts",
+      "group": "reader-search-ui",
+      "bytes": 20445,
+      "lines": 463,
+      "sha256": "ccb7c1ccd63716a50e656838e1a5a4bc90d0c745419b91cf23fc9666a192cbf7",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/geospatial/preview.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 4759,
+      "lines": 112,
+      "sha256": "0f29cdeed10d032a8386f80ebdc271f7bd30f81b2df829d23aeca3d628555dd9",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/geospatial/preview.ts",
+      "group": "reader-search-ui",
+      "bytes": 9937,
+      "lines": 238,
+      "sha256": "335a622229998a503bbfb1945b18c32e1ce2ba61ea406c7e72caa15e9b4caef7",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/learning-registry.ts",
+      "group": "reader-search-ui",
+      "bytes": 4485,
+      "lines": 85,
+      "sha256": "c6628acd98bc843ecb77c34e4ad4542e5aec054f82890fad91e7a183b3f18797",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/legislation/LegislationDetail.svelte",
+      "group": "reader-search-ui",
+      "bytes": 11236,
+      "lines": 193,
+      "sha256": "1fac58071f9f41642acbed86a183edda079bfae7df5bd9b09135c82f9581345a",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/legislation/search.ts",
+      "group": "reader-search-ui",
+      "bytes": 3462,
+      "lines": 77,
+      "sha256": "98d2308053ac331ff7f994b95d2d649323b9f138b67752ca0c7156b69f7c5765",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/legislation/structure.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 2480,
+      "lines": 38,
+      "sha256": "adc6ba0db35f861ad026c2cbac0db41441bca63c0bf13844e1b77e4b28ed9428",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/legislation/structure.ts",
+      "group": "reader-search-ui",
+      "bytes": 11382,
+      "lines": 242,
+      "sha256": "998c50b684a812574a2cf31dd378f1013dd1b1f79c3e72b5e4026c0475458157",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/okfV02.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 4989,
+      "lines": 134,
+      "sha256": "5d100c2911e004fc2840aae6d743d7ea7dd87174c0cae858460025c14eaf85e9",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/okfV02.ts",
+      "group": "reader-search-ui",
+      "bytes": 9474,
+      "lines": 265,
+      "sha256": "d0c3f6a7eac96a58600e2686020c064ea289acf3c3512f4f1f50c508fec0506a",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/publication/ExploratoryBanner.svelte",
+      "group": "reader-search-ui",
+      "bytes": 3517,
+      "lines": 154,
+      "sha256": "0808f314318a9f9ea599810e8ac3f5e971ec1ff40befc375bf04f8f11b6061a4",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/publication/exploratoryPublication.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 10597,
+      "lines": 259,
+      "sha256": "32d0b717fe45ee2b77c64c3c4af18e18817f62c679c21b60b85da0eff51be46f",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/publication/exploratoryPublication.ts",
+      "group": "reader-search-ui",
+      "bytes": 15674,
+      "lines": 411,
+      "sha256": "d44c3853f66bc83738b579ef5f85ba7b7d1f02e59e318648884f0f67d36a5766",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/search/largeSearchClient.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 8822,
+      "lines": 225,
+      "sha256": "f70d6772e6531153e705c9b41d14d3df1acefcf342507293a4d858da2716cfb8",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/search/largeSearchClient.ts",
+      "group": "reader-search-ui",
+      "bytes": 4528,
+      "lines": 128,
+      "sha256": "911b5158d6667b80d9337bd3f5661b9eb2d7c211d6a5d03c66b121587070a1ba",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/search/largeSearchContract.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 6295,
+      "lines": 145,
+      "sha256": "3509bee8702fde371e770647db1da2eaf46ddf56b7722df7c4c054541d0f174b",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/search/largeSearchContract.ts",
+      "group": "reader-search-ui",
+      "bytes": 8469,
+      "lines": 193,
+      "sha256": "6deb62c9aaff2ed61c018f6d5b8bf484f5a190aff7eca176e169b070ab2bf62f",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/search/queryPolicy.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 3361,
+      "lines": 115,
+      "sha256": "84c5c33bd7828c7f11a8fc970c9601b3b177ab6b1946395bfd456198d10bc817",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/search/queryPolicy.ts",
+      "group": "reader-search-ui",
+      "bytes": 5845,
+      "lines": 155,
+      "sha256": "468aeb19639d043d4838c906cfc230dea063309a42ab10d37d169c5acf27cf23",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/search/retrievalState.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 3566,
+      "lines": 91,
+      "sha256": "f7713bcbd3b594ced48c570daa49101dae60cc39116718cab47126746e96fed8",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/search/retrievalState.ts",
+      "group": "reader-search-ui",
+      "bytes": 3787,
+      "lines": 100,
+      "sha256": "de442d80835f332b233797b0c9b3635467d1925b6de2b316f98c7ac95858e5cc",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/search/searchPresentation.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 2154,
+      "lines": 64,
+      "sha256": "5526c87a75ca0a401596f9aea592a74c09c5ebb6c3f93aa091929f1b7efa3ba0",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/search/searchPresentation.ts",
+      "group": "reader-search-ui",
+      "bytes": 1846,
+      "lines": 38,
+      "sha256": "ec623f56046fcd374e1f1c4e00a80f7dd0e5bfca5df055fb4eb266a244840569",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/search/staticSearch.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 3290,
+      "lines": 85,
+      "sha256": "0864dae6566cfa4f54b2313dda32abceca0eb50f710e569a78dfa20a4da53ff1",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/search/staticSearch.ts",
+      "group": "reader-search-ui",
+      "bytes": 3523,
+      "lines": 88,
+      "sha256": "852753a0cadae9be127b8f4f507584aea92f5b5579613a5d17a466491953b1d0",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/search/typoTolerance.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 2848,
+      "lines": 67,
+      "sha256": "13272c15b5da4b9e11c0c242ea92c266fbc84824e6d37986a307f4564cfb18ef",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/search/typoTolerance.ts",
+      "group": "reader-search-ui",
+      "bytes": 5532,
+      "lines": 153,
+      "sha256": "b0143e063e1e5e2f6faefc95717cd652db8a34fd1a086f7a90e7d576a8f5bc1c",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/sources/descriptor.test.ts",
+      "group": "input-evidence",
+      "bytes": 1160,
+      "lines": 35,
+      "sha256": "519f293f72e27ec8abe793d25d5bbb223a6f89e978290bf85e5668af37775742",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/sources/descriptor.ts",
+      "group": "input-evidence",
+      "bytes": 852,
+      "lines": 21,
+      "sha256": "6f902719ecb6058450b6724fdb24261f559b4046413ad4aea8f01918dbbd1a32",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/sources/federation.test.ts",
+      "group": "input-evidence",
+      "bytes": 11921,
+      "lines": 304,
+      "sha256": "0c4f0f58b0a1872408710918e13e7e71c88d58cdfe43c7292b9049b610364ca6",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/sources/federation.ts",
+      "group": "input-evidence",
+      "bytes": 29789,
+      "lines": 671,
+      "sha256": "249524205717c34fba3d23766662bf11f2f2f9dcad6355313eebbebd992ce79a",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/sources/fetch.ts",
+      "group": "input-evidence",
+      "bytes": 24246,
+      "lines": 653,
+      "sha256": "f219ecfa0ce9aa3e49fb31adf5b7ee05813d015875316449fe77469d7d3971c4",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/sources/largeCorpus.ts",
+      "group": "input-evidence",
+      "bytes": 144339,
+      "lines": 3650,
+      "sha256": "b23805f139d86646559f1d0ee5df15e9b322e567f484043c2523325bfef38660",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/sources/modelEnrichmentV3.test.ts",
+      "group": "input-evidence",
+      "bytes": 9908,
+      "lines": 299,
+      "sha256": "e39972190fa282a5e6b197922776a2d62b0d6f77d27d060acfe660a6988b07b6",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/sources/registry.ts",
+      "group": "input-evidence",
+      "bytes": 1199,
+      "lines": 33,
+      "sha256": "b8eac8dd7857d85bc2c6021a7496020566734affcd32d90c37e5a81577dba705",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/sources/releaseDataPlane.test.ts",
+      "group": "input-evidence",
+      "bytes": 6356,
+      "lines": 129,
+      "sha256": "7d74e5194d66695deaa05b6281c5451cb1a5f2290c205d29efc64275be3140fd",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/sources/releaseDataPlane.ts",
+      "group": "input-evidence",
+      "bytes": 11515,
+      "lines": 275,
+      "sha256": "6fa91c927af9b03798ccda04d75a38a51b8beb7e885004e27ef87554e66f6759",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/sources/richRelationshipRuntime.test.ts",
+      "group": "input-evidence",
+      "bytes": 22507,
+      "lines": 576,
+      "sha256": "6f1c05df9e3dcc03de936ac81318730d9270bd601b2f4737e96b570d26d3b0be",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/sources/smallBundle.ts",
+      "group": "input-evidence",
+      "bytes": 17166,
+      "lines": 390,
+      "sha256": "4b8c80c09fee2768b6a68cbde5dbce141fa8963e3bf6623d56c0f6ba7fcb67e9",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/sources/sources.test.ts",
+      "group": "input-evidence",
+      "bytes": 114822,
+      "lines": 3134,
+      "sha256": "7a290aa23c68ea66d07ea57faebb5235e26ab2264e9b33bca34711e2f80cd832",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/types.ts",
+      "group": "reader-search-ui",
+      "bytes": 45909,
+      "lines": 1688,
+      "sha256": "4f42196ef2bff6bd9bb49afcf81c5211c493e02bdf8a12422ac67213821fd9a3",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/EffectsReconciliationPanel.svelte",
+      "group": "reader-search-ui",
+      "bytes": 3061,
+      "lines": 140,
+      "sha256": "95bae0fe82655ac22f28bfb384ae33da2449373f379650de9e3ec3ceb01fa402",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/FederationOverviewPanel.svelte",
+      "group": "reader-search-ui",
+      "bytes": 9016,
+      "lines": 211,
+      "sha256": "797484f5f71d145f286b725355006b104fb44b0c59e71dbd57c8c48c4eea966c",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/GovernedTermsPanel.svelte",
+      "group": "reader-search-ui",
+      "bytes": 9007,
+      "lines": 346,
+      "sha256": "590053b0661eb8d717bb0cf1b3e6daab4a1e7df64456bf799eb2b1844c77cb7d",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/HeritageDetail.svelte",
+      "group": "reader-search-ui",
+      "bytes": 2814,
+      "lines": 114,
+      "sha256": "bd372c18f1e3089c9ce6bcd91bb9a06ba61623bf4803ac0612433d1bc6338923",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/ModelEnrichmentStatus.svelte",
+      "group": "reader-search-ui",
+      "bytes": 3370,
+      "lines": 150,
+      "sha256": "fd0e54ea964a3497c84c5adbe7c770c0a90d8534b08fbbd5f2e67a45f23f35cf",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/ProviderDatapackStatus.svelte",
+      "group": "reader-search-ui",
+      "bytes": 9763,
+      "lines": 380,
+      "sha256": "20c18d5316d56e45839e8fe07b15c9b200ae064db19a1685fc2a33d16cf68f43",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/SourceInspector.svelte",
+      "group": "reader-search-ui",
+      "bytes": 12575,
+      "lines": 227,
+      "sha256": "30bb52197b1c0d0a963e9bafdadcdd3957fdf203085db7e6e376af06cd5d3dd6",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/bookmarks.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 698,
+      "lines": 10,
+      "sha256": "618a9597caf0e171ef6fd94ce3c2389bf4f52d4e94d1f1c56de64480747a89fb",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/bookmarks.ts",
+      "group": "reader-search-ui",
+      "bytes": 837,
+      "lines": 14,
+      "sha256": "ca151702dbb7ab22e44e8222c75509c4ff732bad09053e135a4d890eb3fad027",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/conversationPresentation.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 1909,
+      "lines": 80,
+      "sha256": "5990eb1ecc718109f7cdf0cf6dc21bd597909890c06130cd78aeec56b455be3f",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/conversationPresentation.ts",
+      "group": "reader-search-ui",
+      "bytes": 2540,
+      "lines": 69,
+      "sha256": "31676f85c15c3516a41016729560b91d2c0a876e963604198441676b52dd93bc",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/effectsReconciliation.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 2288,
+      "lines": 63,
+      "sha256": "c983b913aed94cf46aaddbd9ee5af1dc054c86aac3b8abf0534a651e50341bff",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/effectsReconciliation.ts",
+      "group": "reader-search-ui",
+      "bytes": 4493,
+      "lines": 118,
+      "sha256": "c95aad3a7b93c960c0b3f5367d5f97ce885144927ab8a33325116821713ad95f",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/endpointLabels.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 12039,
+      "lines": 343,
+      "sha256": "fff732b7421e822d8f880b607640d42da3525faa26f3745cf990acf7aaaa0121",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/endpointLabels.ts",
+      "group": "reader-search-ui",
+      "bytes": 12279,
+      "lines": 354,
+      "sha256": "83c813060eadcb73812de471ea1db47e867a509ca4944f78a7c630183771adbb",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/facetClassification.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 1496,
+      "lines": 27,
+      "sha256": "55691f40c1e4496ca249b19237145d36b7ec7e0d44135c5d2c322e823b8aa8b6",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/facetClassification.ts",
+      "group": "reader-search-ui",
+      "bytes": 1806,
+      "lines": 36,
+      "sha256": "c0272c23206f2b3f571bb3b06f1827bf1e53aeb120ec440cf3d7fa2cdfb5f2c8",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/facetColours.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 940,
+      "lines": 17,
+      "sha256": "486f8810bc80726db2da51d7caac7ae35ae88f567e92ff5f83414bc6d83f2b98",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/facetColours.ts",
+      "group": "reader-search-ui",
+      "bytes": 403,
+      "lines": 7,
+      "sha256": "d969e457e9709e79f59ed7b86778b317e630ac89160c43d1d05a04f5c3a0bc58",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/facetPresentation.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 8485,
+      "lines": 216,
+      "sha256": "4f8e86d4fed403fe0b53d2337d06be60bd5438c22aea7d1b6c43827e61e18ade",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/facetPresentation.ts",
+      "group": "reader-search-ui",
+      "bytes": 20840,
+      "lines": 444,
+      "sha256": "600288c8df216a5bdd73c095cf5346cfba62408b8d75b966f1abe0a2b9d6fdde",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/facetSelection.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 3356,
+      "lines": 50,
+      "sha256": "16c9a3bcd5b441136afed50933fdd8e62d334484c8d06e271fb04b0f633c824b",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/facetSelection.ts",
+      "group": "reader-search-ui",
+      "bytes": 5887,
+      "lines": 112,
+      "sha256": "f153ea84da2bbea137334cc40951a6e08503080b8a125803b24c43272672bd71",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/governedTerms.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 7033,
+      "lines": 223,
+      "sha256": "2ccd576693ded3a3446a49951c056e72b9363eda6827b340e580fdd862b1ae2f",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/governedTerms.ts",
+      "group": "reader-search-ui",
+      "bytes": 17371,
+      "lines": 430,
+      "sha256": "5569ff4d6628edaef675680288311b0866fb046d4b10809c64359129c8354ad5",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/graphPresentation.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 12233,
+      "lines": 281,
+      "sha256": "d76c808a839b8b209243bf16a91a5ca1156b3dc6dcab1b5bec6a40d65b81cbaa",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/graphPresentation.ts",
+      "group": "reader-search-ui",
+      "bytes": 21461,
+      "lines": 616,
+      "sha256": "a159b0c135a035555f73d0f751ab4d36b3325374a5ed4957b59b42998fc9f9f9",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/helpers.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 19675,
+      "lines": 469,
+      "sha256": "a771dad93637f98f84a6ce5283a46df15bfdca2d7ad8c556f448178b4571102f",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/helpers.ts",
+      "group": "reader-search-ui",
+      "bytes": 26576,
+      "lines": 649,
+      "sha256": "7e2b7ff52545da056c2edf18d51dc390aa50112c00500bbc817494cd758f3fd3",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/heritagePresentation.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 7458,
+      "lines": 194,
+      "sha256": "46d9eff56537222c0cc5a8a5a41c89043d190ffcd8c82fe3423b909fd537f2a1",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/heritagePresentation.ts",
+      "group": "reader-search-ui",
+      "bytes": 7395,
+      "lines": 181,
+      "sha256": "a4f5f23a225b34ecb39b875d733b51773cd92599ea35b92d8a1e0e3c64833f82",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/largeFacetValues.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 2166,
+      "lines": 61,
+      "sha256": "d337b38c6e0d76b03194606502d707f3363ad921721b4e5a6cab555fe555bab5",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/largeFacetValues.ts",
+      "group": "reader-search-ui",
+      "bytes": 5199,
+      "lines": 119,
+      "sha256": "4da25b0765e70eb7bc3a82d08bfda6aa462846c646ea1b3c8b875bc31500622a",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/largeLearning.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 2734,
+      "lines": 45,
+      "sha256": "6b7d9cac210b6d578e4747d313b38aa1639a7b9aaac10e874a246efef26568cc",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/largeLearning.ts",
+      "group": "reader-search-ui",
+      "bytes": 5280,
+      "lines": 60,
+      "sha256": "0208fdf2b196cb68bcd224c96b3b976c08b6709d19898f60dfdd671e2b5d396c",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/largeRecordContracts.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 4657,
+      "lines": 117,
+      "sha256": "32467af9ad86a808f78313bc2c166aa292331f1084af93f622bfc3f7d3ef7255",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/largeRecordContracts.ts",
+      "group": "reader-search-ui",
+      "bytes": 3532,
+      "lines": 101,
+      "sha256": "0a45c52062fcf380fe395aacdc06129327bba8bda23320ab0b77841df4753b96",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/largeTimeline.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 3673,
+      "lines": 49,
+      "sha256": "5ed3d8b3f151d257b12c0f4e07bee6ade4221ed5c88677bcac68117ade9b4eb9",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/largeTimeline.ts",
+      "group": "reader-search-ui",
+      "bytes": 4648,
+      "lines": 78,
+      "sha256": "832ab6c6ad9e84718d72c8784f086a52bf3588ac780fe2d8a6ab652cccb2043a",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/learningAssessment.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 3129,
+      "lines": 35,
+      "sha256": "70978ecaf6cd2a48e75a994a32190773dfb673f6cab3f155b0017593f2352fcb",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/learningAssessment.ts",
+      "group": "reader-search-ui",
+      "bytes": 5044,
+      "lines": 59,
+      "sha256": "7db739997096a62023550e819af1e9a475fdb4222de1e97764cc8ec1d797750b",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/leftPanelSource.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 14313,
+      "lines": 237,
+      "sha256": "fc221d8427b982aeb17e6b1ca562937003dc31de967ddb8bf426d8ceef7b794e",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/localExploration.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 1728,
+      "lines": 26,
+      "sha256": "c0507c487d56f0c51243d40e01e8e5bcf28f02cec184fde2d6618a691524281c",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/localExploration.ts",
+      "group": "reader-search-ui",
+      "bytes": 1902,
+      "lines": 37,
+      "sha256": "0aaae7df6402f55b38500744ab8f2c07dcb479eb957e5f5cf2f9e99326f8f43d",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/providerDatapack.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 18343,
+      "lines": 510,
+      "sha256": "50b0e60c49917646d6530a6c38478840a58213114e8f9cc6119c3fefdcf2a90c",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/providerDatapack.ts",
+      "group": "reader-search-ui",
+      "bytes": 29614,
+      "lines": 765,
+      "sha256": "6e4dcf5a5ec73462bb32ef82974ed314c7ad8d09c593499abae5f5d3e7d03e59",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/relationshipPresentation.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 8348,
+      "lines": 211,
+      "sha256": "afb8e98b25610b6da3f1ff8cf34c273608e8616b471616fc67d3f1633ee08c3b",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/relationshipPresentation.ts",
+      "group": "reader-search-ui",
+      "bytes": 11071,
+      "lines": 295,
+      "sha256": "deea97ed9231246767038dbb6206a131b19421b1ff36cb298044ad1f169dd58f",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/relationshipWindows.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 1974,
+      "lines": 38,
+      "sha256": "253fd43fb8e158841eb2062d12d67a64f3164059bf262556700bd8c374e8bf51",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/relationshipWindows.ts",
+      "group": "reader-search-ui",
+      "bytes": 1500,
+      "lines": 36,
+      "sha256": "8830b240f07d3619e8351488619c2771c27d13c4ada14577f69cc157873bb258",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/sharedExplorerRendering.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 3780,
+      "lines": 60,
+      "sha256": "d987903bd28b310f5ae880081309e3ef3029883fd248327704484b9fae360f30",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/smallExploration.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 988,
+      "lines": 21,
+      "sha256": "ea193040b43d2bab394f8f106add719010d3ae7da8ff575215fb2d18f322e028",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/smallExploration.ts",
+      "group": "reader-search-ui",
+      "bytes": 2060,
+      "lines": 34,
+      "sha256": "f0f04f4acf1ab66ff28600459cb94955ccfb5a959e2d2e2c312dffbbc7e960a9",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/smallGraph.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 861,
+      "lines": 12,
+      "sha256": "d7b6f569204c94d6028be84cbf7ade39e25ee1e1904d7125ece435e555c93c8b",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/smallGraph.ts",
+      "group": "reader-search-ui",
+      "bytes": 916,
+      "lines": 12,
+      "sha256": "4246adc83bf430e0f111c6d340178b9a9fa2f7b00a00675753602100d254ba57",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/smallNodePresentation.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 4038,
+      "lines": 96,
+      "sha256": "7c4a9fd7747878633e688e3edb89840f7740097644eadd7cc82844485c9303fa",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/smallNodePresentation.ts",
+      "group": "reader-search-ui",
+      "bytes": 17758,
+      "lines": 424,
+      "sha256": "df5dbadb06c86c275a0da7073ebcac09809b12b47c2975934e6fcbd7b8dc55ac",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/smallPresentation.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 5473,
+      "lines": 69,
+      "sha256": "6b30b14c903676acb3988652db6f4a15eb23b7a2cfa5c9dba218f9e8d72ff7dc",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/smallPresentation.ts",
+      "group": "reader-search-ui",
+      "bytes": 4205,
+      "lines": 81,
+      "sha256": "715de8aa75161c0f8807e8bf40360e0a60d3928cc640731ea5a27491597b6ee9",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/smallTimeline.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 5180,
+      "lines": 84,
+      "sha256": "3472b3dcd4cb24dc1db1fe65d9e4ba80f3096be6b20d35f4e14e087cb055beb0",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/smallTimeline.ts",
+      "group": "reader-search-ui",
+      "bytes": 5440,
+      "lines": 100,
+      "sha256": "07ca6204677bfc2ba1be8aee16bb32abdba10e351416a0a2ea398df82103be0a",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/sourceInspector.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 3748,
+      "lines": 77,
+      "sha256": "335afe6b4aa79029b784ff6721dc6f9ebe6378bef5b20cd29d901492bedf2489",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/sourceInspector.ts",
+      "group": "reader-search-ui",
+      "bytes": 4536,
+      "lines": 109,
+      "sha256": "2b385b9bd01a554ea4c586f5450b308bb628b3e3f5a0f5f49c9b9bc62572c720",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/staticExplorer.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 910,
+      "lines": 17,
+      "sha256": "2d30cbbc21a8ed5e7c6933daeb1b6d38e86137e27d56cf45795e5be301799957",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/workspaceNavigation.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 875,
+      "lines": 17,
+      "sha256": "343688284e45f14365451d2b865f713e7d57b2afb341bd7d70ec85ab6ebb704f",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/lib/viewer/workspaceNavigation.ts",
+      "group": "reader-search-ui",
+      "bytes": 770,
+      "lines": 10,
+      "sha256": "db4b2ef4bed87244be6169ce8dd8302581eeced1757a281829840ebe0698b295",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/routes/+layout.ts",
+      "group": "reader-search-ui",
+      "bytes": 31,
+      "lines": 1,
+      "sha256": "30eec0a0e67c08341a51c51fa019afb5f4815eec5a183501f2e39d5da1c4e67d",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/routes/+page.svelte",
+      "group": "reader-search-ui",
+      "bytes": 15029,
+      "lines": 253,
+      "sha256": "a0ea4947fb6d43b69b2f37d629ca43c6c936ecf0fc719ce13d2a93ccb11e0c80",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/routes/evidence/+layout.ts",
+      "group": "input-evidence",
+      "bytes": 96,
+      "lines": 3,
+      "sha256": "e734ba2d398ca5c0cf6d6be1756153a5cce4ca716f160602dd176ad31e5ca295",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/routes/evidence/+page.svelte",
+      "group": "input-evidence",
+      "bytes": 42438,
+      "lines": 598,
+      "sha256": "c59a6bf2aa2d7811fd20d13e5d254a161565ed47a99239b93540390cb5f7964a",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/routes/evidence/passages/+layout.ts",
+      "group": "input-evidence",
+      "bytes": 96,
+      "lines": 3,
+      "sha256": "e734ba2d398ca5c0cf6d6be1756153a5cce4ca716f160602dd176ad31e5ca295",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/routes/evidence/passages/+page.svelte",
+      "group": "input-evidence",
+      "bytes": 22349,
+      "lines": 173,
+      "sha256": "11495230a71a5fad388fa663e0957c5fbbef5d7f588671c1e779bf9311c57b01",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/routes/explore/+layout.ts",
+      "group": "reader-search-ui",
+      "bytes": 96,
+      "lines": 3,
+      "sha256": "e734ba2d398ca5c0cf6d6be1756153a5cce4ca716f160602dd176ad31e5ca295",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/routes/explore/+page.svelte",
+      "group": "reader-search-ui",
+      "bytes": 482317,
+      "lines": 9179,
+      "sha256": "eab67939126c3789bd380107dc9da9db9e7a79c199195f9667c7831e741136e0",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/routes/reading-help/+layout.ts",
+      "group": "reader-search-ui",
+      "bytes": 96,
+      "lines": 3,
+      "sha256": "e734ba2d398ca5c0cf6d6be1756153a5cce4ca716f160602dd176ad31e5ca295",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/routes/reading-help/+page.svelte",
+      "group": "reader-search-ui",
+      "bytes": 12654,
+      "lines": 117,
+      "sha256": "14da124505c6ea18c70f50826fca9f69b11acb009d02dc05b470b18c2060167a",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/routes/reading-help/corpus/+page.svelte",
+      "group": "reader-search-ui",
+      "bytes": 24846,
+      "lines": 218,
+      "sha256": "fea9b0a3cc8c6635fa0e46363f811a294015def35d70360a29cec41ef776fc13",
+      "test": false
+    },
+    {
+      "path": "apps/okf-explorer/src/test/contextFixture.ts",
+      "group": "reader-search-ui",
+      "bytes": 4951,
+      "lines": 66,
+      "sha256": "a0d9d030a39c36c28286ba61639392a67c59da46f83ca8336d7b8010f3b3f5a5",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/test/discoveryFixture.ts",
+      "group": "reader-search-ui",
+      "bytes": 6609,
+      "lines": 71,
+      "sha256": "801d4b0a77233fb243b87947de8adadbced62461dd80eff570cb0b4595dceac5",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/test/rangePackFixture.ts",
+      "group": "reader-search-ui",
+      "bytes": 4556,
+      "lines": 136,
+      "sha256": "7a166023dda5e258f6cc4bcd129ecaccefbd7760ebbcac7a3526e01ff99588ee",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/test/unitFixture.ts",
+      "group": "reader-search-ui",
+      "bytes": 2287,
+      "lines": 26,
+      "sha256": "100ecb315a9ac6451df2c8815128d4c727340146a77d1960129a24edb86db077",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/workers/largeSearch.worker.test.ts",
+      "group": "reader-search-ui",
+      "bytes": 57199,
+      "lines": 1364,
+      "sha256": "0c1582ab4ce22d883b966a3c658b69bb0773a1ba0187075644ea501751b6c930",
+      "test": true
+    },
+    {
+      "path": "apps/okf-explorer/src/workers/largeSearch.worker.ts",
+      "group": "reader-search-ui",
+      "bytes": 45712,
+      "lines": 1071,
+      "sha256": "d71df36abba99a0358be72e08731ea07542683889fcf175d698a2fb9f77bdae6",
+      "test": false
+    },
+    {
+      "path": "explorer/app.js",
+      "group": "reader-search-ui",
+      "bytes": 67974,
+      "lines": 1869,
+      "sha256": "ef1fa14192576e1f9047739d9c707b6c71351524b3778966ea91ca71a46bda36",
+      "test": false
+    },
+    {
+      "path": "explorer/index.html",
+      "group": "reader-search-ui",
+      "bytes": 3879,
+      "lines": 91,
+      "sha256": "7ac68e18bf82fc37c2dbf5a19a95b7b9fb6e4b90e6106abf7d1048dcbad3b342",
+      "test": false
+    },
+    {
+      "path": "explorer/service-worker.js",
+      "group": "reader-search-ui",
+      "bytes": 965,
+      "lines": 33,
+      "sha256": "ab02c66112a53d328b6a922b43ad4bb3417e88ce0e1abaa6f9a3a37169d3accf",
+      "test": false
+    },
+    {
+      "path": "plugins/okf-repositories/skills/work-with-okf-repositories/agents/openai.yaml",
+      "group": "build-evaluation-release",
+      "bytes": 257,
+      "lines": 4,
+      "sha256": "2ffdf3188bc0c21d66c7069febfcafc711468056028db850e6f13fd8115e251c",
+      "test": false
+    },
+    {
+      "path": "plugins/okf-repositories/skills/work-with-okf-repositories/scripts/inspect_okf_repo.py",
+      "group": "build-evaluation-release",
+      "bytes": 9670,
+      "lines": 315,
+      "sha256": "7628706353340e222fa29b4d84b4053bb1122dac274bb69e35bf9144906983c9",
+      "test": false
+    },
+    {
+      "path": "scripts/acquire_heritage_evaluation_sources.py",
+      "group": "build-evaluation-release",
+      "bytes": 84257,
+      "lines": 2019,
+      "sha256": "33f20db2a6da7cfa109b9442962bf96d495b23c257e93473bdc0de08add99a85",
+      "test": false
+    },
+    {
+      "path": "scripts/benchmark_static_search.mjs",
+      "group": "build-evaluation-release",
+      "bytes": 12534,
+      "lines": 293,
+      "sha256": "860a5326b94a72d31778b1dc0886ed4bc65271317b7bbb1a532f2b0b9dbe7f7e",
+      "test": false
+    },
+    {
+      "path": "scripts/build_heritage_evaluation.py",
+      "group": "build-evaluation-release",
+      "bytes": 161378,
+      "lines": 3603,
+      "sha256": "33880f7334994c5b171ad914153ddc3605a46b350f914c2e6c192423c0bfc9f9",
+      "test": false
+    },
+    {
+      "path": "scripts/build_heritage_foundry_postmortem.py",
+      "group": "build-evaluation-release",
+      "bytes": 156790,
+      "lines": 3445,
+      "sha256": "38acabc8f2c5366a33befc289f9533097bd86cb4d146c14e23a72b7f0ebc1519",
+      "test": false
+    },
+    {
+      "path": "scripts/build_heritage_local_candidate_receipt.py",
+      "group": "build-evaluation-release",
+      "bytes": 47502,
+      "lines": 1253,
+      "sha256": "3261aba7fd1ae0248b0892c7e924904bec3b0800572d8a2b31326707ded4a7b4",
+      "test": false
+    },
+    {
+      "path": "scripts/build_heritage_tiny_snapshot.py",
+      "group": "build-evaluation-release",
+      "bytes": 19657,
+      "lines": 521,
+      "sha256": "a24423e79c0d0d530d57c64cad41d42b6ff2070acbeb11aaeef3d862d5b44af8",
+      "test": false
+    },
+    {
+      "path": "scripts/build_learning_example.py",
+      "group": "build-evaluation-release",
+      "bytes": 9222,
+      "lines": 168,
+      "sha256": "a9fa91e97c65c55f12a4e96165a1891101b67ac655b8e2fa4aeaa5b04c870fbe",
+      "test": false
+    },
+    {
+      "path": "scripts/build_legislation_evaluation.py",
+      "group": "build-evaluation-release",
+      "bytes": 8411,
+      "lines": 93,
+      "sha256": "2715084f064a605df1a195530ffad85c20d7034bf9a42c22bc5d1b7e11e01725",
+      "test": false
+    },
+    {
+      "path": "scripts/build_legislation_okf.py",
+      "group": "build-evaluation-release",
+      "bytes": 68445,
+      "lines": 984,
+      "sha256": "635b85121df84d705a562b8651ba2ed278682f27da97690ddf4432aec3111886",
+      "test": false
+    },
+    {
+      "path": "scripts/build_okf_bundle.py",
+      "group": "build-evaluation-release",
+      "bytes": 30150,
+      "lines": 750,
+      "sha256": "d76df99d4081a6bf0a3dd2e4854c361ca335722f49cf64200322f2829b0b5fd8",
+      "test": false
+    },
+    {
+      "path": "scripts/build_okf_estate_registry.py",
+      "group": "build-evaluation-release",
+      "bytes": 14803,
+      "lines": 380,
+      "sha256": "88caf8c426d3bbdf52fc58e3880a1a5a2307a408a6374f4ee35b4b132fd8946e",
+      "test": false
+    },
+    {
+      "path": "scripts/build_okf_evolution_evidence.py",
+      "group": "build-evaluation-release",
+      "bytes": 6341,
+      "lines": 209,
+      "sha256": "fab32c4a02c690cc8e65020772f42d22f7c8c481f850fc41c2cc9973e7b43a71",
+      "test": false
+    },
+    {
+      "path": "scripts/build_okf_registry.py",
+      "group": "build-evaluation-release",
+      "bytes": 5811,
+      "lines": 150,
+      "sha256": "a1ac3cf376afee9395f6195414ac7c2cc26805e6769bc6426aa6ff2c5ae7a982",
+      "test": false
+    },
+    {
+      "path": "scripts/build_publication_assurance_receipt.py",
+      "group": "build-evaluation-release",
+      "bytes": 12402,
+      "lines": 314,
+      "sha256": "11b129d74d0c8998863fa085e3b891c5166ab51232f4e354d6471f4247b73704",
+      "test": false
+    },
+    {
+      "path": "scripts/build_site.py",
+      "group": "build-evaluation-release",
+      "bytes": 75971,
+      "lines": 2242,
+      "sha256": "8aed583a894d1a9e6f511b2fb7980d41accf1e0423d1e81292f1a934332d3140",
+      "test": false
+    },
+    {
+      "path": "scripts/build_uk_government_api_okf.py",
+      "group": "build-evaluation-release",
+      "bytes": 159127,
+      "lines": 3505,
+      "sha256": "0efd88256ce84ab91a33e8554f8e91206127f3e70619655d1d671d250c6021c3",
+      "test": false
+    },
+    {
+      "path": "scripts/check_british_english.py",
+      "group": "build-evaluation-release",
+      "bytes": 9295,
+      "lines": 296,
+      "sha256": "10f4ea1213d0906ecaf32a8d57e337ed9f7bf9d1bc4b6b3e55ffa5b6ad8f98fa",
+      "test": false
+    },
+    {
+      "path": "scripts/check_context_assembly.py",
+      "group": "build-evaluation-release",
+      "bytes": 2860,
+      "lines": 69,
+      "sha256": "f4da839fd397a53165f36e921ca67432cc0f54bb74833a7f91cd9ddb40eee5e4",
+      "test": false
+    },
+    {
+      "path": "scripts/check_documentation_lockstep.py",
+      "group": "build-evaluation-release",
+      "bytes": 3682,
+      "lines": 110,
+      "sha256": "3fc140745a8a86123ccc16c124822083b71d7268450841b780a0be43bac509d1",
+      "test": false
+    },
+    {
+      "path": "scripts/check_domain_profile.py",
+      "group": "build-evaluation-release",
+      "bytes": 49995,
+      "lines": 1193,
+      "sha256": "6500dfec4279c408d0c1ad43cae6ef481ead025991e65039d4c1730fa017a99e",
+      "test": false
+    },
+    {
+      "path": "scripts/check_evaluation_foundry.py",
+      "group": "build-evaluation-release",
+      "bytes": 67651,
+      "lines": 1787,
+      "sha256": "bfd6cab1170a586fd53bec577c125bb03031d568b3b32281599e44b5752ec500",
+      "test": false
+    },
+    {
+      "path": "scripts/check_foundry_facets.py",
+      "group": "build-evaluation-release",
+      "bytes": 15770,
+      "lines": 269,
+      "sha256": "a23ae2564b2c9be59bc0ed0ad390df1146cbb18c599ba3b6f40261d52002ead0",
+      "test": false
+    },
+    {
+      "path": "scripts/check_heritage_adversarial.py",
+      "group": "build-evaluation-release",
+      "bytes": 20573,
+      "lines": 500,
+      "sha256": "cb7efdf51d8edc4b0064b434bbba15d162c47569774369d50bcda1ae33d4163d",
+      "test": false
+    },
+    {
+      "path": "scripts/check_impacted_heritage_evaluation.py",
+      "group": "build-evaluation-release",
+      "bytes": 2642,
+      "lines": 78,
+      "sha256": "25c44ccbc390cf2196b171dbf7767132b19eeb49a950e3d8e55600e829abac12",
+      "test": false
+    },
+    {
+      "path": "scripts/check_legislation_okf.py",
+      "group": "build-evaluation-release",
+      "bytes": 4860,
+      "lines": 104,
+      "sha256": "72ec01851fd441aa25eef9caa0b56630ea78237e47649349559040b1fe1a8f4d",
+      "test": false
+    },
+    {
+      "path": "scripts/check_okf.py",
+      "group": "build-evaluation-release",
+      "bytes": 3171,
+      "lines": 92,
+      "sha256": "3b9b9bc9344dd67c4625cb6011aef4072e94671c7f222fdd5da18bc92eb10ee1",
+      "test": false
+    },
+    {
+      "path": "scripts/check_promotion_envelope.py",
+      "group": "build-evaluation-release",
+      "bytes": 54732,
+      "lines": 1227,
+      "sha256": "bd1bad9fc4617d1b4e82899341362f56292868f385072ff356eddf660eed0075",
+      "test": false
+    },
+    {
+      "path": "scripts/check_publication_unit_manifest.py",
+      "group": "build-evaluation-release",
+      "bytes": 5347,
+      "lines": 136,
+      "sha256": "4a8d5ee00674f117661f75559afd8e4c423b52402971756de379229f7f512e8b",
+      "test": false
+    },
+    {
+      "path": "scripts/check_release_policy.py",
+      "group": "build-evaluation-release",
+      "bytes": 21195,
+      "lines": 563,
+      "sha256": "9881bf462cd0ed321c70fd107adb62e15a478ef42592d99abf3e912b34b282b2",
+      "test": false
+    },
+    {
+      "path": "scripts/check_remote_release_docs.py",
+      "group": "build-evaluation-release",
+      "bytes": 9543,
+      "lines": 192,
+      "sha256": "48a0941a0f22fdb82474ae30a3152050604c4cf877d4aedb16ba7536f63874cb",
+      "test": false
+    },
+    {
+      "path": "scripts/check_source_constraints.py",
+      "group": "build-evaluation-release",
+      "bytes": 1992,
+      "lines": 55,
+      "sha256": "beab47889af8664310ddd47cedcae9d98b806024eca7ad4d85bc4c86cd45df7f",
+      "test": false
+    },
+    {
+      "path": "scripts/check_terminal_promotion_envelope.py",
+      "group": "build-evaluation-release",
+      "bytes": 1240,
+      "lines": 43,
+      "sha256": "bed327bd35dc637c85c710af1953d0f210318e1e2cecd640fc33548055b2479a",
+      "test": false
+    },
+    {
+      "path": "scripts/check_terminal_release_policy.py",
+      "group": "build-evaluation-release",
+      "bytes": 599,
+      "lines": 23,
+      "sha256": "60145ee44b7a5a3d696df86270d5825649880fad5663d2c5fed2452978797493",
+      "test": false
+    },
+    {
+      "path": "scripts/collect_heritage_postmortem_evidence.py",
+      "group": "build-evaluation-release",
+      "bytes": 13286,
+      "lines": 438,
+      "sha256": "fcb8a30cedb8e29c6cef32363b81462b5cc08cc4b12849630e5d9e1d560fb6f1",
+      "test": false
+    },
+    {
+      "path": "scripts/context_control_archive.mjs",
+      "group": "build-evaluation-release",
+      "bytes": 3553,
+      "lines": 67,
+      "sha256": "a2a00e7dce0fd4d1c106b12dc71611fae1d240ac3399a5c01d62fff29b68cee4",
+      "test": false
+    },
+    {
+      "path": "scripts/enrich_legislation_semantics.py",
+      "group": "build-evaluation-release",
+      "bytes": 7208,
+      "lines": 147,
+      "sha256": "5bf85a9ef34d49e1ba8812ca6c6a43366184ec4cedc1fe93fc55b266205fb620",
+      "test": false
+    },
+    {
+      "path": "scripts/evaluate_context_package.mjs",
+      "group": "build-evaluation-release",
+      "bytes": 14368,
+      "lines": 219,
+      "sha256": "e5530e231ec9757644a87fbec3490b757282474dcb7b9ca7f2a97dced822bc11",
+      "test": false
+    },
+    {
+      "path": "scripts/evaluate_legislation_answers.py",
+      "group": "build-evaluation-release",
+      "bytes": 5765,
+      "lines": 107,
+      "sha256": "69bf702998ac53c8b67bca0e8b5a77d04dab95fb27569df89596175edf3ee93b",
+      "test": false
+    },
+    {
+      "path": "scripts/evaluate_okf_explorer.mjs",
+      "group": "build-evaluation-release",
+      "bytes": 124821,
+      "lines": 2798,
+      "sha256": "2dda10096ab2d0db7db037e8069186494a275d8c5cd5f9ce4dea5c446d8aee33",
+      "test": false
+    },
+    {
+      "path": "scripts/evaluate_okf_mcp_context.py",
+      "group": "build-evaluation-release",
+      "bytes": 4500,
+      "lines": 99,
+      "sha256": "a2375627e8ed54e41dc5002bfdc27507f462c502a75c4d57bdae66de19cf0124",
+      "test": false
+    },
+    {
+      "path": "scripts/export_publication_unit.py",
+      "group": "build-evaluation-release",
+      "bytes": 23541,
+      "lines": 638,
+      "sha256": "e6612b5fe72fe9794b31f03d26cff62c419b85fb91e76c9bd385cf645400d838",
+      "test": false
+    },
+    {
+      "path": "scripts/heritage_build_io.py",
+      "group": "build-evaluation-release",
+      "bytes": 20224,
+      "lines": 522,
+      "sha256": "5ce235df82926726c3deb2d47c3f2666f364a3e5e6095bcb62e7a067b062e973",
+      "test": false
+    },
+    {
+      "path": "scripts/learning_catalogue.py",
+      "group": "build-evaluation-release",
+      "bytes": 7550,
+      "lines": 125,
+      "sha256": "8a179eace8a83bb12262e342dca3322be916c261c92a1516ecd3b4a3e1b6befa",
+      "test": false
+    },
+    {
+      "path": "scripts/materialize_promotion_envelope.py",
+      "group": "build-evaluation-release",
+      "bytes": 10398,
+      "lines": 248,
+      "sha256": "3390f221fe947c3fe192d979491ca4514a18921884fdce90414674697b28e653",
+      "test": false
+    },
+    {
+      "path": "scripts/measure_workbench_tools.mjs",
+      "group": "build-evaluation-release",
+      "bytes": 16979,
+      "lines": 209,
+      "sha256": "af5ab5e3ac3d76215ad032ac656a8b5c45792e7c643b7a0c9b2bff83e2406167",
+      "test": false
+    },
+    {
+      "path": "scripts/observe_link_intents.py",
+      "group": "build-evaluation-release",
+      "bytes": 42164,
+      "lines": 1072,
+      "sha256": "c81f9d76fa61893df204e875336707506efd98837c28c5972820790366175906",
+      "test": false
+    },
+    {
+      "path": "scripts/okf_explore.py",
+      "group": "build-evaluation-release",
+      "bytes": 15153,
+      "lines": 412,
+      "sha256": "e1d37f3e28373e11e66c4d8b4b59643765923b112c36417c05b142c51a3c74d6",
+      "test": false
+    },
+    {
+      "path": "scripts/okf_publication.py",
+      "group": "build-evaluation-release",
+      "bytes": 15868,
+      "lines": 444,
+      "sha256": "d58dcdb2b4fa4d0f1b63e0e639e597aadc8eb326691cad2d4bcbbe38c3952b51",
+      "test": false
+    },
+    {
+      "path": "scripts/okf_repository_bootstrap.py",
+      "group": "build-evaluation-release",
+      "bytes": 16510,
+      "lines": 474,
+      "sha256": "a9c44b17db926bdc78342a334b8cb1c9c06d01c15a1e09126c55cb0f48269876",
+      "test": false
+    },
+    {
+      "path": "scripts/okf_semantic.py",
+      "group": "build-evaluation-release",
+      "bytes": 59878,
+      "lines": 1561,
+      "sha256": "de4a070c78d468c5aaebbf8c5d55d50eebfa5a0a14797c381a469aa4a75a4ced",
+      "test": false
+    },
+    {
+      "path": "scripts/package_dwp_learning_demo.mjs",
+      "group": "build-evaluation-release",
+      "bytes": 5521,
+      "lines": 22,
+      "sha256": "e0ad57901072b1e6eb7d3bd92e00e227a8a534e0789de506c11245c116983335",
+      "test": false
+    },
+    {
+      "path": "scripts/plan_evaluation_foundry_impact.py",
+      "group": "build-evaluation-release",
+      "bytes": 35511,
+      "lines": 932,
+      "sha256": "592d54939bdfd356aca2e7db201603fecaa28fa60869acc140da6b7f7c8bed95",
+      "test": false
+    },
+    {
+      "path": "scripts/plan_okf_publication_impact.py",
+      "group": "build-evaluation-release",
+      "bytes": 2278,
+      "lines": 68,
+      "sha256": "9b0033a80a0a16f973abcbe170da5f957b584953c7cb2d68ab56e72f68914b14",
+      "test": false
+    },
+    {
+      "path": "scripts/plane_root_validation.py",
+      "group": "build-evaluation-release",
+      "bytes": 6286,
+      "lines": 162,
+      "sha256": "1598a756844e542828eccb7e0b0ca951347c910f50161be5b0b9e533d35f9d88",
+      "test": false
+    },
+    {
+      "path": "scripts/reconcile_okf_repositories.py",
+      "group": "build-evaluation-release",
+      "bytes": 169380,
+      "lines": 3856,
+      "sha256": "baf7d3333548c591e97b89b2b77c781c800a6e746a1e50acb58763c26135b3ca",
+      "test": false
+    },
+    {
+      "path": "scripts/retarget_heritage_source_snapshots.py",
+      "group": "build-evaluation-release",
+      "bytes": 3883,
+      "lines": 110,
+      "sha256": "d1812f0271c3b9f483f7e19afbf691748fd3923a09f8b3d8250b089386ef4fe5",
+      "test": false
+    },
+    {
+      "path": "scripts/run_context_controls.mjs",
+      "group": "build-evaluation-release",
+      "bytes": 10210,
+      "lines": 132,
+      "sha256": "b442755736f804ad644dba622e9a237cb6b08c20e2f4b99c2b56b3e6c559bdc5",
+      "test": false
+    },
+    {
+      "path": "scripts/run_context_evaluation.mjs",
+      "group": "build-evaluation-release",
+      "bytes": 5429,
+      "lines": 92,
+      "sha256": "eb19c75fd2e73dfacd991c39eb05b5e78cb8ae419d8342fc8c458fda41f13afa",
+      "test": false
+    },
+    {
+      "path": "scripts/site_component_cache.py",
+      "group": "build-evaluation-release",
+      "bytes": 11999,
+      "lines": 340,
+      "sha256": "272a9363154f3882d36ce199b148004d493a04204a44ffcd30933cc1c1dbe2fd",
+      "test": false
+    },
+    {
+      "path": "scripts/stage_remote_mcp_site.mjs",
+      "group": "build-evaluation-release",
+      "bytes": 3304,
+      "lines": 32,
+      "sha256": "6bdfe181b6c32ec4890f739de6bf16d34bb9e382bd22f6e64673dcb8ecdb6a32",
+      "test": false
+    },
+    {
+      "path": "scripts/update_viewer.py",
+      "group": "build-evaluation-release",
+      "bytes": 26317,
+      "lines": 674,
+      "sha256": "272d2835526226d99acb054ecd6beabeed4ecd3c1e34ef8c7e6a5fd9db71c406",
+      "test": false
+    },
+    {
+      "path": "services/ask-okf-mcp/scripts/build.mjs",
+      "group": "assembly-delivery",
+      "bytes": 6581,
+      "lines": 74,
+      "sha256": "e2c1a3919bd52fe5cbb235ca02930a8ca4ec62ef3ef91cc86c05d51fff836486",
+      "test": false
+    },
+    {
+      "path": "services/ask-okf-mcp/scripts/engine-admission.mjs",
+      "group": "assembly-delivery",
+      "bytes": 2727,
+      "lines": 36,
+      "sha256": "d4bd23ca758036e07cb561a0d0983c305c8183548f695d1760b360eb567ba559",
+      "test": false
+    },
+    {
+      "path": "services/ask-okf-mcp/scripts/paced-fetch.mjs",
+      "group": "assembly-delivery",
+      "bytes": 1787,
+      "lines": 45,
+      "sha256": "c2f222f2f59a0c6a8017504422d29a39c57e37f69cc51da83ce8a90f3400220d",
+      "test": false
+    },
+    {
+      "path": "services/ask-okf-mcp/scripts/prepare-evidence-connect-release.ts",
+      "group": "assembly-delivery",
+      "bytes": 5177,
+      "lines": 81,
+      "sha256": "28235eca3b0cdb0e1801eea6ba43658aaada1fdcc93560eaf13fa3fef184991f",
+      "test": false
+    },
+    {
+      "path": "services/ask-okf-mcp/scripts/prepare-structured-release.ts",
+      "group": "assembly-delivery",
+      "bytes": 11279,
+      "lines": 136,
+      "sha256": "ecb016585bfa875286a24b4ed033dc71b9b4e9aba25174f78740bafb873e558b",
+      "test": false
+    },
+    {
+      "path": "services/ask-okf-mcp/scripts/replay-observation-files.ts",
+      "group": "assembly-delivery",
+      "bytes": 3865,
+      "lines": 51,
+      "sha256": "a3508f90c700511140f6dff5b1e19fa2bd968bd4a6f15d6a186ea7219d416825",
+      "test": false
+    },
+    {
+      "path": "services/ask-okf-mcp/scripts/verification-cases.mjs",
+      "group": "assembly-delivery",
+      "bytes": 2370,
+      "lines": 21,
+      "sha256": "aa83e9bc1b9c2034f59e9f1636e0c7c9becd0ad0c92b25c051c61851fb043a96",
+      "test": false
+    },
+    {
+      "path": "services/ask-okf-mcp/scripts/verify-approved-versions.ts",
+      "group": "assembly-delivery",
+      "bytes": 12835,
+      "lines": 179,
+      "sha256": "ca0ff6fd484f4bf375cc173a558ff11d6f36485a6bc011fc183c46bc60652a2a",
+      "test": false
+    },
+    {
+      "path": "services/ask-okf-mcp/scripts/verify-delivery.mjs",
+      "group": "assembly-delivery",
+      "bytes": 10006,
+      "lines": 131,
+      "sha256": "85e3b4860fd17f70fe62a2ae108d694f4777c438d470c4b8c4b316a95a1d8642",
+      "test": false
+    },
+    {
+      "path": "services/ask-okf-mcp/scripts/verify-release-0.6.ts",
+      "group": "assembly-delivery",
+      "bytes": 15711,
+      "lines": 194,
+      "sha256": "bd9e06d4f9763aa44ca80708a119e616c4c3cc75cacd4f27ffe456d73d18e1e0",
+      "test": false
+    },
+    {
+      "path": "services/ask-okf-mcp/scripts/verify-remote.mjs",
+      "group": "assembly-delivery",
+      "bytes": 16817,
+      "lines": 204,
+      "sha256": "ea445de815d80506d621a1ea96b32188180dd370d69efbc3bc42ca5d8b82fde1",
+      "test": false
+    },
+    {
+      "path": "services/ask-okf-mcp/scripts/verify-versioned-remote.ts",
+      "group": "assembly-delivery",
+      "bytes": 46913,
+      "lines": 576,
+      "sha256": "e849be75dbcbe460e9263401e91ac8d41e707e1c16981d52ab108603d38dc876",
+      "test": false
+    },
+    {
+      "path": "services/ask-okf-mcp/scripts/verify-versioned-replay.ts",
+      "group": "assembly-delivery",
+      "bytes": 13278,
+      "lines": 172,
+      "sha256": "ea69f37e2ea99016a8fbc1e9c34494b9765ef192baf278aa246c0afd08000176",
+      "test": false
+    },
+    {
+      "path": "services/ask-okf-mcp/scripts/verify-versioned-review.ts",
+      "group": "assembly-delivery",
+      "bytes": 10216,
+      "lines": 132,
+      "sha256": "1d0f9fa88fc88bca1cdaa83a735934fc8efd598146d1deb562206afae64e90c4",
+      "test": false
+    },
+    {
+      "path": "services/ask-okf-mcp/src/bundles.ts",
+      "group": "assembly-delivery",
+      "bytes": 2097,
+      "lines": 27,
+      "sha256": "a9f773482aed0a311dca1ce8cb16d8ced22f8f9e7ab381562cf3565f75aac8f8",
+      "test": false
+    },
+    {
+      "path": "services/ask-okf-mcp/src/contracts.ts",
+      "group": "assembly-delivery",
+      "bytes": 3556,
+      "lines": 43,
+      "sha256": "70e87ce728409095af97a92eab6f1998c65e09d053d44138508938bb5742aedc",
+      "test": false
+    },
+    {
+      "path": "services/ask-okf-mcp/src/corpusAssets.ts",
+      "group": "assembly-delivery",
+      "bytes": 691,
+      "lines": 11,
+      "sha256": "3fc39ba203024c5465515a9061ab079f8548f850588e82de316f29cd12fd5bb2",
+      "test": false
+    },
+    {
+      "path": "services/ask-okf-mcp/src/corpusFetch.ts",
+      "group": "assembly-delivery",
+      "bytes": 3287,
+      "lines": 57,
+      "sha256": "40eea3db05182f3e252e3c06a998a5b571825f8a096564b2e3bf3e351a504306",
+      "test": false
+    },
+    {
+      "path": "services/ask-okf-mcp/src/deliveryContracts.ts",
+      "group": "assembly-delivery",
+      "bytes": 6666,
+      "lines": 86,
+      "sha256": "87ffa6ead9608fb1745c8fc4cdec3a737b697e5538a0a9fa86e6b18c03294eb1",
+      "test": false
+    },
+    {
+      "path": "services/ask-okf-mcp/src/enginePolicy.ts",
+      "group": "assembly-delivery",
+      "bytes": 245,
+      "lines": 5,
+      "sha256": "bc65739ba8568d160710cf403ea22f4bb57d03ac87a70291b634dbcfd8ec60c6",
+      "test": false
+    },
+    {
+      "path": "services/ask-okf-mcp/src/engines.ts",
+      "group": "assembly-delivery",
+      "bytes": 4317,
+      "lines": 52,
+      "sha256": "ae4131cff3ceeeb4f244f2d9d60eabd33e7e8383b66fbe998ada1b49cb841493",
+      "test": false
+    },
+    {
+      "path": "services/ask-okf-mcp/src/landing.ts",
+      "group": "assembly-delivery",
+      "bytes": 6803,
+      "lines": 44,
+      "sha256": "bb3b04666ced6b5710f0ee4120b7e0f597cb5b9e55d324a8658789c6929e7e49",
+      "test": false
+    },
+    {
+      "path": "services/ask-okf-mcp/src/node.ts",
+      "group": "assembly-delivery",
+      "bytes": 1253,
+      "lines": 20,
+      "sha256": "acc948573787ec2c97392aba4c5b65d809cfccf13ff99688a2224860575c435f",
+      "test": false
+    },
+    {
+      "path": "services/ask-okf-mcp/src/raw.d.ts",
+      "group": "assembly-delivery",
+      "bytes": 70,
+      "lines": 1,
+      "sha256": "8ab73ffb23c6e7fe4a85eb1bf8d5483854bfbfce929a15ac2ff1bc97a7e8c235",
+      "test": false
+    },
+    {
+      "path": "services/ask-okf-mcp/src/registry.ts",
+      "group": "assembly-delivery",
+      "bytes": 6371,
+      "lines": 87,
+      "sha256": "b13ed0c60bfcb025ec2a2b42e0d097febbe3309cc06a53736c7e0634433550ef",
+      "test": false
+    },
+    {
+      "path": "services/ask-okf-mcp/src/replay.ts",
+      "group": "assembly-delivery",
+      "bytes": 7877,
+      "lines": 117,
+      "sha256": "bbcd411d6b2db5e85e03d4230afc855f56190eb0f8795788bd961e8cbfd7b0a7",
+      "test": false
+    },
+    {
+      "path": "services/ask-okf-mcp/src/replayDelivery.ts",
+      "group": "assembly-delivery",
+      "bytes": 1562,
+      "lines": 26,
+      "sha256": "a192c5d16c6625c5fc29edff7e8e259333cc52b86a7143666faf674cc133fa52",
+      "test": false
+    },
+    {
+      "path": "services/ask-okf-mcp/src/review.ts",
+      "group": "assembly-delivery",
+      "bytes": 19239,
+      "lines": 224,
+      "sha256": "21056187213ac6efa2461e2a375e0c02b07ecd37e0c09898447cd43b8eedacb3",
+      "test": false
+    },
+    {
+      "path": "services/ask-okf-mcp/src/service.ts",
+      "group": "assembly-delivery",
+      "bytes": 21915,
+      "lines": 280,
+      "sha256": "8d86dc511240dc29b298dfe29d10e810e1464994293e8f4899e36c78dc0ff01d",
+      "test": false
+    },
+    {
+      "path": "services/ask-okf-mcp/src/worker.ts",
+      "group": "assembly-delivery",
+      "bytes": 389,
+      "lines": 8,
+      "sha256": "b8c64b7091c54d16a2bce49a5b081f80a297131778fc5d3de443c75e1e819981",
+      "test": false
+    },
+    {
+      "path": "tools/context-archive/archive.test.ts",
+      "group": "assembly-delivery",
+      "bytes": 13843,
+      "lines": 161,
+      "sha256": "7fba9f1cbfcea2d62b4386ce53f2df486150a18c5dfd62782ad9a38885ab3d71",
+      "test": true
+    },
+    {
+      "path": "tools/context-archive/check-browser.ts",
+      "group": "assembly-delivery",
+      "bytes": 9216,
+      "lines": 98,
+      "sha256": "f04704c4fd5b2ed2197d37882eba2d3a1ba5ef1a639af00bfc5b0227bf182e26",
+      "test": false
+    },
+    {
+      "path": "tools/context-archive/export.ts",
+      "group": "assembly-delivery",
+      "bytes": 14101,
+      "lines": 148,
+      "sha256": "12cfcff2b29c6342fe07cdf98ec0a211829b2492328e71a8c749b8337418f8dc",
+      "test": false
+    },
+    {
+      "path": "tools/context-archive/files.mjs",
+      "group": "assembly-delivery",
+      "bytes": 2272,
+      "lines": 39,
+      "sha256": "3f0789c897fdd8bf84c5e76039dc9bfe683f9d94844b94f94910e8d99e67a29c",
+      "test": false
+    },
+    {
+      "path": "tools/context-archive/fixtures.ts",
+      "group": "assembly-delivery",
+      "bytes": 4928,
+      "lines": 53,
+      "sha256": "eab782539cfd25d080f0010c7447330278af69725e7683bc0b332299f0fe20c3",
+      "test": false
+    },
+    {
+      "path": "tools/context-archive/reader.mjs",
+      "group": "assembly-delivery",
+      "bytes": 16106,
+      "lines": 172,
+      "sha256": "a55c1c07a46d1e5a2003197474be4781a6642a211fa0f6a51b4f0030fa0064c9",
+      "test": false
+    },
+    {
+      "path": "tools/context-archive/schema.mjs",
+      "group": "assembly-delivery",
+      "bytes": 5191,
+      "lines": 68,
+      "sha256": "ee31c43cc3dac5718758bab7bdeff46163a61c1b77bff018185409f6fe59bac4",
+      "test": false
+    },
+    {
+      "path": "tools/context-archive/shared.mjs",
+      "group": "assembly-delivery",
+      "bytes": 3582,
+      "lines": 53,
+      "sha256": "35910aa6d0164080f541c2fe4f2d3e99d0418079e122809f38e14a8f1e699928",
+      "test": false
+    },
+    {
+      "path": "tools/context-archive/validation/local-attempt-01/executed-check-browser.ts",
+      "group": "retained-or-vendored-evidence",
+      "bytes": 8328,
+      "lines": 93,
+      "sha256": "40015b9be398075346bfc180ae274482e1c53d8489810fd5b846cc82b96273d9",
+      "test": false
+    },
+    {
+      "path": "tools/context-archive/validation/local-attempt-02/executed-check-browser.ts",
+      "group": "retained-or-vendored-evidence",
+      "bytes": 8379,
+      "lines": 93,
+      "sha256": "5cd35f5f76f4e5b7ad6dc00c73043af603439c96c362b61cdc411e10ce55d3d6",
+      "test": false
+    },
+    {
+      "path": "tools/context-archive/validation/local-attempt-03/executed-check-browser.ts",
+      "group": "retained-or-vendored-evidence",
+      "bytes": 8859,
+      "lines": 95,
+      "sha256": "39e69724c9cab14436246e7fe470a8fa298544320aae5f91bf43391db8d890a5",
+      "test": false
+    },
+    {
+      "path": "tools/context-archive/validation/local-attempt-04/executed-check-browser.ts",
+      "group": "retained-or-vendored-evidence",
+      "bytes": 9038,
+      "lines": 96,
+      "sha256": "2ff9eb7536dd04d620f849fa2c123171d6bcd47b9a2ef976e976533670bdd1a5",
+      "test": false
+    },
+    {
+      "path": "tools/context-archive/validation/local-attempt-05/executed-check-browser.ts",
+      "group": "retained-or-vendored-evidence",
+      "bytes": 9038,
+      "lines": 96,
+      "sha256": "2ff9eb7536dd04d620f849fa2c123171d6bcd47b9a2ef976e976533670bdd1a5",
+      "test": false
+    },
+    {
+      "path": "tools/context-archive/validation/local-attempt-06/executed-check-browser.ts",
+      "group": "retained-or-vendored-evidence",
+      "bytes": 9216,
+      "lines": 98,
+      "sha256": "f04704c4fd5b2ed2197d37882eba2d3a1ba5ef1a639af00bfc5b0227bf182e26",
+      "test": false
+    },
+    {
+      "path": "tools/context-archive/validation/local-attempt-07/executed-check-browser.ts",
+      "group": "retained-or-vendored-evidence",
+      "bytes": 9216,
+      "lines": 98,
+      "sha256": "f04704c4fd5b2ed2197d37882eba2d3a1ba5ef1a639af00bfc5b0227bf182e26",
+      "test": false
+    }
+  ]
+}

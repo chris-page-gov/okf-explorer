@@ -36,6 +36,10 @@ the optional [project studio](docs/project-studio/index.md),
 reviews. You can finish with a sourced answer or a private bundle; building an
 app and publishing are optional later steps.
 
+The [architecture and implementation plan](docs/architecture-and-implementation-plan.md)
+separates implemented, experimental and proposed capabilities, with prioritised
+work, acceptance criteria and a whole-implementation review scope.
+
 [Governed context assembly](docs/context-assembly.md) adds a separate Ask OKF
 evidence workflow for bundles that declare a compatible index. It follows
 explicit relationships, retains provenance and reports missing context; it

@@ -68,7 +68,7 @@ export function parseManifest(v: unknown, url: URL): Manifest {
 }
 async function bytes(url: URL, max: number, signal?: AbortSignal): Promise<Uint8Array> {
   const active = signal ? AbortSignal.any([signal, AbortSignal.timeout(15000)]) : AbortSignal.timeout(15000);
-  const response = await fetch(url, { signal: active, cache: 'no-store', credentials: 'omit' });
+  const response = await fetch(url, { signal: active, cache: 'no-store', credentials: 'omit', redirect: 'error' });
   if (!response.ok || response.url !== url.href) { await response.body?.cancel(); throw new Error('Reading-help source failed or redirected.'); }
   if (Number(response.headers.get('content-length') || 0) > max) { await response.body?.cancel(); throw new Error('Reading-help source exceeds the byte limit.'); }
   const reader = response.body?.getReader(); if (!reader) throw new Error('Reading-help source is empty.');

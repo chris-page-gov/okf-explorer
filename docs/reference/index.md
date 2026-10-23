@@ -6,6 +6,10 @@ instructions or proof of a present deployment.
 
 ## Technical guides
 
+- [Architecture and implementation plan](../architecture-and-implementation-plan.md)
+  records the current implementation baseline, experimental boundaries,
+  delivery priorities and acceptance criteria. Use it alongside the normative
+  semantic and publication contracts and the dated architecture decisions.
 - [Build and publish OKF bundles consistently](../okf-build-and-publication-methodology.md)
   defines the estate lifecycle standard; its
   [implementation tracker](../okf-estate-standardisation-tracker.md) records

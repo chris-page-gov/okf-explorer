@@ -21,6 +21,9 @@ then checks every passage, occurrence and supporting quotation against the
 frozen page text. A cross-page passage remains split into labelled pages. The
 PDF links use the source-declared URL; this view does not download the PDF to
 check its bytes.
+Manifest and frozen-source requests reject redirects at the fetch boundary and
+retain their 15-second deadline and byte limits. Passage review uses the same
+redirect rejection policy.
 
 Each help button is an explicit occurrence in the manifest. For example,
 `GB` and the adjacent source marker `6` can lead to different cards. Unresolved

@@ -1,0 +1,24 @@
+{
+  "schema": "okf-review-evidence-preservation.v1",
+  "review_baseline": "460f7245352e5d1e407d37e9d40a9b2b6b55ee0a",
+  "files": [
+    {
+      "source": "evaluation-foundry/fixtures/heritage-warwickshire/evidence/local-candidate-receipt.json",
+      "retained": "validation/p0-review/2026-10-23/pre-review/local-candidate-receipt.json",
+      "bytes": 6430,
+      "sha256": "3ba5d887c14d606e859c0519b4b77ea28a53488d953092299a6d66e31b9aee9b"
+    },
+    {
+      "source": "evaluation-foundry/fixtures/heritage-warwickshire/evidence/receipts/question-suite-results.json.gz",
+      "retained": "validation/p0-review/2026-10-23/pre-review/question-suite-results.json.gz",
+      "bytes": 12174,
+      "sha256": "63f24dca9c9462ea082fc8a6ba992e6e9f887d61b05c9f97b11807c46a8768d3"
+    },
+    {
+      "source": "evaluation-foundry/fixtures/heritage-warwickshire/evidence/receipts/local-journey-results.json.gz",
+      "retained": "validation/p0-review/2026-10-23/pre-review/local-journey-results.json.gz",
+      "bytes": 6433,
+      "sha256": "429485ab831d9b4f284a918ac0c8b7f74047f71b4e99d208963a5cd33d7eaace"
+    }
+  ]
+}

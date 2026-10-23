@@ -15,10 +15,15 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-    "pillow>=11,<13",
+    "pillow>=13,<14",
     "python-docx>=1.2,<2",
 ]
 
 [tool.uv]
 package = false
 required-version = "==0.12.2"
+constraint-dependencies = [
+    "certifi>=2026.10.19",
+    "multidict>=6.9.1,<7",
+    "urllib3>=2.8.0",
+]

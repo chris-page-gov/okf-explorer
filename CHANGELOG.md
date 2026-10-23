@@ -1,5 +1,32 @@
 # Changelog
 
+## P0 implementation review and corrections — 23 October 2026
+
+- Record the whole-implementation boundary review, coverage inventory and six
+  validated findings alongside the updated architecture plan.
+- Reject evidence redirects before following them, bound workbench requests
+  and preserve caller cancellation. Isolate compatibility worker caches and
+  tolerate malformed or unavailable saved pins.
+- Escape embedded viewer JSON without changing its source graph, and pin the
+  service's patched Zod 4.6.7 dependency.
+- Address the 44 Python lockfile alerts with targeted Pillow, certifi,
+  multidict and urllib3 updates, resolution constraints and rollback guards.
+  Keep the governed Python and uv versions unchanged.
+- Add regression controls and preserve the previous build-bound Heritage
+  evidence before refreshing candidate assurance. Independent service hosting,
+  domain acceptance and AI-client compatibility retain separate gates.
+
+## Architecture and implementation priorities — 23 October 2026
+
+- Add a maintained architecture and implementation plan against the merged
+  October baseline, separating implemented, experimental and proposed
+  capabilities from deployment, client compatibility and domain acceptance.
+- Prioritise a bounded whole-implementation review, one independently assessed
+  domain journey and current Codex/ChatGPT integration evidence, followed by
+  authoring usability, portability and optional rendering research.
+- Define accountable roles, dependencies, acceptance criteria and evidence
+  requirements. Link the plan from the README and documentation indexes.
+
 ## Reliable browser package downloads — 23 October 2026
 
 - Select the primary Ubuntu and security archives over HTTPS for full-browser

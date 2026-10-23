@@ -38,6 +38,13 @@ function mockFiles(manifest: Manifest, source = pageJson) {
 afterEach(() => vi.unstubAllGlobals());
 
 describe('occurrence-scoped reading help', () => {
+  test('rejects a redirect at the browser fetch boundary', async () => {
+    vi.stubGlobal('fetch', async (_input: URL, options: RequestInit) => {
+      expect(options.redirect).toBe('error');
+      throw new TypeError('Redirect rejected');
+    });
+    await expect(loadReadingHelp(manifestUrl, manifestUrl)).rejects.toThrow('Redirect rejected');
+  });
   test('retains exact source text and separates abbreviation from adjoining source marker', async () => {
     mockFiles(fixture());
     const loaded = await loadReadingHelp(manifestUrl, manifestUrl);

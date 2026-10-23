@@ -9,6 +9,10 @@ official DWP service or individual benefits advice.
 [Publication procedure](../../docs/remote-mcp-publication.md). Software preparation
 and recorded public deployment are separate states.
 
+The 23 October P0 review updates the source dependency pin to Zod 4.6.7 for
+[GHSA-mrhx-c7xc-m3w5](https://github.com/advisories/GHSA-mrhx-c7xc-m3w5).
+Frozen source/engine pairs and recorded deployments remain unchanged.
+
 Service 0.7.0 defaults to the immutable Evidence Connect DMG and ADM source
 `7eeded763042ddd0070f4fed834c6074149e8e2f` with the compatible Explorer
 engine `d6930bbcddaab616deec002d9e6efff6e3aae953`. Its corpus manifest
