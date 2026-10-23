@@ -1,0 +1,59 @@
+{
+  "schema": "okf-controlled-language-result.v1",
+  "locale": "en-GB",
+  "time_zone": "Europe/London",
+  "mode": "offline illustrative fixtures; model-assisted authorship, no live trial",
+  "model_calls": 0,
+  "network_calls": 0,
+  "checker": "pinned SimpleEnglish descriptive regex heuristics; no official dictionary",
+  "evidence_sha256": "464729bca1f73f8957741731edd4c50b28a5692b241d83028381e5d5c77d660f",
+  "bindings": {
+    "profiles.json": "2f1292d81cee2eb5cf978dc3ddefb9ea05b15789605a8366ec92733ba1abb312",
+    "assessor.json": "0a433cb323746e878465556d69d17e5ce8792383d50efd9e1dbd580dbc557448",
+    "fixtures/renderings.json": "32da9e8dd2c1d07bcc0ef0894f20430781c12d85878c58a45109131f49c6e782",
+    "evidence-lock.json": "16f207768da58bf3c6803bce3b827b15639791991f6894662f0af6273648aeee",
+    "explorer-adapter.mjs": "755a1603469fcbeb854f902fc356845318bf432bccbef1787915e87bc5575221",
+    "evaluate.mjs": "95b3e7ad6d8f5b6267a6896c8375adbe42e831bf40b8918cefb18408027e7a6a",
+    "run.mjs": "9658eda9b06364a394ebdfafe8e2c037ac4391d94430841cc4dd85edbf53e707",
+    "checker.py": "ae37e9d68bb04c58c150c6aadb99f118fa49a2dd449de3f51fbd8b9106a91ac8",
+    "assess.mjs": "eafd8623db10c52342068766a34a7b2a62077fe7aaaf2aa74a63ac863ada220f",
+    "prepare.mjs": "17aae8c82587f7fbec9b8f13579250129ddab0db51295052b6981d09c11899f9",
+    "freeze_dwp.py": "15b664b897b6bf0cbfe9f85ab7e21f940673c92fc385ef29d5233f218b0036ce",
+    "../../scripts/evaluate_context_package.mjs": "e5530e231ec9757644a87fbec3490b757282474dcb7b9ca7f2a97dced822bc11"
+  },
+  "rows": [
+    {
+      "id": "baseline",
+      "violations": 3,
+      "words": 198,
+      "mean_sentence_words": 14.1,
+      "semantic_preservation": "not-established",
+      "bounded_checks": "passed",
+      "citation_presence": "passed",
+      "result": "requires-independent-review"
+    },
+    {
+      "id": "ste-inspired",
+      "violations": 0,
+      "words": 154,
+      "mean_sentence_words": 9.1,
+      "semantic_preservation": "not-established",
+      "bounded_checks": "passed",
+      "citation_presence": "passed",
+      "result": "requires-independent-review"
+    },
+    {
+      "id": "controlled",
+      "violations": 0,
+      "words": 119,
+      "mean_sentence_words": 8.5,
+      "semantic_preservation": "failed-development-checks",
+      "bounded_checks": "failed",
+      "citation_presence": "passed",
+      "result": "reject"
+    }
+  ],
+  "human_comprehension": "not measured",
+  "semantic_acceptance": "not established",
+  "recommendation": "Keep an isolated optional experiment; no OKF core change or production adoption."
+}

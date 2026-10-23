@@ -1,0 +1,11 @@
+{
+  "schema": "okf-controlled-language-evidence-lock.v1",
+  "files": {
+    "fixtures/evidence.json": "f1d76d5551c87285ff1f57ca2438d90412f230a86a9a10774878cbd6c1c214bf",
+    "fixtures/baseline-reference.md": "9a8f8579fd930357aeb812e95d6c16ba10fc95dab14f07900681c88f7b640907",
+    "fixtures/baseline-provenance.json": "7d88e8b2ac0e30b8549a2da8f3aebdc6e06cabbae9a984d0c5ce14ac73d474e6",
+    "vendor/ste_lint.py": "de54202af75f54de238fc932bebe725013a080fdb40cc7e3b53cfb6001047c71",
+    "vendor/slop.tsv": "1e65bf53d00c1495781a70c562e91296b3481c6bc0b37feb2cc6ea275b77e4dc",
+    "vendor/LICENSE": "10b2f9435643bae609e4c1a7690131b2aeb6941e9d867e934bc80619935a6f8f"
+  }
+}

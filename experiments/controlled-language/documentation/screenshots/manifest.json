@@ -1,0 +1,332 @@
+{
+  "schema": "okf-experiment-screenshots.v1",
+  "captured_on": "2026-10-10",
+  "browser": "Chrome via Playwright CLI 0.1.17",
+  "capture_kind": "real browser capture of local read-only documentation views",
+  "implementation_commit": "dddc2a7821f96b2bdf978a337c2d2f8a070774e6",
+  "figures": [
+    {
+      "figure": 1,
+      "title": "Checker comparison and choice",
+      "coverage": "Deliverables 1 and 2",
+      "source": "checkers.json",
+      "screenshot": "01-checkers.png",
+      "screenshot_sha256": "01faa633b210285e04b18e932ba49413ad84ac50cf0dbe7eb7113cf9fe8515bb",
+      "html": "source/01-checkers.html",
+      "html_sha256": "e282c9e8fc5e25c0fd0bc56b97c6dfa6044a0d35a0ec73fff4b0cdf2e93f518c"
+    },
+    {
+      "figure": 2,
+      "title": "Optional presentation architecture",
+      "coverage": "Deliverable 3",
+      "source": "explorer-adapter.mjs and profiles.json",
+      "screenshot": "02-architecture.png",
+      "screenshot_sha256": "09b1dbc7faa21f0014fdf916c4ab1135344f09cb67045d6394706ee439badbac",
+      "html": "source/02-architecture.html",
+      "html_sha256": "512fa4de0a4d1549a12fcff7129509afb56f7fe40a58c268e769ebbbc999802e"
+    },
+    {
+      "figure": 3,
+      "title": "Working scripts and reproduction",
+      "coverage": "Deliverable 4",
+      "source": "README.md and run.mjs",
+      "screenshot": "03-prototype.png",
+      "screenshot_sha256": "c7468f3a1afa5c4b02619f3b3efb6d94860bec4ec222ffec36e8ddc63938e5b6",
+      "html": "source/03-prototype.html",
+      "html_sha256": "5768bc13ae120842e14aa4711e77f155bb78a9f281a3f07b0e357812c630852e"
+    },
+    {
+      "figure": 4,
+      "title": "Selected DWP question",
+      "coverage": "Deliverable 5",
+      "source": "fixtures/evidence.json",
+      "screenshot": "04-case.png",
+      "screenshot_sha256": "0d826ab11ea74e28eaa57721e1e2cd08063ae50c1536d6d742a7a704c2cedb89",
+      "html": "source/04-case.html",
+      "html_sha256": "d7b53d85cfb7777af90dec57bbdfbdb95f7fef5be9b1f5e5dd37d17e74c422d4"
+    },
+    {
+      "figure": 5,
+      "title": "Frozen evidence and source context",
+      "coverage": "Deliverable 6",
+      "source": "fixtures/evidence.json and freeze_dwp.py",
+      "screenshot": "05-evidence.png",
+      "screenshot_sha256": "7f38b9e22ae43a6c9c567c81a77e7c67dc057647d0d8eb0b4b42920012169566",
+      "html": "source/05-evidence.html",
+      "html_sha256": "48a46d5e9fc62d7f55183eff4e4a2d89a98a61eb90d1ec8a61bd15143a8111b6"
+    },
+    {
+      "figure": 6,
+      "title": "Baseline explanation",
+      "coverage": "Deliverable 7",
+      "source": "results/baseline.txt and baseline.evaluation.json",
+      "screenshot": "06-baseline.png",
+      "screenshot_sha256": "4fc6ce0207d3cd579091bfb561abfe9c768fef1cd5822d3520904a89d8e36444",
+      "html": "source/06-baseline.html",
+      "html_sha256": "9a19ab703bb7b2716a1eb0129a870243163ea2fc0de263abd743545f80cd0ec9"
+    },
+    {
+      "figure": 7,
+      "title": "STE inspired explanation",
+      "coverage": "Deliverable 7",
+      "source": "results/ste-inspired.txt and ste-inspired.evaluation.json",
+      "screenshot": "07-ste-inspired.png",
+      "screenshot_sha256": "2d8e646937514a778a5661534028f0e973a2522ab46ec61bfe74ceefefbd093d",
+      "html": "source/07-ste-inspired.html",
+      "html_sha256": "0a289c3625ce73d81c36a9963db6f2377c09f7fd3bbf8153877de2d879379518"
+    },
+    {
+      "figure": 8,
+      "title": "Controlled negative control",
+      "coverage": "Deliverable 7",
+      "source": "results/controlled.txt and controlled.evaluation.json",
+      "screenshot": "08-controlled.png",
+      "screenshot_sha256": "a590f9d0fdf073c083cc05ddc323993774345ff85d26fb09bf2279a02d3ef6c0",
+      "html": "source/08-controlled.html",
+      "html_sha256": "04da825f1d2566458eeec5beec865aaa577bcf7d673432424d4916edc963cd71"
+    },
+    {
+      "figure": 9,
+      "title": "Raw language checker results",
+      "coverage": "Deliverable 8",
+      "source": "results/*.checker.raw.json",
+      "screenshot": "09-language.png",
+      "screenshot_sha256": "dfe4c2ea28534257d2432b8adbdbde128ce2fd251e2925183ec1486918872c5e",
+      "html": "source/09-language.html",
+      "html_sha256": "28be0d989aa5c1a669ebf4244ebdcd25d80913137d954c46d6b6df3a16049e93"
+    },
+    {
+      "figure": 10,
+      "title": "Independent development checks",
+      "coverage": "Deliverable 9",
+      "source": "assessor.json and results/controlled.evaluation.json",
+      "screenshot": "10-semantics.png",
+      "screenshot_sha256": "8319ca1fa21ffe6b293b09db8c1f278969c10e359edb518709f353fbcb2ed24e",
+      "html": "source/10-semantics.html",
+      "html_sha256": "4d7b871984e96320e066c50437ae06e6c56ce748a79a466219309679e6041c5e"
+    },
+    {
+      "figure": 11,
+      "title": "Provenance and identity trace",
+      "coverage": "Deliverable 10",
+      "source": "evidence-lock.json and results/checksums.json",
+      "screenshot": "11-provenance.png",
+      "screenshot_sha256": "e85ec45b235475e3b615c940d7600ce1fc1b0f109bc28ec2922568f70e3cd7e1",
+      "html": "source/11-provenance.html",
+      "html_sha256": "3a0f5b23acff32f85fba61dd5c1cf9c052023cf37a9ab02920e21652aa027282"
+    },
+    {
+      "figure": 12,
+      "title": "Bounded checker feedback replay",
+      "coverage": "Deliverable 11",
+      "source": "results/loop.json",
+      "screenshot": "12-loop.png",
+      "screenshot_sha256": "52f5d9d7d6f5a4a11441348fe46ca5454db4ead02557ce64c6fb7bd3229aa69e",
+      "html": "source/12-loop.html",
+      "html_sha256": "c948da216b7f8c96d10f92a09f30ee50ebae1bafbd4a8a42bb8fa94978194222"
+    },
+    {
+      "figure": 13,
+      "title": "Evaluation and profile recommendation",
+      "coverage": "Deliverables 12 and 13",
+      "source": "results/summary.json and docs/controlled-language-experiment.md",
+      "screenshot": "13-findings.png",
+      "screenshot_sha256": "1a95467e212c5b926e38151331ac65bf687dc2ee5e2b03a2f6e63e1d8bce9579",
+      "html": "source/13-findings.html",
+      "html_sha256": "7142802490d015c14c74ddc718f56dcf69f75bc50b7850c1e54fc749b9c25bf8"
+    },
+    {
+      "figure": 14,
+      "title": "Automated tests and CI evidence",
+      "coverage": "Deliverable 14",
+      "source": "tests/controlled_language.test.mjs and GitHub Actions run 38040641350",
+      "screenshot": "14-tests.png",
+      "screenshot_sha256": "97f7adb217fbc0fdbf41745e2d8fddc8cf47ae7780f401815d242228ba55dca0",
+      "html": "source/14-tests.html",
+      "html_sha256": "95d03db9f355626fd66aeaa0e9fa20028e770e9232c7b694d3e7acf0ba8b6e73"
+    },
+    {
+      "figure": 15,
+      "title": "Terminology research",
+      "coverage": "Phase 8 proposal",
+      "source": "docs/controlled-language-experiment.md",
+      "screenshot": "15-terminology.png",
+      "screenshot_sha256": "14fe3f882a6ae174731566095b6a73624a59ecb7333031296d15b21bcec46c6e",
+      "html": "source/15-terminology.html",
+      "html_sha256": "d462d002799bfb7dbd234a1911360e38296ec88424bcc27cb99dd965e0af403f"
+    },
+    {
+      "figure": 16,
+      "title": "MCP feasibility",
+      "coverage": "Phase 9 proposal",
+      "source": "checker.py and docs/controlled-language-experiment.md",
+      "screenshot": "16-mcp.png",
+      "screenshot_sha256": "06869596992a9145c77a3bd37c18d563c5801d3765cab345dd98ec750c192884",
+      "html": "source/16-mcp.html",
+      "html_sha256": "43f1d68b39947f5c1373d165ddd9709faa074124cd6733ee4a94aca8c899cbee"
+    },
+    {
+      "figure": 17,
+      "title": "Controlled language before extraction",
+      "coverage": "Stretch proposal",
+      "source": "CODEX_HANDOVER_ASD_STE100_OKF.md and docs/controlled-language-experiment.md",
+      "screenshot": "17-extraction.png",
+      "screenshot_sha256": "2767d0d8ce6c8e1ad18fbd3695825f1e8efb5dcd1314905dafacf7c96acebc41",
+      "html": "source/17-extraction.html",
+      "html_sha256": "e7d80b527eb08c232e4d999db279b951cbbcfa54abcec80ff5ea65c5fcb3af79"
+    }
+  ],
+  "source_bindings": [
+    {
+      "path": "CODEX_HANDOVER_ASD_STE100_OKF.md",
+      "sha256": "53c92e3b7ccdc153e7ed1f07c735d9690e603947b7ef0586efd1de8ab8cb24d4"
+    },
+    {
+      "path": "README.md",
+      "sha256": "c9059d3e3411019688f825d7014d146a56d6583b1d2a896cd654eace7a85a142"
+    },
+    {
+      "path": "assess.mjs",
+      "sha256": "eafd8623db10c52342068766a34a7b2a62077fe7aaaf2aa74a63ac863ada220f"
+    },
+    {
+      "path": "assessor.json",
+      "sha256": "0a433cb323746e878465556d69d17e5ce8792383d50efd9e1dbd580dbc557448"
+    },
+    {
+      "path": "checker.py",
+      "sha256": "ae37e9d68bb04c58c150c6aadb99f118fa49a2dd449de3f51fbd8b9106a91ac8"
+    },
+    {
+      "path": "checkers.json",
+      "sha256": "68e51d239a1224053e5a750de936bb67d849b92398d17edf9c3048f023ea58bd"
+    },
+    {
+      "path": "evaluate.mjs",
+      "sha256": "95b3e7ad6d8f5b6267a6896c8375adbe42e831bf40b8918cefb18408027e7a6a"
+    },
+    {
+      "path": "evidence-lock.json",
+      "sha256": "16f207768da58bf3c6803bce3b827b15639791991f6894662f0af6273648aeee"
+    },
+    {
+      "path": "explorer-adapter.mjs",
+      "sha256": "755a1603469fcbeb854f902fc356845318bf432bccbef1787915e87bc5575221"
+    },
+    {
+      "path": "fixtures/baseline-provenance.json",
+      "sha256": "7d88e8b2ac0e30b8549a2da8f3aebdc6e06cabbae9a984d0c5ce14ac73d474e6"
+    },
+    {
+      "path": "fixtures/baseline-reference.md",
+      "sha256": "9a8f8579fd930357aeb812e95d6c16ba10fc95dab14f07900681c88f7b640907"
+    },
+    {
+      "path": "fixtures/evidence.json",
+      "sha256": "f1d76d5551c87285ff1f57ca2438d90412f230a86a9a10774878cbd6c1c214bf"
+    },
+    {
+      "path": "fixtures/renderings.json",
+      "sha256": "32da9e8dd2c1d07bcc0ef0894f20430781c12d85878c58a45109131f49c6e782"
+    },
+    {
+      "path": "freeze_dwp.py",
+      "sha256": "15b664b897b6bf0cbfe9f85ab7e21f940673c92fc385ef29d5233f218b0036ce"
+    },
+    {
+      "path": "prepare.mjs",
+      "sha256": "17aae8c82587f7fbec9b8f13579250129ddab0db51295052b6981d09c11899f9"
+    },
+    {
+      "path": "profiles.json",
+      "sha256": "2f1292d81cee2eb5cf978dc3ddefb9ea05b15789605a8366ec92733ba1abb312"
+    },
+    {
+      "path": "results/baseline.checker.raw.json",
+      "sha256": "2534c71d44e2d68f6a50ade806fd1d29e8f4c593b0f8440f81a34f5d93613bcc"
+    },
+    {
+      "path": "results/baseline.evaluation.json",
+      "sha256": "fe9ddc977864a8ebe915330f2aacffe553c4888f33e0c4293f955c83df18abce"
+    },
+    {
+      "path": "results/baseline.request.json",
+      "sha256": "fca3b9c7c816662ff285171243bc777c0d27bbeec3ce90132a6d0fe86e84a5fc"
+    },
+    {
+      "path": "results/baseline.txt",
+      "sha256": "76b790cfba4de056ada5ad2cecb5a824974845bf6ab97bcc7448bfe17e2b6590"
+    },
+    {
+      "path": "results/checksums.json",
+      "sha256": "c1e3e6c512a21d106b4a4c969a4bd3d39289feaad143bb16e4c3b1b5ac369fc5"
+    },
+    {
+      "path": "results/controlled.checker.raw.json",
+      "sha256": "15ad327189c3b3abfc1e6026fa3bd982a5ac7458bf1e10489168a91348eaf1e2"
+    },
+    {
+      "path": "results/controlled.evaluation.json",
+      "sha256": "f1b2c05eca884d116bf905e5c1fc09bcc7bb3fcb54ded350661b8b78f45fa384"
+    },
+    {
+      "path": "results/controlled.request.json",
+      "sha256": "c70250c97779176f8c07ad60a96a2aea6983ed1b10519aa340c330a25c627136"
+    },
+    {
+      "path": "results/controlled.txt",
+      "sha256": "b9b895a288ed5bda6b77735cd6c3e9ce3bdd5e64dc896d144090055508e5747d"
+    },
+    {
+      "path": "results/loop.json",
+      "sha256": "ae692692203b1fc6444784b19c06e620db9d8314588a54e74a12fd1f102b5d00"
+    },
+    {
+      "path": "results/ste-inspired.checker.raw.json",
+      "sha256": "a45d3894152e405223d7d8d309598f78942ec8fc072abe25e31bf8967cfbb63c"
+    },
+    {
+      "path": "results/ste-inspired.evaluation.json",
+      "sha256": "325a503bad8ccc1370fa0e4b2cf853cecd3ac1b8681c2d75bbd509da40a549c4"
+    },
+    {
+      "path": "results/ste-inspired.request.json",
+      "sha256": "8620dc42303dc311edd726ae61444643fe040ed285ecb397ad8bbe78967df65b"
+    },
+    {
+      "path": "results/ste-inspired.txt",
+      "sha256": "df1e54433f5ea8d476e07299d1a8d10f54c454e8795661334a00e5f0bea402fa"
+    },
+    {
+      "path": "results/summary.json",
+      "sha256": "503ae57f9642dcff44d86e58be6aa1403eece3acb8a5e96342b46a78868a8d83"
+    },
+    {
+      "path": "run.mjs",
+      "sha256": "9658eda9b06364a394ebdfafe8e2c037ac4391d94430841cc4dd85edbf53e707"
+    },
+    {
+      "path": "vendor/LICENSE",
+      "sha256": "10b2f9435643bae609e4c1a7690131b2aeb6941e9d867e934bc80619935a6f8f"
+    },
+    {
+      "path": "vendor/slop.tsv",
+      "sha256": "1e65bf53d00c1495781a70c562e91296b3481c6bc0b37feb2cc6ea275b77e4dc"
+    },
+    {
+      "path": "vendor/ste_lint.py",
+      "sha256": "de54202af75f54de238fc932bebe725013a080fdb40cc7e3b53cfb6001047c71"
+    }
+  ],
+  "additional_source_bindings": [
+    {
+      "path": "docs/controlled-language-experiment.md",
+      "sha256": "36f59dccbb86fe0a4cc24de432022e0c298185400857f2f929e60344348a1578"
+    },
+    {
+      "path": "tests/controlled_language.test.mjs",
+      "sha256": "c04bebb5ee3239e2b25ba1d8b9ec9c77d3145b96b9b9d024caaa1ae2cb894df4"
+    }
+  ],
+  "documentation_note": "Source bindings describe the captured working-tree records. The implementation commit identifies the tested prototype baseline; this report and its documentation links were added afterwards."
+}

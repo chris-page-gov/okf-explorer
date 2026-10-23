@@ -1,5 +1,13 @@
 # Changelog
 
+## Reliable browser package downloads — 23 October 2026
+
+- Select the primary Ubuntu and security archives over HTTPS for full-browser
+  CI and nightly assurance after repeated Azure mirror download timeouts.
+- Retain `ubuntu-latest`, signed repository configuration, the 10-minute
+  installation limit and the full Chrome, Firefox and WebKit checks.
+- Keep the isolated research prototype and its retained evidence unchanged.
+
 ## Reviewed MCP service dependencies — 23 October 2026
 
 - Integrate MCP server 2.3.1, client 2.3.0, legacy SDK 1.32.0 and Hono
@@ -42,6 +50,13 @@
   core and existing Reader loading.
 - Pin the Explorer CI runner to Ubuntu 24.04 so the governed Python 3.12.11
   remains available after the Ubuntu latest-image change.
+
+## Controlled-language rendering experiment — 10 October 2026
+
+- Add an isolated, optional request adapter for frozen Explorer/Ask OKF evidence, using the existing DWP disabled-child/date scenario and unchanged source provenance.
+- Retain a pinned MIT heuristic checker, three explicitly illustrative explanations, raw measurements, independent development checks and a bounded feedback replay. Keep complete semantic acceptance and human comprehension unverified.
+- Provide request preparation and response import for later trials, with exact input/output identities, mutation controls and CI reproduction. See the [findings and limits](docs/controlled-language-experiment.md).
+- Document all 14 deliverables and three research proposals in an [illustrated report](experiments/controlled-language/documentation/report.md), with 17 browser screenshots, a Word review copy, capture provenance, evaluation and sequenced next steps.
 
 ## Declared semantic facets for small bundles — 4 October 2026
 

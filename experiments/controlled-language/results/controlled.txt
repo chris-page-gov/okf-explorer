@@ -1,0 +1,7 @@
+The scenario gives two dates. Highest-rate DLA care entitlement starts on 26 January 2025. UC receives the report on 28 March 2026.
+
+Use the first day of the assessment period containing 26 January 2025. The notification date does not by itself establish a different start. A4352 points to exceptions. A4361 covers another relevant benefit, its cessation or a rate change. [A4-34] [A4-36] [A4-37]
+
+F1123 includes highest-rate care, not highest-rate mobility. The source also lists other qualifying routes. [F1-17] [F1-18]
+
+The exact assessment-period boundaries and award history are unknown. The rates table does not establish the amount applicable in January 2025. Do not calculate arrears. This is unreviewed machine extraction and project interpretation. It is not an individual entitlement decision.

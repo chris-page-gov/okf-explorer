@@ -1,0 +1,154 @@
+{
+  "mode": "illustrative fixture feedback replay; no live model optimisation",
+  "maximum_revisions": 2,
+  "steps": [
+    {
+      "iteration": 0,
+      "fixture": "baseline",
+      "request_sha256": "053fefb59f9f228d7fdf5d7c7e27cfb2e53b3d82affb46772690379b7ab6dd3c",
+      "evidence_sha256": "464729bca1f73f8957741731edd4c50b28a5692b241d83028381e5d5c77d660f",
+      "text_sha256": "76b790cfba4de056ada5ad2cecb5a824974845bf6ab97bcc7448bfe17e2b6590",
+      "violations": 3,
+      "semantic_preservation": "not-established",
+      "status": "review-candidate-only",
+      "feedback": null,
+      "not_measured": [
+        "LLM revision behaviour",
+        "human readability"
+      ]
+    },
+    {
+      "iteration": 1,
+      "fixture": "ste-inspired",
+      "request_sha256": "e2b1dcbf227fd8e4f92a6a7b9958a1e98678f24116f0df1f15f3bf9aa76b95c3",
+      "evidence_sha256": "464729bca1f73f8957741731edd4c50b28a5692b241d83028381e5d5c77d660f",
+      "text_sha256": "df1e54433f5ea8d476e07299d1a8d10f54c454e8795661334a00e5f0bea402fa",
+      "violations": 0,
+      "semantic_preservation": "not-established",
+      "status": "review-candidate-only",
+      "feedback": {
+        "text": "The child is described as entitled to the highest-rate care component of DLA from 26 January 2025, whereas the change is reported to Universal Credit on 28 March 2026; these dates describe different events and must be kept separate. If the UC award and responsibility for the child continued, other qualifying conditions were met, and A4361 governs the change, the source-guided interpretation is the first day of the assessment period containing 26 January 2025. The notification date does not by itself establish a different start. The ordinary late-notification paragraph points to exceptions, and A4361 covers another relevant benefit, its cessation or a change in its rate. [A4-34] [A4-36] [A4-37]\n\nF1123 describes highest-rate care, not highest-rate mobility, as one qualifying route for the higher disabled-child addition. Other routes are present in the source. [F1-17] [F1-18]\n\nThe exact assessment-period boundaries are unknown, as is the award history. A4361's examples concern the carer element. They do not establish a disabled-child determination. Historical statutory applicability and independent specialist review remain unestablished. The rates table does not establish the amount applicable in January 2025. Do not calculate arrears. This is unreviewed machine extraction and project interpretation. It is not an individual entitlement decision.",
+        "checker": {
+          "type": "descriptive",
+          "words": 198,
+          "sentences": 14,
+          "mean_sentence_words": 14.1,
+          "longest_sentence_words": 39,
+          "violations": {
+            "sentence_over_limit": 2,
+            "contraction": 0,
+            "banned_modal": 0,
+            "perfect_tense": 0,
+            "ing_clause": 0,
+            "semicolon": 1,
+            "em_dash": 0,
+            "latin_abbrev": 0,
+            "slop_word": 0,
+            "trailing_condition": 0,
+            "synonym_rotation": 0
+          },
+          "violations_total": 3,
+          "violations_per_100w": 1.52,
+          "findings": [
+            {
+              "category": "sentence_over_limit",
+              "text": "The child is described as entitled to the highest-rate care component of DLA fro…",
+              "line": 1
+            },
+            {
+              "category": "sentence_over_limit",
+              "text": "If the UC award and responsibility for the child continued, other qualifying con…",
+              "line": 1
+            },
+            {
+              "category": "semicolon",
+              "text": ";",
+              "line": 1
+            }
+          ],
+          "checker": "AminBlg/SimpleEnglish/evals/ste_lint.py",
+          "checker_revision": "a6fcb4fde098b33617cc1578d151ebf58774b883",
+          "rules_checked": [
+            "sentence_over_limit",
+            "contraction",
+            "banned_modal",
+            "perfect_tense",
+            "ing_clause",
+            "semicolon",
+            "em_dash",
+            "latin_abbrev",
+            "slop_word",
+            "trailing_condition",
+            "synonym_rotation"
+          ],
+          "measurement": "regex heuristic counts; not ASD-STE100 conformance or comprehension",
+          "finding_locations": "upstream approximate line numbers; snippets may be shortened"
+        }
+      },
+      "not_measured": [
+        "LLM revision behaviour",
+        "human readability"
+      ]
+    },
+    {
+      "iteration": 2,
+      "fixture": "controlled",
+      "request_sha256": "2e420096b58bd657e29a4d781de84fa7b3a8f2cf135148195b2c3ad739ad4634",
+      "evidence_sha256": "464729bca1f73f8957741731edd4c50b28a5692b241d83028381e5d5c77d660f",
+      "text_sha256": "b9b895a288ed5bda6b77735cd6c3e9ce3bdd5e64dc896d144090055508e5747d",
+      "violations": 0,
+      "semantic_preservation": "failed-development-checks",
+      "status": "rejected-development-checks",
+      "feedback": {
+        "text": "The scenario gives two dates. Highest-rate DLA care entitlement starts on 26 January 2025. UC receives the report on 28 March 2026.\n\nIf UC and child responsibility continued, other conditions were met, and A4361 governs, consider the first day of the assessment period containing 26 January 2025. The notification date does not by itself establish a different start. A4352 points to exceptions. A4361 covers another relevant benefit, its cessation or a rate change. [A4-34] [A4-36] [A4-37]\n\nF1123 includes highest-rate care, not highest-rate mobility. The source also lists other qualifying routes. [F1-17] [F1-18]\n\nThe exact assessment-period boundaries and award history are unknown. A4361's examples concern the carer element. They do not establish a disabled-child determination. Historical statutory applicability and independent specialist review remain unestablished. The rates table does not establish the amount applicable in January 2025. Do not calculate arrears. This is unreviewed machine extraction and project interpretation. It is not an individual entitlement decision.",
+        "checker": {
+          "type": "descriptive",
+          "words": 154,
+          "sentences": 17,
+          "mean_sentence_words": 9.1,
+          "longest_sentence_words": 25,
+          "violations": {
+            "sentence_over_limit": 0,
+            "contraction": 0,
+            "banned_modal": 0,
+            "perfect_tense": 0,
+            "ing_clause": 0,
+            "semicolon": 0,
+            "em_dash": 0,
+            "latin_abbrev": 0,
+            "slop_word": 0,
+            "trailing_condition": 0,
+            "synonym_rotation": 0
+          },
+          "violations_total": 0,
+          "violations_per_100w": 0,
+          "findings": [],
+          "checker": "AminBlg/SimpleEnglish/evals/ste_lint.py",
+          "checker_revision": "a6fcb4fde098b33617cc1578d151ebf58774b883",
+          "rules_checked": [
+            "sentence_over_limit",
+            "contraction",
+            "banned_modal",
+            "perfect_tense",
+            "ing_clause",
+            "semicolon",
+            "em_dash",
+            "latin_abbrev",
+            "slop_word",
+            "trailing_condition",
+            "synonym_rotation"
+          ],
+          "measurement": "regex heuristic counts; not ASD-STE100 conformance or comprehension",
+          "finding_locations": "upstream approximate line numbers; snippets may be shortened"
+        }
+      },
+      "not_measured": [
+        "LLM revision behaviour",
+        "human readability"
+      ]
+    }
+  ],
+  "review_candidate": "ste-inspired",
+  "accepted_rendering": null,
+  "acceptance_reason": "Complete semantic fidelity and human comprehension remain unverified."
+}

@@ -1,0 +1,191 @@
+{
+  "id": "controlled",
+  "profile": "controlled",
+  "origin": "deliberately lossy offline negative control; never an approved explanation",
+  "generation_status": "offline illustrative fixtures; model-assisted authorship, no live trial",
+  "model_calls": 0,
+  "evidence_sha256": "464729bca1f73f8957741731edd4c50b28a5692b241d83028381e5d5c77d660f",
+  "request_sha256": "053fefb59f9f228d7fdf5d7c7e27cfb2e53b3d82affb46772690379b7ab6dd3c",
+  "profile_sha256": "6075a0fc4b6c1d8e924971258b19b0b6d3529a6a778673056b6f00a4c90343aa",
+  "text_sha256": "b9b895a288ed5bda6b77735cd6c3e9ce3bdd5e64dc896d144090055508e5747d",
+  "checker": {
+    "type": "descriptive",
+    "words": 119,
+    "sentences": 14,
+    "mean_sentence_words": 8.5,
+    "longest_sentence_words": 12,
+    "violations": {
+      "sentence_over_limit": 0,
+      "contraction": 0,
+      "banned_modal": 0,
+      "perfect_tense": 0,
+      "ing_clause": 0,
+      "semicolon": 0,
+      "em_dash": 0,
+      "latin_abbrev": 0,
+      "slop_word": 0,
+      "trailing_condition": 0,
+      "synonym_rotation": 0
+    },
+    "violations_total": 0,
+    "violations_per_100w": 0,
+    "findings": [],
+    "checker": "AminBlg/SimpleEnglish/evals/ste_lint.py",
+    "checker_revision": "a6fcb4fde098b33617cc1578d151ebf58774b883",
+    "rules_checked": [
+      "sentence_over_limit",
+      "contraction",
+      "banned_modal",
+      "perfect_tense",
+      "ing_clause",
+      "semicolon",
+      "em_dash",
+      "latin_abbrev",
+      "slop_word",
+      "trailing_condition",
+      "synonym_rotation"
+    ],
+    "measurement": "regex heuristic counts; not ASD-STE100 conformance or comprehension",
+    "finding_locations": "upstream approximate line numbers; snippets may be shortened"
+  },
+  "semantic_evaluation": {
+    "method": "case-insensitive regex signals in derived prose; not a semantic proof",
+    "assessor_status": "authored unreviewed development checks; never supplied to renderer",
+    "requirements": [
+      {
+        "id": "event_dates",
+        "dimension": "dates",
+        "stage": "B",
+        "basis": "participant question uc-dla-001",
+        "status": "signal-present"
+      },
+      {
+        "id": "care_component",
+        "dimension": "actors-actions",
+        "stage": "B",
+        "basis": "F1123 [F1-18] and case scope",
+        "status": "signal-present"
+      },
+      {
+        "id": "conditional_scope",
+        "dimension": "conditions-modality",
+        "stage": "G",
+        "basis": "existing out-of-sample conditional_source_reading; no unconditional legal conclusion",
+        "status": "signal-missing"
+      },
+      {
+        "id": "event_period",
+        "dimension": "temporal-relationships",
+        "stage": "B",
+        "basis": "conditional source-guided interpretation, not independent legal review",
+        "status": "signal-present"
+      },
+      {
+        "id": "late_exception",
+        "dimension": "exceptions",
+        "stage": "B",
+        "basis": "A4352 and A4361 [A4-34] [A4-36]",
+        "status": "signal-present"
+      },
+      {
+        "id": "unknown_boundaries",
+        "dimension": "uncertainty",
+        "stage": "H",
+        "basis": "missing facts in participant question",
+        "status": "signal-present"
+      },
+      {
+        "id": "carer_examples",
+        "dimension": "qualifications",
+        "stage": "G",
+        "basis": "case limitations; A4361 examples concern carer element",
+        "status": "signal-missing"
+      },
+      {
+        "id": "historical_review",
+        "dimension": "qualifications",
+        "stage": "G",
+        "basis": "existing DWP acceptance boundary",
+        "status": "signal-missing"
+      },
+      {
+        "id": "historical_amount",
+        "dimension": "amounts",
+        "stage": "G",
+        "basis": "F1-18 rates table cannot establish historical rates",
+        "status": "signal-present"
+      },
+      {
+        "id": "authority",
+        "dimension": "negation",
+        "stage": "G",
+        "basis": "DWP working agreements and extraction review status",
+        "status": "signal-present"
+      }
+    ],
+    "forbidden_claim_signals": [],
+    "missing_citations": [],
+    "unknown_citations": [],
+    "provenance_binding": "passed",
+    "citation_presence": "passed",
+    "bounded_checks": "failed",
+    "semantic_preservation": "failed-development-checks",
+    "unsupported_claims": null,
+    "unsupported_claims_note": "Not exhaustively assessed; only declared forbidden patterns were checked.",
+    "review_status": "independent review required",
+    "not_measured": [
+      "complete semantic preservation",
+      "human comprehension",
+      "causal relationships",
+      "general machine interpretation",
+      "independent legal correctness",
+      "unsupported claims outside these declared patterns"
+    ],
+    "stages": {
+      "A": "source bytes checked separately by evidence lock",
+      "B": "declared phrase signals only; graph semantics not re-evaluated",
+      "C": "not measured; fixed source-guided package",
+      "D": "not measured; no traversal change",
+      "E": "same evidence digest in each rendering request",
+      "F": "digest binding passed; citation support needs review",
+      "G": [
+        {
+          "id": "conditional_scope",
+          "dimension": "conditions-modality",
+          "stage": "G",
+          "basis": "existing out-of-sample conditional_source_reading; no unconditional legal conclusion",
+          "status": "signal-missing"
+        },
+        {
+          "id": "carer_examples",
+          "dimension": "qualifications",
+          "stage": "G",
+          "basis": "case limitations; A4361 examples concern carer element",
+          "status": "signal-missing"
+        },
+        {
+          "id": "historical_review",
+          "dimension": "qualifications",
+          "stage": "G",
+          "basis": "existing DWP acceptance boundary",
+          "status": "signal-missing"
+        },
+        {
+          "id": "historical_amount",
+          "dimension": "amounts",
+          "stage": "G",
+          "basis": "F1-18 rates table cannot establish historical rates",
+          "status": "signal-present"
+        },
+        {
+          "id": "authority",
+          "dimension": "negation",
+          "stage": "G",
+          "basis": "DWP working agreements and extraction review status",
+          "status": "signal-present"
+        }
+      ],
+      "H": "evidence remains insufficient; no individual answerability established"
+    }
+  }
+}
