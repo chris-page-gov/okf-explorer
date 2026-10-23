@@ -1,5 +1,15 @@
 # Changelog
 
+## Latest Ubuntu and governed Python recovery — 23 October 2026
+
+- Use `ubuntu-latest` across Pages, PR CI, nightly Foundry assurance and link
+  observation. Install the governed CPython 3.12.11 with uv before synchronising
+  the locked environment, avoiding the missing Ubuntu 26.04 setup-python build.
+- Check runner policy and the managed-Python installation sequence.
+  Keep exact-candidate deployment and live-browser verification gates intact.
+- Update the pinned upload/download artefact actions to 7.0.2/8.0.2 and Node
+  setup to 7.1.0, retaining the existing workflow permissions and triggers.
+
 ## Required Foundry domain facets — 23 October 2026
 
 - Require task-based facets for every new Foundry bundle, including prototypes,
