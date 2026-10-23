@@ -25,6 +25,7 @@ workers as well as contributors.
 
 ## Author and maintain
 
+- [Architecture and implementation plan](architecture-and-implementation-plan.md): current capability states, delivery priorities, acceptance criteria and the whole-implementation review scope.
 - [Learning presentation](learning-presentation.md): design goal-led journeys and conceptual filters.
 - [Bundle authoring](okf-bundle-authoring.md): core fields, optional domain profiles and richer publication.
 - [Foundry prompt kit](okf-authoring-prompt-kit.md): governed production authoring after the small starter.

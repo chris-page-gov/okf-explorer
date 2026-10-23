@@ -1,5 +1,16 @@
 # Changelog
 
+## Architecture and implementation priorities — 23 October 2026
+
+- Add a maintained architecture and implementation plan against the merged
+  October baseline, separating implemented, experimental and proposed
+  capabilities from deployment, client compatibility and domain acceptance.
+- Prioritise a bounded whole-implementation review, one independently assessed
+  domain journey and current Codex/ChatGPT integration evidence, followed by
+  authoring usability, portability and optional rendering research.
+- Define accountable roles, dependencies, acceptance criteria and evidence
+  requirements. Link the plan from the README and documentation indexes.
+
 ## Reliable browser package downloads — 23 October 2026
 
 - Select the primary Ubuntu and security archives over HTTPS for full-browser
