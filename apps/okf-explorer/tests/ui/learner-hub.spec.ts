@@ -127,5 +127,5 @@ test('HUB-E2E-04 preserves a legacy root Explorer link', async ({ context, page 
   const reader = page.getByRole('region', { name: 'Markdown body' });
   await expect(reader.getByRole('heading', { name: 'OKF conversation evidence register' })).toBeVisible();
   await expect(reader.getByRole('table')).toContainText('Timestamped exchange');
-  await expect(page.getByRole('link', { name: 'Return to the OKF learning hub' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'OKF Explorer — return to the learning hub' })).toBeVisible();
 });

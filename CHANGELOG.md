@@ -10,6 +10,19 @@
 - Update the pinned upload/download artefact actions to 7.0.2/8.0.2 and Node
   setup to 7.1.0, retaining the existing workflow permissions and triggers.
 
+## Reviewed Explorer dependencies and reading-help integration — 23 October 2026
+
+- Integrate the overlapping framework, PDF, browser, accessibility and
+  serialisation updates with visible occurrence help on current main.
+- Preserve security overrides, raise the conditional devalue selection to
+  5.9.4 and regenerate the lockfile-bound software inventory with pnpm 10.
+- Raise the coupled Vitest and coverage baseline to 4.1.12 for the follow-up
+  mocker advisories, including the guarded minimum and rollback controls.
+- Include visible text and counts in navigation and graph control names for
+  voice access. Keep redundant graph icon counts out of repeated speech.
+- Preserve both preceding browser receipts before running fresh acceptance
+  against the combined application candidate.
+
 ## Required Foundry domain facets — 23 October 2026
 
 - Require task-based facets for every new Foundry bundle, including prototypes,
@@ -26,6 +39,13 @@
 
 - Let a small bundle supply explicit semantic facet labels and per-node values. Show them before source and review filters while keeping the existing learning presentation and default facets intact.
 - Keep classification with the producer and reject malformed or reserved facet keys and values.
+
+## Reading help visible on selection — 1 October 2026
+
+- Open occurrence and printed-reference help beside the passage on wide screens and in a dismissible bottom drawer on narrower or zoomed screens, without scrolling the main page after selection.
+- Keep the selected literal and exact source location clear, preserve candidate notices and empty states, and scroll long help independently beneath a visible close control.
+- Support keyboard selection, Escape, focus return, switching occurrences and direct occurrence links; test wide, narrow, zoomed and Codex-panel layouts.
+- Preserve the preceding Heritage browser receipt and results, then refresh the 100-question suite and three local journeys against the exact updated Explorer build.
 
 ## Facet touch targets and explicit reference destinations — 27 September 2026
 

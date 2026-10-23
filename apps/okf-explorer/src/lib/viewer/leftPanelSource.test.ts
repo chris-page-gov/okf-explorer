@@ -132,7 +132,7 @@ describe('large-corpus left panel UX harness', () => {
     expect(pageSource).toContain('aria-label={node.label || node.id}');
     expect(pageSource).toContain('aria-label={String(node.label || node.id)}');
     const summaryStart = pageSource.indexOf(
-      '<summary\n                  aria-label={`Relationships panel'
+      '<summary\n                  aria-label={`Relationships ('
     );
     const summaryEnd = pageSource.indexOf('</summary>', summaryStart);
     const drawerSummary = pageSource.slice(summaryStart, summaryEnd);
