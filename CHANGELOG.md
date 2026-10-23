@@ -1,5 +1,13 @@
 # Changelog
 
+## Reviewed MCP service dependencies — 23 October 2026
+
+- Integrate MCP server 2.3.1, client 2.3.0, legacy SDK 1.32.0 and Hono
+  4.13.13 as one compatible service candidate, preserving the pinned node adapter.
+- Select patched ip-address 10.7.4 and retain the shared source, engine and
+  replay identities. Record the MCP licence metadata change and validate both
+  SDK clients, built service boundaries and the evidence review page.
+
 ## Latest Ubuntu and governed Python recovery — 23 October 2026
 
 - Use `ubuntu-latest` across Pages, PR CI, nightly Foundry assurance and link
