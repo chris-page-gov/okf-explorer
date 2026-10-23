@@ -88,7 +88,8 @@ class UvToolchainTests(unittest.TestCase):
             ROOT / ".github" / "actions" / "setup-locked-python" / "action.yml"
         ).read_text(encoding="utf-8")
         self.assertIsInstance(YAML(typ="safe").load(action), dict)
-        self.assertIn("python-version-file: .python-version", action)
+        self.assertIn("run: uv python install", action)
+        self.assertNotIn("actions/setup-python@", action)
         self.assertIn(
             "astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9",
             action,

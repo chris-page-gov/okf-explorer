@@ -173,6 +173,18 @@ SHA-256. The semantic validator also checks lock/inventory equivalence,
 consumer and plane references, required-consumer execution, both compatibility
 directions and deep-link coverage.
 
+## Required domain facets
+
+New Foundry builds require `presentation_contract.domain_facets`, including
+minimal and exploratory packs. Define at least two task-based dimensions and
+link their consumer, validation gate, vocabularies, missing values, field paths
+and exact filtering cases. Run `scripts/check_foundry_facets.py` against the
+actual output as a blocking check, followed by actual-consumer browser checks.
+See [Required facets for new Foundry bundles](../../../docs/foundry-facets.md).
+Existing optional consumer-contract compatibility in the profile validator does
+not waive the emitted-artefact gate's requirement for a declared consumer.
+This authoring policy does not change the OKF 0.2 core or legacy Reader loading.
+
 ## Required Explore OKF Controls
 
 Every conforming `okf-domain-profile.v1` document includes

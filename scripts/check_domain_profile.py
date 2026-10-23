@@ -840,6 +840,8 @@ def reference_errors(value: dict[str, Any]) -> list[str]:
         if count > 1
     ]
     errors.extend(semantic_linking_errors(value))
+    from check_foundry_facets import contract_errors
+    errors.extend(contract_errors(value))
 
     sections: dict[str, set[str]] = {}
     for section in (

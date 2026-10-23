@@ -503,6 +503,15 @@ state the monthly release schedule, full/change-only delivery and API access;
 the older CKAN record remains useful discovery provenance but is not the source
 for current operational status.
 
+## Required facets for Foundry builds
+
+Every new Foundry bundle must follow the [required facet contract and blocking
+validation gate](foundry-facets.md). Include at least two task-based domain
+dimensions, complete record values and supported consumer declarations; generic
+Type, Trust tier, Lifecycle and Section fields alone do not qualify. Validate
+the actual emitted bytes and test filtering in the pinned Reader. This applies
+to small prototypes as well as large corpora and is separate from OKF core.
+
 ## Facets To Prefer
 
 For API/data packs, include these dimensions whenever possible:
