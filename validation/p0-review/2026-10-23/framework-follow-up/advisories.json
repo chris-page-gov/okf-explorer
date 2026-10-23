@@ -54,7 +54,7 @@
       "baseline_version": "2.70.3",
       "range": "< 3.0.0",
       "first_patched": "3.0.0",
-      "candidate_version": "3.0.0",
+      "candidate_version": "3.1.0",
       "severity": "low"
     },
     {
@@ -65,7 +65,7 @@
       "baseline_version": "2.70.3",
       "range": "< 3.0.0",
       "first_patched": "3.0.0",
-      "candidate_version": "3.0.0",
+      "candidate_version": "3.1.0",
       "severity": "low"
     },
     {
@@ -76,7 +76,7 @@
       "baseline_version": "^2.70.3",
       "range": "< 3.0.0",
       "first_patched": "3.0.0",
-      "candidate_version": "3.0.0",
+      "candidate_version": "3.1.0",
       "severity": "low"
     },
     {
@@ -87,7 +87,7 @@
       "baseline_version": "^2.70.3",
       "range": "< 3.0.0",
       "first_patched": "3.0.0",
-      "candidate_version": "3.0.0",
+      "candidate_version": "3.1.0",
       "severity": "low"
     }
   ]

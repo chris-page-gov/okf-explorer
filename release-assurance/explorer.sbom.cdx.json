@@ -19,7 +19,7 @@
     "properties": [
       {
         "name": "okf:pnpm-lock-sha256",
-        "value": "f9f6fde1a774ae95733edab62c545faee7d0baa0e3bbd16deef0acd5337745d6"
+        "value": "6b67ddb312bbd76e6658f902e61cbc6d4520afaa37ddf03a904c834751e0f5f3"
       }
     ],
     "tools": {
@@ -632,15 +632,15 @@
       ]
     },
     {
-      "bom-ref": "pkg:npm/%40sveltejs/kit@3.0.0",
+      "bom-ref": "pkg:npm/%40sveltejs/kit@3.1.0",
       "name": "@sveltejs/kit",
-      "purl": "pkg:npm/%40sveltejs/kit@3.0.0",
+      "purl": "pkg:npm/%40sveltejs/kit@3.1.0",
       "type": "library",
-      "version": "3.0.0",
+      "version": "3.1.0",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "7663fa823cf8d43013edeace3465bc15d4d68e6b26389fd2696544b2e11cd4c5c37291fa615f8fb7df1b89914fba29c7e0b95d24f9927310ea887c020cb442ae"
+          "content": "2535a5ab61d0964ab1eaf228c610b447ab1ce1656a6d0a11c849abe5896a2a68986f36355376b0b525939a330b952d39e9ae3d02691047aae7340357204f01d1"
         }
       ]
     },
@@ -827,15 +827,15 @@
       ]
     },
     {
-      "bom-ref": "pkg:npm/acorn@8.18.0",
+      "bom-ref": "pkg:npm/acorn@8.19.0",
       "name": "acorn",
-      "purl": "pkg:npm/acorn@8.18.0",
+      "purl": "pkg:npm/acorn@8.19.0",
       "type": "library",
-      "version": "8.18.0",
+      "version": "8.19.0",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "946abef72af5fc6b8059a558207463befc921b9ff855f288bc2f045b14ad3dd70387f29aec51b7b703fabf8779064adabd48a584802c1b8423f37b74d8b5943d"
+          "content": "a09940dd78919bb0b293aa850f6267f1a93d07b8d2cb4ab2d340033b7fbc7694f42d28c58a1418bf80b4d8b142498255dd0dfbc58c30472e66f88a48894cea5b"
         }
       ]
     },
@@ -1035,15 +1035,15 @@
       ]
     },
     {
-      "bom-ref": "pkg:npm/esrap@2.3.13",
+      "bom-ref": "pkg:npm/esrap@2.4.0",
       "name": "esrap",
-      "purl": "pkg:npm/esrap@2.3.13",
+      "purl": "pkg:npm/esrap@2.4.0",
       "type": "library",
-      "version": "2.3.13",
+      "version": "2.4.0",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "0dcf1a318d2da893483776a1b5c7049bf51699ad3932dfcdecd04675332d2756d1e52c9cb4d10555a3947e69335577ba3ec93c30f7e28aa51a7d722831b582b1"
+          "content": "0903dc9de107c3f7338f7daec100b9da76276b1f07e125eddb914233e2c8c06678f5c308c693a3ddb3fcc26cdc23e6741c8cb92a40a568f8512df0b24b3c073c"
         }
       ]
     },
@@ -1451,15 +1451,15 @@
       ]
     },
     {
-      "bom-ref": "pkg:npm/nanoid@3.3.19",
+      "bom-ref": "pkg:npm/nanoid@3.3.20",
       "name": "nanoid",
-      "purl": "pkg:npm/nanoid@3.3.19",
+      "purl": "pkg:npm/nanoid@3.3.20",
       "type": "library",
-      "version": "3.3.19",
+      "version": "3.3.20",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "636b54372e28bb0eadab9a0348a7906063b286450184d39c195ff4d8a0beea477d7831aa75977efa68cc8880e296b058be3127098bd5b6cb870ae3fea2449fba"
+          "content": "b8a760d86dc63422909fd6f260ea716c6aab4f67c63b9291b7927ff1bde9a24f2b4faab119617a871332262118b407fe155c98b83f6145a0ea5f9b8f15827865"
         }
       ]
     },
@@ -1568,15 +1568,15 @@
       ]
     },
     {
-      "bom-ref": "pkg:npm/postcss@8.5.28",
+      "bom-ref": "pkg:npm/postcss@8.5.31",
       "name": "postcss",
-      "purl": "pkg:npm/postcss@8.5.28",
+      "purl": "pkg:npm/postcss@8.5.31",
       "type": "library",
-      "version": "8.5.28",
+      "version": "8.5.31",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "451bb3a83b6de58f61deabb3e615a12be4cf9ec995b3a5b0494e8b90931e6381ecb54103b984c6f1425275ac0c4739b302d57e284a06f0ddd0836a8bcb9bccfc"
+          "content": "6146d6602804af09cc01592352761af8a94c0731a91f0888b7f0c4edfd06df702e5f62c7f5471393a2a05b1777cd153ea4ddeefc2f9797712730b3381de6bb4a"
         }
       ]
     },
@@ -1711,28 +1711,28 @@
       ]
     },
     {
-      "bom-ref": "pkg:npm/svelte-check@4.7.6",
+      "bom-ref": "pkg:npm/svelte-check@4.7.7",
       "name": "svelte-check",
-      "purl": "pkg:npm/svelte-check@4.7.6",
+      "purl": "pkg:npm/svelte-check@4.7.7",
       "type": "library",
-      "version": "4.7.6",
+      "version": "4.7.7",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "b76b1c33ffd9b956d263f4f6c3a152070d6ff6cd8d12687f83eb32d65aada2c5b9ca5055e40178c056f54ecf4a7f731b7cf0d40c90d9f4be37e984f448f4ddbf"
+          "content": "19ed8831d793a5b26eccd14646288c83445681b49ccac290bbbc70732149db6f8353d1799cf5f9d7e437807986a91c5840cc76927ade556b79a02b5f7b4bdfda"
         }
       ]
     },
     {
-      "bom-ref": "pkg:npm/svelte@5.57.1",
+      "bom-ref": "pkg:npm/svelte@5.57.2",
       "name": "svelte",
-      "purl": "pkg:npm/svelte@5.57.1",
+      "purl": "pkg:npm/svelte@5.57.2",
       "type": "library",
-      "version": "5.57.1",
+      "version": "5.57.2",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "52a8f8f6558a07e8924a79debb0898609ecc660901f9e5ebd0b5c186fe2e0ee0245ea9d69aaeb94b17e57efa742dce8c74a8cc53119a78e29626acf948d89520"
+          "content": "d5888f0805d3d02b7a835bce32648b6b436c73741132fb43177da2860825195aee808b882b7f11c8388535754386d43cd5326348ee7b35d330e83c982ea4860d"
         }
       ]
     },
@@ -1828,15 +1828,15 @@
       ]
     },
     {
-      "bom-ref": "pkg:npm/vite@8.3.3",
+      "bom-ref": "pkg:npm/vite@8.3.5",
       "name": "vite",
-      "purl": "pkg:npm/vite@8.3.3",
+      "purl": "pkg:npm/vite@8.3.5",
       "type": "library",
-      "version": "8.3.3",
+      "version": "8.3.5",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "71302574a3c89a383a73e824e3c535f4f38f9f7182073670a5db0df1930411c6e97acfbaff0bdfa947740b6cb7a98638c2c8fc3f0805c2b67fd6304f56db4c4a"
+          "content": "cf56298e2789f60d1e6d3990a4b06ffe8abd13717d10894e7beecb6a15bc4ab1372d3886dee7414545d03a56173fd6fe202daada9847795c63f711a5c37e0e11"
         }
       ]
     },
@@ -1913,15 +1913,15 @@
         "pkg:npm/%40axe-core/playwright@4.14.0",
         "pkg:npm/%40playwright/test@1.64.1",
         "pkg:npm/%40sveltejs/adapter-static@4.0.0",
-        "pkg:npm/%40sveltejs/kit@3.0.0",
+        "pkg:npm/%40sveltejs/kit@3.1.0",
         "pkg:npm/%40sveltejs/vite-plugin-svelte@7.3.1",
         "pkg:npm/%40types/node@24.19.2",
         "pkg:npm/%40vitest/coverage-v8@4.1.12",
         "pkg:npm/pdfjs-dist@6.4.299",
-        "pkg:npm/svelte-check@4.7.6",
-        "pkg:npm/svelte@5.57.1",
+        "pkg:npm/svelte-check@4.7.7",
+        "pkg:npm/svelte@5.57.2",
         "pkg:npm/typescript@6.0.3",
-        "pkg:npm/vite@8.3.3",
+        "pkg:npm/vite@8.3.5",
         "pkg:npm/vitest@4.1.12",
         "pkg:npm/yaml@2.9.1"
       ]

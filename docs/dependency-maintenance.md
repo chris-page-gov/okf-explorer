@@ -33,6 +33,13 @@ an automated Dependabot pull request.
 
 ## Preserve the security controls
 
+The [stable component review](stable-component-review-2026-10-23.md) records
+the final P0 selections, including Kit 3.1.0, Svelte 5.57.2, Vite 8.3.5 and
+svelte-check 4.7.7. Use pnpm 10.34.7, as declared by `packageManager` and
+the workflows. CI keeps its existing Node 24 LTS and Node 26 Current lines,
+pinned to security releases 24.22.1 and 26.12.1 respectively. The comparison
+also states why larger or explicitly governed changes remain proposed.
+
 Use the repository's pnpm 10 toolchain. Run `pnpm install --frozen-lockfile` for
 validation: it fails when the manifest and lockfile disagree. During an
 authorised update, regenerate the lockfile with pnpm, review every changed
@@ -76,7 +83,7 @@ review rather than silently passing the stable-version checks.
 
 The September framework baseline used SvelteKit 2.70.3, the Svelte Vite plugin
 7.3.0, Svelte 5.57.0, svelte-check 4.7.6 and Vite 8.3.0. The reviewed October
-versions are listed above. The P0 advisory follow-up adopts SvelteKit 3.0.0 and
+versions are listed above. The P0 advisory follow-up adopts SvelteKit 3.1.0 and
 static adapter 4.0.0, moves framework settings into Vite and extends the Kit 3
 type configuration. Existing `$lib` imports use explicit Vite and TypeScript
 aliases. Deployment polling remains disabled; routes, prerender exceptions and

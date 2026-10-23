@@ -96,7 +96,7 @@ export function checkDependencyPolicy(manifest, lock) {
 
   // Guard the resolved packages, so a future native upstream fix can replace
   // the temporary conditional overrides without relaxing the security floor.
-  for (const [name, minimum] of [['devalue', [5, 9, 2]], ['nanoid', [3, 3, 18]], ['@sveltejs/kit', [3, 0, 0]]]) {
+  for (const [name, minimum] of [['devalue', [5, 9, 2]], ['nanoid', [3, 3, 18]], ['@sveltejs/kit', [3, 1, 0]]]) {
     const packages = entriesFor(lock.packages, name);
     const snapshots = entriesFor(lock.snapshots, name);
     if (!packages.length || !snapshots.length) throw new Error(`${name} inventory or snapshot is missing`);
@@ -116,7 +116,7 @@ export function checkDependencyPolicy(manifest, lock) {
 
   const importer = lock.importers['.'];
   for (const name of ['vitest', '@vitest/coverage-v8', '@sveltejs/kit']) {
-    const minimum = name === '@sveltejs/kit' ? [3, 0, 0] : MIN_VITEST;
+    const minimum = name === '@sveltejs/kit' ? [3, 1, 0] : MIN_VITEST;
     checkManifestRange(manifest?.devDependencies?.[name], name, minimum);
     const direct = importer.devDependencies?.[name];
     if (direct?.specifier !== manifest.devDependencies[name]) {
