@@ -15,7 +15,7 @@
   import LargeLearningReader from '$lib/components/LargeLearningReader.svelte';
   import { largeLearningPresentation } from '$lib/viewer/largeLearning';
   import LearningReader from '$lib/components/LearningReader.svelte';
-  import { learningPresentation, initialSmallRoute } from '$lib/viewer/smallPresentation';
+  import { learningPresentation, semanticFacetPresentation, initialSmallRoute } from '$lib/viewer/smallPresentation';
   import { SMALL_FACETS, smallFacetValues, smallFacetRows, smallIsHighlighted } from '$lib/viewer/smallExploration';
   import { BOOKMARK_STORAGE_KEY, addBookmark, readBookmarks, type Bookmark } from '$lib/viewer/bookmarks';
   import { displayedRoute, type WorkspacePanel } from '$lib/viewer/workspaceNavigation';
@@ -603,7 +603,10 @@
   let largeLearning = $derived(source?.kind === 'large' ? largeLearningPresentation(source.descriptor.learning_presentation) : null);
   let learning = $derived(learningPresentation(smallCorpus));
   let learningKeys = $derived(learning?.facets.map(facet => facet.key) || []);
-  let smallFacetDefinitions = $derived(learning ? [...learning.facets, ...SMALL_FACETS] : SMALL_FACETS);
+  let semanticFacets = $derived(semanticFacetPresentation(smallCorpus));
+  let semanticKeys = $derived(semanticFacets?.facets.map(facet => facet.key) || []);
+  let primaryFacets = $derived(semanticFacets?.facets || learning?.facets || []);
+  let smallFacetDefinitions = $derived([...primaryFacets, ...SMALL_FACETS]);
   let nodeList = $derived(smallCorpus ? Object.values(smallCorpus.nodes) : []);
   let typeList = $derived([...new Set(nodeList.map((node) => node.type || 'Node'))].sort((a, b) => a.localeCompare(b)));
   let baseVisibleNodes = $derived(
@@ -611,7 +614,7 @@
       const query = smallQuery.trim().toLowerCase();
       const type = node.type || 'Node';
       if (visibleTypes.size && !visibleTypes.has(type)) return false;
-      if (!matchesReductions(reductions, key => smallFacetValues(node, key, learningKeys))) return false;
+      if (!matchesReductions(reductions, key => smallFacetValues(node, key, learningKeys, semanticKeys))) return false;
       if (!query) return true;
       return smallNodeSearchText(node).toLowerCase().includes(query);
     }).sort(compareSmallNodes)
@@ -622,7 +625,7 @@
   let smallGeospatialRouteIds: Set<string> = $derived(
     new Set(smallGeospatialRecords.filter((record) => geospatialFilterMatches(record, geospatialFilter)).map((record) => record.route))
   );
-  let visibleNodes = $derived(highlightFirst(geospatialFilter ? baseVisibleNodes.filter((node) => smallGeospatialRouteIds.has(node.id)) : baseVisibleNodes, node => smallIsHighlighted(node, largeFacetHighlights, learningKeys)));
+  let visibleNodes = $derived(highlightFirst(geospatialFilter ? baseVisibleNodes.filter((node) => smallGeospatialRouteIds.has(node.id)) : baseVisibleNodes, node => smallIsHighlighted(node, largeFacetHighlights, learningKeys, semanticKeys)));
   let selectedNode = $derived(smallCorpus && selectedId ? smallCorpus.nodes[selectedId] : null);
   let inspectedNode = $derived(smallCorpus && inspectedId ? smallCorpus.nodes[inspectedId] : null);
   let detailNode = $derived(inspectedNode || selectedNode);
@@ -699,10 +702,10 @@
   let activeLargeFilterCount: number = $derived(Object.values(largeFacetFilters).reduce((total, values) => total + values.length, (geospatialFilter ? 1 : 0) + reductions.length));
   let pinnedLabels = $derived(pins);
   let largeExplorationScope = $derived(currentLargeExplorationScope());
-  let highlightedCount = $derived(source?.kind === 'large' ? largeExplorationScope.highlighted : visibleNodes.filter(node => smallIsHighlighted(node, largeFacetHighlights, learningKeys)).length);
+  let highlightedCount = $derived(source?.kind === 'large' ? largeExplorationScope.highlighted : visibleNodes.filter(node => smallIsHighlighted(node, largeFacetHighlights, learningKeys, semanticKeys)).length);
   let scopeCount = $derived(source?.kind === 'large' ? largeExplorationScope.total : visibleNodes.length);
-  let smallFacets = $derived<FacetModel[]>(smallFacetDefinitions.map(facet => ({ ...facet, open: smallOpenFacet === facet.key || smallOpenedPinnedFacets.includes(facet.key), pinned: smallPinnedFacets.includes(facet.key), rows: smallFacetRows(nodeList, visibleNodes, largeFacetHighlights, facet.key, learningKeys) })));
-  let smallResults = $derived<ResultItem[]>(visibleNodes.filter(node => !foldedIds.has(node.id)).map(node => ({ id: node.id, route: node.id, title: node.title, type: node.type || 'Node', description: node.description || node.summary || '', metadata: learning ? [node.section, typeof node.duration_minutes === 'number' ? `${node.duration_minutes} minutes` : ''].filter(Boolean).join(' · ') : node.source || node.id, highlighted: smallIsHighlighted(node, largeFacetHighlights, learningKeys) })));
+  let smallFacets = $derived<FacetModel[]>(smallFacetDefinitions.map(facet => ({ ...facet, open: smallOpenFacet === facet.key || smallOpenedPinnedFacets.includes(facet.key), pinned: smallPinnedFacets.includes(facet.key), rows: smallFacetRows(nodeList, visibleNodes, largeFacetHighlights, facet.key, learningKeys, semanticKeys) })));
+  let smallResults = $derived<ResultItem[]>(visibleNodes.filter(node => !foldedIds.has(node.id)).map(node => ({ id: node.id, route: node.id, title: node.title, type: node.type || 'Node', description: node.description || node.summary || '', metadata: learning ? [node.section, typeof node.duration_minutes === 'number' ? `${node.duration_minutes} minutes` : ''].filter(Boolean).join(' · ') : node.source || node.id, highlighted: smallIsHighlighted(node, largeFacetHighlights, learningKeys, semanticKeys) })));
   let largeReaderResults = $derived<ResultItem[]>(readerResultItems());
 
   function currentLargeExplorationScope() {
@@ -833,7 +836,7 @@
       if (!largeExplorationScope.scopeIds || !largeExplorationScope.highlightedIds) return;
       const selected = new Set(largeExplorationScope.highlightedIds);
       members = largeExplorationScope.scopeIds.filter(id => selected.has(id) === highlighted);
-    } else members = visibleNodes.filter(node => smallIsHighlighted(node, largeFacetHighlights, learningKeys) === highlighted).map(node => node.id);
+    } else members = visibleNodes.filter(node => smallIsHighlighted(node, largeFacetHighlights, learningKeys, semanticKeys) === highlighted).map(node => node.id);
     members = members.filter(id => !foldedIds.has(id));
     if (!members.length || members.length > MAX_FOLDED_MEMBERS) return;
     foldedSets = [...foldedSets, { id: crypto.randomUUID(), label: `${highlighted ? '' : 'Outside '} ${selectionLabel(largeFacetHighlights)}`.trim(), members }];
@@ -842,7 +845,7 @@
   function foldedSetCounts() {
     if (source?.kind === 'large' && !largeExplorationScope.scopeIds) return {};
     const scope = new Set(source?.kind === 'large' ? largeExplorationScope.scopeIds : visibleNodes.map(node => node.id));
-    const selected = new Set(source?.kind === 'large' ? largeExplorationScope.highlightedIds : visibleNodes.filter(node => smallIsHighlighted(node, largeFacetHighlights, learningKeys)).map(node => node.id));
+    const selected = new Set(source?.kind === 'large' ? largeExplorationScope.highlightedIds : visibleNodes.filter(node => smallIsHighlighted(node, largeFacetHighlights, learningKeys, semanticKeys)).map(node => node.id));
     return Object.fromEntries(foldedSets.map(fold => [fold.id, { inScope: fold.members.filter(id => scope.has(id)).length, highlighted: fold.members.filter(id => scope.has(id) && selected.has(id)).length }]));
   }
 
@@ -4870,6 +4873,7 @@
 
     const addNode = (id: string, type = routeKind(id), label = largeLabelForRoute(id), count?: number, stackFor?: string) => {
       if (!id) return;
+      if (isGraphStackNodeType(type)) label = label.replace(/ \((\d[\d,]*(?: [^()]*)?)\)$/, ' — $1');
       if (!nodeMap.has(id)) nodeMap.set(id, { id, label, type, count, stackFor });
     };
     const addEdge = (sourceId: string, targetId: string, label: string, record?: Record<string, unknown>) => {
@@ -5193,7 +5197,7 @@
             continue;
           }
           const pluralKind = group.otherKind.replaceAll('_', ' ');
-          addNode(stackId, 'relationship-stack', `${group.kind} (${group.rows.length} ${pluralKind}${group.rows.length === 1 ? '' : 's'})`, group.rows.length, center);
+          addNode(stackId, 'relationship-stack', `${group.kind} — ${group.rows.length} ${pluralKind}${group.rows.length === 1 ? '' : 's'}`, group.rows.length, center);
           if (group.direction === 'out') edges.push({ source: center, target: stackId, label: `${group.kind} x${group.rows.length}` });
           else edges.push({ source: stackId, target: center, label: `${group.kind} x${group.rows.length}` });
         } else {
@@ -5223,7 +5227,7 @@
         const resourceCount = result.resource_count || 0;
         if (resourceCount > 0) {
           const stackId = `resource-stack/${center}`;
-          addNode(stackId, 'resource-stack', `${capitalise(resourcePlural())} (${resourceCount})`, resourceCount, center);
+          addNode(stackId, 'resource-stack', `${capitalise(resourcePlural())} — ${resourceCount}`, resourceCount, center);
           edges.push({ source: center, target: stackId, label: `has ${resourcePlural()}` });
         }
       }
@@ -5238,7 +5242,7 @@
         const resources = largeIndex.resourcesByDataset.get(dataset.name) || [];
         if (resources.length > 8 && largeExpandedStackRoute !== center) {
           const stackId = `resource-stack/${center}`;
-          addNode(stackId, 'resource-stack', `${capitalise(resourcePlural())} (${resources.length})`, resources.length, center);
+          addNode(stackId, 'resource-stack', `${capitalise(resourcePlural())} — ${resources.length}`, resources.length, center);
           edges.push({ source: center, target: stackId, label: `has ${resourcePlural()}` });
         } else {
           for (const resource of resources.slice(0, 80)) addEdge(center, resourceRoute(resource), `has ${resourceSingular()}`);
@@ -6481,7 +6485,7 @@
 >
   <header class="topbar">
     <div class="title-block">
-      <h1 aria-label="OKF Explorer"><a class="hub-link" href="../" aria-label="Return to the OKF learning hub">OKF Explorer</a></h1>
+      <h1 aria-label="OKF Explorer"><a class="hub-link" href="../" aria-label="OKF Explorer — return to the learning hub">OKF Explorer</a></h1>
       <p>{source?.kind === 'large' ? source.descriptor.title : source?.kind === 'small' ? source.corpus.title : 'No bundle loaded'}</p>
       <a class="changes-link" href="https://github.com/chris-page-gov/okf-explorer/blob/main/CHANGELOG.md" target="_blank" rel="noopener noreferrer">Explorer changes</a>
       <a class="changes-link" href="../evidence/">Evidence workbench</a>
@@ -6798,8 +6802,8 @@
           {@render navigationTabs()}
           {#if leftPanelTab === 'facets'}
             <div id="left-panel-facets" role="tabpanel" aria-labelledby="left-tab-facets">
-          <FacetPanel facets={learning ? smallFacets.filter(f => learning.facets.some(item => item.key === f.key)) : smallFacets} selection={largeFacetHighlights} bind:multiple={multiSelect} onopen={openSmallFacet} onpin={toggleSmallFacetPin} onpreview={previewFacet} onpreviewsummary={previewFacetSummary} onkeep={commitFacetHighlights} />
-          {#if learning}<details><summary>Source and review filters</summary><FacetPanel facets={smallFacets.filter(f => !learning.facets.some(item => item.key === f.key))} selection={largeFacetHighlights} bind:multiple={multiSelect} onopen={openSmallFacet} onpin={toggleSmallFacetPin} onpreview={previewFacet} onpreviewsummary={previewFacetSummary} onkeep={commitFacetHighlights} /></details>{/if}
+          <FacetPanel facets={primaryFacets.length ? smallFacets.filter(f => primaryFacets.some(item => item.key === f.key)) : smallFacets} selection={largeFacetHighlights} bind:multiple={multiSelect} onopen={openSmallFacet} onpin={toggleSmallFacetPin} onpreview={previewFacet} onpreviewsummary={previewFacetSummary} onkeep={commitFacetHighlights} />
+          {#if primaryFacets.length}<details><summary>Source and review filters</summary><FacetPanel facets={smallFacets.filter(f => !primaryFacets.some(item => item.key === f.key))} selection={largeFacetHighlights} bind:multiple={multiSelect} onopen={openSmallFacet} onpin={toggleSmallFacetPin} onpreview={previewFacet} onpreviewsummary={previewFacetSummary} onkeep={commitFacetHighlights} /></details>{/if}
             </div>
           {:else}
             <div id="left-panel-results" role="tabpanel" aria-labelledby="left-tab-results">
@@ -7036,7 +7040,7 @@
                 <div class="graph-control-row">
                   <div class="graph-buttons" aria-label="Graph controls">
                     <button type="button" aria-label="Zoom out" title="Zoom out" onclick={() => setGraphZoom(graphZoom / 1.2)}>−</button>
-                    <button type="button" aria-label="Reset graph zoom" title="Reset graph zoom" onclick={resetGraphView}>{Math.round(graphZoom * 100)}%</button>
+                    <button type="button" aria-label={`${Math.round(graphZoom * 100)}% — reset graph zoom`} title="Reset graph zoom" onclick={resetGraphView}>{Math.round(graphZoom * 100)}%</button>
                     <button type="button" aria-label="Zoom in" title="Zoom in" onclick={() => setGraphZoom(graphZoom * 1.2)}>+</button>
                   </div>
                   <div class="graph-mode-buttons" aria-label="Graph display controls">
@@ -7118,7 +7122,7 @@
                           data-relationship-authority-filter={authority}
                           data-authority={authority}
                           aria-pressed={graphRelationshipAuthorityEnabled(authority)}
-                          aria-label={`${graphRelationshipAuthorityLabel(authority)} relationships`}
+                          aria-label={`${graphRelationshipAuthorityLabel(authority)} ${graphRelationshipAuthorityCount(fullModel, authority)} relationships`}
                           onclick={() => toggleGraphRelationshipAuthority(authority)}
                         >
                           <i aria-hidden="true"></i>
@@ -7382,7 +7386,7 @@
                       <rect class="stack-card stack-card-back" x={pos.x - 24} y={pos.y - 17} width="42" height="27" rx="5" fill={largeTypeColor(node.type)}></rect>
                       <rect class="stack-card stack-card-mid" x={pos.x - 20} y={pos.y - 14} width="42" height="27" rx="5" fill={largeTypeColor(node.type)}></rect>
                       <rect class="stack-card" x={pos.x - 16} y={pos.y - 11} width="42" height="27" rx="5" fill={largeTypeColor(node.type)}></rect>
-                      <text class="stack-count" x={pos.x + 5} y={pos.y + 7}>{node.count}</text>
+                      <text class="stack-count" aria-hidden="true" x={pos.x + 5} y={pos.y + 7}>{node.count}</text>
                     {:else if node.type === 'resource'}
                       <rect class="node-hit" x={pos.x - 25} y={pos.y - 19} width="50" height="38" rx="6"></rect>
                       <rect class="resource-card" x={pos.x - 16} y={pos.y - 11} width="32" height="22" rx="4" fill={largeTypeColor(node.type)}></rect>
@@ -7460,7 +7464,7 @@
               </svg>
               <details class="edge-panel edge-drawer" class:resizing={edgePanelResizing} style={`--edge-panel-height:${edgePanelHeight}px`} open>
                 <summary
-                  aria-label={`Relationships panel, ${model.relationships.length} relationships, ${edgePanelHeight} pixels high; use up and down arrows to resize`}
+                  aria-label={`Relationships (${model.relationships.length}) open for rows; ${edgePanelHeight} pixels high; use up and down arrows to resize`}
                   onpointerdown={beginEdgePanelResize}
                   onkeydown={resizeEdgePanelWithKeyboard}
                   onclick={suppressEdgePanelToggleFromGrip}
@@ -7928,7 +7932,7 @@
             <div class="graph-controls">
               <div class="graph-buttons" aria-label="Graph controls">
                 <button type="button" aria-label="Zoom out" title="Zoom out" onclick={() => setGraphZoom(graphZoom / 1.2)}>−</button>
-                <button type="button" aria-label="Reset graph zoom" title="Reset graph zoom" onclick={resetGraphView}>{Math.round(graphZoom * 100)}%</button>
+                <button type="button" aria-label={`${Math.round(graphZoom * 100)}% — reset graph zoom`} title="Reset graph zoom" onclick={resetGraphView}>{Math.round(graphZoom * 100)}%</button>
                 <button type="button" aria-label="Zoom in" title="Zoom in" onclick={() => setGraphZoom(graphZoom * 1.2)}>+</button>
                 {#if labelPlan.layerCount > 1}
                   <button

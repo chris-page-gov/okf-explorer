@@ -985,7 +985,7 @@ test.describe('targeted large-corpus relationship hydration', () => {
 
     const authorityFilters = page.getByLabel('Relationship authority filters');
     const modelFilter = authorityFilters.getByRole('button', {
-      name: 'Model-assisted relationships'
+      name: /^Model-assisted \d+ relationships$/
     });
     await expect(modelFilter).toHaveAttribute('aria-pressed', 'true');
     await modelFilter.click();
@@ -1164,7 +1164,7 @@ test.describe('targeted large-corpus relationship hydration', () => {
     }
 
     const summary = page.locator('.edge-drawer > summary');
-    await expect(summary).toHaveAccessibleName(/Relationships panel/);
+    await expect(summary).toHaveAccessibleName(/Relationships \(\d+\) open for rows/);
     await expect(summary.getByRole('button')).toHaveCount(0);
     const beforeResize = await summary.getAttribute('aria-label');
     await summary.focus();

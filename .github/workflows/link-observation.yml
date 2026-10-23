@@ -21,7 +21,7 @@ jobs:
           --manifest evaluation/heritage/data/link-validation/manifest.json
           --output "$RUNNER_TEMP/link-observation-receipt.json"
       - name: Upload timestamped receipt outside candidate and Site
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
           name: link-observation-${{ github.run_id }}
           path: ${{ runner.temp }}/link-observation-receipt.json
@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 24
       - name: Verify genuine Google Chrome and virtual display
@@ -48,7 +48,7 @@ jobs:
           --chrome google-chrome
       - name: Upload protected-page browser receipt outside candidate and Site
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
           name: protected-link-browser-${{ github.run_id }}
           path: ${{ runner.temp }}/protected-link-browser-receipt.json

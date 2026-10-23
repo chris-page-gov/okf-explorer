@@ -65,11 +65,11 @@ test('focused graph opens relationship stacks and reaches incoming evidence afte
   await page.goto(`?bundle=${encodeURIComponent(BUNDLE)}&view=graph#${FOCUS}`);
   const graph = page.getByRole('group', { name: 'Large corpus graph' });
   await expect(page.getByText('Relationships 1–72 of 211 before grouping and filters.', { exact: false })).toBeVisible();
-  await graph.getByRole('button', { name: 'references (72 pages)', exact: true }).click();
+  await graph.getByRole('button', { name: 'references — 72 pages', exact: true }).click();
   await expect(graph.getByRole('button', { name: 'Page 001', exact: true })).toBeVisible();
   await expect(graph.getByRole('button', { name: 'Page 072', exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Collapse relationship stacks', exact: true }).click();
-  await expect(graph.getByRole('button', { name: 'references (72 pages)', exact: true })).toBeVisible();
+  await expect(graph.getByRole('button', { name: 'references — 72 pages', exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Next relationships', exact: true }).click();
   await page.getByRole('button', { name: 'Next relationships', exact: true }).click();
   await expect(page.getByText('Relationships 145–211 of 211 before grouping and filters.', { exact: false })).toBeVisible();

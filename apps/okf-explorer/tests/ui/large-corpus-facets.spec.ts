@@ -983,10 +983,10 @@ test.describe('large-corpus facet interaction contract', () => {
     expect(stackRoute).toBeTruthy();
     await expect(stack).toHaveAttribute(
       'aria-label',
-      `All loaded matches (200 of ${ONS_REGION_COUNT} ONS metadata records)`
+      `All loaded matches — 200 of ${ONS_REGION_COUNT} ONS metadata records`
     );
     await expect(graph.locator(`.graph-node-label[data-label-route="${stackRoute}"]`))
-      .toContainText(`All loaded matches (200 of ${ONS_REGION_COUNT}`);
+      .toContainText(`All loaded matches — 200 of ${ONS_REGION_COUNT}`);
 
     await page.goto(`?bundle=${encodeURIComponent(ONS_FACET_BUNDLE_URL)}#dataset/${ELS_RECORD_NAME}`);
     await waitForFixtureReady(page);

@@ -1,0 +1,21 @@
+{
+  "source_commit": "17be1747f1b58a00d34bb4765671afd6c3494f13",
+  "source_directory": "evaluation-foundry/fixtures/heritage-warwickshire/evidence/",
+  "files": [
+    {
+      "path": "local-candidate-receipt.json",
+      "bytes": 6430,
+      "sha256": "b43f0923aa75412e1099503a6f70e74db027aacbf911464e6500452c8584d634"
+    },
+    {
+      "path": "local-journey-results.json.gz",
+      "bytes": 6439,
+      "sha256": "b05a95516ccf56674bccd2aefa1b78e67b6847b1c2bb80f3d905181138f58750"
+    },
+    {
+      "path": "question-suite-results.json.gz",
+      "bytes": 12178,
+      "sha256": "3cbb397328296e7bd3258468e70f70b20664f6fa2b0cce924872e26ce95637d1"
+    }
+  ]
+}

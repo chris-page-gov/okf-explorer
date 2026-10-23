@@ -18,6 +18,15 @@ reversible predicate; folding retains a membership snapshot. An active zero-matc
 preview is distinct from having no preview. Double-click and Alt+Enter commit the
 whole preview; they never toggle an existing reduction off.
 
+For small bundles, producers may declare `meta.semantic_facet_presentation` with
+schema `okf-semantic-facets.v1` and an ordered list of facet keys and labels.
+Each node may then declare values under `semantic_facets`. Explorer displays
+these semantic facets first and folds the type, trust, lifecycle and section
+filters under **Source and review filters**. It does not derive concepts from
+routes, titles or links. Missing and malformed declarations contribute no
+semantic values. A producer remains responsible for its vocabulary, matching
+evidence, review status and rights.
+
 The indexed worker applies these predicates to complete candidate identities
 before ranking display limits and bounded document hydration. It returns a
 separate current-scope facet distribution and, where complete and bounded,
