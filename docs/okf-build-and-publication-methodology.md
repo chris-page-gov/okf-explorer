@@ -106,6 +106,14 @@ The 23 October workflow review also updates `actions/upload-artifact` to 7.0.2,
 remain pinned by full commit hash. Candidate upload, download, deployment and
 post-deployment identity checks keep their separate jobs and permissions.
 
+Full-browser CI and nightly assurance select the primary Ubuntu archive and
+security archive over HTTPS in the runner's APT mirror list before installing
+Firefox and WebKit. This addresses repeated slow package downloads from the
+Azure mirror on Ubuntu 26.04. The runner retains its signed repository suites
+and keyrings, `ubuntu-latest`, the full browser matrix and the 10-minute
+installation limit. Ubuntu documents the primary archive and its mirrors in
+its [package archive guide](https://documentation.ubuntu.com/project/how-ubuntu-is-made/concepts/package-archive/).
+
 Ordinary Chromium acceptance uses a compatible browser already installed on
 the governed runner where possible. Do not run
 `playwright install --with-deps chromium` merely to obtain a browser that the

@@ -322,6 +322,13 @@ jobs:
           path: apps/okf-explorer/build
       - name: Assemble Site for the Foundry browser suite
         run: uv run --locked python scripts/build_site.py
+      - name: Select Ubuntu HTTPS archives for browser packages
+        timeout-minutes: 1
+        run: |
+          printf '%s\n' \
+            'https://archive.ubuntu.com/ubuntu/' \
+            'https://security.ubuntu.com/ubuntu/' \
+            | sudo tee /etc/apt/apt-mirrors.txt > /dev/null
       - name: Install Firefox and WebKit browser dependencies
         working-directory: apps/okf-explorer
         timeout-minutes: 10

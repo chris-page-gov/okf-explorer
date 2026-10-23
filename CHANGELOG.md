@@ -1,5 +1,13 @@
 # Changelog
 
+## Reliable browser package downloads — 23 October 2026
+
+- Select the primary Ubuntu and security archives over HTTPS for full-browser
+  CI and nightly assurance after repeated Azure mirror download timeouts.
+- Retain `ubuntu-latest`, signed repository configuration, the 10-minute
+  installation limit and the full Chrome, Firefox and WebKit checks.
+- Keep the isolated research prototype and its retained evidence unchanged.
+
 ## Reviewed MCP service dependencies — 23 October 2026
 
 - Integrate MCP server 2.3.1, client 2.3.0, legacy SDK 1.32.0 and Hono
