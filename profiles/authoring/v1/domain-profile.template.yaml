@@ -311,6 +311,101 @@ presentation_contract:
     - No default label in Reader, Graph, Links, Facets, Type, Timeline, Resources, Map or Narrative may expose a configured opaque identifier pattern.
     - A novice must be able to answer each selected competency question without interpreting internal repository vocabulary.
 
+  domain_facets:
+    definitions:
+    - key: topic
+      label: Topic
+      description: Which records discuss the subject I need?
+      user_question: Which records discuss the subject I need?
+      task_refs:
+      - TASK-001
+      value_path:
+      - learning_facets
+      - topic
+      cardinality: multiple
+      vocabulary: closed
+      allowed_values:
+      - Access
+      - Provenance
+      - Not recorded
+      examples:
+      - Access
+      - Provenance
+      missing_value: Not recorded
+    - key: audience
+      label: For whom
+      description: Which records help my role?
+      user_question: Which records help my role?
+      task_refs:
+      - TASK-001
+      value_path:
+      - learning_facets
+      - audience
+      cardinality: multiple
+      vocabulary: closed
+      allowed_values:
+      - Reader
+      - Steward
+      - Not recorded
+      examples:
+      - Reader
+      - Steward
+      missing_value: Not recorded
+    record_path:
+    - corpora
+    - example
+    - nodes
+    declaration_path:
+    - meta
+    - learning_presentation
+    - facets
+    emitted_counts_required: false
+    counts_path:
+    - facets
+    validation_refs:
+    - VAL-FACETS-001
+    browser_checks:
+    - labelled-values-and-counts
+    - keep-and-reset
+    - empty-state
+    - reload-restores-selection
+    acceptance_cases:
+    - key: topic-access
+      kind: single-value
+      selection:
+        topic:
+        - Access
+      expected_record_ids:
+      - records/access.md
+    - key: topic-alternatives
+      kind: or-within-facet
+      selection:
+        topic:
+        - Access
+        - Provenance
+      expected_record_ids:
+      - records/access.md
+      - records/provenance.md
+    - key: topic-and-role
+      kind: and-across-facets
+      selection:
+        topic:
+        - Access
+        audience:
+        - Reader
+      expected_record_ids:
+      - records/access.md
+    - key: no-access-for-steward
+      kind: no-match
+      selection:
+        topic:
+        - Access
+        audience:
+        - Steward
+      expected_record_ids: []
+    consumer_adapter: explorer-small-learning-v1
+    consumer_ref: CONSUMER-001
+
 exploratory_publication:
   enabled: true
   descriptor_schema: okf-exploratory-publication.v1
@@ -691,6 +786,17 @@ validation:
     severity: error
     release_gate: true
     receipt: validation/post-deploy-deep-links.json
+
+  - id: VAL-FACETS-001
+    target: Every domain facet, record classification and consumer declaration
+    method: Run check_foundry_facets.py on emitted bytes; reject missing
+      declarations or values, unknown labels, stale counts and incorrect selection
+      membership. Execute labelled counts, keep/reset, empty-state and reload
+      journeys in the pinned actual consumer.
+    validator: Pinned check_foundry_facets.py and actual-consumer browser harness
+    severity: error
+    release_gate: true
+    receipt: validation/facets.json
 
 evaluation:
   competency_questions:

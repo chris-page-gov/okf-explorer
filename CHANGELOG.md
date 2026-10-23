@@ -1,5 +1,17 @@
 # Changelog
 
+## Required Foundry domain facets — 23 October 2026
+
+- Require task-based facets for every new Foundry bundle, including prototypes,
+  in the domain profile, template, warm-up prompt and build guidance.
+- Add a blocking emitted-artefact checker for complete classifications,
+  consumer declarations, count drift and exact filter membership, with input
+  digests and failure receipts. Require separate actual-Reader evidence.
+- Add positive and negative regression checks to CI. Preserve permissive OKF
+  core and existing Reader loading.
+- Pin the Explorer CI runner to Ubuntu 24.04 so the governed Python 3.12.11
+  remains available after the Ubuntu latest-image change.
+
 ## Declared semantic facets for small bundles — 4 October 2026
 
 - Let a small bundle supply explicit semantic facet labels and per-node values. Show them before source and review filters while keeping the existing learning presentation and default facets intact.
