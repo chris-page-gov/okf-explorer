@@ -1,5 +1,15 @@
 # Changelog
 
+## Required Foundry domain facets — 23 October 2026
+
+- Require task-based facets for every new Foundry bundle, including prototypes,
+  in the domain profile, template, warm-up prompt and build guidance.
+- Add a blocking emitted-artefact checker for complete classifications,
+  consumer declarations, count drift and exact filter membership, with input
+  digests and failure receipts. Require separate actual-Reader evidence.
+- Add positive and negative regression checks to CI. Preserve permissive OKF
+  core and existing Reader loading.
+
 ## Reading help visible on selection — 1 October 2026
 
 - Open occurrence and printed-reference help beside the passage on wide screens and in a dismissible bottom drawer on narrower or zoomed screens, without scrolling the main page after selection.

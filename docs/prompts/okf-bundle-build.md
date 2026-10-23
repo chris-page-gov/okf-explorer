@@ -414,6 +414,27 @@ equivalence, schema/SHACL, links, counts and source/rights ledgers all pass.
 
 ## Phase 5 — Explorer data plane
 
+Every new bundle, including a minimal prototype, must pass the
+[Foundry facet gate](../foundry-facets.md). Implement the approved
+`presentation_contract.domain_facets`: at least two task-based dimensions,
+complete record classifications, explicit missing values and actual-consumer
+facet declarations. Generic Type, Trust tier, Lifecycle or Section fields alone
+fail this gate. Do not fabricate values to obtain variation.
+
+Run `scripts/check_foundry_facets.py` against the actual emitted bundle and
+complete compact record plane, retaining its digest-bound receipt. Check emitted
+aggregate counts when present. Require single-value, OR-within-facet,
+AND-across-facets and no-match cases with exact expected record IDs. A non-zero
+exit status blocks build completion and Gate G4. Execute the same cases in the
+locked Reader, with labelled values and counts, keep/reset, empty-state and
+reload checks. Static membership checks do not replace browser evidence.
+
+For Explorer small bundles, emit the complete supported
+`meta.learning_presentation` declaration, including schema, start route, groups
+and facet definitions, with per-record `learning_facets`. Merely adding custom
+record fields does not enable facets. For other consumers, declare their actual
+adapter paths and test the pinned consumer.
+
 For a small bundle:
 
 - compile one bounded small-bundle projection from the Markdown source;

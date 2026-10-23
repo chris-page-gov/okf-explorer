@@ -182,6 +182,11 @@ jobs:
           path: apps/okf-explorer/build
       - name: Run deterministic Python contracts
         run: uv run --locked python -m unittest discover -s tests
+      - name: Validate Foundry facet regression artefact
+        run: >-
+          uv run --locked python scripts/check_foundry_facets.py
+          profiles/authoring/v1/domain-profile.template.yaml
+          --bundle tests/fixtures/foundry-facets/bundle.json
       - name: Validate YAML-LD registry and constraints
         run: |
           uv run --locked python scripts/build_okf_registry.py --check
