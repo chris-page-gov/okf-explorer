@@ -319,11 +319,26 @@ suitable term exists and it answers a competency question.
 
 ### H. Architecture recommendation
 
+For every proposed Foundry bundle, including a small workshop prototype, author
+`presentation_contract.domain_facets` using the
+[required facet contract](../foundry-facets.md). Specify at least two independent
+user-task dimensions with questions, labels, vocabularies, examples, cardinality,
+explicit missing values and actual emitted field paths. Generic Type, Trust
+tier, Lifecycle and Section fields do not satisfy the requirement. Review whether
+the content supports two meaningful populated values and distinct selections
+per facet; unresolved design blocks build completion rather than inviting
+invented classifications.
+
+Bind a consumer and blocking validation rule. Define exact expected record IDs
+for single-value, OR-within-facet, AND-across-facets and no-match cases. Require
+complete-population artefact validation and actual-consumer labels/counts,
+keep/reset, empty-state and reload checks. Apply this at every build size.
+
 Choose and justify the smallest level that works:
 
 - `inventory-only`: the boundary or rights are too unclear to build;
 - `minimal-okf`: OKF 0.2 Markdown, stable identity, source provenance, human
-  pages, search and basic facets;
+  pages, search and validated task-based domain facets;
 - `governed-semantic`: additionally justified YAML-LD, JSON-LD/RDF,
   vocabulary, semantic equivalence tests and SHACL;
 - `large-corpus`: additionally descriptor, compact facets, static search,
@@ -525,7 +540,7 @@ effect on the result:
 6. Which content and metadata may be stored, transformed, model-processed and
    redistributed?
 7. Which errors could cause material harm?
-8. Which normalized, inferred or model-assisted assertions are permitted?
+8. Which normalised, inferred or model-assisted assertions are permitted?
 9. Which unresolved matters genuinely block a minimal build?
 10. Which consumer versions and producer/consumer compatibility window must
     the release support?
