@@ -43,3 +43,27 @@ describe('assessed programmes',()=>{
   expect(largeLearningPresentation(v2())?.programme?.id).toBe('demo');
  });
 });
+
+describe('unassessed linked learning', () => {
+  it('retains source record links and suggested prerequisites without creating an assessed programme', () => {
+    const raw = { ...fixture(), paths: [
+      { ...fixture().paths[0], prerequisites: [] as string[], personas: ['Evidence reviewer'], steps: [{ ...fixture().paths[0].steps[0], evidence_routes: ['concept/height-datum'] }] },
+      { id: 'compare', title: 'Compare the references', prerequisites: ['assess'], steps: [{ route: 'dataset/another', title: 'Check the second source', outcome: 'Keep evidence scopes separate' }] }
+    ] };
+    const result = largeLearningPresentation(raw)!;
+    expect(result.paths[0].steps[0].evidence_routes).toEqual(['concept/height-datum']);
+    expect(result.paths[1].prerequisites).toEqual(['assess']);
+    expect(result.paths[0].personas).toEqual(['Evidence reviewer']);
+    expect(result.programme).toBeUndefined();
+  });
+  it('rejects missing, cyclic or duplicate prerequisite links in the unassessed overlay', () => {
+    for (const prerequisites of [['assess'], ['missing'], ['missing', 'missing']]) {
+      expect(largeLearningPresentation({ ...fixture(), paths: [{ ...fixture().paths[0], prerequisites }] })).toBeNull();
+    }
+  });
+  it('rejects malformed, external and repeated supporting record references', () => {
+    for (const evidence_routes of ['dataset/other', ['https://example.test'], ['dataset/a', 'dataset/a']]) {
+      expect(largeLearningPresentation({ ...fixture(), paths: [{ ...fixture().paths[0], steps: [{ ...fixture().paths[0].steps[0], evidence_routes }] }] })).toBeNull();
+    }
+  });
+});

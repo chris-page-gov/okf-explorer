@@ -7,12 +7,16 @@
   import { documentContextRegistry, registerContextTools } from '$lib/context/webmcp';
   import { isHttpUrl } from '$lib/viewer/helpers';
 
-  let { source, onOpenRecord }: {
+  let { source, onOpenRecord, suggestedQuestion }: {
     source: LoadedSource;
     onOpenRecord: (route: string) => void;
+    suggestedQuestion?: { sourceUrl: string; question: string } | null;
   } = $props();
 
   let question = $state('');
+  $effect(() => {
+    if (suggestedQuestion?.sourceUrl === source.url) question = suggestedQuestion.question.slice(0, 2000);
+  });
   let result = $state<ContextPackage | null>(null);
   let error = $state('');
   let busy = $state(false);

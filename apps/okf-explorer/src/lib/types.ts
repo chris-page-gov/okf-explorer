@@ -1145,6 +1145,8 @@ export type LargeRouteLink = {
 
 export type LargeRecordNarrative = {
   title?: string;
+  /** Original Markdown location for resolving its relative references. */
+  source_url?: string;
   /** Repository-authored Markdown rendered through Explorer's safe Markdown renderer. */
   body: string;
   process?: LargeRouteLink;
@@ -1164,6 +1166,8 @@ export type LargeSourceAccess = {
 };
 
 export type LargeDataset = {
+  /** Optional retained OKF+ source metadata; validated before presentation. */
+  okf_plus?: unknown;
   id?: string;
   name: string;
   title: string;

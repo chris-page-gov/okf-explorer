@@ -17,6 +17,7 @@
     <details open={path.steps.some(step => step.route === selected) || presentation.paths.length === 1}>
       <summary>{path.title} · {path.steps.filter(step => completed.includes(`${path.id}:${step.route}`)).length}/{path.steps.length} complete</summary>
       <p>{path.description}</p>
+      {#if path.prerequisites?.length}<p><strong>Before this path:</strong> {path.prerequisites.map(id => presentation.paths.find(candidate => candidate.id === id)?.title || id).join('; ')}. This is suggested learning order.</p>{/if}
       <ol>
         {#each path.steps as step}
           {@const key = `${path.id}:${step.route}`}

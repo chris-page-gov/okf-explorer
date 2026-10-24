@@ -1,5 +1,14 @@
 # Changelog
 
+## GIS AI GO learning integration — 24 October 2026
+
+- Reuse the large Reader's unassessed learning presentation for linked practice
+  paths, suggested prerequisites and supporting evidence routes.
+- Inspect retained OKF+ source context and explicit metadata gaps beside the
+  selected record, preserving the original metadata and source revision.
+- Package the existing app with the complete bounded GIS metadata and context
+  projections for a portable local review, with build and file identities.
+
 ## Clear beginner and repository entry links — 24 October 2026
 
 - Put a clearly labelled HTML beginner guide link near the top of the README,

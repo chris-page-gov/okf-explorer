@@ -45,6 +45,15 @@ export function recordNarrative(dataset: LargeDataset | undefined): LargeRecordN
   return candidate;
 }
 
+export function narrativeBaseUrl(narrative: LargeRecordNarrative, fallback: string): string {
+  const value = narrative.source_url;
+  if (typeof value !== 'string' || !/^https?:\/\//.test(value) || /[\s<>"\\]/.test(value) || /%(?![0-9a-f]{2})/i.test(value)) return fallback;
+  try {
+    const url = new URL(value);
+    return url.hostname && !url.username && !url.password ? value : fallback;
+  } catch { return fallback; }
+}
+
 export function narrativeRouteLinks(value: unknown): LargeRouteLink[] {
   if (!Array.isArray(value)) return [];
   return value.filter(routeLink);
