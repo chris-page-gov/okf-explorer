@@ -95,10 +95,16 @@
       <a href="./docs/onboarding/index.html">Start here</a>
       <a href="#bundles">Examples</a>
       <a href="#people">People</a>
-      <a href="./docs/beginners/index.html">Reference guide</a>
+      <a href="./docs/beginners/index.html">Beginner guide</a>
     </nav>
     <a class="header-action" href={workedExampleHref}>Open worked example</a>
   </header>
+
+  <nav class="entry-links" aria-label="Guide and repository">
+    <strong>New to OKF Explorer?</strong>
+    <a href="./docs/beginners/index.html">Read the beginner guide</a>
+    <a href="https://github.com/chris-page-gov/okf-explorer">Browse the GitHub repository</a>
+  </nav>
 
   <main>
     <section class="hero" id="start" aria-labelledby="hero-title">

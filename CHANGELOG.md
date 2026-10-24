@@ -1,5 +1,13 @@
 # Changelog
 
+## Clear beginner and repository entry links — 24 October 2026
+
+- Put a clearly labelled HTML beginner guide link near the top of the README,
+  alongside the website and documentation map.
+- Keep the learning hub as the repository's default website. Add visible
+  beginner guide and GitHub repository links above its introduction, including
+  on narrow screens, and name the guide consistently in the main navigation.
+
 ## P0 advisory follow-up — 23 October 2026
 
 - Correct the eight additional low/moderate JavaScript alerts exposed by the

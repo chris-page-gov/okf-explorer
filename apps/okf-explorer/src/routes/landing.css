@@ -20,6 +20,8 @@ a:focus-visible, button:focus-visible { outline: 3px solid #ffbf47; outline-offs
 .learning-header nav a { text-decoration: none; }
 .learning-header nav a:hover { text-decoration: underline; }
 .header-action { border: 1px solid #173f4b; border-radius: 999px; padding: .65rem 1rem; text-decoration: none; font-weight: 750; }
+.entry-links { max-width: 1240px; margin: 0 auto; padding: 1rem 2rem; display: flex; flex-wrap: wrap; gap: .75rem 1.5rem; border-block: 1px solid #c7c4b9; line-height: 1.5; }
+.entry-links a { font-weight: 650; }
 .hero { max-width: 1240px; margin: 0 auto; min-height: 650px; padding: 5.5rem 2rem 6rem; display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(320px, .65fr); gap: clamp(3rem, 8vw, 7rem); align-items: center; }
 .eyebrow { margin: 0 0 .9rem; color: #b3422e; font-size: .78rem; font-weight: 850; letter-spacing: .14em; text-transform: uppercase; }
 .hero h1 { max-width: 780px; margin: 0; font-size: clamp(3.4rem, 7.8vw, 7.4rem); line-height: .9; letter-spacing: -.072em; font-weight: 830; }
@@ -125,7 +127,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid #ffbf47; outline-offs
 }
 
 @media (max-width: 600px) {
-  .learning-header { padding-inline: 1rem; }
+  .learning-header, .entry-links { padding-inline: 1rem; }
   .brand > span:last-child { display: none; }
   .header-action { padding: .55rem .75rem; font-size: .82rem; }
   .hero, .section { padding: 4rem 1rem; }
