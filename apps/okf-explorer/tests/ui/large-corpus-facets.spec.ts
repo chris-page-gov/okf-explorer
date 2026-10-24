@@ -204,6 +204,54 @@ async function installHugeNoPostingsFixture(page: Page, requestLog: string[]) {
 }
 
 test.describe('large-corpus facet interaction contract', () => {
+  for (const width of [1440, 650, 390, 320]) {
+    test(`FACET-E2E-DENSITY keeps folded colour bars compact and accessible at ${width}px`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 900 });
+      await openOnsFacetFixture(page, [], { skewedCounts: true });
+      if (width < 1100) await page.getByRole('navigation', { name: 'Workspace panels' }).getByRole('button', { name: /^Search & (facets|details)$/ }).click();
+      const facet = facetSection(page, 'population_type');
+      const toggle = facet.locator('.facet-toggle');
+      await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+      await expect(page.locator('.facet-instructions .bar-legend')).toBeHidden();
+      const before = (await facet.boundingBox())!;
+      expect(before.height).toBeLessThanOrEqual(64);
+      expect((await facet.locator('.proportional-bar').boundingBox())!.height).toBeLessThanOrEqual(16);
+
+      const summary = facet.locator('.facet-quick-values summary');
+      const header = (await facet.locator('.facet-header').boundingBox())!;
+      const summaryBounds = (await summary.boundingBox())!;
+      expect(summaryBounds.y).toBeGreaterThanOrEqual(header.y);
+      expect(summaryBounds.y + summaryBounds.height).toBeLessThanOrEqual(header.y + header.height + 1);
+      expect(summaryBounds.width).toBeGreaterThanOrEqual(36);
+      expect(summaryBounds.height).toBeGreaterThanOrEqual(36);
+      await summary.focus();
+      await summary.press('Enter');
+      const controls = facet.locator('.facet-quick-values .quick-value');
+      await expect(controls).toHaveCount(10);
+      expect((await facet.boundingBox())!.height).toBeCloseTo(before.height, 0);
+      for (const bounds of await controls.evaluateAll(elements => elements.map(element => {
+        const bounds = element.getBoundingClientRect();
+        return { width: bounds.width, height: bounds.height };
+      }))) {
+        expect(bounds.width).toBeGreaterThanOrEqual(24);
+        expect(bounds.height).toBeGreaterThanOrEqual(24);
+      }
+      const rare = controls.last();
+      await rare.focus();
+      await rare.press('Enter');
+      await expect(rare).toHaveAttribute('aria-pressed', 'true');
+      await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+      await rare.press('Escape');
+      await expect(summary).toBeFocused();
+      await expect(rare).toBeHidden();
+      await toggle.click();
+      await expect(facet.locator('.facet-values .facet-value')).toHaveCount(10);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
+      const axe = await new AxeBuilder({ page }).include('.facet-sections').withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze();
+      expect(axe.violations.filter(violation => violation.impact === 'serious' || violation.impact === 'critical')).toEqual([]);
+    });
+  }
+
   for (const width of [1440, 800]) {
     test(`FACET-E2E-TOUCH keeps skewed proportional bars and usable controls at ${width}px`, async ({ page }) => {
       await page.setViewportSize({ width, height: 1000 });

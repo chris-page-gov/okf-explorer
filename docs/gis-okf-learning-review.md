@@ -64,3 +64,19 @@ errors. Network evidence should show no eager dataset shards on initial load
 and a targeted shard when selecting a step. Human comprehension, assistive
 technology acceptance, current protected-data entitlement and release assurance
 remain separate from this local technical preview.
+
+## Compact search and facet navigation
+
+Closed facet rows use an 8 px colour stripe and a 4 px highlight track. The
+labelled colour-control button sits in the header beside pinning and options;
+opening it reveals the existing labelled controls. Header controls retain 36 px
+targets. The longer explanation stays under **How selection works**, so it
+does not push the facets down before it is needed. Search/Ask OKF spacing is
+reduced and the facet tabs stick within their own pane.
+
+This layout applies to large and small bundles, including narrow screens.
+It preserves the same selection, counts, multi-selection, pinning and keyboard
+actions. Colour-strip segments remain descriptive; small slices do not become
+tiny click targets. Browser checks exercise folded-row height, colour controls,
+keyboard selection and Escape/focus, with existing interaction and accessibility
+checks retained.

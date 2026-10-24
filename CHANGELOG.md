@@ -1,5 +1,12 @@
 # Changelog
 
+## Compact facet navigation — 24 October 2026
+
+- Restore slim colour bars and compact folded facet rows. Put colour controls
+  in each row's header and keep the longer explanation in optional help.
+- Retain labelled keyboard controls, 36 px header targets, selection and pinning.
+  Reduce spacing around Search/Ask OKF and keep the facet tabs within their pane.
+
 ## GIS AI GO learning integration — 24 October 2026
 
 - Reuse the large Reader's unassessed learning presentation for linked practice
