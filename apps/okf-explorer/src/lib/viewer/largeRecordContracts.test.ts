@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import type { LargeDataset, LargeResource } from '$lib/types';
 import {
   canDisplaySourceInline,
+  narrativeBaseUrl,
   narrativeRouteGroups,
   narrativeRouteLinks,
   recordNarrative,
@@ -47,6 +48,14 @@ describe('large record type label', () => {
 });
 
 describe('large record narrative contract', () => {
+  it('resolves source-relative Markdown against its immutable original location', () => {
+    const source = 'https://github.com/example/knowledge/blob/abc/records/concepts/height.md';
+    expect(new URL('datum.md', narrativeBaseUrl({ body: 'See [datum](datum.md).', source_url: source }, 'https://preview.test/bundle.json')).href)
+      .toBe('https://github.com/example/knowledge/blob/abc/records/concepts/datum.md');
+    for (const source_url of ['file:///etc/passwd', 'https:example.test', 'https://user:pass@example.test/', 'https://example.test/%oops']) {
+      expect(narrativeBaseUrl({ body: 'text', source_url }, 'https://preview.test/bundle.json')).toBe('https://preview.test/bundle.json');
+    }
+  });
   it('accepts a non-empty authored narrative and filters invalid route links', () => {
     expect(recordNarrative(dataset)?.process?.route).toBe('process/enclosing');
     expect(narrativeRouteLinks([dataset.narrative?.next?.[0], { route: '' }, null])).toEqual([

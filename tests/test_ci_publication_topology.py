@@ -211,6 +211,41 @@ class CiPublicationTopologyTests(unittest.TestCase):
             full.index("pnpm test:e2e:terminal"),
         )
 
+    def test_heritage_observation_producer_does_not_replace_retained_gates(self) -> None:
+        document = YAML(typ="safe").load(self.text(".github/workflows/okf-explorer-ci.yml"))
+        jobs = document["jobs"]
+        producer = jobs["heritage-candidate-evidence"]
+        self.assertEqual({"pull_request", "workflow_dispatch"}, set(document["on"]))
+        self.assertEqual({"contents": "read"}, document["permissions"])
+        self.assertEqual({"contents": "read"}, producer["permissions"])
+        self.assertEqual({"impact-plan", "adversarial-gate", "app"}, self.job_needs(producer))
+        self.assertEqual(20, producer["timeout-minutes"])
+        self.assertNotIn("heritage-candidate-evidence", self.job_needs(jobs["okf-explorer-ci"]))
+        self.assertIn("python-contracts", self.job_needs(jobs["okf-explorer-ci"]))
+        steps = producer["steps"]
+        download = next(step for step in steps if step.get("name") == "Download this run's exact app build")
+        self.assertEqual("okf-explorer-app-build", download["with"]["name"])
+        execution = next(step for step in steps if step.get("name") == "Execute the unchanged canonical browser evaluation")
+        self.assertIn("--limit 100", execution["run"])
+        self.assertIn("--bundle /publication/okf-explorer.json", execution["run"])
+        self.assertIn("--candidate-bundle /okf-explorer.json", execution["run"])
+        for identity in ("journey-tiny", "journey-faithful", "journey-synthetic-isolation"):
+            self.assertIn("--journey-id " + identity, execution["run"])
+        self.assertEqual("/opt/google/chrome/chrome", execution["env"]["PLAYWRIGHT_EXECUTABLE_PATH"])
+        commands = "\n".join(step.get("run", "") for step in steps)
+        for forbidden in ("--no-browser", "--defer-browser-receipts", "build_heritage_local_candidate_receipt.py", "git commit", "git push"):
+            self.assertNotIn(forbidden, commands)
+        self.assertIn("node --test scripts/serve_heritage_candidate.test.mjs", commands)
+        self.assertIn("python -m unittest tests.test_emit_heritage_candidate_transport -v", commands)
+        transport = steps[-2]
+        self.assertNotIn("if", transport)
+        self.assertEqual("uv run --locked python scripts/emit_heritage_candidate_transport.py", transport["run"])
+        self.assertLess(steps.index(execution), steps.index(transport))
+        upload = steps[-1]
+        self.assertEqual("always()", upload["if"])
+        self.assertEqual("tmp/heritage-candidate/", upload["with"]["path"])
+        self.assertEqual(7, upload["with"]["retention-days"])
+
     def test_pages_uses_push_impact_and_external_pack_does_not_key_main_cache(
         self,
     ) -> None:

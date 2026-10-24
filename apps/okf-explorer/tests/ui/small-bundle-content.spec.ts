@@ -390,7 +390,10 @@ test('SMALL-E2E-10 uses distinct adjacent colours and a separate highlight track
   });
   expect(pairs.length).toBeGreaterThan(0);
   expect(Math.min(...pairs)).toBeGreaterThanOrEqual(3);
-  await expect(page.getByText(/lower black track shows highlighted matches/)).toBeVisible();
+  const help = page.locator('.facet-instructions').getByText(/lower black track shows highlighted matches/);
+  await expect(help).toBeHidden();
+  await page.locator('.facet-instructions').getByText('How selection works', { exact: true }).click();
+  await expect(help).toBeVisible();
   await page.locator('[data-facet-key="type"] .facet-toggle').click();
   await page.locator('[data-facet-key="type"] [data-facet-value="Dataset"]').click();
   await expect(page.locator('[data-facet-key="type"] [data-facet-value="Dataset"]')).toContainText('Highlighted');

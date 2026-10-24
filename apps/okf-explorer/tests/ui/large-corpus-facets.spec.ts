@@ -204,6 +204,66 @@ async function installHugeNoPostingsFixture(page: Page, requestLog: string[]) {
 }
 
 test.describe('large-corpus facet interaction contract', () => {
+  for (const width of [1440, 650, 390, 320]) {
+    test(`FACET-E2E-DENSITY keeps folded colour bars compact and accessible at ${width}px`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 900 });
+      await openOnsFacetFixture(page, [], { skewedCounts: true });
+      if (width < 1100) await page.getByRole('navigation', { name: 'Workspace panels' }).getByRole('button', { name: /^Search & (facets|details)$/ }).click();
+      const facet = facetSection(page, 'population_type');
+      const toggle = facet.locator('.facet-toggle');
+      await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+      await expect(page.locator('.facet-instructions .bar-legend')).toBeHidden();
+      const before = (await facet.boundingBox())!;
+      expect(before.height).toBeLessThanOrEqual(64);
+      expect((await facet.locator('.proportional-bar').boundingBox())!.height).toBeLessThanOrEqual(16);
+
+      const summary = facet.locator('.facet-quick-values summary');
+      const header = (await facet.locator('.facet-header').boundingBox())!;
+      const summaryBounds = (await summary.boundingBox())!;
+      expect(summaryBounds.y).toBeGreaterThanOrEqual(header.y);
+      expect(summaryBounds.y + summaryBounds.height).toBeLessThanOrEqual(header.y + header.height + 1);
+      expect(summaryBounds.width).toBeGreaterThanOrEqual(36);
+      expect(summaryBounds.height).toBeGreaterThanOrEqual(36);
+      await summary.focus();
+      await summary.press('Enter');
+      const controls = facet.locator('.facet-quick-values .quick-value');
+      await expect(controls).toHaveCount(10);
+      expect((await facet.boundingBox())!.height).toBeCloseTo(before.height, 0);
+      for (const bounds of await controls.evaluateAll(elements => elements.map(element => {
+        const bounds = element.getBoundingClientRect();
+        return { width: bounds.width, height: bounds.height };
+      }))) {
+        expect(bounds.width).toBeGreaterThanOrEqual(24);
+        expect(bounds.height).toBeGreaterThanOrEqual(24);
+      }
+      const rare = controls.last();
+      await rare.focus();
+      await rare.press('Enter');
+      await expect(rare).toHaveAttribute('aria-pressed', 'true');
+      await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+      await rare.press('Escape');
+      await expect(summary).toBeFocused();
+      await expect(rare).toBeHidden();
+      // These labels contain no numbers, so counts in their human labels cannot
+      // accidentally mask a missing visible colour index in an accessible name.
+      const labelledFacet = facetSection(page, 'derivation_mode');
+      await labelledFacet.locator('.facet-quick-values summary').click();
+      const labelledControls = labelledFacet.locator('.facet-quick-values .quick-value');
+      for (const control of await labelledControls.all()) {
+        const visibleIndex = (await control.innerText()).trim();
+        await expect(control).toHaveAccessibleName(new RegExp(`^${visibleIndex}: `));
+      }
+      const paletteAxe = await new AxeBuilder({ page }).include('[data-facet-key="derivation_mode"] .quick-grid').withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze();
+      expect(paletteAxe.violations).toEqual([]);
+      await labelledControls.first().press('Escape');
+      await toggle.click();
+      await expect(facet.locator('.facet-values .facet-value')).toHaveCount(10);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
+      const axe = await new AxeBuilder({ page }).include('.facet-sections').withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze();
+      expect(axe.violations.filter(violation => violation.impact === 'serious' || violation.impact === 'critical')).toEqual([]);
+    });
+  }
+
   for (const width of [1440, 800]) {
     test(`FACET-E2E-TOUCH keeps skewed proportional bars and usable controls at ${width}px`, async ({ page }) => {
       await page.setViewportSize({ width, height: 1000 });
@@ -246,9 +306,26 @@ test.describe('large-corpus facet interaction contract', () => {
     expect(await displayedFacetOrder(page)).toEqual([...suggestedFacetKeys]);
     for (const key of suggestedFacetKeys) {
       await expect(facetToggle(page, key)).toHaveAttribute('aria-expanded', 'false');
-      await expect(facetSection(page, key).getByRole('group', { name: /colour selections/ })).toBeVisible();
-      expect(await facetSection(page, key).locator('.bar-segment').count()).toBeLessThanOrEqual(17);
-      expect(await facetSection(page, key).locator('.facet-distribution button').count()).toBeGreaterThan(0);
+      const facet = facetSection(page, key);
+      await expect(facet.getByRole('group', { name: /colour selections/ })).toBeVisible();
+      const segments = facet.locator('.bar-segment');
+      expect(await segments.count()).toBeGreaterThan(0);
+      expect(await segments.count()).toBeLessThanOrEqual(17);
+      await expect(facet.locator('.facet-distribution button')).toHaveCount(0);
+      const label = await facet.locator('.facet-toggle strong').innerText();
+      const disclosure = facet.locator('.facet-header').getByLabel(`Colour controls for ${label}`, { exact: true });
+      await expect(disclosure).toBeVisible();
+      const controls = facet.locator('.facet-quick-values .quick-value');
+      await expect(controls.first()).toBeHidden();
+      await disclosure.click();
+      await expect(controls.first()).toBeVisible();
+      await expect(controls).toHaveCount(await segments.count());
+      await expect(controls.first()).toBeEnabled();
+      await controls.first().focus();
+      await expect(controls.first()).toBeFocused();
+      await controls.first().press('Escape');
+      await expect(disclosure).toBeFocused();
+      await expect(controls.first()).toBeHidden();
     }
     await expect(page.getByLabel('Select multiple values')).toBeVisible();
     expect(requests.filter(path => path.startsWith('/data/records-'))).toEqual([]);

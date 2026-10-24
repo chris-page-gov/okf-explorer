@@ -2,6 +2,7 @@
   import { onMount, tick } from 'svelte';
   import BookmarkShelf from '$lib/components/BookmarkShelf.svelte';
   import AskOkf from '$lib/components/AskOkf.svelte';
+  import OkfPlusContext from '$lib/viewer/OkfPlusContext.svelte';
   import SmallRecordInspector from '$lib/components/SmallRecordInspector.svelte';
   import { focusedSmallGraph } from '$lib/viewer/smallGraph';
   import { relationshipWindow, visibleIncidentRelationships, type RelationshipWindow } from '$lib/viewer/relationshipWindows';
@@ -99,6 +100,7 @@
   import { largeDatasetFacetValues as projectLargeDatasetFacetValues } from '$lib/viewer/largeFacetValues';
   import {
     canDisplaySourceInline,
+    narrativeBaseUrl,
     narrativeRouteGroups,
     recordNarrative,
     recordTypeLabel,
@@ -447,6 +449,7 @@
   let loading = $state(false);
   let activeView = $state<ViewMode>('reader');
   let interactionMode = $state<'search' | 'ask'>('search');
+  let suggestedContextQuestion = $state<{ sourceUrl: string; question: string } | null>(null);
   let selectedId = $state('');
   let inspectedId = $state('');
   let smallInspectedRelationship = $state<OkfRelationship | null>(null);
@@ -6833,7 +6836,7 @@
     {#snippet content(actions)}
       {#if source}
         <div hidden={interactionMode !== 'ask'}>
-          <AskOkf {source} onOpenRecord={(route) => {
+          <AskOkf {source} suggestedQuestion={suggestedContextQuestion} onOpenRecord={(route) => {
             if (!source) return;
             // Context evidence can sit outside the retained Search reduction.
             // A separate record view keeps that query, its filters and this
@@ -7806,7 +7809,7 @@
               <article>
                 <h3>{selectedNarrative?.title || analysis?.narrative?.title || analysis?.summary?.title || source.descriptor.title}</h3>
                 {#if selectedNarrative}
-                  <div class="markdown-body record-narrative-body">{@html renderSafeMarkdown(selectedNarrative.body, source.url)}</div>
+                  <div class="markdown-body record-narrative-body">{@html renderSafeMarkdown(selectedNarrative.body, narrativeBaseUrl(selectedNarrative, source.url))}</div>
                   <nav class="record-narrative-routes" aria-label="Enclosing process and related routes">
                     {#if selectedNarrative.process}
                       <section>
@@ -8553,6 +8556,13 @@
               >
               {#if detailPanelTab === 'overview'}
                 <HeritageDetail record={largeDetail.dataset} />
+                <OkfPlusContext value={largeDetail.dataset.okf_plus} title={largeDetail.dataset.title} onask={(question) => {
+                  if (!source) return;
+                  suggestedContextQuestion = { sourceUrl: source.url, question };
+                  interactionMode = 'ask';
+                  activePanel = 'content';
+                  void tick().then(() => document.getElementById('ask-okf-question')?.focus());
+                }} />
               {/if}
               {#if operationalContext.explicit || operationalContext.catalogueDerived}
                 <details class="record-context operational-context disclosure-section" id="detail-panel-overview" hidden={detailPanelTab !== 'overview'} open>

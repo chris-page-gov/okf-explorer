@@ -82,6 +82,10 @@ const SUITES = {
     family: 'ui',
     file: 'tests/ui/learning-path.spec.ts'
   },
+  okf_plus_context: {
+    family: 'ui',
+    file: 'tests/ui/okf-plus-context.spec.ts'
+  },
   learner_hub: {
     family: 'ui',
     file: 'tests/ui/learner-hub.spec.ts'
@@ -119,8 +123,8 @@ export const JOURNEY_GROUP_SUITES = Object.freeze({
     'beginner_navigation',
     'foundry_pages'
   ],
-  reader: ['learning_path', 'ask_okf', 'conceptual_navigation', 'small_bundle', 'facets', 'large_corpus', 'legislation_structure', 'reading_help_corpus', 'reading_help_related', 'endpoint_labels', 'exploratory_publication'],
-  search: ['ask_okf', 'conceptual_navigation', 'small_bundle', 'facets', 'large_corpus'],
+  reader: ['learning_path', 'okf_plus_context', 'ask_okf', 'conceptual_navigation', 'small_bundle', 'facets', 'large_corpus', 'legislation_structure', 'reading_help_corpus', 'reading_help_related', 'endpoint_labels', 'exploratory_publication'],
+  search: ['ask_okf', 'okf_plus_context', 'conceptual_navigation', 'small_bundle', 'facets', 'large_corpus'],
   timeline: ['timeline_provenance', 'conceptual_navigation', 'small_bundle', 'large_corpus']
 });
 
@@ -128,6 +132,7 @@ export const TEST_TAG_SUITES = Object.freeze({
   accessibility: [
     'accessibility',
     'ask_okf',
+    'okf_plus_context',
     'relationship_pagination',
     'learner_hub',
     'small_bundle',
@@ -139,13 +144,13 @@ export const TEST_TAG_SUITES = Object.freeze({
   alias: ['large_corpus', 'facets'],
   browser: ALL_SUITES,
   consumer: ALL_UI,
-  contract: ['ask_okf', 'small_bundle', 'foundry_pages'],
+  contract: ['ask_okf', 'okf_plus_context', 'small_bundle', 'foundry_pages'],
   data: ['small_bundle', 'large_corpus', 'map'],
   denominator: ['conceptual_navigation', 'large_corpus', 'facets'],
   descriptor: ['small_bundle', 'foundry_pages'],
   determinism: ['small_bundle'],
   digest: ['ask_okf', 'small_bundle'],
-  evidence: ['evidence_workbench', 'passage_boundaries', 'ask_okf', 'small_bundle', 'foundry_pages'],
+  evidence: ['evidence_workbench', 'passage_boundaries', 'ask_okf', 'okf_plus_context', 'small_bundle', 'foundry_pages'],
   graph: ['small_bundle', 'large_corpus', 'relationship_pagination', 'federation'],
   impact: ['foundry_pages'],
   journey: ['large_corpus', 'foundry_pages'],
@@ -159,6 +164,7 @@ export const TEST_TAG_SUITES = Object.freeze({
     'accessibility',
     'conceptual_navigation',
     'ask_okf',
+    'okf_plus_context',
     'endpoint_labels',
     'relationship_pagination',
     'exploratory_publication',
@@ -168,18 +174,18 @@ export const TEST_TAG_SUITES = Object.freeze({
   ],
   producer: ['conceptual_producer_acceptance', 'small_bundle', 'large_corpus'],
   profile: ['endpoint_labels', 'exploratory_publication', 'foundry_pages'],
-  provenance: ['ask_okf', 'timeline_provenance', 'conceptual_navigation', 'small_bundle', 'large_corpus', 'foundry_pages'],
+  provenance: ['ask_okf', 'okf_plus_context', 'timeline_provenance', 'conceptual_navigation', 'small_bundle', 'large_corpus', 'foundry_pages'],
   python: ['foundry_pages'],
-  question: ['evidence_workbench', 'ask_okf', 'large_corpus'],
+  question: ['evidence_workbench', 'ask_okf', 'okf_plus_context', 'large_corpus'],
   registry: ['small_bundle', 'learner_hub', 'foundry_pages'],
   relationship: ['small_bundle', 'large_corpus', 'relationship_pagination', 'federation'],
   release: ['foundry_pages'],
   repository: ['foundry_pages'],
-  route: ['exploratory_publication', 'learner_hub', 'beginner_navigation', 'foundry_pages'],
+  route: ['okf_plus_context', 'exploratory_publication', 'learner_hub', 'beginner_navigation', 'foundry_pages'],
   runtime: ALL_UI,
   search: ['small_bundle', 'facets', 'large_corpus'],
   site: ['learner_hub', 'beginner_navigation', 'foundry_pages'],
-  source: ['small_bundle', 'large_corpus', 'legislation_structure', 'reading_help_corpus', 'reading_help_related'],
+  source: ['okf_plus_context', 'small_bundle', 'large_corpus', 'legislation_structure', 'reading_help_corpus', 'reading_help_related'],
   validator: ['foundry_pages'],
   workflow: ['foundry_pages'],
   'yaml-ld': ['small_bundle', 'federation', 'foundry_pages']

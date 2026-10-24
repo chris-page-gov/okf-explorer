@@ -37,6 +37,39 @@ test('legacy large bundles retain the existing Reader without a learning panel',
   await expect(page.getByRole('region', { name: 'Learning paths', exact: true })).toHaveCount(0);
 });
 
+test('unassessed paths retain suggested order and open their supporting records', async ({ page }) => {
+  await openOnsFacetFixture(page, [], { learningPresentation: {
+    ...learningPresentation,
+    paths: [
+      { ...learningPresentation.paths[0], prerequisites: [], steps: [{ ...learningPresentation.paths[0].steps[0], evidence_routes: ['dataset/ons-record-0002'] }] },
+      { id: 'compare', title: 'Compare the references', prerequisites: ['assess'], steps: [{ route: 'dataset/ons-record-0003', title: 'Review another source', outcome: 'Keep scopes separate' }] }
+    ]
+  } });
+  const panel = page.getByRole('region', { name: 'Learning paths', exact: true });
+  await panel.locator('summary').filter({ hasText: 'Compare the references' }).click();
+  await expect(panel).toContainText('Before this path: Check the source. This is suggested learning order.');
+  await panel.locator('summary').filter({ hasText: 'Check the source' }).click();
+  await panel.getByRole('button', { name: 'dataset/ons-record-0002', exact: true }).click();
+  await expect(page).toHaveURL(/#dataset\/ons-record-0002$/);
+  await expect(page.getByRole('region', { name: 'Assessed learning' })).toHaveCount(0);
+});
+
+test('a shared source record announces the explicitly chosen learning path', async ({ page }) => {
+  await openOnsFacetFixture(page, [], { learningPresentation: { schema: 'okf-large-learning-presentation.v1', paths: [
+    { id: 'building', title: 'Building heights', steps: [{ route: 'dataset/ons-record-0001', title: 'Reference a building height', outcome: 'Distinguish absolute and relative height' }] },
+    { id: 'road', title: 'Road elevation', steps: [{ route: 'dataset/ons-record-0001', title: 'Clarify road elevation', outcome: 'Distinguish elevation gain from a vertical coordinate' }] }
+  ] } });
+  const panel = page.getByRole('region', { name: 'Learning paths', exact: true });
+  await panel.locator('summary').filter({ hasText: 'Road elevation' }).click();
+  await panel.getByRole('button', { name: 'Clarify road elevation', exact: true }).click();
+  await expect(panel.getByRole('status')).toContainText('Selected: Clarify road elevation. Path: Road elevation.');
+  await expect(panel.locator('[aria-current="step"]')).toHaveCount(1);
+  await panel.locator('summary').filter({ hasText: 'Building heights' }).click();
+  await panel.getByRole('button', { name: 'Reference a building height', exact: true }).click();
+  await expect(panel.getByRole('status')).toContainText('Selected: Reference a building height. Path: Building heights.');
+  await expect(panel.locator('[aria-current="step"]')).toHaveCount(1);
+});
+
 const smallLearning = {
   title: 'Practice bundle', nodes: {
     'start.md': { id: 'start.md', title: 'Learning start', type: 'Goal' },

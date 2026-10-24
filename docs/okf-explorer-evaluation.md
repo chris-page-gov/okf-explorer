@@ -75,6 +75,89 @@ package and browser executable environment variables when using a local browser.
 These are local Explorer runtime checks. Public deployment verification and
 domain-specific policy evaluation remain separately recorded activities.
 
+### Fresh candidate observations from CI
+
+The repository owner maintains the separate `heritage-candidate-evidence` CI
+job. It runs when an app or Site change requires fresh observations and can also
+run through the existing manual CI workflow. It uses that run's exact app
+artefact, assembles the Site at the checked-out commit, and executes the same
+100 questions and three journeys above with installed Google Chrome. It has
+read-only repository permissions, a 20-minute deadline and seven-day artefact
+retention. It changes no deployment, workflow trigger or retained-receipt gate.
+
+The bounded local server is `scripts/serve_heritage_candidate.mjs`. It binds only
+to `127.0.0.1`, serves regular files within the assembled `_site` and checked
+Heritage corpus roots, rejects traversal and symlink escapes, and accepts only
+GET and HEAD. Site files take precedence; `/publication/` explicitly addresses
+the corpus, with root corpus aliases retained for the canonical journey. It
+streams files without executing them and performs no remote proxying. The
+default port is 8002; `HERITAGE_EVIDENCE_PORT` accepts an integer from 1 to 65535.
+
+The threats are stale app identity, changed source roots, failed source access,
+unsafe file disclosure and mistaking observations for acceptance. The ordinary
+app and adversarial gates precede execution. The job uses only the reviewed public
+Heritage fixtures and declared source links; it copies no account-specific
+payload or credentials. A failed navigation remains a failed journey. A local
+network restriction must not be avoided by changing an assertion or substituting
+a source response. Running the unchanged checks on an authorised CI runner is
+separate execution evidence, not a proxy around the local environment.
+
+The artefact `heritage-candidate-evidence-COMMIT` contains only the existing
+`okf-explorer-evaluation-results.v1` question and journey JSON/Markdown, the
+`okf-site-candidate-receipt.v1` Site receipt, the app build manifest, publication
+identity and a plain `source-commit.txt`. `COMMIT` is the checked-out workflow
+commit, including the PR merge candidate where applicable. The producer never
+writes the tracked local receipt, commits changes or promotes a deployment.
+The independent `python-contracts` validation remains required.
+
+When an authorised review environment cannot download artefact storage, the same
+successful job emits a bounded text transport in its ordinary log. The helper
+`scripts/emit_heritage_candidate_transport.py` reads only six fixed public files:
+the two result JSON files, Site receipt, app manifest, publication identity and
+source commit. It rejects symlinks, non-regular files, files over 1 MiB, total
+input over 2 MiB, ZIP output over 256 KiB and log output over 384 KiB. It makes
+no network request and reads no environment values. The deterministic ZIP uses
+fixed timestamps, order and permissions. `OKF_HERITAGE_PUBLIC_EVIDENCE_V1 BEGIN`
+declares ZIP byte length, SHA-256 and chunk count; numbered `CHUNK n/total` lines
+contain at most 8192 base64 characters, followed by an `END` marker. The complete
+payload is validated before any part is printed. Normal artefact upload remains.
+For log transport, require one complete envelope from the successful producer
+job, all chunks exactly once in order, strict base64 decoding, the declared byte
+length and SHA-256, and exactly the six regular ZIP entries before extraction.
+This transport changes no result schema or acceptance requirement.
+
+To import an observation, first verify the workflow run, source commit and
+downloaded artefact identity against the reviewed candidate. Compare its exact
+app tree and manifest with the local checked build. Preserve the previous
+receipt and both compressed results byte for byte, then run the existing
+materialiser with the downloaded inputs:
+
+```sh
+uv run --locked python scripts/build_heritage_local_candidate_receipt.py \
+  --question-results tmp/heritage-candidate/questions/results.json \
+  --journey-results tmp/heritage-candidate/journeys/results.json \
+  --site-candidate-receipt tmp/heritage-candidate/site-candidate-receipt.json \
+  --observed-at OBSERVATION_TIME_AFTER_BOTH_RUNS
+```
+
+The materialiser independently validates scores, journey outcomes, corpus roots,
+app identity, timestamps and result hashes. Review and commit its three generated
+files separately; rerun the retained-receipt tests. Failed or unmatched results
+cannot supply acceptance. The receipt records the executed Site candidate. A
+later evidence-only commit changes the publication identity of a newly assembled
+Site; it does not retroactively change the recorded candidate or establish a
+deployed merge commit. Pages has its own exact-commit verification.
+
+The compact facet update's retained observations came from
+[CI run 40105915998](https://github.com/chris-page-gov/okf-explorer/actions/runs/40105915998),
+at checked-out source `5021656698ebc424013e976c178cfc89e49268ca`.
+All 100 questions passed with a mean score of 92.6; all three journeys passed
+their 40 actions and 26 assertions. The imported receipt retains that executed
+Site identity and binds the compact app tree
+`d127aadb96a77711d5f7cc7aec8cf731cbf5ec1e3d49304d8132189ea4991f93`.
+The preceding receipt and both compressed results are preserved byte for byte
+under `validation/compact-facets/2026-10-24/pre-compact/`.
+
 The rubric is aligned with GOV.UK service-quality guidance: user needs, simple
 task completion, accessibility, open standards, security/privacy, measurable
 performance and reliable operation. Accessibility expectations use WCAG 2.2 AA

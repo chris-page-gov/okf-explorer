@@ -1,0 +1,3 @@
+77e0c7d527e96220a105987679db342cf224d0ee206a0b3fa5bb9d243e53f223  local-candidate-receipt.json
+c61f5d69c7c784b2ce77e6979e20f6db679163f9cccca1aafb73fae3a4e80557  receipts/question-suite-results.json.gz
+c66a9e1d29bf354a1535989378ae13d16789f5f91f56f9530351df81ee2d09e2  receipts/local-journey-results.json.gz

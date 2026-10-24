@@ -542,6 +542,7 @@ const searchManifest = {
 
 export type OnsFacetFixtureOptions = {
   learningPresentation?: unknown;
+  recordContext?: unknown;
   conceptualClassification?: boolean;
   withoutSearch?: boolean;
   responseBytes?: number[];
@@ -565,10 +566,10 @@ export async function installOnsFacetFixture(
   requestLog: string[] = [],
   options: OnsFacetFixtureOptions = {}
 ) {
-  const fixtureRecords = options.skewedCounts ? records.map((record, ordinal) => {
+  const fixtureRecords = (options.skewedCounts ? records.map((record, ordinal) => {
     const populationType = populationTypes[ordinal < 411 ? 0 : ordinal - 410];
     return { ...record, population_type: populationType, fixtureFacetValues: { ...record.fixtureFacetValues, population_type: populationType } };
-  }) : records;
+  }) : records).map(record => record.ordinal === 0 && options.recordContext !== undefined ? { ...record, okf_plus: options.recordContext } : record);
   const populationPostings = options.skewedCounts ? Object.fromEntries(populationTypes.slice(0, 10).map(value => [value, fixtureRecords.filter(record => record.population_type === value).map(record => record.ordinal)])) : facetPostings.population_type;
   const fixtureFacetRows = options.skewedCounts ? { ...facetRows, population_type: Object.entries(populationPostings).map(([value, ordinals]) => ({ value, count: ordinals.length })).sort((left, right) => right.count - left.count || left.value.localeCompare(right.value)) } : facetRows;
   providerDatapackManifest.packs[0]!.sha256 = await compactJsonSha256(providerDatapack);

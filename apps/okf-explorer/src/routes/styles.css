@@ -19,12 +19,12 @@
 
 .context-mode-controls {
   display: flex;
-  gap: .4rem;
-  padding: .7rem;
+  gap: 4px;
+  padding: 4px 0 6px;
   border-bottom: 1px solid var(--line);
 }
 
-.context-mode-controls button { flex: 1; min-height: 38px; }
+.context-mode-controls button { flex: 1; min-height: var(--explorer-control-height); }
 .context-mode-controls [aria-pressed="true"] { background: var(--accent); color: white; }
 .context-mode-controls button:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
 
@@ -679,13 +679,13 @@ input:focus {
 
 .panel-tabs {
   position: sticky;
-  top: -12px;
+  top: 0;
   z-index: 4;
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: minmax(0, 1fr);
   gap: 3px;
-  margin: 7px -2px 6px;
+  margin: 4px 0;
   padding: 2px;
   border: 1px solid var(--line);
   border-radius: 8px;

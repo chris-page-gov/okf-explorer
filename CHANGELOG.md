@@ -1,5 +1,29 @@
 # Changelog
 
+## Compact facet navigation — 24 October 2026
+
+- Restore slim colour bars and compact folded facet rows. Put colour controls
+  in each row's header and keep the longer explanation in optional help.
+- Retain labelled keyboard controls, 36 px header targets, selection and pinning.
+  Reduce spacing around Search/Ask OKF and keep the facet tabs within their pane.
+- Retain fresh Heritage browser observations from a separate CI job for reviewed
+  receipt refreshes, while preserving the existing receipt-validation gates.
+- Add a bounded CI log transport with byte counts and hashes for importing the
+  public browser results into restricted workspaces.
+- Refresh the compact app's exact-build Heritage receipt from successful CI
+  execution of all 100 questions and three unchanged browser journeys.
+- Align large- and small-bundle browser journeys with the colour disclosure
+  and optional help, retaining contrast, selection and bounded-loading checks.
+
+## GIS AI GO learning integration — 24 October 2026
+
+- Reuse the large Reader's unassessed learning presentation for linked practice
+  paths, suggested prerequisites and supporting evidence routes.
+- Inspect retained OKF+ source context and explicit metadata gaps beside the
+  selected record, preserving the original metadata and source revision.
+- Package the existing app with the complete bounded GIS metadata and context
+  projections for a portable local review, with build and file identities.
+
 ## Clear beginner and repository entry links — 24 October 2026
 
 - Put a clearly labelled HTML beginner guide link near the top of the README,

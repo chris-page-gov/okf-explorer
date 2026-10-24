@@ -53,7 +53,7 @@ test('search selectors resolve only the relevant Chromium UI suites', () => {
   assert.deepEqual(plan.engines, ['chrome']);
   assert.deepEqual(
     plan.suites.map((suite) => suite.id),
-    ['ask_okf', 'facets', 'conceptual_navigation', 'small_bundle', 'large_corpus']
+    ['ask_okf', 'facets', 'conceptual_navigation', 'small_bundle', 'large_corpus', 'okf_plus_context']
   );
   assert.equal(plan.commands.length, 1);
   assert.equal(plan.commands[0].family, 'ui');
@@ -92,7 +92,7 @@ test('full terminal assurance covers both suite families in all three engines', 
   });
   assert.equal(plan.mode, 'full');
   assert.equal(plan.requires_site, true);
-  assert.equal(plan.suites.length, 22);
+  assert.equal(plan.suites.length, 23);
   const declaredUiFiles = readdirSync(new URL('../tests/ui/', import.meta.url))
     .filter((name) => name.endsWith('.spec.ts')).map((name) => `tests/ui/${name}`).sort();
   assert.deepEqual(plan.suites.filter((suite) => suite.family === 'ui').map((suite) => suite.file).sort(), declaredUiFiles);
@@ -107,7 +107,7 @@ test('full terminal assurance covers both suite families in all three engines', 
 test('empty and unknown selectors fail closed instead of silently skipping', () => {
   const empty = buildBrowserPlan();
   assert.equal(empty.mode, 'fail-closed-full');
-  assert.equal(empty.suites.length, 22);
+  assert.equal(empty.suites.length, 23);
   assert.ok(empty.commands.some((command) => command.args.includes('tests/ui/ask-okf.spec.ts')));
   assert.throws(
     () => buildBrowserPlan({ testTags: ['new-unmapped-tag'] }),
@@ -135,6 +135,24 @@ test('Timeline provenance is selected by its temporal and provenance surfaces', 
     const plan = buildBrowserPlan(selectors);
     assert.ok(plan.commands.some((command) => command.args.includes('tests/ui/timeline-provenance.spec.ts')));
   }
+});
+
+test('native OKF+ explanations are selected for their Reader, source and evidence surfaces', () => {
+  for (const selectors of [
+    ...['reader', 'search'].map(group => ({ journeyGroups: [group] })),
+    ...['consumer', 'runtime', 'accessibility', 'contract', 'evidence', 'presentation', 'provenance', 'question', 'route', 'source']
+      .map(tag => ({ testTags: [tag] }))
+  ]) {
+    const plan = buildBrowserPlan(selectors);
+    assert.ok(plan.suites.some(suite => suite.id === 'okf_plus_context'), `${JSON.stringify(selectors)} must select native field inspection`);
+    assert.ok(plan.commands.some(command => command.args.includes('tests/ui/okf-plus-context.spec.ts')));
+  }
+  const profile = YAML.parse(readFileSync(new URL(
+    '../../../evaluation-foundry/fixtures/heritage-warwickshire/evaluation-profile.yaml', import.meta.url), 'utf8'));
+  const runtime = profile.impact_policy.path_rules.find(rule => rule.id === 'IMPACT-EXPLORER-RUNTIME');
+  assert.ok(runtime.patterns.includes('apps/okf-explorer/src/**'));
+  const plan = buildBrowserPlan({ testTags: runtime.test_tags, journeyGroups: runtime.journey_groups });
+  assert.ok(plan.suites.some(suite => suite.id === 'okf_plus_context'));
 });
 
 test('relationship windows and graph or Links changes select pagination assurance', () => {
