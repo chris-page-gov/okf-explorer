@@ -10,6 +10,8 @@
   receipt refreshes, while preserving the existing receipt-validation gates.
 - Add a bounded CI log transport with byte counts and hashes for importing the
   public browser results into restricted workspaces.
+- Refresh the compact app's exact-build Heritage receipt from successful CI
+  execution of all 100 questions and three unchanged browser journeys.
 
 ## GIS AI GO learning integration — 24 October 2026
 

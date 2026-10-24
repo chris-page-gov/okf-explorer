@@ -148,6 +148,16 @@ later evidence-only commit changes the publication identity of a newly assembled
 Site; it does not retroactively change the recorded candidate or establish a
 deployed merge commit. Pages has its own exact-commit verification.
 
+The compact facet update's retained observations came from
+[CI run 40105915998](https://github.com/chris-page-gov/okf-explorer/actions/runs/40105915998),
+at checked-out source `5021656698ebc424013e976c178cfc89e49268ca`.
+All 100 questions passed with a mean score of 92.6; all three journeys passed
+their 40 actions and 26 assertions. The imported receipt retains that executed
+Site identity and binds the compact app tree
+`d127aadb96a77711d5f7cc7aec8cf731cbf5ec1e3d49304d8132189ea4991f93`.
+The preceding receipt and both compressed results are preserved byte for byte
+under `validation/compact-facets/2026-10-24/pre-compact/`.
+
 The rubric is aligned with GOV.UK service-quality guidance: user needs, simple
 task completion, accessibility, open standards, security/privacy, measurable
 performance and reliable operation. Accessibility expectations use WCAG 2.2 AA
