@@ -80,3 +80,7 @@ actions. Colour-strip segments remain descriptive; small slices do not become
 tiny click targets. Browser checks exercise folded-row height, colour controls,
 keyboard selection and Escape/focus, with existing interaction and accessibility
 checks retained.
+
+Regression journeys open the colour controls and selection help explicitly
+before checking their contents. They retain the colour-contrast, selection and
+bounded-loading checks while verifying the folded initial state.

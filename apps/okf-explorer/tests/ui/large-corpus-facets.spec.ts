@@ -306,9 +306,26 @@ test.describe('large-corpus facet interaction contract', () => {
     expect(await displayedFacetOrder(page)).toEqual([...suggestedFacetKeys]);
     for (const key of suggestedFacetKeys) {
       await expect(facetToggle(page, key)).toHaveAttribute('aria-expanded', 'false');
-      await expect(facetSection(page, key).getByRole('group', { name: /colour selections/ })).toBeVisible();
-      expect(await facetSection(page, key).locator('.bar-segment').count()).toBeLessThanOrEqual(17);
-      expect(await facetSection(page, key).locator('.facet-distribution button').count()).toBeGreaterThan(0);
+      const facet = facetSection(page, key);
+      await expect(facet.getByRole('group', { name: /colour selections/ })).toBeVisible();
+      const segments = facet.locator('.bar-segment');
+      expect(await segments.count()).toBeGreaterThan(0);
+      expect(await segments.count()).toBeLessThanOrEqual(17);
+      await expect(facet.locator('.facet-distribution button')).toHaveCount(0);
+      const label = await facet.locator('.facet-toggle strong').innerText();
+      const disclosure = facet.locator('.facet-header').getByLabel(`Colour controls for ${label}`, { exact: true });
+      await expect(disclosure).toBeVisible();
+      const controls = facet.locator('.facet-quick-values .quick-value');
+      await expect(controls.first()).toBeHidden();
+      await disclosure.click();
+      await expect(controls.first()).toBeVisible();
+      await expect(controls).toHaveCount(await segments.count());
+      await expect(controls.first()).toBeEnabled();
+      await controls.first().focus();
+      await expect(controls.first()).toBeFocused();
+      await controls.first().press('Escape');
+      await expect(disclosure).toBeFocused();
+      await expect(controls.first()).toBeHidden();
     }
     await expect(page.getByLabel('Select multiple values')).toBeVisible();
     expect(requests.filter(path => path.startsWith('/data/records-'))).toEqual([]);

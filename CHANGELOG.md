@@ -12,6 +12,8 @@
   public browser results into restricted workspaces.
 - Refresh the compact app's exact-build Heritage receipt from successful CI
   execution of all 100 questions and three unchanged browser journeys.
+- Align large- and small-bundle browser journeys with the colour disclosure
+  and optional help, retaining contrast, selection and bounded-loading checks.
 
 ## GIS AI GO learning integration — 24 October 2026
 
