@@ -236,6 +236,11 @@ class CiPublicationTopologyTests(unittest.TestCase):
         for forbidden in ("--no-browser", "--defer-browser-receipts", "build_heritage_local_candidate_receipt.py", "git commit", "git push"):
             self.assertNotIn(forbidden, commands)
         self.assertIn("node --test scripts/serve_heritage_candidate.test.mjs", commands)
+        self.assertIn("python -m unittest tests.test_emit_heritage_candidate_transport -v", commands)
+        transport = steps[-2]
+        self.assertNotIn("if", transport)
+        self.assertEqual("uv run --locked python scripts/emit_heritage_candidate_transport.py", transport["run"])
+        self.assertLess(steps.index(execution), steps.index(transport))
         upload = steps[-1]
         self.assertEqual("always()", upload["if"])
         self.assertEqual("tmp/heritage-candidate/", upload["with"]["path"])

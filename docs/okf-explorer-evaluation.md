@@ -110,6 +110,22 @@ commit, including the PR merge candidate where applicable. The producer never
 writes the tracked local receipt, commits changes or promotes a deployment.
 The independent `python-contracts` validation remains required.
 
+When an authorised review environment cannot download artefact storage, the same
+successful job emits a bounded text transport in its ordinary log. The helper
+`scripts/emit_heritage_candidate_transport.py` reads only six fixed public files:
+the two result JSON files, Site receipt, app manifest, publication identity and
+source commit. It rejects symlinks, non-regular files, files over 1 MiB, total
+input over 2 MiB, ZIP output over 256 KiB and log output over 384 KiB. It makes
+no network request and reads no environment values. The deterministic ZIP uses
+fixed timestamps, order and permissions. `OKF_HERITAGE_PUBLIC_EVIDENCE_V1 BEGIN`
+declares ZIP byte length, SHA-256 and chunk count; numbered `CHUNK n/total` lines
+contain at most 8192 base64 characters, followed by an `END` marker. The complete
+payload is validated before any part is printed. Normal artefact upload remains.
+For log transport, require one complete envelope from the successful producer
+job, all chunks exactly once in order, strict base64 decoding, the declared byte
+length and SHA-256, and exactly the six regular ZIP entries before extraction.
+This transport changes no result schema or acceptance requirement.
+
 To import an observation, first verify the workflow run, source commit and
 downloaded artefact identity against the reviewed candidate. Compare its exact
 app tree and manifest with the local checked build. Preserve the previous
