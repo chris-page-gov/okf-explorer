@@ -37,10 +37,11 @@ pnpm check
 pnpm build:determinism
 cd ../..
 uv run --locked python scripts/build_site.py
-node scripts/package_gis_learning_preview.mjs GIS_PROJECTION_ROOT NEW_OUTPUT_DIRECTORY GIS_SOURCE_COMMIT
+node scripts/package_gis_learning_preview.mjs GIS_PROJECTION_ROOT NEW_OUTPUT_DIRECTORY GIS_SOURCE_COMMIT GIS_LICENCE_FILE
 ```
 
-The packager verifies the app build manifest, retains both licences, and creates
+The packager verifies the app build manifest and GIS source revision, retains
+the supplied GIS licence and both Explorer licences, and creates
 a package manifest of the exact files. The generated `START-HERE.md` explains
 how to run `node serve.mjs` in the package. Open its printed localhost address;
 the preview needs HTTP to verify and fetch bounded local files. It requires

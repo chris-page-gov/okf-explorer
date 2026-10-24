@@ -4,9 +4,10 @@ import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 
 const args = process.argv.slice(2);
-if (args.length !== 3) throw Error('Usage: node scripts/package_gis_learning_preview.mjs GIS_PROJECTION_ROOT NEW_OUTPUT_DIRECTORY GIS_SOURCE_REVISION');
+if (args.length !== 4) throw Error('Usage: node scripts/package_gis_learning_preview.mjs GIS_PROJECTION_ROOT NEW_OUTPUT_DIRECTORY GIS_SOURCE_REVISION GIS_LICENCE_FILE');
 const [projectionRoot, output] = args.slice(0, 2).map(value => path.resolve(value));
 const sourceRevision = args[2];
+const gisLicence = fs.readFileSync(path.resolve(args[3]));
 if (!/^[0-9a-f]{40}$/.test(sourceRevision)) throw Error('Supply the actual GIS source commit.');
 if (fs.existsSync(output)) throw Error('Retain existing candidates; choose a new output directory.');
 const explorerRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -23,6 +24,8 @@ for (const name of ['explorer/okf-explorer.json', 'explorer/context/manifest.jso
   if (!fs.statSync(path.join(projectionRoot, name)).isFile()) throw Error('Missing projection: ' + name);
 }
 const contextIdentity = JSON.parse(fs.readFileSync(path.join(projectionRoot, 'explorer/context/manifest.json')));
+const readerIdentity = JSON.parse(fs.readFileSync(path.join(projectionRoot, 'explorer/okf-explorer.json')));
+if (readerIdentity.source?.revision !== sourceRevision) throw Error('Supplied source commit differs from the generated Reader.');
 if (contextIdentity.bundle?.source_url !== 'http://127.0.0.1:8130/gis/explorer/context/manifest.json') {
   throw Error('Generate the local context for http://127.0.0.1:8130/gis/explorer/context/ before packaging.');
 }
@@ -35,6 +38,7 @@ for (const name of ['docs', 'profile', 'okf-bundle.json', 'okf-bundle.jsonld', '
   fs.cpSync(path.join(siteRoot, name), path.join(output, name), { recursive: true });
 }
 fs.cpSync(path.join(projectionRoot, 'explorer'), path.join(output, 'gis/explorer'), { recursive: true });
+fs.writeFileSync(path.join(output, 'GIS-LICENCE'), gisLicence);
 for (const name of ['LICENSE-CODE.md', 'LICENSE.md']) fs.copyFileSync(path.join(explorerRoot, name), path.join(output, 'EXPLORER-' + name));
 fs.writeFileSync(path.join(output, 'start.html'), `<!doctype html>
 <html lang="en-GB"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>OS and ONS learning review</title>

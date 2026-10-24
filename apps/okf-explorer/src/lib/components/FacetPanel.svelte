@@ -29,7 +29,7 @@
   <details><summary>How selection works</summary><p>Click to highlight and bring matches to the top. Click a selected value again to remove it. An unselected value replaces the selection in that facet. Hold Ctrl or Command, or enable multiple selection, to select values joined by “or”. Different facets are joined by “and”. Double-click to keep highlighted records. Keyboard: Enter highlights; Alt+Enter keeps.</p></details>
 </div>
 <p class="bar-legend">Bar widths show the relative counts, including any grouped other values. Open the colour controls to highlight a value while keeping the facet folded. The lower black track shows highlighted matches. Open a facet for labelled counts and every value; values can overlap.</p>
-<div class="facet-sections" aria-label="Facet filters">
+<div class="facet-sections" role="group" aria-label="Facet filters">
   {#each facets as facet (facet.key)}
     {@const chosen = selection[facet.key] || []}
     {@const total = facet.rows.reduce((sum, row) => sum + row.count, 0)}

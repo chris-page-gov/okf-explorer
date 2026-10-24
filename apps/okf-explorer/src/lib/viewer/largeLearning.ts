@@ -3,6 +3,13 @@ import type { Assessor } from './learningAssessment';
 export type LearningStep = { route: string; title: string; outcome: string; practice: string; minutes: number | null; evidence_routes?: string[] };
 export type LargeLearningPath = { id: string; title: string; description: string; steps: LearningStep[]; prerequisites?: string[]; personas?: string[]; assessment?: string };
 export type LargeLearning = { title: string; introduction: string; paths: LargeLearningPath[]; programme?: { id:string; version:string; assessors:Assessor[] } };
+
+/** A shared record route does not identify which authored learning step was chosen. */
+export function selectedLearningStep(presentation: LargeLearning, route: string, activePathId = ''): { path: LargeLearningPath; step: LearningStep } | null {
+  const paths = activePathId ? presentation.paths.filter(path => path.id === activePathId) : presentation.paths;
+  const matches = paths.flatMap(path => path.steps.filter(step => step.route === route).map(step => ({ path, step })));
+  return matches.length === 1 ? matches[0] : null;
+}
 const obj = (v: unknown): Record<string, unknown> => v && typeof v === 'object' && !Array.isArray(v) ? v as Record<string, unknown> : {};
 const text = (v: unknown, limit = 240) => typeof v === 'string' ? v.trim().slice(0, limit) : '';
 export function largeLearningPresentation(value: unknown): LargeLearning | null {

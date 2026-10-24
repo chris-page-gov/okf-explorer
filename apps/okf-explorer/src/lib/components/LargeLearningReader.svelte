@@ -1,12 +1,14 @@
 <script lang="ts">
   import LearningAssessment from './LearningAssessment.svelte';
-  import type { LargeLearning } from '$lib/viewer/largeLearning';
+  import { selectedLearningStep, type LargeLearning } from '$lib/viewer/largeLearning';
   let { presentation, selected, onselect, snapshot = "" }: { presentation: LargeLearning; snapshot?: string; selected: string; onselect: (route: string) => void } = $props();
   let completed = $state<string[]>([]);
   let persona = $state('');
+  let activePathId = $state('');
   const personas = $derived([...new Set(presentation.paths.flatMap(p=>p.personas??[]))]);
   const personaLabel = (value:string) => value.replace(/^persona\//,'').replaceAll('-',' ');
-  let current = $derived(presentation.paths.flatMap(path => path.steps).find(step => step.route === selected));
+  let current = $derived(selectedLearningStep(presentation, selected, activePathId));
+  function selectPathRecord(pathId: string, route: string) { activePathId = pathId; onselect(route); }
   function toggle(key: string) { completed = completed.includes(key) ? completed.filter(item => item !== key) : [...completed, key]; }
 </script>
 <section aria-label="Learning paths" class="learning-paths">
@@ -14,18 +16,18 @@
   <p>Choose a path, read the record and its supporting evidence, then try the practice task. Progress is self-reported and lasts for this session.</p>
   {#if personas.length}<label>Choose a role <select bind:value={persona}><option value="">All roles</option>{#each personas as role}<option value={role}>{personaLabel(role)}</option>{/each}</select></label>{/if}
   {#each presentation.paths.filter(p=>!persona||p.personas?.includes(persona)) as path}
-    <details open={path.steps.some(step => step.route === selected) || presentation.paths.length === 1}>
+    <details open={current?.path.id === path.id || presentation.paths.length === 1}>
       <summary>{path.title} · {path.steps.filter(step => completed.includes(`${path.id}:${step.route}`)).length}/{path.steps.length} complete</summary>
       <p>{path.description}</p>
       {#if path.prerequisites?.length}<p><strong>Before this path:</strong> {path.prerequisites.map(id => presentation.paths.find(candidate => candidate.id === id)?.title || id).join('; ')}. This is suggested learning order.</p>{/if}
       <ol>
         {#each path.steps as step}
           {@const key = `${path.id}:${step.route}`}
-          <li aria-current={selected === step.route ? 'step' : undefined}>
-            <button type="button" onclick={() => onselect(step.route)}>{step.title}</button>
+          <li aria-current={current?.path.id === path.id && selected === step.route ? 'step' : undefined}>
+            <button type="button" onclick={() => selectPathRecord(path.id, step.route)}>{step.title}</button>
             {#if step.minutes}<span> · {step.minutes} minutes</span>{/if}
             <p><strong>Outcome:</strong> {step.outcome}</p>
-            {#if step.evidence_routes?.length}<p>Inspect supporting records:</p><ul>{#each step.evidence_routes as route}<li><button type="button" onclick={() => onselect(route)}>{route}</button></li>{/each}</ul>{/if}
+            {#if step.evidence_routes?.length}<p>Inspect supporting records:</p><ul>{#each step.evidence_routes as route}<li><button type="button" onclick={() => selectPathRecord(path.id, route)}>{route}</button></li>{/each}</ul>{/if}
             {#if step.practice}<p><strong>Practise:</strong> {step.practice}</p>{/if}
             <label><input type="checkbox" checked={completed.includes(key)} onchange={() => toggle(key)} /> I have completed {step.title}</label>
           </li>
@@ -33,7 +35,7 @@
       </ol>
     </details>
   {/each}
-  {#if current}<p role="status">Selected: {current.title}. Read the record and supporting evidence in the inspection panel. A learning step does not certify competence or the authority of its sources.</p>{/if}
+  {#if current}<p role="status">Selected: {current.step.title}. Path: {current.path.title}. Read the record and supporting evidence in the inspection panel. A learning step does not certify competence or the authority of its sources.</p>{/if}
   {#if completed.length}<button type="button" onclick={() => completed = []}>Reset learning progress</button>{/if}
   {#if presentation.programme}<LearningAssessment {presentation} {snapshot}/>{/if}
 </section>
