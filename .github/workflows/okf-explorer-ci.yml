@@ -400,6 +400,78 @@ jobs:
           name: site-candidate-receipt
           path: ${{ runner.temp }}/site-candidate-receipt.json
 
+  # Observation producer only. Retained-receipt gates remain independently required.
+  heritage-candidate-evidence:
+    needs: [impact-plan, adversarial-gate, app]
+    if: >-
+      needs.app.result == 'success' &&
+      (needs.impact-plan.outputs.app == 'true' || needs.impact-plan.outputs.site == 'true')
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        with:
+          version: 10.34.7
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24.22.1'
+          cache: pnpm
+          cache-dependency-path: apps/okf-explorer/pnpm-lock.yaml
+      - name: Set up locked Python toolchain
+        uses: ./.github/actions/setup-locked-python
+      - name: Install the locked evaluator dependency
+        working-directory: apps/okf-explorer
+        run: pnpm install --frozen-lockfile
+      - name: Check the bounded local evidence server
+        run: node --test scripts/serve_heritage_candidate.test.mjs
+      - name: Download this run's exact app build
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
+        with:
+          name: okf-explorer-app-build
+          path: apps/okf-explorer/build
+      - name: Assemble the exact candidate and retain its source identity
+        run: |
+          mkdir -p tmp/heritage-candidate
+          git rev-parse HEAD > tmp/heritage-candidate/source-commit.txt
+          uv run --locked python scripts/build_site.py --candidate-receipt tmp/heritage-candidate/site-candidate-receipt.json
+          cp apps/okf-explorer/build/okf-explorer-build-manifest.json tmp/heritage-candidate/
+          cp _site/okf-publication-identity.json tmp/heritage-candidate/
+      - name: Execute the unchanged canonical browser evaluation
+        env:
+          PLAYWRIGHT_PACKAGE: ${{ github.workspace }}/apps/okf-explorer/node_modules/@playwright/test
+          PLAYWRIGHT_EXECUTABLE_PATH: /opt/google/chrome/chrome
+        run: |
+          set -euo pipefail
+          test -x "$PLAYWRIGHT_EXECUTABLE_PATH"
+          node scripts/serve_heritage_candidate.mjs > "$RUNNER_TEMP/heritage-candidate-server.log" 2>&1 &
+          heritage_server_pid=$!
+          trap 'kill "$heritage_server_pid" 2>/dev/null || true' EXIT
+          node --input-type=module -e 'let ready=false;for(let n=0;n<50;n++){try{const r=await fetch("http://127.0.0.1:8002/publication/okf-explorer.json");if(r.ok){ready=true;break}}catch{}await new Promise(resolve=>setTimeout(resolve,100))}if(!ready)throw Error("Candidate server did not become ready");'
+          node scripts/evaluate_okf_explorer.mjs \
+            --base-url http://127.0.0.1:8002/ \
+            --bundle /publication/okf-explorer.json \
+            --suite evaluation-foundry/fixtures/heritage-warwickshire/questions.json \
+            --limit 100 --out tmp/heritage-candidate/questions
+          node scripts/evaluate_okf_explorer.mjs \
+            --base-url http://127.0.0.1:8002/ \
+            --candidate-bundle /okf-explorer.json \
+            --bundle-root http://127.0.0.1:8002/publication/ \
+            --journeys-only \
+            --journeys evaluation-foundry/fixtures/heritage-warwickshire/journeys.json \
+            --journey-id journey-tiny --journey-id journey-faithful \
+            --journey-id journey-synthetic-isolation --out tmp/heritage-candidate/journeys
+      - name: Retain fresh observations for reviewed materialisation
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: heritage-candidate-evidence-${{ github.sha }}
+          path: tmp/heritage-candidate/
+          if-no-files-found: error
+          retention-days: 7
+
   release-policy:
     needs: [impact-plan, adversarial-gate]
     if: needs.impact-plan.outputs.release == 'true'

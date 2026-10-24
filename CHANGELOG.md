@@ -6,6 +6,8 @@
   in each row's header and keep the longer explanation in optional help.
 - Retain labelled keyboard controls, 36 px header targets, selection and pinning.
   Reduce spacing around Search/Ask OKF and keep the facet tabs within their pane.
+- Retain fresh Heritage browser observations from a separate CI job for reviewed
+  receipt refreshes, while preserving the existing receipt-validation gates.
 
 ## GIS AI GO learning integration — 24 October 2026
 

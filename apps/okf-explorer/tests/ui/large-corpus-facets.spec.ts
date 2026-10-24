@@ -244,6 +244,18 @@ test.describe('large-corpus facet interaction contract', () => {
       await rare.press('Escape');
       await expect(summary).toBeFocused();
       await expect(rare).toBeHidden();
+      // These labels contain no numbers, so counts in their human labels cannot
+      // accidentally mask a missing visible colour index in an accessible name.
+      const labelledFacet = facetSection(page, 'derivation_mode');
+      await labelledFacet.locator('.facet-quick-values summary').click();
+      const labelledControls = labelledFacet.locator('.facet-quick-values .quick-value');
+      for (const control of await labelledControls.all()) {
+        const visibleIndex = (await control.innerText()).trim();
+        await expect(control).toHaveAccessibleName(new RegExp(`^${visibleIndex}: `));
+      }
+      const paletteAxe = await new AxeBuilder({ page }).include('[data-facet-key="derivation_mode"] .quick-grid').withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze();
+      expect(paletteAxe.violations).toEqual([]);
+      await labelledControls.first().press('Escape');
       await toggle.click();
       await expect(facet.locator('.facet-values .facet-value')).toHaveCount(10);
       expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);

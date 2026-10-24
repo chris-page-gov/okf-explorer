@@ -45,7 +45,7 @@
           {#each segments(facet.rows) as row, index}
             {@const other = 'other' in row && row.other}
             <button type="button" class="quick-value" data-facet-colour={other ? undefined : row.value}
-              aria-label={`${other ? 'Open facet for ' : ''}${row.label}: ${row.highlighted ?? 'unknown'} highlighted / ${row.count} in scope${facet.exact === false ? ' (partial counts)' : ''}`}
+              aria-label={`${other ? '… Open facet for ' : `${index + 1}: `}${row.label}: ${row.highlighted ?? 'unknown'} highlighted / ${row.count} in scope${facet.exact === false ? ' (partial counts)' : ''}`}
               aria-pressed={other ? undefined : chosen.includes(row.value)}
               title={`${row.label}: ${row.highlighted ?? '—'} highlighted / ${row.count} in scope`}
               onclick={(event) => { if (other) { if (!facet.open) onopen(facet.key); } else if (event.detail < 2) onpreviewsummary(facet.key, row.value, multiple || event.ctrlKey || event.metaKey || event.shiftKey); }}
