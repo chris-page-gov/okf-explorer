@@ -4,6 +4,11 @@ Start with a question, inspect the evidence, then make a small bundle of your
 own. These guides serve consumers, domain experts, students and knowledge
 workers as well as contributors.
 
+New to the project? [Read the beginner guide in HTML](https://chris-page-gov.github.io/okf-explorer/docs/beginners/index.html),
+with chapter contents on the left on wider screens. The
+[website home page](https://chris-page-gov.github.io/okf-explorer/) links directly
+to this guide, worked examples and the GitHub repository.
+
 ## Start here
 
 - [Start with knowledge you can inspect](onboarding/index.md): choose a useful first task.

@@ -4,6 +4,12 @@ Use knowledge you can inspect with your AI. Open Knowledge Format (OKF) keeps
 source-linked notes, records and relationships in a reusable bundle. Explorer
 helps you browse that material and check what supports an answer.
 
+**New to OKF Explorer? [Read the beginner guide (HTML, with chapter contents)](https://chris-page-gov.github.io/okf-explorer/docs/beginners/index.html).**
+
+[Open the website](https://chris-page-gov.github.io/okf-explorer/) for examples,
+learning guides and a route into Explorer, or use the
+[documentation map](docs/index.md) to find a specific task.
+
 ## Start here
 
 [Try an existing bundle with AI](docs/onboarding/try-a-bundle.md), then inspect
