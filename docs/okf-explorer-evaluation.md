@@ -41,6 +41,11 @@ The current receipt is regenerated only from fresh runs against the assembled
 Site and its exact Explorer build. The 100 questions are deterministic browser
 checks, not model-authored legal answers.
 
+The beginner entry-link update preserves the preceding receipt and both
+compressed results under `validation/beginner-entry/2026-10-24/pre-entry-links/`,
+with a SHA-256 inventory. Fresh runs bind its navigation changes to the current
+application build while retaining the original Heritage source snapshot.
+
 With the Site and `/publication/` alias served at `http://127.0.0.1:8002/`, the
 browser commands are:
 

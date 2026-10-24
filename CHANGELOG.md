@@ -7,6 +7,8 @@
 - Keep the learning hub as the repository's default website. Add visible
   beginner guide and GitHub repository links above its introduction, including
   on narrow screens, and name the guide consistently in the main navigation.
+- Preserve the previous Heritage browser evidence and rerun its 100-question
+  suite and three local journeys to refresh the exact-build receipt.
 
 ## P0 advisory follow-up — 23 October 2026
 
