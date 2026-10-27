@@ -234,6 +234,7 @@
   const FACET_PAGE_SIZE = 30;
   const MAX_SAFE_FULL_INDEX_RECORDS = 50_000;
   const MAX_SAFE_FULL_RELATIONSHIPS = 100_000;
+  const MAX_TARGETED_RESOURCE_RECORDS = 16;
   const FACET_PREFERENCES_STORAGE_KEY = 'okf-explorer:facet-preferences:v1';
   const DEFAULT_FACET_SEARCH_THRESHOLD = 48;
   const DEFAULT_FACET_DISTRIBUTION_SEGMENTS = 10;
@@ -499,6 +500,8 @@
   let largeIndex = $state<LargeFullIndex | null>(null);
   let largeTargetedDatasets = $state<Map<string, LargeDataset>>(new Map());
   let largeTargetedLoadingRoute = $state('');
+  let largeTargetedResources = $state<Map<string, LargeResource[]>>(new Map());
+  let largeTargetedResourcesLoadingRoute = $state('');
   let largeRelationships = $state<LargeRelationship[]>([]);
   let largeRelationshipsByRoute = $state<Map<string, LargeRelationship[]>>(new Map());
   let largeIncompleteRelationshipRoutes = $state<Record<string, string>>({});
@@ -698,7 +701,7 @@
   );
   let largeVisibleDatasetNames: Set<string> = $derived(new Set(largeVisibleDatasets.map((dataset) => dataset.name)));
   let largeVisibleResources: LargeResource[] = $derived(
-    largeIndex ? largeVisibleDatasets.flatMap((dataset) => largeIndex?.resourcesByDataset.get(dataset.name) || []).slice(0, 600) : []
+    resourceViewDatasets().flatMap((dataset) => resourceRowsForDataset(dataset)).slice(0, 600)
   );
   let largeDetail: LargeDetail | null = $derived(resolveVisibleLargeDetail(largeFacetPreviewRoute || largeInspectedRoute || largeSelectedRoute));
   let largeFacetKeys: string[] = $derived(source?.kind === 'large' ? declaredLargeFacetKeys(source) : []);
@@ -991,7 +994,7 @@
     if (graphLayoutMode === 'relationships') params.set(GRAPH_LAYOUT_PARAM, graphLayoutMode);
     if (
       source?.kind === 'large'
-      && activeView === 'graph'
+      && (activeView === 'graph' || Boolean(source.loadResourcesForRecord && routeKind(route) === 'resource'))
       && largeGraphCenterRoute
       && largeGraphCenterRoute !== route
     ) {
@@ -1183,7 +1186,7 @@
       const filtersChanged = previousFilters !== JSON.stringify(largeFacetFilters);
       applyLargeBrowserRoute(hash, hasSerializedFilters(params));
       applySerializedGraphCenter(params, hash);
-      if ((largeSelectedRoute || largeInspectedRoute) && FULL_INDEX_VIEWS.has(activeView)) {
+      if ((largeSelectedRoute || largeInspectedRoute) && (activeView === 'reader' || FULL_INDEX_VIEWS.has(activeView))) {
         void hydrateForView(activeView);
       }
       if (state.query !== largeAppliedQuery || filtersChanged || previousSort !== state.sort || previousExploration !== JSON.stringify(exploration)) {
@@ -1292,7 +1295,8 @@
 
   function applySerializedGraphCenter(params: URLSearchParams, inspectedRoute: string) {
     const centerRoute = (params.get(GRAPH_CENTER_PARAM) || '').trim().slice(0, 512);
-    if (activeView !== 'graph' || !centerRoute || !inspectedRoute || centerRoute === inspectedRoute) return;
+    const resourceContext = source?.kind === 'large' && source.loadResourcesForRecord && routeKind(inspectedRoute) === 'resource';
+    if ((activeView !== 'graph' && !resourceContext) || !centerRoute || !inspectedRoute || centerRoute === inspectedRoute) return;
     largeSelectedRoute = centerRoute;
     largeInspectedRoute = inspectedRoute;
     largeHighlightedRoute = inspectedRoute;
@@ -1360,6 +1364,8 @@
     largeIndex = null;
     largeTargetedDatasets = new Map();
     largeTargetedLoadingRoute = '';
+    largeTargetedResources = new Map();
+    largeTargetedResourcesLoadingRoute = '';
     largeRelationships = [];
     graphRelationshipPage = { route: '', offset: 0 };
     linkRelationshipPage = { key: '', offset: 0 };
@@ -1675,6 +1681,8 @@
     largeIndex = null;
     largeTargetedDatasets = new Map();
     largeTargetedLoadingRoute = '';
+    largeTargetedResources = new Map();
+    largeTargetedResourcesLoadingRoute = '';
     largeRelationships = [];
     graphRelationshipPage = { route: '', offset: 0 };
     linkRelationshipPage = { key: '', offset: 0 };
@@ -1815,11 +1823,16 @@
     let selectedDataset: LargeDataset | null | undefined;
     if (selectedRoute && largeHasRecordLocator()) {
       selectedDataset = await ensureLargeDataset(selectedRoute);
-      // A record locator hydrates only the selected dataset. The resource
-      // stack is assembled from the corpus-wide resource index, so it must
-      // load that index before rendering even when a targeted dataset is
-      // already available.
+      // A record locator hydrates only the selected dataset. Providers may
+      // also publish bounded source references for that exact record. Older
+      // bundles retain their existing corpus-wide resource-index path.
       if (view === 'resources') {
+        if (source.loadResourcesForRecord) {
+          // ensureLargeDataset has already awaited this record's references.
+          // An unresolved record cannot authorise a whole-corpus fallback.
+          if (!selectedDataset && !error) error = `Source references require a published record context for ${selectedRoute}.`;
+          return;
+        }
         await ensureLargeFullIndex();
         return;
       }
@@ -1950,8 +1963,14 @@
     // `asset/…` or `risk/…`. The locator, not a hard-coded `dataset/` prefix,
     // is the authority for whether a route hydrates a record.
     if (source?.kind !== 'large' || !route) return null;
+    const selectedSource = source;
+    const selectedRequestId = loadRequest;
     const existing = largeTargetedDatasets.get(route) || indexedDatasetForRoute(route);
-    if (existing) return existing;
+    if (existing) {
+      if (source.loadResourcesForRecord) await ensureLargeRecordResources(datasetRoute(existing));
+      return selectedRequestId === loadRequest && source === selectedSource ? existing : null;
+    }
+    if (routeKind(route) === 'resource' && targetedResourceById(routeValue(route))) return null;
     if (!largeHasRecordLocator()) return null;
     const loadingSource = source;
     const requestId = loadRequest;
@@ -1967,7 +1986,8 @@
       }
       largeTargetedDatasets = new Map(largeTargetedDatasets).set(route, dataset);
       error = '';
-      return dataset;
+      if (loadingSource.loadResourcesForRecord) await ensureLargeRecordResources(datasetRoute(dataset));
+      return requestId === loadRequest && source === loadingSource ? dataset : null;
     } catch (err) {
       if (requestId === loadRequest && source === loadingSource) {
         error =
@@ -1980,6 +2000,72 @@
         largeTargetedLoadingRoute = '';
       }
     }
+  }
+
+  async function ensureLargeRecordResources(route: string): Promise<LargeResource[]> {
+    if (source?.kind !== 'large' || !source.loadResourcesForRecord || !route) return [];
+    const cached = largeTargetedResources.get(route);
+    if (cached) return cached;
+    const loadingSource = source;
+    const requestId = loadRequest;
+    largeTargetedResourcesLoadingRoute = route;
+    try {
+      const resources = await loadingSource.loadResourcesForRecord!(route);
+      if (requestId !== loadRequest || source !== loadingSource) return [];
+      const next = new Map(largeTargetedResources).set(route, resources);
+      while (next.size > MAX_TARGETED_RESOURCE_RECORDS) next.delete(next.keys().next().value!);
+      largeTargetedResources = next;
+      if (recordResourceContextIsCurrent(route) && error.startsWith("The selected record's source references could not be loaded:")) error = '';
+      return resources;
+    } catch (err) {
+      if (requestId === loadRequest && source === loadingSource) {
+        const next = new Map(largeTargetedResources);
+        next.delete(route);
+        largeTargetedResources = next;
+        if (recordResourceContextIsCurrent(route)) {
+          error = `The selected record's source references could not be loaded: ${err instanceof Error ? err.message : String(err)}.`;
+        }
+      }
+      return [];
+    } finally {
+      if (requestId === loadRequest && source === loadingSource && largeTargetedResourcesLoadingRoute === route) {
+        largeTargetedResourcesLoadingRoute = '';
+      }
+    }
+  }
+
+  function recordResourceContextIsCurrent(route: string): boolean {
+    const inspectedRoute = largeFacetPreviewRoute || largeInspectedRoute || largeSelectedRoute;
+    const contextRoute = routeKind(inspectedRoute) === 'resource' ? largeSelectedRoute : inspectedRoute;
+    const contextDataset = largeTargetedDatasets.get(contextRoute) || indexedDatasetForRoute(contextRoute);
+    return contextRoute === route || Boolean(contextDataset && datasetRoute(contextDataset) === route);
+  }
+
+  function resourceViewDatasets(): LargeDataset[] {
+    if (largeIndex) return largeVisibleDatasets;
+    const route = largeSelectedRoute || largeInspectedRoute;
+    const dataset = largeTargetedDatasets.get(route);
+    return dataset ? [dataset] : [];
+  }
+
+  function resourceRowsForDataset(dataset: LargeDataset): LargeResource[] {
+    return largeIndex?.resourcesByDataset.get(dataset.name)
+      || largeTargetedResources.get(datasetRoute(dataset)) || [];
+  }
+
+  function targetedResourceById(id: string): LargeResource | undefined {
+    const inspectedRoute = largeFacetPreviewRoute || largeInspectedRoute || largeSelectedRoute;
+    const contextRoute = routeKind(inspectedRoute) === 'resource' ? largeSelectedRoute : inspectedRoute;
+    const contextDataset = largeTargetedDatasets.get(contextRoute) || indexedDatasetForRoute(contextRoute);
+    if (contextDataset) return resourceRowsForDataset(contextDataset).find((row) => row.id === id);
+    let match: LargeResource | undefined;
+    for (const rows of largeTargetedResources.values()) {
+      const resource = rows.find((row) => row.id === id);
+      if (!resource) continue;
+      if (match) return undefined;
+      match = resource;
+    }
+    return match;
   }
 
   async function ensureLargeFacetIndex(): Promise<Record<string, LargeFacetRow[]>> {
@@ -4490,12 +4576,14 @@
     if (analysisLabel) return displayEndpointLabel(analysisLabel);
     const routedDataset = largeIndex?.datasetByRoute.get(route);
     if (routedDataset) return displayEndpointLabel(routedDataset.title);
+    const targetedDataset = largeTargetedDatasets.get(route);
+    if (targetedDataset) return displayEndpointLabel(targetedDataset.title);
     const routedResult = largeResults.find((result) => datasetRoute(result) === route);
     if (routedResult) return displayEndpointLabel(routedResult.title);
     if (kind === 'dataset') {
       return displayEndpointLabel(largeTargetedDatasets.get(route)?.title || largeIndex?.datasetByName.get(value)?.title || largeResults.find((result) => result.name === value)?.title || value);
     }
-    if (kind === 'resource') return displayEndpointLabel(largeIndex?.resourceById.get(value)?.name || value);
+    if (kind === 'resource') return displayEndpointLabel((largeIndex?.resourceById.get(value) || targetedResourceById(value))?.name || value);
     if (kind === 'publisher') return displayEndpointLabel(largeIndex?.publisherByName.get(value)?.title || value);
     if (kind === 'resource-stack') {
       const datasetName = value.replace(/^dataset\//, '');
@@ -4700,7 +4788,7 @@
         kind: 'dataset',
         route,
         dataset: routedDataset,
-        resources: largeIndex?.resourcesByDataset.get(routedDataset.name) || [],
+        resources: resourceRowsForDataset(routedDataset),
         publisher: routedDataset.publisher
           ? largeIndex?.publisherByName.get(routedDataset.publisher)
           : undefined,
@@ -4713,7 +4801,7 @@
         kind: 'dataset',
         route,
         dataset: targetedDataset,
-        resources: largeIndex?.resourcesByDataset.get(targetedDataset.name) || [],
+        resources: resourceRowsForDataset(targetedDataset),
         publisher: targetedDataset.publisher
           ? largeIndex?.publisherByName.get(targetedDataset.publisher)
           : undefined,
@@ -4735,7 +4823,7 @@
           kind: 'dataset',
           route,
           dataset,
-          resources: largeIndex?.resourcesByDataset.get(dataset.name) || [],
+          resources: resourceRowsForDataset(dataset),
           publisher: dataset.publisher ? largeIndex?.publisherByName.get(dataset.publisher) : undefined,
           relationships: routeRelationships(route)
         };
@@ -4745,8 +4833,11 @@
       if (result) return { kind: 'search', route, result };
     }
     if (kind === 'resource') {
-      const resource = largeIndex?.resourceById.get(value);
-      if (resource) return { kind: 'resource', route, resource, dataset: largeIndex?.datasetByName.get(resource.dataset), relationships: routeRelationships(route) };
+      const resource = largeIndex?.resourceById.get(value) || targetedResourceById(value);
+      if (resource) return { kind: 'resource', route, resource,
+        dataset: largeIndex?.datasetByName.get(resource.dataset)
+          || [...largeTargetedDatasets.values()].find((dataset) => dataset.name === resource.dataset),
+        relationships: routeRelationships(route) };
     }
     if (kind === 'publisher') {
       const publisher = largeIndex?.publisherByName.get(value);
@@ -6543,11 +6634,12 @@
         {/each}
       </div>
     {/if}
-    {#if loading || largeFullLoading || largeRelationshipsLoading || largeTargetedLoadingRoute}
+    {#if loading || largeFullLoading || largeRelationshipsLoading || largeTargetedLoadingRoute || largeTargetedResourcesLoadingRoute}
       <div class="status" role="status" aria-live="polite" aria-atomic="true">
         {#if loading}Loading descriptor and overview...{/if}
         {#if largeFullLoading} Loading record index...{/if}
         {#if largeTargetedLoadingRoute} Loading selected record...{/if}
+        {#if largeTargetedResourcesLoadingRoute} Loading selected source references...{/if}
         {#if largeRelationshipsLoading} Loading relationship index...{/if}
       </div>
     {/if}
@@ -7764,8 +7856,8 @@
                 <span>{largeVisibleResources.length.toLocaleString()} {resourcePlural()} shown from current reduction</span>
               </div>
               <section class="resource-stack-view">
-                {#each largeVisibleDatasets.filter((dataset) => (largeIndex?.resourcesByDataset.get(dataset.name) || []).length).slice(0, 80) as dataset}
-                  {@const resources = largeIndex?.resourcesByDataset.get(dataset.name) || []}
+                {#each resourceViewDatasets().filter((dataset) => resourceRowsForDataset(dataset).length).slice(0, 80) as dataset}
+                  {@const resources = resourceRowsForDataset(dataset)}
                   <article>
                     <button class="stack-heading" type="button" onclick={() => inspectLargeRoute(datasetRoute(dataset))} ondblclick={() => recenterLargeRoute(datasetRoute(dataset))}>
                       <strong>{largeLabelForRoute(datasetRoute(dataset))}</strong>
@@ -8442,7 +8534,8 @@
               {@const displaySeriesLabel = governedDisplaySeriesLabel(largeDetail.dataset, displaySeries)}
               {@const seriesPeers = relatedDisplaySeriesDatasets(largeDetail.dataset, largeIndex?.datasets || [])}
               {@const distinctAlternatives = distinctDatasetAlternatives(largeDetail.dataset)}
-              {@const sourceAccessRows = sourceAccesses(largeDetail.dataset, largeDetail.resources)}
+              {@const sourceAccessRows = sourceAccesses(largeDetail.dataset, largeDetail.resources)
+                .filter((access) => source?.kind !== 'large' || !source.loadResourcesForRecord || !access.legacy)}
               <span class="badge">{recordTypeLabel(largeDetail.dataset, capitalise(recordSingular()))}</span>
               <h2>{largeLabelForRoute(largeDetail.route)}</h2>
               {#if datasetMatchReason(largeDetail.dataset)}

@@ -56,8 +56,8 @@ A resource may publish one `source_access` object:
 
 All four fields are required. `display_mode` is one of:
 
-- `link`: Explorer does not fetch the response and offers **Open official
-  source**;
+- `link`: Explorer does not fetch the response. The open-link label uses the
+  producer's supplied source label and does not add an official-source claim;
 - `json`: Explorer requests JSON, parses it and offers summary, tree and raw
   views;
 - `xml`: Explorer requests XML and displays the response as inert text; or
@@ -71,6 +71,62 @@ redistribute them.
 The record-level `source_api_url` field remains supported as legacy JSON-only
 behaviour. It cannot opt an XML, text or HTML response into the inline viewer;
 producers must publish a typed resource instead.
+
+## Bounded references for a selected record
+
+Large bundles may declare an optional `record_resources` entry point in both
+the descriptor and data-manifest indexes. Both declarations must bind the same
+relative JSON path, exact byte length and SHA-256 digest. This is independent
+of the corpus-wide resource chunks and requires the existing record locator.
+Older bundles retain their existing resource-index behaviour.
+
+The entry point identifies an `okf-record-resource-index.v1` object with the
+bundle's exact `snapshot`, `algorithm: fnv1a32-prefix-2`, and at most 256 `buckets`.
+Each bucket has its own byte and digest binding. Its JSON maps an exact record
+route to an entry such as:
+
+```json
+{
+  "dataset": "example/one.md",
+  "count": 1,
+  "chunks": [{
+    "path": "references/shared.json",
+    "bytes": 512,
+    "sha256": "<64 lower-case hexadecimal characters>",
+    "rows": [0]
+  }]
+}
+```
+
+The bucket key is the first byte of the unsigned FNV-1a 32-bit hash of the
+UTF-8 record route, written as two lower-case hexadecimal characters. Shared
+chunks contain JSON resource arrays; `rows` selects only this record's entries.
+The chunk's complete hash and length are checked before those rows are used.
+Selected IDs must be unique local identifiers using letters, digits, `.`, `_`,
+`~` or `-`; each resource must name the resolved record's exact `dataset` name.
+A resource's optional route must equal `resource/<id>`. If the loaded record
+advertises `resource_count`, it must match the selected count. Omitting a record
+with a positive advertised count is an error, not evidence of zero references.
+
+For one record, Explorer accepts at most 16 chunks, 256 selected resources and
+2 MiB of shared chunk bytes. A shared chunk may contain at most 1,024 rows.
+The index is limited to 256 KiB and a bucket to 1 MiB. These files must be
+uncompressed JSON. Route and shared-chunk caches are finite, and failed loads
+can be retried without retaining the failed promise.
+Release-pack transport gzip remains supported for identity JSON members. The
+logical length must equal the reference's declared length; transport may add
+at most 64 KiB, and decompression stops at the declared logical length.
+
+Reader and selected-record Resources views load these references without
+hydrating the whole corpus. Hydrated titles also label native record routes
+whose kind is not `dataset`, subject to any declared endpoint-label registry.
+Reader hash navigation and browser history use the same bounded record and
+reference loading as the first page load.
+When this contract is declared, an empty or failed
+reference load does not activate the legacy `source_api_url` JSON fallback.
+Link-only references may state `media_type: not-established` when no response
+media type has been evidenced. This is not a downloadable-data or access-rights
+claim, and Explorer does not fetch those source URLs.
 
 This contract describes presentation, not authority. Producers remain
 responsible for source identity, assertion provenance, jurisdiction, rights,

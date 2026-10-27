@@ -1,0 +1,27 @@
+{
+  "algorithm": "deterministic-pre-deploy-identity-without-observations-v1",
+  "explorer": {
+    "manifest_sha256": "bbb482b252b9385149ab06a0bb5cbaae778e65a9498ea5c06d3683f4aa297d7a",
+    "tree_sha256": "827ac61a364500a2c73ad949dfda36f0839e54056644edd414ddb34f96aee960"
+  },
+  "publication_identity": {
+    "bytes": 1138,
+    "commit": "e3c0eaa1bd48b99320e57627639e5a1139867146",
+    "path": "okf-publication-identity.json",
+    "sha256": "870bb30986e88930a661a95a082c0dee5625aa0c25db5a117210bbdd83cb1810"
+  },
+  "schema": "okf-site-candidate-receipt.v1",
+  "site": {
+    "file_count": 10731,
+    "internal_references": 8328,
+    "reading_pages": 393,
+    "size_gate": {
+      "headroom_bytes": 176448378,
+      "limit_bytes": 1000000000,
+      "site_bytes": 823551622,
+      "status": "passed"
+    },
+    "tree_algorithm": "sha256-over-canonical-json-path-bytes-digest-list-excluding-receipt-v1",
+    "tree_sha256": "56385afad041da5e807ead0fe73b60c8e26389aa320583d0c64cc35bee963f8c"
+  }
+}

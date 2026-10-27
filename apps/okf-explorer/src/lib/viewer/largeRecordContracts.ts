@@ -106,5 +106,7 @@ export function canDisplaySourceInline(access: ResolvedLargeSourceAccess): boole
 }
 
 export function sourceOpenLabel(access: ResolvedLargeSourceAccess): string {
-  return access.display_mode === 'link' ? 'Open official source ↗' : `Open source ${access.display_mode.toUpperCase()} ↗`;
+  return access.display_mode === 'link'
+    ? `Open ${access.label.trim() || 'source'} ↗`
+    : `Open source ${access.display_mode.toUpperCase()} ↗`;
 }

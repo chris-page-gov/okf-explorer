@@ -379,6 +379,8 @@ export type LargeCorpusDescriptor = {
     context_assembly?: LargeResourceReference;
     context_corpus?: LargeResourceReference;
     record_locator?: LargeResourceReference;
+    /** Optional snapshot-bound source references for one selected record. */
+    record_resources?: LargeResourceReference;
     notes?: string;
     performance?: string;
     relationship_adjacency?: string;
@@ -439,6 +441,7 @@ export type LargeDataManifest = {
     /** Compact, snapshot-bound labels and types for graph-reachable routes. */
     endpoint_labels?: LargeResourceReference;
     record_locator?: LargeResourceReference;
+    record_resources?: LargeResourceReference;
     facets?: string;
     graph?: string;
     govuk_content?: string;
@@ -1654,6 +1657,7 @@ export type LargeCorpusSource = {
   loadContextAssembly?: () => Promise<import('./context/types').BoundContextSource>;
   loadFacetIndex: () => Promise<Record<string, LargeFacetRow[]>>;
   loadDatasetForRoute: (route: string, ordinal?: number) => Promise<LargeDataset | null>;
+  loadResourcesForRecord?: (route: string) => Promise<LargeResource[]>;
   loadFullIndex: () => Promise<LargeFullIndex>;
   loadRelationships: (maxRows?: number) => Promise<LargeRelationshipsResult>;
   loadRelationshipsForRoute: (route: string) => Promise<LargeRelationship[]>;

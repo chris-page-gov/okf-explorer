@@ -1,5 +1,22 @@
 # Changelog
 
+## Bounded record source references — 27 October 2026
+
+- Load source references for one selected record through an optional,
+  snapshot-bound index with exact byte, digest and row bindings. Keep shared
+  chunks within finite loading and cache limits.
+- Keep Reader source actions and the selected Resources view independent of
+  whole-corpus hydration, preserving older bundles' existing behaviour.
+- Display the hydrated record title for native record routes, including routes
+  whose kind is not `dataset`.
+- Load selected Reader records after hash navigation and browser history changes
+  as well as on the first page load.
+- Use the supplied source label for link-only references and remove automatic
+  official-source claims. Unknown source media types and availability remain
+  explicit; citations do not become downloadable data.
+- Refresh the exact-build Heritage receipt from successful CI execution of all
+  100 questions and three unchanged journeys, preserving the preceding evidence.
+
 ## Compact facet navigation — 24 October 2026
 
 - Restore slim colour bars and compact folded facet rows. Put colour controls

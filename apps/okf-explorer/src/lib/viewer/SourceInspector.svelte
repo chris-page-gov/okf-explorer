@@ -95,7 +95,7 @@
       <h3>Explorer could not display this source response</h3>
       <p>{error}</p>
       <p>The endpoint may block browser requests, be unavailable, or exceed Explorer’s 10 MB display limit.</p>
-      <a class="button" href={url} target="_blank" rel="noopener noreferrer">{displayMode === 'json' ? 'Open raw JSON in a new tab ↗' : 'Open official source in a new tab ↗'}</a>
+      <a class="button" href={url} target="_blank" rel="noopener noreferrer">{displayMode === 'json' ? 'Open raw JSON in a new tab ↗' : 'Open source in a new tab ↗'}</a>
     </div>
   {:else if retrievedAt}
     <dl class="response-meta">

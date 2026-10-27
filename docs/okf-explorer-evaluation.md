@@ -158,6 +158,22 @@ Site identity and binds the compact app tree
 The preceding receipt and both compressed results are preserved byte for byte
 under `validation/compact-facets/2026-10-24/pre-compact/`.
 
+On 27 October 2026, the record source reference update received fresh observations
+from [CI run 40492019206](https://github.com/chris-page-gov/okf-explorer/actions/runs/40492019206),
+[successful job 122149016399](https://github.com/chris-page-gov/okf-explorer/actions/runs/40492019206/job/122149016399).
+The reviewed PR head was `f71f776253d54a51552f061a1b10b0b922b99023`; the job
+executed merge candidate `e3c0eaa1bd48b99320e57627639e5a1139867146`.
+All 100 questions scored at least 80, with a mean of 92.6. The tiny, faithful
+and synthetic-isolation journeys all passed. Both result files and the Site
+receipt bind app tree
+`827ac61a364500a2c73ad949dfda36f0839e54056644edd414ddb34f96aee960`
+and build manifest
+`bbb482b252b9385149ab06a0bb5cbaae778e65a9498ea5c06d3683f4aa297d7a`.
+[The retained evidence inventory](../validation/record-source-references/2026-10-27/README.md)
+links the previous receipt, unchanged CI observations and their SHA-256 inventories.
+The materialised receipt records this executed candidate; deployment verification
+remains a separate check.
+
 The rubric is aligned with GOV.UK service-quality guidance: user needs, simple
 task completion, accessibility, open standards, security/privacy, measurable
 performance and reliable operation. Accessibility expectations use WCAG 2.2 AA

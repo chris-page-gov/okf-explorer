@@ -326,7 +326,7 @@ function arrayBufferCopy(bytes: Uint8Array): ArrayBuffer {
   return buffer;
 }
 
-async function gunzipBoundedBytes(bytes: Uint8Array, label: string): Promise<Uint8Array> {
+async function gunzipBoundedBytes(bytes: Uint8Array, label: string, maxBytes = MAX_JSON_BYTES): Promise<Uint8Array> {
   if (typeof DecompressionStream === 'undefined') throw new Error(`This browser cannot decompress ${label}`);
   const body = new Response(arrayBufferCopy(bytes)).body;
   if (!body) throw new Error(`This browser cannot stream ${label}`);
@@ -337,9 +337,9 @@ async function gunzipBoundedBytes(bytes: Uint8Array, label: string): Promise<Uin
     const part = await reader.read();
     if (part.done) break;
     received += part.value.byteLength;
-    if (received > MAX_JSON_BYTES) {
+    if (received > maxBytes) {
       await reader.cancel().catch(() => {});
-      throw new Error(`${label} exceeds the ${MAX_JSON_BYTES}-byte decoded response limit`);
+      throw new Error(`${label} exceeds the ${maxBytes}-byte decoded response limit`);
     }
     chunks.push(part.value);
   }
@@ -444,7 +444,7 @@ export async function fetchJsonResource<T>(
 
       let logicalBytes = bytes;
       if (distributed?.transportCompression === 'gzip') {
-        logicalBytes = await gunzipBoundedBytes(bytes, 'the release-pack transport member');
+        logicalBytes = await gunzipBoundedBytes(bytes, 'the release-pack transport member', distributed.expectedLength);
       }
       if (distributed && logicalBytes.byteLength !== distributed.expectedLength) {
         throw new Error('Release-pack decoded member length differs from the index');
