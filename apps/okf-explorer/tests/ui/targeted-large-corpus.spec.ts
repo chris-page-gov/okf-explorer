@@ -5,6 +5,8 @@ const ORIGIN = 'https://targeted-legislation.fixture.test';
 const BUNDLE_URL = `${ORIGIN}/okf-explorer.json`;
 const SNAPSHOT = 'targeted-legislation-fixture-v1';
 const RECORD_ROUTE = 'dataset/ukpga-1998-42';
+// Both records share a locator bucket, as real chunked corpora commonly do.
+const SECOND_RECORD_ROUTE = 'dataset/second-act-1704';
 const AUDIT_ID = 'codex-assisted-v3-independent-audit-20260726';
 const REVIEW_TASK_ID = 'codex-semantic-review-fixture-20260726';
 const MODEL_MANIFEST_PATH = 'data/enrichment-v3/manifest.json';
@@ -80,6 +82,11 @@ async function installTargetedFixture(
     omitAnalysisRecordCount?: boolean;
     omitDeclaredRecordCount?: boolean;
     resourceHydrationSafe?: boolean;
+    targetedRecordResources?: boolean;
+    recordResourceFailure?: boolean;
+    recordResourceResponseGate?: Promise<void>;
+    recordAlias?: string;
+    reusedResourceId?: boolean;
     sourceReleaseDate?: string;
   } = {}
 ) {
@@ -107,6 +114,7 @@ async function installTargetedFixture(
     legislation_id_uri: 'https://www.legislation.gov.uk/id/ukpga/1998/42',
     document_uri: 'https://www.legislation.gov.uk/ukpga/1998/42',
     url: 'https://www.legislation.gov.uk/ukpga/1998/42',
+    ...(options.targetedRecordResources ? { source_api_url: `${ORIGIN}/legacy/should-not-fetch.json` } : {}),
     narrative: {
       title: 'Target Act within its enclosing process',
       body: 'This authored narrative explains **what comes before**, what happens here, and what may follow without replacing official guidance.',
@@ -118,6 +126,8 @@ async function installTargetedFixture(
     },
     open: RECORD_ROUTE
   };
+  const secondRecord = { ...record, name: 'second-act-1704', route: SECOND_RECORD_ROUTE,
+    open: SECOND_RECORD_ROUTE, title: 'Second Act 2000' };
   const resource = {
     id: 'target-act-html',
     name: 'Target Act HTML',
@@ -394,6 +404,53 @@ async function installTargetedFixture(
     },
     chunks: modelChunks
   };
+  const targetedResourcePath = 'data/record-resources/shared.json';
+  const targetedResourceRows = [{
+    ...resource,
+    source_access: {
+      url: `${ORIGIN}/source-reference/target-act`,
+      label: 'Source reference',
+      media_type: 'not-established',
+      display_mode: 'link'
+    }
+  }, {
+    ...resource, id: 'unrelated-resource', dataset: 'unrelated-record',
+    route: 'resource/unrelated-resource', name: 'Unrelated source reference'
+  }, ...(options.reusedResourceId ? [{
+    ...resource, dataset: secondRecord.name, name: 'Second Act HTML',
+    source_access: {
+      url: `${ORIGIN}/source-reference/second-act`, label: 'Second source reference',
+      media_type: 'not-established', display_mode: 'link'
+    }
+  }] : [])];
+  const targetedChunkReference = {
+    path: targetedResourcePath,
+    bytes: new TextEncoder().encode(JSON.stringify(targetedResourceRows)).byteLength,
+    sha256: await sha256(JSON.stringify(targetedResourceRows))
+  };
+  const targetedBucketPath = `data/record-resources/${bucket}.json`;
+  const targetedResourceBucket = {
+    [RECORD_ROUTE]: { dataset: record.name, count: 1, chunks: [{ ...targetedChunkReference, rows: [0] }] },
+    ...(options.reusedResourceId ? {
+      [SECOND_RECORD_ROUTE]: { dataset: secondRecord.name, count: 1, chunks: [{ ...targetedChunkReference, rows: [2] }] }
+    } : {})
+  };
+  const targetedResourceIndex = {
+    schema: 'okf-record-resource-index.v1', snapshot: SNAPSHOT,
+    algorithm: 'fnv1a32-prefix-2',
+    buckets: {
+      [bucket]: {
+        path: targetedBucketPath,
+        bytes: new TextEncoder().encode(JSON.stringify(targetedResourceBucket)).byteLength,
+        sha256: await sha256(JSON.stringify(targetedResourceBucket))
+      }
+    }
+  };
+  const targetedIndexReference = {
+    path: 'data/record-resources/index.json',
+    bytes: new TextEncoder().encode(JSON.stringify(targetedResourceIndex)).byteLength,
+    sha256: await sha256(JSON.stringify(targetedResourceIndex))
+  };
   const descriptor = {
     schema: 'okf-explorer-large-corpus.v1',
     kind: 'okf-large-corpus',
@@ -406,7 +463,7 @@ async function installTargetedFixture(
       ...(options.omitDeclaredRecordCount
         ? {}
         : { records: options.resourceHydrationSafe ? 4 : 365_786 }),
-      resources: 1,
+      resources: options.reusedResourceId ? 2 : 1,
       relationships: 853_883
     },
     vocabulary: {
@@ -422,6 +479,7 @@ async function installTargetedFixture(
       analysis_overview: 'data/analysis.json',
       search_manifest: 'search/manifest.json',
       record_locator: 'data/records/manifest.json',
+      ...(options.targetedRecordResources ? { record_resources: targetedIndexReference } : {}),
       ...(options.omitAdjacency
         ? {}
         : { relationship_adjacency: 'data/adjacency/manifest.json' }),
@@ -467,6 +525,7 @@ async function installTargetedFixture(
       facets: 'data/facets.json',
       search: 'search/manifest.json',
       record_locator: 'data/records/manifest.json',
+      ...(options.targetedRecordResources ? { record_resources: targetedIndexReference } : {}),
       ...(options.omitAdjacency
         ? {}
         : { relationship_adjacency: 'data/adjacency/manifest.json' })
@@ -483,6 +542,12 @@ async function installTargetedFixture(
       relationships: ['data/relationships-full.json']
     }
   };
+  const recordRoutes = [RECORD_ROUTE, ...(options.recordAlias ? [options.recordAlias] : []),
+    ...(options.reusedResourceId ? [SECOND_RECORD_ROUTE] : [])];
+  const locatorBuckets = Object.fromEntries(recordRoutes.map((route) => {
+    const routeBucket = relationshipBucket(route);
+    return [routeBucket, `data/records/${routeBucket}.json`];
+  }));
   const locator = {
     schema: 'okf-record-locator-sharded.v1',
     algorithm: 'fnv1a32-prefix-2',
@@ -490,8 +555,9 @@ async function installTargetedFixture(
     records: 365_786,
     chunk_size: 100_000,
     record_chunks: manifest.chunks.datasets,
-    buckets: { [bucket]: `data/records/${bucket}.json` },
-    bucket_count: 1
+    ...(options.recordAlias ? { route_aliases: { [options.recordAlias]: RECORD_ROUTE } } : {}),
+    buckets: locatorBuckets,
+    bucket_count: Object.keys(locatorBuckets).length
   };
   const adjacency = {
     schema: 'okf-relationship-adjacency.v1',
@@ -608,10 +674,21 @@ async function installTargetedFixture(
     if (url.pathname === '/search/manifest.json') return json(route, searchManifest);
     if (url.pathname === '/search/doc-map.json') return json(route, {});
     if (url.pathname === '/data/records/manifest.json') return json(route, locator);
-    if (url.pathname === `/data/records/${bucket}.json`) {
-      return json(route, { [RECORD_ROUTE]: [0, 0] });
+    const locatorBucket = Object.entries(locatorBuckets).find(([, path]) => url.pathname === '/' + path)?.[0];
+    if (locatorBucket) {
+      return json(route, Object.fromEntries(recordRoutes
+        .filter((recordRoute) => relationshipBucket(recordRoute) === locatorBucket)
+        .map((recordRoute) => [recordRoute, [0, recordRoute === SECOND_RECORD_ROUTE ? 1 : 0]])));
     }
-    if (url.pathname === '/data/works-0.json') return json(route, [record]);
+    if (url.pathname === '/data/works-0.json') return json(route, options.reusedResourceId ? [record, secondRecord] : [record]);
+    if (options.targetedRecordResources && url.pathname === '/' + targetedIndexReference.path) return json(route, targetedResourceIndex);
+    if (options.targetedRecordResources && url.pathname === '/' + targetedBucketPath) return json(route, targetedResourceBucket);
+    if (options.targetedRecordResources && url.pathname === '/' + targetedResourcePath) {
+      if (options.recordResourceResponseGate) await options.recordResourceResponseGate;
+      return options.recordResourceFailure
+        ? json(route, { error: 'Selected references unavailable' }, 503)
+        : json(route, targetedResourceRows);
+    }
     if (url.pathname === '/data/resources.json') return json(route, [resource]);
     if (url.pathname === '/data/adjacency/manifest.json') return json(route, adjacency);
     if (url.pathname === `/data/adjacency/${bucket}.json`) {
@@ -787,6 +864,157 @@ test.describe('targeted large-corpus relationship hydration', () => {
     await expect(page.getByRole('button', { name: /Target Act HTML/ })).toBeVisible();
     expect(requests).toContain('/data/resources.json');
   });
+
+  test('selected Resources loads only digest-bound references in a huge corpus', async ({ page }) => {
+    const requests: string[] = [];
+    await installTargetedFixture(page.context(), requests, { targetedRecordResources: true });
+    await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}&view=resources#${RECORD_ROUTE}`);
+
+    await expect(page.getByRole('heading', { name: 'Resource stack' })).toBeVisible();
+    await expect(page.getByText('1 manifestations shown from current reduction')).toBeVisible();
+    const stack = page.locator('.resource-stack-view');
+    await expect(stack.getByRole('button', { name: /Target Act HTML/ })).toBeVisible();
+    await expect(stack).not.toContainText('Unrelated source reference');
+    await stack.getByRole('button', { name: /Target Act HTML/ }).click();
+    await expect(page.locator('.right-panel').getByRole('heading', { name: 'Target Act HTML' })).toBeVisible();
+    await page.locator('.right-panel').getByRole('button', { name: 'Legal work', exact: true }).click();
+    await expect(page.locator('.right-panel').getByRole('link', { name: 'Open Source reference ↗', exact: true }))
+      .toHaveAttribute('href', `${ORIGIN}/source-reference/target-act`);
+    expect(requests).toContain('/data/record-resources/shared.json');
+    expect(requests).not.toContain('/data/resources.json');
+    expect(requests).not.toContain('/official/target-act.xml');
+    expect(requests).not.toContain('/source-reference/target-act');
+    expect(requests).not.toContain('/legacy/should-not-fetch.json');
+    expectNoFullHydration(requests);
+  });
+
+  test('Reader loads selected references once and reuses them in Resources', async ({ page }) => {
+    const requests: string[] = [];
+    await installTargetedFixture(page.context(), requests, { targetedRecordResources: true });
+    await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}&view=reader#${RECORD_ROUTE}`);
+
+    await expect(page.locator('.right-panel').getByRole('link', { name: 'Open Source reference ↗', exact: true }))
+      .toHaveAttribute('href', `${ORIGIN}/source-reference/target-act`);
+    await expect(page.getByRole('button', { name: 'View source data', exact: true })).toHaveCount(0);
+    await page.getByLabel('Views').getByRole('button', { name: 'Resources', exact: true }).click();
+    await expect(page.locator('.resource-stack-view').getByRole('button', { name: /Target Act HTML/ })).toBeVisible();
+    expect(requests.filter((path) => path === '/data/record-resources/shared.json')).toHaveLength(1);
+    expect(requests).not.toContain('/data/resources.json');
+    expect(requests).not.toContain('/source-reference/target-act');
+    expect(requests).not.toContain('/legacy/should-not-fetch.json');
+    expectNoFullHydration(requests);
+  });
+
+  test('a record alias reuses canonical source references in Reader and Resources', async ({ page }) => {
+    const requests: string[] = [];
+    const alias = 'dataset/old-target-act';
+    await installTargetedFixture(page.context(), requests, {
+      targetedRecordResources: true, recordAlias: alias
+    });
+    await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}&view=reader#${alias}`);
+    await expect(page.locator('.right-panel').getByRole('link', { name: 'Open Source reference ↗', exact: true }))
+      .toHaveAttribute('href', `${ORIGIN}/source-reference/target-act`);
+    await page.getByLabel('Views').getByRole('button', { name: 'Resources', exact: true }).click();
+    await expect(page.locator('.resource-stack-view').getByRole('button', { name: /Target Act HTML/ })).toBeVisible();
+    expect(requests.filter((path) => path === '/data/record-resources/shared.json')).toHaveLength(1);
+    expect(requests).not.toContain('/data/resources.json');
+    expectNoFullHydration(requests);
+  });
+
+  test('resource inspection stays with the selected record when cached records reuse an ID', async ({ page }) => {
+    const requests: string[] = [];
+    await installTargetedFixture(page.context(), requests, {
+      targetedRecordResources: true, reusedResourceId: true
+    });
+    await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}&view=resources#${SECOND_RECORD_ROUTE}`);
+    const stack = page.locator('.resource-stack-view');
+    await expect(stack.getByRole('button', { name: /Second Act HTML/ })).toBeVisible();
+    await stack.getByRole('button', { name: /Second Act HTML/ }).click();
+    await expect(page.locator('.right-panel').getByRole('heading', { name: 'Second Act HTML' })).toBeVisible();
+
+    await page.evaluate((route) => { location.hash = route; }, RECORD_ROUTE);
+    await expect(stack.getByRole('button', { name: /Target Act HTML/ })).toBeVisible();
+    await stack.getByRole('button', { name: /Target Act HTML/ }).click();
+    await expect(page.locator('.right-panel').getByRole('heading', { name: 'Target Act HTML' })).toBeVisible();
+    await expect(page.locator('.right-panel').getByRole('heading', { name: 'Second Act HTML' })).toHaveCount(0);
+    expect(requests).not.toContain('/data/resources.json');
+    expectNoFullHydration(requests);
+  });
+
+  test('failed targeted references never expose the legacy remote JSON fallback', async ({ page }) => {
+    const requests: string[] = [];
+    await installTargetedFixture(page.context(), requests, {
+      targetedRecordResources: true, recordResourceFailure: true
+    });
+    await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}&view=reader#${RECORD_ROUTE}`);
+    await expect(page.getByText(/The selected record's source references could not be loaded:/)).toBeVisible();
+    await expect(page.locator('.right-panel').getByRole('heading', { name: 'Target Act 1998' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'View source data', exact: true })).toHaveCount(0);
+    await expect(page.locator('a[href$="/legacy/should-not-fetch.json"]')).toHaveCount(0);
+    expect(requests).not.toContain('/legacy/should-not-fetch.json');
+    expect(requests).not.toContain('/data/resources.json');
+    expectNoFullHydration(requests);
+  });
+
+  test('a delayed source-reference failure does not replace the overview with a stale record error', async ({ page }) => {
+    const requests: string[] = [];
+    let releaseResponse!: () => void;
+    const responseGate = new Promise<void>((resolve) => { releaseResponse = resolve; });
+    await installTargetedFixture(page.context(), requests, {
+      targetedRecordResources: true, recordResourceFailure: true,
+      recordResourceResponseGate: responseGate
+    });
+    try {
+      await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}&view=reader#${RECORD_ROUTE}`);
+      await expect.poll(() => requests.includes('/data/record-resources/shared.json')).toBe(true);
+      await page.evaluate(() => { location.hash = 'overview'; });
+      await expect(page.locator('[data-metric="legal-works"]')).toBeVisible();
+      const response = page.waitForResponse((reply) => new URL(reply.url()).pathname === '/data/record-resources/shared.json');
+      releaseResponse();
+      await response;
+      await expect(page.locator('.status')).toHaveCount(0);
+      await expect(page.getByText(/The selected record's source references could not be loaded:/)).toHaveCount(0);
+      expect(requests).not.toContain('/data/resources.json');
+      expectNoFullHydration(requests);
+    } finally {
+      releaseResponse();
+    }
+  });
+
+  test('missing targeted record context never falls back to the full resource index', async ({ page }) => {
+    const requests: string[] = [];
+    await installTargetedFixture(page.context(), requests, { targetedRecordResources: true });
+    await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}&view=resources#dataset/not-in-locator`);
+    await expect(page.getByText(/Source references require a published record context|The selected record could not be loaded/)).toBeVisible();
+    expect(requests).not.toContain('/data/resources.json');
+    expectNoFullHydration(requests);
+  });
+
+  for (const view of ['resources', 'reader']) {
+    test(`copied targeted resource restores its record context in ${view}`, async ({ page, context }) => {
+      const requests: string[] = [];
+      await installClipboard(context);
+      await installTargetedFixture(context, requests, { targetedRecordResources: true });
+      await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}&view=resources#${RECORD_ROUTE}`);
+      await page.locator('.resource-stack-view').getByRole('button', { name: /Target Act HTML/ }).click();
+      if (view === 'reader') await page.getByLabel('Views').getByRole('button', { name: 'Reader', exact: true }).click();
+      await page.locator('.right-panel').getByRole('button', { name: 'Copy route', exact: true }).click();
+      const copied = await page.evaluate(() => navigator.clipboard.readText());
+      expect(new URL(copied).searchParams.get('graph.center')).toBe(RECORD_ROUTE);
+      expect(new URL(copied).hash).toBe('#resource/target-act-html');
+
+      await page.goto('about:blank');
+      await page.goto(copied);
+      await expect(page.locator('.right-panel').getByRole('heading', { name: 'Target Act HTML' })).toBeVisible();
+      await page.locator('.right-panel').getByRole('button', { name: 'Legal work', exact: true }).click();
+      await expect(page.locator('.right-panel').getByRole('heading', { name: 'Target Act 1998' })).toBeVisible();
+      await expect(page.locator('.right-panel').getByRole('link', { name: 'Open Source reference ↗', exact: true }))
+        .toHaveAttribute('href', `${ORIGIN}/source-reference/target-act`);
+      expect(requests).not.toContain('/data/resources.json');
+      expect(requests).not.toContain('/legacy/should-not-fetch.json');
+      expectNoFullHydration(requests);
+    });
+  }
 
   for (const omitAdjacency of [false, true]) {
     test(`deep-linked Timeline hydrates selected-record periods ${omitAdjacency ? 'without' : 'with'} targeted adjacency`, async ({ page }) => {

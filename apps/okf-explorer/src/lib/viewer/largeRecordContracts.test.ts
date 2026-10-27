@@ -73,6 +73,15 @@ describe('large record narrative contract', () => {
 });
 
 describe('typed source access contract', () => {
+  it('does not promote an authored reference label to an official-source claim', () => {
+    const [access] = sourceAccesses(dataset, [{ id: 'authored', dataset: 'family', source_access: {
+      url: 'https://example.test/authored', label: 'Authored project reference',
+      media_type: 'not-established', display_mode: 'link'
+    } }]);
+    expect(sourceOpenLabel(access)).toBe('Open Authored project reference ↗');
+    expect(sourceOpenLabel({ ...access, label: ' ' })).toBe('Open source ↗');
+  });
+
   it('keeps link-only sources out of the inline response viewer', () => {
     const resources: LargeResource[] = [{
       id: 'official-guidance',
@@ -86,7 +95,7 @@ describe('typed source access contract', () => {
     }];
     const [access] = sourceAccesses(dataset, resources);
     expect(canDisplaySourceInline(access)).toBe(false);
-    expect(sourceOpenLabel(access)).toBe('Open official source ↗');
+    expect(sourceOpenLabel(access)).toBe('Open Official guidance ↗');
   });
 
   it('allows declared JSON, XML and text responses and deduplicates exact access routes', () => {

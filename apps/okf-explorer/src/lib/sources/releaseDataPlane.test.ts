@@ -2,9 +2,12 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { fetchJsonResource } from './fetch';
 import {
   MAX_RELEASE_PACK_BYTES,
+  RELEASE_DATA_PLANE_ALGORITHM,
+  canonicalJson,
   prepareReleaseDataPlane,
   releaseDataRequest,
-  safeRelativeResourcePath
+  safeRelativeResourcePath,
+  sha256Hex
 } from './releaseDataPlane';
 import { makeRangePackFixture, rangeResponse } from '../../test/rangePackFixture';
 
@@ -64,6 +67,34 @@ describe('release range-pack data plane', () => {
     expect(() => releaseDataRequest({ path: reference, sha256: '0'.repeat(64) }, prepared)).toThrow(
       'integrity differs'
     );
+  });
+
+  it('cancels gzip transport decoding at the declared logical byte ceiling', async () => {
+    const fixture = await makeRangePackFixture([
+      { path: 'data/reference.json', value: { text: 'x'.repeat(64 * 1024) } }
+    ]);
+    // The packed member has a correct transport hash, but the producer's index
+    // understates its decoded size. Do not inflate to the generic 64 MiB limit
+    // and check the small logical commitment only after retaining the output.
+    fixture.document.entries[0].bytes = 8;
+    fixture.document.counts.source_bytes = 8;
+    fixture.document.index_root_sha256 = await sha256Hex(`${canonicalJson({
+      algorithm: RELEASE_DATA_PLANE_ALGORITHM,
+      packs: fixture.document.packs,
+      entries: fixture.document.entries
+    })}\n`);
+    const prepared = await prepareReleaseDataPlane(fixture.document, 'https://example.test/bundle/', 'snapshot-1');
+    const range = `bytes=0-${fixture.document.entries[0].packed_bytes - 1}`;
+    vi.stubGlobal('fetch', vi.fn(async () => rangeResponse(fixture, range)));
+    const cancel = vi.spyOn(ReadableStreamDefaultReader.prototype, 'cancel');
+    try {
+      await expect(fetchJsonResource('data/reference.json', 'https://example.test/bundle/', {
+        releaseDataPlane: prepared, attempts: 1
+      })).rejects.toThrow('exceeds the 8-byte decoded response limit');
+      expect(cancel).toHaveBeenCalledTimes(1);
+    } finally {
+      cancel.mockRestore();
+    }
   });
 
   it('requires an unencoded HTTP 206 response with the exact advertised length', async () => {

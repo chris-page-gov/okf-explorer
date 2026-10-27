@@ -1,5 +1,16 @@
 # Changelog
 
+## Bounded record source references — 27 October 2026
+
+- Load source references for one selected record through an optional,
+  snapshot-bound index with exact byte, digest and row bindings. Keep shared
+  chunks within finite loading and cache limits.
+- Keep Reader source actions and the selected Resources view independent of
+  whole-corpus hydration, preserving older bundles' existing behaviour.
+- Use the supplied source label for link-only references and remove automatic
+  official-source claims. Unknown source media types and availability remain
+  explicit; citations do not become downloadable data.
+
 ## Compact facet navigation — 24 October 2026
 
 - Restore slim colour bars and compact folded facet rows. Put colour controls

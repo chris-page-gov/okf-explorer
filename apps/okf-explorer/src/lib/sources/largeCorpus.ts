@@ -52,6 +52,7 @@ import { MAX_CONTEXT_INDEX_BYTES, validateContextIndex } from '$lib/context/inde
 import { validateContextCorpusManifest } from '$lib/context/corpus';
 import type { BoundContextSource } from '$lib/context/types';
 import { baseUrlFor, fetchJson, fetchJsonResource, MAX_JSON_BYTES } from './fetch';
+import { createRecordResourceLoader } from './recordResources';
 import {
   type PreparedReleaseDataPlane,
   prepareReleaseDataPlane,
@@ -2712,6 +2713,25 @@ export async function loadLargeCorpus(
     throw new Error('Descriptor and data manifest record-locator paths differ');
   }
   const recordLocatorReference = descriptorRecordLocator || manifestRecordLocator;
+  const descriptorRecordResources = descriptorEntrypoint(descriptor, 'record_resources');
+  const manifestRecordResources = manifest.indexes.record_resources;
+  let recordResourcesReference: LargeResourceReference | undefined;
+  if (descriptorRecordResources || manifestRecordResources) {
+    if (!recordLocatorReference) {
+      throw new Error('Record-resource indexes require a record locator for selected-record binding');
+    }
+    for (const reference of [descriptor.entrypoints.record_resources,
+      descriptor.entrypoint_integrity?.record_resources, manifestRecordResources]) {
+      if (reference && typeof reference === 'object'
+          && reference.compression !== undefined && reference.compression !== 'identity') {
+        throw new Error('Record-resource indexes require identity JSON compression');
+      }
+    }
+    const left = boundGovernanceResource(descriptorRecordResources, 'Descriptor record-resource index');
+    const right = boundGovernanceResource(manifestRecordResources, 'Data-manifest record-resource index');
+    if (!bindingEquals(left, right)) throw new Error('Descriptor and data manifest record-resource bindings differ');
+    recordResourcesReference = governanceResourceReference(left);
+  }
   const descriptorRelationshipRuntime = descriptorEntrypoint(
     descriptor,
     'relationship_runtime'
@@ -3646,5 +3666,25 @@ export async function loadLargeCorpus(
       return mergeRelationships(baseRelationships, modelRelationships);
     }
   };
+  if (recordResourcesReference) {
+    const fetchRecordResource: ResourceFetcher = <T>(reference: LargeResourceReference) => {
+      const distributed = releaseDataPlane?.entries.get(resourcePath(reference));
+      if (distributed && distributed.compression !== 'identity') {
+        return Promise.reject(new Error('Record-resource files require identity JSON compression'));
+      }
+      const declaredBytes = typeof reference === 'object' ? reference.bytes : undefined;
+      if (distributed && (distributed.bytes !== declaredBytes
+          || distributed.packed_bytes > Number(declaredBytes) + 64 * 1024)) {
+        return Promise.reject(new Error('Record-resource release binding differs from its declared byte budget'));
+      }
+      return fetchResource<T>(reference, true);
+    };
+    const loadResources = createRecordResourceLoader(recordResourcesReference, snapshot, fetchRecordResource,
+      (route) => source.loadDatasetForRoute(route));
+    source.loadResourcesForRecord = async (route) => {
+      const locator = await recordLocator();
+      return loadResources(locator?.route_aliases?.[route] || route);
+    };
+  }
   return source;
 }
