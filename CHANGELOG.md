@@ -7,6 +7,8 @@
   chunks within finite loading and cache limits.
 - Keep Reader source actions and the selected Resources view independent of
   whole-corpus hydration, preserving older bundles' existing behaviour.
+- Display the hydrated record title for native record routes, including routes
+  whose kind is not `dataset`.
 - Use the supplied source label for link-only references and remove automatic
   official-source claims. Unknown source media types and availability remain
   explicit; citations do not become downloadable data.

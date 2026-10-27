@@ -4576,6 +4576,8 @@
     if (analysisLabel) return displayEndpointLabel(analysisLabel);
     const routedDataset = largeIndex?.datasetByRoute.get(route);
     if (routedDataset) return displayEndpointLabel(routedDataset.title);
+    const targetedDataset = largeTargetedDatasets.get(route);
+    if (targetedDataset) return displayEndpointLabel(targetedDataset.title);
     const routedResult = largeResults.find((result) => datasetRoute(result) === route);
     if (routedResult) return displayEndpointLabel(routedResult.title);
     if (kind === 'dataset') {

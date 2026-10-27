@@ -4,7 +4,8 @@ import { expect, test, type BrowserContext, type Route } from '@playwright/test'
 const ORIGIN = 'https://targeted-legislation.fixture.test';
 const BUNDLE_URL = `${ORIGIN}/okf-explorer.json`;
 const SNAPSHOT = 'targeted-legislation-fixture-v1';
-const RECORD_ROUTE = 'dataset/ukpga-1998-42';
+const DEFAULT_RECORD_ROUTE = 'dataset/ukpga-1998-42';
+const RECORD_ROUTE = DEFAULT_RECORD_ROUTE;
 // Both records share a locator bucket, as real chunked corpora commonly do.
 const SECOND_RECORD_ROUTE = 'dataset/second-act-1704';
 const AUDIT_ID = 'codex-assisted-v3-independent-audit-20260726';
@@ -86,10 +87,12 @@ async function installTargetedFixture(
     recordResourceFailure?: boolean;
     recordResourceResponseGate?: Promise<void>;
     recordAlias?: string;
+    recordRoute?: string;
     reusedResourceId?: boolean;
     sourceReleaseDate?: string;
   } = {}
 ) {
+  const RECORD_ROUTE = options.recordRoute || DEFAULT_RECORD_ROUTE;
   let modelChunkFailuresRemaining = options.modelChunkFailures || 0;
   const bucket = relationshipBucket(RECORD_ROUTE);
   const record = {
@@ -902,6 +905,22 @@ test.describe('targeted large-corpus relationship hydration', () => {
     expect(requests).not.toContain('/data/resources.json');
     expect(requests).not.toContain('/source-reference/target-act');
     expect(requests).not.toContain('/legacy/should-not-fetch.json');
+    expectNoFullHydration(requests);
+  });
+
+  test('generic record routes show the hydrated title without a global endpoint registry', async ({ page }) => {
+    const requests: string[] = [];
+    const route = 'records/retained/target-act.md';
+    await installTargetedFixture(page.context(), requests, {
+      targetedRecordResources: true, recordRoute: route
+    });
+    await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}&view=reader#${route}`);
+    await expect(page.locator('.right-panel').getByRole('heading', { name: 'Target Act 1998', exact: true })).toBeVisible();
+    await page.getByLabel('Views').getByRole('button', { name: 'Resources', exact: true }).click();
+    const stack = page.locator('.resource-stack-view');
+    await expect(stack.locator('.stack-heading strong')).toHaveText('Target Act 1998');
+    await expect(stack.getByRole('button', { name: /Target Act HTML/ })).toBeVisible();
+    await expect(stack).not.toContainText('Missing label');
     expectNoFullHydration(requests);
   });
 

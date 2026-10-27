@@ -118,7 +118,9 @@ logical length must equal the reference's declared length; transport may add
 at most 64 KiB, and decompression stops at the declared logical length.
 
 Reader and selected-record Resources views load these references without
-hydrating the whole corpus. When this contract is declared, an empty or failed
+hydrating the whole corpus. Hydrated titles also label native record routes
+whose kind is not `dataset`, subject to any declared endpoint-label registry.
+When this contract is declared, an empty or failed
 reference load does not activate the legacy `source_api_url` JSON fallback.
 Link-only references may state `media_type: not-established` when no response
 media type has been evidenced. This is not a downloadable-data or access-rights
