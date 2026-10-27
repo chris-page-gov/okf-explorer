@@ -1,0 +1,5446 @@
+{
+  "schema": "okf-explorer-evaluation-results.v1",
+  "generated_at": "2026-10-27T10:59:37.375000Z",
+  "base_url": "http://127.0.0.1:8002/",
+  "bundle": "/publication/okf-explorer.json",
+  "suite": "evaluation-foundry/fixtures/heritage-warwickshire/questions.json",
+  "visual_regressions": {
+    "schema": "okf-explorer-visual-regressions.v1",
+    "title": "Coventry and Warwickshire heritage visual evidence",
+    "items": [
+      {
+        "id": "HVR001",
+        "view": "search",
+        "image": "evidence/familiar-name-search.png",
+        "comment": "The provenance-reviewed familiar name St Mary's Guildhall must retrieve the official St Mary's Hall record without replacing its source title or hiding the bounded result count.",
+        "checks": [
+          "The active query, result count and official source title remain visible together.",
+          "A familiar discovery name never replaces the canonical Historic England title.",
+          "Search, facets and view controls remain readable without horizontal clipping at 1440 by 1000 pixels.",
+          "The empty/unmatched and spelling-tolerance notices reserve space without obscuring results."
+        ]
+      },
+      {
+        "id": "HVR002",
+        "view": "reader",
+        "image": "evidence/yaml-ld-heritage-detail.png",
+        "comment": "The selected St Mary's Hall route must connect the familiar-name result to additive YAML-LD identity and assertion boundaries in one beginner-readable detail experience.",
+        "checks": [
+          "The selected record retains its official title and NHLE identifier.",
+          "The familiar-name result retains the official source title while the semantic panel is open.",
+          "YAML-LD identity and assertion scope are presented in plain language rather than only as raw JSON.",
+          "Long identifiers and source links wrap without covering controls or adjacent evidence."
+        ]
+      }
+    ]
+  },
+  "summary": {
+    "questions_run": 100,
+    "questions_scored": 100,
+    "average_total": 92.6,
+    "average_retrieval": 31.2,
+    "average_display": 24.2,
+    "average_accessibility": 20,
+    "average_govuk": 17.2,
+    "pass_count_80": 100,
+    "fail_count_below_60": 0
+  },
+  "metadata": {
+    "browser": "playwright",
+    "browser_engine": "chromium",
+    "mode": "browser-scored",
+    "limit": 100,
+    "candidate_bundle_url": "http://127.0.0.1:8002/publication/okf-explorer.json",
+    "evaluator": {
+      "path": "scripts/evaluate_okf_explorer.mjs",
+      "sha256": "2dda10096ab2d0db7db037e8069186494a275d8c5cd5f9ce4dea5c446d8aee33"
+    }
+  },
+  "candidate": {
+    "bundle_url": "http://127.0.0.1:8002/publication/okf-explorer.json",
+    "descriptor_sha256": "97c8c3aa1dbaa48cad06d9a1fec3c1b125a681c7642b418bddbbccc32e27a5da",
+    "schema": "okf-explorer-large-corpus.v1",
+    "snapshot": "heritage-coventry-warwickshire-20260803-v2",
+    "generated_at": "2026-08-03T10:29:12Z",
+    "explorer_build": {
+      "manifest_url": "http://127.0.0.1:8002/okf-explorer-build-manifest.json",
+      "manifest_sha256": "bbb482b252b9385149ab06a0bb5cbaae778e65a9498ea5c06d3683f4aa297d7a",
+      "schema": "okf-explorer-app-build-manifest.v1",
+      "algorithm": "sha256-canonical-json-materials-v1",
+      "file_count": 43,
+      "tree_sha256": "827ac61a364500a2c73ad949dfda36f0839e54056644edd414ddb34f96aee960"
+    }
+  },
+  "records": [
+    {
+      "id": "HQ001",
+      "query": "Coventry heritage",
+      "intent": "What protected heritage can a beginner discover in Coventry?",
+      "tags": [
+        "place",
+        "coventry",
+        "discovery"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 70,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "Coventry",
+            "heritage"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 2911,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 70,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "The Charterhouse, precinct walls, London Road, Coventry",
+        "hash": "#risk/2016/positive-removal/05acb8ccd757332cfb08",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ002",
+      "query": "Coventry Cathedral",
+      "intent": "Find Coventry Cathedral by its familiar name and inspect the official List entry.",
+      "tags": [
+        "place",
+        "named-asset",
+        "rich-page"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 3,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "Cathedral",
+            "Coventry"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1522,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 3,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Ruined Cathedral Church of St Michael, Coventry",
+        "hash": "#risk/2016/positive-removal/131fd338d56cdb439e46",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ003",
+      "query": "Cathedral Church of St Michael",
+      "intent": "Find the cathedral by a formal source-style title.",
+      "tags": [
+        "place",
+        "named-asset",
+        "formal-name"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 2,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "Cathedral",
+            "Michael"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1565,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 2,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "RUINED CATHEDRAL CHURCH OF ST MICHAEL",
+        "hash": "#asset/1076651",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ004",
+      "query": "St Mary's Guildhall Coventry",
+      "intent": "Find St Mary's Guildhall using a familiar local name.",
+      "tags": [
+        "place",
+        "named-asset",
+        "alias"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 1,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "Guildhall",
+            "Coventry"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1532,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 1,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "ST MARY'S HALL",
+        "hash": "#asset/1116402",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ005",
+      "query": "Coventry Charterhouse",
+      "intent": "Find the Charterhouse and distinguish the source record from linked narrative.",
+      "tags": [
+        "place",
+        "named-asset",
+        "provenance"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 6,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "Charterhouse",
+            "Coventry"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1535,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 6,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "The Charterhouse, precinct walls, London Road, Coventry",
+        "hash": "#risk/2016/positive-removal/05acb8ccd757332cfb08",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ006",
+      "query": "Warwick heritage",
+      "intent": "What protected heritage can a beginner discover in Warwick district?",
+      "tags": [
+        "place",
+        "warwick",
+        "discovery"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 76,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "Warwick",
+            "heritage"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1565,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 76,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Warwick Castle (uninhabited parts), Warwick",
+        "hash": "#risk/2025/entry/6d8741a24bcd6671d8b1",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ007",
+      "query": "Warwick Castle",
+      "intent": "Find Warwick Castle and inspect its designation and representations.",
+      "tags": [
+        "place",
+        "named-asset",
+        "resources"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 57,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "Warwick",
+            "Castle"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1546,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 57,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "WARWICK CASTLE",
+        "hash": "#asset/1000386",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ008",
+      "query": "Lord Leycester Hospital",
+      "intent": "Find the Lord Leycester Hospital by its commonly used name.",
+      "tags": [
+        "place",
+        "named-asset",
+        "name"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 2,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "Leycester",
+            "Hospital"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1469,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 2,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "LORD LEYCESTER HOSPITAL",
+        "hash": "#asset/1001597",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ009",
+      "query": "Collegiate Church of St Mary Warwick",
+      "intent": "Find Warwick's collegiate church and inspect its source-native identity.",
+      "tags": [
+        "place",
+        "named-asset",
+        "identity"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 1,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "St Mary",
+            "Warwick"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1466,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 1,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "CHURCH OF SAINT MARY INCLUDING BEAUCHAMP CHAPEL",
+        "hash": "#asset/1035500",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ010",
+      "query": "Royal Leamington Spa heritage",
+      "intent": "Discover protected heritage associated with Royal Leamington Spa.",
+      "tags": [
+        "place",
+        "leamington-spa",
+        "discovery"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 5,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "Leamington",
+            "heritage"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1535,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 5,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "SPA GARDENS, ROYAL LEAMINGTON SPA",
+        "hash": "#asset/1000498",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ011",
+      "query": "Jephson Gardens",
+      "intent": "Find Jephson Gardens and identify its designation category.",
+      "tags": [
+        "place",
+        "named-asset",
+        "designation"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 1,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "Jephson",
+            "Garden"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1531,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 1,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "SPA GARDENS, ROYAL LEAMINGTON SPA",
+        "hash": "#asset/1000498",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ012",
+      "query": "Rugby heritage",
+      "intent": "Discover protected heritage in Rugby borough.",
+      "tags": [
+        "place",
+        "rugby",
+        "discovery"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 68,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "Rugby",
+            "heritage"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1541,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 68,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "6 AND 8, RUGBY ROAD",
+        "hash": "#asset/1034931",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ013",
+      "query": "Rugby School",
+      "intent": "Find Rugby School and inspect the records associated with its name.",
+      "tags": [
+        "place",
+        "named-asset",
+        "multiple-records"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 23,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "Rugby",
+            "School"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1560,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 23,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "RUGBY BAPTIST SUNDAY SCHOOL HALL",
+        "hash": "#asset/1034999",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ014",
+      "query": "Nuneaton heritage",
+      "intent": "Discover protected heritage associated with Nuneaton.",
+      "tags": [
+        "place",
+        "nuneaton",
+        "discovery"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 100,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "Nuneaton",
+            "heritage"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1548,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 100,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "The Tea House, Arbury Park, Nuneaton",
+        "hash": "#risk/2025/entry/73a2a7e1f71c36774819",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ015",
+      "query": "Bedworth heritage",
+      "intent": "Discover protected heritage associated with Bedworth.",
+      "tags": [
+        "place",
+        "bedworth",
+        "discovery"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 100,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "Bedworth",
+            "heritage"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1549,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 100,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "BEDWORTH CEMETERY (COVENTRY ROAD CEMETERY)",
+        "hash": "#asset/1001592",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ016",
+      "query": "North Warwickshire heritage",
+      "intent": "Discover records intersecting the North Warwickshire boundary.",
+      "tags": [
+        "place",
+        "north-warwickshire",
+        "boundary"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 188,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "North Warwickshire",
+            "heritage"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1492,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 188,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "GARDEN WALL, GATEPIERS AND PAVILION APPROXIMATELY 50 METRES NORTH WEST OF MIDDLETON HALL",
+        "hash": "#asset/1034644",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ017",
+      "query": "Atherstone heritage",
+      "intent": "Find protected heritage whose source name mentions Atherstone.",
+      "tags": [
+        "place",
+        "atherstone",
+        "local-name"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 13,
+          "expectedMatches": 1,
+          "expectedTerms": [
+            "Atherstone"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1497,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 13,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "ATHERSTONE HOUSE",
+        "hash": "#asset/1034723",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ018",
+      "query": "Stratford-on-Avon heritage",
+      "intent": "Discover records in the exact Stratford-on-Avon local-authority scope.",
+      "tags": [
+        "place",
+        "stratford-on-avon",
+        "boundary"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 46,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "Stratford-on-Avon",
+            "heritage"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1543,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 46,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Packhorse bridge, Todenham / Tidmington",
+        "hash": "#risk/2015/positive-removal/11a36a460d910946e013",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ019",
+      "query": "Shakespeare's Birthplace",
+      "intent": "Find Shakespeare's Birthplace by its familiar name.",
+      "tags": [
+        "place",
+        "named-asset",
+        "person"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 2,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "Shakespeare",
+            "Birthplace"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1520,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 2,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "SHAKESPEARE'S BIRTHPLACE",
+        "hash": "#asset/1187807",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ020",
+      "query": "Kenilworth Castle",
+      "intent": "Find Kenilworth Castle and inspect its designation date, geometry and sources.",
+      "tags": [
+        "place",
+        "named-asset",
+        "data-card"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 3,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "Kenilworth",
+            "Castle"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1533,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 3,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "KENILWORTH CASTLE",
+        "hash": "#asset/1000496",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ021",
+      "query": "Grade I Coventry",
+      "intent": "Which Grade I assets are present in Coventry?",
+      "tags": [
+        "grade",
+        "coventry",
+        "core-question"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 200,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "Grade I",
+            "Coventry"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1558,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 200,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "LONDON ROAD CEMETERY, COVENTRY",
+        "hash": "#asset/1001205",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ022",
+      "query": "Grade 1 Coventry",
+      "intent": "Does the Grade 1 alternative retrieve the same kind of Grade I records?",
+      "tags": [
+        "grade",
+        "alias",
+        "coventry"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 200,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "Grade I",
+            "Coventry"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1532,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 200,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "LONDON ROAD CEMETERY, COVENTRY",
+        "hash": "#asset/1001205",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ023",
+      "query": "Grade One Warwickshire",
+      "intent": "Use the plain-language Grade One alternative across Warwickshire.",
+      "tags": [
+        "grade",
+        "alias",
+        "warwickshire"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 8,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "Grade I",
+            "Warwick"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1545,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 8,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Warwickshire County Council offices and former gaol",
+        "hash": "#asset/1364827",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ024",
+      "query": "Grade II* Coventry",
+      "intent": "Find Grade II-star assets in Coventry without losing the star distinction.",
+      "tags": [
+        "grade",
+        "coventry",
+        "punctuation"
+      ],
+      "score": {
+        "retrieval": 26,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 89,
+        "checks": {
+          "resultCount": 200,
+          "expectedMatches": 1,
+          "expectedTerms": [
+            "Grade II*",
+            "Coventry"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1556,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 200,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Coventry Central Baths (original part including sunbathing terraces), part of Coventry Sports and Leisure Centre",
+        "hash": "#asset/1021930",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ025",
+      "query": "Grade II star Warwickshire",
+      "intent": "Find Grade II-star records using the spoken-word alternative.",
+      "tags": [
+        "grade",
+        "alias",
+        "warwickshire"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 59,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "Grade II*",
+            "Warwick"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1481,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 59,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "WARWICKSHIRE COUNTY COUNCIL STAFF CLUB, NORTHGATE AND NORTHGATE HOUSE",
+        "hash": "#asset/1364826",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ026",
+      "query": "Grade 2 star",
+      "intent": "Find Grade II-star records using a numeric alternative.",
+      "tags": [
+        "grade",
+        "alias",
+        "numeric"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 200,
+          "expectedMatches": 1,
+          "expectedTerms": [
+            "Grade II*"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1504,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 200,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "MEDIEVAL BASEMENT ON SITE OF OLD STAR INN",
+        "hash": "#asset/1115642",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ027",
+      "query": "Grade II listed building",
+      "intent": "Find Grade II listed buildings and see grade and category as separate facets.",
+      "tags": [
+        "grade",
+        "designation",
+        "facets"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 200,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "Grade II",
+            "Listed Building"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1506,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 200,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "CHURCH FARMHOUSE AND ATTACHED FARM BUILDING",
+        "hash": "#asset/1024188",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ028",
+      "query": "Scheduled Monument",
+      "intent": "Which scheduled monuments are in the evaluation scope?",
+      "tags": [
+        "designation",
+        "scheduled-monument",
+        "types"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 200,
+          "expectedMatches": 1,
+          "expectedTerms": [
+            "Scheduled Monument"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1516,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 200,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Coventry city walls",
+        "hash": "#asset/1002979",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ029",
+      "query": "Registered Park and Garden",
+      "intent": "Which registered parks and gardens are in scope?",
+      "tags": [
+        "designation",
+        "park-garden",
+        "map"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 40,
+          "expectedMatches": 1,
+          "expectedTerms": [
+            "Registered Park and Garden"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1547,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 40,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "ALSCOT PARK",
+        "hash": "#asset/1001183",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ030",
+      "query": "Registered Battlefield Edgehill",
+      "intent": "Find the registered battlefield at Edgehill and inspect its official source.",
+      "tags": [
+        "designation",
+        "battlefield",
+        "named-asset"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 1,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "Battlefield",
+            "Edgehill"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1557,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 1,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Battle of Edgehill 1642",
+        "hash": "#asset/1000009",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ031",
+      "query": "World Heritage Site",
+      "intent": "Check whether this exact scope contains a World Heritage Site and accept a bounded empty result when it does not.",
+      "tags": [
+        "designation",
+        "coverage-gap",
+        "empty-state"
+      ],
+      "score": {
+        "retrieval": 35,
+        "display": 20,
+        "accessibility": 20,
+        "govuk": 13,
+        "total": 88,
+        "checks": {
+          "resultCount": 0,
+          "expectedMatches": 0,
+          "expectedTerms": [
+            "World Heritage Site"
+          ],
+          "expectedMinResults": 0,
+          "expectedMaxResults": 0,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": true,
+          "meaningfulBoundedEmpty": true,
+          "queryRetained": true,
+          "explicitEmptySummary": true,
+          "explicitEmptyMessage": true,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": false,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1090,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 0,
+        "expected_min_results": 0,
+        "expected_max_results": 0,
+        "detail_title": "Coventry and Warwickshire Heritage Evaluation",
+        "hash": "#overview",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ032",
+      "query": "Protected Wreck Site",
+      "intent": "Check whether a protected wreck falls inside the land-boundary evaluation scope.",
+      "tags": [
+        "designation",
+        "coverage-gap",
+        "empty-state"
+      ],
+      "score": {
+        "retrieval": 35,
+        "display": 20,
+        "accessibility": 20,
+        "govuk": 13,
+        "total": 88,
+        "checks": {
+          "resultCount": 0,
+          "expectedMatches": 0,
+          "expectedTerms": [
+            "Protected Wreck Site"
+          ],
+          "expectedMinResults": 0,
+          "expectedMaxResults": 0,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": true,
+          "meaningfulBoundedEmpty": true,
+          "queryRetained": true,
+          "explicitEmptySummary": true,
+          "explicitEmptyMessage": true,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": false,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1165,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 0,
+        "expected_min_results": 0,
+        "expected_max_results": 0,
+        "detail_title": "Coventry and Warwickshire Heritage Evaluation",
+        "hash": "#overview",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ033",
+      "query": "Building Preservation Notice",
+      "intent": "Find any source-declared Building Preservation Notices without inferring one from other records.",
+      "tags": [
+        "designation",
+        "source-boundary"
+      ],
+      "score": {
+        "retrieval": 35,
+        "display": 20,
+        "accessibility": 20,
+        "govuk": 13,
+        "total": 88,
+        "checks": {
+          "resultCount": 0,
+          "expectedMatches": 0,
+          "expectedTerms": [
+            "Building Preservation Notice"
+          ],
+          "expectedMinResults": 0,
+          "expectedMaxResults": 0,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": true,
+          "meaningfulBoundedEmpty": true,
+          "queryRetained": true,
+          "explicitEmptySummary": true,
+          "explicitEmptyMessage": true,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": false,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1152,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 0,
+        "expected_min_results": 0,
+        "expected_max_results": 0,
+        "detail_title": "Coventry and Warwickshire Heritage Evaluation",
+        "hash": "#overview",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ034",
+      "query": "Certificate of Immunity",
+      "intent": "Find any Certificates of Immunity and distinguish their dates from listing dates.",
+      "tags": [
+        "designation",
+        "dates",
+        "source-boundary"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 11,
+          "expectedMatches": 1,
+          "expectedTerms": [
+            "Certificate of Immunity"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1523,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 11,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Water Orton Railway Station",
+        "hash": "#asset/1477543",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ035",
+      "query": "Historic England designated heritage",
+      "intent": "Find source-backed designation records and identify Historic England as authority.",
+      "tags": [
+        "designation",
+        "authority",
+        "source"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 200,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "Historic England",
+            "heritage"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1561,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 200,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "WILMCOTE CHURCH OF ENGLAND JUNIOR AND INFANT SCHOOL",
+        "hash": "#asset/1024542",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ036",
+      "query": "Heritage at Risk Coventry",
+      "intent": "What has appeared in sanctioned Heritage at Risk material for Coventry?",
+      "tags": [
+        "risk",
+        "coventry",
+        "core-question"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 18,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "Heritage at Risk",
+            "Coventry"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1547,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 18,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "The Charterhouse, precinct walls, London Road, Coventry",
+        "hash": "#risk/2016/positive-removal/05acb8ccd757332cfb08",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ037",
+      "query": "Heritage at Risk Warwickshire",
+      "intent": "What has appeared in annual Heritage at Risk material across Warwickshire?",
+      "tags": [
+        "risk",
+        "warwickshire",
+        "core-question"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 22,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "Heritage at Risk",
+            "Warwick"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1531,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 22,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Maxstoke Priory, Church Road, Maxstoke",
+        "hash": "#risk/2025/entry/db835ec10cfbd9972953",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ038",
+      "query": "risk register 2025",
+      "intent": "Find 2025 risk observations and retain their workbook-year meaning.",
+      "tags": [
+        "risk",
+        "year",
+        "timeline"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 70,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "2025",
+            "risk"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1472,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 70,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Church of St Swithin, Lower Quinton, Quinton",
+        "hash": "#risk/2025/entry/0fe8d0c86771d64c4fd7",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ039",
+      "query": "risk register 2013",
+      "intent": "Find the earliest bounded annual risk observations in this evaluation.",
+      "tags": [
+        "risk",
+        "year",
+        "timeline"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 84,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "2013",
+            "risk"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1553,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 84,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Cook Street Gate",
+        "hash": "#risk/2013/entry/2784c0570363584b10c0",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ040",
+      "query": "risk entry",
+      "intent": "Find annual rows classified as register entries.",
+      "tags": [
+        "risk",
+        "event",
+        "facet"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 92,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "risk",
+            "entry"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1552,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 92,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Church of St Peter, Main Street, Bourton and Draycote",
+        "hash": "#risk/2013/entry/002e965265264a408f23",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ041",
+      "query": "risk addition",
+      "intent": "Find annual additions without presenting them as timeless current facts.",
+      "tags": [
+        "risk",
+        "event",
+        "time-scope"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 44,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "risk",
+            "addition"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1547,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 44,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Cook Street Gate",
+        "hash": "#risk/2013/addition/393d54c717dffd12acb2",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ042",
+      "query": "positive removal",
+      "intent": "Find positive removals and explain that removal is an annual source event.",
+      "tags": [
+        "risk",
+        "event",
+        "change"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 49,
+          "expectedMatches": 1,
+          "expectedTerms": [
+            "positive removal"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1559,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 49,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Prehistoric pit alignments and associated features 160m north of The Barbellows, Ryton-on-Dunsmore",
+        "hash": "#risk/2013/positive-removal/02f2c24272203b38ee16",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ043",
+      "query": "condition poor",
+      "intent": "Find annual observations whose source condition includes poor.",
+      "tags": [
+        "risk",
+        "condition",
+        "facet"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 50,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "condition",
+            "poor"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1549,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 50,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Cook Street Gate",
+        "hash": "#risk/2018/entry/a61f6deba54a1c0c4b7f",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ044",
+      "query": "condition very bad",
+      "intent": "Find source rows describing very bad condition while retaining year and methodology.",
+      "tags": [
+        "risk",
+        "condition",
+        "provenance"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 12,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "condition",
+            "very bad"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1530,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 12,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Church of St Peter, Main Street, Bourton and Draycote",
+        "hash": "#risk/2013/entry/002e965265264a408f23",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ045",
+      "query": "vulnerability",
+      "intent": "Find source-declared vulnerability values and leave absent values unknown.",
+      "tags": [
+        "risk",
+        "vulnerability",
+        "missingness"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 102,
+          "expectedMatches": 1,
+          "expectedTerms": [
+            "vulnerability"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1481,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 102,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Cook Street Gate",
+        "hash": "#risk/2015/entry/036bbb668f121e445d3e",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ046",
+      "query": "trend declining",
+      "intent": "Find declining trend values where the annual source actually supplies them.",
+      "tags": [
+        "risk",
+        "trend",
+        "source-boundary"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 37,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "trend",
+            "declining"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1557,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 37,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Cook Street Gate",
+        "hash": "#risk/2013/addition/393d54c717dffd12acb2",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ047",
+      "query": "trend improving",
+      "intent": "Find improving trend values without converting them into an unqualified current claim.",
+      "tags": [
+        "risk",
+        "trend",
+        "time-scope"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 9,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "trend",
+            "improving"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1547,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 9,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Stoneleigh Abbey, Ashow / Stoneleigh",
+        "hash": "#risk/2025/entry/f38f479cd6fdf771e35b",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ048",
+      "query": "priority category",
+      "intent": "Explore source priority categories and see which years expose them.",
+      "tags": [
+        "risk",
+        "priority",
+        "schema-drift"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 102,
+          "expectedMatches": 1,
+          "expectedTerms": [
+            "priority category"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1496,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 102,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Cook Street Gate",
+        "hash": "#risk/2015/entry/036bbb668f121e445d3e",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ049",
+      "query": "ownership",
+      "intent": "Find ownership values only where the source workbook supplies them.",
+      "tags": [
+        "risk",
+        "ownership",
+        "missingness"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 102,
+          "expectedMatches": 1,
+          "expectedTerms": [
+            "ownership"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1583,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 102,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Cook Street Gate",
+        "hash": "#risk/2015/entry/036bbb668f121e445d3e",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ050",
+      "query": "annual observation",
+      "intent": "Find records represented as time-specific annual observations.",
+      "tags": [
+        "risk",
+        "record-type",
+        "timeline"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 92,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "annual",
+            "observation"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1549,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 92,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Church of St Peter, Main Street, Bourton and Draycote",
+        "hash": "#risk/2013/entry/002e965265264a408f23",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ051",
+      "query": "risk change List Entry",
+      "intent": "How can annual changes be joined to an NHLE asset using an exact List entry number?",
+      "tags": [
+        "risk",
+        "change",
+        "identifier-join"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 1,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "List Entry",
+            "risk"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1553,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 1,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Lower Shuckburgh, Upper and Lower Shuckburgh",
+        "hash": "#risk/2025/entry/58d25c7823370a153248",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ052",
+      "query": "at risk scheduled monument",
+      "intent": "Find risk observations associated with scheduled monuments.",
+      "tags": [
+        "risk",
+        "designation",
+        "cross-filter"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 66,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "risk",
+            "Scheduled Monument"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1565,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 66,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Cook Street Gate",
+        "hash": "#risk/2015/entry/036bbb668f121e445d3e",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ053",
+      "query": "at risk listed building",
+      "intent": "Find risk observations associated with listed buildings.",
+      "tags": [
+        "risk",
+        "designation",
+        "cross-filter"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 41,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "risk",
+            "Listed Building"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1472,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 41,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "The Charterhouse, London Road",
+        "hash": "#risk/2019/entry/352723df44ef9965ed86",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ054",
+      "query": "condition unknown",
+      "intent": "Confirm that absent historical condition is shown as unknown rather than fabricated.",
+      "tags": [
+        "risk",
+        "missingness",
+        "limitation"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 26,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "condition",
+            "unknown"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1550,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 26,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Bowl barrow 490 metres north west of Abbey Farm, Wolvey",
+        "hash": "#risk/2024/entry/253ebf7fe4123a945189",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ055",
+      "query": "annual register provenance",
+      "intent": "Inspect workbook year, sheet and row evidence behind an annual risk record.",
+      "tags": [
+        "risk",
+        "provenance",
+        "evidence"
+      ],
+      "score": {
+        "retrieval": 26,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 89,
+        "checks": {
+          "resultCount": 102,
+          "expectedMatches": 1,
+          "expectedTerms": [
+            "annual",
+            "provenance"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1492,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 102,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Cook Street Gate",
+        "hash": "#risk/2015/entry/036bbb668f121e445d3e",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ056",
+      "query": "medieval Coventry",
+      "intent": "Explore possible medieval records, then use official rich pages for narrative period evidence not present in open fields.",
+      "tags": [
+        "period",
+        "coventry",
+        "source-boundary"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 4,
+          "expectedMatches": 1,
+          "expectedTerms": [
+            "Coventry"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1468,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 4,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "MEDIEVAL BASEMENT ON SITE OF OLD STAR INN",
+        "hash": "#asset/1115642",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ057",
+      "query": "Roman Alcester",
+      "intent": "Find records whose source names mention Roman Alcester without inventing a period classification.",
+      "tags": [
+        "period",
+        "alcester",
+        "source-boundary"
+      ],
+      "score": {
+        "retrieval": 35,
+        "display": 20,
+        "accessibility": 20,
+        "govuk": 13,
+        "total": 88,
+        "checks": {
+          "resultCount": 0,
+          "expectedMatches": 0,
+          "expectedTerms": [
+            "Alcester"
+          ],
+          "expectedMinResults": 0,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": true,
+          "meaningfulBoundedEmpty": true,
+          "queryRetained": true,
+          "explicitEmptySummary": true,
+          "explicitEmptyMessage": true,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": false,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1151,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 0,
+        "expected_min_results": 0,
+        "expected_max_results": null,
+        "detail_title": "Coventry and Warwickshire Heritage Evaluation",
+        "hash": "#overview",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ058",
+      "query": "Civil War Edgehill",
+      "intent": "Find Edgehill battlefield material and verify historical narrative at the official source.",
+      "tags": [
+        "period",
+        "battlefield",
+        "rich-page"
+      ],
+      "score": {
+        "retrieval": 35,
+        "display": 20,
+        "accessibility": 20,
+        "govuk": 13,
+        "total": 88,
+        "checks": {
+          "resultCount": 0,
+          "expectedMatches": 0,
+          "expectedTerms": [
+            "Edgehill",
+            "Battlefield"
+          ],
+          "expectedMinResults": 0,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": true,
+          "meaningfulBoundedEmpty": true,
+          "queryRetained": true,
+          "explicitEmptySummary": true,
+          "explicitEmptyMessage": true,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": false,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1150,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 0,
+        "expected_min_results": 0,
+        "expected_max_results": null,
+        "detail_title": "Coventry and Warwickshire Heritage Evaluation",
+        "hash": "#overview",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ059",
+      "query": "Tudor Stratford",
+      "intent": "Explore source names associated with Tudor Stratford and state when period data is unavailable.",
+      "tags": [
+        "period",
+        "stratford",
+        "limitation"
+      ],
+      "score": {
+        "retrieval": 35,
+        "display": 20,
+        "accessibility": 20,
+        "govuk": 13,
+        "total": 88,
+        "checks": {
+          "resultCount": 0,
+          "expectedMatches": 0,
+          "expectedTerms": [
+            "Stratford"
+          ],
+          "expectedMinResults": 0,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": true,
+          "meaningfulBoundedEmpty": true,
+          "queryRetained": true,
+          "explicitEmptySummary": true,
+          "explicitEmptyMessage": true,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": false,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1156,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 0,
+        "expected_min_results": 0,
+        "expected_max_results": null,
+        "detail_title": "Coventry and Warwickshire Heritage Evaluation",
+        "hash": "#overview",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ060",
+      "query": "Victorian Leamington",
+      "intent": "Explore likely Victorian heritage while keeping any period interpretation separate from source fields.",
+      "tags": [
+        "period",
+        "leamington-spa",
+        "limitation"
+      ],
+      "score": {
+        "retrieval": 35,
+        "display": 20,
+        "accessibility": 20,
+        "govuk": 13,
+        "total": 88,
+        "checks": {
+          "resultCount": 0,
+          "expectedMatches": 0,
+          "expectedTerms": [
+            "Leamington"
+          ],
+          "expectedMinResults": 0,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": true,
+          "meaningfulBoundedEmpty": true,
+          "queryRetained": true,
+          "explicitEmptySummary": true,
+          "explicitEmptyMessage": true,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": false,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1159,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 0,
+        "expected_min_results": 0,
+        "expected_max_results": null,
+        "detail_title": "Coventry and Warwickshire Heritage Evaluation",
+        "hash": "#overview",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ061",
+      "query": "modern Coventry Cathedral",
+      "intent": "Find the modern cathedral and distinguish familiar chronology from source designation dates.",
+      "tags": [
+        "period",
+        "named-asset",
+        "designation-date"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 1,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "Cathedral",
+            "Coventry"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1467,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 1,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Cathedral of St Michael",
+        "hash": "#asset/1342941",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ062",
+      "query": "William Shakespeare",
+      "intent": "Which source record names mention William Shakespeare, and where must fuller associations be checked?",
+      "tags": [
+        "person",
+        "shakespeare",
+        "core-question"
+      ],
+      "score": {
+        "retrieval": 35,
+        "display": 20,
+        "accessibility": 20,
+        "govuk": 13,
+        "total": 88,
+        "checks": {
+          "resultCount": 0,
+          "expectedMatches": 0,
+          "expectedTerms": [
+            "Shakespeare"
+          ],
+          "expectedMinResults": 0,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": true,
+          "meaningfulBoundedEmpty": true,
+          "queryRetained": true,
+          "explicitEmptySummary": true,
+          "explicitEmptyMessage": true,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": false,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1092,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 0,
+        "expected_min_results": 0,
+        "expected_max_results": null,
+        "detail_title": "Coventry and Warwickshire Heritage Evaluation",
+        "hash": "#overview",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ063",
+      "query": "Anne Hathaway",
+      "intent": "Find Anne Hathaway's Cottage by a person's familiar name.",
+      "tags": [
+        "person",
+        "named-asset",
+        "alias"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 2,
+          "expectedMatches": 1,
+          "expectedTerms": [
+            "Anne Hathaway"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1475,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 2,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "ANNE HATHAWAY'S COTTAGE",
+        "hash": "#asset/1001184",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ064",
+      "query": "Lady Godiva",
+      "intent": "Find source titles that mention Lady Godiva without creating unsupported person relationships.",
+      "tags": [
+        "person",
+        "coventry",
+        "association-boundary"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 1,
+          "expectedMatches": 1,
+          "expectedTerms": [
+            "Godiva"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1467,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 1,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "LADY GODIVA STATUE",
+        "hash": "#asset/1031589",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ065",
+      "query": "Basil Spence Cathedral",
+      "intent": "Test whether open-data names expose Basil Spence and defer unsupported authorship claims to linked evidence.",
+      "tags": [
+        "person",
+        "architect",
+        "source-boundary"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 1,
+          "expectedMatches": 1,
+          "expectedTerms": [
+            "Cathedral"
+          ],
+          "expectedMinResults": 0,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1532,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 1,
+        "expected_min_results": 0,
+        "expected_max_results": null,
+        "detail_title": "Cathedral of St Michael",
+        "hash": "#asset/1342941",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ066",
+      "query": "Capability Brown park",
+      "intent": "Explore park records associated in prior knowledge with Capability Brown and require source evidence for any relationship.",
+      "tags": [
+        "person",
+        "landscape",
+        "association-boundary"
+      ],
+      "score": {
+        "retrieval": 35,
+        "display": 20,
+        "accessibility": 20,
+        "govuk": 13,
+        "total": 88,
+        "checks": {
+          "resultCount": 0,
+          "expectedMatches": 0,
+          "expectedTerms": [
+            "Park"
+          ],
+          "expectedMinResults": 0,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": true,
+          "meaningfulBoundedEmpty": true,
+          "queryRetained": true,
+          "explicitEmptySummary": true,
+          "explicitEmptyMessage": true,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": false,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1150,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 0,
+        "expected_min_results": 0,
+        "expected_max_results": null,
+        "detail_title": "Coventry and Warwickshire Heritage Evaluation",
+        "hash": "#overview",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ067",
+      "query": "George Eliot Nuneaton",
+      "intent": "Find named heritage records that expose a George Eliot connection and avoid inferring one from place alone.",
+      "tags": [
+        "person",
+        "nuneaton",
+        "association-boundary"
+      ],
+      "score": {
+        "retrieval": 35,
+        "display": 20,
+        "accessibility": 20,
+        "govuk": 13,
+        "total": 88,
+        "checks": {
+          "resultCount": 0,
+          "expectedMatches": 0,
+          "expectedTerms": [
+            "Nuneaton"
+          ],
+          "expectedMinResults": 0,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": true,
+          "meaningfulBoundedEmpty": true,
+          "queryRetained": true,
+          "explicitEmptySummary": true,
+          "explicitEmptyMessage": true,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": false,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1088,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 0,
+        "expected_min_results": 0,
+        "expected_max_results": null,
+        "detail_title": "Coventry and Warwickshire Heritage Evaluation",
+        "hash": "#overview",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ068",
+      "query": "Frank Whittle Coventry",
+      "intent": "Test a familiar local person query and report a bounded empty result when source titles do not support it.",
+      "tags": [
+        "person",
+        "coventry",
+        "empty-state"
+      ],
+      "score": {
+        "retrieval": 35,
+        "display": 20,
+        "accessibility": 20,
+        "govuk": 13,
+        "total": 88,
+        "checks": {
+          "resultCount": 0,
+          "expectedMatches": 1,
+          "expectedTerms": [
+            "Coventry"
+          ],
+          "expectedMinResults": 0,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": true,
+          "meaningfulBoundedEmpty": true,
+          "queryRetained": true,
+          "explicitEmptySummary": true,
+          "explicitEmptyMessage": true,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": false,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1144,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 0,
+        "expected_min_results": 0,
+        "expected_max_results": null,
+        "detail_title": "Coventry and Warwickshire Heritage Evaluation",
+        "hash": "#overview",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ069",
+      "query": "architect",
+      "intent": "Determine whether architect is a source-supported searchable field or only available on rich pages.",
+      "tags": [
+        "person",
+        "field-coverage",
+        "limitation"
+      ],
+      "score": {
+        "retrieval": 35,
+        "display": 20,
+        "accessibility": 20,
+        "govuk": 13,
+        "total": 88,
+        "checks": {
+          "resultCount": 0,
+          "expectedMatches": 1,
+          "expectedTerms": [
+            "source"
+          ],
+          "expectedMinResults": 0,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": true,
+          "meaningfulBoundedEmpty": true,
+          "queryRetained": true,
+          "explicitEmptySummary": true,
+          "explicitEmptyMessage": true,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": false,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1147,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 0,
+        "expected_min_results": 0,
+        "expected_max_results": null,
+        "detail_title": "Coventry and Warwickshire Heritage Evaluation",
+        "hash": "#overview",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ070",
+      "query": "people associations evidence",
+      "intent": "Explain where source-backed named-person associations end and why the evaluation does not manufacture them.",
+      "tags": [
+        "person",
+        "association",
+        "publication-boundary"
+      ],
+      "score": {
+        "retrieval": 35,
+        "display": 20,
+        "accessibility": 20,
+        "govuk": 13,
+        "total": 88,
+        "checks": {
+          "resultCount": 0,
+          "expectedMatches": 1,
+          "expectedTerms": [
+            "evidence"
+          ],
+          "expectedMinResults": 0,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": true,
+          "meaningfulBoundedEmpty": true,
+          "queryRetained": true,
+          "explicitEmptySummary": true,
+          "explicitEmptyMessage": true,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": false,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1154,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 0,
+        "expected_min_results": 0,
+        "expected_max_results": null,
+        "detail_title": "Coventry and Warwickshire Heritage Evaluation",
+        "hash": "#overview",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ071",
+      "query": "Coventry contained in place",
+      "intent": "Inspect source-backed boundary membership in the graph.",
+      "tags": [
+        "association",
+        "graph",
+        "geography"
+      ],
+      "score": {
+        "retrieval": 26,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 89,
+        "checks": {
+          "resultCount": 101,
+          "expectedMatches": 1,
+          "expectedTerms": [
+            "Coventry",
+            "contained"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1484,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 101,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Church of St John the Baptist, Fleet Street, Coventry",
+        "hash": "#risk/2025/entry/c0a22d526a800d675763",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ072",
+      "query": "E07000222 Warwick",
+      "intent": "Find records through the official Warwick geography code and inspect their graph membership.",
+      "tags": [
+        "association",
+        "graph",
+        "identifier"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 143,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "E07000222",
+            "Warwick"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1487,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 143,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "WARWICK CASTLE",
+        "hash": "#asset/1000386",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ073",
+      "query": "risk observation assesses NHLE",
+      "intent": "Inspect an exact identifier-backed relationship from an annual risk observation to an NHLE asset.",
+      "tags": [
+        "association",
+        "graph",
+        "risk"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 86,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "risk",
+            "NHLE"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1494,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 86,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Church of St Peter, Main Street, Bourton and Draycote",
+        "hash": "#risk/2013/entry/002e965265264a408f23",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ074",
+      "query": "previous annual observation",
+      "intent": "Inspect normalized continuity between adjacent annual observations and its derivation label.",
+      "tags": [
+        "association",
+        "graph",
+        "change"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 92,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "annual",
+            "observation"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1482,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 92,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Church of St Peter, Main Street, Bourton and Draycote",
+        "hash": "#risk/2013/entry/002e965265264a408f23",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ075",
+      "query": "source-backed relationship",
+      "intent": "Find a graph relationship and read predicate, authority, evidence and derivation together.",
+      "tags": [
+        "association",
+        "graph",
+        "evidence"
+      ],
+      "score": {
+        "retrieval": 26,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 89,
+        "checks": {
+          "resultCount": 200,
+          "expectedMatches": 1,
+          "expectedTerms": [
+            "source",
+            "relationship"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1581,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 200,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Battle of Edgehill 1642",
+        "hash": "#asset/1000009",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ076",
+      "query": "containedInPlace",
+      "intent": "Find the governed predicate used for exact boundary membership.",
+      "tags": [
+        "association",
+        "predicate",
+        "yaml-ld"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 200,
+          "expectedMatches": 1,
+          "expectedTerms": [
+            "containedInPlace"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1518,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 200,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Battle of Edgehill 1642",
+        "hash": "#asset/1000009",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ077",
+      "query": "List Entry exact join",
+      "intent": "Confirm that HAR-to-NHLE associations use exact identifiers rather than title guessing.",
+      "tags": [
+        "association",
+        "identifier",
+        "provenance"
+      ],
+      "score": {
+        "retrieval": 26,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 89,
+        "checks": {
+          "resultCount": 86,
+          "expectedMatches": 1,
+          "expectedTerms": [
+            "List Entry",
+            "exact"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1553,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 86,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Church of St Peter, Main Street, Bourton and Draycote",
+        "hash": "#risk/2013/entry/002e965265264a408f23",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ078",
+      "query": "relationship authority",
+      "intent": "Inspect whether a relationship is official, normalized, derived or synthetic.",
+      "tags": [
+        "association",
+        "authority",
+        "graph"
+      ],
+      "score": {
+        "retrieval": 26,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 89,
+        "checks": {
+          "resultCount": 200,
+          "expectedMatches": 1,
+          "expectedTerms": [
+            "authority",
+            "relationship"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1525,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 200,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Battle of Edgehill 1642",
+        "hash": "#asset/1000009",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ079",
+      "query": "relationship evidence",
+      "intent": "Open the evidence attached to a graph edge and trace it to a source or declared derivation.",
+      "tags": [
+        "association",
+        "evidence",
+        "graph"
+      ],
+      "score": {
+        "retrieval": 26,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 89,
+        "checks": {
+          "resultCount": 200,
+          "expectedMatches": 1,
+          "expectedTerms": [
+            "evidence",
+            "relationship"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1572,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 200,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Battle of Edgehill 1642",
+        "hash": "#asset/1000009",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ080",
+      "query": "synthetic relationship",
+      "intent": "Confirm that invented demonstration relationships do not appear in the faithful corpus.",
+      "tags": [
+        "association",
+        "synthetic",
+        "isolation"
+      ],
+      "score": {
+        "retrieval": 35,
+        "display": 20,
+        "accessibility": 20,
+        "govuk": 13,
+        "total": 88,
+        "checks": {
+          "resultCount": 0,
+          "expectedMatches": 1,
+          "expectedTerms": [
+            "synthetic"
+          ],
+          "expectedMinResults": 0,
+          "expectedMaxResults": 0,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": true,
+          "meaningfulBoundedEmpty": true,
+          "queryRetained": true,
+          "explicitEmptySummary": true,
+          "explicitEmptyMessage": true,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": false,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1161,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 0,
+        "expected_min_results": 0,
+        "expected_max_results": 0,
+        "detail_title": "Coventry and Warwickshire Heritage Evaluation",
+        "hash": "#overview",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ081",
+      "query": "Coventtry Cathedral",
+      "intent": "Recover a one-edit misspelling of Coventry and expose the correction explanation.",
+      "tags": [
+        "search",
+        "misspelling",
+        "coventry"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 3,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "Coventry",
+            "Cathedral"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1547,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 3,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Ruined Cathedral Church of St Michael, Coventry",
+        "hash": "#risk/2016/positive-removal/131fd338d56cdb439e46",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ082",
+      "query": "Warick Castle",
+      "intent": "Recover a one-edit misspelling of Warwick without silently changing the canonical title.",
+      "tags": [
+        "search",
+        "misspelling",
+        "warwick"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 57,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "Warwick",
+            "Castle"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1483,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 57,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "WARWICK CASTLE",
+        "hash": "#asset/1000386",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ083",
+      "query": "Kennilworth Castle",
+      "intent": "Recover a familiar misspelling of Kenilworth and explain the corrected token.",
+      "tags": [
+        "search",
+        "misspelling",
+        "kenilworth"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 3,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "Kenilworth",
+            "Castle"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1528,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 3,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "KENILWORTH CASTLE",
+        "hash": "#asset/1000496",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ084",
+      "query": "Shakespear Birthplace",
+      "intent": "Recover a one-edit misspelling of Shakespeare while keeping the result source-backed.",
+      "tags": [
+        "search",
+        "misspelling",
+        "shakespeare"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 2,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "Shakespeare",
+            "Birthplace"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1467,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 2,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "SHAKESPEARE'S BIRTHPLACE",
+        "hash": "#asset/1187807",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ085",
+      "query": "Leaminton Spa",
+      "intent": "Recover a one-edit misspelling of Leamington.",
+      "tags": [
+        "search",
+        "misspelling",
+        "leamington-spa"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 7,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "Leamington",
+            "Spa"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1536,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 7,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "SPA GARDENS, ROYAL LEAMINGTON SPA",
+        "hash": "#asset/1000498",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ086",
+      "query": "Stratford upon Avon",
+      "intent": "Find Stratford-on-Avon despite punctuation and preposition variation.",
+      "tags": [
+        "search",
+        "alias",
+        "stratford-on-avon"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 16,
+          "expectedMatches": 1,
+          "expectedTerms": [
+            "Stratford-on-Avon"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1532,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 16,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Brome Hall Bridge (Number 38), Stratford upon Avon Canal",
+        "hash": "#asset/1035077",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ087",
+      "query": "St Michael Cathedral",
+      "intent": "Find the cathedral using the St abbreviation and reordered familiar words.",
+      "tags": [
+        "search",
+        "alias",
+        "coventry"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 3,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "St Michael",
+            "Cathedral"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1466,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 3,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "RUINED CATHEDRAL CHURCH OF ST MICHAEL",
+        "hash": "#asset/1076651",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ088",
+      "query": "Saint Mary's Guildhall",
+      "intent": "Find St Mary's Guildhall using Saint rather than St.",
+      "tags": [
+        "search",
+        "alias",
+        "coventry"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 1,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "St Mary",
+            "Guildhall"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1533,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 1,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "ST MARY'S HALL",
+        "hash": "#asset/1116402",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ089",
+      "query": "NHLE 1342941",
+      "intent": "Find a source record directly by its NHLE identifier alias.",
+      "tags": [
+        "search",
+        "identifier",
+        "nhle"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 1,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "1342941",
+            "NHLE"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1534,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 1,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Cathedral of St Michael",
+        "hash": "#asset/1342941",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ090",
+      "query": "List Entry 1342941",
+      "intent": "Find the same source record using the beginner-readable List Entry prefix.",
+      "tags": [
+        "search",
+        "identifier",
+        "alias"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 1,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "1342941",
+            "List Entry"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1531,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 1,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Cathedral of St Michael",
+        "hash": "#asset/1342941",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ091",
+      "query": "Historic England",
+      "intent": "Identify Historic England as source authority and publisher, not the evaluation itself as register owner.",
+      "tags": [
+        "provenance",
+        "authority",
+        "publisher"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 200,
+          "expectedMatches": 1,
+          "expectedTerms": [
+            "Historic England"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1593,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 200,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "WILMCOTE CHURCH OF ENGLAND JUNIOR AND INFANT SCHOOL",
+        "hash": "#asset/1024542",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ092",
+      "query": "National Heritage List for England",
+      "intent": "Find NHLE-backed records and inspect the frozen source service and observation time.",
+      "tags": [
+        "provenance",
+        "source",
+        "nhle"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 200,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "National Heritage List for England",
+            "NHLE"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1513,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 200,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "WILMCOTE CHURCH OF ENGLAND JUNIOR AND INFANT SCHOOL",
+        "hash": "#asset/1024542",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ093",
+      "query": "E08000026",
+      "intent": "Use Coventry's official geography code and inspect the pinned boundary vintage.",
+      "tags": [
+        "provenance",
+        "boundary",
+        "identifier"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 200,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "E08000026",
+            "Coventry"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1553,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 200,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "LONDON ROAD CEMETERY, COVENTRY",
+        "hash": "#asset/1001205",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ094",
+      "query": "source geometry",
+      "intent": "Inspect source geometry, the declared CRS and any labelled representative-point derivation.",
+      "tags": [
+        "provenance",
+        "map",
+        "derivation"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 71,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "geometry",
+            "source"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1507,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 71,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Double ditched enclosure east of Thornton Farm, Ettington",
+        "hash": "#risk/2023/entry/a037b10908134f33d0f1",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ095",
+      "query": "Open Government Licence",
+      "intent": "Confirm licence and attribution are visible without broadening the rights of linked rich-page text.",
+      "tags": [
+        "provenance",
+        "licence",
+        "rights"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 200,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "Open Government Licence",
+            "Licence"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1510,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 200,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "ALVESTON PASTURES FARMHOUSE AND ATTACHED OPEN FRONTED SHED RANGE",
+        "hash": "#asset/1187819",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ096",
+      "query": "YAML-LD @id",
+      "intent": "Explain why YAML-LD is the authoring form, the normalized graph defines semantic identity and JSON-LD is a generated interchange form, while legacy Markdown remains usable.",
+      "tags": [
+        "yaml-ld",
+        "identity",
+        "beginner"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 200,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "YAML-LD",
+            "identifier"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1499,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 200,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Battle of Edgehill 1642",
+        "hash": "#asset/1000009",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ097",
+      "query": "assertion status official",
+      "intent": "Distinguish an official source field from a normalized or model-derived assertion.",
+      "tags": [
+        "provenance",
+        "assertion-status",
+        "authority"
+      ],
+      "score": {
+        "retrieval": 31,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 94,
+        "checks": {
+          "resultCount": 200,
+          "expectedMatches": 2,
+          "expectedTerms": [
+            "official",
+            "assertion"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1568,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 200,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Battle of Edgehill 1642",
+        "hash": "#asset/1000009",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ098",
+      "query": "assertion scope real-world",
+      "intent": "Confirm that faithful statements are marked real-world independently of their authority status.",
+      "tags": [
+        "provenance",
+        "assertion-scope",
+        "faithful"
+      ],
+      "score": {
+        "retrieval": 26,
+        "display": 25,
+        "accessibility": 20,
+        "govuk": 18,
+        "total": 89,
+        "checks": {
+          "resultCount": 102,
+          "expectedMatches": 1,
+          "expectedTerms": [
+            "real-world",
+            "assertion"
+          ],
+          "expectedMinResults": 1,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": false,
+          "meaningfulBoundedEmpty": false,
+          "queryRetained": true,
+          "explicitEmptySummary": false,
+          "explicitEmptyMessage": false,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": true,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1491,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 102,
+        "expected_min_results": 1,
+        "expected_max_results": null,
+        "detail_title": "Cook Street Gate",
+        "hash": "#risk/2015/entry/036bbb668f121e445d3e",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ099",
+      "query": "synthetic fixture",
+      "intent": "Verify that the synthetic supplement has a separate identity, is default-off and contributes to no faithful count or search result.",
+      "tags": [
+        "publication",
+        "synthetic",
+        "isolation"
+      ],
+      "score": {
+        "retrieval": 35,
+        "display": 20,
+        "accessibility": 20,
+        "govuk": 13,
+        "total": 88,
+        "checks": {
+          "resultCount": 0,
+          "expectedMatches": 1,
+          "expectedTerms": [
+            "synthetic",
+            "default-off"
+          ],
+          "expectedMinResults": 0,
+          "expectedMaxResults": 0,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": true,
+          "meaningfulBoundedEmpty": true,
+          "queryRetained": true,
+          "explicitEmptySummary": true,
+          "explicitEmptyMessage": true,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": false,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1174,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 0,
+        "expected_min_results": 0,
+        "expected_max_results": 0,
+        "detail_title": "Coventry and Warwickshire Heritage Evaluation",
+        "hash": "#overview",
+        "warnings": []
+      }
+    },
+    {
+      "id": "HQ100",
+      "query": "publication boundary",
+      "intent": "State plainly that this is a functionality evaluation, not a legal register or replacement for Historic England, and that deployment status belongs in a signed envelope outside the candidate.",
+      "tags": [
+        "publication",
+        "boundary",
+        "beginner"
+      ],
+      "score": {
+        "retrieval": 35,
+        "display": 20,
+        "accessibility": 20,
+        "govuk": 13,
+        "total": 88,
+        "checks": {
+          "resultCount": 0,
+          "expectedMatches": 1,
+          "expectedTerms": [
+            "evaluation",
+            "Historic England"
+          ],
+          "expectedMinResults": 0,
+          "expectedMaxResults": null,
+          "meetsExpectedMinimum": true,
+          "meetsExpectedMaximum": true,
+          "hasExpectedResults": true,
+          "expectsEmpty": true,
+          "meaningfulBoundedEmpty": true,
+          "queryRetained": true,
+          "explicitEmptySummary": true,
+          "explicitEmptyMessage": true,
+          "emptyRecovery": true,
+          "hasRoute": true,
+          "hasDetailBasics": false,
+          "noRawGaps": true,
+          "namedControls": true,
+          "hasLiveStatus": true,
+          "hasLandmarks": true,
+          "noSecrets": true,
+          "visualWarnings": []
+        }
+      },
+      "elapsed_ms": 1096,
+      "attempts": 1,
+      "evidence": {
+        "result_count": 0,
+        "expected_min_results": 0,
+        "expected_max_results": null,
+        "detail_title": "Coventry and Warwickshire Heritage Evaluation",
+        "hash": "#overview",
+        "warnings": []
+      }
+    }
+  ]
+}

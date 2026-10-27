@@ -1,0 +1,34 @@
+{
+  "commit": "e3c0eaa1bd48b99320e57627639e5a1139867146",
+  "materials": [
+    {
+      "bytes": 33186,
+      "path": "okf.publication.json",
+      "sha256": "331c021c3a9104c26f00205d88fe42fae382908f2b38183e7649ad812b0fde0d"
+    },
+    {
+      "bytes": 33428,
+      "path": "okf-estate-registry.json",
+      "sha256": "fa9de8396731206a0005b0c4acf6de4e2403dce6cf94a267ed6203ad8936e742"
+    },
+    {
+      "bytes": 8937,
+      "path": "okf-registry.json",
+      "sha256": "27018c67a14af9a943a74ba65a174010fc6f0e2133c2e6871eb2b10f19602909"
+    },
+    {
+      "bytes": 29614,
+      "path": "registry/estate/index.html",
+      "sha256": "d020c468132daf155945fe80c5d6b40c2e72e7b7bc0c37cca7ec931a5d7677d4"
+    }
+  ],
+  "publication_boundary": "This identity is authoritative only when the Site candidate was assembled from a clean checkout of this commit and promoted without rebuild.",
+  "repository": {
+    "lifecycle": "active",
+    "name": "okf-explorer",
+    "role": "profile-and-consumer",
+    "root_index": "index.md",
+    "url": "https://github.com/chris-page-gov/okf-explorer"
+  },
+  "schema": "okf-publication-deployment-identity.v1"
+}

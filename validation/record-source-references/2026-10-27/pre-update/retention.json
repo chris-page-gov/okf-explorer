@@ -1,0 +1,22 @@
+{
+  "schema": "okf-validation-retained-inputs.v1",
+  "purpose": "Preserve the exact previous Heritage observations before importing an independently executed candidate for PR185. No prior result is relabelled.",
+  "date": "2026-10-27",
+  "files": [
+    {
+      "path": "local-candidate-receipt.json",
+      "bytes": 6430,
+      "sha256": "d5a09c984273fb3c92645474c76a9ef46136b6b332a2fc42c90142d78ecd62ad"
+    },
+    {
+      "path": "receipts/question-suite-results.json.gz",
+      "bytes": 12192,
+      "sha256": "5fed722a590d918d13bb570b420e4fcd19d9c9db87188a927890cc501610f302"
+    },
+    {
+      "path": "receipts/local-journey-results.json.gz",
+      "bytes": 6222,
+      "sha256": "46299f0fdc949c875a2e4ec6dc307bc957237fdae9a3b6d939f7ccd7cb849d3e"
+    }
+  ]
+}

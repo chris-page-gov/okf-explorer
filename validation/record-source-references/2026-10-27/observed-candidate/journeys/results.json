@@ -1,0 +1,774 @@
+{
+  "schema": "okf-explorer-evaluation-results.v1",
+  "generated_at": "2026-10-27T10:59:59.586000Z",
+  "base_url": "http://127.0.0.1:8002/",
+  "bundle": "/okf-explorer.json",
+  "suite": "evaluation-foundry/fixtures/heritage-warwickshire/questions.json",
+  "visual_regressions": {
+    "schema": "okf-explorer-visual-regressions.v1",
+    "items": []
+  },
+  "summary": {
+    "questions_run": 0,
+    "questions_scored": 0,
+    "average_total": null,
+    "average_retrieval": null,
+    "average_display": null,
+    "average_accessibility": null,
+    "average_govuk": null,
+    "pass_count_80": 0,
+    "fail_count_below_60": 0
+  },
+  "metadata": {
+    "browser": "playwright",
+    "browser_engine": "chromium",
+    "mode": "browser-scored",
+    "limit": 100,
+    "candidate_bundle_url": "http://127.0.0.1:8002/publication/okf-explorer.json",
+    "evaluator": {
+      "path": "scripts/evaluate_okf_explorer.mjs",
+      "sha256": "2dda10096ab2d0db7db037e8069186494a275d8c5cd5f9ce4dea5c446d8aee33"
+    }
+  },
+  "candidate": {
+    "bundle_url": "http://127.0.0.1:8002/publication/okf-explorer.json",
+    "descriptor_sha256": "97c8c3aa1dbaa48cad06d9a1fec3c1b125a681c7642b418bddbbccc32e27a5da",
+    "schema": "okf-explorer-large-corpus.v1",
+    "snapshot": "heritage-coventry-warwickshire-20260803-v2",
+    "generated_at": "2026-08-03T10:29:12Z",
+    "explorer_build": {
+      "manifest_url": "http://127.0.0.1:8002/okf-explorer-build-manifest.json",
+      "manifest_sha256": "bbb482b252b9385149ab06a0bb5cbaae778e65a9498ea5c06d3683f4aa297d7a",
+      "schema": "okf-explorer-app-build-manifest.v1",
+      "algorithm": "sha256-canonical-json-materials-v1",
+      "file_count": 43,
+      "tree_sha256": "827ac61a364500a2c73ad949dfda36f0839e54056644edd414ddb34f96aee960"
+    }
+  },
+  "records": [],
+  "interaction_journeys": {
+    "manifest": "evaluation-foundry/fixtures/heritage-warwickshire/journeys.json",
+    "target_bundle": "/okf-explorer.json",
+    "summary": {
+      "journeys_run": 3,
+      "passed": 3,
+      "failed": 0,
+      "errors": 0,
+      "validation_only": 0
+    },
+    "records": [
+      {
+        "id": "journey-tiny",
+        "title": "Tiny fixture assurance before the large corpus",
+        "persona_ids": [
+          "persona-implementer"
+        ],
+        "story_ids": [
+          "story-assurance"
+        ],
+        "start_url": "http://127.0.0.1:8002/?bundle=http%3A%2F%2F127.0.0.1%3A8002%2Fpublication%2Ftiny%2Fokf-explorer.json&q=Coventry+Cathedral",
+        "status": "passed",
+        "elapsed_ms": 5780,
+        "actions": [
+          {
+            "action": "search",
+            "passed": true,
+            "evidence": {
+              "value": "Coventry Cathedral",
+              "url": "http://127.0.0.1:8002/explore/?bundle=http%3A%2F%2F127.0.0.1%3A8002%2Fpublication%2Ftiny%2Fokf-explorer.json&q=Coventry+Cathedral#overview"
+            }
+          },
+          {
+            "action": "search",
+            "passed": true,
+            "evidence": {
+              "value": "Coventtry Cathedral",
+              "url": "http://127.0.0.1:8002/explore/?bundle=http%3A%2F%2F127.0.0.1%3A8002%2Fpublication%2Ftiny%2Fokf-explorer.json&q=Coventtry+Cathedral#overview"
+            }
+          },
+          {
+            "action": "open_first_result",
+            "passed": true,
+            "evidence": {
+              "title": "Cathedral of St Michael",
+              "url": "http://127.0.0.1:8002/explore/?bundle=http%3A%2F%2F127.0.0.1%3A8002%2Fpublication%2Ftiny%2Fokf-explorer.json&q=Coventtry+Cathedral#asset/1342941"
+            }
+          },
+          {
+            "action": "load_full_record",
+            "passed": true,
+            "evidence": {
+              "states": [
+                true,
+                false
+              ],
+              "observed": true
+            }
+          },
+          {
+            "action": "toggle_disclosure",
+            "passed": true,
+            "evidence": {
+              "label": "Overview",
+              "initial": false,
+              "afterOpen": true,
+              "afterClose": false,
+              "observed": true
+            }
+          },
+          {
+            "action": "open_source_inspector",
+            "passed": true,
+            "evidence": {
+              "visible": true,
+              "openerUrl": "http://127.0.0.1:8002/explore/?bundle=http%3A%2F%2F127.0.0.1%3A8002%2Fpublication%2Ftiny%2Fokf-explorer.json&q=Coventtry+Cathedral#asset/1342941"
+            }
+          },
+          {
+            "action": "open_raw_source_new_tab",
+            "passed": true,
+            "evidence": {
+              "openerUrl": "http://127.0.0.1:8002/explore/?bundle=http%3A%2F%2F127.0.0.1%3A8002%2Fpublication%2Ftiny%2Fokf-explorer.json&q=Coventtry+Cathedral#asset/1342941",
+              "popupUrl": "https://services-eu1.arcgis.com/ZOdPfBS3aqqDYPUQ/arcgis/rest/services/National_Heritage_List_for_England_NHLE_v02_VIEW/FeatureServer/0/query?where=ListEntry%3D%271342941%27&outFields=%2A&returnGeometry=true&outSR=4326&f=json",
+              "openerUnchanged": true,
+              "separatePage": true,
+              "opened": true
+            }
+          },
+          {
+            "action": "history_round_trip",
+            "passed": true,
+            "evidence": {
+              "originalUrl": "http://127.0.0.1:8002/explore/?bundle=http%3A%2F%2F127.0.0.1%3A8002%2Fpublication%2Ftiny%2Fokf-explorer.json&q=Coventtry+Cathedral#asset/1342941",
+              "originalQuery": "Coventtry Cathedral",
+              "alternateQuery": "Warwick Castle",
+              "restoredBackUrl": "http://127.0.0.1:8002/explore/?bundle=http%3A%2F%2F127.0.0.1%3A8002%2Fpublication%2Ftiny%2Fokf-explorer.json&q=Coventtry+Cathedral#asset/1342941",
+              "restoredBackQuery": "Coventtry Cathedral",
+              "restoredForwardQuery": "Warwick Castle",
+              "finalBackUrl": "http://127.0.0.1:8002/explore/?bundle=http%3A%2F%2F127.0.0.1%3A8002%2Fpublication%2Ftiny%2Fokf-explorer.json&q=Coventtry+Cathedral#asset/1342941",
+              "finalBackQuery": "Coventtry Cathedral",
+              "restored": true
+            }
+          }
+        ],
+        "assertions": [
+          {
+            "assertion": "url_param_includes",
+            "passed": true,
+            "expected": "/tiny/okf-explorer.json",
+            "actual": [
+              "http://127.0.0.1:8002/publication/tiny/okf-explorer.json"
+            ]
+          },
+          {
+            "assertion": "search_value",
+            "passed": true,
+            "expected": "Coventtry Cathedral",
+            "actual": "Coventtry Cathedral"
+          },
+          {
+            "assertion": "result_count_min",
+            "passed": true,
+            "expected": 1,
+            "actual": 1
+          },
+          {
+            "assertion": "disclosure_defaults_observed",
+            "passed": true,
+            "expected": null,
+            "actual": {
+              "states": [
+                true,
+                false
+              ],
+              "observed": true
+            }
+          },
+          {
+            "assertion": "disclosure_toggle_observed",
+            "passed": true,
+            "expected": null,
+            "actual": {
+              "label": "Overview",
+              "initial": false,
+              "afterOpen": true,
+              "afterClose": false,
+              "observed": true
+            }
+          },
+          {
+            "assertion": "source_inspector_visible",
+            "passed": true,
+            "expected": null,
+            "actual": {
+              "visible": true,
+              "openerUrl": "http://127.0.0.1:8002/explore/?bundle=http%3A%2F%2F127.0.0.1%3A8002%2Fpublication%2Ftiny%2Fokf-explorer.json&q=Coventtry+Cathedral#asset/1342941"
+            }
+          },
+          {
+            "assertion": "external_link_opened_in_new_tab",
+            "passed": true,
+            "expected": null,
+            "actual": {
+              "openerUrl": "http://127.0.0.1:8002/explore/?bundle=http%3A%2F%2F127.0.0.1%3A8002%2Fpublication%2Ftiny%2Fokf-explorer.json&q=Coventtry+Cathedral#asset/1342941",
+              "popupUrl": "https://services-eu1.arcgis.com/ZOdPfBS3aqqDYPUQ/arcgis/rest/services/National_Heritage_List_for_England_NHLE_v02_VIEW/FeatureServer/0/query?where=ListEntry%3D%271342941%27&outFields=%2A&returnGeometry=true&outSR=4326&f=json",
+              "openerUnchanged": true,
+              "separatePage": true,
+              "opened": true
+            }
+          },
+          {
+            "assertion": "history_round_trip_restored",
+            "passed": true,
+            "expected": null,
+            "actual": {
+              "originalUrl": "http://127.0.0.1:8002/explore/?bundle=http%3A%2F%2F127.0.0.1%3A8002%2Fpublication%2Ftiny%2Fokf-explorer.json&q=Coventtry+Cathedral#asset/1342941",
+              "originalQuery": "Coventtry Cathedral",
+              "alternateQuery": "Warwick Castle",
+              "restoredBackUrl": "http://127.0.0.1:8002/explore/?bundle=http%3A%2F%2F127.0.0.1%3A8002%2Fpublication%2Ftiny%2Fokf-explorer.json&q=Coventtry+Cathedral#asset/1342941",
+              "restoredBackQuery": "Coventtry Cathedral",
+              "restoredForwardQuery": "Warwick Castle",
+              "finalBackUrl": "http://127.0.0.1:8002/explore/?bundle=http%3A%2F%2F127.0.0.1%3A8002%2Fpublication%2Ftiny%2Fokf-explorer.json&q=Coventtry+Cathedral#asset/1342941",
+              "finalBackQuery": "Coventtry Cathedral",
+              "restored": true
+            }
+          }
+        ]
+      },
+      {
+        "id": "journey-faithful",
+        "title": "Full Explorer conversation and state-preservation journey",
+        "persona_ids": [
+          "persona-curious-beginner",
+          "persona-domain-reviewer",
+          "persona-implementer"
+        ],
+        "story_ids": [
+          "story-discovery",
+          "story-inspection",
+          "story-projections"
+        ],
+        "start_url": "http://127.0.0.1:8002/?bundle=http%3A%2F%2F127.0.0.1%3A8002%2Fpublication%2Fokf-explorer.json&q=Coventry+Cathedral",
+        "status": "passed",
+        "elapsed_ms": 13580,
+        "actions": [
+          {
+            "action": "search",
+            "passed": true,
+            "evidence": {
+              "value": "Coventry Cathedral",
+              "url": "http://127.0.0.1:8002/explore/?bundle=http%3A%2F%2F127.0.0.1%3A8002%2Fpublication%2Fokf-explorer.json&q=Coventry+Cathedral#overview"
+            }
+          },
+          {
+            "action": "search",
+            "passed": true,
+            "evidence": {
+              "value": "Cathedral Church of St Michael",
+              "url": "http://127.0.0.1:8002/explore/?bundle=http%3A%2F%2F127.0.0.1%3A8002%2Fpublication%2Fokf-explorer.json&q=Cathedral+Church+of+St+Michael#overview"
+            }
+          },
+          {
+            "action": "search",
+            "passed": true,
+            "evidence": {
+              "value": "Coventtry Cathedral",
+              "url": "http://127.0.0.1:8002/explore/?bundle=http%3A%2F%2F127.0.0.1%3A8002%2Fpublication%2Fokf-explorer.json&q=Coventtry+Cathedral#overview"
+            }
+          },
+          {
+            "action": "open_facet",
+            "passed": true,
+            "evidence": {
+              "label": "Local Authority\n \n6 values",
+              "open": true
+            }
+          },
+          {
+            "action": "select_facet_value",
+            "passed": true,
+            "evidence": {
+              "facet": "local_authority",
+              "value": "Coventry",
+              "label": "Coventry\n0 / 6",
+              "url": "http://127.0.0.1:8002/explore/?bundle=http%3A%2F%2F127.0.0.1%3A8002%2Fpublication%2Fokf-explorer.json&explore=%7B%22preview%22%3A%7B%7D%2C%22reductions%22%3A%5B%7B%22mode%22%3A%22keep%22%2C%22selection%22%3A%7B%22local_authority%22%3A%5B%22Coventry%22%5D%7D%7D%5D%7D&q=Coventtry+Cathedral#overview"
+            }
+          },
+          {
+            "action": "search",
+            "passed": true,
+            "evidence": {
+              "value": "NHLE 1076651",
+              "url": "http://127.0.0.1:8002/explore/?bundle=http%3A%2F%2F127.0.0.1%3A8002%2Fpublication%2Fokf-explorer.json&explore=%7B%22preview%22%3A%7B%7D%2C%22reductions%22%3A%5B%7B%22mode%22%3A%22keep%22%2C%22selection%22%3A%7B%22local_authority%22%3A%5B%22Coventry%22%5D%7D%7D%5D%7D&q=NHLE+1076651#overview"
+            }
+          },
+          {
+            "action": "set_sort",
+            "passed": true,
+            "evidence": {
+              "value": "title",
+              "url": "http://127.0.0.1:8002/explore/?bundle=http%3A%2F%2F127.0.0.1%3A8002%2Fpublication%2Fokf-explorer.json&explore=%7B%22preview%22%3A%7B%7D%2C%22reductions%22%3A%5B%7B%22mode%22%3A%22keep%22%2C%22selection%22%3A%7B%22local_authority%22%3A%5B%22Coventry%22%5D%7D%7D%5D%7D&q=NHLE+1076651&sort=title#overview"
+            }
+          },
+          {
+            "action": "open_first_result",
+            "passed": true,
+            "evidence": {
+              "title": "Ruined Cathedral Church of St Michael, Coventry",
+              "url": "http://127.0.0.1:8002/explore/?bundle=http%3A%2F%2F127.0.0.1%3A8002%2Fpublication%2Fokf-explorer.json&explore=%7B%22preview%22%3A%7B%7D%2C%22reductions%22%3A%5B%7B%22mode%22%3A%22keep%22%2C%22selection%22%3A%7B%22local_authority%22%3A%5B%22Coventry%22%5D%7D%7D%5D%7D&q=NHLE+1076651&sort=title#risk/2016/positive-removal/131fd338d56cdb439e46"
+            }
+          },
+          {
+            "action": "load_full_record",
+            "passed": true,
+            "evidence": {
+              "states": [
+                true,
+                false
+              ],
+              "observed": true
+            }
+          },
+          {
+            "action": "toggle_disclosure",
+            "passed": true,
+            "evidence": {
+              "label": "Overview",
+              "initial": false,
+              "afterOpen": true,
+              "afterClose": false,
+              "observed": true
+            }
+          },
+          {
+            "action": "select_view",
+            "passed": true,
+            "evidence": {
+              "value": "Type",
+              "active": true
+            }
+          },
+          {
+            "action": "select_view",
+            "passed": true,
+            "evidence": {
+              "value": "Resources",
+              "active": true
+            }
+          },
+          {
+            "action": "select_view",
+            "passed": true,
+            "evidence": {
+              "value": "Graph",
+              "active": true
+            }
+          },
+          {
+            "action": "select_graph_edge",
+            "passed": true,
+            "evidence": {
+              "key": "risk/2016/positive-removal/131fd338d56cdb439e46>asset/1076651:assesses",
+              "selectedRows": 1,
+              "relationshipCard": 1,
+              "expectedText": [
+                "Official source relationship",
+                "official",
+                "real-world",
+                "Relationship evidence and provenance"
+              ],
+              "expectedTextMatched": true,
+              "selected": true
+            }
+          },
+          {
+            "action": "resize_relationship_drawer",
+            "passed": true,
+            "evidence": {
+              "before": 180,
+              "after": 260,
+              "input": "keyboard",
+              "resized": true
+            }
+          },
+          {
+            "action": "select_view",
+            "passed": true,
+            "evidence": {
+              "value": "Links",
+              "active": true
+            }
+          },
+          {
+            "action": "select_view",
+            "passed": true,
+            "evidence": {
+              "value": "Timeline",
+              "active": true
+            }
+          },
+          {
+            "action": "select_view",
+            "passed": true,
+            "evidence": {
+              "value": "Map",
+              "active": true
+            }
+          },
+          {
+            "action": "select_map_filter",
+            "passed": true,
+            "evidence": {
+              "label": "Explicit geometry",
+              "url": "http://127.0.0.1:8002/explore/?bundle=http%3A%2F%2F127.0.0.1%3A8002%2Fpublication%2Fokf-explorer.json&explore=%7B%22preview%22%3A%7B%7D%2C%22reductions%22%3A%5B%7B%22mode%22%3A%22keep%22%2C%22selection%22%3A%7B%22local_authority%22%3A%5B%22Coventry%22%5D%7D%7D%5D%7D&view=map&q=NHLE+1076651&sort=title&graph.edge=risk%2F2016%2Fpositive-removal%2F131fd338d56cdb439e46%3Easset%2F1076651%3Aassesses&geo=signal%3Ageometry#overview",
+              "value": "signal:geometry",
+              "active": true
+            }
+          },
+          {
+            "action": "select_map_record",
+            "passed": true,
+            "evidence": {
+              "title": "RUINED CATHEDRAL CHURCH OF ST MICHAEL",
+              "markerCount": 1,
+              "selected": true,
+              "detailVisible": true,
+              "url": "http://127.0.0.1:8002/explore/?bundle=http%3A%2F%2F127.0.0.1%3A8002%2Fpublication%2Fokf-explorer.json&explore=%7B%22preview%22%3A%7B%7D%2C%22reductions%22%3A%5B%7B%22mode%22%3A%22keep%22%2C%22selection%22%3A%7B%22local_authority%22%3A%5B%22Coventry%22%5D%7D%7D%5D%7D&view=map&geo=signal%3Ageometry&q=NHLE+1076651&sort=title#asset/1076651"
+            }
+          },
+          {
+            "action": "select_view",
+            "passed": true,
+            "evidence": {
+              "value": "Narrative",
+              "active": true
+            }
+          },
+          {
+            "action": "select_view",
+            "passed": true,
+            "evidence": {
+              "value": "Reader",
+              "active": true
+            }
+          },
+          {
+            "action": "search",
+            "passed": true,
+            "evidence": {
+              "value": "NHLE 1342941",
+              "url": "http://127.0.0.1:8002/explore/?bundle=http%3A%2F%2F127.0.0.1%3A8002%2Fpublication%2Fokf-explorer.json&explore=%7B%22preview%22%3A%7B%7D%2C%22reductions%22%3A%5B%7B%22mode%22%3A%22keep%22%2C%22selection%22%3A%7B%22local_authority%22%3A%5B%22Coventry%22%5D%7D%7D%5D%7D&geo=signal%3Ageometry&q=NHLE+1342941&sort=title#overview"
+            }
+          },
+          {
+            "action": "open_first_result",
+            "passed": true,
+            "evidence": {
+              "title": "Cathedral of St Michael",
+              "url": "http://127.0.0.1:8002/explore/?bundle=http%3A%2F%2F127.0.0.1%3A8002%2Fpublication%2Fokf-explorer.json&explore=%7B%22preview%22%3A%7B%7D%2C%22reductions%22%3A%5B%7B%22mode%22%3A%22keep%22%2C%22selection%22%3A%7B%22local_authority%22%3A%5B%22Coventry%22%5D%7D%7D%5D%7D&geo=signal%3Ageometry&q=NHLE+1342941&sort=title#asset/1342941"
+            }
+          },
+          {
+            "action": "load_full_record",
+            "passed": true,
+            "evidence": {
+              "states": [
+                true,
+                false
+              ],
+              "observed": true
+            }
+          },
+          {
+            "action": "open_external_link_new_tab",
+            "passed": true,
+            "evidence": {
+              "openerUrl": "http://127.0.0.1:8002/explore/?bundle=http%3A%2F%2F127.0.0.1%3A8002%2Fpublication%2Fokf-explorer.json&explore=%7B%22preview%22%3A%7B%7D%2C%22reductions%22%3A%5B%7B%22mode%22%3A%22keep%22%2C%22selection%22%3A%7B%22local_authority%22%3A%5B%22Coventry%22%5D%7D%7D%5D%7D&geo=signal%3Ageometry&q=NHLE+1342941&sort=title#asset/1342941",
+              "popupUrl": "https://historicengland.org.uk/listing/the-list/list-entry/1342941",
+              "openerUnchanged": true,
+              "separatePage": true,
+              "opened": true,
+              "hrefIncludes": "historicengland.org.uk/listing/the-list/list-entry/1342941"
+            }
+          },
+          {
+            "action": "history_round_trip",
+            "passed": true,
+            "evidence": {
+              "originalUrl": "http://127.0.0.1:8002/explore/?bundle=http%3A%2F%2F127.0.0.1%3A8002%2Fpublication%2Fokf-explorer.json&explore=%7B%22preview%22%3A%7B%7D%2C%22reductions%22%3A%5B%7B%22mode%22%3A%22keep%22%2C%22selection%22%3A%7B%22local_authority%22%3A%5B%22Coventry%22%5D%7D%7D%5D%7D&geo=signal%3Ageometry&q=NHLE+1342941&sort=title#asset/1342941",
+              "originalQuery": "NHLE 1342941",
+              "alternateQuery": "Warwick Castle",
+              "restoredBackUrl": "http://127.0.0.1:8002/explore/?bundle=http%3A%2F%2F127.0.0.1%3A8002%2Fpublication%2Fokf-explorer.json&explore=%7B%22preview%22%3A%7B%7D%2C%22reductions%22%3A%5B%7B%22mode%22%3A%22keep%22%2C%22selection%22%3A%7B%22local_authority%22%3A%5B%22Coventry%22%5D%7D%7D%5D%7D&geo=signal%3Ageometry&q=NHLE+1342941&sort=title#asset/1342941",
+              "restoredBackQuery": "NHLE 1342941",
+              "restoredForwardQuery": "Warwick Castle",
+              "finalBackUrl": "http://127.0.0.1:8002/explore/?bundle=http%3A%2F%2F127.0.0.1%3A8002%2Fpublication%2Fokf-explorer.json&explore=%7B%22preview%22%3A%7B%7D%2C%22reductions%22%3A%5B%7B%22mode%22%3A%22keep%22%2C%22selection%22%3A%7B%22local_authority%22%3A%5B%22Coventry%22%5D%7D%7D%5D%7D&geo=signal%3Ageometry&q=NHLE+1342941&sort=title#asset/1342941",
+              "finalBackQuery": "NHLE 1342941",
+              "restored": true
+            }
+          }
+        ],
+        "assertions": [
+          {
+            "assertion": "url_param_includes",
+            "passed": true,
+            "expected": "/okf-explorer.json",
+            "actual": [
+              "http://127.0.0.1:8002/publication/okf-explorer.json"
+            ]
+          },
+          {
+            "assertion": "kept_facet_value",
+            "passed": true,
+            "expected": "Coventry",
+            "actual": {
+              "legacy": [],
+              "exploration": "{\"preview\":{},\"reductions\":[{\"mode\":\"keep\",\"selection\":{\"local_authority\":[\"Coventry\"]}}]}"
+            }
+          },
+          {
+            "assertion": "search_value",
+            "passed": true,
+            "expected": "NHLE 1342941",
+            "actual": "NHLE 1342941"
+          },
+          {
+            "assertion": "sort_value",
+            "passed": true,
+            "expected": "title",
+            "actual": {
+              "url": "title",
+              "control": null,
+              "action": "title"
+            }
+          },
+          {
+            "assertion": "result_count_min",
+            "passed": true,
+            "expected": 1,
+            "actual": 1
+          },
+          {
+            "assertion": "graph_edge_selected",
+            "passed": true,
+            "expected": null,
+            "actual": {
+              "key": "risk/2016/positive-removal/131fd338d56cdb439e46>asset/1076651:assesses",
+              "selectedRows": 1,
+              "relationshipCard": 1,
+              "expectedText": [
+                "Official source relationship",
+                "official",
+                "real-world",
+                "Relationship evidence and provenance"
+              ],
+              "expectedTextMatched": true,
+              "selected": true
+            }
+          },
+          {
+            "assertion": "relationship_drawer_resized",
+            "passed": true,
+            "expected": null,
+            "actual": {
+              "before": 180,
+              "after": 260,
+              "input": "keyboard",
+              "resized": true
+            }
+          },
+          {
+            "assertion": "map_filter_applied",
+            "passed": true,
+            "expected": null,
+            "actual": {
+              "label": "Explicit geometry",
+              "url": "http://127.0.0.1:8002/explore/?bundle=http%3A%2F%2F127.0.0.1%3A8002%2Fpublication%2Fokf-explorer.json&explore=%7B%22preview%22%3A%7B%7D%2C%22reductions%22%3A%5B%7B%22mode%22%3A%22keep%22%2C%22selection%22%3A%7B%22local_authority%22%3A%5B%22Coventry%22%5D%7D%7D%5D%7D&view=map&q=NHLE+1076651&sort=title&graph.edge=risk%2F2016%2Fpositive-removal%2F131fd338d56cdb439e46%3Easset%2F1076651%3Aassesses&geo=signal%3Ageometry#overview",
+              "value": "signal:geometry",
+              "active": true
+            }
+          },
+          {
+            "assertion": "map_marker_visible",
+            "passed": true,
+            "expected": 1,
+            "actual": 1
+          },
+          {
+            "assertion": "map_record_selected",
+            "passed": true,
+            "expected": null,
+            "actual": {
+              "title": "RUINED CATHEDRAL CHURCH OF ST MICHAEL",
+              "markerCount": 1,
+              "selected": true,
+              "detailVisible": true,
+              "url": "http://127.0.0.1:8002/explore/?bundle=http%3A%2F%2F127.0.0.1%3A8002%2Fpublication%2Fokf-explorer.json&explore=%7B%22preview%22%3A%7B%7D%2C%22reductions%22%3A%5B%7B%22mode%22%3A%22keep%22%2C%22selection%22%3A%7B%22local_authority%22%3A%5B%22Coventry%22%5D%7D%7D%5D%7D&view=map&geo=signal%3Ageometry&q=NHLE+1076651&sort=title#asset/1076651"
+            }
+          },
+          {
+            "assertion": "disclosure_defaults_observed",
+            "passed": true,
+            "expected": null,
+            "actual": {
+              "states": [
+                true,
+                false
+              ],
+              "observed": true
+            }
+          },
+          {
+            "assertion": "disclosure_toggle_observed",
+            "passed": true,
+            "expected": null,
+            "actual": {
+              "label": "Overview",
+              "initial": false,
+              "afterOpen": true,
+              "afterClose": false,
+              "observed": true
+            }
+          },
+          {
+            "assertion": "external_link_opened_in_new_tab",
+            "passed": true,
+            "expected": null,
+            "actual": {
+              "openerUrl": "http://127.0.0.1:8002/explore/?bundle=http%3A%2F%2F127.0.0.1%3A8002%2Fpublication%2Fokf-explorer.json&explore=%7B%22preview%22%3A%7B%7D%2C%22reductions%22%3A%5B%7B%22mode%22%3A%22keep%22%2C%22selection%22%3A%7B%22local_authority%22%3A%5B%22Coventry%22%5D%7D%7D%5D%7D&geo=signal%3Ageometry&q=NHLE+1342941&sort=title#asset/1342941",
+              "popupUrl": "https://historicengland.org.uk/listing/the-list/list-entry/1342941",
+              "openerUnchanged": true,
+              "separatePage": true,
+              "opened": true,
+              "hrefIncludes": "historicengland.org.uk/listing/the-list/list-entry/1342941"
+            }
+          },
+          {
+            "assertion": "history_round_trip_restored",
+            "passed": true,
+            "expected": null,
+            "actual": {
+              "originalUrl": "http://127.0.0.1:8002/explore/?bundle=http%3A%2F%2F127.0.0.1%3A8002%2Fpublication%2Fokf-explorer.json&explore=%7B%22preview%22%3A%7B%7D%2C%22reductions%22%3A%5B%7B%22mode%22%3A%22keep%22%2C%22selection%22%3A%7B%22local_authority%22%3A%5B%22Coventry%22%5D%7D%7D%5D%7D&geo=signal%3Ageometry&q=NHLE+1342941&sort=title#asset/1342941",
+              "originalQuery": "NHLE 1342941",
+              "alternateQuery": "Warwick Castle",
+              "restoredBackUrl": "http://127.0.0.1:8002/explore/?bundle=http%3A%2F%2F127.0.0.1%3A8002%2Fpublication%2Fokf-explorer.json&explore=%7B%22preview%22%3A%7B%7D%2C%22reductions%22%3A%5B%7B%22mode%22%3A%22keep%22%2C%22selection%22%3A%7B%22local_authority%22%3A%5B%22Coventry%22%5D%7D%7D%5D%7D&geo=signal%3Ageometry&q=NHLE+1342941&sort=title#asset/1342941",
+              "restoredBackQuery": "NHLE 1342941",
+              "restoredForwardQuery": "Warwick Castle",
+              "finalBackUrl": "http://127.0.0.1:8002/explore/?bundle=http%3A%2F%2F127.0.0.1%3A8002%2Fpublication%2Fokf-explorer.json&explore=%7B%22preview%22%3A%7B%7D%2C%22reductions%22%3A%5B%7B%22mode%22%3A%22keep%22%2C%22selection%22%3A%7B%22local_authority%22%3A%5B%22Coventry%22%5D%7D%7D%5D%7D&geo=signal%3Ageometry&q=NHLE+1342941&sort=title#asset/1342941",
+              "finalBackQuery": "NHLE 1342941",
+              "restored": true
+            }
+          },
+          {
+            "assertion": "visible_text",
+            "passed": true,
+            "expected": "Historic England",
+            "actual": "OKF Explorer\n\nCoventry and Warwickshire Heritage Evaluation\n\nExplorer changes Evidence workbench\nReader\nGraph\nLinks\nTimeline\nType\nResources\nMap\nNarrative\nLoad\nFile\n‹\nSearch\nAsk OKF\nSEARCH\nx\nFacets\nResults\nFilter results (2)\nMap: Explicit geometry\n×\nSuggested\nAll\n25 of 25 facets shown\nGuidance\nClear filters\nReset facet layout\nSelect multiple values\nHow selection works\nAmendment Year\n \n1 values\n☆\n⋯\nAssertion Scope\n \n1 values\n☆\n⋯\nAssertion Status\n \n1 values\n☆\n⋯\nCondition\n \n1 values\n☆\n⋯\nDesignation Year\n \n1 values\n☆\n⋯\nFormat\n \n3 values\n☆\n⋯\nGeography Code\n \n1 values\n☆\n⋯\nGeometry Type\n \n1 values\n☆\n⋯\nGrade\n \n1 values\n☆\n⋯\nHeritage Category\n \n1 values\n☆\n⋯\nLicense\n \n1 values\n☆\n⋯\nLocal Authority\n \n1 values\n☆\n⋯\nPriority Category\n \n1 values\n☆\n⋯\nRecord Type\n \n1 values\n☆\n⋯\nRegister Year\n \n1 values\n☆\n⋯\nRisk Event\n \n1 values\n☆\n⋯\nRisk Methodology\n \n1 values\n☆\n⋯\nRisk Status\n \n1 values\n☆\n⋯\nSite Subtype\n \n1 values\n☆\n⋯\nSite Type\n \n1 values\n☆\n⋯\nSource Adapter\n \n1 values\n☆\n⋯\nTopic\n \n2 values\n☆\n⋯\nTrend\n \n1 values\n☆\n⋯\nVulnerability\n \n1 values\n☆\n⋯\nownership\n \n1 values\n☆\n⋯\n←\n→\nLarge corpus / reader / Cathedral of St Michael\nCopy route\nPin\nInspect\n\n0 highlighted / 1 in scope\n\nKeep highlighted\nKeep unhighlighted\nFold highlighted\nFold unhighlighted\nClear highlight\nUndo keep (1)\nReset view\n1\nheritage records in map scope\n1\nheritage records shown\n0\nhighlighted\n2\nactive filters\nResults\n1 shown of 1 matching records\nCards\nList\n1 shown\nHeritage Asset · source historic-england-nhle-arcgis · confidence source-declared fields; exact deterministic spatial intersection · ArcGIS REST, HTTPS\nCathedral of St Michael\nHistoric England · 3 sources and representations\n\nOfficial listed building record from the National Heritage List for England. It intersects Coventry. Full official descriptive and legal text remains on the linked List entry page.\n\nWhy this matched: Matched search aliases, tag, identifier or URL\n›\nHeritage Asset\nCathedral of St Michael\n\nWhy this matched\nMatched search aliases, tag, identifier or URL\n\nListed Building · Grade I · Coventry · SP 33627 79065\n\nCatalogue/index date 29 Mar 1988\nCatalogue date — not necessarily the dataset’s latest release or update frequency.\n\nOfficial listed building record from the National Heritage List for England. It intersects Coventry. Full official descriptive and legal text remains on the linked List entry page.\n\nGraph\nPin\nCopy route\nView source data\nOpen source JSON ↗\nOverview\nEvidence\nData\nHeritage evaluation fields\nSource fields and visibly labelled YAML-LD projections\nHeritage identity and designation\n\nSource identity, designation and spatial fields retained by the evaluation.\n\nSource-native identifier\n1342941\nNHLE List entry\nThe identifier used by Historic England; blank when the source row has no List entry.\n1342941\nOfficial rich page\nThe identifier-bound Historic England HTML representation.\nhttps://historicengland.org.uk/listing/the-list/list-entry/1342941\nHeritage category\nListed Building\nGrade\nSource grade; not every designation category has one.\nI\nDesignation date\n1988-03-29\nNational Grid reference\nSP 33627 79065\nIntersected local authority\nCoventry\nBoundary code\nE08000026\nSource geometry type\nMultiPoint\nSource surface\nNHLE FeatureServer\nLicence\nRights recorded for the acquired source fields; this does not broaden rights in linked rich-page content.\nOpen Government Licence v3.0\nLicence source\nThe source attribution retained with this record.\nHistoric England open data terms\nReviewed discovery names\nEvidence-backed search terms only; they do not replace the official title or assert exact identity.\nNew Coventry Cathedral · Modern Coventry Cathedral · Basil Spence Cathedral\nDiscovery-name relationship\nreviewed-descriptive-name\nDiscovery-name evidence\nOfficial NHLE entry describing the new cathedral, built 1951–62\nDiscovery-name evidence link\nhttps://historicengland.org.uk/listing/the-list/list-entry/1342941\nYAML-LD identity and assertion boundary\nDates and related records\nSeries and coverage context\nTimeline\n\nNo content or resource year is declared for this record.\n\nSeries Cathedral of St Michael\n\nNo other release in this series is present in this bundle.\n\nOverview\nDesignated heritage\nListed Building\nHTML\nArcGIS JSON\nGeoJSON\nE08000026\nI\ndesignated-heritage\nlisted-building\nnhle"
+          }
+        ]
+      },
+      {
+        "id": "journey-synthetic-isolation",
+        "title": "Explicitly load the default-off synthetic supplement",
+        "persona_ids": [
+          "persona-domain-reviewer",
+          "persona-implementer"
+        ],
+        "story_ids": [
+          "story-assurance",
+          "story-projections"
+        ],
+        "start_url": "http://127.0.0.1:8002/?bundle=http%3A%2F%2F127.0.0.1%3A8002%2Fpublication%2Fsynthetic%2Fokf-explorer.json&q=SYN-PLACE-001",
+        "status": "passed",
+        "elapsed_ms": 2255,
+        "actions": [
+          {
+            "action": "search",
+            "passed": true,
+            "evidence": {
+              "value": "SYN-PLACE-001",
+              "url": "http://127.0.0.1:8002/explore/?bundle=http%3A%2F%2F127.0.0.1%3A8002%2Fpublication%2Fsynthetic%2Fokf-explorer.json&q=SYN-PLACE-001#overview"
+            }
+          },
+          {
+            "action": "open_first_result",
+            "passed": true,
+            "evidence": {
+              "title": "Meridian Dye Works (synthetic)",
+              "url": "http://127.0.0.1:8002/explore/?bundle=http%3A%2F%2F127.0.0.1%3A8002%2Fpublication%2Fsynthetic%2Fokf-explorer.json&q=SYN-PLACE-001#synthetic/place/meridian-dye-works"
+            }
+          },
+          {
+            "action": "load_full_record",
+            "passed": true,
+            "evidence": {
+              "states": [
+                true,
+                false
+              ],
+              "observed": true
+            }
+          },
+          {
+            "action": "select_view",
+            "passed": true,
+            "evidence": {
+              "value": "Graph",
+              "active": true
+            }
+          },
+          {
+            "action": "select_graph_edge",
+            "passed": true,
+            "evidence": {
+              "key": "synthetic/place/meridian-dye-works>synthetic/person/asha-bennett:possibly designed by",
+              "selectedRows": 1,
+              "relationshipCard": 1,
+              "expectedText": [
+                "Invented Evaluation Foundry assertion",
+                "model-derived",
+                "synthetic-fixture",
+                "Relationship evidence and provenance"
+              ],
+              "expectedTextMatched": true,
+              "selected": true
+            }
+          }
+        ],
+        "assertions": [
+          {
+            "assertion": "url_param_includes",
+            "passed": true,
+            "expected": "/synthetic/okf-explorer.json",
+            "actual": [
+              "http://127.0.0.1:8002/publication/synthetic/okf-explorer.json"
+            ]
+          },
+          {
+            "assertion": "graph_edge_selected",
+            "passed": true,
+            "expected": null,
+            "actual": {
+              "key": "synthetic/place/meridian-dye-works>synthetic/person/asha-bennett:possibly designed by",
+              "selectedRows": 1,
+              "relationshipCard": 1,
+              "expectedText": [
+                "Invented Evaluation Foundry assertion",
+                "model-derived",
+                "synthetic-fixture",
+                "Relationship evidence and provenance"
+              ],
+              "expectedTextMatched": true,
+              "selected": true
+            }
+          },
+          {
+            "assertion": "visible_text",
+            "passed": true,
+            "expected": "synthetic",
+            "actual": "OKF Explorer\n\nSynthetic Heritage Capability Supplement\n\nExplorer changes Evidence workbench\nReader\nGraph\nLinks\nTimeline\nType\nResources\nMap\nNarrative\nLoad\nFile\n‹\nSearch\nAsk OKF\nSEARCH\nx\nFacets\nResults\nFilter results\nSuggested\nAll\n2 of 25 facets shown\nGuidance\nClear filters\nReset facet layout\nSelect multiple values\nHow selection works\nFormat\n \n2 values\n☆\n⋯\nTopic\n \n4 values\n☆\n⋯\n←\n→\nLarge corpus / graph / Meridian Dye Works (synthetic)\nCopy route\nPin\nInspect\nSynthetic assurance fixture\nInvented test assertions are isolated from faithful counts and search and load only when this corpus is opened explicitly.\n−\n100%\n+\nLabels (1/1)\nNodes (12)\nRelationships (11)\nLayout\nauthority\n1\nrepresentations\n2\ntopic\n2\ntag\n3\nresource-stack\n1\nsynthetic\n3 · focus\nAUTHORITY\nSynthetic fixture\n2\nUnclassified\n9\nMeridian Dye Works (synthetic)\n2\npossibly designed by\nproposes protection for\npublished by\nhas format\nclassified as\ntagged\nhas sources and representations\nMeridian Dye Works (synthetic)\nperson/asha-bennett\nevent/flood-resilience-2031\nokf-explorer-evaluation-foundry\nHTML\nGeoJSON\nSynthetic capability testing\nIndustrial heritage\nsynthetic\nindustrial-heritage\nuncertain-attribution\nSources and representations — 2\nRelationships (11)\nopen for rows\nMeridian Dye Works (synthetic) → possibly designed by → person/asha-bennett\nInvented Evaluation Foundry assertion · model-derived · synthetic-fixture · unknown\nevent/flood-resilience-2031 → proposes protection for → Meridian Dye Works (synthetic)\nInvented Evaluation Foundry assertion · model-derived · synthetic-fixture · unknown\nMeridian Dye Works (synthetic) → published by → okf-explorer-evaluation-foundry\nAuthority not declared · unknown\nMeridian Dye Works (synthetic) → has format → HTML\nAuthority not declared · unknown\nMeridian Dye Works (synthetic) → has format → GeoJSON\nAuthority not declared · unknown\nMeridian Dye Works (synthetic) → classified as → Synthetic capability testing\nAuthority not declared · unknown\nMeridian Dye Works (synthetic) → classified as → Industrial heritage\nAuthority not declared · unknown\nMeridian Dye Works (synthetic) → tagged → synthetic\nAuthority not declared · unknown\nMeridian Dye Works (synthetic) → tagged → industrial-heritage\nAuthority not declared · unknown\nMeridian Dye Works (synthetic) → tagged → uncertain-attribution\nAuthority not declared · unknown\nMeridian Dye Works (synthetic) → has sources and representations → Evidence and representation stack: synthetic/place/meridian-dye-works\nAuthority not declared · unknown\n\nShowing 12 nodes directly related to Meridian Dye Works (synthetic). Relationship groups use the ordered regions shown above; hidden groups and members are excluded. Drag to pan, use +/- or Ctrl/Command+wheel to zoom, click a stack to expand it, single-click real nodes to inspect, and double-click metadata nodes to reduce context.\n\n›\nRelationship Invented Evaluation Foundry assertion model-derived synthetic-fixture unknown\npossibly designed by\n\nMeridian Dye Works (synthetic) → possibly designed by → person/asha-bennett\n\nClear relationship\nSource\nRelationship\nTarget\nDirection\nSource → relationship → target\nType\npossibly designed by\nAssertion ID\nhttps://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/id/assertion/3f15a7b92028e760c5d0\nPredicate\nhttps://schema.org/architect\nInverse label\npossibly designed\nSource IRI\nhttps://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-heritage-coventry-warwickshire%2Fsynthetic%2Fokf-explorer.json#record:c3ludGhldGljL3BsYWNlL21lcmlkaWFuLWR5ZS13b3Jrcw\nTarget IRI\nhttps://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-heritage-coventry-warwickshire%2Fsynthetic%2Fokf-explorer.json#record:c3ludGhldGljL3BlcnNvbi9hc2hhLWJlbm5ldHQ\nAssertion status\nmodel-derived\nAssertion scope\nsynthetic-fixture\nAuthority\nInvented Evaluation Foundry assertion\nAuthority source\nhttps://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/\nDerivation\nHand-authored invented relationship used to demonstrate uncertainty metadata.\nDerivation activity\nhttps://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/methodology.html#relationship-projection-rules\nConfidence\n0.62\nObserved\n2026-08-02T00:00:00Z\nFreshness\nunknown\nRights source\nhttps://creativecommons.org/publicdomain/zero/1.0/\nRights assertion\nUnderlying source rights are retained; this relationship projection follows the declared evaluation licence.\nRelationship evidence and provenance\nsource identity or declared relationship\nRetrieved 2026-08-02T00:00:00Z\nSource evidence\nRelationship JSON"
+          }
+        ]
+      }
+    ]
+  }
+}

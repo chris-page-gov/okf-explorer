@@ -14,6 +14,8 @@
 - Use the supplied source label for link-only references and remove automatic
   official-source claims. Unknown source media types and availability remain
   explicit; citations do not become downloadable data.
+- Refresh the exact-build Heritage receipt from successful CI execution of all
+  100 questions and three unchanged journeys, preserving the preceding evidence.
 
 ## Compact facet navigation — 24 October 2026
 

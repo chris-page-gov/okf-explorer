@@ -1,0 +1,67 @@
+{
+  "schema": "okf-validation-ci-observation-origin.v1",
+  "repository": "chris-page-gov/okf-explorer",
+  "pullRequest": 185,
+  "reviewedHead": "f71f776253d54a51552f061a1b10b0b922b99023",
+  "executedCheckout": "e3c0eaa1bd48b99320e57627639e5a1139867146",
+  "workflowRun": 40492019206,
+  "jobId": 122149016399,
+  "jobConclusion": "success",
+  "artifact": {
+    "id": 12728954654,
+    "name": "heritage-candidate-evidence-e3c0eaa1bd48b99320e57627639e5a1139867146",
+    "bytes": 28898,
+    "sha256": "b6c960c5bb1d158488e44016a7004f636e9adc112f3220eeb7014f3619cfe27a",
+    "entries": 8
+  },
+  "app": {
+    "tree_sha256": "827ac61a364500a2c73ad949dfda36f0839e54056644edd414ddb34f96aee960",
+    "manifest_sha256": "bbb482b252b9385149ab06a0bb5cbaae778e65a9498ea5c06d3683f4aa297d7a"
+  },
+  "files": [
+    {
+      "path": "journeys/results.json",
+      "bytes": 41314,
+      "sha256": "4a00c5b214d1159e1a9b9a1c9a6b1349a9a8771cc44117ff4a272775e0280e6a"
+    },
+    {
+      "path": "okf-explorer-build-manifest.json",
+      "bytes": 7398,
+      "sha256": "bbb482b252b9385149ab06a0bb5cbaae778e65a9498ea5c06d3683f4aa297d7a"
+    },
+    {
+      "path": "okf-publication-identity.json",
+      "bytes": 1138,
+      "sha256": "870bb30986e88930a661a95a082c0dee5625aa0c25db5a117210bbdd83cb1810"
+    },
+    {
+      "path": "questions/results.json",
+      "bytes": 158073,
+      "sha256": "8094e63f482cd1bdb87033a3860179cacb8ad0889f348816453069902fb68963"
+    },
+    {
+      "path": "site-candidate-receipt.json",
+      "bytes": 991,
+      "sha256": "0dda769b6dc01b40c825791c11e0cc0d1de026cba53db8bb88378eb669b34473"
+    },
+    {
+      "path": "source-commit.txt",
+      "bytes": 41,
+      "sha256": "bdcb0695b0ae7f41be8db880f9cf45c633f753a41a71f3f2ddf39e2648a45789"
+    }
+  ],
+  "scope": "Actual unchanged 100-question and three-journey public Heritage candidate observations; not a deployment or a claim that the evidence-only commit was executed.",
+  "retainedInputScope": "The six fixed public evidence files required by the documented import contract. Optional Markdown renderings remain in the original downloaded archive and are not input to the materialiser.",
+  "optionalArtifactReports": [
+    {
+      "path": "questions/results.md",
+      "bytes": 17666,
+      "sha256": "7c4b3deffffaffc8c8b045b37c1f501691589b265bc1ea1ec67cddb2425ba143"
+    },
+    {
+      "path": "journeys/results.md",
+      "bytes": 2478,
+      "sha256": "84d2abceb95c2de4cf006b2d823a0b8cb3f0210e51c9f1db85a5e794956f279a"
+    }
+  ]
+}
