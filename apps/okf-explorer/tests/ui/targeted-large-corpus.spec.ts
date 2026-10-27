@@ -924,6 +924,35 @@ test.describe('targeted large-corpus relationship hydration', () => {
     expectNoFullHydration(requests);
   });
 
+  test('Reader hash navigation and history hydrate native records without reloading the document', async ({ page }) => {
+    const requests: string[] = [];
+    const route = 'records/retained/target-act.md';
+    await installTargetedFixture(page.context(), requests, {
+      targetedRecordResources: true, recordRoute: route
+    });
+    await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}&view=reader#overview`);
+    const metric = page.locator('[data-metric="legal-works"] strong');
+    await expect(metric).toHaveText('365,786');
+    await page.evaluate((selectedRoute) => {
+      Reflect.set(window, '__targetedReaderDocument', 'retained');
+      location.hash = selectedRoute;
+    }, route);
+    const detail = page.locator('.right-panel');
+    const sourceLink = detail.getByRole('link', { name: 'Open Source reference ↗', exact: true });
+    await expect(detail.getByRole('heading', { name: 'Target Act 1998', exact: true })).toBeVisible();
+    await expect(sourceLink).toHaveAttribute('href', `${ORIGIN}/source-reference/target-act`);
+    await page.goBack();
+    await expect(page).toHaveURL(/#overview$/);
+    await expect(metric).toHaveText('365,786');
+    await page.goForward();
+    await expect(sourceLink).toHaveAttribute('href', `${ORIGIN}/source-reference/target-act`);
+    expect(await page.evaluate(() => Reflect.get(window, '__targetedReaderDocument'))).toBe('retained');
+    expect(requests.filter((path) => path === '/data/works-0.json')).toHaveLength(1);
+    expect(requests.filter((path) => path === '/data/record-resources/shared.json')).toHaveLength(1);
+    expect(requests).not.toContain('/data/resources.json');
+    expectNoFullHydration(requests);
+  });
+
   test('a record alias reuses canonical source references in Reader and Resources', async ({ page }) => {
     const requests: string[] = [];
     const alias = 'dataset/old-target-act';

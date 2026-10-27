@@ -120,6 +120,8 @@ at most 64 KiB, and decompression stops at the declared logical length.
 Reader and selected-record Resources views load these references without
 hydrating the whole corpus. Hydrated titles also label native record routes
 whose kind is not `dataset`, subject to any declared endpoint-label registry.
+Reader hash navigation and browser history use the same bounded record and
+reference loading as the first page load.
 When this contract is declared, an empty or failed
 reference load does not activate the legacy `source_api_url` JSON fallback.
 Link-only references may state `media_type: not-established` when no response

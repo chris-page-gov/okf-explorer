@@ -1186,7 +1186,7 @@
       const filtersChanged = previousFilters !== JSON.stringify(largeFacetFilters);
       applyLargeBrowserRoute(hash, hasSerializedFilters(params));
       applySerializedGraphCenter(params, hash);
-      if ((largeSelectedRoute || largeInspectedRoute) && FULL_INDEX_VIEWS.has(activeView)) {
+      if ((largeSelectedRoute || largeInspectedRoute) && (activeView === 'reader' || FULL_INDEX_VIEWS.has(activeView))) {
         void hydrateForView(activeView);
       }
       if (state.query !== largeAppliedQuery || filtersChanged || previousSort !== state.sort || previousExploration !== JSON.stringify(exploration)) {

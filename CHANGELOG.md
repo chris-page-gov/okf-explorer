@@ -9,6 +9,8 @@
   whole-corpus hydration, preserving older bundles' existing behaviour.
 - Display the hydrated record title for native record routes, including routes
   whose kind is not `dataset`.
+- Load selected Reader records after hash navigation and browser history changes
+  as well as on the first page load.
 - Use the supplied source label for link-only references and remove automatic
   official-source claims. Unknown source media types and availability remain
   explicit; citations do not become downloadable data.
