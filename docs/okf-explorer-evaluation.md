@@ -7,6 +7,15 @@ byte under `validation/encoded-route-sharing/2026-10-28/pre-update/`, with a
 SHA-256 inventory. These local observations do not establish public deployment
 or domain-specific policy acceptance.
 
+The producer-declared catalogue report links change also has fresh local
+Heritage observations, bound to Explorer tree
+`e1aad43dc8236e387654c86d67f1575ebdd4fd94256ea1e9628a879829e34c4a`. All 100
+questions scored at least 80, with a 92.6 average, and all three local journeys
+passed. The previous receipt and compressed results are preserved byte for
+byte under `validation/catalogue-report-links/2026-10-29/pre-update/`, with a
+SHA-256 inventory. These local observations do not establish public deployment
+or domain-specific policy acceptance.
+
 This repository now carries repeatable browser evaluation suites for the UK
 Government APIs OKF pack, the hosted GOV.UK CKAN OKF pack, and future large OKF
 bundles.

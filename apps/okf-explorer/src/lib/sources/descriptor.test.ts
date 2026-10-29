@@ -52,6 +52,7 @@ describe('producer-declared related descriptor links', () => {
       { label: 'bad', url: 'https://example.test/%zz', kind: 'reports' },
       { label: 'bad', url: 'https://example.test/a b', kind: 'reports' },
       { label: 'bad', url: 'https://example.test:99999/', kind: 'reports' },
+      { label: 'bad', url: 'https://example.test:0/', kind: 'reports' },
       { label: 'bad', url: 'https://example.test', kind: 'reports' },
       { label: 'bad\nlabel', url: 'https://example.test/', kind: 'reports' },
       { label: 'x'.repeat(121), url: 'https://example.test/', kind: 'reports' },

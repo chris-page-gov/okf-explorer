@@ -24,7 +24,7 @@ export function parseRelatedDescriptorLinks(value: unknown): RelatedDescriptorLi
     if (typeof url !== 'string' || url.length < 1 || url.length > MAX_RELATED_LINK_URL || /[\s\u0000-\u001f\u007f"'<>\\]/.test(url) || /%(?![0-9a-fA-F]{2})/.test(url)) continue;
     try {
       const parsed = new URL(url);
-      if (parsed.protocol !== 'https:' || !parsed.hostname || parsed.username || parsed.password || parsed.href !== url) continue;
+      if (parsed.protocol !== 'https:' || !parsed.hostname || parsed.username || parsed.password || parsed.port === '0' || parsed.href !== url) continue;
     } catch {
       continue;
     }
