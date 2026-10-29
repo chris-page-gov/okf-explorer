@@ -238,7 +238,9 @@ truth. It uses normal Markdown links rather than editor-specific wikilinks.
 During publication, each in-scope `.md` reading page is rendered as an `.html`
 page and internal links are rewritten and checked against those HTML routes.
 Explorer deep links point to the published project-root URL ending in `/`,
-identify the bundle and carry an encoded record route in the fragment. A
+identify the bundle and carry a record route in the fragment. Routes containing
+percent escapes use an opaque `record:` base64url token so browser decoding
+cannot change encoded path separators; ordinary routes remain readable. A
 copied URL can therefore reopen the same record in the interface instead of
 exposing a filesystem path or relying on a Markdown renderer.
 

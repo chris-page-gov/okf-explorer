@@ -20,6 +20,7 @@
   import { SMALL_FACETS, smallFacetValues, smallFacetRows, smallIsHighlighted } from '$lib/viewer/smallExploration';
   import { BOOKMARK_STORAGE_KEY, addBookmark, readBookmarks, type Bookmark } from '$lib/viewer/bookmarks';
   import { displayedRoute, type WorkspacePanel } from '$lib/viewer/workspaceNavigation';
+  import { routeHash, routeFromHash } from '$lib/viewer/routeHash';
   import { pushState, replaceState } from '$app/navigation';
   import type {
     BundleRegistryEntry,
@@ -926,19 +927,7 @@
   }
 
   function safeDecodeHash(): string {
-    const raw = location.hash.replace(/^#/, '');
-    try {
-      const decoded = decodeURIComponent(raw);
-      if (!decoded.startsWith('record:')) return decoded;
-      const token = decoded.slice('record:'.length);
-      if (!/^[A-Za-z0-9_-]+$/.test(token)) return decoded;
-      const padded = token.replace(/-/g, '+').replace(/_/g, '/') + '='.repeat((4 - token.length % 4) % 4);
-      const bytes = Uint8Array.from(atob(padded), (value) => value.charCodeAt(0));
-      return new TextDecoder().decode(bytes);
-    } catch {
-      // Malformed percent/base64 encoding in a shared link should not break routing.
-      return raw;
-    }
+    return routeFromHash(location.hash);
   }
 
   function toAbsoluteUrl(url: string): string {
@@ -1046,7 +1035,7 @@
     }
     if (geospatialFilter) next.searchParams.set('geo', geospatialFilter);
     else next.searchParams.delete('geo');
-    next.hash = route || (source?.kind === 'large' ? 'overview' : '');
+    next.hash = routeHash(route || (source?.kind === 'large' ? 'overview' : ''));
     return next.toString();
   }
 
@@ -6935,7 +6924,7 @@
             // context package intact instead of bypassing selection guards.
             const target = new URL(location.href);
             target.search = new URLSearchParams({ bundle: source.url }).toString();
-            target.hash = route;
+            target.hash = routeHash(route);
             window.open(target.toString(), '_blank', 'noopener,noreferrer');
           }} />
         </div>

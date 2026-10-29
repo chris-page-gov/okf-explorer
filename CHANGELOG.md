@@ -1,5 +1,20 @@
 # Changelog
 
+## Encoded record route sharing evidence — 29 October 2026
+
+- Refresh the Heritage 100-question and three-journey browser observations for
+  the encoded record route sharing app build, preserving the previous receipt
+  and compressed results byte for byte.
+
+## Preserve encoded record routes in shared links — 28 October 2026
+
+- Serialise routes containing percent escapes as opaque `record:` base64url
+  fragments so refresh and browser history restore the same record route.
+- Keep ordinary route fragments readable and apply the same encoding to
+  record links opened in a separate tab.
+- Add focused round-trip coverage for encoded slashes, spaces, Unicode, plus
+  and hash characters, and malformed percent escapes.
+
 ## Bounded record source references — 27 October 2026
 
 - Load source references for one selected record through an optional,
