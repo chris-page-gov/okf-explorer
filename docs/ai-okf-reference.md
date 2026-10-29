@@ -30,6 +30,13 @@ For a large corpus, give the AI:
 
 ## Large JSON Graphs Are Still Semantic Data
 
+A large-corpus descriptor may include an optional `related_links` list. Explorer
+shows its valid entries with the active catalogue; each entry has a plain-text
+`label`, an HTTPS `url` and a short `kind`. Keep the list to eight entries, each
+label to 120 characters and each URL to 2,048 characters. Explorer ignores
+entries that are malformed or use a non-canonical, unsafe or non-HTTPS URL.
+Older descriptors without this field remain valid.
+
 A large OKF publication does not need one giant Turtle or JSON-LD document for
 an AI to traverse it. The public descriptor and vocabulary define the semantic
 contract; chunked JSON carries the operational records and assertions with

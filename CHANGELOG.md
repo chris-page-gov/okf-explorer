@@ -1,5 +1,15 @@
 # Changelog
 
+## Producer-declared catalogue report links — 29 October 2026
+
+- Show bounded, validated HTTPS links from a large-corpus descriptor beside
+  the active catalogue title, while keeping older descriptors compatible.
+- Reject explicit port zero as an invalid HTTPS destination.
+- Document the optional `related_links` descriptor field and test accepted,
+  absent and rejected values.
+- Refresh the exact-build Heritage receipt from 100 browser-scored questions
+  and three local journeys; preserve the earlier receipt and results.
+
 ## Encoded record route sharing evidence — 29 October 2026
 
 - Refresh the Heritage 100-question and three-journey browser observations for
