@@ -116,6 +116,14 @@ input:focus {
   white-space: nowrap;
 }
 
+.descriptor-related-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  margin-top: 4px;
+  font-size: 12px;
+}
+
 .tabs {
   grid-area: tabs;
   display: flex;

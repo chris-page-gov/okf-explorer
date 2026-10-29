@@ -344,6 +344,8 @@ export type LargeCorpusDescriptor = {
   core_conformance?: string;
   title: string;
   description?: string;
+  /** Optional links to related material, validated before rendering. */
+  related_links?: unknown;
   version?: string;
   status?: string;
   assertion_scope?: RelationshipAssertionScope | string;

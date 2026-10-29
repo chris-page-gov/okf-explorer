@@ -1,5 +1,12 @@
 # Changelog
 
+## Producer-declared catalogue report links — 29 October 2026
+
+- Show bounded, validated HTTPS links from a large-corpus descriptor beside
+  the active catalogue title, while keeping older descriptors compatible.
+- Document the optional `related_links` descriptor field and test accepted,
+  absent and rejected values.
+
 ## Encoded record route sharing evidence — 29 October 2026
 
 - Refresh the Heritage 100-question and three-journey browser observations for

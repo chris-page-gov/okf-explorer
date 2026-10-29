@@ -161,7 +161,7 @@
     movedBundleTarget,
     parseStructuredDocumentText
   } from '$lib/sources/fetch';
-  import { isLargeCorpusDescriptor } from '$lib/sources/descriptor';
+  import { isLargeCorpusDescriptor, parseRelatedDescriptorLinks } from '$lib/sources/descriptor';
   import ExploratoryBanner from '$lib/publication/ExploratoryBanner.svelte';
   import {
     buildExploratoryFeedbackUrl,
@@ -608,6 +608,7 @@
   let smallCorpus = $derived(source?.kind === 'small' ? source.corpus : null);
   let federationOverview = $derived(source?.kind === 'small' ? source.federation : undefined);
   let largeLearning = $derived(source?.kind === 'large' ? largeLearningPresentation(source.descriptor.learning_presentation) : null);
+  let relatedDescriptorLinks = $derived(source?.kind === 'large' ? parseRelatedDescriptorLinks(source.descriptor.related_links) : []);
   let learning = $derived(learningPresentation(smallCorpus));
   let learningKeys = $derived(learning?.facets.map(facet => facet.key) || []);
   let semanticFacets = $derived(semanticFacetPresentation(smallCorpus));
@@ -6572,6 +6573,13 @@
       <p>{source?.kind === 'large' ? source.descriptor.title : source?.kind === 'small' ? source.corpus.title : 'No bundle loaded'}</p>
       <a class="changes-link" href="https://github.com/chris-page-gov/okf-explorer/blob/main/CHANGELOG.md" target="_blank" rel="noopener noreferrer">Explorer changes</a>
       <a class="changes-link" href="../evidence/">Evidence workbench</a>
+      {#if relatedDescriptorLinks.length}
+        <nav class="descriptor-related-links" aria-label="Related material">
+          {#each relatedDescriptorLinks as link}
+            <a href={link.url} target="_blank" rel="noopener noreferrer" data-link-kind={link.kind}>{link.label}</a>
+          {/each}
+        </nav>
+      {/if}
     </div>
     <nav class="tabs" aria-label="Views">
       {#each VIEW_MODES as view}

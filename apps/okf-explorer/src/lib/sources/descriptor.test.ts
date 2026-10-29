@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { isLargeCorpusDescriptor } from './descriptor';
+import { isLargeCorpusDescriptor, parseRelatedDescriptorLinks } from './descriptor';
 
 describe('large-corpus descriptor discrimination', () => {
   it('accepts only the supported schema and kind pair', () => {
@@ -31,5 +31,39 @@ describe('large-corpus descriptor discrimination', () => {
         kind: 'okf-large-corpus'
       })
     ).toThrow('Unsupported large-corpus descriptor schema');
+  });
+});
+
+describe('producer-declared related descriptor links', () => {
+  it('keeps absent links compatible and accepts bounded canonical HTTPS links', () => {
+    expect(parseRelatedDescriptorLinks(undefined)).toEqual([]);
+    expect(parseRelatedDescriptorLinks([
+      { label: 'AI evaluation reports', url: 'https://example.test/reports/', kind: 'evaluation-reports' }
+    ])).toEqual([
+      { label: 'AI evaluation reports', url: 'https://example.test/reports/', kind: 'evaluation-reports' }
+    ]);
+  });
+
+  it('rejects malformed, unsafe, non-canonical and overlong values', () => {
+    const invalid = [
+      { label: 'bad', url: 'http://example.test/', kind: 'reports' },
+      { label: 'bad', url: 'https://user:pass@example.test/', kind: 'reports' },
+      { label: 'bad', url: 'javascript:alert(1)', kind: 'reports' },
+      { label: 'bad', url: 'https://example.test/%zz', kind: 'reports' },
+      { label: 'bad', url: 'https://example.test/a b', kind: 'reports' },
+      { label: 'bad', url: 'https://example.test:99999/', kind: 'reports' },
+      { label: 'bad', url: 'https://example.test', kind: 'reports' },
+      { label: 'bad\nlabel', url: 'https://example.test/', kind: 'reports' },
+      { label: 'x'.repeat(121), url: 'https://example.test/', kind: 'reports' },
+      { label: 'bad', url: `https://example.test/${'x'.repeat(2040)}`, kind: 'reports' }
+    ];
+    expect(parseRelatedDescriptorLinks(invalid)).toEqual([]);
+  });
+
+  it('caps the declared list at eight entries', () => {
+    const rows = Array.from({ length: 9 }, (_, index) => ({
+      label: `Report ${index}`, url: `https://example.test/${index}/`, kind: 'reports'
+    }));
+    expect(parseRelatedDescriptorLinks(rows)).toHaveLength(8);
   });
 });
