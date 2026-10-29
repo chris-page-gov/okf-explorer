@@ -1,5 +1,12 @@
 # OKF Explorer evaluation harness
 
+The encoded record route sharing change has fresh local Heritage question and
+journey observations, run on 29 October 2026 and bound to its exact app build.
+The previous receipt and both compressed result files are preserved byte for
+byte under `validation/encoded-route-sharing/2026-10-28/pre-update/`, with a
+SHA-256 inventory. These local observations do not establish public deployment
+or domain-specific policy acceptance.
+
 This repository now carries repeatable browser evaluation suites for the UK
 Government APIs OKF pack, the hosted GOV.UK CKAN OKF pack, and future large OKF
 bundles.
