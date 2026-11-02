@@ -55,7 +55,11 @@ or official endorsement.
 retain the evidence and decisions at their stated dates. Follow current task
 guides for today's interface.
 
-## Research Basis
+## Research basis
+
+[Corpus Map implications for OKF+ and Microsoft](corpus-map-okf-microsoft-review-2026-10-26.md)
+reviews entity navigation, the existing bundle design, Microsoft integration
+routes and a bounded evaluation before adoption.
 
 [Curated bounded evidence package research](bep-research.md) retains the
 research briefs, reports and reconstructed examples with their provenance and
