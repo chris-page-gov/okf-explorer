@@ -165,7 +165,11 @@ instructions or proof of a present deployment.
 - [Code review follow-up, 2026-07-08](../code-review-2026-07-08.md) records the
   remediation, publication checks and current pack checkpoint.
 
-## Research Basis
+## Research basis
+
+- [Corpus Map research review for OKF+ and Microsoft integration](../corpus-map-okf-microsoft-review-2026-10-26.md)
+  assesses the supplied preprint, optional entity navigation, Microsoft
+  consumer projections, permission boundaries and a proposed pilot.
 
 The documentation and evaluation rubric are deliberately aligned with current
 public service guidance rather than only internal engineering preferences:
