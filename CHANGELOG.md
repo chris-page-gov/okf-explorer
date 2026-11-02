@@ -1,5 +1,11 @@
 # Changelog
 
+## Dependency maintenance — 2 November 2026
+
+- Pin the Ask OKF Node HTTP adapter to 2.1.0 for the upstream request-body
+  and batch bounds advisory. Preserve the service's stricter existing body
+  cap, single-message admission, host/origin checks and read-only tools.
+
 ## Producer-declared catalogue report links — 29 October 2026
 
 - Show bounded, validated HTTPS links from a large-corpus descriptor beside

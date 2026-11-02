@@ -1,5 +1,16 @@
 # Maintaining Explorer dependencies
 
+## Ask OKF HTTP adapter — 2 November 2026
+
+The maintenance candidate pins `@modelcontextprotocol/node` to 2.1.0 in
+`services/ask-okf-mcp`. The upstream adapter adds HTTP body and batch bounds.
+The application already rejects oversized bodies and all JSON-RPC batches
+before invoking the handler; retain those stricter controls. The service
+tests exercise streamed and declared body limits, single-message admission,
+both supported SDKs and ordinary read-only evidence requests. Type checking,
+tests and a reproducible service build are required. This candidate does
+not deploy the hosted service or change an existing published archive.
+
 ## Reviewed integration on 23 October 2026
 
 The reading-help candidate combines the overlapping Explorer updates from
