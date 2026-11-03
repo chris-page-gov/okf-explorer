@@ -1,5 +1,18 @@
 # Changelog
 
+## Dependency candidate integration — 3 November 2026
+
+- Integrate current main into the Ask OKF dependency candidate, preserving the
+  Corpus Map article and index updates together with both maintenance records.
+- Retain the bounded Node adapter and existing service admission controls;
+  repeat the affected verification before owner review.
+
+## Dependency maintenance — 2 November 2026
+
+- Pin the Ask OKF Node HTTP adapter to 2.1.0 for the upstream request-body
+  and batch bounds advisory. Preserve the service's stricter existing body
+  cap, single-message admission, host/origin checks and read-only tools.
+
 ## Corpus Map review publication — 2 November 2026
 
 - Publish the dated Corpus Map review through the documentation and reference
