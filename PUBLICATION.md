@@ -75,7 +75,7 @@ observations are evidence about that candidate. They are never copied into the
 candidate or used as a Site component input, so refreshing them cannot change
 the candidate identity.
 
-## Explorer v0.7.0 Release Sequence
+## Explorer v0.8.0 release sequence
 
 Explorer releases use the Explorer repository's own merge, Pages and browser
 evidence. They do not reuse the external Heritage R1/R2 promotion procedure
@@ -121,24 +121,24 @@ below.
    genuine Google Chrome run, not Playwright's bundled Chromium. Confirm the
    tested fragment and current chapter survive navigation and reload, and that
    no page or browser-console error occurred.
-5. Write `okf-explorer-v0.7.0-public-verification.json` outside `_site/`. It
+5. Write `okf-explorer-v0.8.0-public-verification.json` outside `_site/`. It
    must record the merge commit, Pages run and deployment URLs, observation
    time, browser name and version, exact commands and passing test counts,
    Pages artefact byte count and SHA-256, candidate-receipt SHA-256, deployed
    application-manifest SHA-256 and tree SHA-256, tested URLs/fragments,
    assertion results and any limitations. A failed or partial journey remains
    failed evidence; do not edit it into a pass.
-6. Create and push annotated tag `v0.7.0` at the exact verified merge commit.
-   Prepare a draft release titled **OKF Explorer v0.7.0** from the matching
+6. Create and push annotated tag `v0.8.0` at the exact verified merge commit.
+   Prepare a draft release titled **OKF Explorer v0.8.0** from the matching
    changelog section. Attach exactly these three assets:
 
-   - `okf-explorer-v0.7.0-pages-artifact.zip` — the unchanged `github-pages`
+   - `okf-explorer-v0.8.0-pages-artifact.zip` — the unchanged `github-pages`
      Actions artefact from step 2; it contains the released Explorer, rendered
      corpus, OKF JSON/YAML-LD projections and legacy viewer;
-   - `okf-explorer-v0.7.0-sbom.cdx.json` — the checked
+   - `okf-explorer-v0.8.0-sbom.cdx.json` — the checked
      `release-assurance/explorer.sbom.cdx.json`, renamed without changing its
      bytes; and
-   - `okf-explorer-v0.7.0-public-verification.json` — the exact step 5 receipt.
+   - `okf-explorer-v0.8.0-public-verification.json` — the exact step 5 receipt.
 
 7. Before publishing the draft, download all three assets and independently
    compare their byte counts and SHA-256 digests with the local files. Confirm

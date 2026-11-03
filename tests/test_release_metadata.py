@@ -47,18 +47,18 @@ class ReleaseMetadataTest(unittest.TestCase):
         ):
             self.assertIn(suite, checks)
 
-    def test_v070_release_metadata_is_synchronised(self) -> None:
+    def test_v080_release_metadata_is_synchronised(self) -> None:
         package_version = json.loads(PACKAGE.read_text(encoding="utf-8"))["version"]
         citation = CITATION.read_text(encoding="utf-8")
         changelog = CHANGELOG.read_text(encoding="utf-8")
 
-        self.assertEqual("0.7.0", package_version)
+        self.assertEqual("0.8.0", package_version)
         self.assertEqual(
             [package_version, package_version],
             re.findall(r"^\s*version:\s*\"([^\"]+)\"\s*$", citation, re.MULTILINE),
         )
         self.assertEqual(
-            ["2026-08-12", "2026-08-12"],
+            ["2026-11-03", "2026-11-03"],
             re.findall(
                 r"^\s*date-released:\s*\"([^\"]+)\"\s*$",
                 citation,
@@ -79,6 +79,10 @@ class ReleaseMetadataTest(unittest.TestCase):
         )
         self.assertRegex(
             changelog,
+            r"(?m)^## v0\.8\.0 - 2026-11-03 - \S",
+        )
+        self.assertRegex(
+            changelog,
             r"(?m)^## v0\.7\.0 - 2026-08-12 - \S",
         )
         self.assertRegex(
@@ -93,7 +97,7 @@ class ReleaseMetadataTest(unittest.TestCase):
             changelog,
             r"(?m)^## v0\.6\.1 - 2026-08-11 - \S",
         )
-        self.assertNotIn("## v0.7.0 - Unreleased", changelog)
+        self.assertNotIn("## v0.8.0 - Unreleased", changelog)
         self.assertRegex(
             changelog,
             r"(?m)^## v0\.5\.4 - 2026-07-27 - \S",

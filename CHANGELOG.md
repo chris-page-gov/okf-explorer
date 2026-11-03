@@ -1,5 +1,27 @@
 # Changelog
 
+## Unreleased
+
+## v0.8.0 - 2026-11-03 - Consolidated publication and Legislation v0.4
+
+- Publish the accumulated Explorer, evidence-workbench, learning, corpus-map,
+  bounded-source and dependency-maintenance work recorded below since v0.7.0.
+- Register the independently versioned UK Legislation and UK Whole-Law
+  publications as stable v0.4.0 bundles, without changing their July source
+  snapshots or conflating bundle release 0.4.0 with OKF specification 0.2.
+- Retain the optional, read-only `document.modelContext` WebMCP adapter and its
+  ordinary browser and machine-readable fallbacks. Registration remains
+  distinct from proof that a particular AI host invoked a page tool.
+- Update the repository's remote MCP transport to
+  `@modelcontextprotocol/node` 2.1.2 and the legacy comparison SDK to 1.32.2.
+  Pin patched transitive HTTP parsing and serving dependencies so request-body,
+  JSON-RPC batch, path-decoding and compressed-body denial-of-service controls
+  are present. A repository release does not claim that the separately hosted
+  service has been redeployed.
+- Prepare one exact Explorer v0.8.0 Site candidate for Pages, real-browser
+  verification and immutable release; evidence about the deployed candidate
+  remains outside the candidate bytes.
+
 ## Corpus Map review publication — 2 November 2026
 
 - Publish the dated Corpus Map review through the documentation and reference
@@ -510,7 +532,7 @@
 
 - Add a static history landing page after the publication audit found a directory link without an index. Preserve all frozen observation, classification and inventory bytes; this is a separately labelled navigation addition.
 
-## Unreleased
+### Additional v0.8.0 changes
 
 - Open learning-hub guides with normal browser navigation so static documents do
   not first fail as application routes. The DWP Try link now reaches a beginner
