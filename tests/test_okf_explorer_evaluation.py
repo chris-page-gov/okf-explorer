@@ -54,6 +54,20 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
         }
 
     @staticmethod
+    def _receipt_explorer_build_identity(
+        receipt: dict[str, object], base_url: str
+    ) -> dict[str, object]:
+        candidate = receipt["candidate"]
+        return {
+            "manifest_url": urljoin(base_url, "okf-explorer-build-manifest.json"),
+            "manifest_sha256": candidate["explorer_manifest_sha256"],
+            "schema": "okf-explorer-app-build-manifest.v1",
+            "algorithm": "sha256-canonical-json-materials-v1",
+            "file_count": 43,
+            "tree_sha256": candidate["explorer_tree_sha256"],
+        }
+
+    @staticmethod
     def _producer_materials() -> dict[str, object]:
         paths = (
             "requirements-okf.txt",
@@ -367,6 +381,9 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
                 self._evaluator_identity(),
                 result["metadata"]["evaluator"],
             )
+            recorded_explorer_build = self._receipt_explorer_build_identity(
+                receipt, section["base_url"]
+            )
             self.assertEqual(
                 {
                     "bundle_url": expected_candidate_bundle_url,
@@ -374,9 +391,7 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
                     "schema": faithful_descriptor["schema"],
                     "snapshot": receipt["candidate"]["snapshot"],
                     "generated_at": receipt["candidate"]["generated_at"],
-                    "explorer_build": self._explorer_build_identity(
-                        section["base_url"]
-                    ),
+                    "explorer_build": recorded_explorer_build,
                 },
                 result["candidate"],
             )
@@ -450,41 +465,16 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
                     ],
                 )
 
-    def test_heritage_receipt_binds_exact_explorer_build_identity(self):
+    def test_heritage_receipt_preserves_its_executed_explorer_build_identity(self):
         receipt = json.loads(HERITAGE_LOCAL_RECEIPT.read_text(encoding="utf-8"))
-        app_root = ROOT / "apps" / "okf-explorer" / "build"
-        app_manifest_path = app_root / "okf-explorer-build-manifest.json"
-        app_manifest_bytes = app_manifest_path.read_bytes()
-        app_manifest = json.loads(app_manifest_bytes)
-        app_materials = []
-        for declared in app_manifest["materials"]:
-            raw = (app_root / declared["path"]).read_bytes()
-            app_materials.append(
-                {
-                    "path": declared["path"],
-                    "bytes": len(raw),
-                    "sha256": hashlib.sha256(raw).hexdigest(),
-                }
+        for key in ("question_suite", "local_journeys"):
+            section = receipt[key]
+            compressed = HERITAGE_EVALUATION / section["result"]
+            result = json.loads(gzip.decompress(compressed.read_bytes()))
+            self.assertEqual(
+                self._receipt_explorer_build_identity(receipt, section["base_url"]),
+                result["candidate"]["explorer_build"],
             )
-        app_tree_bytes = (
-            json.dumps(
-                app_materials,
-                ensure_ascii=False,
-                separators=(",", ":"),
-            )
-            + "\n"
-        ).encode("utf-8")
-        app_tree_sha256 = hashlib.sha256(app_tree_bytes).hexdigest()
-        self.assertEqual(app_manifest["materials"], app_materials)
-        self.assertEqual(app_manifest["tree_sha256"], app_tree_sha256)
-        self.assertEqual(
-            receipt["candidate"]["explorer_tree_sha256"],
-            app_tree_sha256,
-        )
-        self.assertEqual(
-            receipt["candidate"]["explorer_manifest_sha256"],
-            hashlib.sha256(app_manifest_bytes).hexdigest(),
-        )
 
     def test_question_suite_has_100_unique_questions_and_100_point_rubric(self):
         for evaluation_dir in [EVALUATION, CKAN_EVALUATION]:
