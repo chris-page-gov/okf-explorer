@@ -1,10 +1,23 @@
 # Changelog
 
+## Dependency candidate integration — 3 November 2026
+
+- Integrate current main into the Ask OKF dependency candidate, preserving the
+  Corpus Map article and index updates together with both maintenance records.
+- Retain the bounded Node adapter and existing service admission controls;
+  repeat the affected verification before owner review.
+
 ## Dependency maintenance — 2 November 2026
 
 - Pin the Ask OKF Node HTTP adapter to 2.1.0 for the upstream request-body
   and batch bounds advisory. Preserve the service's stricter existing body
   cap, single-message admission, host/origin checks and read-only tools.
+
+## Corpus Map review publication — 2 November 2026
+
+- Publish the dated Corpus Map review through the documentation and reference
+  indexes, preserving its research baseline and proposed status.
+- Link to the versioned arXiv source instead of a local PDF copy.
 
 ## Producer-declared catalogue report links — 29 October 2026
 
@@ -47,6 +60,15 @@
   explicit; citations do not become downloadable data.
 - Refresh the exact-build Heritage receipt from successful CI execution of all
   100 questions and three unchanged journeys, preserving the preceding evidence.
+
+## Corpus Map research and Microsoft integration review — 26 October 2026
+
+- Assess the supplied CorpusMap preprint against the OKF+ bundle,
+  semantic and context-assembly design at the recorded baseline, including the
+  importance of relevant starting candidates and the limits of reported token savings.
+- Propose an optional entity navigation profile, Microsoft consumer routes
+  and a bounded comparative pilot with identity, provenance and access checks.
+  Keep these proposals distinct from implemented profiles and tenant evidence.
 
 ## Compact facet navigation — 24 October 2026
 

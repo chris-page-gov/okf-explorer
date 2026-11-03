@@ -11,6 +11,14 @@ both supported SDKs and ordinary read-only evidence requests. Type checking,
 tests and a reproducible service build are required. This candidate does
 not deploy the hosted service or change an existing published archive.
 
+On 3 November 2026 the candidate incorporates current main at `a7f85cc`,
+preserving the Corpus Map review article and both documentation indexes.
+The changelog resolution retains both independent entries. The service's
+dependency pins, bounded admission policy and immutable source/engine pairs
+remain as reviewed; rerun service and publication checks against the integrated
+candidate before review. Merging this candidate and publishing a service remain
+separate owner decisions.
+
 ## Reviewed integration on 23 October 2026
 
 The reading-help candidate combines the overlapping Explorer updates from
