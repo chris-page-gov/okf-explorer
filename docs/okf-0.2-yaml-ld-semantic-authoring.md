@@ -3,7 +3,7 @@
 The cross-repository tables below are dated observations, not automatic live deployment checks. Use each producer’s current release and [the estate tracker](okf-estate-standardisation-tracker.md) to establish current state. The semantic contract and historical receipts remain separate.
 
 
-Status: Explorer v0.8.0 and Legislation/Whole-Law v0.4.0 are the current
+Status: Explorer v0.8.1 and Legislation/Whole-Law v0.4.0 are the current
 publication targets; Land Registry v0.3.0 remains released immutably and
 publicly verified. Land Registry retains Explorer v0.6.2 as its governed
 acceptance dependency; v0.6.3 is the separate post-G9 presentation correction,

@@ -365,7 +365,7 @@ test('binds a release receipt to exact candidate and Explorer revisions', () => 
     candidateTree: 'c'.repeat(40),
     candidateBundleTree: SHA,
     explorerCommit: 'd'.repeat(40),
-    explorerTag: 'v0.6.2'
+    explorerTag: 'v0.8.1'
   });
 
   assert.deepEqual(binding, {
@@ -377,12 +377,12 @@ test('binds a release receipt to exact candidate and Explorer revisions', () => 
     },
     explorer: {
       repository: 'https://github.com/chris-page-gov/okf-explorer',
-      tag: 'v0.6.2',
+      tag: 'v0.8.1',
       commit: 'd'.repeat(40)
     }
   });
-  assert.equal(EXPLORER_RELEASE_VERSION, '0.6.2');
-  assert.equal(EXPLORER_RELEASE_TAG, 'v0.6.2');
+  assert.equal(EXPLORER_RELEASE_VERSION, '0.8.1');
+  assert.equal(EXPLORER_RELEASE_TAG, 'v0.8.1');
 });
 
 test('rejects partial or malformed release bindings', () => {
@@ -398,9 +398,25 @@ test('rejects partial or malformed release bindings', () => {
         candidateTree: 'c'.repeat(40),
         candidateBundleTree: SHA,
         explorerCommit: 'd'.repeat(40),
-        explorerTag: 'v0.6.0'
+        explorerTag: 'v0.8.0'
       }),
-    /requires Explorer v0\.6\.2/
+    /requires Explorer v0\.8\.1/
+  );
+});
+
+test('uses the stable model-assisted relationship filter identity', async () => {
+  const runner = await readFile(
+    new URL('./run_legislation_runtime_acceptance.mjs', import.meta.url),
+    'utf8'
+  );
+
+  assert.match(
+    runner,
+    /\[data-relationship-authority-filter="model-assisted"\]/
+  );
+  assert.doesNotMatch(
+    runner,
+    /getByRole\('button', \{ name: 'Model-assisted relationships' \}\)/
   );
 });
 
