@@ -12,6 +12,12 @@
 - Retain the optional, read-only `document.modelContext` WebMCP adapter and its
   ordinary browser and machine-readable fallbacks. Registration remains
   distinct from proof that a particular AI host invoked a page tool.
+- Update the repository's remote MCP transport to
+  `@modelcontextprotocol/node` 2.1.2 and the legacy comparison SDK to 1.32.2.
+  Pin patched transitive HTTP parsing and serving dependencies so request-body,
+  JSON-RPC batch, path-decoding and compressed-body denial-of-service controls
+  are present. A repository release does not claim that the separately hosted
+  service has been redeployed.
 - Prepare one exact Explorer v0.8.0 Site candidate for Pages, real-browser
   verification and immutable release; evidence about the deployed candidate
   remains outside the candidate bytes.
