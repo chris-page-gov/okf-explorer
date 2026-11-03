@@ -1,7 +1,10 @@
 # UK Legislation OKF
 
-This architecture document retains dated release observations. Consult the
-[producer](https://github.com/chris-page-gov/okf-uk-legislation) for current
+This architecture document describes the stable UK Legislation and Whole-Law
+v0.4.0 publications dated 3 November 2026. Their source snapshots remain
+`legislation-work-index-2026-07-11T18:00:00Z` and `whole-law-2026-07-25`;
+publication date is not source-currency date. Consult the
+[producer](https://github.com/chris-page-gov/okf-uk-legislation) for the exact
 release identity. Explorer-local generator commands describe compatibility
 material, not authority to refresh the independent production corpus.
 
@@ -25,12 +28,11 @@ still machine-readable semantic data: they retain stable routes, predicates,
 authority, derivation and evidence, and an agent can traverse them through the
 published search and adjacency manifests.
 
-The earlier demonstration documented below reported inconsistent artefacts: the operational Explorer
-descriptor identifies release `0.3.0`, while the root YAML-LD and JSON-LD
-representations still identify bundle version `0.2.0`. That observation is historical; check the current producer descriptor and
-semantic representations together before using them. Do not silently combine
-conflicting release metadata. The demonstration did not expose a root Turtle
-document.
+The root and Whole-Law descriptors, YAML-LD and JSON-LD representations now
+identify release `0.4.0`; Whole-Law also publishes Turtle. The separately
+declared `okf_version` remains `0.2`, because that is the format specification,
+not the publication version. The operational corpus stays in digest-bound
+chunked JSON rather than one impractical monolithic RDF document.
 
 ## What “complete” means
 
@@ -83,12 +85,13 @@ type code”; it is not provision-level legal extent or applicability. Explorer
 therefore shows a bounded membership preview and derived membership graph for
 that card. Selecting a legal work then loads the work's route-scoped adjacency.
 
-The current route resolver combines the core adjacency with governed
-model-assisted enrichment available for the selected work. Official-effects
-assertions are present in the release-wide effect datapack and reconciliation
-evidence, but are not yet indexed by both source and target work route. This is
-a declared publication limitation; the selected-work card must not be
-described as the complete combined 906,754-assertion graph.
+The current route resolver combines core adjacency with governed
+model-assisted enrichment for a selected work. It uses digest-bound route
+locators and bounded shards, so a record card can show its own incident
+relationships without hydrating all 906,754 active assertions. Aggregate cards
+and exceptionally dense routes remain bounded; the interface must report that
+limit rather than presenting a partial result as the complete graph. Official
+effects remain source-derived and distinct from model-assisted discovery.
 
 ## Official access methods
 
