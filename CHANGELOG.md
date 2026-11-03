@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+## v0.8.1 - 2026-11-03 - Legislation release acceptance correction
+
+- Bind the UK Legislation runtime-acceptance contract to Explorer v0.8.1 so
+  the final receipt can prove the current release identity instead of the
+  superseded v0.6.2 dependency.
+- Select the model-assisted relationship filter by its stable data identity,
+  rather than an accessible label that now includes the live relationship
+  count. This preserves the visible, descriptive label while restoring the
+  governed cross-browser journey.
+- Add regression coverage for both the exact release binding and stable filter
+  selector. Explorer v0.8.0 remains an immutable published release.
+
 ## v0.8.0 - 2026-11-03 - Consolidated publication and Legislation v0.4
 
 - Publish the accumulated Explorer, evidence-workbench, learning, corpus-map,

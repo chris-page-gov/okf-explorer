@@ -1785,7 +1785,9 @@ async function modelRelationshipEvidence(page, result) {
   );
 
   const filters = page.getByLabel('Relationship authority filters');
-  const modelFilter = filters.getByRole('button', { name: 'Model-assisted relationships' });
+  const modelFilter = filters.locator(
+    '[data-relationship-authority-filter="model-assisted"]'
+  );
   await modelFilter.waitFor({ state: 'visible' });
   invariant(await modelFilter.getAttribute('aria-pressed') === 'true', 'Model-assisted authority filter did not start enabled');
   await modelFilter.click();
