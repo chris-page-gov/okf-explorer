@@ -19,7 +19,7 @@
     "properties": [
       {
         "name": "okf:pnpm-lock-sha256",
-        "value": "6b67ddb312bbd76e6658f902e61cbc6d4520afaa37ddf03a904c834751e0f5f3"
+        "value": "8d14db01051bc3bdfca89d2439bec8959345cd7565be04f69ffb2bfe08f297a4"
       }
     ],
     "tools": {
@@ -710,15 +710,15 @@
       ]
     },
     {
-      "bom-ref": "pkg:npm/%40types/node@24.19.2",
+      "bom-ref": "pkg:npm/%40types/node@26.6.6",
       "name": "@types/node",
-      "purl": "pkg:npm/%40types/node@24.19.2",
+      "purl": "pkg:npm/%40types/node@26.6.6",
       "type": "library",
-      "version": "24.19.2",
+      "version": "26.6.6",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "f77778f700962640b237ceccc4ba4d37a2973c2c05c3b6d5520efd986515d4e4b8d09196c150abf27eb50d7092ab3ec257afd57cf91bef179ceee3f633e40759"
+          "content": "333423fbc2b1dd7238d0e994004e90a21e7c64c36cb4d34cc27da77dddea5ac7deee70cd4aa24dcdeb389e3873e801f0ad21ce7df48bc1753ac9be3be10e1aa2"
         }
       ]
     },
@@ -1815,15 +1815,15 @@
       ]
     },
     {
-      "bom-ref": "pkg:npm/undici-types@7.24.6",
+      "bom-ref": "pkg:npm/undici-types@8.9.0",
       "name": "undici-types",
-      "purl": "pkg:npm/undici-types@7.24.6",
+      "purl": "pkg:npm/undici-types@8.9.0",
       "type": "library",
-      "version": "7.24.6",
+      "version": "8.9.0",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "591356fac2608f9381378ff42691c5aadab38696e75741ae07e3a8cc0f6008bedaf7ddd2994fb5241642ccb37162c6cc7c87832fe953b29843e6337937e9f4ce"
+          "content": "2930f2453617f2c5a629702290f1c74b273adc244f11331cb728ca16ea5c0ba3812d74f7c6c3747bd685ee6fa6217bad156a545ee79db68c06ee22cece9d2442"
         }
       ]
     },
@@ -1915,7 +1915,7 @@
         "pkg:npm/%40sveltejs/adapter-static@4.0.0",
         "pkg:npm/%40sveltejs/kit@3.1.0",
         "pkg:npm/%40sveltejs/vite-plugin-svelte@7.3.1",
-        "pkg:npm/%40types/node@24.19.2",
+        "pkg:npm/%40types/node@26.6.6",
         "pkg:npm/%40vitest/coverage-v8@4.1.12",
         "pkg:npm/pdfjs-dist@6.4.299",
         "pkg:npm/svelte-check@4.7.7",

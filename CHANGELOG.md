@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Update the Explorer's Node type definitions to 26.6.6 with matching
+  `undici-types` 8.9.0 and regenerate the dependency inventory. Retain the
+  declared runtime minimum and security overrides.
 - Update the pinned pnpm setup action to 6.1.1 across CI, shadow evaluation and
   Pages. Verify the release commit while retaining pnpm 10.34.7, existing
   workflow triggers and deployment permissions.

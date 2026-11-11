@@ -1,5 +1,19 @@
 # Maintaining Explorer dependencies
 
+## Node type definitions — 11 November 2026
+
+PR #190 updates the application's development-only `@types/node` resolution
+from 24.19.2 to 26.6.6, with `undici-types` 8.9.0. These packages describe Node
+APIs to TypeScript; they do not install a Node runtime or raise the application's
+declared minimum. CI retains its existing Node 24 and Node 26 runtime checks.
+No application code begins using a newer Node API in this update.
+
+Review the resolved lockfile and regenerated SBOM together. The dependency
+policy, Svelte type check and application tests pass locally. The deterministic
+application tree and build-manifest digests remain identical to the preceding
+main build, so its existing Heritage browser evidence still identifies those
+application bytes. Protected CI and deployed identity remain separate checks.
+
 ## Ask OKF HTTP adapter reconciliation — 11 November 2026
 
 The earlier PR #191 candidate proposed `@modelcontextprotocol/node` 2.1.0.
