@@ -39,6 +39,12 @@ freshness schedule and written to receipts outside the candidate. A signed
 promotion envelope may bind those receipts to the exact deployed bytes only
 after the public journey passes.
 
+The retained local candidate receipt is immutable historical evidence for the
+exact Explorer build recorded inside its executed results. A later Explorer
+release does not rewrite that receipt or make its earlier claims current. Any
+new Heritage release claim must execute a new evaluation and write a new
+receipt bound to the candidate and Explorer bytes that were actually tested.
+
 The corpus, its reading pages and future release assets are owned by the
 [external heritage publication unit](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire).
 The reusable [OKF Explorer](https://chris-page-gov.github.io/okf-explorer/)

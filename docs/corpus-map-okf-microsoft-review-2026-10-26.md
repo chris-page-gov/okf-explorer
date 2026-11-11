@@ -47,7 +47,10 @@ The supplied paper is *Follow the Entities: A Corpus Map for Agentic Search*,
 by Soyeong Jeong, Sujay Kumar Jauhar, Sung Ju Hwang and Andrew Joohun Nam,
 arXiv:2609.37226v1, dated 29 September 2026. It is a preprint with KAIST and
 Microsoft affiliations. References to paper pages below use its printed page
-numbers. See the [versioned arXiv record](https://arxiv.org/abs/2609.37226v1).
+numbers. See the [versioned arXiv record](https://arxiv.org/abs/2609.37226v1)
+and [version 1 PDF](https://arxiv.org/pdf/2609.37226v1). The
+[central bibliography entry](../sources-index.md#corpusmap) records the
+citation and the fingerprint of the retained local input PDF.
 
 CorpusMap builds a reusable map before a question is asked. It identifies
 document-local mentions, resolves them against an entity registry and exposes

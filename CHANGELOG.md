@@ -1,17 +1,54 @@
 # Changelog
 
-## Dependency candidate integration — 3 November 2026
+## Unreleased
 
-- Integrate current main into the Ask OKF dependency candidate, preserving the
-  Corpus Map article and index updates together with both maintenance records.
-- Retain the bounded Node adapter and existing service admission controls;
-  repeat the affected verification before owner review.
+- Reconcile the earlier Ask OKF dependency candidate with the newer adapter
+  2.1.2 and server/client 2.4.0 already on main. Preserve the current dependency
+  lockfile and security overrides, and clarify the maintenance history.
+- Expand the central bibliography to cover 33 referenced papers, with authors,
+  dates, versioned arXiv source and PDF links, journal and conference editions,
+  repository citation locations, and explicit access and verification limits.
+- Keep retained research PDFs out of Git and Site inputs. Move the two older
+  BEP PDF exports into ignored local storage with unchanged checksums and
+  recorded retention paths; exclude research PDFs from Site copying and test
+  nested and mixed-case filenames. Earlier Git history remains unchanged.
+- Extend the existing sources index into a central bibliography with citation,
+  version, verification-date and local-retention guidance.
+- Add CorpusMap's version 1 source and PDF URLs, review link and retained-file
+  fingerprint. Preserve the supplied PDF in an ignored local research folder
+  outside public Site inputs, and link the bibliography from the documentation.
 
-## Dependency maintenance — 2 November 2026
+## v0.8.1 - 2026-11-03 - Legislation release acceptance correction
 
-- Pin the Ask OKF Node HTTP adapter to 2.1.0 for the upstream request-body
-  and batch bounds advisory. Preserve the service's stricter existing body
-  cap, single-message admission, host/origin checks and read-only tools.
+- Bind the UK Legislation runtime-acceptance contract to Explorer v0.8.1 so
+  the final receipt can prove the current release identity instead of the
+  superseded v0.6.2 dependency.
+- Select the model-assisted relationship filter by its stable data identity,
+  rather than an accessible label that now includes the live relationship
+  count. This preserves the visible, descriptive label while restoring the
+  governed cross-browser journey.
+- Add regression coverage for both the exact release binding and stable filter
+  selector. Explorer v0.8.0 remains an immutable published release.
+
+## v0.8.0 - 2026-11-03 - Consolidated publication and Legislation v0.4
+
+- Publish the accumulated Explorer, evidence-workbench, learning, corpus-map,
+  bounded-source and dependency-maintenance work recorded below since v0.7.0.
+- Register the independently versioned UK Legislation and UK Whole-Law
+  publications as stable v0.4.0 bundles, without changing their July source
+  snapshots or conflating bundle release 0.4.0 with OKF specification 0.2.
+- Retain the optional, read-only `document.modelContext` WebMCP adapter and its
+  ordinary browser and machine-readable fallbacks. Registration remains
+  distinct from proof that a particular AI host invoked a page tool.
+- Update the repository's remote MCP transport to
+  `@modelcontextprotocol/node` 2.1.2 and the legacy comparison SDK to 1.32.2.
+  Pin patched transitive HTTP parsing and serving dependencies so request-body,
+  JSON-RPC batch, path-decoding and compressed-body denial-of-service controls
+  are present. A repository release does not claim that the separately hosted
+  service has been redeployed.
+- Prepare one exact Explorer v0.8.0 Site candidate for Pages, real-browser
+  verification and immutable release; evidence about the deployed candidate
+  remains outside the candidate bytes.
 
 ## Corpus Map review publication — 2 November 2026
 
@@ -523,7 +560,7 @@
 
 - Add a static history landing page after the publication audit found a directory link without an index. Preserve all frozen observation, classification and inventory bytes; this is a separately labelled navigation addition.
 
-## Unreleased
+### Additional v0.8.0 changes
 
 - Open learning-hub guides with normal browser navigation so static documents do
   not first fail as application routes. The DWP Try link now reaches a beginner

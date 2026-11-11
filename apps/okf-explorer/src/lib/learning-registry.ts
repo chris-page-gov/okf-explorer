@@ -47,8 +47,8 @@ export const learningRegistry: BundleRegistryEntry[] = [
     "title": "UK Legislation complete work catalogue",
     "description": "Complete legislation.gov.uk work catalogue with live progressive CLML discovery.",
     "kind": "large-corpus",
-    "status": "preview",
-    "version": "0.2.0",
+    "status": "stable",
+    "version": "0.4.0",
     "url": "https://chris-page-gov.github.io/okf-uk-legislation/okf-explorer.json",
     "home_url": "https://chris-page-gov.github.io/okf-uk-legislation/"
   },
@@ -57,8 +57,8 @@ export const learningRegistry: BundleRegistryEntry[] = [
     "title": "UK Whole-Law OKF",
     "description": "Federated overview of independently governed UK legal-source bundles with explicit authority, coverage, freshness and alternate access routes.",
     "kind": "federation",
-    "status": "preview",
-    "version": "0.3.0",
+    "status": "stable",
+    "version": "0.4.0",
     "url": "https://chris-page-gov.github.io/okf-uk-legislation/whole-law/okf-explorer.json",
     "home_url": "https://chris-page-gov.github.io/okf-uk-legislation/whole-law/"
   },

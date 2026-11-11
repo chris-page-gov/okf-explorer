@@ -70,10 +70,10 @@
       "profile": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/",
       "publisher": "https://github.com/chris-page-gov",
       "semantic_url": "https://chris-page-gov.github.io/okf-uk-legislation/okf-bundle.yamlld",
-      "status": "preview",
+      "status": "stable",
       "title": "UK Legislation complete work catalogue",
       "url": "https://chris-page-gov.github.io/okf-uk-legislation/okf-explorer.json",
-      "version": "0.2.0"
+      "version": "0.4.0"
     },
     {
       "description": "Federated overview of independently governed UK legal-source bundles with explicit authority, coverage, freshness and alternate access routes.",
@@ -97,10 +97,10 @@
         }
       ],
       "semantic_url": "https://chris-page-gov.github.io/okf-uk-legislation/whole-law/okf-bundle.yamlld",
-      "status": "preview",
+      "status": "stable",
       "title": "UK Whole-Law OKF",
       "url": "https://chris-page-gov.github.io/okf-uk-legislation/whole-law/okf-explorer.json",
-      "version": "0.3.0"
+      "version": "0.4.0"
     },
     {
       "description": "Independently published Evaluation Foundry exemplar covering the faithful source-backed corpus, tiny assurance subset and isolated synthetic capability supplement; promotion evidence is carried by its signed release envelope.",

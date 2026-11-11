@@ -1,23 +1,21 @@
 # Maintaining Explorer dependencies
 
-## Ask OKF HTTP adapter — 2 November 2026
+## Ask OKF HTTP adapter reconciliation — 11 November 2026
 
-The maintenance candidate pins `@modelcontextprotocol/node` to 2.1.0 in
-`services/ask-okf-mcp`. The upstream adapter adds HTTP body and batch bounds.
-The application already rejects oversized bodies and all JSON-RPC batches
-before invoking the handler; retain those stricter controls. The service
-tests exercise streamed and declared body limits, single-message admission,
-both supported SDKs and ordinary read-only evidence requests. Type checking,
-tests and a reproducible service build are required. This candidate does
-not deploy the hosted service or change an existing published archive.
+The earlier PR #191 candidate proposed `@modelcontextprotocol/node` 2.1.0.
+The v0.8.0 integration subsequently adopted adapter 2.1.2, server and client
+2.4.0, legacy comparison SDK 1.32.2 and patched transitive HTTP dependencies.
+Reconciliation preserves the newer manifest and lockfile from main byte for
+byte, including its security overrides; the earlier candidate must not
+downgrade them. The remaining change records that history and links this
+maintenance guidance from the repository introduction.
 
-On 3 November 2026 the candidate incorporates current main at `a7f85cc`,
-preserving the Corpus Map review article and both documentation indexes.
-The changelog resolution retains both independent entries. The service's
-dependency pins, bounded admission policy and immutable source/engine pairs
-remain as reviewed; rerun service and publication checks against the integrated
-candidate before review. Merging this candidate and publishing a service remain
-separate owner decisions.
+The service rejects oversized bodies and all JSON-RPC batches before invoking
+the handler. Preserve those stricter application controls, host/origin
+admission and read-only evidence tools. Service tests cover streamed and
+declared body limits, single-message admission, both supported SDKs and
+ordinary evidence requests. A repository merge does not redeploy the hosted
+service or change a published source/engine archive.
 
 ## Reviewed integration on 23 October 2026
 

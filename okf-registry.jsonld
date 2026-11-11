@@ -181,13 +181,13 @@
             "https://chris-page-gov.github.io/okf-uk-legislation/okf-bundle.yamlld"
           ],
           "status": [
-            "preview"
+            "stable"
           ],
           "title": [
             "UK Legislation complete work catalogue"
           ],
           "version": [
-            "0.2.0"
+            "0.4.0"
           ]
         },
         {
@@ -231,13 +231,13 @@
             "https://chris-page-gov.github.io/okf-uk-legislation/whole-law/okf-bundle.yamlld"
           ],
           "status": [
-            "preview"
+            "stable"
           ],
           "title": [
             "UK Whole-Law OKF"
           ],
           "version": [
-            "0.3.0"
+            "0.4.0"
           ]
         },
         {
