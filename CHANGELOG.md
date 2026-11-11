@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Update the Explorer framework to static adapter 4.0.1, SvelteKit 3.1.1,
+  Svelte 5.57.3, svelte-check 4.7.8 and Vite 8.3.6. Regenerate the dependency
+  inventory while retaining the reviewed security overrides and Rolldown pin.
 - Update PDF.js from 6.4.299 to 6.5.438 and regenerate the dependency inventory.
   Verify PDF rendering and page changes against the retained DWP fixture,
   and refresh the exact-build Heritage browser evidence while preserving the

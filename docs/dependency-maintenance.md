@@ -222,6 +222,28 @@ triggers and permissions. The action's upstream changes concern bootstrap and
 cache handling; protected CI and the exact Pages deployment verify its use in
 this repository.
 
+## Framework maintenance — 11 November 2026
+
+The maintenance candidate selects static adapter 4.0.1, SvelteKit 3.1.1,
+Svelte 5.57.3, svelte-check 4.7.8 and Vite 8.3.6. These versions retain the
+existing Node requirements. Their locked indirect dependencies include cookie
+2.0.2, PostCSS 8.5.32 and magic-string 1.4.5. The conditional security overrides
+and the reviewed Rolldown 1.2.9 pin remain in place.
+
+The upstream fixes cover framework routing and server imports, Svelte state
+and accessibility handling, and Vite asset hashing, CSS imports and workers.
+Explorer's application source and route contracts remain unchanged. Those
+upstream descriptions do not establish Explorer compatibility: the candidate
+must pass the app contracts, generated Site checks and Chrome, Firefox and
+WebKit journeys against its exact locked build.
+
+The framework changes generated application bytes. The refreshed Heritage
+100-question and three-journey observations cover the combined application,
+including PDF.js 6.5.438. The preceding PDF.js receipt and compressed results
+are retained under `validation/dependency-updates/2026-11-11/pre-framework/`.
+Local observations and protected-branch CI do not establish a later Pages
+deployment.
+
 ## PDF renderer maintenance — 11 November 2026
 
 The PDF.js update selects `pdfjs-dist` 6.5.438 and its optional canvas dependency
