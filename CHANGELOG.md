@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Update Playwright test, core and browser tooling together to 1.65.0 and
+  regenerate the dependency inventory. Retain the installed-Chrome policy
+  and the required Chrome, Firefox and WebKit acceptance gate.
 - Update the Explorer's Node type definitions to 26.6.6 with matching
   `undici-types` 8.9.0 and regenerate the dependency inventory. Retain the
   declared runtime minimum and security overrides.
