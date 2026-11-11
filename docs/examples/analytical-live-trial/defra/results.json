@@ -1,0 +1,79 @@
+{
+  "schema": "okf-defra-api-trial.v1",
+  "scope": "frozen read-only GET observations and local analytical projection",
+  "serviceVersion": "0.9",
+  "readingDate": "2026-11-10",
+  "paging": {
+    "stations": {
+      "pageSizes": [
+        2,
+        2,
+        1,
+        0
+      ],
+      "uniqueItems": 5,
+      "emptyTerminalPage": true,
+      "referenceSetMatches": true
+    },
+    "readings": {
+      "pageSizes": [
+        37,
+        37,
+        22,
+        0
+      ],
+      "uniqueItems": 96,
+      "emptyTerminalPage": true,
+      "referenceSetMatches": true
+    }
+  },
+  "timestamps": {
+    "observations": 96,
+    "minimumUtc": "2026-11-10T00:00:00+00:00",
+    "maximumUtc": "2026-11-10T23:45:00+00:00",
+    "intervalSecondsObserved": [
+      900
+    ],
+    "validation": "supplementary adapter check; original dateTime strings retained",
+    "sinceNoonUtcItems": 47
+  },
+  "spatial": {
+    "coordinatePairs": 5,
+    "maximumDistanceKm": 2.715288,
+    "geographicCoordinates": "publisher-documented WGS84 latitude and longitude fields",
+    "projectedCoordinates": "publisher-documented British National Grid easting and northing fields",
+    "explicitCrsIdentifierInPayload": false,
+    "administrativeCountyClip": "unassessed; the fixture is a 5 km circle centred on the named Warwick station",
+    "coordinateAccuracyAndReprojection": "unassessed"
+  },
+  "measure": {
+    "id": "http://environment.data.gov.uk/flood-monitoring/id/measures/2091-level-stage-i-15_min-mASD",
+    "unitName": "mASD",
+    "qualifier": "Stage",
+    "periodSeconds": 900
+  },
+  "dateOnlyTypeProbe": {
+    "status": "rejected-as-expected",
+    "reason": "Table readings.csv: Observation 1, field date_time: Expected date"
+  },
+  "gaps": [
+    "Datetime is a string in RC.1; timezone and instant checks are supplementary.",
+    "Spatial CRS meaning comes from publisher documentation; the payload has no explicit CRS identifier.",
+    "The circle establishes a Warwick locality fixture; county completeness, reprojection and coordinate accuracy are unassessed.",
+    "One day's successful paging and cadence observations provide bounded point-in-time evidence.",
+    "Unit and vertical qualifier are retained as mASD and Stage; no vertical datum conversion is inferred."
+  ],
+  "attribution": "this uses Environment Agency flood and river level data from the real-time data API (Beta)",
+  "localDerivation": "JSON metadata and readings projected to two CSVs; source URIs, coordinate literals, timestamp strings and numeric decimal values retained.",
+  "stationFieldMapping": {
+    "station_id": "@id",
+    "station_reference": "stationReference",
+    "label": "label",
+    "latitude": "lat",
+    "longitude": "long",
+    "easting": "easting",
+    "northing": "northing",
+    "town": "town"
+  },
+  "releaseIdentity": "Local snapshot release uses the reading day and capture completion. API version 0.9 is a separate service declaration."
+}

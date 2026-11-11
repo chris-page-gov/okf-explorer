@@ -1,0 +1,3775 @@
+{
+  "schema": "okf-public-guidance-capture.v1",
+  "title": "DEFRA Data Services Platform engineering lessons",
+  "files": [
+    {
+      "path": "home.html.txt",
+      "url": "https://environment.data.gov.uk/",
+      "status": "retrieved",
+      "httpStatus": null,
+      "representation": "original HTTP HTML body; numeric final status not retained; curl --fail --location succeeded",
+      "bytes": 6345,
+      "sha256": "4fef646d2c033c1b6e0bc1c57452ba18606a17d5d98bec88e9b7059b8ffe3737",
+      "observedAt": "2026-11-11T05:17:22Z"
+    },
+    {
+      "path": "api-portal.html.txt",
+      "url": "https://environment.data.gov.uk/apiportal",
+      "status": "retrieved",
+      "httpStatus": null,
+      "representation": "original HTTP HTML body; numeric final status not retained; curl --fail --location succeeded",
+      "bytes": 5117,
+      "sha256": "7c7342b6d0a51a5ac688f031e9d627d3f50490faf8588b0824d691c03f9ae522",
+      "observedAt": "2026-11-11T05:17:23Z"
+    },
+    {
+      "path": "metadata.html.txt",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/275809095",
+      "status": "retrieved",
+      "httpStatus": null,
+      "representation": "original HTTP HTML body; numeric final status not retained; curl --fail --location succeeded",
+      "bytes": 87565,
+      "sha256": "45223a61bdb07ad788f17b589054a97a3c69eeee5e98c5da3c65460706b5caab",
+      "observedAt": "2026-11-11T05:17:24Z"
+    },
+    {
+      "path": "metadata-dates.html.txt",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/275809488",
+      "status": "retrieved",
+      "httpStatus": null,
+      "representation": "original HTTP HTML body; numeric final status not retained; curl --fail --location succeeded",
+      "bytes": 87565,
+      "sha256": "6bdd4d7d3927d8295d2158e915f879d4d195d25849f1676ac7d95f448a4c8fac",
+      "observedAt": "2026-11-11T05:17:24Z"
+    },
+    {
+      "path": "fair-use.html.txt",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/1169555459",
+      "status": "retrieved",
+      "httpStatus": null,
+      "representation": "original HTTP HTML body; numeric final status not retained; curl --fail --location succeeded",
+      "bytes": 87569,
+      "sha256": "71d3c373d1a9c57a3eb5c5a9e0ab0cdfd25b51e29b8f2addc9b00fd1853a906d",
+      "observedAt": "2026-11-11T05:18:48Z"
+    },
+    {
+      "path": "water-quality-migration.html.txt",
+      "url": "https://environment.data.gov.uk/support/faqs/275879249/1156874241",
+      "status": "retrieved",
+      "httpStatus": null,
+      "representation": "original HTTP HTML body; numeric final status not retained; curl --fail --location succeeded",
+      "bytes": 51131,
+      "sha256": "8fa28c1cdf7a1125b35b4c25784d38fe450a18c409ed73b7ec11be9878c4ff4f",
+      "observedAt": "2026-11-11T05:17:27Z"
+    },
+    {
+      "path": "flood-api-reference.html.txt",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "status": "retrieved",
+      "httpStatus": null,
+      "representation": "original HTTP HTML body; numeric final status not retained; curl --fail --location succeeded",
+      "bytes": 154617,
+      "sha256": "87b7156f3fea64b54b92473cc67f62227b9fb4bf678bd76761c4a907a5b07b92",
+      "observedAt": "2026-11-11T05:17:27Z"
+    },
+    {
+      "path": "ecology-access.html.txt",
+      "url": "https://environment.data.gov.uk/support/faqs/275874849/275874938",
+      "status": "retrieved",
+      "httpStatus": null,
+      "representation": "original HTTP HTML body; numeric final status not retained; curl --fail --location succeeded",
+      "bytes": 15349,
+      "sha256": "672801b67c8a5ba9433fada849703c7c6c90374db7dcafd9881f1d62f9466a63",
+      "observedAt": "2026-11-11T05:17:28Z"
+    },
+    {
+      "path": "browser-witness.json",
+      "url": "https://environment.data.gov.uk/",
+      "status": "retrieved",
+      "httpStatus": null,
+      "representation": "browser-derived main text and hyperlinks; not original HTTP entity bytes",
+      "bytes": 19093,
+      "sha256": "1af7c5cc15d14635a41319e91638dce0af56e5330f07a1fc54e9d59fece70089",
+      "observedAt": "2026-11-11T05:18:53Z"
+    },
+    {
+      "path": "browser-metadata-witness.json",
+      "url": "https://environment.data.gov.uk/",
+      "status": "retrieved",
+      "httpStatus": null,
+      "representation": "browser-derived main text and hyperlinks; not original HTTP entity bytes",
+      "bytes": 109939,
+      "sha256": "e642f9a4b294ed0b7d0736ee7b39d4ee5e268dfaeb76c667e45cc479c5d75530",
+      "observedAt": "2026-11-11T05:21:19Z"
+    },
+    {
+      "path": "browser-console.txt",
+      "url": "https://environment.data.gov.uk/",
+      "status": "retrieved",
+      "httpStatus": null,
+      "representation": "browser console witness across the review session",
+      "bytes": 9370,
+      "sha256": "bd033d53f208ab8395ff565a2a3f656f7d364cd4ee2c2af8f69f3e4bb5174841",
+      "observedAt": "2026-11-11T05:21:19Z"
+    }
+  ],
+  "rights": {
+    "status": "publisher-notice",
+    "licence": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+    "scope": "Editorial content under the site notice, except where otherwise stated. Individual datasets, services and linked resources retain their own rights."
+  },
+  "references": [
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 1",
+      "href": "#main",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#main",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 2",
+      "href": "/cookies",
+      "url": "https://environment.data.gov.uk/cookies",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 3",
+      "href": "/cookies",
+      "url": "https://environment.data.gov.uk/cookies",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 4",
+      "href": "https://environment.data.gov.uk/",
+      "url": "https://environment.data.gov.uk/",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 5",
+      "href": "/flood-monitoring/doc/reference",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 6",
+      "href": "/flood-monitoring/doc/reference",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 7",
+      "href": "/flood-monitoring/doc/rainfall",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/rainfall",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 8",
+      "href": "/flood-monitoring/doc/tidegauge",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/tidegauge",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 9",
+      "href": "/flood-monitoring/archive",
+      "url": "https://environment.data.gov.uk/flood-monitoring/archive",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 10",
+      "href": "https://environment.data.gov.uk/support",
+      "url": "https://environment.data.gov.uk/support",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 11",
+      "href": "#introduction",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#introduction",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 12",
+      "href": "#availability",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#availability",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 13",
+      "href": "#recent",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#recent",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 14",
+      "href": "#api-summary",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#api-summary",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 15",
+      "href": "#api-structure",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#api-structure",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 16",
+      "href": "#api-requests",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#api-requests",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 17",
+      "href": "#api-metadata",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#api-metadata",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 18",
+      "href": "#api-items",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#api-items",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 19",
+      "href": "#api-content-types",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#api-content-types",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 20",
+      "href": "#api-lists",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#api-lists",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 21",
+      "href": "#flood-warnings",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#flood-warnings",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 22",
+      "href": "#flood-areas",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#flood-areas",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 23",
+      "href": "#stations",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#stations",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 24",
+      "href": "#individual-station",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#individual-station",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 25",
+      "href": "#measures",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#measures",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 26",
+      "href": "#individual-measure",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#individual-measure",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 27",
+      "href": "#readings",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#readings",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 28",
+      "href": "#historic-readings",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#historic-readings",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 29",
+      "href": "#5dfx",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#5dfx",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 30",
+      "href": "#acknowledgements",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#acknowledgements",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 31",
+      "href": "#data",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#data",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 32",
+      "href": "https://forms.office.com/Pages/ResponsePage.aspx?id=UCQKdycCYkyQx044U38RAlS_vYS6otFJmqjW5Hudy4hUMkVSSVI2VUlSOTQ4RU9FOVVaTTVBNlowRyQlQCN0PWcu",
+      "url": "https://forms.office.com/Pages/ResponsePage.aspx?id=UCQKdycCYkyQx044U38RAlS_vYS6otFJmqjW5Hudy4hUMkVSSVI2VUlSOTQ4RU9FOVVaTTVBNlowRyQlQCN0PWcu",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 33",
+      "href": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+      "url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 34",
+      "href": "/flood-monitoring/data/readings?latest",
+      "url": "https://environment.data.gov.uk/flood-monitoring/data/readings?latest",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 35",
+      "href": "https://www.gov.uk/check-if-youre-at-risk-of-flooding",
+      "url": "https://www.gov.uk/check-if-youre-at-risk-of-flooding",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 36",
+      "href": "/flood-monitoring/id/floods",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/floods",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 37",
+      "href": "/flood-monitoring/id/stations?_limit=50",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/stations?_limit=50",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 38",
+      "href": "/flood-monitoring/id/stations/1491TH/measures",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/stations/1491TH/measures",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 39",
+      "href": "/flood-monitoring/id/measures?_limit=50",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/measures?_limit=50",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 40",
+      "href": "/flood-monitoring/data/readings?_limit=50",
+      "url": "https://environment.data.gov.uk/flood-monitoring/data/readings?_limit=50",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 41",
+      "href": "/flood-monitoring/id/measures/1491TH-level-stage-i-15_min-mASD/readings?_sorted&_limit=100",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/measures/1491TH-level-stage-i-15_min-mASD/readings?_sorted&_limit=100",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 42",
+      "href": "/flood-monitoring/id/stations/1491TH/readings?_sorted&_limit=100",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/stations/1491TH/readings?_sorted&_limit=100",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 43",
+      "href": "https://en.wikipedia.org/wiki/Representational_state_transfer",
+      "url": "https://en.wikipedia.org/wiki/Representational_state_transfer",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 44",
+      "href": "/flood-monitoring/id/floods",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/floods",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 45",
+      "href": "https://json-ld.org/",
+      "url": "https://json-ld.org/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 46",
+      "href": "#api-content-types",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#api-content-types",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 47",
+      "href": "/flood-monitoring/id/floodAreas/122WAC953",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/floodAreas/122WAC953",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 48",
+      "href": "/flood-monitoring/id/floods?min-severity=3",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/floods?min-severity=3",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 49",
+      "href": "/flood-monitoring/id/floods",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/floods",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 50",
+      "href": "/flood-monitoring/id/floods?min-severity=3",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/floods?min-severity=3",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 51",
+      "href": "/flood-monitoring/id/floods?county=Somerset",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/floods?county=Somerset",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 52",
+      "href": "https://environment.data.gov.uk/ds/catalogue/index.jsp#/catalogue",
+      "url": "https://environment.data.gov.uk/ds/catalogue/index.jsp#/catalogue",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 53",
+      "href": "/flood-monitoring/id/floodAreas/122WAC953",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/floodAreas/122WAC953",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 54",
+      "href": "/flood-monitoring/id/floodAreas",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/floodAreas",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 55",
+      "href": "/flood-monitoring/id/stations?_limit=50",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/stations?_limit=50",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 56",
+      "href": "/flood-monitoring/id/stations?parameter=flow",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/stations?parameter=flow",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 57",
+      "href": "/flood-monitoring/id/stations?qualifier=Downstream+Stage",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/stations?qualifier=Downstream+Stage",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 58",
+      "href": "/flood-monitoring/id/stations?catchmentName=Cotswolds&_limit=10",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/stations?catchmentName=Cotswolds&_limit=10",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 59",
+      "href": "/flood-monitoring/id/stations?search=River+Wey",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/stations?search=River+Wey",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 60",
+      "href": "/flood-monitoring/id/stations?riverName=Cherwell",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/stations?riverName=Cherwell",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 61",
+      "href": "/flood-monitoring/id/stations/1491TH.html",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/stations/1491TH.html",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 62",
+      "href": "/flood-monitoring/id/stations/1491TH.json",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/stations/1491TH.json",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 63",
+      "href": "/flood-monitoring/id/measures?_limit=50",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/measures?_limit=50",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 64",
+      "href": "/flood-monitoring/id/stations/1491TH/measures",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/stations/1491TH/measures",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 65",
+      "href": "/flood-monitoring/id/measures/1491TH-level-stage-i-15_min-mASD",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/measures/1491TH-level-stage-i-15_min-mASD",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 66",
+      "href": "#measure-results",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#measure-results",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 67",
+      "href": "/flood-monitoring/data/readings?_limit=100",
+      "url": "https://environment.data.gov.uk/flood-monitoring/data/readings?_limit=100",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 68",
+      "href": "/flood-monitoring/id/measures/1491TH-level-stage-i-15_min-mASD/readings?_sorted&_limit=100",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/measures/1491TH-level-stage-i-15_min-mASD/readings?_sorted&_limit=100",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 69",
+      "href": "/flood-monitoring/id/stations/1491TH/readings?_sorted&_limit=100",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/stations/1491TH/readings?_sorted&_limit=100",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 70",
+      "href": "https://www.gov.uk/government/publications/designing-uri-sets-for-the-uk-public-sector",
+      "url": "https://www.gov.uk/government/publications/designing-uri-sets-for-the-uk-public-sector",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 71",
+      "href": "https://github.com/UKGovLD/URI-patterns-core/blob/master/URI%20Patterns.md",
+      "url": "https://github.com/UKGovLD/URI-patterns-core/blob/master/URI%20Patterns.md",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 72",
+      "href": "#size-limits",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#size-limits",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 73",
+      "href": "#size-limits",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#size-limits",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 74",
+      "href": "/flood-monitoring/data/readings.csv?latest&_limit=6000",
+      "url": "https://environment.data.gov.uk/flood-monitoring/data/readings.csv?latest&_limit=6000",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 75",
+      "href": "/flood-monitoring/data/readings?latest&qualifier=Groundwater",
+      "url": "https://environment.data.gov.uk/flood-monitoring/data/readings?latest&qualifier=Groundwater",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 76",
+      "href": "/flood-monitoring/data/readings?latest¶meter=flow",
+      "url": "https://environment.data.gov.uk/flood-monitoring/data/readings?latest¶meter=flow",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 77",
+      "href": "/flood-monitoring/data/readings?latest¶meter=flow&_view=full",
+      "url": "https://environment.data.gov.uk/flood-monitoring/data/readings?latest¶meter=flow&_view=full",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 78",
+      "href": "/flood-monitoring/id/measures/1491TH-level-stage-i-15_min-mASD/readings?_sorted&_limit=10",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/measures/1491TH-level-stage-i-15_min-mASD/readings?_sorted&_limit=10",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 79",
+      "href": "/flood-monitoring/archive",
+      "url": "https://environment.data.gov.uk/flood-monitoring/archive",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 80",
+      "href": "https://api.foursources.metoffice.gov.uk/docs/flood-guidance-statement-api-public",
+      "url": "https://api.foursources.metoffice.gov.uk/docs/flood-guidance-statement-api-public",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 81",
+      "href": "https://getbootstrap.com/",
+      "url": "https://getbootstrap.com/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 82",
+      "href": "#definition-AffectedRegion",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-AffectedRegion",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 83",
+      "href": "#definition-Coastal",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-Coastal",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 84",
+      "href": "#definition-DatumType",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-DatumType",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 85",
+      "href": "#definition-DayForecast",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-DayForecast",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 86",
+      "href": "#definition-FloodAlertArea",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-FloodAlertArea",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 87",
+      "href": "#definition-FloodAlertOrWarning",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-FloodAlertOrWarning",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 88",
+      "href": "#definition-FloodArea",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-FloodArea",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 89",
+      "href": "#definition-FloodWarningArea",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-FloodWarningArea",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 90",
+      "href": "#definition-Flow",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-Flow",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 91",
+      "href": "#definition-ForecastRisk",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-ForecastRisk",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 92",
+      "href": "#definition-GatePosition",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-GatePosition",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 93",
+      "href": "#definition-Groundwater",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-Groundwater",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 94",
+      "href": "#definition-Measure",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-Measure",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 95",
+      "href": "#definition-Meteorological",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-Meteorological",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 96",
+      "href": "#definition-MultiTraceLevel",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-MultiTraceLevel",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 97",
+      "href": "#definition-RLOIid",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-RLOIid",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 98",
+      "href": "#definition-Rainfall",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-Rainfall",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 99",
+      "href": "#definition-Reading",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-Reading",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 100",
+      "href": "#definition-SingleLevel",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-SingleLevel",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 101",
+      "href": "#definition-Station",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-Station",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 102",
+      "href": "#definition-Temperature",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-Temperature",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 103",
+      "href": "#definition-ThreeDayForecast",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-ThreeDayForecast",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 104",
+      "href": "#definition-ValueType",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-ValueType",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 105",
+      "href": "#definition-WaterLevel",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-WaterLevel",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 106",
+      "href": "#definition-Wind",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-Wind",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 107",
+      "href": "#definition-advice",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-advice",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 108",
+      "href": "#definition-affectedRegion",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-affectedRegion",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 109",
+      "href": "#definition-catchmentName",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-catchmentName",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 110",
+      "href": "#definition-comment",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-comment",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 111",
+      "href": "#definition-county",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-county",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 112",
+      "href": "#definition-currentWarning",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-currentWarning",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 113",
+      "href": "#definition-date",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-date",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 114",
+      "href": "#definition-dateOpened",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-dateOpened",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 115",
+      "href": "#definition-dateTime",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-dateTime",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 116",
+      "href": "#definition-datum",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-datum",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 117",
+      "href": "#definition-datumAOD",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-datumAOD",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 118",
+      "href": "#definition-datumASD",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-datumASD",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 119",
+      "href": "#definition-datumBDAT",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-datumBDAT",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 120",
+      "href": "#definition-datumOffset",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-datumOffset",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 121",
+      "href": "#definition-datumType",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-datumType",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 122",
+      "href": "#definition-day1image",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-day1image",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 123",
+      "href": "#definition-day2image",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-day2image",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 124",
+      "href": "#definition-day3image",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-day3image",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 125",
+      "href": "#definition-dayForecast",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-dayForecast",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 126",
+      "href": "#definition-description",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-description",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 127",
+      "href": "#definition-downstageScale",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-downstageScale",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 128",
+      "href": "#definition-eaArea",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-eaArea",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 129",
+      "href": "#definition-eaAreaName",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-eaAreaName",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 130",
+      "href": "#definition-eaRegionName",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-eaRegionName",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 131",
+      "href": "#definition-floodArea",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-floodArea",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 132",
+      "href": "#definition-floodAreaID",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-floodAreaID",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 133",
+      "href": "#definition-floodWatchArea",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-floodWatchArea",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 134",
+      "href": "#definition-forecastRisk",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-forecastRisk",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 135",
+      "href": "#definition-forecastSummary",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-forecastSummary",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 136",
+      "href": "#definition-fwdCode",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-fwdCode",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 137",
+      "href": "#definition-gridReference",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-gridReference",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 138",
+      "href": "#definition-highestRecent",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-highestRecent",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 139",
+      "href": "#definition-impact",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-impact",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 140",
+      "href": "#definition-instantaneous",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-instantaneous",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 141",
+      "href": "#definition-isTidal",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-isTidal",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 142",
+      "href": "#definition-issueDatetime",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-issueDatetime",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 143",
+      "href": "#definition-label",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-label",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 144",
+      "href": "#definition-latestReading",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-latestReading",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 145",
+      "href": "#definition-maxOnRecord",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-maxOnRecord",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 146",
+      "href": "#definition-maximum",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-maximum",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 147",
+      "href": "#definition-mean",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-mean",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 148",
+      "href": "#definition-measure",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-measure",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 149",
+      "href": "#definition-measures",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-measures",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 150",
+      "href": "#definition-message",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-message",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 151",
+      "href": "#definition-minOnRecord",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-minOnRecord",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 152",
+      "href": "#definition-minimum",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-minimum",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 153",
+      "href": "#definition-notation",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-notation",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 154",
+      "href": "#definition-parameter",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-parameter",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 155",
+      "href": "#definition-parameterName",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-parameterName",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 156",
+      "href": "#definition-period",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-period",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 157",
+      "href": "#definition-polygon",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-polygon",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 158",
+      "href": "#definition-qualifier",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-qualifier",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 159",
+      "href": "#definition-quickDialNumber",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-quickDialNumber",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 160",
+      "href": "#definition-riskLevel",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-riskLevel",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 161",
+      "href": "#definition-riverName",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-riverName",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 162",
+      "href": "#definition-riverOrSea",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-riverOrSea",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 163",
+      "href": "#definition-scaleMax",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-scaleMax",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 164",
+      "href": "#definition-severity",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-severity",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 165",
+      "href": "#definition-severityLevel",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-severityLevel",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 166",
+      "href": "#definition-stageScale",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-stageScale",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 167",
+      "href": "#definition-station",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-station",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 168",
+      "href": "#definition-stationReference",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-stationReference",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 169",
+      "href": "#definition-timeMessageChanged",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-timeMessageChanged",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 170",
+      "href": "#definition-timeRaised",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-timeRaised",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 171",
+      "href": "#definition-timeSeverityChanged",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-timeSeverityChanged",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 172",
+      "href": "#definition-total",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-total",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 173",
+      "href": "#definition-town",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-town",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 174",
+      "href": "#definition-type",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-type",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 175",
+      "href": "#definition-typicalRangeHigh",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-typicalRangeHigh",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 176",
+      "href": "#definition-typicalRangeLow",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-typicalRangeLow",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 177",
+      "href": "#definition-unit",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-unit",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 178",
+      "href": "#definition-unitName",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-unitName",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 179",
+      "href": "#definition-value",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-value",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 180",
+      "href": "#definition-valueType",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-valueType",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 181",
+      "href": "#definition-wiskiID",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-wiskiID",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 182",
+      "href": "https://environment.data.gov.uk/support",
+      "url": "https://environment.data.gov.uk/support",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 183",
+      "href": "https://environment.data.gov.uk/support/faqs/275811163/275811177",
+      "url": "https://environment.data.gov.uk/support/faqs/275811163/275811177",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 184",
+      "href": "https://environment.data.gov.uk/support/faqs/275811163/275811229",
+      "url": "https://environment.data.gov.uk/support/faqs/275811163/275811229",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 185",
+      "href": "https://environment.data.gov.uk/help/cookies",
+      "url": "https://environment.data.gov.uk/help/cookies",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 186",
+      "href": "https://environment.data.gov.uk/support/faqs/275810340/275810354",
+      "url": "https://environment.data.gov.uk/support/faqs/275810340/275810354",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "flood-api-reference.html.txt",
+      "locator": "a[href] occurrence 187",
+      "href": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+      "url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-witness.json",
+      "page": "https://environment.data.gov.uk/",
+      "locator": "main a[href] occurrence 1",
+      "href": "/support/announcements/275811641/1692139541",
+      "url": "https://environment.data.gov.uk/support/announcements/275811641/1692139541",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-witness.json",
+      "page": "https://environment.data.gov.uk/",
+      "locator": "main a[href] occurrence 2",
+      "href": "/support/announcements/275811447/1895727149",
+      "url": "https://environment.data.gov.uk/support/announcements/275811447/1895727149",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-witness.json",
+      "page": "https://environment.data.gov.uk/",
+      "locator": "main a[href] occurrence 3",
+      "href": "https://data.gov.uk/",
+      "url": "https://data.gov.uk/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-witness.json",
+      "page": "https://environment.data.gov.uk/",
+      "locator": "main a[href] occurrence 4",
+      "href": "/apiportal",
+      "url": "https://environment.data.gov.uk/apiportal",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-witness.json",
+      "page": "https://environment.data.gov.uk/",
+      "locator": "main a[href] occurrence 5",
+      "href": "https://environment.data.gov.uk/support/faqs/275876955",
+      "url": "https://environment.data.gov.uk/support/faqs/275876955",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-witness.json",
+      "page": "https://environment.data.gov.uk/",
+      "locator": "main a[href] occurrence 6",
+      "href": "/appgallery",
+      "url": "https://environment.data.gov.uk/appgallery",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-witness.json",
+      "page": "https://environment.data.gov.uk/",
+      "locator": "main a[href] occurrence 7",
+      "href": "/register",
+      "url": "https://environment.data.gov.uk/register",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/1169555459",
+      "locator": "main a[href] occurrence 1",
+      "href": "/",
+      "url": "https://environment.data.gov.uk/",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/1169555459",
+      "locator": "main a[href] occurrence 2",
+      "href": "/support",
+      "url": "https://environment.data.gov.uk/support",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/1169555459",
+      "locator": "main a[href] occurrence 3",
+      "href": "/support/faqs",
+      "url": "https://environment.data.gov.uk/support/faqs",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/1169555459",
+      "locator": "main a[href] occurrence 4",
+      "href": "/support/faqs/275808874/275808888",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/275808888",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/1169555459",
+      "locator": "main a[href] occurrence 5",
+      "href": "/support/faqs/275808874/275808948",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/275808948",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/1169555459",
+      "locator": "main a[href] occurrence 6",
+      "href": "/support/faqs/275808874/275808984",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/275808984",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/1169555459",
+      "locator": "main a[href] occurrence 7",
+      "href": "/support/faqs/275808874/275809020",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/275809020",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/1169555459",
+      "locator": "main a[href] occurrence 8",
+      "href": "/support/faqs/275808874/275809061",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/275809061",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/1169555459",
+      "locator": "main a[href] occurrence 9",
+      "href": "/support/faqs/275808874/275809095",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/275809095",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/1169555459",
+      "locator": "main a[href] occurrence 10",
+      "href": "/support/faqs/275808874/275809488",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/275809488",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/1169555459",
+      "locator": "main a[href] occurrence 11",
+      "href": "/support/faqs/275808874/275809165",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/275809165",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/1169555459",
+      "locator": "main a[href] occurrence 12",
+      "href": "/support/faqs/275808874/275809211",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/275809211",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/1169555459",
+      "locator": "main a[href] occurrence 13",
+      "href": "/support/faqs/275808874/275809270",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/275809270",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/1169555459",
+      "locator": "main a[href] occurrence 14",
+      "href": "/support/faqs/275808874/275810000",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/275810000",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/1169555459",
+      "locator": "main a[href] occurrence 15",
+      "href": "https://environment.data.gov.uk/support/faqs/275811163/275811229",
+      "url": "https://environment.data.gov.uk/support/faqs/275811163/275811229",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/1169555459",
+      "locator": "main a[href] occurrence 16",
+      "href": "https://environment.data.gov.uk/support",
+      "url": "https://environment.data.gov.uk/support",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/1169555459",
+      "locator": "main a[href] occurrence 17",
+      "href": "/support/faqs/275808874/275808888",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/275808888",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/1169555459",
+      "locator": "main a[href] occurrence 18",
+      "href": "/support/faqs/275808874/275808948",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/275808948",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275879249/1156874241",
+      "locator": "main a[href] occurrence 1",
+      "href": "/",
+      "url": "https://environment.data.gov.uk/",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275879249/1156874241",
+      "locator": "main a[href] occurrence 2",
+      "href": "/support",
+      "url": "https://environment.data.gov.uk/support",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275879249/1156874241",
+      "locator": "main a[href] occurrence 3",
+      "href": "/support/faqs",
+      "url": "https://environment.data.gov.uk/support/faqs",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275879249/1156874241",
+      "locator": "main a[href] occurrence 4",
+      "href": "/support/faqs/275879249/275879414",
+      "url": "https://environment.data.gov.uk/support/faqs/275879249/275879414",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275879249/1156874241",
+      "locator": "main a[href] occurrence 5",
+      "href": "/support/faqs/275879249/1082097669",
+      "url": "https://environment.data.gov.uk/support/faqs/275879249/1082097669",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275879249/1156874241",
+      "locator": "main a[href] occurrence 6",
+      "href": "/support/faqs/275879249/1081769999",
+      "url": "https://environment.data.gov.uk/support/faqs/275879249/1081769999",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275879249/1156874241",
+      "locator": "main a[href] occurrence 7",
+      "href": "/support/faqs/275879249/1082228739",
+      "url": "https://environment.data.gov.uk/support/faqs/275879249/1082228739",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275879249/1156874241",
+      "locator": "main a[href] occurrence 8",
+      "href": "/support/faqs/275879249/275879383",
+      "url": "https://environment.data.gov.uk/support/faqs/275879249/275879383",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275879249/1156874241",
+      "locator": "main a[href] occurrence 9",
+      "href": "https://eur03.safelinks.protection.outlook.com/?url=https%3A%2F%2Fenvironment.data.gov.uk%2Fwater-quality%2Fview%2Flanding&data=05%7C02%7CJames.Howard%40environment-agency.gov.uk%7C703d51b425bb46f6bc7008de2db947cb%7C770a245002274c6290c74e38537f1102%7C0%7C0%7C638998470956003026%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=7xtoNeee2ZckKzcmk7Oyxz1VmSaXEsxMXXGR9iFgrFs%3D&reserved=0",
+      "url": "https://eur03.safelinks.protection.outlook.com/?url=https%3A%2F%2Fenvironment.data.gov.uk%2Fwater-quality%2Fview%2Flanding&data=05%7C02%7CJames.Howard%40environment-agency.gov.uk%7C703d51b425bb46f6bc7008de2db947cb%7C770a245002274c6290c74e38537f1102%7C0%7C0%7C638998470956003026%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=7xtoNeee2ZckKzcmk7Oyxz1VmSaXEsxMXXGR9iFgrFs%3D&reserved=0",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275879249/1156874241",
+      "locator": "main a[href] occurrence 10",
+      "href": "https://eur03.safelinks.protection.outlook.com/?url=https%3A%2F%2Fenvironment.data.gov.uk%2Fwater-quality-beta%2Fapi-docs&data=05%7C02%7CJames.Howard%40environment-agency.gov.uk%7C703d51b425bb46f6bc7008de2db947cb%7C770a245002274c6290c74e38537f1102%7C0%7C0%7C638998470956020822%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=%2FcxaSqtDJEeBqK3tRAcZqTEPX0Fgvv72U6NQwmwKgm8%3D&reserved=0",
+      "url": "https://eur03.safelinks.protection.outlook.com/?url=https%3A%2F%2Fenvironment.data.gov.uk%2Fwater-quality-beta%2Fapi-docs&data=05%7C02%7CJames.Howard%40environment-agency.gov.uk%7C703d51b425bb46f6bc7008de2db947cb%7C770a245002274c6290c74e38537f1102%7C0%7C0%7C638998470956020822%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=%2FcxaSqtDJEeBqK3tRAcZqTEPX0Fgvv72U6NQwmwKgm8%3D&reserved=0",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275879249/1156874241",
+      "locator": "main a[href] occurrence 11",
+      "href": "https://eur03.safelinks.protection.outlook.com/?url=https%3A%2F%2Fenvironment.data.gov.uk%2Fwater-quality-beta&data=05%7C02%7CJames.Howard%40environment-agency.gov.uk%7C703d51b425bb46f6bc7008de2db947cb%7C770a245002274c6290c74e38537f1102%7C0%7C0%7C638998470956038022%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=OiF0aCgNYWJuv64r0EaQaO4SDW3tAh3Bc6mI6ekz0iM%3D&reserved=0",
+      "url": "https://eur03.safelinks.protection.outlook.com/?url=https%3A%2F%2Fenvironment.data.gov.uk%2Fwater-quality-beta&data=05%7C02%7CJames.Howard%40environment-agency.gov.uk%7C703d51b425bb46f6bc7008de2db947cb%7C770a245002274c6290c74e38537f1102%7C0%7C0%7C638998470956038022%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=OiF0aCgNYWJuv64r0EaQaO4SDW3tAh3Bc6mI6ekz0iM%3D&reserved=0",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275879249/1156874241",
+      "locator": "main a[href] occurrence 12",
+      "href": "/support/faqs/275879249/275879383",
+      "url": "https://environment.data.gov.uk/support/faqs/275879249/275879383",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275879249/1156874241",
+      "locator": "main a[href] occurrence 13",
+      "href": "/support/faqs/275879249/275879414",
+      "url": "https://environment.data.gov.uk/support/faqs/275879249/275879414",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/apiportal",
+      "locator": "main a[href] occurrence 1",
+      "href": "https://en.wikipedia.org/wiki/Application_programming_interface",
+      "url": "https://en.wikipedia.org/wiki/Application_programming_interface",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/apiportal",
+      "locator": "main a[href] occurrence 2",
+      "href": "/",
+      "url": "https://environment.data.gov.uk/",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/apiportal",
+      "locator": "main a[href] occurrence 3",
+      "href": "/appgallery",
+      "url": "https://environment.data.gov.uk/appgallery",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/apiportal",
+      "locator": "main a[href] occurrence 4",
+      "href": "/asset-management/doc/reference",
+      "url": "https://environment.data.gov.uk/asset-management/doc/reference",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/apiportal",
+      "locator": "main a[href] occurrence 5",
+      "href": "/bwq/doc/api-reference-v0.6.html",
+      "url": "https://environment.data.gov.uk/bwq/doc/api-reference-v0.6.html",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/apiportal",
+      "locator": "main a[href] occurrence 6",
+      "href": "/catchment-planning/api/docs",
+      "url": "https://environment.data.gov.uk/catchment-planning/api/docs",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/apiportal",
+      "locator": "main a[href] occurrence 7",
+      "href": "/ecology/api",
+      "url": "https://environment.data.gov.uk/ecology/api",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/apiportal",
+      "locator": "main a[href] occurrence 8",
+      "href": "/flood-monitoring/doc/reference",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/apiportal",
+      "locator": "main a[href] occurrence 9",
+      "href": "/hydrology/doc/reference",
+      "url": "https://environment.data.gov.uk/hydrology/doc/reference",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/apiportal",
+      "locator": "main a[href] occurrence 10",
+      "href": "/public-register/view/api-reference",
+      "url": "https://environment.data.gov.uk/public-register/view/api-reference",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/apiportal",
+      "locator": "main a[href] occurrence 11",
+      "href": "/flood-monitoring/doc/rainfall",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/rainfall",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/apiportal",
+      "locator": "main a[href] occurrence 12",
+      "href": "/rpa/api-doc",
+      "url": "https://environment.data.gov.uk/rpa/api-doc",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/apiportal",
+      "locator": "main a[href] occurrence 13",
+      "href": "/flood-monitoring/doc/tidegauge",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/tidegauge",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/apiportal",
+      "locator": "main a[href] occurrence 14",
+      "href": "/water-quality/api-docs",
+      "url": "https://environment.data.gov.uk/water-quality/api-docs",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/275809095",
+      "locator": "main a[href] occurrence 1",
+      "href": "/",
+      "url": "https://environment.data.gov.uk/",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/275809095",
+      "locator": "main a[href] occurrence 2",
+      "href": "/support",
+      "url": "https://environment.data.gov.uk/support",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/275809095",
+      "locator": "main a[href] occurrence 3",
+      "href": "/support/faqs",
+      "url": "https://environment.data.gov.uk/support/faqs",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/275809095",
+      "locator": "main a[href] occurrence 4",
+      "href": "/support/faqs/275808874/275808888",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/275808888",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/275809095",
+      "locator": "main a[href] occurrence 5",
+      "href": "/support/faqs/275808874/1169555459",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/1169555459",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/275809095",
+      "locator": "main a[href] occurrence 6",
+      "href": "/support/faqs/275808874/275808948",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/275808948",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/275809095",
+      "locator": "main a[href] occurrence 7",
+      "href": "/support/faqs/275808874/275808984",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/275808984",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/275809095",
+      "locator": "main a[href] occurrence 8",
+      "href": "/support/faqs/275808874/275809020",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/275809020",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/275809095",
+      "locator": "main a[href] occurrence 9",
+      "href": "/support/faqs/275808874/275809061",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/275809061",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/275809095",
+      "locator": "main a[href] occurrence 10",
+      "href": "/support/faqs/275808874/275809488",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/275809488",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/275809095",
+      "locator": "main a[href] occurrence 11",
+      "href": "/support/faqs/275808874/275809165",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/275809165",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/275809095",
+      "locator": "main a[href] occurrence 12",
+      "href": "/support/faqs/275808874/275809211",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/275809211",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/275809095",
+      "locator": "main a[href] occurrence 13",
+      "href": "/support/faqs/275808874/275809270",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/275809270",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/275809095",
+      "locator": "main a[href] occurrence 14",
+      "href": "/support/faqs/275808874/275810000",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/275810000",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/275809095",
+      "locator": "main a[href] occurrence 15",
+      "href": "/support/faqs/275808874/275809061",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/275809061",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/275809095",
+      "locator": "main a[href] occurrence 16",
+      "href": "/support/faqs/275808874/275809488",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/275809488",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/275809488",
+      "locator": "main a[href] occurrence 1",
+      "href": "/",
+      "url": "https://environment.data.gov.uk/",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/275809488",
+      "locator": "main a[href] occurrence 2",
+      "href": "/support",
+      "url": "https://environment.data.gov.uk/support",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/275809488",
+      "locator": "main a[href] occurrence 3",
+      "href": "/support/faqs",
+      "url": "https://environment.data.gov.uk/support/faqs",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/275809488",
+      "locator": "main a[href] occurrence 4",
+      "href": "/support/faqs/275808874/275808888",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/275808888",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/275809488",
+      "locator": "main a[href] occurrence 5",
+      "href": "/support/faqs/275808874/1169555459",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/1169555459",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/275809488",
+      "locator": "main a[href] occurrence 6",
+      "href": "/support/faqs/275808874/275808948",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/275808948",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/275809488",
+      "locator": "main a[href] occurrence 7",
+      "href": "/support/faqs/275808874/275808984",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/275808984",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/275809488",
+      "locator": "main a[href] occurrence 8",
+      "href": "/support/faqs/275808874/275809020",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/275809020",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/275809488",
+      "locator": "main a[href] occurrence 9",
+      "href": "/support/faqs/275808874/275809061",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/275809061",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/275809488",
+      "locator": "main a[href] occurrence 10",
+      "href": "/support/faqs/275808874/275809095",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/275809095",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/275809488",
+      "locator": "main a[href] occurrence 11",
+      "href": "/support/faqs/275808874/275809165",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/275809165",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/275809488",
+      "locator": "main a[href] occurrence 12",
+      "href": "/support/faqs/275808874/275809211",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/275809211",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/275809488",
+      "locator": "main a[href] occurrence 13",
+      "href": "/support/faqs/275808874/275809270",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/275809270",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/275809488",
+      "locator": "main a[href] occurrence 14",
+      "href": "/support/faqs/275808874/275810000",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/275810000",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/275809488",
+      "locator": "main a[href] occurrence 15",
+      "href": "http://data.gov.uk",
+      "url": "http://data.gov.uk/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/275809488",
+      "locator": "main a[href] occurrence 16",
+      "href": "http://data.gov.uk",
+      "url": "http://data.gov.uk/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/275809488",
+      "locator": "main a[href] occurrence 17",
+      "href": "http://data.gov.uk",
+      "url": "http://data.gov.uk/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/275809488",
+      "locator": "main a[href] occurrence 18",
+      "href": "http://data.gov.uk",
+      "url": "http://data.gov.uk/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/275809488",
+      "locator": "main a[href] occurrence 19",
+      "href": "http://Data.gov.uk",
+      "url": "http://data.gov.uk/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/275809488",
+      "locator": "main a[href] occurrence 20",
+      "href": "http://data.gov.uk",
+      "url": "http://data.gov.uk/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/275809488",
+      "locator": "main a[href] occurrence 21",
+      "href": "/support/faqs/275808874/275809095",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/275809095",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275808874/275809488",
+      "locator": "main a[href] occurrence 22",
+      "href": "/support/faqs/275808874/275809165",
+      "url": "https://environment.data.gov.uk/support/faqs/275808874/275809165",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 1",
+      "href": "#main",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#main",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 2",
+      "href": "/cookies",
+      "url": "https://environment.data.gov.uk/cookies",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 3",
+      "href": "/cookies",
+      "url": "https://environment.data.gov.uk/cookies",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 4",
+      "href": "https://environment.data.gov.uk/",
+      "url": "https://environment.data.gov.uk/",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 5",
+      "href": "/flood-monitoring/doc/reference",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 6",
+      "href": "/flood-monitoring/doc/reference",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 7",
+      "href": "/flood-monitoring/doc/rainfall",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/rainfall",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 8",
+      "href": "/flood-monitoring/doc/tidegauge",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/tidegauge",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 9",
+      "href": "/flood-monitoring/archive",
+      "url": "https://environment.data.gov.uk/flood-monitoring/archive",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 10",
+      "href": "https://environment.data.gov.uk/support",
+      "url": "https://environment.data.gov.uk/support",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 11",
+      "href": "#introduction",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#introduction",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 12",
+      "href": "#availability",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#availability",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 13",
+      "href": "#recent",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#recent",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 14",
+      "href": "#api-summary",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#api-summary",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 15",
+      "href": "#api-structure",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#api-structure",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 16",
+      "href": "#api-requests",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#api-requests",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 17",
+      "href": "#api-metadata",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#api-metadata",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 18",
+      "href": "#api-items",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#api-items",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 19",
+      "href": "#api-content-types",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#api-content-types",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 20",
+      "href": "#api-lists",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#api-lists",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 21",
+      "href": "#flood-warnings",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#flood-warnings",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 22",
+      "href": "#flood-areas",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#flood-areas",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 23",
+      "href": "#stations",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#stations",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 24",
+      "href": "#individual-station",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#individual-station",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 25",
+      "href": "#measures",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#measures",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 26",
+      "href": "#individual-measure",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#individual-measure",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 27",
+      "href": "#readings",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#readings",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 28",
+      "href": "#historic-readings",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#historic-readings",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 29",
+      "href": "#5dfx",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#5dfx",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 30",
+      "href": "#acknowledgements",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#acknowledgements",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 31",
+      "href": "#data",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#data",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 32",
+      "href": "https://forms.office.com/Pages/ResponsePage.aspx?id=UCQKdycCYkyQx044U38RAlS_vYS6otFJmqjW5Hudy4hUMkVSSVI2VUlSOTQ4RU9FOVVaTTVBNlowRyQlQCN0PWcu",
+      "url": "https://forms.office.com/Pages/ResponsePage.aspx?id=UCQKdycCYkyQx044U38RAlS_vYS6otFJmqjW5Hudy4hUMkVSSVI2VUlSOTQ4RU9FOVVaTTVBNlowRyQlQCN0PWcu",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 33",
+      "href": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+      "url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 34",
+      "href": "/flood-monitoring/data/readings?latest",
+      "url": "https://environment.data.gov.uk/flood-monitoring/data/readings?latest",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 35",
+      "href": "https://www.gov.uk/check-if-youre-at-risk-of-flooding",
+      "url": "https://www.gov.uk/check-if-youre-at-risk-of-flooding",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 36",
+      "href": "/flood-monitoring/id/floods",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/floods",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 37",
+      "href": "/flood-monitoring/id/stations?_limit=50",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/stations?_limit=50",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 38",
+      "href": "/flood-monitoring/id/stations/1491TH/measures",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/stations/1491TH/measures",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 39",
+      "href": "/flood-monitoring/id/measures?_limit=50",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/measures?_limit=50",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 40",
+      "href": "/flood-monitoring/data/readings?_limit=50",
+      "url": "https://environment.data.gov.uk/flood-monitoring/data/readings?_limit=50",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 41",
+      "href": "/flood-monitoring/id/measures/1491TH-level-stage-i-15_min-mASD/readings?_sorted&_limit=100",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/measures/1491TH-level-stage-i-15_min-mASD/readings?_sorted&_limit=100",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 42",
+      "href": "/flood-monitoring/id/stations/1491TH/readings?_sorted&_limit=100",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/stations/1491TH/readings?_sorted&_limit=100",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 43",
+      "href": "https://en.wikipedia.org/wiki/Representational_state_transfer",
+      "url": "https://en.wikipedia.org/wiki/Representational_state_transfer",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 44",
+      "href": "/flood-monitoring/id/floods",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/floods",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 45",
+      "href": "https://json-ld.org/",
+      "url": "https://json-ld.org/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 46",
+      "href": "#api-content-types",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#api-content-types",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 47",
+      "href": "/flood-monitoring/id/floodAreas/122WAC953",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/floodAreas/122WAC953",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 48",
+      "href": "/flood-monitoring/id/floods?min-severity=3",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/floods?min-severity=3",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 49",
+      "href": "/flood-monitoring/id/floods",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/floods",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 50",
+      "href": "/flood-monitoring/id/floods?min-severity=3",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/floods?min-severity=3",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 51",
+      "href": "/flood-monitoring/id/floods?county=Somerset",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/floods?county=Somerset",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 52",
+      "href": "https://environment.data.gov.uk/ds/catalogue/index.jsp#/catalogue",
+      "url": "https://environment.data.gov.uk/ds/catalogue/index.jsp#/catalogue",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 53",
+      "href": "/flood-monitoring/id/floodAreas/122WAC953",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/floodAreas/122WAC953",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 54",
+      "href": "/flood-monitoring/id/floodAreas",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/floodAreas",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 55",
+      "href": "/flood-monitoring/id/stations?_limit=50",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/stations?_limit=50",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 56",
+      "href": "/flood-monitoring/id/stations?parameter=flow",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/stations?parameter=flow",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 57",
+      "href": "/flood-monitoring/id/stations?qualifier=Downstream+Stage",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/stations?qualifier=Downstream+Stage",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 58",
+      "href": "/flood-monitoring/id/stations?catchmentName=Cotswolds&_limit=10",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/stations?catchmentName=Cotswolds&_limit=10",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 59",
+      "href": "/flood-monitoring/id/stations?search=River+Wey",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/stations?search=River+Wey",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 60",
+      "href": "/flood-monitoring/id/stations?riverName=Cherwell",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/stations?riverName=Cherwell",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 61",
+      "href": "/flood-monitoring/id/stations/1491TH.html",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/stations/1491TH.html",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 62",
+      "href": "/flood-monitoring/id/stations/1491TH.json",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/stations/1491TH.json",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 63",
+      "href": "/flood-monitoring/id/measures?_limit=50",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/measures?_limit=50",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 64",
+      "href": "/flood-monitoring/id/stations/1491TH/measures",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/stations/1491TH/measures",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 65",
+      "href": "/flood-monitoring/id/measures/1491TH-level-stage-i-15_min-mASD",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/measures/1491TH-level-stage-i-15_min-mASD",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 66",
+      "href": "#measure-results",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#measure-results",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 67",
+      "href": "/flood-monitoring/data/readings?_limit=100",
+      "url": "https://environment.data.gov.uk/flood-monitoring/data/readings?_limit=100",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 68",
+      "href": "/flood-monitoring/id/measures/1491TH-level-stage-i-15_min-mASD/readings?_sorted&_limit=100",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/measures/1491TH-level-stage-i-15_min-mASD/readings?_sorted&_limit=100",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 69",
+      "href": "/flood-monitoring/id/stations/1491TH/readings?_sorted&_limit=100",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/stations/1491TH/readings?_sorted&_limit=100",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 70",
+      "href": "https://www.gov.uk/government/publications/designing-uri-sets-for-the-uk-public-sector",
+      "url": "https://www.gov.uk/government/publications/designing-uri-sets-for-the-uk-public-sector",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 71",
+      "href": "https://github.com/UKGovLD/URI-patterns-core/blob/master/URI%20Patterns.md",
+      "url": "https://github.com/UKGovLD/URI-patterns-core/blob/master/URI%20Patterns.md",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 72",
+      "href": "#size-limits",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#size-limits",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 73",
+      "href": "#size-limits",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#size-limits",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 74",
+      "href": "/flood-monitoring/data/readings.csv?latest&_limit=6000",
+      "url": "https://environment.data.gov.uk/flood-monitoring/data/readings.csv?latest&_limit=6000",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 75",
+      "href": "/flood-monitoring/data/readings?latest&qualifier=Groundwater",
+      "url": "https://environment.data.gov.uk/flood-monitoring/data/readings?latest&qualifier=Groundwater",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 76",
+      "href": "/flood-monitoring/data/readings?latest&parameter=flow",
+      "url": "https://environment.data.gov.uk/flood-monitoring/data/readings?latest&parameter=flow",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 77",
+      "href": "/flood-monitoring/data/readings?latest&parameter=flow&_view=full",
+      "url": "https://environment.data.gov.uk/flood-monitoring/data/readings?latest&parameter=flow&_view=full",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 78",
+      "href": "/flood-monitoring/id/measures/1491TH-level-stage-i-15_min-mASD/readings?_sorted&_limit=10",
+      "url": "https://environment.data.gov.uk/flood-monitoring/id/measures/1491TH-level-stage-i-15_min-mASD/readings?_sorted&_limit=10",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 79",
+      "href": "/flood-monitoring/archive",
+      "url": "https://environment.data.gov.uk/flood-monitoring/archive",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 80",
+      "href": "https://api.foursources.metoffice.gov.uk/docs/flood-guidance-statement-api-public",
+      "url": "https://api.foursources.metoffice.gov.uk/docs/flood-guidance-statement-api-public",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 81",
+      "href": "https://getbootstrap.com/",
+      "url": "https://getbootstrap.com/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 82",
+      "href": "#definition-AffectedRegion",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-AffectedRegion",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 83",
+      "href": "#definition-Coastal",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-Coastal",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 84",
+      "href": "#definition-DatumType",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-DatumType",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 85",
+      "href": "#definition-DayForecast",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-DayForecast",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 86",
+      "href": "#definition-FloodAlertArea",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-FloodAlertArea",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 87",
+      "href": "#definition-FloodAlertOrWarning",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-FloodAlertOrWarning",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 88",
+      "href": "#definition-FloodArea",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-FloodArea",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 89",
+      "href": "#definition-FloodWarningArea",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-FloodWarningArea",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 90",
+      "href": "#definition-Flow",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-Flow",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 91",
+      "href": "#definition-ForecastRisk",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-ForecastRisk",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 92",
+      "href": "#definition-GatePosition",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-GatePosition",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 93",
+      "href": "#definition-Groundwater",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-Groundwater",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 94",
+      "href": "#definition-Measure",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-Measure",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 95",
+      "href": "#definition-Meteorological",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-Meteorological",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 96",
+      "href": "#definition-MultiTraceLevel",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-MultiTraceLevel",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 97",
+      "href": "#definition-RLOIid",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-RLOIid",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 98",
+      "href": "#definition-Rainfall",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-Rainfall",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 99",
+      "href": "#definition-Reading",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-Reading",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 100",
+      "href": "#definition-SingleLevel",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-SingleLevel",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 101",
+      "href": "#definition-Station",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-Station",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 102",
+      "href": "#definition-Temperature",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-Temperature",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 103",
+      "href": "#definition-ThreeDayForecast",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-ThreeDayForecast",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 104",
+      "href": "#definition-ValueType",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-ValueType",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 105",
+      "href": "#definition-WaterLevel",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-WaterLevel",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 106",
+      "href": "#definition-Wind",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-Wind",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 107",
+      "href": "#definition-advice",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-advice",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 108",
+      "href": "#definition-affectedRegion",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-affectedRegion",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 109",
+      "href": "#definition-catchmentName",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-catchmentName",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 110",
+      "href": "#definition-comment",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-comment",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 111",
+      "href": "#definition-county",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-county",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 112",
+      "href": "#definition-currentWarning",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-currentWarning",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 113",
+      "href": "#definition-date",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-date",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 114",
+      "href": "#definition-dateOpened",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-dateOpened",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 115",
+      "href": "#definition-dateTime",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-dateTime",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 116",
+      "href": "#definition-datum",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-datum",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 117",
+      "href": "#definition-datumAOD",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-datumAOD",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 118",
+      "href": "#definition-datumASD",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-datumASD",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 119",
+      "href": "#definition-datumBDAT",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-datumBDAT",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 120",
+      "href": "#definition-datumOffset",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-datumOffset",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 121",
+      "href": "#definition-datumType",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-datumType",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 122",
+      "href": "#definition-day1image",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-day1image",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 123",
+      "href": "#definition-day2image",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-day2image",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 124",
+      "href": "#definition-day3image",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-day3image",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 125",
+      "href": "#definition-dayForecast",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-dayForecast",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 126",
+      "href": "#definition-description",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-description",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 127",
+      "href": "#definition-downstageScale",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-downstageScale",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 128",
+      "href": "#definition-eaArea",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-eaArea",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 129",
+      "href": "#definition-eaAreaName",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-eaAreaName",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 130",
+      "href": "#definition-eaRegionName",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-eaRegionName",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 131",
+      "href": "#definition-floodArea",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-floodArea",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 132",
+      "href": "#definition-floodAreaID",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-floodAreaID",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 133",
+      "href": "#definition-floodWatchArea",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-floodWatchArea",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 134",
+      "href": "#definition-forecastRisk",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-forecastRisk",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 135",
+      "href": "#definition-forecastSummary",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-forecastSummary",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 136",
+      "href": "#definition-fwdCode",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-fwdCode",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 137",
+      "href": "#definition-gridReference",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-gridReference",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 138",
+      "href": "#definition-highestRecent",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-highestRecent",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 139",
+      "href": "#definition-impact",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-impact",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 140",
+      "href": "#definition-instantaneous",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-instantaneous",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 141",
+      "href": "#definition-isTidal",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-isTidal",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 142",
+      "href": "#definition-issueDatetime",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-issueDatetime",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 143",
+      "href": "#definition-label",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-label",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 144",
+      "href": "#definition-latestReading",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-latestReading",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 145",
+      "href": "#definition-maxOnRecord",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-maxOnRecord",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 146",
+      "href": "#definition-maximum",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-maximum",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 147",
+      "href": "#definition-mean",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-mean",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 148",
+      "href": "#definition-measure",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-measure",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 149",
+      "href": "#definition-measures",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-measures",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 150",
+      "href": "#definition-message",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-message",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 151",
+      "href": "#definition-minOnRecord",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-minOnRecord",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 152",
+      "href": "#definition-minimum",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-minimum",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 153",
+      "href": "#definition-notation",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-notation",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 154",
+      "href": "#definition-parameter",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-parameter",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 155",
+      "href": "#definition-parameterName",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-parameterName",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 156",
+      "href": "#definition-period",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-period",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 157",
+      "href": "#definition-polygon",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-polygon",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 158",
+      "href": "#definition-qualifier",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-qualifier",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 159",
+      "href": "#definition-quickDialNumber",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-quickDialNumber",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 160",
+      "href": "#definition-riskLevel",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-riskLevel",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 161",
+      "href": "#definition-riverName",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-riverName",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 162",
+      "href": "#definition-riverOrSea",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-riverOrSea",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 163",
+      "href": "#definition-scaleMax",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-scaleMax",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 164",
+      "href": "#definition-severity",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-severity",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 165",
+      "href": "#definition-severityLevel",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-severityLevel",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 166",
+      "href": "#definition-stageScale",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-stageScale",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 167",
+      "href": "#definition-station",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-station",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 168",
+      "href": "#definition-stationReference",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-stationReference",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 169",
+      "href": "#definition-timeMessageChanged",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-timeMessageChanged",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 170",
+      "href": "#definition-timeRaised",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-timeRaised",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 171",
+      "href": "#definition-timeSeverityChanged",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-timeSeverityChanged",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 172",
+      "href": "#definition-total",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-total",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 173",
+      "href": "#definition-town",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-town",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 174",
+      "href": "#definition-type",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-type",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 175",
+      "href": "#definition-typicalRangeHigh",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-typicalRangeHigh",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 176",
+      "href": "#definition-typicalRangeLow",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-typicalRangeLow",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 177",
+      "href": "#definition-unit",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-unit",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 178",
+      "href": "#definition-unitName",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-unitName",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 179",
+      "href": "#definition-value",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-value",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 180",
+      "href": "#definition-valueType",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-valueType",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 181",
+      "href": "#definition-wiskiID",
+      "url": "https://environment.data.gov.uk/flood-monitoring/doc/reference#definition-wiskiID",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 182",
+      "href": "https://environment.data.gov.uk/support",
+      "url": "https://environment.data.gov.uk/support",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 183",
+      "href": "https://environment.data.gov.uk/support/faqs/275811163/275811177",
+      "url": "https://environment.data.gov.uk/support/faqs/275811163/275811177",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 184",
+      "href": "https://environment.data.gov.uk/support/faqs/275811163/275811229",
+      "url": "https://environment.data.gov.uk/support/faqs/275811163/275811229",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 185",
+      "href": "https://environment.data.gov.uk/help/cookies",
+      "url": "https://environment.data.gov.uk/help/cookies",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 186",
+      "href": "https://environment.data.gov.uk/support/faqs/275810340/275810354",
+      "url": "https://environment.data.gov.uk/support/faqs/275810340/275810354",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "locator": "main a[href] occurrence 187",
+      "href": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+      "url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275874849/275874938",
+      "locator": "main a[href] occurrence 1",
+      "href": "/",
+      "url": "https://environment.data.gov.uk/",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275874849/275874938",
+      "locator": "main a[href] occurrence 2",
+      "href": "/support",
+      "url": "https://environment.data.gov.uk/support",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275874849/275874938",
+      "locator": "main a[href] occurrence 3",
+      "href": "/support/faqs",
+      "url": "https://environment.data.gov.uk/support/faqs",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275874849/275874938",
+      "locator": "main a[href] occurrence 4",
+      "href": "/support/faqs/275874849/275874986",
+      "url": "https://environment.data.gov.uk/support/faqs/275874849/275874986",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275874849/275874938",
+      "locator": "main a[href] occurrence 5",
+      "href": "/support/faqs/275874849/275875026",
+      "url": "https://environment.data.gov.uk/support/faqs/275874849/275875026",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275874849/275874938",
+      "locator": "main a[href] occurrence 6",
+      "href": "/support/faqs/275874849/639860737",
+      "url": "https://environment.data.gov.uk/support/faqs/275874849/639860737",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275874849/275874938",
+      "locator": "main a[href] occurrence 7",
+      "href": "https://environment.data.gov.uk/ecology/explorer/",
+      "url": "https://environment.data.gov.uk/ecology/explorer/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275874849/275874938",
+      "locator": "main a[href] occurrence 8",
+      "href": "https://environment.data.gov.uk/ecology/API",
+      "url": "https://environment.data.gov.uk/ecology/API",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275874849/275874938",
+      "locator": "main a[href] occurrence 9",
+      "href": "https://environment.data.gov.uk/ecology/explorer/downloads/",
+      "url": "https://environment.data.gov.uk/ecology/explorer/downloads/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275874849/275874938",
+      "locator": "main a[href] occurrence 10",
+      "href": "https://eur03.safelinks.protection.outlook.com/?url=https%3A%2F%2Fenvironment.data.gov.uk%2Fecology%2Fexplorer&data=04%7C01%7CJoanna.Whittle%40environment-agency.gov.uk%7Cddbb7ca6c62d47b0375308d8f352eff0%7C770a245002274c6290c74e38537f1102%7C1%7C0%7C637526884825884649%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&sdata=bwl4YMWduP%2Biwe5E%2FthJDYKX3xDF2diNR%2FD%2FRUtl%2BTY%3D&reserved=0",
+      "url": "https://eur03.safelinks.protection.outlook.com/?url=https%3A%2F%2Fenvironment.data.gov.uk%2Fecology%2Fexplorer&data=04%7C01%7CJoanna.Whittle%40environment-agency.gov.uk%7Cddbb7ca6c62d47b0375308d8f352eff0%7C770a245002274c6290c74e38537f1102%7C1%7C0%7C637526884825884649%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&sdata=bwl4YMWduP%2Biwe5E%2FthJDYKX3xDF2diNR%2FD%2FRUtl%2BTY%3D&reserved=0",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275874849/275874938",
+      "locator": "main a[href] occurrence 11",
+      "href": "https://environment.data.gov.uk/support/question",
+      "url": "https://environment.data.gov.uk/support/question",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275874849/275874938",
+      "locator": "main a[href] occurrence 12",
+      "href": "https://environment.data.gov.uk/support/problem",
+      "url": "https://environment.data.gov.uk/support/problem",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275874849/275874938",
+      "locator": "main a[href] occurrence 13",
+      "href": "https://environment.data.gov.uk/support/feedback",
+      "url": "https://environment.data.gov.uk/support/feedback",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275874849/275874938",
+      "locator": "main a[href] occurrence 14",
+      "href": "/support/faqs/275874849/639860737",
+      "url": "https://environment.data.gov.uk/support/faqs/275874849/639860737",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "browser-metadata-witness.json",
+      "page": "https://environment.data.gov.uk/support/faqs/275874849/275874938",
+      "locator": "main a[href] occurrence 15",
+      "href": "/support/faqs/275874849/275874986",
+      "url": "https://environment.data.gov.uk/support/faqs/275874849/275874986",
+      "captureStatus": "linked-not-acquired"
+    }
+  ],
+  "scope": "Eight public pages with original HTTP HTML and corresponding rendered main-text captures. References are inventoried with acquisition status. API execution, bulk downloads, authentication and quota testing remain separate scope.",
+  "observations": [
+    "The general web reader exposed no readable homepage lines. Chrome rendered the homepage and articles.",
+    "A React hydration error was observed in Chrome. This is a review-session observation.",
+    "Rendered text and HTTP HTML have distinct representation identities.",
+    "The fair-use policy gives mutable provider-specific request limits and gives dataset-specific terms precedence."
+  ]
+}

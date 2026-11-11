@@ -1,0 +1,86 @@
+{
+  "schema": "okf-analytical-producer-compatibility.v1",
+  "check": "shared Explorer repository-contract reconciliation; read-only",
+  "wcc": {
+    "commit": "ec731a81f622e91e84ddc289c1e3b3ff269e6302",
+    "result": {
+      "contract_schema": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/repository-contract.schema.json",
+      "profile": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/",
+      "repositories": [
+        {
+          "errors": [
+            "README.md does not declare okf_version: 0.2",
+            "invalid semantic document okf/warwickshire-public/graph.yamlld: YAML-LD must contain one document without stream separators",
+            "reader.delivery is not governed: json-large-corpus",
+            "reader.preserves differs from the governed v1 field set",
+            "relationship_contract.authoring is not governed: generated-from-reviewed-source-snapshot-and-config",
+            "relationship_contract.direct_triple_policy is not governed: generated-from-one-bounded-source-model",
+            "relationship_contract.predicate_policy must be absolute-iri",
+            "relationship_contract.required_fields differs from the governed v1 field set",
+            "relationship_contract.schema has no exact declared relationship-schema output or qualifying canonical profile mirror: https://github.com/wcc-domesday-map/domesday-map/blob/main/docs/okf-geospatial-data-profile.md",
+            "semantic_layer.context_policy is not the governed pinned-context policy",
+            "semantic_layer.identity_policy is not the governed IRI/route policy",
+            "semantic_layer.outputs[3].role is not governed: explorer-large-corpus",
+            "semantic_layer.state is not governed: generated-json-ld-with-draft-yaml-ld-projection"
+          ],
+          "migration_warning_count": 1,
+          "path": "wcc-domesday-map",
+          "relationship_files_declared": 1,
+          "relationship_rows_sampled": 100,
+          "relationship_schemas_checked": 0,
+          "repository": "wcc-domesday-map",
+          "semantic_assertions_sampled": 0,
+          "semantic_documents_checked": 2,
+          "semantic_state": "generated-json-ld-with-draft-yaml-ld-projection",
+          "status": "non-conformant",
+          "validation_error_count": 13,
+          "warnings": [
+            "okf/warwickshire-public/explorer/data/relationships-0.json relationship lacks rich fields: source_iri, target_iri, label, inverse_label, assertion_status, assertion_scope, authority, derivation, observed_at, rights"
+          ]
+        }
+      ],
+      "schema": "okf-repository-reconciliation-report.v1",
+      "summary": {
+        "conformant": 0,
+        "migration": 0,
+        "non_conformant": 1,
+        "repositories": 1
+      }
+    },
+    "baselineErrorsIdentical": true
+  },
+  "ndl": {
+    "commit": "509d55d7d4bdf7f19bf682809b85d2862abee7f0",
+    "result": {
+      "contract_schema": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/repository-contract.schema.json",
+      "profile": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/",
+      "repositories": [
+        {
+          "errors": [
+            "README.md does not declare okf_version: 0.2"
+          ],
+          "migration_warning_count": 0,
+          "path": "okf-data-gov-uk",
+          "relationship_files_declared": 748,
+          "relationship_rows_sampled": 300,
+          "relationship_schemas_checked": 0,
+          "repository": "okf-data-gov-uk",
+          "semantic_assertions_sampled": 0,
+          "semantic_documents_checked": 6,
+          "semantic_state": "generated-yaml-ld-sharded-graph",
+          "status": "non-conformant",
+          "validation_error_count": 1,
+          "warnings": []
+        }
+      ],
+      "schema": "okf-repository-reconciliation-report.v1",
+      "summary": {
+        "conformant": 0,
+        "migration": 0,
+        "non_conformant": 1,
+        "repositories": 1
+      }
+    },
+    "baselineErrorsIdentical": true
+  }
+}

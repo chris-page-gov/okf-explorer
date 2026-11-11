@@ -1,0 +1,328 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chris-page-gov.github.io/okf-explorer/profile/analytical-data/v1/package.schema.json",
+  "title": "OKF+ Analytical Data package v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "conformsTo",
+    "profileVersion",
+    "dataset",
+    "tables"
+  ],
+  "properties": {
+    "conformsTo": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 2048,
+        "format": "credential-free-http",
+        "pattern": "^https?://"
+      },
+      "minItems": 1,
+      "maxItems": 32,
+      "uniqueItems": true,
+      "contains": {
+        "const": "https://chris-page-gov.github.io/okf-explorer/profile/analytical-data/v1/"
+      }
+    },
+    "profileVersion": {
+      "const": "1.0.0-rc.1"
+    },
+    "dataset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version",
+        "title",
+        "scope",
+        "rights"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 2048,
+          "format": "credential-free-http",
+          "pattern": "^https?://"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "pattern": "\\S"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "pattern": "\\S"
+        },
+        "scope": {
+          "enum": [
+            "real-world",
+            "synthetic"
+          ]
+        },
+        "rights": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "source"
+          ],
+          "properties": {
+            "status": {
+              "enum": [
+                "declared",
+                "unverified"
+              ]
+            },
+            "source": {
+              "type": "string",
+              "maxLength": 2048,
+              "format": "credential-free-http",
+              "pattern": "^https?://"
+            },
+            "licence": {
+              "type": "string",
+              "maxLength": 2048,
+              "format": "credential-free-http",
+              "pattern": "^https?://"
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "status": {
+                    "const": "declared"
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "licence"
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "tables": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "path",
+          "sha256",
+          "source",
+          "observationKey",
+          "fields"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 512,
+            "pattern": "\\.csv$"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "source": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "url",
+              "observedAt"
+            ],
+            "properties": {
+              "url": {
+                "type": "string",
+                "maxLength": 2048,
+                "format": "credential-free-http",
+                "pattern": "^https?://"
+              },
+              "observedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "contract": {
+                "type": "string",
+                "maxLength": 2048,
+                "format": "credential-free-http",
+                "pattern": "^https?://"
+              }
+            }
+          },
+          "observationKey": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z_][A-Za-z0-9_]*(?![\\s\\S])"
+            },
+            "minItems": 1,
+            "maxItems": 128,
+            "uniqueItems": true
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "name",
+                "label",
+                "role",
+                "dataType"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128,
+                  "pattern": "^[A-Za-z_][A-Za-z0-9_]*(?![\\s\\S])"
+                },
+                "label": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 512,
+                  "pattern": "\\S"
+                },
+                "role": {
+                  "enum": [
+                    "dimension",
+                    "measure",
+                    "attribute"
+                  ]
+                },
+                "dataType": {
+                  "enum": [
+                    "string",
+                    "integer",
+                    "number",
+                    "boolean",
+                    "date"
+                  ]
+                },
+                "concept": {
+                  "type": "string",
+                  "maxLength": 2048,
+                  "format": "credential-free-http",
+                  "pattern": "^https?://"
+                },
+                "unit": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 512,
+                  "pattern": "\\S"
+                },
+                "vocabulary": {
+                  "type": "string",
+                  "maxLength": 2048,
+                  "format": "credential-free-http",
+                  "pattern": "^https?://"
+                },
+                "identifier": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "scheme",
+                    "entityType"
+                  ],
+                  "properties": {
+                    "scheme": {
+                      "type": "string",
+                      "maxLength": 2048,
+                      "format": "credential-free-http",
+                      "pattern": "^https?://"
+                    },
+                    "entityType": {
+                      "type": "string",
+                      "maxLength": 2048,
+                      "format": "credential-free-http",
+                      "pattern": "^https?://"
+                    },
+                    "edition": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 512,
+                      "pattern": "\\S"
+                    }
+                  }
+                },
+                "allowedValues": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "maxLength": 1024
+                  },
+                  "minItems": 1,
+                  "maxItems": 1024,
+                  "uniqueItems": true
+                },
+                "valueStates": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "token",
+                      "state"
+                    ],
+                    "properties": {
+                      "token": {
+                        "type": "string",
+                        "maxLength": 1024
+                      },
+                      "state": {
+                        "enum": [
+                          "missing",
+                          "notApplicable",
+                          "notAvailable",
+                          "suppressed",
+                          "roundedToZero",
+                          "lowReliability"
+                        ]
+                      }
+                    }
+                  },
+                  "minItems": 1,
+                  "maxItems": 32
+                },
+                "display": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "minProperties": 1,
+                  "properties": {
+                    "decimalPlaces": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 18
+                    },
+                    "group": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 512,
+                      "pattern": "\\S"
+                    }
+                  }
+                }
+              }
+            },
+            "minItems": 1,
+            "maxItems": 128
+          }
+        }
+      },
+      "minItems": 1,
+      "maxItems": 32
+    }
+  }
+}

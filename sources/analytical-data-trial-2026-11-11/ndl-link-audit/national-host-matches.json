@@ -1,0 +1,904 @@
+[
+  {
+    "id": "00055483-dd79-4ada-b4be-eb54eeaec19b",
+    "name": "warwickshire-public-weighbridges",
+    "title": "Public Weighbridges",
+    "publisher": "warwickshire-county-council",
+    "metadataModified": "2013-08-12T23:00:31.404269",
+    "resources": [
+      {
+        "id": "fe5bd141-d2a4-40d6-ac8f-cc9225f5b5b9",
+        "url": "http://opendata.s3.amazonaws.com/public-weighbridges.xls",
+        "format": "XLS",
+        "description": "",
+        "name": null
+      }
+    ],
+    "sourcePage": "page-000",
+    "sourcePageSha256": "73098fa2c8be4bea7138c2a86296e0627ee5d51efb7e4fb85a8ceaf1abfa3944"
+  },
+  {
+    "id": "008e0051-3f8e-4be1-8980-76a852e5dfd9",
+    "name": "warwickshire-pupil-numbers-on-roll",
+    "title": "Pupil numbers on roll",
+    "publisher": "warwickshire-county-council",
+    "metadataModified": "2013-08-12T23:00:31.404269",
+    "resources": [
+      {
+        "id": "46397d23-df2b-47b5-bc91-1767dd137fc1",
+        "url": "http://opendata.s3.amazonaws.com/schools/schools-number-on-roll-warwickshire-1998-2010.csv",
+        "format": "CSV",
+        "description": "",
+        "name": null
+      },
+      {
+        "id": "321273bb-b141-4e5b-ad87-5315c5c9e2ff",
+        "url": "http://opendata.s3.amazonaws.com/schools/schools-number-on-roll-warwickshire-1998-2010.xml",
+        "format": "XML",
+        "description": "",
+        "name": null
+      }
+    ],
+    "sourcePage": "page-000",
+    "sourcePageSha256": "73098fa2c8be4bea7138c2a86296e0627ee5d51efb7e4fb85a8ceaf1abfa3944"
+  },
+  {
+    "id": "0242081f-10af-445d-88b1-2661815f75a3",
+    "name": "warwickshire-medium-term-savings",
+    "title": "Medium Term Savings",
+    "publisher": "warwickshire-county-council",
+    "metadataModified": "2013-08-12T23:00:31.404269",
+    "resources": [
+      {
+        "id": "33a0e3bc-1625-40d3-bb96-1cee1ee8d4eb",
+        "url": "http://opendata.s3.amazonaws.com/finance/medium-term-savings-plan-2010-2011.xls",
+        "format": "XLS",
+        "description": "Medium Term Savings  2010/2011",
+        "name": null
+      }
+    ],
+    "sourcePage": "page-000",
+    "sourcePageSha256": "73098fa2c8be4bea7138c2a86296e0627ee5d51efb7e4fb85a8ceaf1abfa3944"
+  },
+  {
+    "id": "19b54b33-379b-44ec-8eb3-476cefe15ffa",
+    "name": "warwickshire-school-admissions-offers-2010",
+    "title": "School Admissions Offers - 2010",
+    "publisher": "warwickshire-county-council",
+    "metadataModified": "2013-08-12T23:00:31.404269",
+    "resources": [
+      {
+        "id": "b77ccff6-5f07-4e55-b20c-44c70791c689",
+        "url": "http://opendata.s3.amazonaws.com/schools/schools-offer-breakdown-warwickshire-2010.csv",
+        "format": "CSV",
+        "description": "",
+        "name": null
+      },
+      {
+        "id": "aea012fa-4562-43d3-9380-0766b12ba603",
+        "url": "http://opendata.s3.amazonaws.com/schools/schools-offer-breakdown-warwickshire-2010.xml",
+        "format": "XML",
+        "description": "",
+        "name": null
+      }
+    ],
+    "sourcePage": "page-006",
+    "sourcePageSha256": "ced1b9f9af46193ec69d55fd9ad135c73a92dd75a1a0bbf4fb163dc2ae518a01"
+  },
+  {
+    "id": "2a77b704-c9b0-4355-b23c-ec913d135efd",
+    "name": "warwickshire-pupils-with-sen-status",
+    "title": "Pupils with SEN status",
+    "publisher": "warwickshire-county-council",
+    "metadataModified": "2013-08-12T23:00:31.404269",
+    "resources": [
+      {
+        "id": "80be1e88-a660-48df-9566-1cff14cd4bc1",
+        "url": "http://opendata.s3.amazonaws.com/schools/schools-special-needs-status-warwickshire-2008-2010.csv",
+        "format": "CSV",
+        "description": "",
+        "name": null
+      }
+    ],
+    "sourcePage": "page-010",
+    "sourcePageSha256": "c645d265fda1fe67d865ddf6acb929405b799eabf68a7bb8c796349c69b949ad"
+  },
+  {
+    "id": "2e9172c4-423e-444e-9653-9bb86406a2f9",
+    "name": "warwickshire-school-admissions-offers-2009",
+    "title": "School Admissions Offers - 2009",
+    "publisher": "warwickshire-county-council",
+    "metadataModified": "2013-08-12T23:00:31.404269",
+    "resources": [
+      {
+        "id": "9211aaeb-bac5-4d3f-a2f3-8839fa9f8197",
+        "url": "http://opendata.s3.amazonaws.com/schools/schools-offer-breakdown-warwickshire-2009.csv",
+        "format": "CSV",
+        "description": "",
+        "name": null
+      },
+      {
+        "id": "92acf3f4-2d66-4556-b3f0-c10585b4656d",
+        "url": "http://opendata.s3.amazonaws.com/schools/schools-offer-breakdown-warwickshire-2009.xml",
+        "format": "XML",
+        "description": "",
+        "name": null
+      }
+    ],
+    "sourcePage": "page-010",
+    "sourcePageSha256": "c645d265fda1fe67d865ddf6acb929405b799eabf68a7bb8c796349c69b949ad"
+  },
+  {
+    "id": "39bbc618-15f2-45d9-b0db-a82f7bf52c4f",
+    "name": "warwickshire-district-and-borough-boundaries",
+    "title": "Warwickshire District and Borough Boundaries",
+    "publisher": "warwickshire-county-council",
+    "metadataModified": "2013-12-19T10:28:47.285969",
+    "resources": [
+      {
+        "id": "74709a64-837b-411b-83ab-c3e876db413c",
+        "url": "http://opendata.s3.amazonaws.com/warwickshire-districts-and-boroughs.kml",
+        "format": "KML",
+        "description": "Warwickshire District and Borough Boundaries",
+        "name": null
+      }
+    ],
+    "sourcePage": "page-013",
+    "sourcePageSha256": "65aebfe486c72d8ad728c13bd29fc14efaebea53eb52883aa6b9df5404f6bd16"
+  },
+  {
+    "id": "3a083709-bb65-4d07-9ff2-a5af64684ced",
+    "name": "warwickshire-job-seekers-allowance-claimants",
+    "title": "Job Seekers Allowance Claimants",
+    "publisher": "warwickshire-county-council",
+    "metadataModified": "2013-08-12T23:00:31.404269",
+    "resources": [
+      {
+        "id": "10034292-e060-4b05-98c4-3c613e4877e6",
+        "url": "http://opendata.s3.amazonaws.com/job-seekers-allowance-2008-2009.csv",
+        "format": "CSV",
+        "description": "Job Seekers Allowance Claimants 2008 - 2009",
+        "name": null
+      },
+      {
+        "id": "e13da60c-fa74-4b18-82fd-b1d1d9af3278",
+        "url": "http://opendata.s3.amazonaws.com/job-seekers-allowance-2008-2009.xls",
+        "format": "XLS",
+        "description": "Job Seekers Allowance Claimants 2008 - 2009",
+        "name": null
+      }
+    ],
+    "sourcePage": "page-013",
+    "sourcePageSha256": "65aebfe486c72d8ad728c13bd29fc14efaebea53eb52883aa6b9df5404f6bd16"
+  },
+  {
+    "id": "3afb86bd-94d8-4ae1-9de3-2fef18d277a9",
+    "name": "warwickshire-super-output-areas",
+    "title": "Warwickshire Super Output Areas",
+    "publisher": "warwickshire-county-council",
+    "metadataModified": "2013-12-19T10:28:47.285969",
+    "resources": [
+      {
+        "id": "0a595e81-b85f-460c-bc05-880f60ba0225",
+        "url": "http://opendata.s3.amazonaws.com/lower-super-output-areas.kml",
+        "format": "KML",
+        "description": "Warwickshire Super Output Areas",
+        "name": null
+      }
+    ],
+    "sourcePage": "page-013",
+    "sourcePageSha256": "65aebfe486c72d8ad728c13bd29fc14efaebea53eb52883aa6b9df5404f6bd16"
+  },
+  {
+    "id": "3fc40755-1559-4046-841c-69f4f891d69a",
+    "name": "warwickshire-bridge-weight-limits",
+    "title": "Bridge Weight Limits",
+    "publisher": "warwickshire-county-council",
+    "metadataModified": "2013-12-19T10:28:47.285969",
+    "resources": [
+      {
+        "id": "ef988868-6373-4520-a07d-d641c67a11f5",
+        "url": "http://opendata.s3.amazonaws.com/bridge-weight-limits-2010.xls",
+        "format": "XLS",
+        "description": "",
+        "name": null
+      }
+    ],
+    "sourcePage": "page-014",
+    "sourcePageSha256": "ce0bb3b859439bbcbf80845e76e43cd1b422435b02f2173e3a669933b51980d5"
+  },
+  {
+    "id": "44e7e46b-f24c-4460-b66d-494cb2fc14ed",
+    "name": "warwickshire-school-exclusions",
+    "title": "School Exclusions",
+    "publisher": "warwickshire-county-council",
+    "metadataModified": "2013-08-12T23:00:31.404269",
+    "resources": [
+      {
+        "id": "d45c8261-6fd1-4aa4-8e3b-bfd508f244aa",
+        "url": "http://opendata.s3.amazonaws.com/schools/schools-report-2009-cutdown-no-graph.xls",
+        "format": "XLS",
+        "description": "",
+        "name": null
+      }
+    ],
+    "sourcePage": "page-016",
+    "sourcePageSha256": "24bfa4cd1f39c38728620bf8fb51e50eb16ab416560d18c403cdc90c0de964d3"
+  },
+  {
+    "id": "4a59458c-3f09-4c42-be4c-34143b801954",
+    "name": "warwickshire-council-election-results-7th-june-2001",
+    "title": "Council Election Results 7th June 2001",
+    "publisher": "warwickshire-county-council",
+    "metadataModified": "2013-08-12T23:00:31.404269",
+    "resources": [
+      {
+        "id": "436f7a47-c1ce-4805-8e99-2fc3c9368267",
+        "url": "http://opendata.s3.amazonaws.com/county-council-election-results-7th-june-2001.csv",
+        "format": "CSV",
+        "description": "",
+        "name": null
+      }
+    ],
+    "sourcePage": "page-017",
+    "sourcePageSha256": "d70a51bb3a72e4a124867d9b9a9ec15b9b9aa74c7188a5d86a80adbd995fdb15"
+  },
+  {
+    "id": "4ce19374-56e9-473e-afd2-783f40245199",
+    "name": "warwickshire-customer-access-points",
+    "title": "Customer Access Points",
+    "publisher": "warwickshire-county-council",
+    "metadataModified": "2013-08-12T23:00:31.404269",
+    "resources": [
+      {
+        "id": "e656ff69-d247-4a58-87d9-79a0729be56e",
+        "url": "http://opendata.s3.amazonaws.com/customer-access-warwickshire.csv",
+        "format": "CSV",
+        "description": "",
+        "name": null
+      }
+    ],
+    "sourcePage": "page-018",
+    "sourcePageSha256": "be8d58e8880df9b6727c064db60d1387ffae69390a65af93d4ae19074e7e6019"
+  },
+  {
+    "id": "513a030e-99a9-4655-b568-79e17abd6de3",
+    "name": "warwickshire-waste-disposal",
+    "title": "Waste disposal",
+    "publisher": "warwickshire-county-council",
+    "metadataModified": "2013-12-19T10:28:47.285969",
+    "resources": [
+      {
+        "id": "cf970401-3ed1-4ff7-a897-5c68f4d725f3",
+        "url": "http://opendata.s3.amazonaws.com/wastedata/Disposal-Inputs-09-10.xls",
+        "format": "XLS",
+        "description": "Waste disposal 2009-2010",
+        "name": null
+      },
+      {
+        "id": "b39dd9ff-f02a-4219-8a4f-42dc243850c4",
+        "url": "http://opendata.s3.amazonaws.com/wastedata/Disposal-Inputs-08-09.xls",
+        "format": "XLS",
+        "description": "Waste disposal 2008-2009",
+        "name": null
+      },
+      {
+        "id": "f19c47b7-abf3-4775-81fe-9630c33fa5e5",
+        "url": "http://opendata.s3.amazonaws.com/wastedata/Disposal-Inputs-07-08.xls",
+        "format": "XLS",
+        "description": "Waste disposal 2007-2008",
+        "name": null
+      },
+      {
+        "id": "95f45b99-c770-42ec-b471-91f279619ef7",
+        "url": "http://opendata.s3.amazonaws.com/wastedata/Disposal-Inputs-06-07.xls",
+        "format": "XLS",
+        "description": "Waste disposal 2006-2007",
+        "name": null
+      },
+      {
+        "id": "376f89a8-baa9-487d-8cbd-b1a319256608",
+        "url": "http://opendata.s3.amazonaws.com/wastedata/Disposal-Inputs-05-06.xls",
+        "format": "XLS",
+        "description": "Waste disposal 2005-2006",
+        "name": null
+      },
+      {
+        "id": "966d9ef8-d235-44ce-8b09-d16dbff3f22f",
+        "url": "http://opendata.s3.amazonaws.com/wastedata/Disposal-Inputs-04-05.xls",
+        "format": "XLS",
+        "description": "Waste disposal 2004-2005",
+        "name": null
+      }
+    ],
+    "sourcePage": "page-019",
+    "sourcePageSha256": "63d447adef693b0d3e0e4126d4e0dc4c5be28f0387306817bf66246ad969dde8"
+  },
+  {
+    "id": "5c52fe04-d1a4-4227-8c70-4ffa2a4f3e12",
+    "name": "warwickshire-schools",
+    "title": "Warwickshire Schools",
+    "publisher": "warwickshire-county-council",
+    "metadataModified": "2017-08-23T16:01:57.569188",
+    "resources": [
+      {
+        "id": "5f70f407-2f29-481c-a1ee-ccf79b13cb01",
+        "url": "http://opendata.s3.amazonaws.com/schools/schools-detail-warwickshire-2010.csv",
+        "format": "CSV",
+        "description": "Warwickshire schools 2010 (CSV)",
+        "name": null
+      },
+      {
+        "id": "fe607e89-93b8-489e-abc1-89dfe39c6695",
+        "url": "http://opendata.s3.amazonaws.com/schools/schools-detail-warwickshire-2010.xml",
+        "format": "XML",
+        "description": "Warwickshire schools 2010 (XML)",
+        "name": null
+      }
+    ],
+    "sourcePage": "page-021",
+    "sourcePageSha256": "de5881606c249d8696fbd2cb5565ff540370b3186938a01c0f9b7c4dc32e09da"
+  },
+  {
+    "id": "71108612-be58-46fd-85d7-5717d2ee350b",
+    "name": "warwickshire-area-based-grant-allocations",
+    "title": "Area Based Grant Allocations",
+    "publisher": "warwickshire-county-council",
+    "metadataModified": "2013-12-19T10:28:47.285969",
+    "resources": [
+      {
+        "id": "a4e54227-72d9-4993-8863-9fe9254822a5",
+        "url": "http://opendata.s3.amazonaws.com/finance/area-based-grant-allocations-2010-2011.csv",
+        "format": "CSV",
+        "description": "Area Based Grant Allocations 2010/2011",
+        "name": null
+      },
+      {
+        "id": "0012faeb-d1d9-4b61-8f6e-3571d0d69a30",
+        "url": "http://opendata.s3.amazonaws.com/finance/area-based-grant-allocations-2010-2011.xls",
+        "format": "XLS",
+        "description": "Area Based Grant Allocations 2010/2011",
+        "name": null
+      }
+    ],
+    "sourcePage": "page-026",
+    "sourcePageSha256": "0f0883d47f9cb8ce787c7701d19bccadab323fb328edde7ad2f05b0ba1041a15"
+  },
+  {
+    "id": "76be54d0-c06a-463b-a89e-e53ec2dc2666",
+    "name": "warwickshire-school-crossing-patrols",
+    "title": "School Crossing Patrols",
+    "publisher": "warwickshire-county-council",
+    "metadataModified": "2013-08-12T23:00:31.404269",
+    "resources": [
+      {
+        "id": "36e07906-75ab-4097-a1e6-0df7533241c5",
+        "url": "http://opendata.s3.amazonaws.com/schools/school_crossings.csv",
+        "format": "CSV",
+        "description": "School Crossing Patrols",
+        "name": null
+      },
+      {
+        "id": "53cafa42-157a-4975-b676-7b5cb6b65355",
+        "url": "http://opendata.s3.amazonaws.com/schools/school_crossings.xls",
+        "format": "XLS",
+        "description": "School Crossing Patrols",
+        "name": null
+      }
+    ],
+    "sourcePage": "page-027",
+    "sourcePageSha256": "5b5aa83997b3f9aa3c7de89609ef5bf69dcd3192d76f82934d807d37bcb5b8fc"
+  },
+  {
+    "id": "79dcb891-b401-4bef-840a-27e4b6c2da6c",
+    "name": "warwickshire-household-waste-recycling-centre-data",
+    "title": "Household Waste Recycling Centre Data",
+    "publisher": "warwickshire-county-council",
+    "metadataModified": "2013-08-12T23:00:31.404269",
+    "resources": [
+      {
+        "id": "d706f113-b416-4880-bf2e-bcec20a4b0d6",
+        "url": "http://opendata.s3.amazonaws.com/wastedata/HWRC-Report-09-10.xls",
+        "format": "XLS",
+        "description": "Household Waste Recycling Centre Data 2009-2010",
+        "name": null
+      },
+      {
+        "id": "c426f8de-de74-4688-a7c0-bb4e471ff630",
+        "url": "http://opendata.s3.amazonaws.com/wastedata/HWRC-Report-08-09.xls",
+        "format": "XLS",
+        "description": "Household Waste Recycling Centre Data 2008-2009",
+        "name": null
+      },
+      {
+        "id": "44a7397b-9815-44c7-8b8a-a369e4a8771e",
+        "url": "http://opendata.s3.amazonaws.com/wastedata/HWRC-Report-07-08.xls",
+        "format": "XLS",
+        "description": "Household Waste Recycling Centre Data 2007-2008",
+        "name": null
+      },
+      {
+        "id": "d3823988-61fa-4fbf-982f-f1afe754635f",
+        "url": "http://opendata.s3.amazonaws.com/wastedata/HWRC-Report-06-07.xls",
+        "format": "XLS",
+        "description": "Household Waste Recycling Centre Data 2006-2007",
+        "name": null
+      },
+      {
+        "id": "69cdf98a-8abd-4882-9624-3c9acda7f54b",
+        "url": "http://opendata.s3.amazonaws.com/wastedata/HWRC-Report-05-06.xls",
+        "format": "XLS",
+        "description": "Household Waste Recycling Centre Data 2005-2006",
+        "name": null
+      },
+      {
+        "id": "38000358-dfa9-4d1e-b5bd-7bfdf90a10e6",
+        "url": "http://opendata.s3.amazonaws.com/wastedata/HWRC-Report-04-05.xls",
+        "format": "XLS",
+        "description": "Household Waste Recycling Centre Data 2004-2005",
+        "name": null
+      }
+    ],
+    "sourcePage": "page-028",
+    "sourcePageSha256": "ed5f788eb000558be17de2443f2e258c85bea0aea5b2ac32db4a7e4ec405940c"
+  },
+  {
+    "id": "801e4079-e3b0-4db9-a36b-a1442afb4332",
+    "name": "warwickshire-under-18-conceptions",
+    "title": "Under 18 Conceptions",
+    "publisher": "warwickshire-county-council",
+    "metadataModified": "2013-08-12T23:00:31.404269",
+    "resources": [
+      {
+        "id": "01475f8f-c698-444a-a91a-f0149f659627",
+        "url": "http://opendata.s3.amazonaws.com/under_18_conceptions_2001_2008.csv",
+        "format": "CSV",
+        "description": "Under 18 Conceptions",
+        "name": null
+      },
+      {
+        "id": "a97dc7f4-712e-4925-a9dd-ac4456ec633d",
+        "url": "http://opendata.s3.amazonaws.com/under_18_conceptions_2001_2008.xls",
+        "format": "XLS",
+        "description": "Under 18 Conceptions",
+        "name": null
+      }
+    ],
+    "sourcePage": "page-030",
+    "sourcePageSha256": "9d444b78af741f40beb35bb063e0da275ad28dbdc5086320df8b93bb9f646fef"
+  },
+  {
+    "id": "82eb8c12-e4de-41cf-a648-4283edd92fe0",
+    "name": "warwickshire-school-admissions-offers-2008",
+    "title": "School Admissions Offers - 2008",
+    "publisher": "warwickshire-county-council",
+    "metadataModified": "2013-08-12T23:00:31.404269",
+    "resources": [
+      {
+        "id": "85c602af-b104-4a10-9a76-8f6e8d32755c",
+        "url": "http://opendata.s3.amazonaws.com/schools/schools-offer-breakdown-warwickshire-2008.csv",
+        "format": "CSV",
+        "description": "",
+        "name": null
+      }
+    ],
+    "sourcePage": "page-030",
+    "sourcePageSha256": "9d444b78af741f40beb35bb063e0da275ad28dbdc5086320df8b93bb9f646fef"
+  },
+  {
+    "id": "86265fb6-3331-4b8b-8774-866253beeda2",
+    "name": "warwickshire-pupils-eligible-for-free-school-meals",
+    "title": "Pupils eligible for Free School Meals",
+    "publisher": "warwickshire-county-council",
+    "metadataModified": "2013-08-12T23:00:31.404269",
+    "resources": [
+      {
+        "id": "ca3576d6-ee7f-4c71-a388-c6e8409b7eb7",
+        "url": "http://opendata.s3.amazonaws.com/schools/schools-free-school-meals-eligibility-warwickshire-2008-2010.csv",
+        "format": "CSV",
+        "description": "",
+        "name": null
+      }
+    ],
+    "sourcePage": "page-031",
+    "sourcePageSha256": "fc2e449ed37f06867a8ec0c1e324d6a8aa1d92353cb9b28956a7777fec779b49"
+  },
+  {
+    "id": "8666d46b-9e68-4142-ac79-6ad8b2ed938b",
+    "name": "warwickshire-bridge-height-restrictions",
+    "title": "Bridge Height Restrictions",
+    "publisher": "warwickshire-county-council",
+    "metadataModified": "2013-12-19T10:28:47.285969",
+    "resources": [
+      {
+        "id": "52829f8f-3bfb-4e22-a07f-bb91376c19a6",
+        "url": "http://opendata.s3.amazonaws.com/bridge-height-restrictions-2010.xls",
+        "format": "XLS",
+        "description": "",
+        "name": null
+      }
+    ],
+    "sourcePage": "page-031",
+    "sourcePageSha256": "fc2e449ed37f06867a8ec0c1e324d6a8aa1d92353cb9b28956a7777fec779b49"
+  },
+  {
+    "id": "880eb2e2-7314-4658-8de9-b393dd98293a",
+    "name": "warwickshire-council-election-results-4th-june-2009",
+    "title": "Council Election Results 4th June 2009",
+    "publisher": "warwickshire-county-council",
+    "metadataModified": "2013-08-12T23:00:31.404269",
+    "resources": [
+      {
+        "id": "2cb167ac-087e-4d4e-a8d3-ca64fea80f0f",
+        "url": "http://opendata.s3.amazonaws.com/county-council-election-results-4th-june-2009.csv",
+        "format": "CSV",
+        "description": "",
+        "name": null
+      }
+    ],
+    "sourcePage": "page-031",
+    "sourcePageSha256": "fc2e449ed37f06867a8ec0c1e324d6a8aa1d92353cb9b28956a7777fec779b49"
+  },
+  {
+    "id": "89e5101a-2064-46e7-955e-4cac2fb31c7c",
+    "name": "warwickshire-ageing-population",
+    "title": "Ageing Population",
+    "publisher": "warwickshire-county-council",
+    "metadataModified": "2013-08-12T23:00:31.404269",
+    "resources": [
+      {
+        "id": "0e0492c0-e58d-43c6-b6d5-890e0432a1f3",
+        "url": "http://opendata.s3.amazonaws.com/aging-population-2008.csv",
+        "format": "CSV",
+        "description": "Ageing Population 2008",
+        "name": null
+      },
+      {
+        "id": "35e1840c-9722-422f-b627-eccd74ba89ad",
+        "url": "http://opendata.s3.amazonaws.com/aging-population-2008.xls",
+        "format": "XLS",
+        "description": "Ageing Population 2008",
+        "name": null
+      }
+    ],
+    "sourcePage": "page-032",
+    "sourcePageSha256": "33ae5d15fdd2f96bcec3feec50a846f212eb79d1640f7263b7c942d5ffd11617"
+  },
+  {
+    "id": "93c1427d-3b4f-4134-bed0-47d859b5fd74",
+    "name": "warwickshire-skills-and-qualifications",
+    "title": "Skills and Qualifications",
+    "publisher": "warwickshire-county-council",
+    "metadataModified": "2013-08-12T23:00:31.404269",
+    "resources": [
+      {
+        "id": "60a946f2-4c88-489c-b997-f4657ad604b5",
+        "url": "http://opendata.s3.amazonaws.com/skills-qualifications-2008.csv",
+        "format": "CSV",
+        "description": "Skills and Qualifications",
+        "name": null
+      },
+      {
+        "id": "d27aba42-f22e-4c42-952d-ab65e6467ce4",
+        "url": "http://opendata.s3.amazonaws.com/skills-qualifications-2008.xls",
+        "format": "XLS",
+        "description": "Skills and Qualifications",
+        "name": null
+      }
+    ],
+    "sourcePage": "page-034",
+    "sourcePageSha256": "f026019725eaff6a00cbf7161666935942f1458441b9ca6cfabe192356fad1bd"
+  },
+  {
+    "id": "98fd10dc-12b1-4d0c-9bd2-e28c11be51f3",
+    "name": "warwickshire-health-deprivation",
+    "title": "Health Deprivation",
+    "publisher": "warwickshire-county-council",
+    "metadataModified": "2013-12-19T10:28:47.285969",
+    "resources": [
+      {
+        "id": "e79b0479-08de-4bee-8e0d-5eb297b47f16",
+        "url": "http://opendata.s3.amazonaws.com/health-deprivation-issues-2007.xls",
+        "format": "XLS",
+        "description": "Health Deprivation 2007",
+        "name": null
+      }
+    ],
+    "sourcePage": "page-035",
+    "sourcePageSha256": "b3ee9ca00c2eb6b196b71f4f095426ba0e204007953819334458d50d0fd71c60"
+  },
+  {
+    "id": "9907e7df-26e8-48e8-a222-02ab84792b72",
+    "name": "warwickshire-parish-boundaries",
+    "title": "Warwickshire Parish Boundaries",
+    "publisher": "warwickshire-county-council",
+    "metadataModified": "2013-12-19T10:28:47.285969",
+    "resources": [
+      {
+        "id": "5fff93c0-55f2-4523-b80c-e482e16f6b4a",
+        "url": "http://opendata.s3.amazonaws.com/warwickshire-parish-areas.kml",
+        "format": "KML",
+        "description": "Warwickshire Parish Boundaries",
+        "name": null
+      }
+    ],
+    "sourcePage": "page-035",
+    "sourcePageSha256": "b3ee9ca00c2eb6b196b71f4f095426ba0e204007953819334458d50d0fd71c60"
+  },
+  {
+    "id": "a159c12a-0046-440f-bf3e-3b7960cd2b83",
+    "name": "warwickshire-mobile-library-timetable",
+    "title": "Mobile Library Timetable",
+    "publisher": "warwickshire-county-council",
+    "metadataModified": "2013-08-12T23:00:31.404269",
+    "resources": [
+      {
+        "id": "1f83f9de-42d0-41c3-b494-89ebac4210df",
+        "url": "http://opendata.s3.amazonaws.com/mobile-library-stops-2010.csv",
+        "format": "CSV",
+        "description": "Mobile Library Timetable",
+        "name": null
+      },
+      {
+        "id": "2d4d814d-0ce1-4ad0-975d-f6d1220adde7",
+        "url": "http://opendata.s3.amazonaws.com/mobile-library-stops-2010.xls",
+        "format": "XLS",
+        "description": "Mobile Library Timetable",
+        "name": null
+      }
+    ],
+    "sourcePage": "page-037",
+    "sourcePageSha256": "011a5e32aec986e00339362add11c9d870f2f3f4e3256f27a232e21bf78d6bc4"
+  },
+  {
+    "id": "a2898cd8-531b-4b32-afe8-06457fdddb0c",
+    "name": "warwickshire-pupils-by-ethnic-groups",
+    "title": "Pupils by Ethnic Groups",
+    "publisher": "warwickshire-county-council",
+    "metadataModified": "2013-08-12T23:00:31.404269",
+    "resources": [
+      {
+        "id": "afbbf916-20ea-4c0c-be95-7c6bd85c538f",
+        "url": "http://opendata.s3.amazonaws.com/schools/schools-ethnic-groups-warwickshire-2008-2010.csv",
+        "format": "CSV",
+        "description": "",
+        "name": null
+      }
+    ],
+    "sourcePage": "page-038",
+    "sourcePageSha256": "206359a3d40b5467499eb1a7492897132d8dd5473388a8dfeca51b4130626962"
+  },
+  {
+    "id": "b5b3f07e-87cb-4a09-bf02-472ce52a1979",
+    "name": "warwickshire-capital-programme",
+    "title": "Capital Programme",
+    "publisher": "warwickshire-county-council",
+    "metadataModified": "2013-08-12T23:00:31.404269",
+    "resources": [
+      {
+        "id": "039635d7-c54a-4f51-9d25-f12a05215329",
+        "url": "http://opendata.s3.amazonaws.com/captial-programme-2010.csv",
+        "format": "CSV",
+        "description": "Capital Programme 2010",
+        "name": null
+      }
+    ],
+    "sourcePage": "page-042",
+    "sourcePageSha256": "c0543d1c6d906411b2b77d127422f12f0913bfef01871897cca0f468be5a7142"
+  },
+  {
+    "id": "b9bdc290-507e-4cf1-87a2-9e94e8e4a25d",
+    "name": "pension-fund-management-results",
+    "title": "Pension Fund management results",
+    "publisher": "warwickshire-county-council",
+    "metadataModified": "2013-08-12T23:00:31.404269",
+    "resources": [
+      {
+        "id": "f2466c88-1513-4268-8da1-99a5e962ff8b",
+        "url": "http://opendata.s3.amazonaws.com/fund-management-results-20100331.csv",
+        "format": "CSV",
+        "description": "Pension Fund management results",
+        "name": null
+      }
+    ],
+    "sourcePage": "page-043",
+    "sourcePageSha256": "96ea3c3d9c6003b32eb86588898559d0e37a5c469ea73ba5c1abbfb87204bf43"
+  },
+  {
+    "id": "c0019522-ae41-4293-b3bb-382655b4f137",
+    "name": "warwickshire-county-boundary",
+    "title": "Warwickshire County Boundary",
+    "publisher": "warwickshire-county-council",
+    "metadataModified": "2013-12-19T10:28:47.285969",
+    "resources": [
+      {
+        "id": "f9f34668-92bb-4638-a2da-65e2afaefa36",
+        "url": "http://opendata.s3.amazonaws.com/warwickshire-county.kml",
+        "format": "KML",
+        "description": "Warwickshire County Boundary",
+        "name": null
+      }
+    ],
+    "sourcePage": "page-045",
+    "sourcePageSha256": "82c74c9bad70206d511252ffa15c15ebf94995ef3fab94b66b0674f136113eee"
+  },
+  {
+    "id": "c43ffe7b-0a1c-4be2-b4d7-ad32409d09ff",
+    "name": "warwickshire-spending-allocation",
+    "title": "Spending Allocations",
+    "publisher": "warwickshire-county-council",
+    "metadataModified": "2013-08-12T23:00:31.404269",
+    "resources": [
+      {
+        "id": "cdcaca02-98c1-40bc-953d-ed9f860c1bb8",
+        "url": "http://opendata.s3.amazonaws.com/finance/spending-allocations-2010-2011.csv",
+        "format": "CSV",
+        "description": "Spending allocations for 2010/2011",
+        "name": null
+      },
+      {
+        "id": "c42efbf1-193c-44c5-856c-8904477e6b26",
+        "url": "http://opendata.s3.amazonaws.com/finance/spending-allocations-2010-2011.xls",
+        "format": "XLS",
+        "description": "Spending allocations for 2010/2011",
+        "name": null
+      }
+    ],
+    "sourcePage": "page-045",
+    "sourcePageSha256": "82c74c9bad70206d511252ffa15c15ebf94995ef3fab94b66b0674f136113eee"
+  },
+  {
+    "id": "c824c408-a976-426d-89aa-a8e0a8abece0",
+    "name": "warwickshire-child-poverty-issues-2007",
+    "title": "Child Poverty Issues",
+    "publisher": "warwickshire-county-council",
+    "metadataModified": "2013-08-12T23:00:31.404269",
+    "resources": [
+      {
+        "id": "8f2c8f98-2014-4331-8ac4-a1fc54e73a2a",
+        "url": "http://opendata.s3.amazonaws.com/child-poverty-issues-2007.xls",
+        "format": "XLS",
+        "description": "Child Poverty Issues 2007",
+        "name": null
+      }
+    ],
+    "sourcePage": "page-046",
+    "sourcePageSha256": "916e2802f0d6f86dca60fc25ab6fccd2b152eae37913cbc1ddbcfa2ce80bef6d"
+  },
+  {
+    "id": "c8c1a841-bc00-4f37-84d1-011bb8ac9099",
+    "name": "warwickshire-relative-age-profile",
+    "title": "Relative Age Profile",
+    "publisher": "warwickshire-county-council",
+    "metadataModified": "2013-08-12T23:00:31.404269",
+    "resources": [
+      {
+        "id": "a8cf21e6-d484-4e6f-9ee3-3e535d8261f1",
+        "url": "http://opendata.s3.amazonaws.com/relative-age-profile-2008.csv",
+        "format": "CSV",
+        "description": "Relative Age Profile 2008",
+        "name": null
+      },
+      {
+        "id": "d2e2e35d-e613-4506-ad70-f4c9b5f96c3e",
+        "url": "http://opendata.s3.amazonaws.com/relative-age-profile-2008.xls",
+        "format": "XLS",
+        "description": "Relative Age Profile 2008",
+        "name": null
+      }
+    ],
+    "sourcePage": "page-047",
+    "sourcePageSha256": "64cc9fcb292ccfdab9cb253e6948cdef6d5626f998e0f5a68b5381e1181ebd91"
+  },
+  {
+    "id": "d1067793-d55e-47e7-ab58-e04e526f5dff",
+    "name": "warwickshire-jobs-growth",
+    "title": "Jobs Growth",
+    "publisher": "warwickshire-county-council",
+    "metadataModified": "2013-08-12T23:00:31.404269",
+    "resources": [
+      {
+        "id": "6e47b830-7888-4c77-9526-6c600d35aaa5",
+        "url": "http://opendata.s3.amazonaws.com/jobs-growth-2008.csv",
+        "format": "CSV",
+        "description": "Jobs Growth 2003 - 2007",
+        "name": null
+      },
+      {
+        "id": "51b1db64-d176-4642-b723-3fdc6ad89cb7",
+        "url": "http://opendata.s3.amazonaws.com/jobs-growth-2008.xls",
+        "format": "XLS",
+        "description": "Jobs Growth 2003 - 2007",
+        "name": null
+      }
+    ],
+    "sourcePage": "page-048",
+    "sourcePageSha256": "5a3e973f38f749324a617a25b9bdda3b18d9193d50012b2302ce8d6dea56a158"
+  },
+  {
+    "id": "dc2dac58-e06d-4f42-9de1-355793f1ab6d",
+    "name": "warwickshire-schools-detail",
+    "title": "Warwickshire Schools (Detail)",
+    "publisher": "warwickshire-county-council",
+    "metadataModified": "2013-08-12T23:00:31.404269",
+    "resources": [
+      {
+        "id": "12a836a9-cd93-45c0-a01a-845865ed5197",
+        "url": "http://opendata.s3.amazonaws.com/schools/schools-detail-warwickshire.csv",
+        "format": "CSV",
+        "description": "",
+        "name": null
+      },
+      {
+        "id": "adc58165-856a-48c9-ae6b-fc2430335b05",
+        "url": "http://opendata.s3.amazonaws.com/schools/schools-detail-warwickshire.xls",
+        "format": "XLS",
+        "description": "",
+        "name": null
+      },
+      {
+        "id": "d71ea8e1-eab0-4470-ada9-d64f9a573893",
+        "url": "http://opendata.s3.amazonaws.com/schools/schools-detail-warwickshire.xml",
+        "format": "XML",
+        "description": "",
+        "name": null
+      }
+    ],
+    "sourcePage": "page-051",
+    "sourcePageSha256": "1293f67507bef86d1f82cd96ce7149e7fa402a0a63fadf09ff14e201b1ca46b3"
+  },
+  {
+    "id": "dea1014b-dd56-45d1-af77-284138144b10",
+    "name": "warwickshire-pupils-by-first-language",
+    "title": "Pupils by First Language",
+    "publisher": "warwickshire-county-council",
+    "metadataModified": "2013-08-12T23:00:31.404269",
+    "resources": [
+      {
+        "id": "7df67866-8957-41bb-8eed-a3fe9f6bc404",
+        "url": "http://opendata.s3.amazonaws.com/schools/schools-first-language-warwickshire-2008-2010.csv",
+        "format": "CSV",
+        "description": "",
+        "name": null
+      }
+    ],
+    "sourcePage": "page-052",
+    "sourcePageSha256": "e82d735ece2435947f9ca5dca11432157d38b6be20f3f964bc43c1c09f4f6077"
+  },
+  {
+    "id": "eccf6e97-8edd-4009-8efb-fe860a928343",
+    "name": "warwickshire-ward-boundaries",
+    "title": "Warwickshire Ward Boundaries",
+    "publisher": "warwickshire-county-council",
+    "metadataModified": "2013-12-19T10:28:47.285969",
+    "resources": [
+      {
+        "id": "59099953-438d-4333-93cb-37f097257652",
+        "url": "http://opendata.s3.amazonaws.com/warwickshire-wards.kml",
+        "format": "KML",
+        "description": "Warwickshire Ward Boundaries",
+        "name": null
+      }
+    ],
+    "sourcePage": "page-055",
+    "sourcePageSha256": "bf033e22c337e18532cd512a7a0566b6d79981e1a50a9ba648e9ee7057df80ee"
+  },
+  {
+    "id": "f8f6934b-09f0-42cc-90ff-084521d93698",
+    "name": "warwickshire-council-election-results-5th-may-2005",
+    "title": "Council Election Results 5th May 2005",
+    "publisher": "warwickshire-county-council",
+    "metadataModified": "2013-08-12T23:00:31.404269",
+    "resources": [
+      {
+        "id": "1ee9084a-c140-4a46-9c47-28bd0e5c6615",
+        "url": "http://opendata.s3.amazonaws.com/county-council-election-results-5th-may-2005.csv",
+        "format": "CSV",
+        "description": "",
+        "name": null
+      }
+    ],
+    "sourcePage": "page-058",
+    "sourcePageSha256": "058ba7d149d3403c5998ce4900f2a8ae73e5c8a4b7d055c9e0a22c7342ab8681"
+  }
+]

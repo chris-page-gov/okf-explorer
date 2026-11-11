@@ -1,0 +1,72 @@
+{
+  "schema": "okf-live-trial-sources.v1",
+  "representation": "Original WCC and GitHub HTTP metadata bodies, an indexed-query control, a current publisher XLS object and immutable protocol observations. The gzip inventory is a deterministic logical metadata projection of all observed public dataset/resource host identities. National HTTP pages and resource prefixes are retained in local acquisition envelopes, with parent hashes in the portable records.",
+  "files": [
+    {
+      "path": "ageing-population-2008.xls",
+      "bytes": 70144,
+      "sha256": "214d8214ecbb683a2b5b06a94dbb313c28bcd5bd8daeee96c7cbca05b6f4b2fe"
+    },
+    {
+      "path": "github-ref.body",
+      "bytes": 353,
+      "sha256": "59f0bdd0c508164bd8a44c6142887fb9f870ff5b645bd0660cc1c1310b8d0a1e"
+    },
+    {
+      "path": "github-tree.body",
+      "bytes": 125681,
+      "sha256": "f661a667c095c930e4f3f65d697f7dd9838574470ffb56d051d0d03cce83394b"
+    },
+    {
+      "path": "indexed-host-query-control.body",
+      "bytes": 230,
+      "sha256": "bdeb10efba8ca93dcfdb9e7a66db6db76305b2ec9d6f5d6595c098682349bc78"
+    },
+    {
+      "path": "national-host-matches.json",
+      "bytes": 32826,
+      "sha256": "9410038925c83c6709e7dfb5ee59e30009f6377394c3f2f50b266812e3f0ad83"
+    },
+    {
+      "path": "national-index-ledger.json",
+      "bytes": 34738,
+      "sha256": "419820a3f8437df0732cccb3236b33232c0b63a596a9e0e1c02f61b38dab351c"
+    },
+    {
+      "path": "national-resource-hosts.jsonl.gz",
+      "bytes": 7387075,
+      "sha256": "0ca86c3a1aaaa6dd547523625b8bdb244cd51fa3cd630018514d39cb84ee3cf6"
+    },
+    {
+      "path": "wcc-metadata.body",
+      "bytes": 168646,
+      "sha256": "40a001ab96e5d39000e11804fca4ec727b34774adc8bcd3e44b2e87d4476e20d"
+    },
+    {
+      "path": "wcc-probes.json",
+      "bytes": 233273,
+      "sha256": "2d42f267f5077bb4d6b12aeb6bd0851a0e93a1747d217fc2d3d530d5bd570387"
+    },
+    {
+      "path": "indexed-host-query-recheck.json",
+      "bytes": 1265,
+      "sha256": "8aef91affdbdf7237ff30dfd86743bb381067e81d3d6ff175016778d465b3797"
+    }
+  ],
+  "rightsAndHandling": {
+    "catalogueMetadataNotice": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+    "scope": "Public catalogue editorial metadata and original publisher dataset rights are separate. National gzip is a derived logical metadata projection. Resource prefixes remain local.",
+    "wccDatasetLicenceDeclared": "https://creativecommons.org/licenses/by-sa/2.0/uk/",
+    "ndlDatasetLicenceDeclared": "http://reference.data.gov.uk/id/open-government-licence",
+    "rightsDiscrepancy": "unverified",
+    "sourceProducerCredit": "Office for National Statistics, Mid-2008 Super-Output Area Population Estimates",
+    "sourcePublisher": "Warwickshire County Council",
+    "modifications": "No source entity bytes changed; transport observations and national host inventory are labelled local derivations."
+  },
+  "indexedQueryControl": {
+    "queryExpression": "res_url:opendata.s3.amazonaws.com",
+    "originalRepresentation": "Retained JSON result body; original numeric HTTP status and exact request URL not retained.",
+    "repeatRequestReceipt": "indexed-host-query-recheck.json",
+    "repeatBodyEqualsOriginal": true
+  }
+}

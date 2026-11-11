@@ -1,0 +1,22 @@
+{
+  "schema": "okf-analytical-live-reproduction.v1",
+  "inputSha256": {
+    "sources/analytical-data-trial-2026-11-11/ndl-link-audit/source-register.json": "7ed6007d38d3d5121d34a538d665eb0e2a1c8dcbb6bed02dd8848816fa02dc7c",
+    "sources/analytical-data-trial-2026-11-11/live-defra-api/source-register.json": "21d6a04b638e65f2bc7b02a1320f653df2706104d052e0ae1c05e8fd4f810fb3",
+    "sources/analytical-data-trial-2026-11-11/defra-learning/flood-api-reference.html.txt": "87b7156f3fea64b54b92473cc67f62227b9fb4bf678bd76761c4a907a5b07b92",
+    "profiles/analytical-data/v1/profile.json": "1f768c2839dddaa6f5cb70a0278042e7600d5518b29235ee17c97f0c027eb1c2",
+    "profiles/analytical-data/v1/package.schema.json": "676cbd90441f31b3b9babcca1c23618b5e7ce1113e9eba9972f02fe9942a7ccb",
+    "scripts/build_analytical_live_trial.py": "0a30fa0b41882136249f3260863ed96d7b86ec89b7cdcf2f8e2ac6680ca566a9"
+  },
+  "outputSha256": {
+    "ndl-national-host-scope.json": "3e55facb9a2c5d1e47178c267ef8a0428446278b44d158e8c8d169bfc7bac650",
+    "wcc-link-scope.json": "413ac326153caa4a57b6e48b46649b90f6841c45f5762162573a9ea43a89aab5",
+    "wcc-resource-results.csv": "769e17b788bf27e9872745ba96bf1dfedd75b47e0e713df0d21d59e9df2db718",
+    "defra/stations.csv": "b767f5ec6b467642913a1fbb43a0483918489a20314a13444a97608fd2011618",
+    "defra/readings.csv": "a9d7c58d75b02bb9a21d5c88a9f80230e5269dd53722303180218757b60289eb",
+    "defra/okf-analytical-data.json": "b2d72e478dc9ebbf478c0e8e68e36b9959a5461425e023e21e6887f2f00cf0bf",
+    "defra/receipt.json": "c9359ae0be43edde66a02be778b25a14520bf4a63fea6d05be3dd748532e35f9",
+    "defra/results.json": "24b6c8061e7218ee7b4b2dfcdbc55d379bf740cfd249b2a3c49da23b4cc1fbf1"
+  },
+  "networkDuringBuild": false
+}

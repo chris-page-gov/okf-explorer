@@ -1,0 +1,67 @@
+{
+  "conformsTo": [
+    "https://chris-page-gov.github.io/okf-explorer/profile/analytical-data/v1/"
+  ],
+  "profileVersion": "1.0.0-rc.1",
+  "dataset": {
+    "id": "https://example.org/datasets/participation",
+    "version": "2026-example-1",
+    "title": "Illustrative participation counts",
+    "scope": "synthetic",
+    "rights": {
+      "status": "declared",
+      "source": "https://example.org/datasets/participation",
+      "licence": "https://creativecommons.org/publicdomain/zero/1.0/"
+    }
+  },
+  "tables": [
+    {
+      "path": "data/participation.csv",
+      "sha256": "32a918023f73ee904325279c3385dd63fc6c3e6465664286e6987c09c95c874c",
+      "source": {
+        "url": "https://example.org/datasets/participation",
+        "observedAt": "2026-11-10T12:00:00Z"
+      },
+      "observationKey": [
+        "area_code",
+        "period"
+      ],
+      "fields": [
+        {
+          "name": "area_code",
+          "label": "Area code",
+          "role": "dimension",
+          "dataType": "string",
+          "identifier": {
+            "scheme": "https://example.org/schemes/example-area",
+            "entityType": "https://example.org/types/area",
+            "edition": "example-2026"
+          }
+        },
+        {
+          "name": "period",
+          "label": "Reporting year",
+          "role": "dimension",
+          "dataType": "integer"
+        },
+        {
+          "name": "participants",
+          "label": "Participants",
+          "role": "measure",
+          "dataType": "integer",
+          "unit": "people",
+          "valueStates": [
+            {
+              "token": "c",
+              "state": "suppressed"
+            },
+            {
+              "token": "k",
+              "state": "roundedToZero"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

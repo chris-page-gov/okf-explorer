@@ -1,0 +1,16 @@
+{ 
+  "@context" : "http://environment.data.gov.uk/flood-monitoring/meta/context.jsonld" ,
+  "meta" : { 
+    "publisher" : "Environment Agency" ,
+    "licence" : "http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" ,
+    "documentation" : "http://environment.data.gov.uk/flood-monitoring/doc/reference" ,
+    "version" : "0.9" ,
+    "comment" : "Status: Beta service" ,
+    "hasFormat" : [ "http://environment.data.gov.uk/flood-monitoring/id/stations.csv?lat=52.284932&long=-1.562658&dist=5&_view=full&_limit=2&_offset=5", "http://environment.data.gov.uk/flood-monitoring/id/stations.rdf?lat=52.284932&long=-1.562658&dist=5&_view=full&_limit=2&_offset=5", "http://environment.data.gov.uk/flood-monitoring/id/stations.ttl?lat=52.284932&long=-1.562658&dist=5&_view=full&_limit=2&_offset=5", "http://environment.data.gov.uk/flood-monitoring/id/stations.html?lat=52.284932&long=-1.562658&dist=5&_view=full&_limit=2&_offset=5" ] ,
+    "limit" : 2 ,
+    "offset" : 5
+  }
+   ,
+  "items" : [  ]
+}
+

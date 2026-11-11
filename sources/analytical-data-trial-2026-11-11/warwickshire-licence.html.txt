@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+
+        <!--[if lt IE 7]>       <html class="lt-ie10 lt-ie9 lt-ie8 lt-ie7 no-js" lang="en"> <![endif]-->
+    <!--[if IE 7]>          <html class="lt-ie10 lt-ie9 lt-ie8 no-js" lang="en"> <![endif]-->
+    <!--[if IE 8]>          <html class="lt-ie10 lt-ie9 no-js" lang="en"> <![endif]-->
+    <!--[if IE 9]>          <html class="lt-ie10 no-js" lang="en"> <![endif]-->
+    <!--[if gt IE 9]><!-->  <html class=" no-js" lang="en"><!--<![endif]-->
+
+    <head>
+
+    
+                    <meta charset="UTF-8">
+        
+        <title>Warwickshire Open Data licence - Warwickshire County Council</title>
+
+                    <meta http-equiv="x-ua-compatible" content="ie=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+                    <link rel="alternate" type="application/rss+xml" href="/rss/news">
+        
+            <link rel="apple-touch-icon" sizes="180x180" href="/site/dist/images/favicons/apple-touch-icon.png?1.156.2">
+    <link rel="icon" type="image/png" sizes="32x32" href="/site/dist/images/favicons/favicon-32x32.png?1.156.2">
+    <link rel="icon" type="image/png" sizes="16x16" href="/site/dist/images/favicons/favicon-16x16.png?1.156.2">
+    <link rel="manifest" href="/site/dist/images/favicons/site.webmanifest?1.156.2">
+    <link rel="mask-icon" href="/site/dist/images/favicons/safari-pinned-tab.svg?1.156.2" color="#076440">
+    <link rel="shortcut icon" href="/site/dist/images/favicons/favicon.ico?1.156.2">
+    <meta name="apple-mobile-web-app-title" content="Warwickshire County Council">
+    <meta name="application-name" content="Warwickshire County Council">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="theme-color" content="#ffffff">
+
+                        <link rel="stylesheet" href="/site/dist/orbit.css?1.156.2">
+        
+        <style>
+        /*Print stylesheet to used in addition to and not as a replacement to existing print stylesheet in Jadu site*/
+        /*V 1.0*/
+        /*Created by Dave Jennings*/
+        @media print {
+        .site-header {display:none;} /*hides header from print*/
+        a.identity__link {display:none;} /*hides home link from icon*/
+        /*.page-header__heading-container:before {content: url(/images/wcc_logo.png?t=1554380998);}*/ /*adds image to top of printed page*/
+        .page-header__heading-container:before {content: url('data:image/png;base64,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');} /*adds image to top of printed page*/
+        nav.breadcrumb {display: none;} /*hides breadcrumbs*/
+        .site-announcement {display: none;}
+        a[href]:after { content: " (" attr(href) ")"; } /*adds url after link text on print*/
+        .link-external::after {background-image:none;} /*hides external link icon*/
+        .link-external::after {width: auto;} /*gives space for external url to display on print*/
+        .page-header__heading-container {border-bottom-style: solid; border-bottom-color: black; border-bottom-width: 2px;} /*adds border below page title when printed*/
+        .nav--pages-in {display:none;} /*hides navigation on multi page on print*/
+        nav.aside__section {display:none;} /*hides directories link in sidebar from print*/
+        .supplement.supplement--navigation {display:none;} /*hides you may also be interested in and Details etc from print*/
+        .supplement.supplement--contact {border-bottom-style: solid; border-bottom-color: grey; border-bottom-width: 2px;padding-bottom:25px;} /*adds border to bottom of contact details when printed*/
+        .site-footer__supplier {display:none;} /*hides supplied by when printed*/
+        .site-footer {display:none;} /*hides footer from print when printed*/
+        .embed-container {display:none;} /*hides embedded videos when printed*/
+        #erw-container {display:none;} /*hides Elgin maps from print*/
+        iframe {display: none;} /*hides embedded googlesheet when printed*/
+        .tota11y-toolbar {display:none;} /*hidesurl after feedback button when printed*/
+        body:after {
+                  content: "If you have any comments or complaints about our services, please let us know. Phone: 01926 410410 Email: customerrelations@warwickshire.gov.uk. We will aim to provide this information in a format suitable for your needs. Please contact us so we can discuss your requirements.";} /*adds paragraph to bottom of printed page*/
+
+        form.form.boxed__form {display: none;} /*hides directory search from print*/
+
+        }
+        </style>
+
+                            <link rel="stylesheet" type="text/css" href="/site/styles/additionalcss.css?bb2b3538ead484d12f2eb849666b9fb19128e897">
+
+        
+                                                        
+                    <meta name="revisit-after" content="2 days">
+            <meta name="robots" content="index,follow">
+            <meta name="author" content="Warwickshire County Council">
+            <meta name="keywords" content="">
+            <meta name="description" content="Using the data published on this site is governed by the Creative Commons Attribution Share Alike license.
+
+The following Code of Conduct has been taken from the Central Government Datastore guidance on open data usage.">
+            <meta property="dcterms:creator" content="Charlie Dingle">
+            <meta property="dcterms:rightsHolder" content="Copyright Warwickshire County Council">
+            <meta property="dcterms:coverage" content="Atherstone, Nuneaton, Bedworth, Coleshill, Polesworth, Rugby, Southam, Kenilworth, Warwick, Leamington Spa, Stratford-upon-Avon, Wellesbourne, Shipston">
+            <meta property="dcterms:identifier" content="https://www.warwickshire.gov.uk/open-data/warwickshire-open-data-licence">
+            <meta property="dcterms:publisher" content="Warwickshire County Council">
+            <meta property="dcterms:subject" content="" >
+            <meta property="dcterms:description" content="Using the data published on this site is governed by the Creative Commons Attribution Share Alike license.
+
+The following Code of Conduct has been taken from the Central Government Datastore guidance on open data usage." >
+            <meta property="dcterms:title" content="Warwickshire Open Data licence">
+            <meta property="dcterms:format" content="text/html">
+            <meta property="dcterms:language" content="en">
+            <meta property="dcterms:contributor" content="" >
+            <meta property="dcterms:source" content="" >
+                            <meta property="dcterms:created" content="2020-07-15">
+                                        <meta property="dcterms:modified" content="2020-07-15">
+                                        <meta property="dcterms:valid" content="1970-01-01">
+                    
+                    <link rel="canonical" href="https://www.warwickshire.gov.uk/open-data/warwickshire-open-data-licence" />
+        
+                    <meta property="og:title" content="Warwickshire Open Data licence – Warwickshire County Council">
+            <meta property="og:site_name" content="Warwickshire County Council">
+            <meta property="og:type" content="website">
+            <meta property="og:url" content="https://www.warwickshire.gov.uk/open-data/warwickshire-open-data-licence">
+            <meta property="og:image" content="https://www.warwickshire.gov.uk/open-data/warwickshire-open-data-licence/site/dist/icons/png/logo.png">
+            <meta property="og:image:alt" content="Warwickshire County Council" />
+        
+                                    <meta name="silktide-cms" content="eyJjbXMiOiJqYWR1IiwiZWRpdG9yVXJsIjoiaHR0cHM6XC9cL3d3dy53YXJ3aWNrc2hpcmUuZ292LnVrXC9qYWR1XC9pbnRlZ3JhdGlvbnNcL3NpbGt0aWRlXC9lZGl0P2NvbnRlbnRUeXBlSWQ9OCZjb250ZW50SWQ9OTc3In0=">
+                    
+                    <script src="/site/dist/libs/modernizr-custom.js?1.156.2"></script>
+        
+        
+        <link rel="stylesheet" type="text/css" href="https://www.warwickshire.gov.uk/site/styles/wcc_corprate_cookie_styling.css">
+
+<!--Acquia Optimize tag -->
+<script type="text/javascript"> 
+    window._monsido = window._monsido || {
+        token: "SyH0U9gEk-tApc6oPM0bog",
+        statistics: {
+            enabled: true,
+            cookieLessTracking: true,
+            documentTracking: {
+                enabled: true,
+                documentCls: "monsido_download",
+                documentIgnoreCls: "monsido_ignore_download",
+                documentExt: [],
+            },
+        },
+    };
+</script>
+<script type="text/javascript" async src="https://app-script.monsido.com/v2/monsido-script.js"></script>
+<!-- end of Acquia Optimize tag -->
+
+<!--Meta verification tag -->
+<meta name="facebook-domain-verification" content="zayk9768u238lyc46uz4d6f82x5q44" />
+<!-- end of Meta verification tag -->
+
+<link rel="stylesheet" type="text/css" href="https://www.warwickshire.gov.uk/site/styles/additionalcss.css">
+
+
+<!-- Cookie Consent by FreePrivacyPolicy.com https://www.FreePrivacyPolicy.com -->
+<script type="text/javascript" src="//www.freeprivacypolicy.com/public/cookie-consent/4.1.0/cookie-consent.js" charset="UTF-8"></script>
+<script type="text/javascript" charset="UTF-8">
+document.addEventListener('DOMContentLoaded', function () {
+cookieconsent.run({"notice_banner_type":"interstitial","consent_type":"express","palette":"dark","language":"en","page_load_consent_levels":["strictly-necessary"],"notice_banner_reject_button_hide":false,"preferences_center_close_button_hide":false,"page_refresh_confirmation_buttons":false,"website_privacy_policy_url":"https://www.warwickshire.gov.uk/disclaimer"});
+});
+</script>
+
+<!-- Google Analytics -->
+<script type="text/plain" data-cookie-consent="tracking" async src="https://www.googletagmanager.com/gtag/js?id=G-2G38B806EJ"></script>
+<script type="text/plain" data-cookie-consent="tracking">
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+ 
+  gtag('config', 'G-2G38B806EJ');
+</script>
+<!-- end of Google Analytics-->
+
+<!-- Google Tag Manager -->
+<script type="text/plain" data-cookie-consent="tracking">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NCF9SK');</script>
+<!-- end of Google Tag Manager-->
+
+<!-- Meta Pixel -->
+<script type="text/plain" data-cookie-consent="targeting">
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1042921504026031');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src=https://www.facebook.com/tr?id=1042921504026031&ev=PageView&noscript=1
+/></noscript>
+<!-- end of Meta Pixel-->
+
+<noscript>Cookie Consent by <a href="https://www.freeprivacypolicy.com/">Free Privacy Policy Generator</a></noscript>
+<!-- End Cookie Consent by FreePrivacyPolicy.com https://www.FreePrivacyPolicy.com -->
+
+
+<!-- ReachDeck -->
+<script type="text/javascript" src="https://www.browsealoud.com/plus/scripts/3.1.0/ba.js" crossorigin="anonymous" integrity="sha256-VCrJcQdV3IbbIVjmUyF7DnCqBbWD1BcZ/1sda2KWeFc= sha384-k2OQFn+wNFrKjU9HiaHAcHlEvLbfsVfvOnpmKBGWVBrpmGaIleDNHnnCJO4z2Y2H sha512-gxDfysgvGhVPSHDTieJ/8AlcIEjFbF3MdUgZZL2M5GXXDdIXCcX0CpH7Dh6jsHLOLOjRzTFdXASWZtxO+eMgyQ==">  </script>
+<!-- End of ReachDeck -->
+
+<!-- Lucky Orange -->
+<script async defer src="https://tools.luckyorange.com/core/lo.js?site-id=b067eb75"></script>
+<!-- End of Lucky Orange -->
+
+<!--adds extra text to the Learn More link in the cookie banner-->
+<!--style>
+a.wpcb-privacy:after {
+    content: ' about the cookies we use.';
+}
+</style-->
+
+<!--change greenbar to white-->
+<style>
+.site-header {
+    background-color: #ffffff;
+    border-bottom-style: solid;
+    border-bottom-color: #096F48;
+    border-bottom-width: 5px;
+}
+
+.icon-logo {
+    background-repeat: no-repeat;
+      background-image: url(https://warwickshire.github.io/WCC%20Logo%20Website%20Homepage.svg)!important;
+}
+
+.icon-menu-subscribe {
+    background-image: url(/images/envelope.png)!important;
+    background-repeat: no-repeat;
+}
+
+.site-header .site-header__links .list__link {
+    color: #096F48;
+    font-size: .875rem;
+    text-decoration: none;
+}
+
+.site-search--header .form__field {
+    background-color: #fff;
+    border: 0;
+    font-size: .875rem;
+    min-height: 1.75rem;
+    padding: 0.25rem 0.75rem;
+   border-style: solid;
+    border-width: thin;
+    border-color: #096f48;
+}
+
+.site-search--header .button {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    border: 0;
+    border-radius: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    margin: 0;
+    padding: 0.5rem;
+    background: #d3d3d338;
+    border-style: solid;
+    border-width: thin;
+    border-color: #096f48;
+}
+
+.site-footer__section .icon-logo {
+    background-image: url(data:image/svg+xml;charset%3DUS-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22317%22%20height%3D%2254%22%20viewBox%3D%220%200%20317%2054%22%20preserveAspectRatio%3D%22xMinYMid%22%20aria-hidden%3D%22true%22%20focusable%3D%22false%22%3E%3Cpath%20d%3D%22M10.13%2C22V17.81l2-2v-3H11v1.33h-.89V9.76l-.92-.91H7.42l0%2C8v1.28H6.7V16.76H5.46v2.39l1.32%2C1.31V26H6.27V27.3H5.38V26H4.14v2.38L6.79%2C31v6.82H6.26v1.47H5.37V37.8H3.64V41l1.82%2C1.84v6.58l1%2C1h4l1-1V37.91l2-2%2C0-3H11.6v1.47h-.89V32.89h-.56v-9L9.08%2C22.84V21.39h1V22H9.74v.59l2.13%2C2.12h1.4l1.32%2C1.32h5.6l4-4h1.08v.75h-.79L20.5%2C26.79h-.64V29l.66.65V33l1.32%2C1.32v1.54l1.41-1.4v-.56H24v.86l-4.13%2C4.15v7.4L17.16%2C48.6V50l.4.4h5.6l.4-.4V43.08l3.28-3.27h.54v.52l-.68.69v6.16l-1.34%2C1.33v.09h-.63v-.92l.88-.89v-4.2l-.91.9v8l-.18-.16-.71.71h-7.1l-1.18-1.17v-2.9l2.71-2.22V38.06l2-2v-1.3l-1.31-1.32v-3l-.57-.58v-2.3H13.6l-1.23-1.23h-.66v4.93H15v5.51l-2%2C2V50.31L11.38%2C52H5.53L3.86%2C50.29V43.71L2%2C41.86V36.25H5.2V31.89L2.57%2C29.25V24.4H5.22l0-3L3.86%2C20V15.18h2V7.06H10L11.87%2C9v2H13.7v5.72l-1.89%2C1.89v1.81l4.94%2C0L19%2C18.19v-1l1.53-1.52-.87-.85V14L19%2C13.31h-1.4L15.2%2C11V8.25l1.58-1.57h1.16l.9-.9h.25l1.32-1.32h1.15l.62-.61V2h2.31l2.65%2C2.65v.64l1%2C1v.65l.66.66v.9l.75.74v2.47l2%2C2v2.55l.81.81v.76l.44.44V30.71l.67.68v7l-.61.61v2l-.41.42v9.18L31.13%2C52H25.21l-.45-.44%2C0-2.87h.63v1.43l.34.34h4.86l.34-.34V40.62l.41-.41v-2l.65-.65V32.23l-.66-.66V19.05l-.65-.65v-.67L30%2C17.08V14.44l-1.73-1.72H26.12l-3.77%2C3.76V15.43L25.81%2C12H28V10.09l-.65-.66v-.9l-.67-.67V7.2l-1-1V5.49l-1.9-1.9V4.65L22.24%2C6.22h-1.3L20.12%2C7h-.26L18.7%2C8.2H17.57L16.82%2C9v1.14l1.49%2C1.48h1.3l1.57%2C1.57v.66L22.33%2C15V16.5L20.6%2C18.24v.83l-3%2C2.95ZM44.61%2C2h-1V52h1ZM59.85%2C35.45l2.27-9.09%2C2.21%2C9.09h2l4-13.74H67.77L65.33%2C31.3%2C63%2C21.71H61.17L58.82%2C31.3l-2.41-9.59H53.8l4%2C13.74ZM79%2C25.15v1.37l-.15-.2a4%2C4%2C0%2C0%2C0-3.22-1.41%2C5.07%2C5.07%2C0%2C0%2C0-3.53%2C1.3%2C5.33%2C5.33%2C0%2C0%2C0-1.72%2C4.13A5.42%2C5.42%2C0%2C0%2C0%2C71.66%2C34a4.93%2C4.93%2C0%2C0%2C0%2C3.92%2C1.73l.56%2C0A4.34%2C4.34%2C0%2C0%2C0%2C79%2C34.11v1.34h2.27V25.15Zm-1.34%2C2.56a3.06%2C3.06%2C0%2C0%2C1%2C1.26%2C2.66%2C3.7%2C3.7%2C0%2C0%2C1-.74%2C2.12%2C2.77%2C2.77%2C0%2C0%2C1-2.25.93%2C3.17%2C3.17%2C0%2C0%2C1-1.75-.48%2C2.8%2C2.8%2C0%2C0%2C1-1.3-2.55%2C3.37%2C3.37%2C0%2C0%2C1%2C.54-1.91%2C2.74%2C2.74%2C0%2C0%2C1%2C2.47-1.3A3.06%2C3.06%2C0%2C0%2C1%2C77.67%2C27.71Zm7.92%2C7.74V29.72c0-1.58.74-2.4%2C2.22-2.43V24.91h-.19a3.46%2C3.46%2C0%2C0%2C0-.78.07%2C2.6%2C2.6%2C0%2C0%2C0-1.45%2C1.17v-1H83.12v10.3Zm8.1%2C0%2C2-6.68%2C1.95%2C6.68h1.54l3.72-10.3h-2.64l-1.88%2C6.28-1.69-6.28h-2L93%2C31.43l-1.84-6.28H88.48l3.68%2C10.3Zm13-11.42V21.71h-2.47V24Zm0%2C11.42V25.15h-2.47v10.3ZM116%2C32.14a2.68%2C2.68%2C0%2C0%2C1-2.31%2C1.28%2C2.93%2C2.93%2C0%2C0%2C1-1.78-.57%2C3%2C3%2C0%2C0%2C1-1.21-2.57%2C3.19%2C3.19%2C0%2C0%2C1%2C.52-1.82%2C2.67%2C2.67%2C0%2C0%2C1%2C2.42-1.28%2C2.53%2C2.53%2C0%2C0%2C1%2C2.4%2C1.41h2.79c0-.11-.08-.22-.11-.32a5.13%2C5.13%2C0%2C0%2C0-1.29-1.91%2C5.34%2C5.34%2C0%2C0%2C0-3.79-1.45%2C5.25%2C5.25%2C0%2C0%2C0-3.76%2C1.47%2C5.36%2C5.36%2C0%2C0%2C0-.13%2C7.67%2C5.33%2C5.33%2C0%2C0%2C0%2C4%2C1.64%2C5.74%2C5.74%2C0%2C0%2C0%2C1.88-.3%2C5.18%2C5.18%2C0%2C0%2C0%2C3.24-3.32H116Zm6.9%2C3.31V30.63l3.52%2C4.82h3.33l-4.28-5.26%2C3.68-5h-3L122.89%2C30V21.71h-2.47V35.45Zm7.76-1.19a1.53%2C1.53%2C0%2C0%2C0%2C.26.31%2C3.77%2C3.77%2C0%2C0%2C0%2C2.83%2C1.12%2C3.7%2C3.7%2C0%2C0%2C0%2C2.36-.8%2C3.29%2C3.29%2C0%2C0%2C0%2C1.32-2.71%2C2.56%2C2.56%2C0%2C0%2C0-1-2.14%2C5.63%2C5.63%2C0%2C0%2C0-1.9-.88c-.66-.21-1.08-.35-1.24-.42a.72.72%2C0%2C0%2C1-.5-.69l.05-.34a1%2C1%2C0%2C0%2C1%2C1.86.28h2.42A3%2C3%2C0%2C0%2C0%2C136.4%2C26a3.44%2C3.44%2C0%2C0%2C0-2.65-1.13%2C3.58%2C3.58%2C0%2C0%2C0-2.15.68%2C2.9%2C2.9%2C0%2C0%2C0-1.27%2C2.46%2C2.75%2C2.75%2C0%2C0%2C0%2C.21%2C1.11%2C4%2C4%2C0%2C0%2C0%2C2.66%2C1.94%2C7%2C7%2C0%2C0%2C1%2C1.28.52.91.91%2C0%2C0%2C1%2C.47.8%2C1.07%2C1.07%2C0%2C0%2C1-.1.41%2C1%2C1%2C0%2C0%2C1-1%2C.59.78.78%2C0%2C0%2C1-.22%2C0c-.56-.06-1-.47-1.16-1.22H130A4.25%2C4.25%2C0%2C0%2C0%2C130.65%2C34.26Zm10.62%2C1.19V30.22a4.54%2C4.54%2C0%2C0%2C1%2C.35-2.06%2C1.94%2C1.94%2C0%2C0%2C1%2C1.83-1%2C2.39%2C2.39%2C0%2C0%2C1%2C.55.05l.45.15c.67.35%2C1%2C1.28%2C1%2C2.81v5.26h2.47V29.39a5.39%2C5.39%2C0%2C0%2C0-.69-2.87%2C3.69%2C3.69%2C0%2C0%2C0-3.35-1.63%2C3.76%2C3.76%2C0%2C0%2C0-2.62%2C1V21.71H138.8V35.45ZM152.43%2C24V21.71H150V24Zm0%2C11.42V25.15H150v10.3Zm4.47%2C0V29.72c0-1.58.73-2.4%2C2.21-2.43V24.91h-.19a3.46%2C3.46%2C0%2C0%2C0-.78.07%2C2.63%2C2.63%2C0%2C0%2C0-1.45%2C1.17v-1h-2.27v10.3Zm13.39-5a5.62%2C5.62%2C0%2C0%2C0-1.34-3.8%2C5%2C5%2C0%2C0%2C0-4-1.74%2C5.38%2C5.38%2C0%2C0%2C0-5.43%2C5.43A5.06%2C5.06%2C0%2C0%2C0%2C161%2C34a5.5%2C5.5%2C0%2C0%2C0%2C4.09%2C1.67%2C5.19%2C5.19%2C0%2C0%2C0%2C4.09-1.86A4.5%2C4.5%2C0%2C0%2C0%2C170%2C32.4h-2.7a2.61%2C2.61%2C0%2C0%2C1-.22.24%2C2.77%2C2.77%2C0%2C0%2C1-2.05.78%2C3.39%2C3.39%2C0%2C0%2C1-1.13-.18%2C2.46%2C2.46%2C0%2C0%2C1-1.71-1.84h8A4.86%2C4.86%2C0%2C0%2C0%2C170.29%2C30.45ZM162.22%2C29A2.65%2C2.65%2C0%2C0%2C1%2C165%2C27.18h.46a2.49%2C2.49%2C0%2C0%2C1%2C2.38%2C2h-5.71C162.17%2C29.15%2C162.19%2C29.08%2C162.22%2C29Zm24.55%2C3.06a4.39%2C4.39%2C0%2C0%2C1-6.06-.11%2C4.52%2C4.52%2C0%2C0%2C1-1.49-3.42%2C5.53%2C5.53%2C0%2C0%2C1%2C1.13-3.12%2C4.27%2C4.27%2C0%2C0%2C1%2C3.43-1.51l.5%2C0a4.23%2C4.23%2C0%2C0%2C1%2C3.11%2C1.71h2.84l-.22-.46a6.57%2C6.57%2C0%2C0%2C0-1.73-2.14%2C7%2C7%2C0%2C0%2C0-4.56-1.58c-.2%2C0-.4%2C0-.61%2C0a7.13%2C7.13%2C0%2C0%2C0-6.46%2C7c0%2C.19%2C0%2C.37%2C0%2C.54a6.88%2C6.88%2C0%2C0%2C0%2C2.25%2C4.67%2C7.3%2C7.3%2C0%2C0%2C0%2C8%2C1.3%2C6.47%2C6.47%2C0%2C0%2C0%2C3.33-3.42h-3C187.08%2C31.79%2C186.92%2C32%2C186.77%2C32.08Zm6-5.61a5.3%2C5.3%2C0%2C0%2C0-.07%2C7.6%2C5.3%2C5.3%2C0%2C0%2C0%2C3.9%2C1.62%2C5.36%2C5.36%2C0%2C0%2C0%2C3.85-1.56%2C5.06%2C5.06%2C0%2C0%2C0%2C1.64-3.76%2C5.49%2C5.49%2C0%2C0%2C0-9.32-3.9Zm5.69%2C1.37a3.06%2C3.06%2C0%2C0%2C1%2C1.14%2C2.46%2C3.16%2C3.16%2C0%2C0%2C1-.65%2C1.95%2C2.8%2C2.8%2C0%2C0%2C1-2.33%2C1.17%2C2.86%2C2.86%2C0%2C0%2C1-1.82-.63%2C3.27%2C3.27%2C0%2C0%2C1-.51-4.48%2C2.83%2C2.83%2C0%2C0%2C1%2C2.31-1.13A2.86%2C2.86%2C0%2C0%2C1%2C198.49%2C27.84Zm11.72-2.69V30a5.1%2C5.1%2C0%2C0%2C1-.39%2C2.47%2C2%2C2%2C0%2C0%2C1-1.88%2C1%2C1.68%2C1.68%2C0%2C0%2C1-1.45-.65%2C4.54%2C4.54%2C0%2C0%2C1-.5-2.58v-5h-2.48v5.52c0%2C.25%2C0%2C.47%2C0%2C.67a5.25%2C5.25%2C0%2C0%2C0%2C.77%2C2.83%2C3.58%2C3.58%2C0%2C0%2C0%2C3.14%2C1.52l.61%2C0a3.83%2C3.83%2C0%2C0%2C0%2C2.35-1.19v1h2.29V25.15Zm6.94%2C10.3v-5.1a4.66%2C4.66%2C0%2C0%2C1%2C.41-2.23%2C2%2C2%2C0%2C0%2C1%2C1.82-.94%2C1.74%2C1.74%2C0%2C0%2C1%2C1.49.65%2C4.72%2C4.72%2C0%2C0%2C1%2C.48%2C2.58v5h2.48V29.93c0-.3%2C0-.57%2C0-.8a5.2%2C5.2%2C0%2C0%2C0-.73-2.74%2C3.62%2C3.62%2C0%2C0%2C0-3.21-1.48h-.32A4.14%2C4.14%2C0%2C0%2C0%2C217%2C26.13v-1h-2.28v10.3Zm11.53%2C0V27.4h1.49V25.15h-1.49V21.71h-2.47v3.44H225V27.4h1.21v8.05ZM235%2C38.89%2C241%2C25.15h-2.85l-2.49%2C6.67-2.29-6.67h-2.82l3.77%2C9.33-1.93%2C4.41Zm22.06-6.81A4.39%2C4.39%2C0%2C0%2C1%2C251%2C32a4.48%2C4.48%2C0%2C0%2C1-1.49-3.42%2C5.53%2C5.53%2C0%2C0%2C1%2C1.13-3.12%2C4.27%2C4.27%2C0%2C0%2C1%2C3.43-1.51l.5%2C0a4.19%2C4.19%2C0%2C0%2C1%2C3.1%2C1.71h2.85l-.22-.46a6.57%2C6.57%2C0%2C0%2C0-1.73-2.14A7%2C7%2C0%2C0%2C0%2C254%2C21.47c-.2%2C0-.4%2C0-.61%2C0a6.84%2C6.84%2C0%2C0%2C0-4.56%2C2.25%2C6.76%2C6.76%2C0%2C0%2C0-1.9%2C4.79c0%2C.19%2C0%2C.37%2C0%2C.54a6.88%2C6.88%2C0%2C0%2C0%2C2.25%2C4.67%2C7.3%2C7.3%2C0%2C0%2C0%2C8%2C1.3%2C6.47%2C6.47%2C0%2C0%2C0%2C3.33-3.42h-3C257.39%2C31.79%2C257.24%2C32%2C257.09%2C32.08Zm6-5.61a5.31%2C5.31%2C0%2C0%2C0-.08%2C7.6%2C5.53%2C5.53%2C0%2C0%2C0%2C7.76.06%2C5.06%2C5.06%2C0%2C0%2C0%2C1.64-3.76%2C5.49%2C5.49%2C0%2C0%2C0-9.32-3.9Zm5.69%2C1.37a3%2C3%2C0%2C0%2C1%2C1.13%2C2.46%2C3.1%2C3.1%2C0%2C0%2C1-.65%2C1.95A2.78%2C2.78%2C0%2C0%2C1%2C267%2C33.42a2.9%2C2.9%2C0%2C0%2C1-1.83-.63A3.08%2C3.08%2C0%2C0%2C1%2C264%2C30.26a3.12%2C3.12%2C0%2C0%2C1%2C.67-2A2.83%2C2.83%2C0%2C0%2C1%2C267%2C27.18%2C2.9%2C2.9%2C0%2C0%2C1%2C268.81%2C27.84Zm11.72-2.69V30a5.1%2C5.1%2C0%2C0%2C1-.39%2C2.47%2C2%2C2%2C0%2C0%2C1-1.88%2C1%2C1.68%2C1.68%2C0%2C0%2C1-1.45-.65%2C4.46%2C4.46%2C0%2C0%2C1-.5-2.58v-5h-2.48v5.52c0%2C.25%2C0%2C.47%2C0%2C.67a5.34%2C5.34%2C0%2C0%2C0%2C.76%2C2.83%2C3.61%2C3.61%2C0%2C0%2C0%2C3.15%2C1.52l.61%2C0a3.86%2C3.86%2C0%2C0%2C0%2C2.35-1.19v1H283V25.15Zm6.94%2C10.3v-5.1a4.66%2C4.66%2C0%2C0%2C1%2C.41-2.23%2C2%2C2%2C0%2C0%2C1%2C1.82-.94%2C1.75%2C1.75%2C0%2C0%2C1%2C1.49.65%2C4.72%2C4.72%2C0%2C0%2C1%2C.48%2C2.58v5h2.48V29.93c0-.3%2C0-.57%2C0-.8a5.2%2C5.2%2C0%2C0%2C0-.73-2.74%2C3.62%2C3.62%2C0%2C0%2C0-3.22-1.48h-.31a4.14%2C4.14%2C0%2C0%2C0-2.59%2C1.22v-1H285v10.3Zm16-3.31a2.67%2C2.67%2C0%2C0%2C1-2.3%2C1.28%2C3%2C3%2C0%2C0%2C1-1.79-.57%2C3%2C3%2C0%2C0%2C1-1.21-2.57%2C3.26%2C3.26%2C0%2C0%2C1%2C.52-1.82%2C2.68%2C2.68%2C0%2C0%2C1%2C2.42-1.28%2C2.53%2C2.53%2C0%2C0%2C1%2C2.4%2C1.41h2.79c0-.11-.07-.22-.11-.32a5.11%2C5.11%2C0%2C0%2C0-1.28-1.91%2C5.39%2C5.39%2C0%2C0%2C0-3.8-1.45%2C5.25%2C5.25%2C0%2C0%2C0-3.76%2C1.47%2C5.39%2C5.39%2C0%2C0%2C0-.13%2C7.67%2C5.33%2C5.33%2C0%2C0%2C0%2C4%2C1.64%2C5.73%2C5.73%2C0%2C0%2C0%2C1.87-.3%2C5.18%2C5.18%2C0%2C0%2C0%2C3.24-3.32h-2.79Zm7-8.11V21.71h-2.48V24Zm0%2C11.42V25.15h-2.48v10.3Zm4.46%2C0V21.71h-2.47V35.45Z%22%20fill%3D%22%23fff%22%2F%3E%3C%2Fsvg%3E)!important;
+    background-repeat: no-repeat;
+    /* display: none; */
+}
+
+.site-header .site-search__toggle-button {
+    background-color: #096f48;
+    border: 0;
+    margin: 0;
+    padding: 0.5rem;
+}
+
+.site-header .site-search__toggle-button {
+    background-color: #ffffff00;
+}
+
+.icon-ui-search {
+    background-image: url('https://warwickshire.github.io/search-icon-green.png')!important;
+    background-repeat: no-repeat;
+}
+
+[aria-expanded="true"] .icon-ui-search, .icon-ui-close {
+    background-image: url('https://warwickshire.github.io/search-icon-green.png');
+    background-repeat: no-repeat;
+}
+</style>
+
+<!-- fixes for homepage searchbox on mobile-->
+
+<style>
+@media screen and (max-width: 390px) {
+.widget-hero-search .widget__content-wrapper {
+    width: 475px;
+}
+button.button.button--with-icon {
+    width: 28px;
+}
+.form__append-group {
+    width: 300px;
+}
+}
+</style>
+
+<style>
+h2 {
+    font-size: 2.0rem;
+}
+
+@media screen and (max-width: 759px) {
+h1 {
+font-size:2.25rem;
+}
+}
+</style>
+
+<style>
+.icon-social-twitter {
+    background-image: url(https://warwickshire.github.io/Xlogo.svg)!important;
+}
+</style>
+<style>
+.site-header {
+    position: absolute;
+}
+</style>
+<!-- styling to make btn outline slightly larger-->
+<style>
+.button, .button:visited, .pagination--complex .pagination__link, .pagination--complex .pagination__active, .pagination--complex .pagination__link:visited, .pagination--complex .pagination__active:visited {
+    border: 2px solid;
+    }
+</style>
+
+
+
+<!-- start of print all pages for multi pages -->
+<link rel="stylesheet" type="text/css" href="https://www.warwickshire.gov.uk/downloads/file/122/print-all-btn-styling.css">
+<script type="text/javascript" src="https://www.warwickshire.gov.uk/downloads/file/123/print-all-btn-js-file.js"></script>
+
+<!-- end of print all pages for multi pages -->
+
+<!--script to change JSNA directory breadcrumbs -->
+<script type="text/javascript" src="https://www.warwickshire.gov.uk/downloads/file/124/jsna-directory-breadcrumbs.js"></script>
+
+        
+    
+    </head>
+
+    <body class="two-column document-article">
+
+        
+            
+                                <nav class="skip-links" aria-label="Skip link">
+    <ul class="list list--skip-links">
+        <li class="list__item">
+            <a class="list__link" href="#content" rel="nofollow">
+                Skip to content
+            </a>
+        </li>
+        <li class="list__item">
+            <a class="list__link" href="#js-menu-toggle" rel="nofollow">
+                Skip to navigation
+            </a>
+        </li>
+    </ul>
+</nav>
+                
+    
+                    <aside class="cookie-banner" aria-label="Cookie banner">
+        <div class="container">
+            <button class="button button--primary cookie-banner__button">
+                Don&#039;t show this message again
+            </button>
+            <p class="cookie-banner__text">
+                <span>We use <a class="cookie-banner__link" href="/cookies" title="Privacy and Cookies">cookies</a> on your computer or mobile device to help make this website better. You can change your <a class="cookie-banner__link" href="/cookies" title="How to update your cookie settings">cookie settings</a> at any time. Otherwise, we'll assume you're OK to continue.</span>
+                            </p>
+        </div>
+    </aside>
+
+    
+                                    <header class="site-header">
+
+        
+                            <div class="container">
+
+                    
+                                                                                    <div class="identity">
+        <a class="identity__link" href="/">
+            <span class="icon icon-logo identity__logo"></span>
+            <span class="visually-hidden">Warwickshire County Council</span>
+        </a>
+    </div>
+                        
+                        
+                                                        <nav class="nav nav--primary-navigation" aria-label="Main">
+        <div class="site-header__links"><ul id="js-menu-toggle" class="list list--inline site-header__primary-navigation" tabindex="-1"><li class="list__item"><a class="list__link" href="http://www.warwickshire.gov.uk/keepmeposted" title="Subscribe for updates"><span class="icon icon-menu-subscribe icon--inline icon--small"></span><span class="list__link-text">Subscribe for updates</span></a></li></ul><section class="site-search-wrapper" id="site-search" aria-label="Search form"><button class="button site-search__toggle-button js-search-toggle" id="js-search-toggle" data-a11y-toggle="js-search"><span class="icon icon-ui-search icon--small"></span><span class="visually-hidden">Search</span></button><form
+        class="site-search form form--search site-search--header site-search--loading"
+        id="js-search"
+        action="/site-search/results/"
+        role="search"
+        method="get"><div class="form__control"><label class="form__label visually-hidden" for="search-site-header">
+                                    Search this site
+                                </label><input class="form__field" type="search" size="10" maxlength="40" name="q" placeholder="Search (eg. libraries, blue badge, potholes)" id="search-site-header"><button class="button" type="submit"><span class="icon icon-ui-search-primary icon--small"></span><span class="visually-hidden"> Go Search</span></button></div></form></section></div>    </nav>
+                        
+                    
+                </div>
+            
+        
+    </header>
+                
+    
+        
+
+                <main class="site-main" id="top">
+
+        
+            
+                                            <div class="site-announcement">
+        <div class="container">
+                <div class="alert alert--warning" id="flash-message-alert-warning-announcement">
+
+                    
+                <span class="alert__heading">
+        Essential maintenance
+    </span>
+
+                            
+                                            <p class="alert__text">Some of our online forms will be unavailable from 5pm on Tuesday 10th November. The system should be back online by 2pm on Wednesday 11th November. We apologise for any inconvenience.</p>
+                    
+                            
+                                        
+        
+        
+    </div>
+
+        </div>
+    </div>
+
+                
+            
+                            <header class="page-header">
+                    <div class="page-header__content">
+
+                                                    <nav class="breadcrumb" aria-label="Breadcrumb"><div class="container"><ol class="list list--breadcrumb"><li class="list__item"><a href="/" rel="home">
+                                    Home
+                                </a></li><li class="list__item"><a href="/council-democracy-councillors">
+                                            Council, democracy and councillors
+                                        </a></li><li class="list__item"><a href="/data-council-services">
+                                            Data on council services
+                                        </a></li><li class="list__item"><a href="/open-data">
+                                            Warwickshire Open Data
+                                        </a></li><li class="list__item"><span>Warwickshire Open Data licence</span></li></ol></div></nav>                        
+                    </div>
+
+                                            <div class="page-header__heading-container">
+                            <div class="container">
+
+                                                                    <h1 class="page-heading">
+    Warwickshire Open Data licence
+</h1>
+                                
+                            </div>
+                        </div>
+                    
+                                    </header>
+            
+                            <div class="container">
+
+                                            <div class="site-content" id="content" tabindex="-1">
+
+                            
+                                                                    <div class="page-content">
+
+                                                        
+                                        
+    
+                            
+                                    
+                
+                
+                
+                        <div class="editor">
+    Using the data published on this site is governed by the&nbsp;<a href="http://creativecommons.org/licenses/by-sa/2.0/">Creative Commons Attribution Share Alike license</a>.
+<p>The following Code of Conduct has been taken from the&nbsp;<a href="http://data.gov.uk/">Central Government Datastore</a>&nbsp;guidance on open data usage.</p>
+
+<p>The data is provided to you the developers for you to develop applications which will make the world a better place, providing more or improved utility for the general public based on public sector datasets. We are here to help you do the great things we know you&rsquo;re itching to do, but, as part of this being a trusted space in which we work together, there are some basic rules.</p>
+
+<p>You are&nbsp;<strong>encouraged to:</strong></p>
+
+<ul>
+	<li>use provided live sources for the datasets as your primary data source, where possible &ndash; much of the data provided is dynamic and fluid (although in many cases over an annual or longer period of time), and basing your application on the keys in the data we are providing will ensure that your application is as up to date as possible;</li>
+	<li>where using our data feeds, please if possible cache the data over a short period of time to reduce load both on your application and our servers;</li>
+	<li>where you cannot use our live sources as the primary data source, please still use the keys contained within the data as the primary or foreign keys within your application, as this will enable you to migrate as simply as possible to up-to-date data and information when it is made available;</li>
+	<li>where using your own long-term caches of our data, please refresh the data within your application in a timely manner when a new set of the data is made available;</li>
+	<li>engage with us when something&rsquo;s wrong &ndash; point out any inconsistencies in the data you find, make suggestions about how to improve the service, request new data sources to be added, and tell us about what you have built so we can help you to promote it!</li>
+</ul>
+
+<p>You&nbsp;<strong>should:</strong></p>
+
+<ul>
+	<li>refer back to and cite the origin or source of the data when using it;</li>
+	<li>clearly state where possible about which data is derived from official sources, which is from other sources, and which data is from any calculation within or outwith your app.</li>
+</ul>
+
+<p>You&nbsp;<strong>must not:</strong></p>
+
+<ul>
+	<li>make an application that pretends to be an official government service;</li>
+	<li>present the data in a misleading or incorrect manner or to misrepresent or change the data;</li>
+	<li>use this site for party political purposes, as the site paid for with public money so it is not appropriate to engage in party-political activity here;</li>
+	<li>use these materials in or to support a criminal or illicit activity;</li>
+	<li>use these materials on an application to inflame or make comments that are racist, sexist or homophobic, or which promote or incite violence and illegal activity.</li>
+</ul>
+
+
+Last updated at 13:37 on Thursday 6 May 2010
+
+</div>
+            
+                
+                    
+    
+
+                                        
+                                            
+                                    
+
+                                                            
+                                                                            </div>
+                                
+                                                                    
+                                                                                <div class="aside aside--sidebar">
+
+                                                
+                                                        
+                
+
+    
+                
+
+                                                        
+
+                                                                    
+                                                                                                        
+                                                
+                                            </div>
+                                        
+
+                                                                    
+                            
+                        </div>
+                    
+                                        
+                </div>
+            
+        
+        <div class="container">
+                <div class="feedback-form" id="feedback" role="form">
+
+                    <button class="button button--primary feedback__button" id="feedback-heading" type="button" data-a11y-toggle="feedback-toggle">Was this information useful?</button>
+        
+                    <section class="feedback-toggle" id="feedback-toggle" aria-labelledby="feedback-heading">
+
+                                    <form class="form" action="#feedback" method="post">
+                                                    <input type="hidden" name="__token" id="auth" value="37fd803ce58668bcea579bf6a73381c2" />
+
+                                                                                        
+                                                            <fieldset>
+
+                                                                            <legend>Was this information helpful?<em class="form__required-note"> (required)</em></legend>
+                                    
+                                                                                                                
+                                                                            <div class="form__control">
+                                            <div class="form__component form__component--radio">
+                                                <div class="form__control-group">
+                                                    <input class="form__radio" type="radio" name="helpful" onclick="toggleRequiredComments();"
+                                                    id="helpful-yes" value="1" />
+                                                    <label class="form__label form__label--radio" for="helpful-yes">Yes</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    
+                                                                            <div class="form__control">
+                                            <div class="form__component form__component--radio">
+                                                <div class="form__control-group">
+                                                    <input class="form__radio" type="radio" name="helpful" onclick="toggleRequiredComments();"
+                                                    id="helpful-maybe" value="3" />
+                                                    <label class="form__label form__label--radio" for="helpful-maybe">It&#039;s good, but</label>
+                                                </div>
+                                            </div>
+                                            <div class="form__component">
+                                                <label class="form__label form__label--select" for="reason1" style="display: none">Select a reason why this information needs improvement<em class="form__required-note"> (required)</em></label>
+                                                                                                <select class="form__select" name="reason1" id="reason1" style="display: none">
+                                                    <option value="-1">Please select</option>
+                                                                                                            <option value="there&#039;s a spelling mistake">there&#039;s a spelling mistake</option>
+                                                                                                            <option value="it&#039;s incorrect">it&#039;s incorrect</option>
+                                                                                                            <option value="it needs updating">it needs updating</option>
+                                                                                                            <option value="there&#039;s a broken link">there&#039;s a broken link</option>
+                                                                                                            <option value="other">other</option>
+                                                                                                    </select>
+                                            </div>
+                                        </div>
+                                    
+                                                                                    <div class="form__control">
+                                                <div class="form__component form__component--radio">
+                                                    <div class="form__control-group">
+                                                        <input class="form__radio" type="radio" name="helpful" onclick="toggleRequiredComments();"
+                                                        id="helpful-no" value="2" />
+                                                        <label class="form__label form__label--radio" for="helpful-no">No - here&#039;s why:</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form__component">
+                                                    <label class="form__label form__label--select" for="reason2" style="display: none;">Select a reason why this information is not useful<em class="form__required-note"> (required)</em></label>
+                                                                                                        <select class="form__select" name="reason2" id="reason2" style="display: none;">
+                                                        <option value="-1">Please select</option>
+                                                                                                                    <option value="it didn&#039;t answer my question">it didn&#039;t answer my question</option>
+                                                                                                                    <option value="it wasn&#039;t detailed enough">it wasn&#039;t detailed enough</option>
+                                                                                                                    <option value="it&#039;s hard to understand">it&#039;s hard to understand</option>
+                                                                                                                    <option value="it was hard to find">it was hard to find</option>
+                                                                                                                    <option value="it&#039;s incorrect">it&#039;s incorrect</option>
+                                                                                                                    <option value="it needs updating">it needs updating</option>
+                                                                                                                    <option value="I&#039;m not sure what to do next">I&#039;m not sure what to do next</option>
+                                                                                                            </select>
+                                                </div>
+                                            </div>
+                                        
+                                </fieldset>
+                            
+                                                                    <div class="form__control">
+                                        <label class="form__label"
+                                            for="comments">Anything further to add? If you have a question about a service, you need to contact them directly or via the switchboard.</label>
+                                                                                    <textarea class="form__textarea" id="comments"
+                                                                                        name="comments" rows="5" cols="10"></textarea>
+                                    </div>
+                                
+                                                                                        
+                                                                                        
+                                                                                                <div class="form__control" id="feedback-recaptcha">
+                                        <script src="https://www.google.com/recaptcha/api.js" async defer></script><div class="g-recaptcha" data-sitekey="6Lc61QwrAAAAAAR_Ebc1OQzPzbJiSUMuICc4ITDp"></div>
+                                    </div>
+                                                            
+                                                            <button type="submit" name="sendDocFeedback" class="button button--primary">Send</button>
+                            
+                                            </form>
+                
+            </section>
+        
+    </div>
+
+    <script type="text/javascript">
+        
+        function toggleRequiredComments() {
+                        }
+
+            var feedbackFormSelects = document.querySelectorAll('.feedback-form .form__select');
+            var feedbackRadios = document.querySelectorAll('.feedback-form .form__radio');
+
+            feedbackRadios.forEach(function(currentRadio) {
+                var currentRadioParent = currentRadio.parentElement.parentElement.parentElement;
+
+                currentRadio.addEventListener('change', function(event) {
+                    feedbackFormSelects.forEach(function(currentSelect) {
+                        currentSelect.style.display = 'none';
+                        currentSelect.previousElementSibling.style.display = 'none';
+                    });
+
+                    if (event.target.checked) {
+                        var currentSelect = currentRadioParent.querySelector('.form__select');
+                        var currentSelectLabel = currentRadioParent.querySelector('.form__label--select');
+
+                        if (currentSelect) {
+                            currentSelect.style.display = 'block';
+                            currentSelectLabel.style.display = 'block';
+                        }
+                    }
+                });
+            });
+        </script>
+    
+        </div>
+    </main>
+
+                
+
+    <footer class="site-footer">
+
+                                    <div class="site-footer__top">
+                    <div class="container">
+                                                                            <a class="site-footer__top-link" href="https://www.warwickshire.gov.uk/livechat"><span class="icon icon--inline icon--small icon-chat"></span><span class="site-footer__top-link-text">Live chat</span></a>
+                                            </div>
+                </div>
+                    
+                    <div class="container site-footer__container">
+                <div class="site-footer__section">
+
+                                                <div class="identity">
+        <a class="identity__link" href="/">
+            <span class="icon icon-logo identity__logo"></span>
+            <span class="visually-hidden">Warwickshire County Council</span>
+        </a>
+    </div>
+                    
+                    <div class="site-footer__info">
+
+                                                    <p class="site-footer__text site-footer__rights">&copy; Warwickshire County Council</p>
+                        
+                    </div>
+                </div>
+                <div class="site-footer__section">
+
+                                                <nav class="site-footer__navigation" aria-label="Footer">
+        <div class="site-footer__group site-footer__group--primary"><ul class="list"><li class="list__item"><a class="list__link" href="https://www.warwickshire.gov.uk/a-to-z"><span class="list__link-text">
+                            A-Z of services
+                        </span></a></li><li class="list__item"><a class="list__link" href="https://www.warwickshire.gov.uk/disclaimer"><span class="list__link-text">
+                            Privacy and disclaimer
+                        </span></a></li><li class="list__item"><a class="list__link" href="https://www.warwickshire.gov.uk/accessibility"><span class="list__link-text">
+                            Accessibility
+                        </span></a></li><li class="list__item"><a class="list__link" href="https://www.warwickshire.gov.uk/accessibilitystatement"><span class="list__link-text">
+                            Accessibility statement
+                        </span></a></li><li class="list__item"><a class="list__link" href="https://www.warwickshire.gov.uk/contactus"><span class="list__link-text">
+                            Get in touch
+                        </span></a></li><li class="list__item"><a class="list__link" href="https://www.warwickshire.gov.uk/customerservice"><span class="list__link-text">
+                            Customer service and complaints
+                        </span></a></li><li class="list__item"><a class="list__link" href="https://www.warwickshire.gov.uk/help"><span class="list__link-text">
+                            Help using this website
+                        </span></a></li><li class="list__item"><a class="list__link" href="https://www.warwickshire.gov.uk/websitereview"><span class="list__link-text">
+                            Help us to improve the website
+                        </span></a></li></ul></div>    </nav>
+                    
+                </div>
+                <div class="site-footer__section">
+
+                                                                
+                                            <div class="site-footer__suppliers">
+                            <p class="site-footer__text">
+                                Powered by <a class="site-footer__text-link" href="http://www.jadu.net">Jadu</a>
+                            </p>
+                        </div>
+                    
+                </div>
+            </div>
+        
+        
+                            <a class="button back-to-top" href="#top" rel="nofollow" data-scroll-to="#top" title="Back to Top">
+                    <span class="button__text"><span class="icon icon-ui-chevron-up-black icon--small"></span><span class="visually-hidden">Back to the top</span></span>
+                </a>
+            
+        
+    </footer>
+
+        
+            <link rel="stylesheet" href="/site/dist/icons/icons.data.svg.css?1.156.2">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="/site/dist/libs/jquery.min.js?1.156.2"><\/script>');</script>
+    <script src="/site/dist/orbit.js?1.156.2"></script>
+    <script src="/site/js/almond.min.js?1.156.2"></script>
+    <script src="/site/js/util.min.js?1.156.2"></script>
+            
+    <!--script async src="//ads.counciladvertising.net/code/warwickshirecc/media/public"></script--><style>.list--az .button {    float: left;}@media screen and (min-width: 1280px) {.one-column .list--az .button {    padding: 25%;}}</style><style>.wpcb-container.wpcb-float.wpcb-corners-round.wpcb-corners-small.wpcb-border-thin.wpcb-bottom.wpcb-left.wpcb-color-custom--943834009 {    position: unset;    margin-top: 6em;    margin-bottom: -4em;    width: -webkit-fill-available;}.wpcb-float {    max-width: inherit;}button.wpcb-btn {    width: fit-content;    padding: 0.5em;}@media screen and (max-width: 736px) {.wpcb-float {    padding-top: 5em;}.wpcb-container {    position: unset;}}</style>
+
+<div class="extra-footer2"
+<a href="#" id="open_preferences_center">Update cookies preferences</a>
+</div>
+
+<style>
+div#open_preferences_center {
+    text-align: center;
+    background-color: #000;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+div#open_preferences_center:hover {
+    text-decoration: underline;
+}
+</style>
+
+    </body>
+</html>

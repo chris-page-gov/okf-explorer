@@ -1,0 +1,30 @@
+{
+  "schema": "okf-indexed-query-control-recheck.v1",
+  "queryExpression": "res_url:opendata.s3.amazonaws.com",
+  "receipt": {
+    "requestUrl": "https://ckan.publishing.service.gov.uk/api/3/action/package_search?q=res_url%3Aopendata.s3.amazonaws.com&rows=1&include_private=false",
+    "method": "GET",
+    "startedAt": "2026-11-11T06:19:03Z",
+    "hops": [
+      {
+        "url": "https://ckan.publishing.service.gov.uk/api/3/action/package_search?q=res_url%3Aopendata.s3.amazonaws.com&rows=1&include_private=false",
+        "status": 200,
+        "headers": {
+          "date": "Wed, 11 Nov 2026 06:19:04 GMT",
+          "content-type": "application/json;charset=utf-8",
+          "content-length": "230"
+        },
+        "curlExit": 0,
+        "elapsedSeconds": 0.164809,
+        "bodyPath": "indexed-host-query-hop-0.body",
+        "bytes": 230,
+        "sha256": "bdeb10efba8ca93dcfdb9e7a66db6db76305b2ec9d6f5d6595c098682349bc78"
+      }
+    ],
+    "completedAt": "2026-11-11T06:19:04Z"
+  },
+  "returnedCount": 0,
+  "originalControlNumericHttpStatus": "not-retained",
+  "interpretation": "The query must find known positives before supporting national absence. Cause of query behaviour unassessed.",
+  "portableBodyPath": "indexed-host-query-control.body"
+}

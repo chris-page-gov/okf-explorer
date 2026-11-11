@@ -1,0 +1,6 @@
+station_id,station_reference,label,latitude,longitude,easting,northing,town
+http://environment.data.gov.uk/flood-monitoring/id/stations/2091,2091,Warwick,52.284932,-1.562658,429930,265290,Warwick
+http://environment.data.gov.uk/flood-monitoring/id/stations/2049,2049,Leamington Pdw LVL,52.286203,-1.549042,430858,265437,
+http://environment.data.gov.uk/flood-monitoring/id/stations/2542,2542,Warwick Wedgnock Lane,52.288919,-1.602042,427241,265718,
+http://environment.data.gov.uk/flood-monitoring/id/stations/2543,2543,Warwick Rothwell Road,52.292637,-1.595616,427677,266134,
+http://environment.data.gov.uk/flood-monitoring/id/stations/1775,1775,Rainfall station,52.27751,-1.599081,427450,264450,
