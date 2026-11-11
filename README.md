@@ -84,6 +84,10 @@ testing and the governed publication process. The [repository guide](docs/reposi
 explains authored/generated boundaries. Preserve source authority, derivation,
 rights, freshness and lifecycle; a passing build does not establish truth.
 
+Follow [dependency maintenance](docs/dependency-maintenance.md) when reviewing
+updates, including verification against current main and preservation of
+independent documentation changes.
+
 ## Open The Hosted Explorer
 
 [Open the learning hub](https://chris-page-gov.github.io/okf-explorer/) or follow
