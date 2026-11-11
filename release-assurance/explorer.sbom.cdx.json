@@ -19,7 +19,7 @@
     "properties": [
       {
         "name": "okf:pnpm-lock-sha256",
-        "value": "053b0383c9deb63e1f8344c31053cc030c1f3f5d51c6490465ea15e1628db119"
+        "value": "2ec39f9566d0c77cbecaf49ccb4c05f868f7016c28fcd40118cb9c9197cafc04"
       }
     ],
     "tools": {
@@ -655,6 +655,16 @@
           "alg": "SHA-512",
           "content": "64fb0b37c0757bf127f80939b3857bb2b1434f9df6a12d2a89e2ec430bbadcd18ab12fa2023a0ed89b3506872194796095c53e3eded600edc2e447bee1fea054"
         }
+      ],
+      "properties": [
+        {
+          "name": "okf:pnpm:patch-path",
+          "value": "patches/@sveltejs__vite-plugin-svelte@7.3.1.patch"
+        },
+        {
+          "name": "okf:pnpm:patch-sha256",
+          "value": "f95e0729acd995fa4cbaef1b01817162697a5f450c27f39e5be93759c841dd2c"
+        }
       ]
     },
     {
@@ -953,19 +963,6 @@
         {
           "alg": "SHA-512",
           "content": "48bd1c56e11d113129ee937416e65bd35b68737be738311f5540a8a311b5489374c888ab87b24c6fd5fd6ef7c215fd2fcf36d3ebc45d6ca0c7613896cbb6bb8b"
-        }
-      ]
-    },
-    {
-      "bom-ref": "pkg:npm/deepmerge@4.3.1",
-      "name": "deepmerge",
-      "purl": "pkg:npm/deepmerge@4.3.1",
-      "type": "library",
-      "version": "4.3.1",
-      "hashes": [
-        {
-          "alg": "SHA-512",
-          "content": "dec52a6cc11cefb5eaa5d34eec547246883e796de987e19809b8feacafae63244cbb0b15cb4acc895b4f9fe40994a16f58fff53d8a5aa6a627d0c7b6927167f8"
         }
       ]
     },

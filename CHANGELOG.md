@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Remove the vulnerable development-only `deepmerge` dependency through a
+  hash-bound backport of the Svelte plugin's proposed internal configuration
+  merge. Retain patch provenance in the SBOM and test prototype-poisoning
+  rejection, configuration compatibility and dependency reintroduction.
+
 - Update the Explorer framework to static adapter 4.0.1, SvelteKit 3.1.1,
   Svelte 5.57.3, svelte-check 4.7.8 and Vite 8.3.6. Regenerate the dependency
   inventory while retaining the reviewed security overrides and Rolldown pin.

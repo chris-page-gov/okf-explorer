@@ -184,3 +184,16 @@ test('rejects an older framework and a cookie override that downgrades Kit 3', (
   manifest.pnpm.overrides.cookie = '^0.7.2';
   assert.throws(() => checkDependencyPolicy(manifest, lock), /cookie override/);
 });
+
+for (const plane of ['packages', 'snapshots']) {
+  test(`rejects deepmerge returning in ${plane}`, () => {
+    const { manifest, lock } = fixture();
+    lock[plane]['deepmerge@4.3.1'] = {};
+    assert.throws(() => checkDependencyPolicy(manifest, lock), /deepmerge/);
+  });
+}
+test('rejects a deepmerge reference even without its inventory', () => {
+  const { manifest, lock } = fixture();
+  lock.snapshots['consumer@1.0.0'] = { dependencies: { deepmerge: '4.3.1' } };
+  assert.throws(() => checkDependencyPolicy(manifest, lock), /deepmerge/);
+});
