@@ -66,10 +66,11 @@ jobs:
       - name: Select Ubuntu HTTPS archives for browser packages
         timeout-minutes: 1
         run: |
-          printf '%s\n' \
-            'https://archive.ubuntu.com/ubuntu/' \
-            'https://security.ubuntu.com/ubuntu/' \
-            | sudo tee /etc/apt/apt-mirrors.txt > /dev/null
+          for mirror_file in /etc/apt/apt-mirrors*.txt; do
+            if [ -f "$mirror_file" ]; then
+              sudo sed -i.bak 's|http://|https://|g' "$mirror_file"
+            fi
+          done
       - name: Install Firefox and WebKit browser dependencies
         working-directory: apps/okf-explorer
         timeout-minutes: 10
