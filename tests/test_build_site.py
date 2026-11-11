@@ -110,6 +110,10 @@ class BuildSiteTests(unittest.TestCase):
             output = Path(directory) / "published"
             source.mkdir()
             (source / "private-draft.docx").write_bytes(b"local draft")
+            (source / "retained-paper.pdf").write_bytes(b"%PDF-local paper")
+            nested = source / "report-exports"
+            nested.mkdir()
+            (nested / "report.PDF").write_bytes(b"%PDF-local report")
             archive = source / "bep_research_A_RECONSTRUCTED_2026-09-19"
             archive.mkdir()
             (archive / "REPORT.html").write_text("original archival HTML")
@@ -120,6 +124,8 @@ class BuildSiteTests(unittest.TestCase):
                 include=lambda path: build_site.is_component_source_allowed(Path("research") / path),
             )
             self.assertFalse((output / "private-draft.docx").exists())
+            self.assertFalse((output / "retained-paper.pdf").exists())
+            self.assertFalse((output / nested.name / "report.PDF").exists())
             self.assertFalse((output / archive.name / "REPORT.html").exists())
             self.assertEqual((output / "other.html").read_text(), "other public HTML")
             self.assertEqual((output / "diagram.svg").read_text(), "<svg/>")

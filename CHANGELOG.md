@@ -2,6 +2,26 @@
 
 ## Unreleased
 
+- Update PDF.js from 6.4.299 to 6.5.438 and regenerate the dependency inventory.
+  Verify PDF rendering and page changes against the retained DWP fixture,
+  and refresh the exact-build Heritage browser evidence while preserving the
+  preceding receipt. Local research PDFs remain outside Git and Site inputs.
+- Reconcile the earlier Ask OKF dependency candidate with the newer adapter
+  2.1.2 and server/client 2.4.0 already on main. Preserve the current dependency
+  lockfile and security overrides, and clarify the maintenance history.
+- Expand the central bibliography to cover 33 referenced papers, with authors,
+  dates, versioned arXiv source and PDF links, journal and conference editions,
+  repository citation locations, and explicit access and verification limits.
+- Keep retained research PDFs out of Git and Site inputs. Move the two older
+  BEP PDF exports into ignored local storage with unchanged checksums and
+  recorded retention paths; exclude research PDFs from Site copying and test
+  nested and mixed-case filenames. Earlier Git history remains unchanged.
+- Extend the existing sources index into a central bibliography with citation,
+  version, verification-date and local-retention guidance.
+- Add CorpusMap's version 1 source and PDF URLs, review link and retained-file
+  fingerprint. Preserve the supplied PDF in an ignored local research folder
+  outside public Site inputs, and link the bibliography from the documentation.
+
 ## v0.8.1 - 2026-11-03 - Legislation release acceptance correction
 
 - Bind the UK Legislation runtime-acceptance contract to Explorer v0.8.1 so

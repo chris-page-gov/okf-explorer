@@ -1,5 +1,22 @@
 # Maintaining Explorer dependencies
 
+## Ask OKF HTTP adapter reconciliation — 11 November 2026
+
+The earlier PR #191 candidate proposed `@modelcontextprotocol/node` 2.1.0.
+The v0.8.0 integration subsequently adopted adapter 2.1.2, server and client
+2.4.0, legacy comparison SDK 1.32.2 and patched transitive HTTP dependencies.
+Reconciliation preserves the newer manifest and lockfile from main byte for
+byte, including its security overrides; the earlier candidate must not
+downgrade them. The remaining change records that history and links this
+maintenance guidance from the repository introduction.
+
+The service rejects oversized bodies and all JSON-RPC batches before invoking
+the handler. Preserve those stricter application controls, host/origin
+admission and read-only evidence tools. Service tests cover streamed and
+declared body limits, single-message admission, both supported SDKs and
+ordinary evidence requests. A repository merge does not redeploy the hosted
+service or change a published source/engine archive.
+
 ## Reviewed integration on 23 October 2026
 
 The reading-help candidate combines the overlapping Explorer updates from
@@ -169,3 +186,22 @@ the upstream release. Preserve the existing workflow triggers, pnpm 10 setting
 and separate Pages deployment permissions. The reviewed maintenance update
 uses `pnpm/action-setup` 6.1.0 and `actions/deploy-pages` 5.0.1; it does not grant
 additional permissions.
+
+## PDF renderer maintenance — 11 November 2026
+
+The PDF.js update selects `pdfjs-dist` 6.5.438 and its optional canvas dependency
+`@napi-rs/canvas` 1.1.0. The renderer and worker remain from the same locked
+package; the update changes the generated application bytes. The SBOM records
+the resolved packages without changing the existing security overrides.
+
+The existing source-boundary browser test verifies the frozen DWP PDF checksum,
+renders a populated page, changes page and returns to it. It also loads all
+28 source cases. This local check uses the separately retained producer fixture;
+no PDF is copied into Explorer's Git history or Site inputs by the update.
+The 100-question Heritage suite and three local journeys supply fresh runtime
+evidence for the rebuilt application. The previous receipt and compressed
+results are retained under
+`validation/dependency-updates/2026-11-11/pre-pdfjs/`.
+
+Protected-branch CI and exact-commit Pages verification remain separate from
+these local observations.
