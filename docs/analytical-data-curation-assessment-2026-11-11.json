@@ -1,0 +1,147 @@
+{
+  "schema": "okf-local-curation-assessment.v1",
+  "authority": "local proposal and assessment",
+  "status": "human-review-pending",
+  "profileVersion": "1.0.0-rc.1",
+  "dataset": "https://chris-page-gov.github.io/okf-explorer/docs/examples/analytical-data-trial/warwickshire/",
+  "catalogueRecord": {
+    "url": "https://www.data.gov.uk/dataset/89e5101a-2064-46e7-955e-4cac2fb31c7c/warwickshire-ageing-population",
+    "surface": "directory-record",
+    "curatedCollectionMembership": "unverified"
+  },
+  "criteria": [
+    {
+      "sourceCriterion": "Scope (required)",
+      "assessment": "public-sector provenance supported by the publisher declarations",
+      "evidence": [
+        "https://www.warwickshire.gov.uk/directory-record/6300/ageing-population-2008"
+      ],
+      "qualification": "WCC publisher and ONS source credit are distinct recorded roles."
+    },
+    {
+      "sourceCriterion": "Relevance",
+      "assessment": "human review required",
+      "recordedPurpose": "historical analytical compatibility trial",
+      "widerAudienceCase": null,
+      "qualification": "Local coverage and the 2008 period stay visible. Historical scope needs a suitability rationale."
+    },
+    {
+      "sourceCriterion": "Demand",
+      "assessment": "no NDL curation demand evidence retained in the trial",
+      "evidence": [],
+      "qualification": "The user request establishes the purpose of this exercise. Wider collection demand remains unassessed."
+    },
+    {
+      "sourceCriterion": "Quality",
+      "assessment": "partially evidenced",
+      "evidence": [
+        "examples/analytical-data-trial/warwickshire/receipt.json"
+      ],
+      "conversionIntegrity": "333 captured observations preserved",
+      "statisticalAccuracy": "unassessed",
+      "populationCompleteness": "unassessed",
+      "geographyEditionAndCodeMembership": "unverified",
+      "maintenanceDecision": "unverified"
+    }
+  ],
+  "ownership": {
+    "publisher": "Warwickshire County Council",
+    "sourceProducerCredit": "Office for National Statistics, Mid-2008 Super-Output Area Population Estimates",
+    "accountableSteward": null,
+    "reviewer": null,
+    "roleStatus": "publisher and source credit retained; stewardship fields are local proposals"
+  },
+  "currency": {
+    "sourceReferenceYear": 2008,
+    "publisherDataRevision": null,
+    "localProjectionVersion": "2008-local-projection-2026-11-11",
+    "metadataModified": {
+      "value": "2013-08-12T23:00:31.404269",
+      "timezone": "not declared in captured field"
+    },
+    "acquiredAt": "2026-11-11T04:02:30Z",
+    "updateFrequency": null,
+    "reviewDueAt": null,
+    "qualification": "A frozen historical dataset can have a documented maintenance decision. Acquisition time, data revision and metadata revision retain separate meanings."
+  },
+  "rightsAndAccess": {
+    "rightsStatus": "unverified",
+    "publisherLicence": "https://creativecommons.org/licenses/by-sa/2.0/uk/",
+    "catalogueLicence": "http://reference.data.gov.uk/id/open-government-licence",
+    "publisherCsv": "captured and converted locally",
+    "catalogueCsv": "403 AccessDenied observed",
+    "denialCause": "unverified",
+    "distributionEquivalence": "unverified"
+  },
+  "sourceGuidance": [
+    "https://www.data.gov.uk/data-curation/",
+    "https://www.data.gov.uk/publishers/",
+    "https://guidance.data.gov.uk/publish_and_manage_data/",
+    "https://environment.data.gov.uk/"
+  ],
+  "proposedEngineeringWork": [
+    {
+      "id": "AD-CURATION-01",
+      "status": "open",
+      "proposal": "Record audience, purpose, source rationale, ownership and a human curation decision beside the package."
+    },
+    {
+      "id": "AD-CURRENCY-01",
+      "status": "open",
+      "proposal": "Record source period, publisher data revision, metadata revision, acquisition observation, expected cadence and a maintenance decision."
+    },
+    {
+      "id": "AD-ACCESS-01",
+      "status": "open",
+      "proposal": "Version the access contract and acquisition recipe, with content negotiation, filters, pagination, provider limits and completion evidence."
+    },
+    {
+      "id": "AD-TEMPORAL-01",
+      "status": "open",
+      "proposal": "Review typed datetime and timezone validation through a deliberate profile revision. Preserve original literals under the current contract."
+    },
+    {
+      "id": "AD-SPATIAL-01",
+      "status": "open",
+      "proposal": "Use a reviewed spatial companion for CRS, datum, extent, units and boundary edition before spatial joins."
+    },
+    {
+      "id": "AD-CAPTURE-01",
+      "status": "open",
+      "proposal": "Distinguish original HTTP entities, rendered text, catalogue metadata and underlying data in acquisition evidence."
+    }
+  ],
+  "humanCurationDecision": {
+    "status": "pending",
+    "reviewer": null,
+    "date": null,
+    "sourceAcceptance": "unverified"
+  },
+  "profileImpact": {
+    "currentSchema": "profiles/analytical-data/v1/package.schema.json",
+    "currentRevision": "1.0.0-rc.1",
+    "changeType": "supplementary documentation and local assessment",
+    "futureValidationChanges": "require a reviewed candidate revision and consumer fixtures"
+  },
+  "originalAssuranceQualifications": {
+    "skippedChecks": 8,
+    "helpLayout": "initial failure retained; isolated four-layout rerun passed",
+    "existingWccProducerErrors": 13,
+    "existingNdlProducerErrors": 1
+  },
+  "subsequentReadOnlyEvidence": {
+    "report": "analytical-live-trial-2026-11-11.md",
+    "wccRecords": 59,
+    "deniedLegacyResourceOccurrences": 66,
+    "exactPathRespondingCandidates": 62,
+    "missingCandidatePaths": 4,
+    "emptyResourceRecords": 18,
+    "historicalEquivalence": "unverified",
+    "publisherApproval": "pending",
+    "nationalOtherHostLinkHealth": "unassessed",
+    "defraLocalityStations": 5,
+    "defraReadings": 96,
+    "profileRevision": "1.0.0-rc.1",
+    "typedDatetimeAndSpatialContract": "unresolved"
+  }
+}

@@ -1,0 +1,219 @@
+{
+  "schema": "okf-analytical-live-verification.v1",
+  "observedAt": "2026-11-11T06:24:13Z",
+  "scope": "Local pre-commit candidate bytes and full local checks; PR, remote CI and publication retain separate identities.",
+  "parentCommit": "4bfb1e440c151758506967f18032397e43be0d85",
+  "targetBaseCommit": "dcd0c43e29593436b13c59271c75d37d06e2b754",
+  "versions": {
+    "explorer": "0.8.1",
+    "analyticalProfile": "1.0.0-rc.1",
+    "apiService": "0.9"
+  },
+  "toolchain": {
+    "python": "CPython 3.12.11 through uv --locked",
+    "node": "v26.7.0",
+    "pnpm": "10.33.2",
+    "ciDeclaredNode": "26.12.1",
+    "ciDeclaredPnpm": "10.34.7"
+  },
+  "checks": {
+    "python": {
+      "status": "passed",
+      "tests": 571,
+      "newTrialTests": 8
+    },
+    "svelte": {
+      "status": "passed",
+      "errors": 0,
+      "warnings": 0
+    },
+    "vitest": {
+      "status": "passed",
+      "tests": 891
+    },
+    "appNode": {
+      "status": "passed",
+      "testsPassed": 120,
+      "skipped": 1,
+      "reason": "opt-in genuine Google Chrome CDP observation"
+    },
+    "mcp": {
+      "status": "passed",
+      "testsPassed": 98,
+      "skipped": 1,
+      "reason": "opt-in actual pinned Evidence Connect integration",
+      "typeCheckAndBuild": "passed"
+    },
+    "contextAndServer": {
+      "status": "passed",
+      "contextNodeTests": 54,
+      "serverTests": 1,
+      "controlledLanguageSelfTest": "passed",
+      "studyClubReplay": "passed"
+    },
+    "standaloneChromeUi": {
+      "status": "passed",
+      "passed": 177,
+      "skipped": 6,
+      "total": 183
+    },
+    "declaredFullTerminalBrowserGate": {
+      "status": "passed",
+      "command": "pnpm --dir apps/okf-explorer test:e2e:terminal",
+      "engines": [
+        "chrome",
+        "firefox",
+        "webkit"
+      ],
+      "ui": {
+        "passed": 531,
+        "skipped": 15,
+        "total": 546
+      },
+      "builtDocumentation": {
+        "passed": 78,
+        "skipped": 0
+      },
+      "selectionDifference": "Terminal runner selects 182 registered UI cases per engine. Standalone Chrome also includes the source-review integration case."
+    },
+    "sourceSemanticAndDocumentationGates": {
+      "status": "passed",
+      "commands": "Mandatory eight pre-commit commands plus source constraints, analytical reproduction, package validation, SBOM and own-repo semantic reconciliation."
+    },
+    "newTrialBrowser": {
+      "status": "passed",
+      "browser": "installed Google Chrome",
+      "files": 34,
+      "journey": "Current report, repeat-query receipt and verification links; national scope and Defra result qualification links; all frozen source and output asset digests.",
+      "consoleErrors": [],
+      "failedRequests": [],
+      "assetsSha256": {
+        "sources/analytical-data-trial-2026-11-11/live-defra-api/source-register.json": "21d6a04b638e65f2bc7b02a1320f653df2706104d052e0ae1c05e8fd4f810fb3",
+        "sources/analytical-data-trial-2026-11-11/live-defra-api/capture-plan.json": "7771fbbd44447782624589f1dbfec7ad02739956e8f02d9506ebe2e232fd818f",
+        "sources/analytical-data-trial-2026-11-11/live-defra-api/name-search-discovery.json": "733015acbec371ad0cd8a487e67c5a009de96bdc2017ec1a6f72a11adb808fa4",
+        "sources/analytical-data-trial-2026-11-11/live-defra-api/readings-page-000-hop-0.body": "4ffdeb306fdea571c34f211798c8654d8be4b2ced11f729e4f62dab34cd11811",
+        "sources/analytical-data-trial-2026-11-11/live-defra-api/readings-page-037-hop-0.body": "f2bead6392f7d1e7eac1c0b83332a82a7e9cdae0182e75a41e0520d27d01e362",
+        "sources/analytical-data-trial-2026-11-11/live-defra-api/readings-page-074-hop-0.body": "2f2d28e8ca8291662a82fcf15ea464c00640e5c40c3a6f74e3eb6ba594179329",
+        "sources/analytical-data-trial-2026-11-11/live-defra-api/readings-page-096-hop-0.body": "36bf1389c5de9de5c1985077210b1580ae75d9cfec4a08d40cde266d8e9bc0be",
+        "sources/analytical-data-trial-2026-11-11/live-defra-api/readings-reference-hop-0.body": "359405435118af19fb6d311c3d72e89720c66c327eb9fb41cb1ac5c5bbbe1e6d",
+        "sources/analytical-data-trial-2026-11-11/live-defra-api/readings-since-control-hop-0.body": "c197fa0dd7663ce30db1ec2db5fd89325f576ec73c3300424b69d2a73a347202",
+        "sources/analytical-data-trial-2026-11-11/live-defra-api/stations-page-000-hop-0.body": "867569be80d90f7350f7b7bac468a7766240122e738870724bbae2fb91ad6e88",
+        "sources/analytical-data-trial-2026-11-11/live-defra-api/stations-page-002-hop-0.body": "e34452e9eea933b61c54ce52dbd345ed6b177f9af8770753cdcf12669f366853",
+        "sources/analytical-data-trial-2026-11-11/live-defra-api/stations-page-004-hop-0.body": "1b0a1d58c08a318b07282a173e70b3beabcb8ac81c598228e6e771eaf3bd694f",
+        "sources/analytical-data-trial-2026-11-11/live-defra-api/stations-page-005-hop-0.body": "e48fdbdbc6ac35de0efa95e6c64ff7b6ddb37d2b0f4d67c6a7b2dbee4565651f",
+        "sources/analytical-data-trial-2026-11-11/live-defra-api/stations-reference-hop-0.body": "b11c70304347da621ab5776d24ba8bae9388669c46891610203db4b33f1e4ecc",
+        "sources/analytical-data-trial-2026-11-11/ndl-link-audit/source-register.json": "7ed6007d38d3d5121d34a538d665eb0e2a1c8dcbb6bed02dd8848816fa02dc7c",
+        "sources/analytical-data-trial-2026-11-11/ndl-link-audit/ageing-population-2008.xls": "214d8214ecbb683a2b5b06a94dbb313c28bcd5bd8daeee96c7cbca05b6f4b2fe",
+        "sources/analytical-data-trial-2026-11-11/ndl-link-audit/github-ref.body": "59f0bdd0c508164bd8a44c6142887fb9f870ff5b645bd0660cc1c1310b8d0a1e",
+        "sources/analytical-data-trial-2026-11-11/ndl-link-audit/github-tree.body": "f661a667c095c930e4f3f65d697f7dd9838574470ffb56d051d0d03cce83394b",
+        "sources/analytical-data-trial-2026-11-11/ndl-link-audit/indexed-host-query-control.body": "bdeb10efba8ca93dcfdb9e7a66db6db76305b2ec9d6f5d6595c098682349bc78",
+        "sources/analytical-data-trial-2026-11-11/ndl-link-audit/national-host-matches.json": "9410038925c83c6709e7dfb5ee59e30009f6377394c3f2f50b266812e3f0ad83",
+        "sources/analytical-data-trial-2026-11-11/ndl-link-audit/national-index-ledger.json": "419820a3f8437df0732cccb3236b33232c0b63a596a9e0e1c02f61b38dab351c",
+        "sources/analytical-data-trial-2026-11-11/ndl-link-audit/national-resource-hosts.jsonl.gz": "0ca86c3a1aaaa6dd547523625b8bdb244cd51fa3cd630018514d39cb84ee3cf6",
+        "sources/analytical-data-trial-2026-11-11/ndl-link-audit/wcc-metadata.body": "40a001ab96e5d39000e11804fca4ec727b34774adc8bcd3e44b2e87d4476e20d",
+        "sources/analytical-data-trial-2026-11-11/ndl-link-audit/wcc-probes.json": "2d42f267f5077bb4d6b12aeb6bd0851a0e93a1747d217fc2d3d530d5bd570387",
+        "sources/analytical-data-trial-2026-11-11/ndl-link-audit/indexed-host-query-recheck.json": "8aef91affdbdf7237ff30dfd86743bb381067e81d3d6ff175016778d465b3797",
+        "docs/examples/analytical-live-trial/reproduction-receipt.json": "084b305c5a047e768e7ceb6fafa3361676df627df5405168140c2ffc6a194377",
+        "docs/examples/analytical-live-trial/wcc-resource-results.csv": "769e17b788bf27e9872745ba96bf1dfedd75b47e0e713df0d21d59e9df2db718",
+        "docs/examples/analytical-live-trial/ndl-national-host-scope.json": "3e55facb9a2c5d1e47178c267ef8a0428446278b44d158e8c8d169bfc7bac650",
+        "docs/examples/analytical-live-trial/wcc-link-scope.json": "413ac326153caa4a57b6e48b46649b90f6841c45f5762162573a9ea43a89aab5",
+        "docs/examples/analytical-live-trial/defra/okf-analytical-data.json": "b2d72e478dc9ebbf478c0e8e68e36b9959a5461425e023e21e6887f2f00cf0bf",
+        "docs/examples/analytical-live-trial/defra/results.json": "24b6c8061e7218ee7b4b2dfcdbc55d379bf740cfd249b2a3c49da23b4cc1fbf1",
+        "docs/examples/analytical-live-trial/defra/readings.csv": "a9d7c58d75b02bb9a21d5c88a9f80230e5269dd53722303180218757b60289eb",
+        "docs/examples/analytical-live-trial/defra/stations.csv": "b767f5ec6b467642913a1fbb43a0483918489a20314a13444a97608fd2011618",
+        "docs/examples/analytical-live-trial/defra/receipt.json": "c9359ae0be43edde66a02be778b25a14520bf4a63fea6d05be3dd748532e35f9"
+      }
+    },
+    "stagedSourceBytes": {
+      "status": "passed",
+      "files": 23,
+      "proofSha256": "a6f599152ab65f5c893d3a2981a8a69e8bd60f60a7f8ebd6b8d6cd9d4a5f1c49"
+    }
+  },
+  "sourceScope": {
+    "nationalPublicIndex": {
+      "datasetRecords": 60155,
+      "resourceOccurrences": 221687,
+      "recordsWithoutResourceEntries": 12153,
+      "malformedUrlParserObservations": 1,
+      "exactHostDatasetRecords": 40,
+      "exactHostResourceOccurrences": 66,
+      "exactHostPublishers": {
+        "warwickshire-county-council": 40
+      },
+      "exactHost": "opendata.s3.amazonaws.com",
+      "atomicSnapshot": false,
+      "captureStartedAt": "2026-11-11T05:50:26Z",
+      "captureCompletedAt": "2026-11-11T05:54:22Z",
+      "indexedHostQueryCount": 0,
+      "indexedHostQueryRecheckedAt": "2026-11-11T06:19:04Z",
+      "indexedHostQueryPositiveControl": "failed",
+      "otherHostLinkHealth": "unassessed"
+    },
+    "wccSourceFiles": "23 original or derived pinned files across two supplementary source registers; register metadata is separately hash-bound.",
+    "privateIntake": "Supplied diagnosis and raw national acquisition envelopes remain ignored local intake. The PR uses independently captured public evidence.",
+    "networkMethods": "Unauthenticated read-only GET; no catalogue edits or external messages.",
+    "reproduction": "Offline from frozen inputs; no remote JSON-LD context resolution."
+  },
+  "historicalQualifications": {
+    "originalSkippedChecks": 8,
+    "originalHelpLayout": "Original full Chrome run: 176 passes, six skips, one narrow reading-help PageDown failure. Isolated four-layout rerun passed 4/4. The current full Chrome and three-engine gates pass; the earlier intermittent observation remains retained.",
+    "originalProducerGaps": {
+      "wccErrors": 13,
+      "ndlErrors": 1,
+      "status": "unresolved existing producer contract gaps"
+    },
+    "otherOpenGaps": [
+      "Historical S3 byte equivalence",
+      "WCC and NDL rights discrepancy",
+      "Four publisher paths absent",
+      "18 WCC records with no resource entries",
+      "Health of resource URLs on other national hosts",
+      "Typed datetime and timezone contract",
+      "Explicit CRS identifiers, datum conversion and county clipping",
+      "Human curation acceptance and owner approval"
+    ]
+  },
+  "executionCorrections": [
+    "Initial unittest discover without -s tests found no tests; corrected command ran all 571.",
+    "Initial context invocation lacked the governed UV_CACHE_DIR; rerun with the locked environment passed.",
+    "Initial report navigation preceded server readiness; the subsequent Chrome journey passed."
+  ],
+  "inputSha256": {
+    "docs/analytical-live-trial-2026-11-11.md": "017a6cb52592271f191a11a4cc2fea8d08eed9ab78c772c094df954d8a7dc834",
+    "scripts/build_analytical_live_trial.py": "0a30fa0b41882136249f3260863ed96d7b86ec89b7cdcf2f8e2ac6680ca566a9",
+    "tests/test_analytical_live_trial.py": "1cf42a158fa8ef3f17d58c75078dda55967512832f2bce4a2932447ec9aed199",
+    "scripts/check_analytical_data.py": "8c4e65c7fe1165d784c4447a80d35e4425702d67b7650a0529f123b0505874c9",
+    "profiles/analytical-data/v1/profile.json": "1f768c2839dddaa6f5cb70a0278042e7600d5518b29235ee17c97f0c027eb1c2",
+    "profiles/analytical-data/v1/package.schema.json": "676cbd90441f31b3b9babcca1c23618b5e7ce1113e9eba9972f02fe9942a7ccb",
+    "okf.publication.json": "046333cd63c65bb64b702a7cc741c4662c3c88a0b42a72be27d20aecfb4d77f1",
+    "uv.lock": "4d9f84cdfbaaeda3ad1bfc83157eb7ced5ef33127feeeb30714aabe56103e8ef",
+    "sources/analytical-data-trial-2026-11-11/live-defra-api/source-register.json": "21d6a04b638e65f2bc7b02a1320f653df2706104d052e0ae1c05e8fd4f810fb3",
+    "sources/analytical-data-trial-2026-11-11/ndl-link-audit/source-register.json": "7ed6007d38d3d5121d34a538d665eb0e2a1c8dcbb6bed02dd8848816fa02dc7c",
+    "docs/examples/analytical-live-trial/reproduction-receipt.json": "084b305c5a047e768e7ceb6fafa3361676df627df5405168140c2ffc6a194377",
+    "docs/examples/analytical-live-trial/wcc-resource-results.csv": "769e17b788bf27e9872745ba96bf1dfedd75b47e0e713df0d21d59e9df2db718",
+    "docs/examples/analytical-live-trial/ndl-national-host-scope.json": "3e55facb9a2c5d1e47178c267ef8a0428446278b44d158e8c8d169bfc7bac650",
+    "docs/examples/analytical-live-trial/wcc-link-scope.json": "413ac326153caa4a57b6e48b46649b90f6841c45f5762162573a9ea43a89aab5",
+    "docs/examples/analytical-live-trial/defra/okf-analytical-data.json": "b2d72e478dc9ebbf478c0e8e68e36b9959a5461425e023e21e6887f2f00cf0bf",
+    "docs/examples/analytical-live-trial/defra/results.json": "24b6c8061e7218ee7b4b2dfcdbc55d379bf740cfd249b2a3c49da23b4cc1fbf1",
+    "docs/examples/analytical-live-trial/defra/readings.csv": "a9d7c58d75b02bb9a21d5c88a9f80230e5269dd53722303180218757b60289eb",
+    "docs/examples/analytical-live-trial/defra/stations.csv": "b767f5ec6b467642913a1fbb43a0483918489a20314a13444a97608fd2011618",
+    "docs/examples/analytical-live-trial/defra/receipt.json": "c9359ae0be43edde66a02be778b25a14520bf4a63fea6d05be3dd748532e35f9"
+  },
+  "retainedLogSha256": {
+    "analytical-live-app-check.log": "31848570f1ca7803c950d10cabc04af5ffc31f43d10246ff8381bb5bf2804320",
+    "analytical-live-app-test.log": "5509a0c635a201a5c5cc8a4b4a6fd2c3e315b025b69d8b851c7a3884cd77d5d2",
+    "analytical-live-mcp.log": "a5e049e4c599769c1bb687cedf11acaaf6361a78bfd39f8a48bcda9adfb18c45",
+    "analytical-live-context.log": "93926816530aa433b93be9c35ac66d761abc0417df8b97a4f89633aff1063277",
+    "analytical-live-node-contracts.log": "74724061b7568011278dd036ce21665a2b6241c516d8bf1a7c0accd5f1cd5a59",
+    "analytical-live-python-full.log": "166f04f6271db7d8bb3138305c04a96c1512a378adedfc1cfe68b5a65896b2bf",
+    "analytical-live-focused.log": "3b19c96a2f6df5e6c2dc62bf33f499b0d64beca876b5fed70881eedfa6102f42",
+    "analytical-live-chrome.log": "8008a6aa80793a544a2eb7466226b746facf06d74ea7dd3f6b8450fe85d7d1b8",
+    "analytical-live-terminal.log": "e0a51db08f1f3d8726c049bb9c07ed369e1d8897f1f09345cf3f87c468d24d5a",
+    "analytical-live-core.log": "be3a374241838c5eec060d958ce3342d8129e960f82b071b14a56d80384831b0",
+    "analytical-live-site.log": "4c5aa81144a107600a4381a51429793f3e2808fc0f33a1848aff99988db178a4",
+    "analytical-live-core-final.log": "ddff4f0134f6f87ce78a5e638dda38f7db93cfb80fa09bfbf4811db2594a91d3",
+    "analytical-live-site-final.log": "68844a3aec059fb84f0a32a7765d47c09047a66e83a3eeb6746dec8560bbd46d",
+    "analytical-live-browser-final.log": "311e4f8fd7f333d9b29ab9ab2cd65d33716125356cb364ed49211e11d0e97437"
+  }
+}

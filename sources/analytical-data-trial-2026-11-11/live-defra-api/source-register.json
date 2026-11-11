@@ -1,0 +1,78 @@
+{
+  "schema": "okf-live-trial-sources.v1",
+  "representation": "Original HTTP JSON entity bodies and GET protocol receipts. Name-search discovery is a separate earlier HTTP capture without retained numeric response status or exact request URL. JSON-LD contexts are retained as links and are not resolved by the build.",
+  "files": [
+    {
+      "path": "capture-plan.json",
+      "bytes": 12410,
+      "sha256": "7771fbbd44447782624589f1dbfec7ad02739956e8f02d9506ebe2e232fd818f"
+    },
+    {
+      "path": "name-search-discovery.json",
+      "bytes": 6007,
+      "sha256": "733015acbec371ad0cd8a487e67c5a009de96bdc2017ec1a6f72a11adb808fa4"
+    },
+    {
+      "path": "readings-page-000-hop-0.body",
+      "bytes": 12713,
+      "sha256": "4ffdeb306fdea571c34f211798c8654d8be4b2ced11f729e4f62dab34cd11811"
+    },
+    {
+      "path": "readings-page-037-hop-0.body",
+      "bytes": 12722,
+      "sha256": "f2bead6392f7d1e7eac1c0b83332a82a7e9cdae0182e75a41e0520d27d01e362"
+    },
+    {
+      "path": "readings-page-074-hop-0.body",
+      "bytes": 8009,
+      "sha256": "2f2d28e8ca8291662a82fcf15ea464c00640e5c40c3a6f74e3eb6ba594179329"
+    },
+    {
+      "path": "readings-page-096-hop-0.body",
+      "bytes": 1110,
+      "sha256": "36bf1389c5de9de5c1985077210b1580ae75d9cfec4a08d40cde266d8e9bc0be"
+    },
+    {
+      "path": "readings-reference-hop-0.body",
+      "bytes": 31179,
+      "sha256": "359405435118af19fb6d311c3d72e89720c66c327eb9fb41cb1ac5c5bbbe1e6d"
+    },
+    {
+      "path": "readings-since-control-hop-0.body",
+      "bytes": 15927,
+      "sha256": "c197fa0dd7663ce30db1ec2db5fd89325f576ec73c3300424b69d2a73a347202"
+    },
+    {
+      "path": "stations-page-000-hop-0.body",
+      "bytes": 3356,
+      "sha256": "867569be80d90f7350f7b7bac468a7766240122e738870724bbae2fb91ad6e88"
+    },
+    {
+      "path": "stations-page-002-hop-0.body",
+      "bytes": 2258,
+      "sha256": "e34452e9eea933b61c54ce52dbd345ed6b177f9af8770753cdcf12669f366853"
+    },
+    {
+      "path": "stations-page-004-hop-0.body",
+      "bytes": 1661,
+      "sha256": "1b0a1d58c08a318b07282a173e70b3beabcb8ac81c598228e6e771eaf3bd694f"
+    },
+    {
+      "path": "stations-page-005-hop-0.body",
+      "bytes": 1012,
+      "sha256": "e48fdbdbc6ac35de0efa95e6c64ff7b6ddb37d2b0f4d67c6a7b2dbee4565651f"
+    },
+    {
+      "path": "stations-reference-hop-0.body",
+      "bytes": 5211,
+      "sha256": "b11c70304347da621ab5776d24ba8bae9388669c46891610203db4b33f1e4ecc"
+    }
+  ],
+  "rightsAndHandling": {
+    "publisher": "Environment Agency",
+    "licenceDeclared": "http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+    "source": "https://environment.data.gov.uk/flood-monitoring/doc/reference",
+    "attribution": "this uses Environment Agency flood and river level data from the real-time data API (Beta)",
+    "modifications": "Original source JSON retained. Local projection and supplementary checks are labelled separately."
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "schema": "okf-analytical-data-validation.v1",
+  "status": "passed",
+  "validatedProfile": "https://chris-page-gov.github.io/okf-explorer/profile/analytical-data/v1/",
+  "profileVersion": "1.0.0-rc.1",
+  "profileStatus": "candidate",
+  "profileDescriptorSha256": "1f768c2839dddaa6f5cb70a0278042e7600d5518b29235ee17c97f0c027eb1c2",
+  "profileSchemaSha256": "676cbd90441f31b3b9babcca1c23618b5e7ce1113e9eba9972f02fe9942a7ccb",
+  "validatorSha256": "8c4e65c7fe1165d784c4447a80d35e4425702d67b7650a0529f123b0505874c9",
+  "pathAndUrlChecksSha256": "aa3d15a1392fec3379e12601b36eebe84a878e014b6b593e352aa558d01d1883",
+  "toolchainLockSha256": "4d9f84cdfbaaeda3ad1bfc83157eb7ced5ef33127feeeb30714aabe56103e8ef",
+  "manifestSha256": "b2d72e478dc9ebbf478c0e8e68e36b9959a5461425e023e21e6887f2f00cf0bf",
+  "unevaluatedProfiles": [],
+  "dataset": {
+    "id": "https://chris-page-gov.github.io/okf-explorer/docs/examples/analytical-live-trial/defra/",
+    "version": "warwick-2026-11-10-captured-2026-11-11T05:53:34Z",
+    "scope": "real-world"
+  },
+  "rightsStatus": "declared",
+  "tables": [
+    {
+      "path": "stations.csv",
+      "sha256": "b767f5ec6b467642913a1fbb43a0483918489a20314a13444a97608fd2011618",
+      "rows": 5,
+      "valueStates": {
+        "missing": 4
+      },
+      "trueNumericZeroes": 0
+    },
+    {
+      "path": "readings.csv",
+      "sha256": "a9d7c58d75b02bb9a21d5c88a9f80230e5269dd53722303180218757b60289eb",
+      "rows": 96,
+      "valueStates": {},
+      "trueNumericZeroes": 0
+    }
+  ]
+}

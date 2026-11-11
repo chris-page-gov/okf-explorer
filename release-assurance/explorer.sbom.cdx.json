@@ -19,7 +19,7 @@
     "properties": [
       {
         "name": "okf:pnpm-lock-sha256",
-        "value": "e1b435601fb993184a7877b3fa87178646abfae5b9effd946c0780f5cba6d7c3"
+        "value": "f4a529178696c96ac14f3d7444430a93f43c74b34d5cce02d883c3f079511880"
       }
     ],
     "tools": {
@@ -346,15 +346,15 @@
       ]
     },
     {
-      "bom-ref": "pkg:npm/%40playwright/test@1.64.1",
+      "bom-ref": "pkg:npm/%40playwright/test@1.65.0",
       "name": "@playwright/test",
-      "purl": "pkg:npm/%40playwright/test@1.64.1",
+      "purl": "pkg:npm/%40playwright/test@1.65.0",
       "type": "library",
-      "version": "1.64.1",
+      "version": "1.65.0",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "21a6069a5fe748e89959139f3edb882fb9debaef6a0ce6774cdbcd963508ae10ccc6219380f8f38ff83da7d471a52dad49ea4f0d163e53001a11e88ab54bc802"
+          "content": "8865112c6b8a0cb6a448497b3e07eff21edff972d3f95f3ad567e1cf4ce5125e67c85b8a528a5d90504f2aa4e5953529d3a68ec0fb87f22b9411bdf2a773296d"
         }
       ]
     },
@@ -697,15 +697,15 @@
       ]
     },
     {
-      "bom-ref": "pkg:npm/%40types/node@24.19.2",
+      "bom-ref": "pkg:npm/%40types/node@26.6.6",
       "name": "@types/node",
-      "purl": "pkg:npm/%40types/node@24.19.2",
+      "purl": "pkg:npm/%40types/node@26.6.6",
       "type": "library",
-      "version": "24.19.2",
+      "version": "26.6.6",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "f77778f700962640b237ceccc4ba4d37a2973c2c05c3b6d5520efd986515d4e4b8d09196c150abf27eb50d7092ab3ec257afd57cf91bef179ceee3f633e40759"
+          "content": "333423fbc2b1dd7238d0e994004e90a21e7c64c36cb4d34cc27da77dddea5ac7deee70cd4aa24dcdeb389e3873e801f0ad21ce7df48bc1753ac9be3be10e1aa2"
         }
       ]
     },
@@ -1516,28 +1516,28 @@
       ]
     },
     {
-      "bom-ref": "pkg:npm/playwright-core@1.64.1",
+      "bom-ref": "pkg:npm/playwright-core@1.65.0",
       "name": "playwright-core",
-      "purl": "pkg:npm/playwright-core@1.64.1",
+      "purl": "pkg:npm/playwright-core@1.65.0",
       "type": "library",
-      "version": "1.64.1",
+      "version": "1.65.0",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "042e2cf32e9211503a435ad2c594eda3c848d4a508df15e51c6660bc6a8fe08a8f748fdae855fd1f6f480cdcfbbcaa3d976d5be8b7d8a2c49c3cbe8cdf1c720d"
+          "content": "bcd48a807e98aad37b71d4ff2f7df8ce8d1af98c24ae989ccab1c995658f226fd0f8d9f64962278a5d35a13d266eef7a5381a0a11b426100fd0b3250823bbe94"
         }
       ]
     },
     {
-      "bom-ref": "pkg:npm/playwright@1.64.1",
+      "bom-ref": "pkg:npm/playwright@1.65.0",
       "name": "playwright",
-      "purl": "pkg:npm/playwright@1.64.1",
+      "purl": "pkg:npm/playwright@1.65.0",
       "type": "library",
-      "version": "1.64.1",
+      "version": "1.65.0",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "1c2ad5847af9410bb0628b301141936fb806a79db6c9f95bbff493f27178b05586b8b8d00add7b43f12e6e918648d2989f5b6c4c23d9c6a1e11c27d5511bbb50"
+          "content": "17700c59c478e2a301b7892afba29bea65fb6e3197b2192d28538f50b77bade103e992567af8db351ab2b0feeaf8001313d91d3c464189b7b1d4162cbe956878"
         }
       ]
     },
@@ -1789,15 +1789,15 @@
       ]
     },
     {
-      "bom-ref": "pkg:npm/undici-types@7.24.6",
+      "bom-ref": "pkg:npm/undici-types@8.9.0",
       "name": "undici-types",
-      "purl": "pkg:npm/undici-types@7.24.6",
+      "purl": "pkg:npm/undici-types@8.9.0",
       "type": "library",
-      "version": "7.24.6",
+      "version": "8.9.0",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "591356fac2608f9381378ff42691c5aadab38696e75741ae07e3a8cc0f6008bedaf7ddd2994fb5241642ccb37162c6cc7c87832fe953b29843e6337937e9f4ce"
+          "content": "2930f2453617f2c5a629702290f1c74b273adc244f11331cb728ca16ea5c0ba3812d74f7c6c3747bd685ee6fa6217bad156a545ee79db68c06ee22cece9d2442"
         }
       ]
     },
@@ -1885,11 +1885,11 @@
       "ref": "pkg:github/chris-page-gov/okf-explorer@0.8.1",
       "dependsOn": [
         "pkg:npm/%40axe-core/playwright@4.14.0",
-        "pkg:npm/%40playwright/test@1.64.1",
+        "pkg:npm/%40playwright/test@1.65.0",
         "pkg:npm/%40sveltejs/adapter-static@4.0.1",
         "pkg:npm/%40sveltejs/kit@3.1.1",
         "pkg:npm/%40sveltejs/vite-plugin-svelte@7.3.1",
-        "pkg:npm/%40types/node@24.19.2",
+        "pkg:npm/%40types/node@26.6.6",
         "pkg:npm/%40vitest/coverage-v8@4.1.12",
         "pkg:npm/pdfjs-dist@6.5.438",
         "pkg:npm/svelte-check@4.7.8",
