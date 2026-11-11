@@ -1,0 +1,117 @@
+{
+  "schema": "okf-local-analytical-compatibility-verification.v1",
+  "observedAt": "2026-11-11T04:17:57Z",
+  "scope": "local uncommitted analytical-profile candidate and retained public-data compatibility trial",
+  "baseCommit": "7d48a552fb5f83b7ec0ed6a98f7d8739ac1d3492",
+  "branch": "codex/analytical-data-profile",
+  "profileVersion": "1.0.0-rc.1",
+  "toolchain": {
+    "python": "CPython 3.12.11 through uv --locked",
+    "node": "v26.7.0",
+    "pnpm": "10.33.2",
+    "ciDeclaredNode": "26.12.1",
+    "ciDeclaredPnpm": "10.34.7"
+  },
+  "checks": {
+    "python": {
+      "status": "passed",
+      "tests": 563
+    },
+    "svelte": {
+      "status": "passed",
+      "errors": 0,
+      "warnings": 0
+    },
+    "vitest": {
+      "status": "passed",
+      "tests": 891
+    },
+    "appNode": {
+      "status": "passed",
+      "testsPassed": 119,
+      "skipped": 1,
+      "skip": "opt-in genuine-Chrome CDP observation"
+    },
+    "mcp": {
+      "status": "passed",
+      "testsPassed": 98,
+      "skipped": 1,
+      "skip": "opt-in actual pinned Evidence Connect integration"
+    },
+    "contextAndNode": {
+      "status": "passed",
+      "tests": 47
+    },
+    "deterministicAppBuild": {
+      "status": "passed"
+    },
+    "sourceSemanticAndDocumentationGates": {
+      "status": "passed"
+    },
+    "chromeUi": {
+      "status": "passed-after-isolated-rerun",
+      "initial": {
+        "passed": 176,
+        "skipped": 6,
+        "failed": 1
+      },
+      "failure": "narrow reading-help PageDown scrollTop remained zero",
+      "isolatedLayoutGroup": {
+        "passed": 4
+      },
+      "classification": "intermittent test observation; no application code change",
+      "skips": "six environment-dependent external corpus, curriculum and source-review integrations"
+    },
+    "trialBrowser": {
+      "status": "passed",
+      "browser": "installed Google Chrome",
+      "journey": "two-record Reader, companion popup, exact asset digests, NDL gap and documentation navigation",
+      "profileVersion": "1.0.0-rc.1",
+      "observations": 333,
+      "rightsStatus": "unverified",
+      "manifestSha256": "09268e38d294d7a2fa75f0992453e2580141c2d6b5ae682100129c1ccf42f4cf",
+      "csvSha256": "502ab0f9fd3ed267f2f7b05b7fa288460c2375ec5128b032c49312629e1be3d9",
+      "schemaSha256": "676cbd90441f31b3b9babcca1c23618b5e7ce1113e9eba9972f02fe9942a7ccb",
+      "recordId": "89e5101a-2064-46e7-955e-4cac2fb31c7c",
+      "distributionStatus": "unassessed-download-denied",
+      "consoleErrors": [],
+      "failedRequests": []
+    },
+    "producerReconciliation": {
+      "status": "existing-gaps-recorded",
+      "wccErrors": 13,
+      "ndlErrors": 1,
+      "originalCheckerErrorsIdentical": true
+    }
+  },
+  "inputSha256": {
+    "scripts/check_analytical_data.py": "8c4e65c7fe1165d784c4447a80d35e4425702d67b7650a0529f123b0505874c9",
+    "scripts/build_analytical_data_trial.py": "f67ba6ff009cbdb3a124530281de3a0e8756f2e73e9b6f0bba2ff31aba39f26e",
+    "scripts/reconcile_okf_repositories.py": "aa3d15a1392fec3379e12601b36eebe84a878e014b6b593e352aa558d01d1883",
+    "tests/test_analytical_data_profile.py": "793cbf2e2fd48b73381d49b17510c87a47fd93164b2564a74868b9e4c2a0dd60",
+    "tests/test_analytical_data_trial.py": "bc0c1c83d57f47c2466b86b11c1de51b35b2dfe53f3de2c564525ef3dbd385ef",
+    "profiles/analytical-data/v1/profile.json": "1f768c2839dddaa6f5cb70a0278042e7600d5518b29235ee17c97f0c027eb1c2",
+    "profiles/analytical-data/v1/package.schema.json": "676cbd90441f31b3b9babcca1c23618b5e7ce1113e9eba9972f02fe9942a7ccb",
+    "sources/analytical-data-trial-2026-11-11/source-register.json": "cdd84b1d88226cf0e1ebd001961182e67df3a03328f9ce8d674e1c8c3b4b4cbd",
+    "sources/analytical-data-trial-2026-11-11/projection.json": "b06ea74986fdca5514c4e5fa43e39b64b8b013a633c5c4bef90692e57c20f754",
+    "docs/examples/analytical-data-trial/reader-bundle.json": "694cb9f78426f5dc9d463400817eee7afb2b25de6d40ae0617c47ff5b92fcdff",
+    "docs/examples/analytical-data-trial/results.json": "c873b82ae64b9fe97e2bd6b54f3c5465106d959719e1d8e2b03a959811e86adf",
+    "docs/examples/analytical-data-trial/warwickshire/okf-analytical-data.json": "09268e38d294d7a2fa75f0992453e2580141c2d6b5ae682100129c1ccf42f4cf",
+    "docs/examples/analytical-data-trial/warwickshire/receipt.json": "5657b5ddcd041b432d3616c504b0ee7357275029f81e76d084d6f0e2500a236a",
+    "docs/analytical-data-trial-2026-11-11-producers.json": "0b8e96b14a3e6ac1e1b8882406d32259d7cc0ac97747408fc0958d303212faf4",
+    "okf.semantic.json": "5f974ad1d0889b9d28e2242cdc3fceccf8d63903f0b889a8413a51dc11850a75",
+    "okf.publication.json": "9e5ce80a109c6ca260d7ec60ef0a2820d3db4d0a1cd259f9359a2ae784fc735e",
+    "uv.lock": "4d9f84cdfbaaeda3ad1bfc83157eb7ced5ef33127feeeb30714aabe56103e8ef"
+  },
+  "retainedLogSha256": {
+    "analytical-data-trial-full-python-final.log": "9aafe8585af8d8cdb72c168a2b4827659eee78a001d51dbffbb1d9c52d4cb9c0",
+    "analytical-data-trial-app-test-host.log": "9182b717be1c067c0b0aeb1984ef9fbaed502139f4812fe63c5c69ed92d9fd85",
+    "analytical-data-trial-app-check.log": "5c5727ba32e228c54540c4c545fb70d972dda252906afcac42a7e7b0315ec412",
+    "analytical-data-trial-mcp.log": "bc443054d767e66e0b121dbf803f11b5a3a52587a4be26cfc91f4f68a7fc2fd2",
+    "analytical-data-trial-context.log": "9bcba853b93f9b4fb24f54e375de1d9f6a2f9bfdbb6f3f8a11c8d0c2988b7e59",
+    "analytical-data-trial-node-contracts.log": "6d3ff3a7f9c8ea9bed9292b918ac0c0a0b10754475b4080edc40aa6de87a6411",
+    "analytical-data-trial-ui-chrome.log": "cf57af78002790a8ae87d5f643d47373c1aec3a6f4992096db370a7fcd613c35",
+    "analytical-data-trial-ui-narrow-rerun.log": "039c4a33b4c2f26b187de0945689cf4aba44e0f56357e6ccbeb8aa933237f943",
+    "analytical-data-trial-core-final.log": "7fb71815e41a88458c1923ad1847a77553a5cf44feb1f17faa72b8a8c8d5ffed"
+  }
+}

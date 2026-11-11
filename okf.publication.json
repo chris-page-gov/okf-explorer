@@ -1,6 +1,6 @@
 {
   "schema": "okf-repository-publication-contract.v1",
-  "modified": "2026-09-21",
+  "modified": "2026-11-11",
   "locale": "en-GB",
   "time_zone": "Europe/London",
   "repository": {
@@ -280,6 +280,11 @@
       {
         "path": "services/ask-okf-mcp/package-lock.json",
         "role": "policy"
+      },
+      {
+        "path": ".gitattributes",
+        "role": "policy",
+        "source_family_id": "estate-governance"
       }
     ],
     "generated": [
@@ -512,10 +517,17 @@
         "publication-units/**",
         "scripts/**",
         ".github/actions/**",
-        "okf.config.json"
+        "okf.config.json",
+        "tests/test_analytical_data_profile.py",
+        "tests/test_analytical_data_trial.py",
+        ".gitattributes",
+        "tests/test_analytical_live_trial.py"
       ],
       "command_ids": [
-        "check-source-constraints"
+        "check-source-constraints",
+        "check-analytical-data",
+        "check-analytical-trial",
+        "check-analytical-live-trial"
       ]
     },
     {
@@ -1058,6 +1070,45 @@
         ],
         "command": "node --experimental-strip-types --test tools/context-archive/archive.test.ts",
         "source": "docs/context-assembly.md",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "none",
+        "timeout_minutes": 5
+      },
+      {
+        "id": "check-analytical-data",
+        "kind": "check",
+        "planes": [
+          "source"
+        ],
+        "command": "uv run --locked python -m unittest tests.test_analytical_data_profile -v",
+        "source": "profiles/analytical-data/v1/index.md",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "none",
+        "timeout_minutes": 5
+      },
+      {
+        "id": "check-analytical-trial",
+        "kind": "check",
+        "planes": [
+          "source"
+        ],
+        "command": "uv run --locked python scripts/build_analytical_data_trial.py --check",
+        "source": "docs/analytical-data-trial-2026-11-11.md",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "none",
+        "timeout_minutes": 5
+      },
+      {
+        "id": "check-analytical-live-trial",
+        "kind": "check",
+        "planes": [
+          "source"
+        ],
+        "command": "uv run --locked python scripts/build_analytical_live_trial.py --check",
+        "source": "docs/analytical-live-trial-2026-11-11.md",
         "review_status": "reviewed-local-guidance",
         "network": "none",
         "mutates": "none",

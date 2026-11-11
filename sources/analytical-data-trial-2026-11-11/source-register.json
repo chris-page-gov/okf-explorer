@@ -1,0 +1,64 @@
+{
+  "schema": "okf-analytical-trial-sources.v1",
+  "observedAt": "2026-11-11T04:03:55Z",
+  "files": [
+    {
+      "path": "warwickshire-original.csv",
+      "url": "https://raw.githubusercontent.com/warwickshire/opendata/e4d26dd92f202958fd3d593256349c62cd2a0a55/aging-population-2008.csv",
+      "status": 200,
+      "bytes": 32018,
+      "sha256": "a62d69f9906d9a2b900028d79c5a76ffcc421d262a76ea4865d1a4e089a71601",
+      "observedAt": "2026-11-11T04:02:30Z"
+    },
+    {
+      "path": "warwickshire-record.html.txt",
+      "url": "https://www.warwickshire.gov.uk/directory-record/6300/ageing-population-2008",
+      "status": 200,
+      "bytes": 65532,
+      "sha256": "6ce3b8e97e9e3683def3ce7c5f9016c760c078a682d769a3b9c5be78e456bd29",
+      "observedAt": "2026-11-11T04:02:30Z"
+    },
+    {
+      "path": "warwickshire-licence.html.txt",
+      "url": "https://www.warwickshire.gov.uk/open-data/warwickshire-open-data-licence/1",
+      "status": 200,
+      "bytes": 62921,
+      "sha256": "22f6278c71d266e1bd9686e7e0615bb4b99bc164b08b5c07bcacd29c0cfdf904",
+      "observedAt": "2026-11-11T04:02:30Z"
+    },
+    {
+      "path": "ndl-record.html.txt",
+      "url": "https://www.data.gov.uk/dataset/89e5101a-2064-46e7-955e-4cac2fb31c7c/warwickshire-ageing-population",
+      "status": 200,
+      "bytes": 21166,
+      "sha256": "2469d667b8fa35f4d908654380d20da6228e6468b3c7c9592f7e40abdc8fa462",
+      "observedAt": "2026-11-11T04:02:43Z"
+    },
+    {
+      "path": "ndl-package.json",
+      "url": "https://ckan.publishing.service.gov.uk/api/3/action/package_show?id=89e5101a-2064-46e7-955e-4cac2fb31c7c",
+      "status": 200,
+      "bytes": 3187,
+      "sha256": "f3f4bc9c7f50ed5fa093dd42f3cdfe4f7fbeccbf8a2151443c3edfc18a4f0826",
+      "observedAt": "2026-11-11T04:02:43Z"
+    },
+    {
+      "path": "ndl-resource-http.xml.txt",
+      "url": "http://opendata.s3.amazonaws.com/aging-population-2008.csv",
+      "status": 403,
+      "bytes": 263,
+      "sha256": "4c722a9b5db15aa91b8b027f9434be90ea2035f74784d4787f39f9f409911613",
+      "observedAt": "2026-11-11T04:03:11Z"
+    },
+    {
+      "path": "ndl-resource-https.xml.txt",
+      "url": "https://opendata.s3.amazonaws.com/aging-population-2008.csv",
+      "status": 403,
+      "bytes": 263,
+      "sha256": "fb1b23c0d88f2ebe5b5ce561acfd4aa538fa92f05a96ba1c80c3861390eb3c72",
+      "observedAt": "2026-11-11T04:03:11Z"
+    }
+  ],
+  "warwickshireGitTree": "e4d26dd92f202958fd3d593256349c62cd2a0a55",
+  "warwickshireGitBlob": "42e03f81987c9ec4c41c57515f4217c8235bf55a"
+}

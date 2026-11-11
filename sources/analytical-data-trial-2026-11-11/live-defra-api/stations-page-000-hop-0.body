@@ -1,0 +1,87 @@
+{ 
+  "@context" : "http://environment.data.gov.uk/flood-monitoring/meta/context.jsonld" ,
+  "meta" : { 
+    "publisher" : "Environment Agency" ,
+    "licence" : "http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" ,
+    "documentation" : "http://environment.data.gov.uk/flood-monitoring/doc/reference" ,
+    "version" : "0.9" ,
+    "comment" : "Status: Beta service" ,
+    "hasFormat" : [ "http://environment.data.gov.uk/flood-monitoring/id/stations.csv?lat=52.284932&long=-1.562658&dist=5&_view=full&_limit=2&_offset=0", "http://environment.data.gov.uk/flood-monitoring/id/stations.rdf?lat=52.284932&long=-1.562658&dist=5&_view=full&_limit=2&_offset=0", "http://environment.data.gov.uk/flood-monitoring/id/stations.ttl?lat=52.284932&long=-1.562658&dist=5&_view=full&_limit=2&_offset=0", "http://environment.data.gov.uk/flood-monitoring/id/stations.html?lat=52.284932&long=-1.562658&dist=5&_view=full&_limit=2&_offset=0" ] ,
+    "limit" : 2 ,
+    "offset" : 0
+  }
+   ,
+  "items" : [ { 
+    "@id" : "http://environment.data.gov.uk/flood-monitoring/id/stations/2091" ,
+    "RLOIid" : "2044" ,
+    "catchmentName" : "Warwickshire Avon" ,
+    "dateOpened" : "1972-05-17" ,
+    "easting" : 429930 ,
+    "label" : "Warwick" ,
+    "lat" : 52.284932 ,
+    "long" : -1.562658 ,
+    "measures" : [ { 
+      "@id" : "http://environment.data.gov.uk/flood-monitoring/id/measures/2091-level-stage-i-15_min-mASD" ,
+      "parameter" : "level" ,
+      "parameterName" : "Water Level" ,
+      "period" : 900 ,
+      "qualifier" : "Stage" ,
+      "unitName" : "mASD"
+    }
+     ] ,
+    "northing" : 265290 ,
+    "notation" : "2091" ,
+    "riverName" : "River Avon" ,
+    "stageScale" : { 
+      "@id" : "http://environment.data.gov.uk/flood-monitoring/id/stations/2091/stageScale" ,
+      "highestRecent" : { 
+        "@id" : "http://environment.data.gov.uk/flood-monitoring/id/stations/2091/stageScale/highestRecent" ,
+        "dateTime" : "2012-11-26T07:00:00" ,
+        "value" : 3.318
+      }
+       ,
+      "maxOnRecord" : { 
+        "@id" : "http://environment.data.gov.uk/flood-monitoring/id/stations/2091/stageScale/maxOnRecord" ,
+        "dateTime" : "1998-04-10T08:45:00" ,
+        "value" : 3.945
+      }
+       ,
+      "minOnRecord" : { 
+        "@id" : "http://environment.data.gov.uk/flood-monitoring/id/stations/2091/stageScale/minOnRecord" ,
+        "dateTime" : "1973-08-21T13:15:00" ,
+        "value" : 0.319
+      }
+       ,
+      "scaleMax" : 5 ,
+      "typicalRangeHigh" : 1.463 ,
+      "typicalRangeLow" : 0.399
+    }
+     ,
+    "stationReference" : "2091" ,
+    "status" : "http://environment.data.gov.uk/flood-monitoring/def/core/statusActive" ,
+    "town" : "Warwick" ,
+    "wiskiID" : "2091"
+  }
+  , { 
+    "@id" : "http://environment.data.gov.uk/flood-monitoring/id/stations/2049" ,
+    "easting" : 430858 ,
+    "gridReference" : "SP3085865437" ,
+    "label" : "Leamington Pdw LVL" ,
+    "lat" : 52.286203 ,
+    "long" : -1.549042 ,
+    "measures" : [ { 
+      "@id" : "http://environment.data.gov.uk/flood-monitoring/id/measures/2049-level-stage-i-15_min-mASD" ,
+      "parameter" : "level" ,
+      "parameterName" : "Water Level" ,
+      "period" : 900 ,
+      "qualifier" : "Stage" ,
+      "unitName" : "mASD"
+    }
+     ] ,
+    "northing" : 265437 ,
+    "notation" : "2049" ,
+    "stationReference" : "2049"
+  }
+   ]
+}
+

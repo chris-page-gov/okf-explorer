@@ -1,0 +1,149 @@
+{
+  "schema": "okf-analytical-trial-projection.v1",
+  "expectedRows": 333,
+  "referenceYear": 2008,
+  "fields": [
+    {
+      "sourceName": "SOA Code",
+      "declaration": {
+        "name": "soa_code",
+        "label": "SOA Code",
+        "role": "dimension",
+        "dataType": "string",
+        "identifier": {
+          "scheme": "https://www.ons.gov.uk/methodology/geography/geographicalproducts/namescodesandlookups",
+          "entityType": "https://schema.org/Place"
+        }
+      }
+    },
+    {
+      "sourceName": "SOA Name",
+      "declaration": {
+        "name": "soa_name",
+        "label": "SOA Name",
+        "role": "attribute",
+        "dataType": "string"
+      }
+    },
+    {
+      "sourceName": "Ward Name",
+      "declaration": {
+        "name": "ward_name",
+        "label": "Ward Name",
+        "role": "attribute",
+        "dataType": "string"
+      }
+    },
+    {
+      "sourceName": "Locality",
+      "declaration": {
+        "name": "locality",
+        "label": "Locality",
+        "role": "attribute",
+        "dataType": "string"
+      }
+    },
+    {
+      "sourceName": "District/Borough",
+      "declaration": {
+        "name": "district_borough",
+        "label": "District/Borough",
+        "role": "attribute",
+        "dataType": "string"
+      }
+    },
+    {
+      "sourceName": "Total Population",
+      "declaration": {
+        "name": "total_population",
+        "label": "Total Population",
+        "role": "measure",
+        "dataType": "integer",
+        "unit": "people"
+      }
+    },
+    {
+      "sourceName": "% of Total Population aged 60+ (Females), 65+ (Males)",
+      "declaration": {
+        "name": "retirement_age_share",
+        "label": "% of Total Population aged 60+ (Females), 65+ (Males)",
+        "role": "measure",
+        "dataType": "number",
+        "unit": "percent",
+        "display": {
+          "decimalPlaces": 1
+        }
+      }
+    }
+  ],
+  "yearField": {
+    "name": "reference_year",
+    "label": "Reference year from the publisher catalogue",
+    "role": "dimension",
+    "dataType": "integer",
+    "allowedValues": [
+      "2008"
+    ]
+  },
+  "dataset": {
+    "id": "https://chris-page-gov.github.io/okf-explorer/docs/examples/analytical-data-trial/warwickshire/",
+    "version": "2008-local-projection-2026-11-11",
+    "title": "Ageing population 2008, local analytical projection",
+    "scope": "real-world",
+    "rights": {
+      "status": "unverified",
+      "source": "https://www.warwickshire.gov.uk/directory-record/6300/ageing-population-2008",
+      "licence": "https://creativecommons.org/licenses/by-sa/2.0/uk/"
+    }
+  },
+  "ndlRecordId": "89e5101a-2064-46e7-955e-4cac2fb31c7c",
+  "ndlRecordUrl": "https://www.data.gov.uk/dataset/89e5101a-2064-46e7-955e-4cac2fb31c7c/warwickshire-ageing-population",
+  "ndlCsvResourceId": "0e0492c0-e58d-43c6-b6d5-890e0432a1f3",
+  "compatibilityGaps": [
+    {
+      "id": "AD-WCC-01",
+      "status": "adapted-locally",
+      "finding": "Native field names, grouped integers and percent strings require the recorded projection."
+    },
+    {
+      "id": "AD-WCC-02",
+      "status": "open",
+      "finding": "The catalogue identifies Super Output Area and a 2008 reference period. It supplies no pinned boundary/code-list edition or membership witness. The validator does not establish authoritative code membership or comparability with current geography."
+    },
+    {
+      "id": "AD-WCC-03",
+      "status": "open",
+      "finding": "The historical retirement-age definition uses females aged 60+ and males aged 65+. It needs an explicit concept mapping before comparisons with modern retirement-age or 65+ indicators."
+    },
+    {
+      "id": "AD-RIGHTS-01",
+      "status": "open",
+      "finding": "The WCC dataset page links CC BY-SA 2.0 UK, while the NDL directory record declares UK OGL without an explicit version. Rights remain unverified for this cross-catalogue companion."
+    },
+    {
+      "id": "AD-NDL-01",
+      "status": "open",
+      "finding": "Both recorded S3 CSV download attempts returned HTTP 403 AccessDenied. No NDL distribution bytes or equivalence with the WCC GitHub bytes were established."
+    },
+    {
+      "id": "AD-NDL-02",
+      "status": "open",
+      "finding": "The NDL record has no release version, resource digest, byte size, field schema, observation key or Analytical Data profile declaration."
+    },
+    {
+      "id": "AD-SCOPE-01",
+      "status": "open",
+      "finding": "All 333 observations have populated fields and positive values. Real suppression, missingness and numeric zero are untested in this dataset. Separate synthetic regressions cover those cases."
+    },
+    {
+      "id": "AD-READER-01",
+      "status": "proposed",
+      "finding": "The current Reader can present record bodies and links. In-browser analytical table inspection, profile validation receipts and typed-value display would need a separately scoped application feature."
+    },
+    {
+      "id": "AD-PRODUCER-01",
+      "status": "open",
+      "finding": "Read-only reconciliation against the shared Explorer baseline reports 13 existing WCC producer errors and one existing NDL producer error. The original Explorer checker reports identical errors. These repository-contract gaps are separate from analytical CSV validation."
+    }
+  ]
+}
