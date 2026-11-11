@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Update the pinned pnpm setup action to 6.1.1 across CI, shadow evaluation and
+  Pages. Verify the release commit while retaining pnpm 10.34.7, existing
+  workflow triggers and deployment permissions.
 - Scope the Warwickshire legacy S3 failure against all 60,155 observed public NDL
   records; retain 66 denied resource occurrences, 62 responding GitHub candidates
   and four missing paths without asserting historical byte equivalence. Add a

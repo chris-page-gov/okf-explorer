@@ -184,5 +184,11 @@ GitHub Actions updates can affect code running during builds or deployment.
 Keep actions pinned to complete commit hashes and verify those hashes against
 the upstream release. Preserve the existing workflow triggers, pnpm 10 setting
 and separate Pages deployment permissions. The reviewed maintenance update
-uses `pnpm/action-setup` 6.1.0 and `actions/deploy-pages` 5.0.1; it does not grant
-additional permissions.
+uses `pnpm/action-setup` 6.1.1 and `actions/deploy-pages` 5.0.1; it does not grant
+additional permissions. On 11 November 2026, the upstream annotated `v6.1.1`
+tag was checked against the pinned commit
+`73e46992e05b19abd31f2f3c20e0e7370d762115`. The update changes the setup action
+in CI, shadow evaluation and Pages while preserving pnpm 10.34.7 and existing
+triggers and permissions. The action's upstream changes concern bootstrap and
+cache handling; protected CI and the exact Pages deployment verify its use in
+this repository.
