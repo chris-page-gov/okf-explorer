@@ -1,0 +1,24 @@
+{
+  "source_commit": "263b83b9a5701ad0b2d705174d2d4437f7c9d03e",
+  "reason": "Preserve evidence preceding the PDF.js update",
+  "files": [
+    {
+      "path": "local-candidate-receipt.json",
+      "source_path": "evaluation-foundry/fixtures/heritage-warwickshire/evidence/local-candidate-receipt.json",
+      "bytes": 6430,
+      "sha256": "ff4b3285381a7bba7fe3e5baba0e2647c107b9703f26fb255064a8674b31912a"
+    },
+    {
+      "path": "receipts/question-suite-results.json.gz",
+      "source_path": "evaluation-foundry/fixtures/heritage-warwickshire/evidence/receipts/question-suite-results.json.gz",
+      "bytes": 12217,
+      "sha256": "d500e3baedcf93fdf2185155cef8441f205e2cc1ea8f894cb203c2e0263789d1"
+    },
+    {
+      "path": "receipts/local-journey-results.json.gz",
+      "source_path": "evaluation-foundry/fixtures/heritage-warwickshire/evidence/receipts/local-journey-results.json.gz",
+      "bytes": 6219,
+      "sha256": "14d30f14e0fbd3e517e74a52bc18cda6388dbde4372ccd5d7fefcf2c4260e1bf"
+    }
+  ]
+}

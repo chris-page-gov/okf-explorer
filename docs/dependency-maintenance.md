@@ -202,7 +202,28 @@ upstream descriptions do not establish Explorer compatibility: the candidate
 must pass the app contracts, generated Site checks and Chrome, Firefox and
 WebKit journeys against its exact locked build.
 
-The framework changes generated application bytes. Refresh the Heritage
-100-question and three-journey observations after integrating the preceding
-dependency updates, retaining the previous receipt byte for byte. Local
-observations and protected-branch CI do not establish a later Pages deployment.
+The framework changes generated application bytes. The refreshed Heritage
+100-question and three-journey observations cover the combined application,
+including PDF.js 6.5.438. The preceding PDF.js receipt and compressed results
+are retained under `validation/dependency-updates/2026-11-11/pre-framework/`.
+Local observations and protected-branch CI do not establish a later Pages
+deployment.
+
+## PDF renderer maintenance — 11 November 2026
+
+The PDF.js update selects `pdfjs-dist` 6.5.438 and its optional canvas dependency
+`@napi-rs/canvas` 1.1.0. The renderer and worker remain from the same locked
+package; the update changes the generated application bytes. The SBOM records
+the resolved packages without changing the existing security overrides.
+
+The existing source-boundary browser test verifies the frozen DWP PDF checksum,
+renders a populated page, changes page and returns to it. It also loads all
+28 source cases. This local check uses the separately retained producer fixture;
+no PDF is copied into Explorer's Git history or Site inputs by the update.
+The 100-question Heritage suite and three local journeys supply fresh runtime
+evidence for the rebuilt application. The previous receipt and compressed
+results are retained under
+`validation/dependency-updates/2026-11-11/pre-pdfjs/`.
+
+Protected-branch CI and exact-commit Pages verification remain separate from
+these local observations.
