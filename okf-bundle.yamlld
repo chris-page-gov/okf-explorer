@@ -1665,7 +1665,7 @@
   type: Research
 - '@id': https://chris-page-gov.github.io/okf-explorer/id/sources-index
   '@type': okf:Concept
-  description: Every source, standard, framework, paper and organisation in the bundle, with verified citations.
+  description: Central bibliography and source register for the bundle and its research reviews, with versioned citations and retention records.
   http://purl.org/dc/terms/references:
   - '@id': https://chris-page-gov.github.io/okf-explorer/id/federated/cross-device-vs-cross-silo
   - '@id': https://chris-page-gov.github.io/okf-explorer/id/federated/differential-privacy
@@ -1763,7 +1763,7 @@
   section: root
   source_path: sources-index.md
   timestamp: '2026-07-09T09:44:00Z'
-  title: Sources index
+  title: Sources index and bibliography
   type: Index
 - '@id': https://chris-page-gov.github.io/okf-explorer/id/stack/contracts-and-interfaces
   '@type': okf:Concept
@@ -15885,7 +15885,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: federated/cross-device-vs-cross-silo.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: c978f7e8b148aaefcf8a0f934306512b88aff3f2715d478244f2743c99f0e289
@@ -15923,7 +15923,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: federated/differential-privacy.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: b07782151bd0170361f4364d595f975a6c671ec19501843941ca693e94e28109
@@ -15961,7 +15961,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: federated/evaluation-rubric.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 758b471aa46909a30a574367249e99d3dda81ed01340222b7b019d516b81f968
@@ -15999,7 +15999,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: federated/federated-analytics.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: c277a5c94ae1364a2844eb7904ae2a4e01a09e854ce26fea8dca55fbcd8fbb9a
@@ -16037,7 +16037,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: federated/federated-evaluation.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: a8699c1c335c274e1a7cee52c604c5ffa4903fb3ca7368bcd48891c95b987883
@@ -16075,7 +16075,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: federated/federated-learning.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: b5c7d12e1569f676d250fff3b83ab1ea701c07227572447e77cf2b976ad89d30
@@ -16113,7 +16113,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: federated/federated-rag.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: d41584875caecba51262d296cf23c78b58e861e25ffdc098f5eb9cc984be7252
@@ -16151,7 +16151,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: federated/federated-unlearning.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 63839e3fca2646a78f04233c1089fc99713c21b03db011685fc9b4d82a8f83d3
@@ -16189,7 +16189,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: federated/homomorphic-encryption-mpc.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: fcea3436d6dc50c5b3364c37faaa62193fa417a31f7fd3081f5321923377b3fc
@@ -16227,7 +16227,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: federated/hub-and-spoke-vs-hierarchical.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: c059763e7ed9dd8c84289cc1548645393094d460ec637b970f8d4d9eed8c48b9
@@ -16265,7 +16265,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: federated/membership-inference.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 5aea5f7eec6026f64698234e33a71d95b67fa67362c4416201cfdf0205c30cf9
@@ -16303,7 +16303,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: federated/model-poisoning-backdoors.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 7d3b10ef593d9d6a691b34742d62bf0ddb60fc406530e3495e51df3e67afd3ac
@@ -16341,7 +16341,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: federated/non-iid-data.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 5ef1fd5dec0a05b4bd7d0f009f0e23285a76305fdaf191be4cc5de637dc47f99
@@ -16379,7 +16379,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: federated/secure-aggregation.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: a160599e9d396d9ddef2ba3bfa9afb1a6e2f33b545a3768046208f4196fe0105
@@ -16417,7 +16417,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: federated/trusted-execution-environments.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 1c1941cd37eb3134b8952e782f2dfc4057986282f72056228d5bd91d2c3c6474
@@ -16455,7 +16455,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: frameworks/autogen.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 81055acdc849059113a8cec2acb306b2af3565794f3b162d0996f0a4561ec05e
@@ -16493,7 +16493,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: frameworks/context-hub.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 9d2bad33912ce44cff83d48643bc3aa1728ae474148bb060d4a32d812e160104
@@ -16531,7 +16531,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: frameworks/fate.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 17336e94b7083115e5461d202d98a5f70008f01d1e1e67312c7c9fa3261cf232
@@ -16569,7 +16569,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: frameworks/fedml.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: d582e21b3d097cd88fab3d27a49451a5ccabc8d38ad64ac1371c233489313ab6
@@ -16607,7 +16607,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: frameworks/flotilla.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 07989b755c2c27d900e88f1406ba2409501b65c6f8197a690f9643f1fbda4ff8
@@ -16645,7 +16645,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: frameworks/flower.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 37fbf80aadaf65f59b54310b092ca33c48977a113ae0a4165b24f685044e7e3a
@@ -16683,7 +16683,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: frameworks/nvidia-flare.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 66e44572afec50761b0d98d17c1d9033edf4227f0316aa686f95f7a91e99ead1
@@ -16721,7 +16721,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: frameworks/openai-agents-sdk.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 9e4fbb53a988360877e55698f7fb828408c6281798ae5f63eebdcb2ee6ed30ce
@@ -16759,7 +16759,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: frameworks/openfl.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 8689ea7bc9c5075d03def8e9fa318a5478a6312f51ec81bb3c9a2048f7b192dd
@@ -16797,7 +16797,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: frameworks/pysyft.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: cce6386704bbaca00bde1e26e0a777183142adecf8cb0d20abb0567768bc546e
@@ -16835,7 +16835,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: frameworks/semantic-kernel.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 8f34ec8497ca82db280ae7dc7768c5d0cdab63393f1196ebdfa8be4532f74fb9
@@ -16873,7 +16873,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: frameworks/substra.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 03a1147b31819e3c34cba8b979a77dddac21c76b5948878a698595f400560830
@@ -16911,7 +16911,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: frameworks/tensorflow-federated.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 3a33a50ede8defe23f60cb01b48ed3a8d0fd326f1ffb8a93375c34a88197d20f
@@ -16949,7 +16949,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: organisations/aisi.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: bbe42bd5de4bf20fec875c4662a5e61aa5fea7540d520e156b3307b6d7d9e54b
@@ -16987,7 +16987,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: organisations/anthropic.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 4289917dfc0d8983a3225bb3af06e9090ed90dbb2b723c35c810fcb74c9097be
@@ -17025,7 +17025,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: organisations/cncf.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: b5412e29269d10893fcf48c97338bf771d23052965e8bd2c5ce849237a69fea5
@@ -17063,7 +17063,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: organisations/dsit.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: a8ecf9a658e505dc116b9a21f4290d3d42a40cb45c93b805385be796d319ffc5
@@ -17101,7 +17101,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: organisations/flower-labs.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 6b9c511e96ebe5fdc8772bde9bd8bdebd38e9b9787fdf8ea72d43cf782e2591a
@@ -17139,7 +17139,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: organisations/gds.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 9c717d5444ea4bf5377459b7868fc1decda24439b6d2de5b2852e03bc1db6f61
@@ -17177,7 +17177,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: organisations/google.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 9ea4b66ac6dbf45612874c2251076f47ed876b8486cacf2cffe8a68ac9fe5493
@@ -17215,7 +17215,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: organisations/ico.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 214c039e25151af313f9a36405c64c87d846be7f19885e9944b97d64ec748509
@@ -17253,7 +17253,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: organisations/ietf.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 952b1d730cef306829988cea1a515221b396a1c0d27aaf6e32c2a10e5fbaaffa
@@ -17291,7 +17291,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: organisations/linux-foundation.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 3fa84194964990be1c96a052c1e0dceb863034d3212376aadd2bfe57e76d4341
@@ -17329,7 +17329,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: organisations/ncsc.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 74ebeabf2ea3d32f473313660f311375439a8bce6df553d2c530c50fd6a050cd
@@ -17367,7 +17367,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: organisations/nvidia.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 665e48a302193dafe0f4ced38ca0b9b949db497369c6ea904c5b80bb56bf16e2
@@ -17405,7 +17405,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: organisations/openai.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: d2ea5f6062df49fcf32cceab1184215d07071504f55651c873c01a8e276472ad
@@ -17443,7 +17443,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: organisations/openapi-initiative.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 1753a015614cb79948c9c6d2cadbfc300dbb410bc2d6c4b5c0124da39248e5f5
@@ -17481,7 +17481,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: organisations/openmined.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 264220e49aaf363bf04923a23174e3cf8e41c3ccf2f7249bc1d990d268bd3e8e
@@ -17519,7 +17519,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: organisations/w3c.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 92312819579f7d9f1c9932d5aa26bf9bf04ccf4f9c71351be69b2bdc81d4b14e
@@ -17557,7 +17557,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: research/agentbench.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: fc99514857d35dd5d0a4eb70ac1383511f242950f7a4edee0f96ba5154f7923a
@@ -17595,7 +17595,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: research/api-bank.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 116f9d499482d9a6f59ef8ab9552fbe5a504a5670e50233196f362f1b87295fe
@@ -17633,7 +17633,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: research/apigen.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 0baad88f95da1c698351afa5fffd7f15782f84d626baf6cb7af67d78012c8710
@@ -17671,7 +17671,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: research/bfcl.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 04f6789b3332e77bf53141df29159687929022a7a2a0a2879f577e9a7abb5a7c
@@ -17709,7 +17709,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: research/fedavg.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 719e369be89bd6041ec0ff95db9ecb283b845167efdae9da4b52135745622677
@@ -17747,7 +17747,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: research/google-keyboard-fl.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: aee9f98b3fadab6833759a5c6cacb896bd8ce33b686eb589a3b8a73a2cba8cdf
@@ -17785,7 +17785,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: research/gorilla.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 715f4c949750193b8612f3971b56c8c091648830fb721f2d444cf074cff25f8a
@@ -17823,7 +17823,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: research/kairouz-open-problems.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 341e7d10715c5a533cc30845660db9fd0aef73b63a18ed525adf2382797e3a2c
@@ -17861,7 +17861,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: research/melloddy.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: e23558afafa5420535d454bc65ad7d3681b67cd09857adddc7028ee38c619afb
@@ -17899,7 +17899,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: research/mrkl.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 230a0076b41bd7cb9d48661a52dd254f45cc11bf8bc64249b0c60152deb2a754
@@ -17937,7 +17937,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: research/react.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: ab3a43169b97bbfee0d39f4f19326f4e744562637b178ee12c7430e06513d836
@@ -17975,7 +17975,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: research/realm.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 730ea3b131621cc015d288a23b218d5e9009aac9a6e223d4c812639b682ccf37
@@ -18013,7 +18013,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: research/tau-bench.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: cfb5ef66524b86b5e97a8de6d17d353483f7a36bc673e32c5f774719b841ada4
@@ -18051,7 +18051,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: research/toolace.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: b63223dc12feb44b1abaed53fc9a0ffa3f551e2c153bf82d63bbfc5b1d4aa3e0
@@ -18089,7 +18089,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: research/toolformer.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 2dce9d66857188af8227c941f54c459605da2f88189ae4f0046d969207055d70
@@ -18127,7 +18127,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: research/toolllm-toolbench.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 9bd29809af33f430a6085ddc7babfffc3adf88b957b62d881ec0a297dc41de24
@@ -18165,7 +18165,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: research/toolsandbox.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 26d430a4f163ed0ceeb9f1bd10a7690420c36f6d8e9cce207cd5caeb42241cbd
@@ -18203,7 +18203,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: standards/a2a.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: ee7faab483744e1580e8ddb644e2748229a03e9a3bbc2c887876ce7274d16379
@@ -18241,7 +18241,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: standards/arazzo.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 7b3154aac4a1ca185ddd96eee5307045a863232b2fc079d0606b94729b91b67c
@@ -18279,7 +18279,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: standards/asyncapi.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 465a4fe12869b1ba8c653e8fb1469f9a8d3d13c1dcf50690d0aaa78bb4ce6f3d
@@ -18317,7 +18317,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: standards/dpop.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 97c9610ffcc322ac24ca6a99ecf40cbe3f916a8df6b313615b4b91f5093fc3fe
@@ -18355,7 +18355,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: standards/graphql.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 9051d2a085db4d9807dcc9b5de4137ec629c0883a9bfe374790d5450f2d2b7c2
@@ -18393,7 +18393,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: standards/grpc-protobuf.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 6a1987d462ce026ca812e26ee9b24a617f8f2bfff3a65404fd3f8931631b67c5
@@ -18431,7 +18431,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: standards/http-message-signatures.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: aedc3c6615f63b59a1a0a241edbb3453458e352307861a5f91e943defd5f0dd7
@@ -18469,7 +18469,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: standards/json-schema.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: a2ee1c4b729f2497dcbb5aa0db2d9835cfdc032af89301f54b283e0d59d1b7ff
@@ -18507,7 +18507,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: standards/mcp.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: e0696e9bcbd15fa84bd58fd537a26712ccd63e6f7ccfcfa2df3edfe141553a08
@@ -18545,7 +18545,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: standards/mtls-bound-tokens.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: fbf39821fc35ab90437ee32070bb92669e71bc5b2fd3a3cf16d79995336a314f
@@ -18583,7 +18583,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: standards/oauth-2-0-security-bcp.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 519df199a539dc59b596b62fde9d39a3d8f817fb4f9c5f92d0ebe32e8ec34388
@@ -18621,7 +18621,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: standards/oauth-2-0.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 6f08802a3e3d69a08fd1d042a97f5f3a9af191436b5b78d57bb357cf40b09f43
@@ -18659,7 +18659,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: standards/opa.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: acffb9960e9cfe58b2feebccde3740aa7ea7a17eedc3a427a46083960e3019b1
@@ -18697,7 +18697,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: standards/openapi.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: a1af356ad119312a516190bef36744a11ee0fda633e1b606063b2d45e6929c29
@@ -18735,7 +18735,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: standards/opentelemetry.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: be85948903150b656530b781f23910b9158822e33ccdcd43a702506c642b5c01
@@ -18773,7 +18773,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: standards/pkce.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 3347508ab751a6def01900dc2a48b3845f0d7fcffdb0e9ed6ca814d3290fc8fa
@@ -18811,7 +18811,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: standards/spiffe-spire.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 4b112f6da810427feae8c765d189b29e7344dcb8030503038b5788bb613e86ec
@@ -18849,7 +18849,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: standards/structured-outputs.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: bcc608c9089348e8b22c3c4c762c6ea936b4523389c94e13ccc638dd44b9a385
@@ -18887,7 +18887,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: standards/token-exchange.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 1189412a2a242b77759b7f9c73277e91638a547bdf6c237c110ecf720fdffbba
@@ -18925,7 +18925,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: standards/w3c-prov.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 90738266343e063fd8d18c9cb36ffc0d0ceace92a7a7ca28fbc5b75b197f6686
@@ -18963,7 +18963,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: standards/zero-trust.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: dd9e0edf8fe009478c1a4ad2b749e31ec677cda1ecadb67e9173ba0c135a3e4f
@@ -19001,7 +19001,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: uk-government/ai-management-essentials.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 7e0c5ef248d6c0eb36409b2825443412225379daeb7c0e4abfeb48b3d5b636a0
@@ -19039,7 +19039,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: uk-government/atrs.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 78dd1bb9c4fa950088972e5ca352dc2bb980be92467ce1fc5db4f7c613d098c2
@@ -19077,7 +19077,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: uk-government/blueprint-modern-digital-government.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: bd9f65becb6a0d554c3a7787340a15c60dbae584ad84b05eb5d8547913276bbd
@@ -19115,7 +19115,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: uk-government/data-ethics-framework.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 547104d4c1d0826d12ca17c2f8208fd1446ac77ef1089f3d8dc6bfd8e8110649
@@ -19153,7 +19153,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: uk-government/dpia.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: b05ae62ec4c35445451aec2824f0c6d599f72f482cd70f8aebe949133a2a6615
@@ -19191,7 +19191,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: uk-government/gds-api-standards.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: a54ea46dbae827c3faeb0bd2c59148e4693105c0959bda0b2bedadcc01572630
@@ -19229,7 +19229,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: uk-government/ico-ai-guidance.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: d954018b2f214d039a6a3e898838bf1c91051987e3f7a92ac5ec5d438fde7836
@@ -19267,7 +19267,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: uk-government/ncsc-secure-ai.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 90a627ebdbdd723364544db5ba3ef75259cbc5b7dcab39401c1840066f647eb9
@@ -19305,7 +19305,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: uk-government/state-of-digital-government.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 58dfffaaf44e91276d3b7859427c4651d51f251156fb78a8f647c4470d5668a6
@@ -19343,7 +19343,7 @@
     retrieved_at: '2026-07-09T09:44:00Z'
     source_artifact: sources-index.md
     source_field: Markdown body
-    source_sha256: a09c43871544aaa62d131d985457adc09faedaaec8e2fa32519a864a10fdefe6
+    source_sha256: 3c4a6df9ac86db6c63b12c3bd34e25353978175e6207402ec5bb5a80b15487e2
     source_value: uk-government/uk-api-catalogue.md
     source_value_hash_canonicalization: utf8-verbatim-resolved-path
     source_value_sha256: 57a0a666c3ca2ef41058883515e216c6e6514505a06d4d6a6faab3246f738002

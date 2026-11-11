@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Extend the existing sources index into a central bibliography with citation,
+  version, verification-date and local-retention guidance.
+- Add CorpusMap's version 1 source and PDF URLs, review link and retained-file
+  fingerprint. Preserve the supplied PDF in an ignored local research folder
+  outside public Site inputs, and link the bibliography from the documentation.
+
 ## v0.8.1 - 2026-11-03 - Legislation release acceptance correction
 
 - Bind the UK Legislation runtime-acceptance contract to Explorer v0.8.1 so
