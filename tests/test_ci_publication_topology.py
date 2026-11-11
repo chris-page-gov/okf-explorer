@@ -23,18 +23,13 @@ class CiPublicationTopologyTests(unittest.TestCase):
         needs = job.get("needs", [])
         return {needs} if isinstance(needs, str) else set(needs)
 
-    def test_governed_python_jobs_use_declared_ubuntu_and_managed_python(self) -> None:
+    def test_governed_python_jobs_use_latest_ubuntu_and_managed_python(self) -> None:
         for path in sorted((ROOT / ".github/workflows").glob("*.yml")):
             for name, job in self.workflow_jobs(str(path.relative_to(ROOT))).items():
                 if any(step.get("uses") == "./.github/actions/setup-locked-python"
                        for step in job.get("steps", [])):
                     with self.subTest(workflow=path.name, job=name):
-                        browser_pins = {
-                            ('okf-explorer-ci.yml', 'browser-full'),
-                            ('foundry-full-shadow.yml', 'browser-three-engine'),
-                        }
-                        expected = 'ubuntu-24.04' if (path.name, name) in browser_pins else 'ubuntu-latest'
-                        self.assertEqual(expected, job["runs-on"])
+                        self.assertEqual("ubuntu-latest", job["runs-on"])
 
         setup = YAML(typ="safe").load(self.text(".github/actions/setup-locked-python/action.yml"))
         steps = setup["runs"]["steps"]

@@ -94,7 +94,6 @@ The [synthetic regression fixture](../tests/fixtures/foundry-facets/bundle.json)
 and [tests](../tests/test_foundry_facets.py) exercise the gate in repository CI.
 They are checker examples, not evidence that a newly built domain pack passed.
 
-Explorer CI uses `ubuntu-latest`, with the full browser job pinned to
-`ubuntu-24.04` after archive DNS failures. It installs the governed CPython 3.12.11
+Explorer CI uses `ubuntu-latest` and installs the governed CPython 3.12.11
 through uv before synchronising the locked environment. See the
 [development guide](development.md#python-toolchain) for the current setup.

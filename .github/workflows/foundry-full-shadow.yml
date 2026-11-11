@@ -31,7 +31,7 @@ jobs:
 
   browser-three-engine:
     needs: adversarial-gate
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -66,11 +66,10 @@ jobs:
       - name: Select Ubuntu HTTPS archives for browser packages
         timeout-minutes: 1
         run: |
-          for mirror_file in /etc/apt/apt-mirrors*.txt; do
-            if [ -f "$mirror_file" ]; then
-              sudo sed -i.bak 's|http://|https://|g' "$mirror_file"
-            fi
-          done
+          printf '%s\n' \
+            'https://archive.ubuntu.com/ubuntu/' \
+            'https://security.ubuntu.com/ubuntu/' \
+            | sudo tee /etc/apt/apt-mirrors.txt > /dev/null
       - name: Install Firefox and WebKit browser dependencies
         working-directory: apps/okf-explorer
         timeout-minutes: 10
