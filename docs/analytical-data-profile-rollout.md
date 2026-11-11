@@ -29,3 +29,5 @@ The local checkout observations above were made on 10 November 2026. The estate 
 The 11 November trial confirms the offline analytical check and supplies a bounded two-record Reader journey with ordinary companion links. In-browser typed data inspection and validation-receipt interpretation require a separately scoped application feature. [Explorer update assessment](analytical-data-trial-2026-11-11.md#does-okf-explorer-need-an-update)
 
 Read-only shared-profile reconciliation also records 13 existing WCC producer errors and one existing NDL producer error. The original Explorer checker reproduces both sets. These producer contract migrations retain their own review scope. [Pinned reconciliation results](analytical-data-trial-2026-11-11-producers.json)
+
+Draft PR preparation uses current `main` at `dcd0c43e` with Explorer v0.8.1. The earlier trial receipts retain their original base, skipped checks and intermittent UI observation. [Integration record](analytical-data-candidate-integration-2026-11-11.json)

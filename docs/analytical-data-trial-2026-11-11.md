@@ -64,3 +64,11 @@ The full local suite passed 563 Python tests, 891 Vitest tests, 119 application 
 The full installed-Chrome UI run recorded 176 passes, six environment-dependent skips and one narrow reading-help failure where PageDown left `scrollTop` at zero. The isolated four-layout group passed on rerun. This remains an intermittent test observation. The dedicated two-record trial journey passed in installed Google Chrome, including the companion popup, exact manifest, CSV and schema hashes, catalogue denial qualifiers and documentation navigation, with no console errors or failed local requests.
 
 The [verification record](analytical-data-trial-2026-11-11-verification.json) binds the test observations to the source, code, profile and companion digests. It also records the local Node and pnpm versions and the different CI declarations. These observations concern the local candidate based on `7d48a552`. The producer reconciliations retain the existing failures described above.
+
+## Commit and draft PR preparation
+
+The candidate was replayed onto current `main` at `dcd0c43e`, which contains Explorer v0.8.1 and its Legislation acceptance correction. The original verification record remains a dated observation of the initial working tree. The [integration record](analytical-data-candidate-integration-2026-11-11.json) pins the committed candidate and its packaging attributes. All seven source snapshots reproduce byte for byte from an export of the committed Git tree.
+
+Fresh integration checks passed 563 Python tests, 25 runtime-acceptance Node tests, Svelte checking, the deterministic v0.8.1 app build, SBOM and the source, semantic, registry and documentation gates. The original Vitest, MCP and full Chrome observations retain their original base. Their eight skipped checks and intermittent help-layout failure remain explicit in both verification records. The compatibility gaps retain their open status during draft review.
+
+The dedicated companion journey also passed against the integrated build in installed Chrome. Its receipt binds the exact v0.8.1 app manifest and tree alongside the analytical manifest, schema and CSV digests. The original full UI suite observation retains its separate date and scope.

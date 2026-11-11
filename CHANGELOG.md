@@ -11,6 +11,8 @@
   including existing producer errors and a help-layout check that passed on rerun.
   Preserve acquired source bytes across Git checkout with scoped attributes and
   source hash checks.
+  Record integration with current Explorer v0.8.1 while retaining the original
+  trial base, skipped checks and intermittent UI observation.
 
 - Add the candidate Analytical Data profile v1 for CSV packages with explicit
   field semantics, versioned identifier declarations and special-value states.
