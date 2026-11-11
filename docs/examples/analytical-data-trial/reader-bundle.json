@@ -1,0 +1,52 @@
+{
+  "okf_version": "0.2",
+  "meta": {
+    "title": "Warwickshire analytical data compatibility trial",
+    "default_corpus": "analytical-trial"
+  },
+  "corpora": {
+    "analytical-trial": {
+      "id": "analytical-trial",
+      "title": "Warwickshire analytical data trial",
+      "nodes": {
+        "records/ndl.md": {
+          "type": "Catalogue record",
+          "title": "National Data Library ageing population record trial",
+          "description": "Captured NDL directory metadata with a denied S3 distribution route and a licence discrepancy.",
+          "status": "draft",
+          "resource": "https://www.data.gov.uk/dataset/89e5101a-2064-46e7-955e-4cac2fb31c7c/warwickshire-ageing-population",
+          "tags": [
+            "National-Data-Library",
+            "analytical-data",
+            "catalogue",
+            "local-trial"
+          ],
+          "id": "records/ndl.md",
+          "route": "records/ndl.md",
+          "body": "# National Data Library ageing population record trial\n\nThe NDL record lists Warwickshire County Council as publisher and UK Open Government Licence as its licence. Its last metadata update is 12 August 2013. It lists an S3 CSV distribution and a separate XLS resource.\n\nThe captured CSV URL and its HTTPS form both returned 403 AccessDenied on 11 November 2026. The original S3 distribution remains unassessed. Its bytes have no established equivalence with the CSV retrieved through the WCC publisher record.\n\nThe trial proposes a companion manifest for the separately acquired WCC distribution. The companion is a local conversion with a passed offline check and an unresolved rights declaration. The catalogue record has its own identity, metadata and access route.\n\n- [Captured catalogue and distribution link trial](ndl-catalogue-link.json)\n- [Local Warwickshire companion manifest](warwickshire/okf-analytical-data.json)\n- [NDL directory record](https://www.data.gov.uk/dataset/89e5101a-2064-46e7-955e-4cac2fb31c7c/warwickshire-ageing-population)\n\nThis record is a local compatibility assessment prepared on 11 November 2026. It grants no publisher conformance or distribution equivalence. NDL metadata retains its [recorded public licence](https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/) and the underlying resource retains its separately recorded rights gap.",
+          "section": "analytical-data-trial",
+          "trust_tier": "unverified"
+        },
+        "records/warwickshire.md": {
+          "type": "Dataset",
+          "title": "Warwickshire ageing population 2008 trial",
+          "description": "Local analytical projection of 333 historical Warwickshire observations.",
+          "status": "draft",
+          "resource": "https://www.warwickshire.gov.uk/directory-record/6300/ageing-population-2008",
+          "tags": [
+            "Warwickshire",
+            "analytical-data",
+            "historical",
+            "local-projection"
+          ],
+          "id": "records/warwickshire.md",
+          "route": "records/warwickshire.md",
+          "body": "# Warwickshire ageing population 2008 trial\n\nThe publisher describes the percentage of the population of retirement age as females aged 60+ and males aged 65+, by Super Output Area. The reference period is 2008. This is historical information.\n\nThe local projection retains all 333 observations and every area code. It renames the headers, removes numeric grouping commas and percentage signs, and adds the catalogue reference year. Other text, including trailing spaces in locality names, stays as supplied.\n\nThe offline Analytical Data 1.0.0-rc.1 check passed. Rights remain unverified because the WCC dataset page links CC BY-SA 2.0 UK and the NDL record declares UK OGL. Boundary edition, official code membership and comparisons with modern indicators need separate evidence.\n\n- [Validated analytical companion manifest](warwickshire/okf-analytical-data.json)\n- [Exact validation receipt](warwickshire/receipt.json)\n- [Converted observations](warwickshire/observations.csv)\n- [Warwickshire publisher record](https://www.warwickshire.gov.uk/directory-record/6300/ageing-population-2008)\n\nThis record and the companion are local trial material prepared on 11 November 2026. Attribution is to Warwickshire County Council and the Office for National Statistics, Mid-2008 Super-Output Area Population Estimates. The [publisher-linked licence](https://creativecommons.org/licenses/by-sa/2.0/uk/) applies to the retained source and its local conversion, subject to resolution of the recorded catalogue discrepancy.",
+          "section": "analytical-data-trial",
+          "trust_tier": "unverified"
+        }
+      },
+      "relationships": []
+    }
+  }
+}

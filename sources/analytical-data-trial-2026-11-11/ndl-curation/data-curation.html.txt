@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en" class="govuk-template datagovuk-template">
+  <head>
+    <meta charset="utf-8" />
+
+    
+    
+
+    <title>
+      
+  How we curate data - National Data Library
+
+    </title>
+
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#FFFFFF" />
+
+    <link rel="stylesheet" href="/assets/CACHE/css/output.d3cd60caadf0.css" type="text/css">
+    
+    
+
+    <link rel="icon" href="/assets/images/favicon.c5b82a321b64.png" />
+
+    
+      
+
+      
+
+      
+
+      
+
+      <script nonce="x6_wBOp9apVXizpWaga8-g">
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl+'&';f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-5WRWCH8X');
+      </script>
+    
+  </head>
+
+  <body class="govuk-template__body">
+    <script nonce="x6_wBOp9apVXizpWaga8-g">document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');</script>
+
+    <div id="global-cookie-message" data-module="cookie-banner" role="region" aria-label="cookie banner" data-nosnippet="">
+      <div class="govuk-cookie-banner datagovuk-cookie-banner js-banner-wrapper" role="region" aria-label="Cookies on data.gov.uk">
+        <div class="govuk-cookie-banner__message govuk-width-container datagovuk-width-container">
+          <div class="govuk-grid-row">
+            <div class="govuk-grid-column-three-quarters">
+              <h2 class="govuk-cookie-banner__heading govuk-heading-m datagovuk-heading-m">Cookies on data.gov.uk</h2>
+              <div class="govuk-cookie-banner__content">
+                <p class="govuk-body datagovuk-body">
+                  We use some essential cookies to make this website work. We’d like to set additional cookies to understand how you use data.gov.uk and improve the service.
+                </p>
+              </div>
+
+              <div class="govuk-button-group">
+                <button class="govuk-button datagovuk-button gem-c-button"
+                        type="submit"
+                        data-accept-cookies="true"
+                        data-track-category="cookieBanner"
+                        data-track-action="Cookie banner accepted"
+                        data-cookie-types="all">Accept additional cookies</button>
+                <button class="govuk-button datagovuk-button gem-c-button"
+                        type="submit"
+                        data-reject-cookies="true"
+                        data-track-category="cookieBanner"
+                        data-track-action="Cookie banner rejected">Reject additional cookies</button>
+                <a class="govuk-body datagovuk-body govuk-link datagovuk-link" href="/cookies/">View cookies</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="gem-c-cookie-banner__confirmation govuk-width-container datagovuk-width-container" tabindex="-1" hidden="">
+        <p class="gem-c-cookie-banner__confirmation-message govuk-body datagovuk-body govuk-!-margin-bottom-4" role="alert">
+          You can <a class="govuk-link datagovuk-link"
+    data-track-category="cookieBanner"
+    data-track-action="Cookie banner settings clicked from confirmation"
+    href="/cookies/">change your cookie settings</a> at any time.
+        </p>
+        <div class="govuk-button-group">
+          <button class="govuk-button datagovuk-button"
+                  data-hide-cookie-banner="true"
+                  data-module="gem-track-click"
+                  data-track-category="cookieBanner"
+                  data-track-action="Hide cookie banner">Hide this message</button>
+        </div>
+      </div>
+    </div>
+
+    <a href="#main" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
+
+    <header role="banner" class="datagovuk-header">
+  <div class="govuk-width-container datagovuk-width-container datagovuk-header__inner">
+    <div class="datagovuk-header__logo">
+      <a class="datagovuk-header__logo-link" href="/">
+
+        <img src="/assets/images/logo-ndl.146dec963b67.svg" width="200" height="61" class="datagovuk-header__logo-image" alt="Home" />
+      </a>
+    </div>
+    <button type="button"
+            class="datagovuk-header__button"
+            id="datagovuk-header-button-all"
+            aria-controls="datagovuk-menu-collections">Menu</button>
+    <button type="button"
+            class="datagovuk-header__button"
+            id="datagovuk-header-button-collections"
+            aria-controls="datagovuk-menu-collections">Collections</button>
+    <div class="datagovuk-menu" id="datagovuk-menu-collections">
+      <h2 class="datagovuk-menu__heading">Collections</h2>
+      <div class="datagovuk-menu__items">
+        
+          <a href="/collections/business-and-economy"
+             class="govuk-link datagovuk-link datagovuk-menu__item-link">
+            Business and economy
+            
+          </a>
+        
+          <a href="/collections/environment"
+             class="govuk-link datagovuk-link datagovuk-menu__item-link">
+            Environment
+            
+          </a>
+        
+          <a href="/collections/government-and-parliament"
+             class="govuk-link datagovuk-link datagovuk-menu__item-link">
+            Government and Parliament
+            
+          </a>
+        
+          <a href="/collections/land-and-property"
+             class="govuk-link datagovuk-link datagovuk-menu__item-link">
+            Land and property
+            
+          </a>
+        
+          <a href="/collections/people"
+             class="govuk-link datagovuk-link datagovuk-menu__item-link">
+            People
+            
+          </a>
+        
+          <a href="/collections/transport"
+             class="govuk-link datagovuk-link datagovuk-menu__item-link">
+            Transport
+            
+          </a>
+        
+          <a href="/collections/early-years"
+             class="govuk-link datagovuk-link datagovuk-menu__item-link datagovuk-menu__item-spotlight-link">
+            Early years
+            <span class="datagovuk-menu__spotlight-tag">Spotlight</span>
+          </a>
+        
+      </div>
+    </div>
+    
+    <a class="datagovuk-header__link" href="/search">Directory</a>
+    <div class="datagovuk-menu">
+      <div class="datagovuk-menu__items">
+        <a href="/search" class="govuk-link datagovuk-link datagovuk-menu__item-link">Directory</a>
+        <a href="/help/" class="govuk-link datagovuk-link datagovuk-menu__item-link">Help</a>
+      </div>
+    </div>
+    <a class="datagovuk-header__link" href="/help/">Help</a>
+  </div>
+  
+</header>
+
+    <main id="main" class="datagovuk-main">
+      
+  <div class="govuk-width-container datagovuk-width-container govuk-!-margin-top-9">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds-from-desktop">
+        <div class="datagovuk-content"><h1 class="govuk-heading-xl datagovuk-heading-xl">How we curate data</h1>
+<p class="govuk-body-m datagovuk-body">Understand what criteria influence curation of data collections on the National Data Library and how to suggest data for curation.</p>
+<h2 class="govuk-heading-l datagovuk-heading-l">Data collections</h2>
+<p class="govuk-body-m datagovuk-body">In March 2026, we introduced collections to the National Data Library. Collections help users who are browsing. A user might not know exactly what they’re looking for, so can explore a set of pages to see what data is available for a particular topic. We started by selecting 6 collections based on common topics:</p>
+<ul class="govuk-list govuk-list--bullet datagovuk-list datagovuk-body"><li>business and economy</li>
+<li>environment</li>
+<li>government</li>
+<li>land and property</li>
+<li>people</li>
+<li>transport</li>
+</ul>
+<p class="govuk-body-m datagovuk-body">Each collection contains 10 to 20 pages. Some pages link to more than one dataset or service, but the links are always grouped logically. The number of collections will grow over time.
+Collections are curated – selected by people with experience and expertise in public sector data. We have criteria that influence curation but no precise rules.</p>
+<h2 class="govuk-heading-l datagovuk-heading-l">Curation criteria</h2>
+<h3 class="govuk-heading-m datagovuk-heading-m">Scope (required)</h3>
+<p class="govuk-body-m datagovuk-body">data.gov.uk is only concerned with public sector data. This means data that’s owned or produced by:</p>
+<ul class="govuk-list govuk-list--bullet datagovuk-list datagovuk-body"><li><a href="https://www.gov.uk/government/organisations" class="govuk-link datagovuk-link datagovuk-link--secondary">government departments, agencies and public bodies</a></li>
+<li><a href="https://www.gov.uk/guidance/local-government-structure-and-elections" class="govuk-link datagovuk-link datagovuk-link--secondary">local government authorities</a></li>
+</ul>
+<p class="govuk-body-m datagovuk-body">Examples include organisations such as the NHS, Met Office, Office for National Statistics and the Ordnance Survey. 
+Most of this is open data – publicly available under <a href="https://www.nationalarchives.gov.uk/doc/open-government-licence" class="govuk-link datagovuk-link datagovuk-link--secondary">the Open Government Licence</a> – but we are not restricted to open data. For example, some Ordnance Survey address data is not open, and the Met Office also offer paid data services. </p>
+<h3 class="govuk-heading-m datagovuk-heading-m">Relevance</h3>
+<p class="govuk-body-m datagovuk-body">The collections should be relevant to a relatively wide, non-expert audience. This means that the data should cover the basics of the topic and should not be too niche. We want to produce data pages that are interesting and inspiring for those browsing.
+For now, collections have a national focus, though we’re looking into how to support more local data. </p>
+<h3 class="govuk-heading-m datagovuk-heading-m">Demand</h3>
+<p class="govuk-body-m datagovuk-body">We curate the collections by asking what our users need and what they’re looking for.
+We use various sources to answer these questions, including:</p>
+<ul class="govuk-list govuk-list--bullet datagovuk-list datagovuk-body"><li>activity and search on the National Data Library</li>
+<li>activity on other government services and data catalogues, such as the <a href="https://environment.data.gov.uk/" class="govuk-link datagovuk-link datagovuk-link--secondary">DEFRA Data Services Platform</a></li>
+<li>user research, surveys and feedback</li>
+<li>information about relevant and current social topics, such as unemployment</li>
+<li>Google Search Console</li>
+</ul>
+<h3 class="govuk-heading-m datagovuk-heading-m">Quality</h3>
+<p class="govuk-body-m datagovuk-body">The data should be of a high quality, meaning it should be:</p>
+<ul class="govuk-list govuk-list--bullet datagovuk-list datagovuk-body"><li>up to date</li>
+<li>accurate and complete</li>
+<li>from an authoritative source, with a clear owner</li>
+<li>updated regularly (where relevant)</li>
+</ul>
+<h2 class="govuk-heading-l datagovuk-heading-l">Adding new data pages</h2>
+<p class="govuk-body-m datagovuk-body">Anyone can propose a new data page by <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=BXCsy8EC60O0l-ZJLRst2DIqEVWadcZMr7fcyD7mPQpUMFNQNEdGM0RWUkgwSDFXTEMyMkxNUU5JTi4u" class="govuk-link datagovuk-link datagovuk-link--secondary">completing our feedback form</a>.</p>
+<p class="govuk-body-m datagovuk-body">First, you should consider:</p>
+<ul class="govuk-list govuk-list--bullet datagovuk-list datagovuk-body"><li>who will benefit from this data and why?</li>
+<li>have you found the best source for this data?</li>
+<li>does the data seem a good fit based on our curation criteria?</li>
+</ul>
+<p class="govuk-body-m datagovuk-body">We’ll review all requests for new data pages and contact you if you have left us contact details, but we cannot guarantee that we’ll add a page you request.</p>
+<blockquote class="govuk-inset-text datagovuk-inset-text"><p class="govuk-body-m datagovuk-body">Note: You can still self publish open data in the area now named 'directory'. Follow <a href="https://www.data.gov.uk/publishers" class="govuk-link datagovuk-link datagovuk-link--secondary">the guidance for publishers</a> to make your data available via <a href="https://www.data.gov.uk/search" class="govuk-link datagovuk-link datagovuk-link--secondary">the directory</a></p>
+</blockquote>
+</div>
+      </div>
+    </div>
+  </div>
+
+    </main>
+
+    <div class="govuk-footer datagovuk-footer">
+  <div class="govuk-width-container datagovuk-width-container">
+    <h2 class="govuk-visually-hidden">Support links</h2>
+    <ul class="govuk-footer__inline-list">
+      <li class="govuk-footer__inline-list-item">
+        <a href="/roadmap/" class="govuk-footer__link datagovuk-footer__link datagovuk-link">Roadmap</a>
+      </li>
+      <li class="govuk-footer__inline-list-item">
+        <a href="/about/" class="govuk-footer__link datagovuk-footer__link datagovuk-link">About</a>
+      </li>
+      <li class="govuk-footer__inline-list-item">
+        <a href="/support/" class="govuk-footer__link datagovuk-footer__link datagovuk-link">Support</a>
+      </li>
+      <li class="govuk-footer__inline-list-item">
+        <a href="/accessibility/" class="govuk-footer__link datagovuk-footer__link datagovuk-link">Accessibility</a>
+      </li>
+      <li class="govuk-footer__inline-list-item">
+        <a href="/cookies/" class="govuk-footer__link datagovuk-footer__link datagovuk-link">Cookies</a>
+      </li>
+      <li class="govuk-footer__inline-list-item">
+        <a href="/privacy-and-terms/" class="govuk-footer__link datagovuk-footer__link datagovuk-link">Privacy and terms</a>
+      </li>
+    </ul>
+    <div class="govuk-!-margin-bottom-9">
+      Built by the
+      <a href="/team/" class="govuk-footer__link datagovuk-footer__link datagovuk-link">
+        National Data Library team
+      </a>
+    </div>
+    <div class="govuk-!-margin-bottom-6">
+      All content is available under the
+      <a class="govuk-footer__link datagovuk-footer__link"
+         href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
+         rel="license">Open Government Licence v3.0</a>, except where otherwise stated.
+    </div>
+    <div class="govuk-!-margin-bottom-6">
+      <a class="govuk-footer__link datagovuk-footer__link govuk-footer__copyright-logo datagovuk-footer__copyright-logo"
+         href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/">© Crown copyright</a>
+    </div>
+  </div>
+</div>
+
+    
+    
+
+    <script type="module" src="/assets/javascripts/govuk-frontend-6.0.0.min.b8f7d6ecf531.js"></script>
+    <script src="/assets/CACHE/js/output.c61ae00b8d7a.js"></script>
+    
+    
+    <script type="module" nonce="x6_wBOp9apVXizpWaga8-g">
+      import { initAll } from "/assets/javascripts/govuk-frontend-6.0.0.min.b8f7d6ecf531.js"
+      initAll()
+    </script>
+  </body>
+</html>

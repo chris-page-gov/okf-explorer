@@ -11,3 +11,12 @@
 # Imported checksummed research must retain exact supplied line endings.
 research/bep-research-2026-09-19/** -text
 research/bep_research_A_RECONSTRUCTED_2026-09-19/** -text
+
+# Captured trial sources retain their acquired bytes and line endings.
+sources/analytical-data-trial-2026-11-11/** -text
+sources/analytical-data-trial-2026-11-11/*.txt -whitespace
+sources/analytical-data-trial-2026-11-11/warwickshire-original.csv -whitespace
+sources/analytical-data-trial-2026-11-11/ndl-curation/*.txt -whitespace
+sources/analytical-data-trial-2026-11-11/defra-learning/*.txt -whitespace
+sources/analytical-data-trial-2026-11-11/live-defra-api/** -whitespace
+sources/analytical-data-trial-2026-11-11/ndl-link-audit/** -whitespace

@@ -6,6 +6,45 @@
   Verify PDF rendering and page changes against the retained DWP fixture,
   and refresh the exact-build Heritage browser evidence while preserving the
   preceding receipt. Local research PDFs remain outside Git and Site inputs.
+- Update Playwright test, core and browser tooling together to 1.65.0 and
+  regenerate the dependency inventory. Retain the installed-Chrome policy
+  and the required Chrome, Firefox and WebKit acceptance gate.
+- Update the Explorer's Node type definitions to 26.6.6 with matching
+  `undici-types` 8.9.0 and regenerate the dependency inventory. Retain the
+  declared runtime minimum and security overrides.
+- Update the pinned pnpm setup action to 6.1.1 across CI, shadow evaluation and
+  Pages. Verify the release commit while retaining pnpm 10.34.7, existing
+  workflow triggers and deployment permissions.
+- Scope the Warwickshire legacy S3 failure against all 60,155 observed public NDL
+  records; retain 66 denied resource occurrences, 62 responding GitHub candidates
+  and four missing paths without asserting historical byte equivalence. Add a
+  read-only live Environment Agency API trial with five Warwick locality stations,
+  96 readings, paging completion, timestamp and spatial checks. Preserve RC.1
+  datetime/CRS gaps and add reproducible offline evidence and regression tests.
+
+- Capture NDL curation and directly linked publisher guidance, plus selected
+  DEFRA platform and engineering documentation. Distinguish directory records
+  from human collection selection and add a local review of purpose, ownership,
+  demand, currency, rights and versioned access. Retain service-specific limits,
+  representation evidence, future datetime and spatial gaps, and the original
+  skipped checks and intermittent UI observation.
+
+- Test Analytical Data 1.0.0-rc.1 against all 333 observations in Warwickshire's
+  historical ageing-population CSV and its NDL directory record. Retain pinned
+  sources, a reproducible conversion, seven rejection probes and a bounded
+  Reader trial. Record denied S3 access, conflicting licence declarations,
+  missing geography edition and the separate analytical preview feature gap.
+  Reconcile the Explorer semantic preset and retain full local test observations,
+  including existing producer errors and a help-layout check that passed on rerun.
+  Preserve acquired source bytes across Git checkout with scoped attributes and
+  source hash checks.
+  Record integration with current Explorer v0.8.1 while retaining the original
+  trial base, skipped checks and intermittent UI observation.
+
+- Add the candidate Analytical Data profile v1 for CSV packages with explicit
+  field semantics, versioned identifier declarations and special-value states.
+  Bind validation to exact input and schema digests and document staged adoption
+  across the OKF estate.
 - Reconcile the earlier Ask OKF dependency candidate with the newer adapter
   2.1.2 and server/client 2.4.0 already on main. Preserve the current dependency
   lockfile and security overrides, and clarify the maintenance history.

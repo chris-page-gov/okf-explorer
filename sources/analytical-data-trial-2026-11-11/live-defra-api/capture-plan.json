@@ -1,0 +1,302 @@
+{
+  "schema": "okf-defra-live-capture.v1",
+  "service": "https://environment.data.gov.uk/flood-monitoring",
+  "stationQuery": {
+    "lat": "52.284932",
+    "long": "-1.562658",
+    "dist": "5",
+    "_view": "full"
+  },
+  "stationReference": "2091",
+  "measure": "http://environment.data.gov.uk/flood-monitoring/id/measures/2091-level-stage-i-15_min-mASD",
+  "readingDate": "2026-11-10",
+  "captures": [
+    {
+      "name": "stations-reference",
+      "receipt": {
+        "requestUrl": "https://environment.data.gov.uk/flood-monitoring/id/stations?lat=52.284932&long=-1.562658&dist=5&_view=full&_limit=1000",
+        "method": "GET",
+        "startedAt": "2026-11-11T05:51:52Z",
+        "hops": [
+          {
+            "url": "https://environment.data.gov.uk/flood-monitoring/id/stations?lat=52.284932&long=-1.562658&dist=5&_view=full&_limit=1000",
+            "status": 200,
+            "headers": {
+              "date": "Wed, 11 Nov 2026 05:51:54 GMT",
+              "content-type": "application/json",
+              "last-modified": "Wed, 11 Nov 2026 05:48:12 GMT",
+              "accept-ranges": "bytes"
+            },
+            "curlExit": 0,
+            "elapsedSeconds": 1.119271,
+            "bodyPath": "stations-reference-hop-0.body",
+            "bytes": 5211,
+            "sha256": "b11c70304347da621ab5776d24ba8bae9388669c46891610203db4b33f1e4ecc"
+          }
+        ],
+        "completedAt": "2026-11-11T05:51:54Z"
+      }
+    },
+    {
+      "name": "stations-page-000",
+      "receipt": {
+        "requestUrl": "https://environment.data.gov.uk/flood-monitoring/id/stations?lat=52.284932&long=-1.562658&dist=5&_view=full&_limit=2&_offset=0",
+        "method": "GET",
+        "startedAt": "2026-11-11T05:52:01Z",
+        "hops": [
+          {
+            "url": "https://environment.data.gov.uk/flood-monitoring/id/stations?lat=52.284932&long=-1.562658&dist=5&_view=full&_limit=2&_offset=0",
+            "status": 200,
+            "headers": {
+              "date": "Wed, 11 Nov 2026 05:52:02 GMT",
+              "content-type": "application/json",
+              "last-modified": "Wed, 11 Nov 2026 05:48:12 GMT",
+              "accept-ranges": "bytes"
+            },
+            "curlExit": 0,
+            "elapsedSeconds": 1.248508,
+            "bodyPath": "stations-page-000-hop-0.body",
+            "bytes": 3356,
+            "sha256": "867569be80d90f7350f7b7bac468a7766240122e738870724bbae2fb91ad6e88"
+          }
+        ],
+        "completedAt": "2026-11-11T05:52:02Z"
+      }
+    },
+    {
+      "name": "stations-page-002",
+      "receipt": {
+        "requestUrl": "https://environment.data.gov.uk/flood-monitoring/id/stations?lat=52.284932&long=-1.562658&dist=5&_view=full&_limit=2&_offset=2",
+        "method": "GET",
+        "startedAt": "2026-11-11T05:52:09Z",
+        "hops": [
+          {
+            "url": "https://environment.data.gov.uk/flood-monitoring/id/stations?lat=52.284932&long=-1.562658&dist=5&_view=full&_limit=2&_offset=2",
+            "status": 200,
+            "headers": {
+              "date": "Wed, 11 Nov 2026 05:52:17 GMT",
+              "content-type": "application/json",
+              "last-modified": "Wed, 11 Nov 2026 05:48:12 GMT",
+              "accept-ranges": "bytes"
+            },
+            "curlExit": 0,
+            "elapsedSeconds": 7.645423,
+            "bodyPath": "stations-page-002-hop-0.body",
+            "bytes": 2258,
+            "sha256": "e34452e9eea933b61c54ce52dbd345ed6b177f9af8770753cdcf12669f366853"
+          }
+        ],
+        "completedAt": "2026-11-11T05:52:17Z"
+      }
+    },
+    {
+      "name": "stations-page-004",
+      "receipt": {
+        "requestUrl": "https://environment.data.gov.uk/flood-monitoring/id/stations?lat=52.284932&long=-1.562658&dist=5&_view=full&_limit=2&_offset=4",
+        "method": "GET",
+        "startedAt": "2026-11-11T05:52:24Z",
+        "hops": [
+          {
+            "url": "https://environment.data.gov.uk/flood-monitoring/id/stations?lat=52.284932&long=-1.562658&dist=5&_view=full&_limit=2&_offset=4",
+            "status": 200,
+            "headers": {
+              "date": "Wed, 11 Nov 2026 05:52:25 GMT",
+              "content-type": "application/json",
+              "last-modified": "Wed, 11 Nov 2026 05:48:12 GMT",
+              "accept-ranges": "bytes"
+            },
+            "curlExit": 0,
+            "elapsedSeconds": 1.884949,
+            "bodyPath": "stations-page-004-hop-0.body",
+            "bytes": 1661,
+            "sha256": "1b0a1d58c08a318b07282a173e70b3beabcb8ac81c598228e6e771eaf3bd694f"
+          }
+        ],
+        "completedAt": "2026-11-11T05:52:25Z"
+      }
+    },
+    {
+      "name": "stations-page-005",
+      "receipt": {
+        "requestUrl": "https://environment.data.gov.uk/flood-monitoring/id/stations?lat=52.284932&long=-1.562658&dist=5&_view=full&_limit=2&_offset=5",
+        "method": "GET",
+        "startedAt": "2026-11-11T05:52:32Z",
+        "hops": [
+          {
+            "url": "https://environment.data.gov.uk/flood-monitoring/id/stations?lat=52.284932&long=-1.562658&dist=5&_view=full&_limit=2&_offset=5",
+            "status": 200,
+            "headers": {
+              "date": "Wed, 11 Nov 2026 05:52:35 GMT",
+              "content-type": "application/json",
+              "last-modified": "Wed, 11 Nov 2026 05:48:12 GMT",
+              "accept-ranges": "bytes"
+            },
+            "curlExit": 0,
+            "elapsedSeconds": 2.926069,
+            "bodyPath": "stations-page-005-hop-0.body",
+            "bytes": 1012,
+            "sha256": "e48fdbdbc6ac35de0efa95e6c64ff7b6ddb37d2b0f4d67c6a7b2dbee4565651f"
+          }
+        ],
+        "completedAt": "2026-11-11T05:52:35Z"
+      }
+    },
+    {
+      "name": "readings-reference",
+      "receipt": {
+        "requestUrl": "https://environment.data.gov.uk/flood-monitoring/id/measures/2091-level-stage-i-15_min-mASD/readings?date=2026-11-10&_sorted=true&_limit=1000",
+        "method": "GET",
+        "startedAt": "2026-11-11T05:52:42Z",
+        "hops": [
+          {
+            "url": "https://environment.data.gov.uk/flood-monitoring/id/measures/2091-level-stage-i-15_min-mASD/readings?date=2026-11-10&_sorted=true&_limit=1000",
+            "status": 200,
+            "headers": {
+              "date": "Wed, 11 Nov 2026 05:52:43 GMT",
+              "content-type": "application/json",
+              "last-modified": "Wed, 11 Nov 2026 05:48:12 GMT",
+              "accept-ranges": "bytes"
+            },
+            "curlExit": 0,
+            "elapsedSeconds": 0.609727,
+            "bodyPath": "readings-reference-hop-0.body",
+            "bytes": 31179,
+            "sha256": "359405435118af19fb6d311c3d72e89720c66c327eb9fb41cb1ac5c5bbbe1e6d"
+          }
+        ],
+        "completedAt": "2026-11-11T05:52:43Z"
+      }
+    },
+    {
+      "name": "readings-page-000",
+      "receipt": {
+        "requestUrl": "https://environment.data.gov.uk/flood-monitoring/id/measures/2091-level-stage-i-15_min-mASD/readings?date=2026-11-10&_sorted=true&_limit=37&_offset=0",
+        "method": "GET",
+        "startedAt": "2026-11-11T05:52:50Z",
+        "hops": [
+          {
+            "url": "https://environment.data.gov.uk/flood-monitoring/id/measures/2091-level-stage-i-15_min-mASD/readings?date=2026-11-10&_sorted=true&_limit=37&_offset=0",
+            "status": 200,
+            "headers": {
+              "date": "Wed, 11 Nov 2026 05:52:51 GMT",
+              "content-type": "application/json",
+              "last-modified": "Wed, 11 Nov 2026 05:48:12 GMT",
+              "accept-ranges": "bytes"
+            },
+            "curlExit": 0,
+            "elapsedSeconds": 0.869009,
+            "bodyPath": "readings-page-000-hop-0.body",
+            "bytes": 12713,
+            "sha256": "4ffdeb306fdea571c34f211798c8654d8be4b2ced11f729e4f62dab34cd11811"
+          }
+        ],
+        "completedAt": "2026-11-11T05:52:51Z"
+      }
+    },
+    {
+      "name": "readings-page-037",
+      "receipt": {
+        "requestUrl": "https://environment.data.gov.uk/flood-monitoring/id/measures/2091-level-stage-i-15_min-mASD/readings?date=2026-11-10&_sorted=true&_limit=37&_offset=37",
+        "method": "GET",
+        "startedAt": "2026-11-11T05:52:58Z",
+        "hops": [
+          {
+            "url": "https://environment.data.gov.uk/flood-monitoring/id/measures/2091-level-stage-i-15_min-mASD/readings?date=2026-11-10&_sorted=true&_limit=37&_offset=37",
+            "status": 200,
+            "headers": {
+              "date": "Wed, 11 Nov 2026 05:53:01 GMT",
+              "content-type": "application/json",
+              "last-modified": "Wed, 11 Nov 2026 05:48:12 GMT",
+              "accept-ranges": "bytes"
+            },
+            "curlExit": 0,
+            "elapsedSeconds": 2.809115,
+            "bodyPath": "readings-page-037-hop-0.body",
+            "bytes": 12722,
+            "sha256": "f2bead6392f7d1e7eac1c0b83332a82a7e9cdae0182e75a41e0520d27d01e362"
+          }
+        ],
+        "completedAt": "2026-11-11T05:53:01Z"
+      }
+    },
+    {
+      "name": "readings-page-074",
+      "receipt": {
+        "requestUrl": "https://environment.data.gov.uk/flood-monitoring/id/measures/2091-level-stage-i-15_min-mASD/readings?date=2026-11-10&_sorted=true&_limit=37&_offset=74",
+        "method": "GET",
+        "startedAt": "2026-11-11T05:53:08Z",
+        "hops": [
+          {
+            "url": "https://environment.data.gov.uk/flood-monitoring/id/measures/2091-level-stage-i-15_min-mASD/readings?date=2026-11-10&_sorted=true&_limit=37&_offset=74",
+            "status": 200,
+            "headers": {
+              "date": "Wed, 11 Nov 2026 05:53:13 GMT",
+              "content-type": "application/json",
+              "last-modified": "Wed, 11 Nov 2026 05:48:12 GMT",
+              "accept-ranges": "bytes"
+            },
+            "curlExit": 0,
+            "elapsedSeconds": 5.573647,
+            "bodyPath": "readings-page-074-hop-0.body",
+            "bytes": 8009,
+            "sha256": "2f2d28e8ca8291662a82fcf15ea464c00640e5c40c3a6f74e3eb6ba594179329"
+          }
+        ],
+        "completedAt": "2026-11-11T05:53:13Z"
+      }
+    },
+    {
+      "name": "readings-page-096",
+      "receipt": {
+        "requestUrl": "https://environment.data.gov.uk/flood-monitoring/id/measures/2091-level-stage-i-15_min-mASD/readings?date=2026-11-10&_sorted=true&_limit=37&_offset=96",
+        "method": "GET",
+        "startedAt": "2026-11-11T05:53:20Z",
+        "hops": [
+          {
+            "url": "https://environment.data.gov.uk/flood-monitoring/id/measures/2091-level-stage-i-15_min-mASD/readings?date=2026-11-10&_sorted=true&_limit=37&_offset=96",
+            "status": 200,
+            "headers": {
+              "date": "Wed, 11 Nov 2026 05:53:24 GMT",
+              "content-type": "application/json",
+              "last-modified": "Wed, 11 Nov 2026 05:48:12 GMT",
+              "accept-ranges": "bytes"
+            },
+            "curlExit": 0,
+            "elapsedSeconds": 3.396768,
+            "bodyPath": "readings-page-096-hop-0.body",
+            "bytes": 1110,
+            "sha256": "36bf1389c5de9de5c1985077210b1580ae75d9cfec4a08d40cde266d8e9bc0be"
+          }
+        ],
+        "completedAt": "2026-11-11T05:53:24Z"
+      }
+    },
+    {
+      "name": "readings-since-control",
+      "receipt": {
+        "requestUrl": "https://environment.data.gov.uk/flood-monitoring/id/measures/2091-level-stage-i-15_min-mASD/readings?date=2026-11-10&_sorted=true&since=2026-11-10T12%3A00%3A00Z&_limit=1000",
+        "method": "GET",
+        "startedAt": "2026-11-11T05:53:31Z",
+        "hops": [
+          {
+            "url": "https://environment.data.gov.uk/flood-monitoring/id/measures/2091-level-stage-i-15_min-mASD/readings?date=2026-11-10&_sorted=true&since=2026-11-10T12%3A00%3A00Z&_limit=1000",
+            "status": 200,
+            "headers": {
+              "date": "Wed, 11 Nov 2026 05:53:34 GMT",
+              "content-type": "application/json",
+              "last-modified": "Wed, 11 Nov 2026 05:48:12 GMT",
+              "accept-ranges": "bytes"
+            },
+            "curlExit": 0,
+            "elapsedSeconds": 3.023738,
+            "bodyPath": "readings-since-control-hop-0.body",
+            "bytes": 15927,
+            "sha256": "c197fa0dd7663ce30db1ec2db5fd89325f576ec73c3300424b69d2a73a347202"
+          }
+        ],
+        "completedAt": "2026-11-11T05:53:34Z"
+      }
+    }
+  ],
+  "minimumRequestSpacingSeconds": 7
+}

@@ -1,5 +1,34 @@
 # Maintaining Explorer dependencies
 
+## Playwright maintenance — 11 November 2026
+
+PR #195 moves `@playwright/test`, `playwright` and `playwright-core` together
+from 1.64.1 to 1.65.0. The axe integration resolves the same core version. The
+update retains Node-based test execution and the existing reporters; the new
+optional Bun runner is not enabled. The lockfile and SBOM record the coupled
+versions, while the application source and dependency security overrides stay
+unchanged.
+
+Use `PLAYWRIGHT_CHROMIUM_CHANNEL=chrome` for the browser-backed Node contract
+tests, matching CI. A newly installed Playwright package does not imply that
+its bundled Chromium has been downloaded. The supported three-engine terminal
+gate must pass with the new runner before merge; retain its existing external
+fixture skips rather than treating them as executed evidence.
+
+## Node type definitions — 11 November 2026
+
+PR #190 updates the application's development-only `@types/node` resolution
+from 24.19.2 to 26.6.6, with `undici-types` 8.9.0. These packages describe Node
+APIs to TypeScript; they do not install a Node runtime or raise the application's
+declared minimum. CI retains its existing Node 24 and Node 26 runtime checks.
+No application code begins using a newer Node API in this update.
+
+Review the resolved lockfile and regenerated SBOM together. The dependency
+policy, Svelte type check and application tests pass locally. The deterministic
+application tree and build-manifest digests remain identical to the preceding
+main build, so its existing Heritage browser evidence still identifies those
+application bytes. Protected CI and deployed identity remain separate checks.
+
 ## Ask OKF HTTP adapter reconciliation — 11 November 2026
 
 The earlier PR #191 candidate proposed `@modelcontextprotocol/node` 2.1.0.
@@ -184,8 +213,14 @@ GitHub Actions updates can affect code running during builds or deployment.
 Keep actions pinned to complete commit hashes and verify those hashes against
 the upstream release. Preserve the existing workflow triggers, pnpm 10 setting
 and separate Pages deployment permissions. The reviewed maintenance update
-uses `pnpm/action-setup` 6.1.0 and `actions/deploy-pages` 5.0.1; it does not grant
-additional permissions.
+uses `pnpm/action-setup` 6.1.1 and `actions/deploy-pages` 5.0.1; it does not grant
+additional permissions. On 11 November 2026, the upstream annotated `v6.1.1`
+tag was checked against the pinned commit
+`73e46992e05b19abd31f2f3c20e0e7370d762115`. The update changes the setup action
+in CI, shadow evaluation and Pages while preserving pnpm 10.34.7 and existing
+triggers and permissions. The action's upstream changes concern bootstrap and
+cache handling; protected CI and the exact Pages deployment verify its use in
+this repository.
 
 ## PDF renderer maintenance — 11 November 2026
 

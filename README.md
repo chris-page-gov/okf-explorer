@@ -64,6 +64,19 @@ offline export and small static reader for approved fixed packages. Follow the
 to inspect source text, provenance, relationships and gaps without a live AI
 call. Publication and an actual public-host check remain separate gates.
 
+[Analytical Data profile v1](profiles/analytical-data/v1/index.md) provides a
+candidate contract and local validator for versioned CSV distributions.
+[The rollout note](docs/analytical-data-profile-rollout.md) maps producer and
+Reader checks across the estate.
+[The Warwickshire and NDL trial](docs/analytical-data-trial-2026-11-11.md)
+records a passed 333-observation local projection, a denied catalogue download
+route, unresolved rights and geography gaps, and the existing Reader boundary.
+[The NDL curation and DEFRA review](docs/analytical-data-curation-review-2026-11-11.md)
+adds evidence about human selection, data currency, ownership, access contracts
+and service-specific engineering controls.
+
+[The live Defra trial and NDL link-scope audit](docs/analytical-live-trial-2026-11-11.md) validate a Warwick locality API snapshot and scope the legacy host across the public directory. They retain datetime, CRS, rights and national link-health gaps.
+
 ## Contribute
 
 Use the [development guide](docs/development.md) for locked setup, local builds,

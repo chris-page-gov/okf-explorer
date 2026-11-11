@@ -1,0 +1,46 @@
+{
+  "datasetRecords": 59,
+  "resourceOccurrences": 67,
+  "recordsWithoutResourceEntries": 18,
+  "legacyHostDatasetRecords": 40,
+  "legacyHostResourceOccurrences": 66,
+  "storedResourceStatusOccurrences": {
+    "403": 66,
+    "206": 1
+  },
+  "exactGitPathCandidateStatusOccurrences": {
+    "206": 62
+  },
+  "candidatePathsAbsentFromPublisherTree": [
+    {
+      "datasetId": "3afb86bd-94d8-4ae1-9de3-2fef18d277a9",
+      "resourceId": "0a595e81-b85f-460c-bc05-880f60ba0225",
+      "candidatePath": "lower-super-output-areas.kml",
+      "declaredFormat": "KML"
+    },
+    {
+      "datasetId": "dc2dac58-e06d-4f42-9de1-355793f1ab6d",
+      "resourceId": "12a836a9-cd93-45c0-a01a-845865ed5197",
+      "candidatePath": "schools/schools-detail-warwickshire.csv",
+      "declaredFormat": "CSV"
+    },
+    {
+      "datasetId": "dc2dac58-e06d-4f42-9de1-355793f1ab6d",
+      "resourceId": "adc58165-856a-48c9-ae6b-fc2430335b05",
+      "candidatePath": "schools/schools-detail-warwickshire.xls",
+      "declaredFormat": "XLS"
+    },
+    {
+      "datasetId": "dc2dac58-e06d-4f42-9de1-355793f1ab6d",
+      "resourceId": "d71ea8e1-eab0-4470-ada9-d64f9a573893",
+      "candidatePath": "schools/schools-detail-warwickshire.xml",
+      "declaredFormat": "XML"
+    }
+  ],
+  "publisherGitCommit": "e4d26dd92f202958fd3d593256349c62cd2a0a55",
+  "publisherApproval": "pending",
+  "historicalS3ByteEquivalence": "unverified",
+  "rangeRequestBytes": 131072,
+  "resourceTimeoutSeconds": 15,
+  "interpretation": "HTTP observations and candidate-path checks. Empty resource arrays and responses from other protocols need their own assessment."
+}

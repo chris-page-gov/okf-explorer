@@ -1,0 +1,56 @@
+{ 
+  "@context" : "http://environment.data.gov.uk/flood-monitoring/meta/context.jsonld" ,
+  "meta" : { 
+    "publisher" : "Environment Agency" ,
+    "licence" : "http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" ,
+    "documentation" : "http://environment.data.gov.uk/flood-monitoring/doc/reference" ,
+    "version" : "0.9" ,
+    "comment" : "Status: Beta service" ,
+    "hasFormat" : [ "http://environment.data.gov.uk/flood-monitoring/id/stations.csv?lat=52.284932&long=-1.562658&dist=5&_view=full&_limit=2&_offset=2", "http://environment.data.gov.uk/flood-monitoring/id/stations.rdf?lat=52.284932&long=-1.562658&dist=5&_view=full&_limit=2&_offset=2", "http://environment.data.gov.uk/flood-monitoring/id/stations.ttl?lat=52.284932&long=-1.562658&dist=5&_view=full&_limit=2&_offset=2", "http://environment.data.gov.uk/flood-monitoring/id/stations.html?lat=52.284932&long=-1.562658&dist=5&_view=full&_limit=2&_offset=2" ] ,
+    "limit" : 2 ,
+    "offset" : 2
+  }
+   ,
+  "items" : [ { 
+    "@id" : "http://environment.data.gov.uk/flood-monitoring/id/stations/2542" ,
+    "easting" : 427241 ,
+    "gridReference" : "SP2724165718" ,
+    "label" : "Warwick Wedgnock Lane" ,
+    "lat" : 52.288919 ,
+    "long" : -1.602042 ,
+    "measures" : [ { 
+      "@id" : "http://environment.data.gov.uk/flood-monitoring/id/measures/2542-level-stage-i-15_min-mASD" ,
+      "parameter" : "level" ,
+      "parameterName" : "Water Level" ,
+      "period" : 900 ,
+      "qualifier" : "Stage" ,
+      "unitName" : "mASD"
+    }
+     ] ,
+    "northing" : 265718 ,
+    "notation" : "2542" ,
+    "stationReference" : "2542"
+  }
+  , { 
+    "@id" : "http://environment.data.gov.uk/flood-monitoring/id/stations/2543" ,
+    "easting" : 427677 ,
+    "gridReference" : "SP2767766134" ,
+    "label" : "Warwick Rothwell Road" ,
+    "lat" : 52.292637 ,
+    "long" : -1.595616 ,
+    "measures" : [ { 
+      "@id" : "http://environment.data.gov.uk/flood-monitoring/id/measures/2543-level-stage-i-15_min-mASD" ,
+      "parameter" : "level" ,
+      "parameterName" : "Water Level" ,
+      "period" : 900 ,
+      "qualifier" : "Stage" ,
+      "unitName" : "mASD"
+    }
+     ] ,
+    "northing" : 266134 ,
+    "notation" : "2543" ,
+    "stationReference" : "2543"
+  }
+   ]
+}
+
