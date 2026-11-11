@@ -1,0 +1,93 @@
+{
+  "conformsTo": [
+    "https://chris-page-gov.github.io/okf-explorer/profile/analytical-data/v1/"
+  ],
+  "profileVersion": "1.0.0-rc.1",
+  "dataset": {
+    "id": "https://chris-page-gov.github.io/okf-explorer/docs/examples/analytical-data-trial/warwickshire/",
+    "version": "2008-local-projection-2026-11-11",
+    "title": "Ageing population 2008, local analytical projection",
+    "scope": "real-world",
+    "rights": {
+      "status": "unverified",
+      "source": "https://www.warwickshire.gov.uk/directory-record/6300/ageing-population-2008",
+      "licence": "https://creativecommons.org/licenses/by-sa/2.0/uk/"
+    }
+  },
+  "tables": [
+    {
+      "path": "observations.csv",
+      "sha256": "502ab0f9fd3ed267f2f7b05b7fa288460c2375ec5128b032c49312629e1be3d9",
+      "source": {
+        "url": "https://raw.githubusercontent.com/warwickshire/opendata/e4d26dd92f202958fd3d593256349c62cd2a0a55/aging-population-2008.csv",
+        "observedAt": "2026-11-11T04:02:30Z"
+      },
+      "fields": [
+        {
+          "name": "soa_code",
+          "label": "SOA Code",
+          "role": "dimension",
+          "dataType": "string",
+          "identifier": {
+            "scheme": "https://www.ons.gov.uk/methodology/geography/geographicalproducts/namescodesandlookups",
+            "entityType": "https://schema.org/Place"
+          }
+        },
+        {
+          "name": "soa_name",
+          "label": "SOA Name",
+          "role": "attribute",
+          "dataType": "string"
+        },
+        {
+          "name": "ward_name",
+          "label": "Ward Name",
+          "role": "attribute",
+          "dataType": "string"
+        },
+        {
+          "name": "locality",
+          "label": "Locality",
+          "role": "attribute",
+          "dataType": "string"
+        },
+        {
+          "name": "district_borough",
+          "label": "District/Borough",
+          "role": "attribute",
+          "dataType": "string"
+        },
+        {
+          "name": "total_population",
+          "label": "Total Population",
+          "role": "measure",
+          "dataType": "integer",
+          "unit": "people"
+        },
+        {
+          "name": "retirement_age_share",
+          "label": "% of Total Population aged 60+ (Females), 65+ (Males)",
+          "role": "measure",
+          "dataType": "number",
+          "unit": "percent",
+          "display": {
+            "decimalPlaces": 1
+          }
+        },
+        {
+          "name": "reference_year",
+          "label": "Reference year from the publisher catalogue",
+          "role": "dimension",
+          "dataType": "integer",
+          "allowedValues": [
+            "2008"
+          ]
+        }
+      ],
+      "observationKey": [
+        "soa_code",
+        "reference_year"
+      ]
+    }
+  ]
+}

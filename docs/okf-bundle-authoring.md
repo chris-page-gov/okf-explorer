@@ -15,6 +15,22 @@ warm-up produces a validated, checksummed profile; the separate build prompt
 then applies the concrete authoring rules below without replaying the research
 transcript.
 
+A bundle with a versioned analytical CSV distribution can reference a separate
+analytical package. Its manifest declares field names, observation keys,
+identifier schemes and special values. The candidate has its own validation
+command and receipt. [Analytical Data profile v1](../profiles/analytical-data/v1/index.md)
+
+The [Warwickshire and NDL trial](analytical-data-trial-2026-11-11.md) demonstrates
+an ordinary record linked to a separately validated analytical companion. The
+existing Reader can display those links. Typed CSV inspection and receipt
+interpretation would require a separate application feature.
+
+For discovery and maintained analytical publications, retain a human review of
+audience, demand, owner, currency, rights and access with the package. The
+[NDL curation and DEFRA review](analytical-data-curation-review-2026-11-11.md)
+distinguishes the official service guidance from the proposed local review
+structure and future contract work.
+
 ## Choose The Bundle Shape
 
 | Use this | When | Output |
@@ -786,3 +802,5 @@ polite to static hosts.
 - No secrets, tokens, API keys, passwords or live credentials are stored.
 - The pack has a task- and evidence-derived evaluation suite or a documented smaller
   acceptance suite for its first release.
+
+The [live Warwick API trial](analytical-live-trial-2026-11-11.md) shows a two-table analytical companion from a read-only API. Its adapter checks pagination and timestamps separately from RC.1 validation; spatial metadata retains its source and uncertainty.

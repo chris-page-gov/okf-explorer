@@ -1,0 +1,175 @@
+{
+  "conformsTo": [
+    "https://chris-page-gov.github.io/okf-explorer/profile/analytical-data/v1/"
+  ],
+  "profileVersion": "1.0.0-rc.1",
+  "dataset": {
+    "id": "https://chris-page-gov.github.io/okf-explorer/docs/examples/analytical-live-trial/defra/",
+    "version": "warwick-2026-11-10-captured-2026-11-11T05:53:34Z",
+    "title": "Local projection of Warwick station metadata and one UTC day of readings",
+    "scope": "real-world",
+    "rights": {
+      "status": "declared",
+      "source": "http://environment.data.gov.uk/flood-monitoring/doc/reference",
+      "licence": "http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
+    }
+  },
+  "tables": [
+    {
+      "path": "stations.csv",
+      "sha256": "b767f5ec6b467642913a1fbb43a0483918489a20314a13444a97608fd2011618",
+      "source": {
+        "url": "https://environment.data.gov.uk/flood-monitoring/id/stations?lat=52.284932&long=-1.562658&dist=5&_view=full&_limit=1000",
+        "observedAt": "2026-11-11T05:51:54Z",
+        "contract": "http://environment.data.gov.uk/flood-monitoring/doc/reference"
+      },
+      "observationKey": [
+        "station_id"
+      ],
+      "fields": [
+        {
+          "name": "station_id",
+          "label": "Station resource URI",
+          "role": "dimension",
+          "dataType": "string"
+        },
+        {
+          "name": "station_reference",
+          "label": "Station reference",
+          "role": "attribute",
+          "dataType": "string",
+          "valueStates": [
+            {
+              "token": "",
+              "state": "missing"
+            }
+          ]
+        },
+        {
+          "name": "label",
+          "label": "Station label",
+          "role": "attribute",
+          "dataType": "string",
+          "valueStates": [
+            {
+              "token": "",
+              "state": "missing"
+            }
+          ]
+        },
+        {
+          "name": "latitude",
+          "label": "Latitude in WGS84",
+          "role": "attribute",
+          "dataType": "number",
+          "valueStates": [
+            {
+              "token": "",
+              "state": "missing"
+            }
+          ]
+        },
+        {
+          "name": "longitude",
+          "label": "Longitude in WGS84",
+          "role": "attribute",
+          "dataType": "number",
+          "valueStates": [
+            {
+              "token": "",
+              "state": "missing"
+            }
+          ]
+        },
+        {
+          "name": "easting",
+          "label": "Easting on British National Grid",
+          "role": "attribute",
+          "dataType": "integer",
+          "valueStates": [
+            {
+              "token": "",
+              "state": "missing"
+            }
+          ]
+        },
+        {
+          "name": "northing",
+          "label": "Northing on British National Grid",
+          "role": "attribute",
+          "dataType": "integer",
+          "valueStates": [
+            {
+              "token": "",
+              "state": "missing"
+            }
+          ]
+        },
+        {
+          "name": "town",
+          "label": "Town where supplied",
+          "role": "attribute",
+          "dataType": "string",
+          "valueStates": [
+            {
+              "token": "",
+              "state": "missing"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "readings.csv",
+      "sha256": "a9d7c58d75b02bb9a21d5c88a9f80230e5269dd53722303180218757b60289eb",
+      "source": {
+        "url": "https://environment.data.gov.uk/flood-monitoring/id/measures/2091-level-stage-i-15_min-mASD/readings?date=2026-11-10&_sorted=true&_limit=1000",
+        "observedAt": "2026-11-11T05:52:43Z",
+        "contract": "http://environment.data.gov.uk/flood-monitoring/doc/reference"
+      },
+      "observationKey": [
+        "measure_id",
+        "date_time"
+      ],
+      "fields": [
+        {
+          "name": "reading_id",
+          "label": "Reading resource URI",
+          "role": "attribute",
+          "dataType": "string"
+        },
+        {
+          "name": "measure_id",
+          "label": "Measure resource URI",
+          "role": "dimension",
+          "dataType": "string"
+        },
+        {
+          "name": "date_time",
+          "label": "Observation timestamp with original timezone",
+          "role": "dimension",
+          "dataType": "string"
+        },
+        {
+          "name": "value",
+          "label": "Observed water level",
+          "role": "measure",
+          "dataType": "number",
+          "unit": "mASD"
+        },
+        {
+          "name": "unit_name",
+          "label": "Publisher unit notation",
+          "role": "attribute",
+          "dataType": "string"
+        },
+        {
+          "name": "qualifier",
+          "label": "Publisher measurement qualifier",
+          "role": "attribute",
+          "dataType": "string"
+        }
+      ]
+    }
+  ]
+}

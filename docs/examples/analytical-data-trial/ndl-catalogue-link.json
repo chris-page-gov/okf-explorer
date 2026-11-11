@@ -1,0 +1,88 @@
+{
+  "schema": "okf-analytical-catalogue-link-trial.v1",
+  "catalogueRecord": {
+    "id": "89e5101a-2064-46e7-955e-4cac2fb31c7c",
+    "url": "https://www.data.gov.uk/dataset/89e5101a-2064-46e7-955e-4cac2fb31c7c/warwickshire-ageing-population",
+    "title": "Ageing Population",
+    "metadataModified": "2013-08-12T23:00:31.404269",
+    "licence": "http://reference.data.gov.uk/id/open-government-licence"
+  },
+  "distribution": {
+    "id": "0e0492c0-e58d-43c6-b6d5-890e0432a1f3",
+    "format": "CSV",
+    "accessUrl": "http://opendata.s3.amazonaws.com/aging-population-2008.csv",
+    "downloadResults": [
+      {
+        "path": "ndl-resource-http.xml.txt",
+        "url": "http://opendata.s3.amazonaws.com/aging-population-2008.csv",
+        "status": 403,
+        "bytes": 263,
+        "sha256": "4c722a9b5db15aa91b8b027f9434be90ea2035f74784d4787f39f9f409911613",
+        "observedAt": "2026-11-11T04:03:11Z"
+      },
+      {
+        "path": "ndl-resource-https.xml.txt",
+        "url": "https://opendata.s3.amazonaws.com/aging-population-2008.csv",
+        "status": 403,
+        "bytes": 263,
+        "sha256": "fb1b23c0d88f2ebe5b5ce561acfd4aa538fa92f05a96ba1c80c3861390eb3c72",
+        "observedAt": "2026-11-11T04:03:11Z"
+      }
+    ],
+    "analyticalValidation": "unassessed-download-denied",
+    "byteEquivalenceWithWarwickshireSnapshot": "not-established"
+  },
+  "localProposal": {
+    "companionManifest": "warwickshire/okf-analytical-data.json",
+    "companionManifestSha256": "09268e38d294d7a2fa75f0992453e2580141c2d6b5ae682100129c1ccf42f4cf",
+    "relationship": "candidate companion to the Warwickshire publisher route",
+    "sourceSubstitution": false
+  },
+  "compatibilityGaps": [
+    {
+      "id": "AD-WCC-01",
+      "status": "adapted-locally",
+      "finding": "Native field names, grouped integers and percent strings require the recorded projection."
+    },
+    {
+      "id": "AD-WCC-02",
+      "status": "open",
+      "finding": "The catalogue identifies Super Output Area and a 2008 reference period. It supplies no pinned boundary/code-list edition or membership witness. The validator does not establish authoritative code membership or comparability with current geography."
+    },
+    {
+      "id": "AD-WCC-03",
+      "status": "open",
+      "finding": "The historical retirement-age definition uses females aged 60+ and males aged 65+. It needs an explicit concept mapping before comparisons with modern retirement-age or 65+ indicators."
+    },
+    {
+      "id": "AD-RIGHTS-01",
+      "status": "open",
+      "finding": "The WCC dataset page links CC BY-SA 2.0 UK, while the NDL directory record declares UK OGL without an explicit version. Rights remain unverified for this cross-catalogue companion."
+    },
+    {
+      "id": "AD-NDL-01",
+      "status": "open",
+      "finding": "Both recorded S3 CSV download attempts returned HTTP 403 AccessDenied. No NDL distribution bytes or equivalence with the WCC GitHub bytes were established."
+    },
+    {
+      "id": "AD-NDL-02",
+      "status": "open",
+      "finding": "The NDL record has no release version, resource digest, byte size, field schema, observation key or Analytical Data profile declaration."
+    },
+    {
+      "id": "AD-SCOPE-01",
+      "status": "open",
+      "finding": "All 333 observations have populated fields and positive values. Real suppression, missingness and numeric zero are untested in this dataset. Separate synthetic regressions cover those cases."
+    },
+    {
+      "id": "AD-READER-01",
+      "status": "proposed",
+      "finding": "The current Reader can present record bodies and links. In-browser analytical table inspection, profile validation receipts and typed-value display would need a separately scoped application feature."
+    },
+    {
+      "id": "AD-PRODUCER-01",
+      "status": "open",
+      "finding": "Read-only reconciliation against the shared Explorer baseline reports 13 existing WCC producer errors and one existing NDL producer error. The original Explorer checker reports identical errors. These repository-contract gaps are separate from analytical CSV validation."
+    }
+  ]
+}

@@ -1,0 +1,171 @@
+{ 
+  "@context" : "http://environment.data.gov.uk/flood-monitoring/meta/context.jsonld" ,
+  "meta" : { 
+    "publisher" : "Environment Agency" ,
+    "licence" : "http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" ,
+    "documentation" : "http://environment.data.gov.uk/flood-monitoring/doc/reference" ,
+    "version" : "0.9" ,
+    "comment" : "Status: Beta service" ,
+    "hasFormat" : [ "http://environment.data.gov.uk/flood-monitoring/id/stations.csv?search=Warwick&_view=full&_limit=10", "http://environment.data.gov.uk/flood-monitoring/id/stations.rdf?search=Warwick&_view=full&_limit=10", "http://environment.data.gov.uk/flood-monitoring/id/stations.ttl?search=Warwick&_view=full&_limit=10", "http://environment.data.gov.uk/flood-monitoring/id/stations.html?search=Warwick&_view=full&_limit=10" ] ,
+    "limit" : 10
+  }
+   ,
+  "items" : [ { 
+    "@id" : "http://environment.data.gov.uk/flood-monitoring/id/stations/2091" ,
+    "RLOIid" : "2044" ,
+    "catchmentName" : "Warwickshire Avon" ,
+    "dateOpened" : "1972-05-17" ,
+    "easting" : 429930 ,
+    "label" : "Warwick" ,
+    "lat" : 52.284932 ,
+    "long" : -1.562658 ,
+    "measures" : [ { 
+      "@id" : "http://environment.data.gov.uk/flood-monitoring/id/measures/2091-level-stage-i-15_min-mASD" ,
+      "parameter" : "level" ,
+      "parameterName" : "Water Level" ,
+      "period" : 900 ,
+      "qualifier" : "Stage" ,
+      "unitName" : "mASD"
+    }
+     ] ,
+    "northing" : 265290 ,
+    "notation" : "2091" ,
+    "riverName" : "River Avon" ,
+    "stageScale" : { 
+      "@id" : "http://environment.data.gov.uk/flood-monitoring/id/stations/2091/stageScale" ,
+      "highestRecent" : { 
+        "@id" : "http://environment.data.gov.uk/flood-monitoring/id/stations/2091/stageScale/highestRecent" ,
+        "dateTime" : "2012-11-26T07:00:00" ,
+        "value" : 3.318
+      }
+       ,
+      "maxOnRecord" : { 
+        "@id" : "http://environment.data.gov.uk/flood-monitoring/id/stations/2091/stageScale/maxOnRecord" ,
+        "dateTime" : "1998-04-10T08:45:00" ,
+        "value" : 3.945
+      }
+       ,
+      "minOnRecord" : { 
+        "@id" : "http://environment.data.gov.uk/flood-monitoring/id/stations/2091/stageScale/minOnRecord" ,
+        "dateTime" : "1973-08-21T13:15:00" ,
+        "value" : 0.319
+      }
+       ,
+      "scaleMax" : 5 ,
+      "typicalRangeHigh" : 1.463 ,
+      "typicalRangeLow" : 0.399
+    }
+     ,
+    "stationReference" : "2091" ,
+    "status" : "http://environment.data.gov.uk/flood-monitoring/def/core/statusActive" ,
+    "town" : "Warwick" ,
+    "wiskiID" : "2091"
+  }
+  , { 
+    "@id" : "http://environment.data.gov.uk/flood-monitoring/id/stations/762510" ,
+    "RLOIid" : "9379" ,
+    "catchmentName" : "Eden and Esk" ,
+    "dateOpened" : "2020-10-23" ,
+    "easting" : 347687 ,
+    "gridReference" : "NY4768756904" ,
+    "label" : "Warwick Bridge" ,
+    "lat" : 54.904086 ,
+    "long" : -2.817354 ,
+    "measures" : [ { 
+      "@id" : "http://environment.data.gov.uk/flood-monitoring/id/measures/762510-level-stage-i-15_min-m" ,
+      "parameter" : "level" ,
+      "parameterName" : "Water Level" ,
+      "period" : 900 ,
+      "qualifier" : "Stage" ,
+      "unitName" : "m"
+    }
+     ] ,
+    "northing" : 556904 ,
+    "notation" : "762510" ,
+    "riverName" : "Trout Beck" ,
+    "stageScale" : { 
+      "@id" : "http://environment.data.gov.uk/flood-monitoring/id/stations/762510/stageScale" ,
+      "maxOnRecord" : { 
+        "@id" : "http://environment.data.gov.uk/flood-monitoring/id/stations/762510/stageScale/maxOnRecord" ,
+        "dateTime" : "2024-05-23T01:15:00" ,
+        "value" : 1.841
+      }
+       ,
+      "minOnRecord" : { 
+        "@id" : "http://environment.data.gov.uk/flood-monitoring/id/stations/762510/stageScale/minOnRecord" ,
+        "dateTime" : "2020-10-24T03:15:00" ,
+        "value" : 0.081
+      }
+       ,
+      "typicalRangeHigh" : 0.5 ,
+      "typicalRangeLow" : 0.1
+    }
+     ,
+    "stationReference" : "762510" ,
+    "status" : "http://environment.data.gov.uk/flood-monitoring/def/core/statusActive" ,
+    "town" : "Warwick Bridge" ,
+    "wiskiID" : "762510"
+  }
+  , { 
+    "@id" : "http://environment.data.gov.uk/flood-monitoring/id/stations/2542" ,
+    "easting" : 427241 ,
+    "gridReference" : "SP2724165718" ,
+    "label" : "Warwick Wedgnock Lane" ,
+    "lat" : 52.288919 ,
+    "long" : -1.602042 ,
+    "measures" : [ { 
+      "@id" : "http://environment.data.gov.uk/flood-monitoring/id/measures/2542-level-stage-i-15_min-mASD" ,
+      "parameter" : "level" ,
+      "parameterName" : "Water Level" ,
+      "period" : 900 ,
+      "qualifier" : "Stage" ,
+      "unitName" : "mASD"
+    }
+     ] ,
+    "northing" : 265718 ,
+    "notation" : "2542" ,
+    "stationReference" : "2542"
+  }
+  , { 
+    "@id" : "http://environment.data.gov.uk/flood-monitoring/id/stations/2541" ,
+    "easting" : 396611 ,
+    "gridReference" : "SO9661171641" ,
+    "label" : "Warwick Old Budbrooke Road" ,
+    "lat" : 52.342826 ,
+    "long" : -2.051161 ,
+    "measures" : [ { 
+      "@id" : "http://environment.data.gov.uk/flood-monitoring/id/measures/2541-level-stage-i-15_min-mASD" ,
+      "parameter" : "level" ,
+      "parameterName" : "Water Level" ,
+      "period" : 900 ,
+      "qualifier" : "Stage" ,
+      "unitName" : "mASD"
+    }
+     ] ,
+    "northing" : 271641 ,
+    "notation" : "2541" ,
+    "stationReference" : "2541"
+  }
+  , { 
+    "@id" : "http://environment.data.gov.uk/flood-monitoring/id/stations/2543" ,
+    "easting" : 427677 ,
+    "gridReference" : "SP2767766134" ,
+    "label" : "Warwick Rothwell Road" ,
+    "lat" : 52.292637 ,
+    "long" : -1.595616 ,
+    "measures" : [ { 
+      "@id" : "http://environment.data.gov.uk/flood-monitoring/id/measures/2543-level-stage-i-15_min-mASD" ,
+      "parameter" : "level" ,
+      "parameterName" : "Water Level" ,
+      "period" : 900 ,
+      "qualifier" : "Stage" ,
+      "unitName" : "mASD"
+    }
+     ] ,
+    "northing" : 266134 ,
+    "notation" : "2543" ,
+    "stationReference" : "2543"
+  }
+   ]
+}
+

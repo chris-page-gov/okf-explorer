@@ -1,5 +1,22 @@
 # Maintaining Explorer dependencies
 
+## Ask OKF HTTP adapter reconciliation — 11 November 2026
+
+The earlier PR #191 candidate proposed `@modelcontextprotocol/node` 2.1.0.
+The v0.8.0 integration subsequently adopted adapter 2.1.2, server and client
+2.4.0, legacy comparison SDK 1.32.2 and patched transitive HTTP dependencies.
+Reconciliation preserves the newer manifest and lockfile from main byte for
+byte, including its security overrides; the earlier candidate must not
+downgrade them. The remaining change records that history and links this
+maintenance guidance from the repository introduction.
+
+The service rejects oversized bodies and all JSON-RPC batches before invoking
+the handler. Preserve those stricter application controls, host/origin
+admission and read-only evidence tools. Service tests cover streamed and
+declared body limits, single-message admission, both supported SDKs and
+ordinary evidence requests. A repository merge does not redeploy the hosted
+service or change a published source/engine archive.
+
 ## Reviewed integration on 23 October 2026
 
 The reading-help candidate combines the overlapping Explorer updates from
