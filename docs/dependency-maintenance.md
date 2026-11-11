@@ -1,5 +1,20 @@
 # Maintaining Explorer dependencies
 
+## Playwright maintenance — 11 November 2026
+
+PR #195 moves `@playwright/test`, `playwright` and `playwright-core` together
+from 1.64.1 to 1.65.0. The axe integration resolves the same core version. The
+update retains Node-based test execution and the existing reporters; the new
+optional Bun runner is not enabled. The lockfile and SBOM record the coupled
+versions, while the application source and dependency security overrides stay
+unchanged.
+
+Use `PLAYWRIGHT_CHROMIUM_CHANNEL=chrome` for the browser-backed Node contract
+tests, matching CI. A newly installed Playwright package does not imply that
+its bundled Chromium has been downloaded. The supported three-engine terminal
+gate must pass with the new runner before merge; retain its existing external
+fixture skips rather than treating them as executed evidence.
+
 ## Reviewed integration on 23 October 2026
 
 The reading-help candidate combines the overlapping Explorer updates from

@@ -57,6 +57,10 @@ guides for today's interface.
 
 ## Research basis
 
+[Sources index and central bibliography](../sources-index.md) records source
+identities, versioned citations and retained-copy fingerprints. Follow each
+entry's review links for analysis and its source links for retrieval.
+
 [Corpus Map implications for OKF+ and Microsoft](corpus-map-okf-microsoft-review-2026-10-26.md)
 reviews entity navigation, the existing bundle design, Microsoft integration
 routes and a bounded evaluation before adoption.
