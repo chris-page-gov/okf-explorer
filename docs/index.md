@@ -32,6 +32,9 @@ to this guide, worked examples and the GitHub repository.
 
 - [Architecture and implementation plan](architecture-and-implementation-plan.md): current capability states, delivery priorities, acceptance criteria and the whole-implementation review scope.
 - [Learning presentation](learning-presentation.md): design goal-led journeys and conceptual filters.
+- [Analytical Data profile v1](../profiles/analytical-data/v1/index.md) and [estate rollout](analytical-data-profile-rollout.md) cover versioned CSV packages, identifier declarations and validation.
+- [Warwickshire and NDL compatibility trial](analytical-data-trial-2026-11-11.md) captures all 333 real observations, conversion evidence, denied catalogue access and the Explorer application boundary.
+
 - [Bundle authoring](okf-bundle-authoring.md): core fields, optional domain profiles and richer publication.
 - [Foundry prompt kit](okf-authoring-prompt-kit.md): governed production authoring after the small starter.
 - [Build and publication method](okf-build-and-publication-methodology.md): impact planning, source intake and release gates.

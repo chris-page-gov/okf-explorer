@@ -1,0 +1,64 @@
+{
+  "schema": "okf-analytical-data-trial.v1",
+  "warwickshire": {
+    "status": "passed",
+    "observations": 333,
+    "uniqueAreaCodes": 333,
+    "totalPopulationChecksum": 530661,
+    "retirementAgePercentageRange": [
+      "5.4",
+      "41.7"
+    ],
+    "missingCells": 0,
+    "projection": "renamed headers, removed grouping commas and percent signs, added reference_year=2008; original order, codes and other text retained",
+    "rightsStatus": "unverified"
+  },
+  "nationalDataLibrary": {
+    "recordStatus": "captured-and-cross-checked",
+    "distributionStatus": "unassessed-download-denied",
+    "recordId": "89e5101a-2064-46e7-955e-4cac2fb31c7c",
+    "licenceConflict": true
+  },
+  "compatibilityProbes": [
+    {
+      "probe": "publisher CSV with original headers",
+      "status": "rejected-as-expected",
+      "reason": "Manifest $.tables[0].observationKey[0] failed pattern"
+    },
+    {
+      "probe": "renamed headers with original numeric formatting",
+      "status": "rejected-as-expected",
+      "reason": "Table observations.csv: Observation 1, field total_population: Expected integer"
+    },
+    {
+      "probe": "duplicate observation key",
+      "status": "rejected-as-expected",
+      "reason": "Table observations.csv: Duplicate observation key at observation 334"
+    },
+    {
+      "probe": "undeclared blank measure",
+      "status": "rejected-as-expected",
+      "reason": "Table observations.csv: Observation 1, field total_population: Blank value requires a declared state"
+    },
+    {
+      "probe": "percent sign in numeric measure",
+      "status": "rejected-as-expected",
+      "reason": "Table observations.csv: Observation 1, field retirement_age_share: Expected number"
+    },
+    {
+      "probe": "changed table bytes without a new digest",
+      "status": "rejected-as-expected",
+      "reason": "Table digest mismatch: observations.csv"
+    },
+    {
+      "probe": "NDL metadata used as an analytical manifest",
+      "status": "rejected-as-expected",
+      "reason": "Manifest $ failed additionalProperties"
+    }
+  ],
+  "inputs": {
+    "sourceRegisterSha256": "cdd84b1d88226cf0e1ebd001961182e67df3a03328f9ce8d674e1c8c3b4b4cbd",
+    "projectionSha256": "b06ea74986fdca5514c4e5fa43e39b64b8b013a633c5c4bef90692e57c20f754",
+    "builderSha256": "f67ba6ff009cbdb3a124530281de3a0e8756f2e73e9b6f0bba2ff31aba39f26e"
+  }
+}

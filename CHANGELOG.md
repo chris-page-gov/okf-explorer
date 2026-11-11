@@ -2,6 +2,21 @@
 
 ## Unreleased
 
+- Test Analytical Data 1.0.0-rc.1 against all 333 observations in Warwickshire's
+  historical ageing-population CSV and its NDL directory record. Retain pinned
+  sources, a reproducible conversion, seven rejection probes and a bounded
+  Reader trial. Record denied S3 access, conflicting licence declarations,
+  missing geography edition and the separate analytical preview feature gap.
+  Reconcile the Explorer semantic preset and retain full local test observations,
+  including existing producer errors and a help-layout check that passed on rerun.
+  Preserve acquired source bytes across Git checkout with scoped attributes and
+  source hash checks.
+
+- Add the candidate Analytical Data profile v1 for CSV packages with explicit
+  field semantics, versioned identifier declarations and special-value states.
+  Bind validation to exact input and schema digests and document staged adoption
+  across the OKF estate.
+
 ## v0.8.1 - 2026-11-03 - Legislation release acceptance correction
 
 - Bind the UK Legislation runtime-acceptance contract to Explorer v0.8.1 so
