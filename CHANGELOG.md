@@ -4,7 +4,8 @@
 
 - Preserve runner-selected Ubuntu archive mirrors while upgrading them to HTTPS
   for browser validation, following repeated installation failures against the
-  previously forced generic hosts.
+  previously forced generic hosts. Pin the affected browser jobs to Ubuntu
+  24.04 after Ubuntu 26.04 also failed against its preserved mirrors.
 
 - Remove the vulnerable development-only `deepmerge` dependency through a
   hash-bound backport of the Svelte plugin's proposed internal configuration

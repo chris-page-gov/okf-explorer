@@ -15,7 +15,10 @@ class BrowserArchiveTests(unittest.TestCase):
         for name in ['okf-explorer-ci.yml', 'foundry-full-shadow.yml']:
             with self.subTest(workflow=name), tempfile.TemporaryDirectory() as directory:
                 workflow = yaml.safe_load((ROOT / '.github/workflows' / name).read_text())
-                steps = [step for job in workflow['jobs'].values() for step in job.get('steps', [])]
+                jobs = [job for job in workflow['jobs'].values() if any(step.get('name') == 'Select Ubuntu HTTPS archives for browser packages' for step in job.get('steps', []))]
+                self.assertEqual(len(jobs), 1)
+                self.assertEqual(jobs[0]['runs-on'], 'ubuntu-24.04')
+                steps = jobs[0]['steps']
                 step = next(step for step in steps if step.get('name') == 'Select Ubuntu HTTPS archives for browser packages')
                 root = Path(directory)
                 initial = {

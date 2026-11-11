@@ -90,7 +90,7 @@ Use these rules:
 
 ## Browser policy
 
-All GitHub Actions workflows use `ubuntu-latest`, including Pages, PR CI,
+GitHub Actions jobs use `ubuntu-latest`, including Pages and ordinary PR CI,
 scheduled assurance and link observation. The shared setup action installs the
 pinned uv 0.12.2 first, then runs `uv python install` to obtain the CPython
 3.12.11 version declared in `.python-version`, followed by `uv sync --locked`.
@@ -98,21 +98,24 @@ This uses uv-managed Python builds instead of GitHub's Ubuntu-specific
 `actions/setup-python` inventory, which lacks 3.12.11 on Ubuntu 26.04.
 The [uv Actions guidance](https://docs.astral.sh/uv/guides/integration/github/#setting-up-python)
 documents that the install command respects the project's pinned version.
-Workflow topology checks retain the latest runner and require Python installation
-before the locked environment is synchronised.
+Workflow topology checks retain the latest runner except for the two declared
+browser jobs, and require Python installation before locked synchronisation.
 
 The 23 October workflow review also updates `actions/upload-artifact` to 7.0.2,
 `actions/download-artifact` to 8.0.2 and `actions/setup-node` to 7.1.0. These
 remain pinned by full commit hash. Candidate upload, download, deployment and
 post-deployment identity checks keep their separate jobs and permissions.
 
-Full-browser CI and nightly assurance select the primary Ubuntu archive and
-security archive over HTTPS in the runner's APT mirror list before installing
-Firefox and WebKit. This addresses repeated slow package downloads from the
-Azure mirror on Ubuntu 26.04. The runner retains its signed repository suites
-and keyrings, `ubuntu-latest`, the full browser matrix and the 10-minute
-installation limit. Ubuntu documents the primary archive and its mirrors in
-its [package archive guide](https://documentation.ubuntu.com/project/how-ubuntu-is-made/concepts/package-archive/).
+Full-browser CI and nightly assurance preserve runner-selected APT archive and
+security mirror hosts while upgrading HTTP entries to HTTPS. The earlier setup
+forced primary Ubuntu archive hosts after slow Azure downloads; subsequent DNS
+failures affected both the forced hosts and preserved Azure mirrors on Ubuntu
+26.04. The affected `browser-full` CI and `browser-three-engine` shadow jobs
+therefore use Playwright-supported `ubuntu-24.04` as a bounded runner fallback.
+They retain signed repository suites and keyrings, managed CPython 3.12.11, the
+full browser matrix and the 10-minute installation limit. The topology test
+allows only these two runner exceptions. Ubuntu explains its archives in the
+[package archive guide](https://documentation.ubuntu.com/project/how-ubuntu-is-made/concepts/package-archive/).
 
 Ordinary Chromium acceptance uses a compatible browser already installed on
 the governed runner where possible. Do not run

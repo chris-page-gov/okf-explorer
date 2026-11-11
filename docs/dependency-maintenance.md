@@ -29,7 +29,10 @@ The existing archive setup replaced runner-selected mirrors with generic Ubuntu
 hosts. Browser workflows now preserve the configured mirror hosts and upgrade
 HTTP entries to HTTPS, including security mirrors. The browser engines,
 assertions and installation timeout remain in force; CI must demonstrate that
-installation and the full browser gate succeed before merge.
+installation and the full browser gate succeed before merge. DNS failures
+continued on Ubuntu 26.04 after preserving mirrors, so these two browser jobs
+are pinned to Playwright-supported Ubuntu 24.04 for a bounded runner fallback;
+this does not claim that mirror preservation alone fixed the network failure.
 
 Run frozen installation from `apps/okf-explorer` so relative patch paths resolve
 consistently, as CI does. Replace this backport with a compatible upstream
