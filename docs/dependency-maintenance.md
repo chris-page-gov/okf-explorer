@@ -1,5 +1,22 @@
 # Maintaining Explorer dependencies
 
+## Ask OKF HTTP adapter reconciliation — 11 November 2026
+
+The earlier PR #191 candidate proposed `@modelcontextprotocol/node` 2.1.0.
+The v0.8.0 integration subsequently adopted adapter 2.1.2, server and client
+2.4.0, legacy comparison SDK 1.32.2 and patched transitive HTTP dependencies.
+Reconciliation preserves the newer manifest and lockfile from main byte for
+byte, including its security overrides; the earlier candidate must not
+downgrade them. The remaining change records that history and links this
+maintenance guidance from the repository introduction.
+
+The service rejects oversized bodies and all JSON-RPC batches before invoking
+the handler. Preserve those stricter application controls, host/origin
+admission and read-only evidence tools. Service tests cover streamed and
+declared body limits, single-message admission, both supported SDKs and
+ordinary evidence requests. A repository merge does not redeploy the hosted
+service or change a published source/engine archive.
+
 ## Reviewed integration on 23 October 2026
 
 The reading-help candidate combines the overlapping Explorer updates from
@@ -169,3 +186,23 @@ the upstream release. Preserve the existing workflow triggers, pnpm 10 setting
 and separate Pages deployment permissions. The reviewed maintenance update
 uses `pnpm/action-setup` 6.1.0 and `actions/deploy-pages` 5.0.1; it does not grant
 additional permissions.
+
+## Framework maintenance — 11 November 2026
+
+The maintenance candidate selects static adapter 4.0.1, SvelteKit 3.1.1,
+Svelte 5.57.3, svelte-check 4.7.8 and Vite 8.3.6. These versions retain the
+existing Node requirements. Their locked indirect dependencies include cookie
+2.0.2, PostCSS 8.5.32 and magic-string 1.4.5. The conditional security overrides
+and the reviewed Rolldown 1.2.9 pin remain in place.
+
+The upstream fixes cover framework routing and server imports, Svelte state
+and accessibility handling, and Vite asset hashing, CSS imports and workers.
+Explorer's application source and route contracts remain unchanged. Those
+upstream descriptions do not establish Explorer compatibility: the candidate
+must pass the app contracts, generated Site checks and Chrome, Firefox and
+WebKit journeys against its exact locked build.
+
+The framework changes generated application bytes. Refresh the Heritage
+100-question and three-journey observations after integrating the preceding
+dependency updates, retaining the previous receipt byte for byte. Local
+observations and protected-branch CI do not establish a later Pages deployment.
