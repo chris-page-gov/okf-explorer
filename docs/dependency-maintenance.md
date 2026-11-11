@@ -1,19 +1,19 @@
 # Maintaining Explorer dependencies
 
-## Playwright maintenance — 11 November 2026
+## Playwright update deferred — 11 November 2026
 
-PR #195 moves `@playwright/test`, `playwright` and `playwright-core` together
-from 1.64.1 to 1.65.0. The axe integration resolves the same core version. The
-update retains Node-based test execution and the existing reporters; the new
-optional Bun runner is not enabled. The lockfile and SBOM record the coupled
-versions, while the application source and dependency security overrides stay
-unchanged.
+PR #195 remains open because Playwright 1.65.0's Firefox 159 build crashes in
+three existing accessibility checks. The failures reproduce locally, including
+a direct native ARIA reflection read after a role or label locator. They match
+[Playwright issue #43967](https://github.com/microsoft/playwright/issues/43967)
+and [Mozilla bug 2090055](https://bugzilla.mozilla.org/show_bug.cgi?id=2090055).
+The latest stable npm version was still 1.65.0 when checked on 11 November.
 
-Use `PLAYWRIGHT_CHROMIUM_CHANNEL=chrome` for the browser-backed Node contract
-tests, matching CI. A newly installed Playwright package does not imply that
-its bundled Chromium has been downloaded. The supported three-engine terminal
-gate must pass with the new runner before merge; retain its existing external
-fixture skips rather than treating them as executed evidence.
+The independent PDF.js and framework updates retain Playwright 1.64.1 from
+main. Resume the browser update when a stable package contains the upstream
+fix, then run the complete Chrome, Firefox and WebKit acceptance gate. Keep
+all accessibility rules, tests and browser engines enabled. This deferral does
+not establish that the older toolchain has no other known defects.
 
 ## Node type definitions — 11 November 2026
 
