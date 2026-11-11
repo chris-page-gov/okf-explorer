@@ -15,6 +15,7 @@ configuration merge calls with the proposed internal merge. A scoped dependency
 override removes the unused `deepmerge` edge. This is a maintained local
 backport, not a claim that the upstream proposal has been released.
 
+Patch context retains upstream whitespace through a scoped Git attribute.
 The lockfile binds the patch hash; the SBOM records its path and SHA-256
 alongside the original registry package integrity. Tests exercise poisoned
 nested and null-prototype inputs, constructor keys, configuration precedence,
