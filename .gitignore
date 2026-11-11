@@ -41,3 +41,6 @@ postmortem/
 
 # Local research drafts are excluded from Git and Site assembly.
 /research/*.docx
+
+# Retained research inputs live outside the public Site input directories.
+/.local-research/

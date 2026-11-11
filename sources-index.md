@@ -1,15 +1,46 @@
 ---
 type: "Index"
-title: "Sources index"
-description: "Every source, standard, framework, paper and organisation in the bundle, with verified citations."
-tags: [index, sources]
+title: "Sources index and bibliography"
+description: "Central bibliography and source register for the bundle and its research reviews, with versioned citations and retention records."
+tags: [index, sources, bibliography]
 generated: { by: human:crpage, at: 2026-07-09T09:44:00Z }
+modified: "2026-11-11"
 status: stable
 ---
 
 # Sources index
 
-Verified against primary or authoritative pages (accessed 27 June 2026).
+This is the central bibliography for papers, standards, frameworks and other
+sources used in the bundle and its research reviews. Keep source identities
+here and link to the separate notes that explain their relevance to OKF+.
+
+The original index recorded a source check on 27 June 2026. Existing compact
+entries are retained below; they have not all been reverified for this update.
+New or revised entries carry their own check date. Inclusion is not evidence
+that a source is current, independently validated or available for reuse.
+
+## Using this bibliography
+
+For each new or revised research entry, record:
+
+- the official title, authors, publication or submission date and publication status;
+- a stable identifier, the exact version used, and source-record and PDF URLs;
+- the date those links and citation details were checked, the source's rights
+  information, and links to our reviews or evaluations; and
+- for a retained copy, its local location, original filename, byte size,
+  SHA-256 checksum and the date that fingerprint was recorded.
+
+Use the versioned source URLs for retrieval. Keep the cited version when a
+newer version appears, and distinguish any later review from the original
+one. Missing metadata in older entries remains unrecorded until checked.
+
+Retain exact copies used for reviews or evaluations when needed for
+reproducibility. Store local copies in `.local-research/`, which is excluded
+from Git and outside the public site's input directories. Record their
+locations as text, not public download links. The source's terms govern reuse;
+a bibliography entry does not grant permission to redistribute its PDF.
+Compare a retained copy with its recorded checksum before reusing it, and do
+not silently replace it with a download that has different bytes.
 
 
 ## Standards & specifications
@@ -53,6 +84,38 @@ Verified against primary or authoritative pages (accessed 27 June 2026).
 - [TensorFlow Federated](frameworks/tensorflow-federated.md) — <https://www.tensorflow.org/federated>
 
 ## Research & benchmarks
+
+### CorpusMap
+
+Jeong, Soyeong; Jauhar, Sujay Kumar; Hwang, Sung Ju; and Nam, Andrew Joohun
+(2026). *Follow the Entities: A Corpus Map for Agentic Search*.
+arXiv:2609.37226v1. Preprint submitted on 29 September 2026.
+
+- **Cited version:** `v1`; stable reference: `arxiv:2609.37226v1`.
+- **Source record:** [arXiv:2609.37226v1](https://arxiv.org/abs/2609.37226v1).
+- **PDF:** [Read version 1](https://arxiv.org/pdf/2609.37226v1).
+- **Citation and links checked:** 11 November 2026.
+- **Rights information:** use the licence link on the
+  [arXiv source record](https://arxiv.org/abs/2609.37226v1). The retained copy is
+  local; the public bibliography links to the publisher's copy.
+- **Related review:** [Corpus Map implications for OKF+ and Microsoft](https://github.com/chris-page-gov/okf-explorer/blob/main/docs/corpus-map-okf-microsoft-review-2026-10-26.md),
+  dated 26 October 2026. Its recommendations remain proposals.
+
+The supplied PDF is retained for reproducibility under its original filename,
+`OKF+ like A Corpus Map for Agentic Search - 2609.37226v1.pdf`.
+Its local location is
+`.local-research/OKF+ like A Corpus Map for Agentic Search - 2609.37226v1.pdf`.
+The copy contains **523,503 bytes**. Its SHA-256 checksum, recorded on
+11 November 2026, is:
+
+```text
+de52222fe3bc1d16ba62d3f193d2986b5a183a60913d5c17829cd01922e16373
+```
+
+This fingerprint identifies the retained input file; it is not a claim that a
+fresh download has identical bytes.
+
+### Existing research references
 
 - [API-Bank (2023)](research/api-bank.md) — <https://arxiv.org/abs/2304.08244>
 - [APIGen (2024)](research/apigen.md) — <https://arxiv.org/abs/2406.18518>
