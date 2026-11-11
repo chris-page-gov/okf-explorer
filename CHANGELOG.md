@@ -9,9 +9,9 @@
   Verify PDF rendering and page changes against the retained DWP fixture,
   and refresh the exact-build Heritage browser evidence while preserving the
   preceding receipt. Local research PDFs remain outside Git and Site inputs.
-- Update Playwright test, core and browser tooling together to 1.65.0 and
-  regenerate the dependency inventory. Retain the installed-Chrome policy
-  and the required Chrome, Firefox and WebKit acceptance gate.
+- Defer Playwright 1.65.0 after reproducing its upstream Firefox ARIA
+  reflection crash. Keep the existing stable toolchain and full accessibility
+  gate for the independent PDF.js and framework updates.
 - Update the Explorer's Node type definitions to 26.6.6 with matching
   `undici-types` 8.9.0 and regenerate the dependency inventory. Retain the
   declared runtime minimum and security overrides.
