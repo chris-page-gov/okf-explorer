@@ -44,6 +44,13 @@ async function build() {
   const lock = YAML.parse(lockBytes.toString('utf8'));
   const packageDocument = JSON.parse(await readFile(PACKAGE, 'utf8'));
   checkDependencyPolicy(packageDocument, lock);
+  const patchEvidence = {};
+  for (const [key, patch] of Object.entries(lock.patchedDependencies || {})) {
+    patchEvidence[key] = [
+      { name: 'okf:pnpm:patch-path', value: patch.path },
+      { name: 'okf:pnpm:patch-sha256', value: sha256(await readFile(resolve(APP, patch.path))) }
+    ];
+  }
   const components = Object.entries(lock.packages || {}).map(([key, row]) => {
     const { name, version } = packageIdentity(key);
     const component = {
@@ -60,6 +67,7 @@ async function build() {
         content: Buffer.from(integrity.slice(7), 'base64').toString('hex')
       }];
     }
+    if (patchEvidence[key]) component.properties = patchEvidence[key];
     return component;
   }).sort((left, right) => left['bom-ref'].localeCompare(right['bom-ref']));
 

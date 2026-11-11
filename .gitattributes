@@ -20,3 +20,6 @@ sources/analytical-data-trial-2026-11-11/ndl-curation/*.txt -whitespace
 sources/analytical-data-trial-2026-11-11/defra-learning/*.txt -whitespace
 sources/analytical-data-trial-2026-11-11/live-defra-api/** -whitespace
 sources/analytical-data-trial-2026-11-11/ndl-link-audit/** -whitespace
+
+# Unified patch context deliberately retains upstream tabs and blank lines.
+apps/okf-explorer/patches/*.patch -whitespace

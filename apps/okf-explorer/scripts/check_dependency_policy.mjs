@@ -63,6 +63,14 @@ function checkManifestRange(value, name, minimum = MIN_VITEST) {
 }
 
 export function checkDependencyPolicy(manifest, lock) {
+  for (const rows of [lock.packages || {}, lock.snapshots || {}]) {
+    if (entriesFor(rows, 'deepmerge').length) throw new Error('deepmerge must not return to the dependency graph');
+    for (const row of Object.values(rows)) {
+      for (const deps of [row?.dependencies, row?.optionalDependencies]) {
+        if (deps && Object.hasOwn(deps, 'deepmerge')) throw new Error('deepmerge dependency reference is prohibited');
+      }
+    }
+  }
   if (manifest?.pnpm?.overrides?.[COOKIE_OVERRIDE_KEY] !== COOKIE_OVERRIDE ||
       lock?.overrides?.[COOKIE_OVERRIDE_KEY] !== COOKIE_OVERRIDE ||
       manifest?.pnpm?.overrides?.cookie || lock?.overrides?.cookie) {

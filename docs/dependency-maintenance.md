@@ -1,5 +1,33 @@
 # Maintaining Explorer dependencies
 
+## Deepmerge removal — 11 November 2026
+
+Alert #92 ([GHSA-gcqx-w48m-w2h4](https://github.com/advisories/GHSA-gcqx-w48m-w2h4))
+concerns prototype poisoning in `deepmerge` 4.3.1. Its only consumer here was
+the development-only Svelte Vite plugin, which merges repository configuration;
+this does not establish a remotely exploitable path in the static Site. Neither
+package has a released upstream fix.
+
+The pinned plugin 7.3.1 carries a pnpm patch backported from
+[upstream PR #1415](https://github.com/sveltejs/vite-plugin-svelte/pull/1415),
+revision `3fb6096650ede5b0d7f8ea9a82edd8849e3e4b76`. It replaces both
+configuration merge calls with the proposed internal merge. A scoped dependency
+override removes the unused `deepmerge` edge. This is a maintained local
+backport, not a claim that the upstream proposal has been released.
+
+Patch context retains upstream whitespace through a scoped Git attribute.
+The lockfile binds the patch hash; the SBOM records its path and SHA-256
+alongside the original registry package integrity. Tests exercise poisoned
+nested and null-prototype inputs, constructor keys, configuration precedence,
+array replacement, source isolation and preprocessor behaviour against the
+installed patched plugin. The dependency policy rejects any returning copy or
+reference to `deepmerge`. Arrays and non-plain values retain their references,
+as in the upstream proposal; plain objects are copied recursively.
+
+Run frozen installation from `apps/okf-explorer` so relative patch paths resolve
+consistently, as CI does. Replace this backport with a compatible upstream
+release only after checking that the dependency is absent and these tests pass.
+
 ## Playwright update deferred — 11 November 2026
 
 PR #195 remains open because Playwright 1.65.0's Firefox 159 build crashes in
