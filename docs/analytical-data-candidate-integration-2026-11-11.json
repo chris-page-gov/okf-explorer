@@ -1,0 +1,90 @@
+{
+  "schema": "okf-analytical-candidate-integration.v1",
+  "observedAt": "2026-11-11T05:07:34Z",
+  "checkedCandidateCommit": "32c209825fc4fb0f9f50045847ed2061ed672513",
+  "targetBaseCommit": "dcd0c43e29593436b13c59271c75d37d06e2b754",
+  "explorerVersion": "0.8.1",
+  "analyticalProfileVersion": "1.0.0-rc.1",
+  "sourceTreeExport": {
+    "method": "git archive of the committed source snapshots",
+    "filesVerified": 7,
+    "status": "passed"
+  },
+  "checks": {
+    "python": {
+      "passed": 563
+    },
+    "runtimeAcceptanceNode": {
+      "passed": 25
+    },
+    "svelte": {
+      "errors": 0,
+      "warnings": 0
+    },
+    "deterministicAppBuild": {
+      "status": "passed",
+      "treeSha256": "5320dbeffebe59d647488ca6f7bd2fa3c6408b99cbbd5cb1f7295fcd971969e4"
+    },
+    "sbom": {
+      "status": "passed",
+      "pinnedComponents": 144
+    },
+    "bundleRegistrySemanticDocumentationAndTrial": {
+      "status": "passed"
+    },
+    "trialBrowser": {
+      "status": "passed",
+      "browser": "installed Google Chrome",
+      "journey": "two-record Reader, companion popup, exact asset digests, NDL gap and documentation navigation",
+      "profileVersion": "1.0.0-rc.1",
+      "observations": 333,
+      "rightsStatus": "unverified",
+      "manifestSha256": "09268e38d294d7a2fa75f0992453e2580141c2d6b5ae682100129c1ccf42f4cf",
+      "csvSha256": "502ab0f9fd3ed267f2f7b05b7fa288460c2375ec5128b032c49312629e1be3d9",
+      "schemaSha256": "676cbd90441f31b3b9babcca1c23618b5e7ce1113e9eba9972f02fe9942a7ccb",
+      "recordId": "89e5101a-2064-46e7-955e-4cac2fb31c7c",
+      "distributionStatus": "unassessed-download-denied",
+      "consoleErrors": [],
+      "failedRequests": [],
+      "appTreeSha256": "5320dbeffebe59d647488ca6f7bd2fa3c6408b99cbbd5cb1f7295fcd971969e4",
+      "appManifestSha256": "8c1c0394806ed4d466f5adee7084a807543664e2dde776eef7fab26998c56a69"
+    }
+  },
+  "retainedOriginalVerification": "analytical-data-trial-2026-11-11-verification.json",
+  "originalEvidenceBase": "7d48a552fb5f83b7ec0ed6a98f7d8739ac1d3492",
+  "originalSkippedChecks": {
+    "chromeUi": 6,
+    "genuineChromeCdpIntegration": 1,
+    "actualEvidenceConnectIntegration": 1
+  },
+  "originalIntermittentHelpLayout": {
+    "initialFailure": "narrow PageDown left scrollTop at zero",
+    "fullSuitePassed": 176,
+    "fullSuiteSkipped": 6,
+    "isolatedLayoutGroupPassed": 4,
+    "status": "recorded-intermittent-observation"
+  },
+  "unresolvedCompatibility": {
+    "ndlCsvAccess": "403 AccessDenied",
+    "rights": "unverified due to divergent catalogue declarations",
+    "geographyEditionAndCodeMembership": "unverified",
+    "retirementAgeComparability": "unverified",
+    "existingWccProducerErrors": 13,
+    "existingNdlProducerErrors": 1
+  },
+  "inputSha256": {
+    ".gitattributes": "e5f5b925a4135fb1d89774092b91965a4dbaf370a79f11ff439ceadbbc9df6cd",
+    "okf.publication.json": "293635883b115071b83f468f100ef3edb4b3db287ada3bcbe7a89e0a8470fa61",
+    "okf.semantic.json": "5f974ad1d0889b9d28e2242cdc3fceccf8d63903f0b889a8413a51dc11850a75",
+    "sources/analytical-data-trial-2026-11-11/source-register.json": "cdd84b1d88226cf0e1ebd001961182e67df3a03328f9ce8d674e1c8c3b4b4cbd",
+    "profiles/analytical-data/v1/package.schema.json": "676cbd90441f31b3b9babcca1c23618b5e7ce1113e9eba9972f02fe9942a7ccb",
+    "scripts/build_analytical_data_trial.py": "f67ba6ff009cbdb3a124530281de3a0e8756f2e73e9b6f0bba2ff31aba39f26e",
+    "scripts/check_analytical_data.py": "8c4e65c7fe1165d784c4447a80d35e4425702d67b7650a0529f123b0505874c9",
+    "scripts/reconcile_okf_repositories.py": "aa3d15a1392fec3379e12601b36eebe84a878e014b6b593e352aa558d01d1883"
+  },
+  "retainedLogSha256": {
+    "analytical-data-pr-python.log": "b699a64f23c581aaae0ace32e03ac937ec9cc0a705585c068208006b6fd7b0d0",
+    "analytical-data-pr-app.log": "c736f8b2f484ce18692cc5a287d1257729995f22b9272175b4b52ad20b975366",
+    "analytical-data-pr-core.log": "7df8c13eacfb5044a05e4d58990e23fd722d5273033680963234d7c5dbe64141"
+  }
+}

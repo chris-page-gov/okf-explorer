@@ -14,6 +14,23 @@ application tree and build-manifest digests remain identical to the preceding
 main build, so its existing Heritage browser evidence still identifies those
 application bytes. Protected CI and deployed identity remain separate checks.
 
+## Ask OKF HTTP adapter reconciliation — 11 November 2026
+
+The earlier PR #191 candidate proposed `@modelcontextprotocol/node` 2.1.0.
+The v0.8.0 integration subsequently adopted adapter 2.1.2, server and client
+2.4.0, legacy comparison SDK 1.32.2 and patched transitive HTTP dependencies.
+Reconciliation preserves the newer manifest and lockfile from main byte for
+byte, including its security overrides; the earlier candidate must not
+downgrade them. The remaining change records that history and links this
+maintenance guidance from the repository introduction.
+
+The service rejects oversized bodies and all JSON-RPC batches before invoking
+the handler. Preserve those stricter application controls, host/origin
+admission and read-only evidence tools. Service tests cover streamed and
+declared body limits, single-message admission, both supported SDKs and
+ordinary evidence requests. A repository merge does not redeploy the hosted
+service or change a published source/engine archive.
+
 ## Reviewed integration on 23 October 2026
 
 The reading-help candidate combines the overlapping Explorer updates from
@@ -181,5 +198,11 @@ GitHub Actions updates can affect code running during builds or deployment.
 Keep actions pinned to complete commit hashes and verify those hashes against
 the upstream release. Preserve the existing workflow triggers, pnpm 10 setting
 and separate Pages deployment permissions. The reviewed maintenance update
-uses `pnpm/action-setup` 6.1.0 and `actions/deploy-pages` 5.0.1; it does not grant
-additional permissions.
+uses `pnpm/action-setup` 6.1.1 and `actions/deploy-pages` 5.0.1; it does not grant
+additional permissions. On 11 November 2026, the upstream annotated `v6.1.1`
+tag was checked against the pinned commit
+`73e46992e05b19abd31f2f3c20e0e7370d762115`. The update changes the setup action
+in CI, shadow evaluation and Pages while preserving pnpm 10.34.7 and existing
+triggers and permissions. The action's upstream changes concern bootstrap and
+cache handling; protected CI and the exact Pages deployment verify its use in
+this repository.

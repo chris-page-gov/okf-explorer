@@ -1,0 +1,36 @@
+{ 
+  "@context" : "http://environment.data.gov.uk/flood-monitoring/meta/context.jsonld" ,
+  "meta" : { 
+    "publisher" : "Environment Agency" ,
+    "licence" : "http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" ,
+    "documentation" : "http://environment.data.gov.uk/flood-monitoring/doc/reference" ,
+    "version" : "0.9" ,
+    "comment" : "Status: Beta service" ,
+    "hasFormat" : [ "http://environment.data.gov.uk/flood-monitoring/id/stations.csv?lat=52.284932&long=-1.562658&dist=5&_view=full&_limit=2&_offset=4", "http://environment.data.gov.uk/flood-monitoring/id/stations.rdf?lat=52.284932&long=-1.562658&dist=5&_view=full&_limit=2&_offset=4", "http://environment.data.gov.uk/flood-monitoring/id/stations.ttl?lat=52.284932&long=-1.562658&dist=5&_view=full&_limit=2&_offset=4", "http://environment.data.gov.uk/flood-monitoring/id/stations.html?lat=52.284932&long=-1.562658&dist=5&_view=full&_limit=2&_offset=4" ] ,
+    "limit" : 2 ,
+    "offset" : 4
+  }
+   ,
+  "items" : [ { 
+    "@id" : "http://environment.data.gov.uk/flood-monitoring/id/stations/1775" ,
+    "easting" : 427450 ,
+    "gridReference" : "SP274644" ,
+    "label" : "Rainfall station" ,
+    "lat" : 52.27751 ,
+    "long" : -1.599081 ,
+    "measures" : [ { 
+      "@id" : "http://environment.data.gov.uk/flood-monitoring/id/measures/1775-rainfall-tipping_bucket_raingauge-t-15_min-mm" ,
+      "parameter" : "rainfall" ,
+      "parameterName" : "Rainfall" ,
+      "period" : 900 ,
+      "qualifier" : "Tipping Bucket Raingauge" ,
+      "unitName" : "mm"
+    }
+     ] ,
+    "northing" : 264450 ,
+    "notation" : "1775" ,
+    "stationReference" : "1775"
+  }
+   ]
+}
+

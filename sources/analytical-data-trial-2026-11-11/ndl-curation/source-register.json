@@ -1,0 +1,681 @@
+{
+  "schema": "okf-public-guidance-capture.v1",
+  "title": "NDL curation and directory publication",
+  "files": [
+    {
+      "path": "data-curation.html.txt",
+      "url": "https://www.data.gov.uk/data-curation/",
+      "status": "retrieved",
+      "bytes": 15389,
+      "sha256": "2e990587de3775016453c239bec6dba1d0d38e09170fdc10a910dc084e861aab",
+      "observedAt": "2026-11-11T05:15:22Z",
+      "httpStatus": null,
+      "representation": "original HTTP HTML body; numeric final status not retained; curl --fail --location succeeded"
+    },
+    {
+      "path": "publishers.html.txt",
+      "url": "https://www.data.gov.uk/publishers/",
+      "status": "retrieved",
+      "bytes": 10911,
+      "sha256": "7c0e81ff8a7c81214bf7acbdb5710cd3096369b19097c4164a171d6a4bf54812",
+      "observedAt": "2026-11-11T05:15:22Z",
+      "httpStatus": null,
+      "representation": "original HTTP HTML body; numeric final status not retained; curl --fail --location succeeded"
+    },
+    {
+      "path": "publish-and-manage.html.txt",
+      "url": "https://guidance.data.gov.uk/publish_and_manage_data/",
+      "status": "retrieved",
+      "bytes": 12080,
+      "sha256": "b63825a48c994d9d6724bdbeb0e3de4cb366e320c7a177916bc4bf18d5f4fef5",
+      "observedAt": "2026-11-11T05:15:50Z",
+      "httpStatus": null,
+      "representation": "original HTTP HTML body; numeric final status not retained; curl --fail --location succeeded"
+    }
+  ],
+  "rights": {
+    "status": "publisher-notice",
+    "licence": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+    "scope": "Editorial content under the page notice, except where otherwise stated. Linked resources retain their own terms."
+  },
+  "references": [
+    {
+      "parent": "data-curation.html.txt",
+      "locator": "a[href] occurrence 1",
+      "href": "/cookies/",
+      "url": "https://www.data.gov.uk/cookies/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "data-curation.html.txt",
+      "locator": "a[href] occurrence 2",
+      "href": "/cookies/",
+      "url": "https://www.data.gov.uk/cookies/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "data-curation.html.txt",
+      "locator": "a[href] occurrence 3",
+      "href": "#main",
+      "url": "https://www.data.gov.uk/data-curation/#main",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "data-curation.html.txt",
+      "locator": "a[href] occurrence 4",
+      "href": "/",
+      "url": "https://www.data.gov.uk/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "data-curation.html.txt",
+      "locator": "a[href] occurrence 5",
+      "href": "/collections/business-and-economy",
+      "url": "https://www.data.gov.uk/collections/business-and-economy",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "data-curation.html.txt",
+      "locator": "a[href] occurrence 6",
+      "href": "/collections/environment",
+      "url": "https://www.data.gov.uk/collections/environment",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "data-curation.html.txt",
+      "locator": "a[href] occurrence 7",
+      "href": "/collections/government-and-parliament",
+      "url": "https://www.data.gov.uk/collections/government-and-parliament",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "data-curation.html.txt",
+      "locator": "a[href] occurrence 8",
+      "href": "/collections/land-and-property",
+      "url": "https://www.data.gov.uk/collections/land-and-property",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "data-curation.html.txt",
+      "locator": "a[href] occurrence 9",
+      "href": "/collections/people",
+      "url": "https://www.data.gov.uk/collections/people",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "data-curation.html.txt",
+      "locator": "a[href] occurrence 10",
+      "href": "/collections/transport",
+      "url": "https://www.data.gov.uk/collections/transport",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "data-curation.html.txt",
+      "locator": "a[href] occurrence 11",
+      "href": "/collections/early-years",
+      "url": "https://www.data.gov.uk/collections/early-years",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "data-curation.html.txt",
+      "locator": "a[href] occurrence 12",
+      "href": "/search",
+      "url": "https://www.data.gov.uk/search",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "data-curation.html.txt",
+      "locator": "a[href] occurrence 13",
+      "href": "/search",
+      "url": "https://www.data.gov.uk/search",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "data-curation.html.txt",
+      "locator": "a[href] occurrence 14",
+      "href": "/help/",
+      "url": "https://www.data.gov.uk/help/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "data-curation.html.txt",
+      "locator": "a[href] occurrence 15",
+      "href": "/help/",
+      "url": "https://www.data.gov.uk/help/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "data-curation.html.txt",
+      "locator": "a[href] occurrence 16",
+      "href": "https://www.gov.uk/government/organisations",
+      "url": "https://www.gov.uk/government/organisations",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "data-curation.html.txt",
+      "locator": "a[href] occurrence 17",
+      "href": "https://www.gov.uk/guidance/local-government-structure-and-elections",
+      "url": "https://www.gov.uk/guidance/local-government-structure-and-elections",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "data-curation.html.txt",
+      "locator": "a[href] occurrence 18",
+      "href": "https://www.nationalarchives.gov.uk/doc/open-government-licence",
+      "url": "https://www.nationalarchives.gov.uk/doc/open-government-licence",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "data-curation.html.txt",
+      "locator": "a[href] occurrence 19",
+      "href": "https://environment.data.gov.uk/",
+      "url": "https://environment.data.gov.uk/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "data-curation.html.txt",
+      "locator": "a[href] occurrence 20",
+      "href": "https://forms.office.com/Pages/ResponsePage.aspx?id=BXCsy8EC60O0l-ZJLRst2DIqEVWadcZMr7fcyD7mPQpUMFNQNEdGM0RWUkgwSDFXTEMyMkxNUU5JTi4u",
+      "url": "https://forms.office.com/Pages/ResponsePage.aspx?id=BXCsy8EC60O0l-ZJLRst2DIqEVWadcZMr7fcyD7mPQpUMFNQNEdGM0RWUkgwSDFXTEMyMkxNUU5JTi4u",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "data-curation.html.txt",
+      "locator": "a[href] occurrence 21",
+      "href": "https://www.data.gov.uk/publishers",
+      "url": "https://www.data.gov.uk/publishers",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "data-curation.html.txt",
+      "locator": "a[href] occurrence 22",
+      "href": "https://www.data.gov.uk/search",
+      "url": "https://www.data.gov.uk/search",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "data-curation.html.txt",
+      "locator": "a[href] occurrence 23",
+      "href": "/roadmap/",
+      "url": "https://www.data.gov.uk/roadmap/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "data-curation.html.txt",
+      "locator": "a[href] occurrence 24",
+      "href": "/about/",
+      "url": "https://www.data.gov.uk/about/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "data-curation.html.txt",
+      "locator": "a[href] occurrence 25",
+      "href": "/support/",
+      "url": "https://www.data.gov.uk/support/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "data-curation.html.txt",
+      "locator": "a[href] occurrence 26",
+      "href": "/accessibility/",
+      "url": "https://www.data.gov.uk/accessibility/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "data-curation.html.txt",
+      "locator": "a[href] occurrence 27",
+      "href": "/cookies/",
+      "url": "https://www.data.gov.uk/cookies/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "data-curation.html.txt",
+      "locator": "a[href] occurrence 28",
+      "href": "/privacy-and-terms/",
+      "url": "https://www.data.gov.uk/privacy-and-terms/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "data-curation.html.txt",
+      "locator": "a[href] occurrence 29",
+      "href": "/team/",
+      "url": "https://www.data.gov.uk/team/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "data-curation.html.txt",
+      "locator": "a[href] occurrence 30",
+      "href": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+      "url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "data-curation.html.txt",
+      "locator": "a[href] occurrence 31",
+      "href": "https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/",
+      "url": "https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publishers.html.txt",
+      "locator": "a[href] occurrence 1",
+      "href": "/cookies/",
+      "url": "https://www.data.gov.uk/cookies/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publishers.html.txt",
+      "locator": "a[href] occurrence 2",
+      "href": "/cookies/",
+      "url": "https://www.data.gov.uk/cookies/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publishers.html.txt",
+      "locator": "a[href] occurrence 3",
+      "href": "#main",
+      "url": "https://www.data.gov.uk/publishers/#main",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "publishers.html.txt",
+      "locator": "a[href] occurrence 4",
+      "href": "/",
+      "url": "https://www.data.gov.uk/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publishers.html.txt",
+      "locator": "a[href] occurrence 5",
+      "href": "/collections/business-and-economy",
+      "url": "https://www.data.gov.uk/collections/business-and-economy",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publishers.html.txt",
+      "locator": "a[href] occurrence 6",
+      "href": "/collections/environment",
+      "url": "https://www.data.gov.uk/collections/environment",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publishers.html.txt",
+      "locator": "a[href] occurrence 7",
+      "href": "/collections/government-and-parliament",
+      "url": "https://www.data.gov.uk/collections/government-and-parliament",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publishers.html.txt",
+      "locator": "a[href] occurrence 8",
+      "href": "/collections/land-and-property",
+      "url": "https://www.data.gov.uk/collections/land-and-property",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publishers.html.txt",
+      "locator": "a[href] occurrence 9",
+      "href": "/collections/people",
+      "url": "https://www.data.gov.uk/collections/people",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publishers.html.txt",
+      "locator": "a[href] occurrence 10",
+      "href": "/collections/transport",
+      "url": "https://www.data.gov.uk/collections/transport",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publishers.html.txt",
+      "locator": "a[href] occurrence 11",
+      "href": "/collections/early-years",
+      "url": "https://www.data.gov.uk/collections/early-years",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publishers.html.txt",
+      "locator": "a[href] occurrence 12",
+      "href": "/search",
+      "url": "https://www.data.gov.uk/search",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publishers.html.txt",
+      "locator": "a[href] occurrence 13",
+      "href": "/search",
+      "url": "https://www.data.gov.uk/search",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publishers.html.txt",
+      "locator": "a[href] occurrence 14",
+      "href": "/help/",
+      "url": "https://www.data.gov.uk/help/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publishers.html.txt",
+      "locator": "a[href] occurrence 15",
+      "href": "/help/",
+      "url": "https://www.data.gov.uk/help/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publishers.html.txt",
+      "locator": "a[href] occurrence 16",
+      "href": "https://ckan.publishing.service.gov.uk/user/login",
+      "url": "https://ckan.publishing.service.gov.uk/user/login",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publishers.html.txt",
+      "locator": "a[href] occurrence 17",
+      "href": "https://guidance.data.gov.uk/publish_and_manage_data/",
+      "url": "https://guidance.data.gov.uk/publish_and_manage_data/",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "publishers.html.txt",
+      "locator": "a[href] occurrence 18",
+      "href": "/support/",
+      "url": "https://www.data.gov.uk/support/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publishers.html.txt",
+      "locator": "a[href] occurrence 19",
+      "href": "/roadmap/",
+      "url": "https://www.data.gov.uk/roadmap/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publishers.html.txt",
+      "locator": "a[href] occurrence 20",
+      "href": "/about/",
+      "url": "https://www.data.gov.uk/about/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publishers.html.txt",
+      "locator": "a[href] occurrence 21",
+      "href": "/support/",
+      "url": "https://www.data.gov.uk/support/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publishers.html.txt",
+      "locator": "a[href] occurrence 22",
+      "href": "/accessibility/",
+      "url": "https://www.data.gov.uk/accessibility/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publishers.html.txt",
+      "locator": "a[href] occurrence 23",
+      "href": "/cookies/",
+      "url": "https://www.data.gov.uk/cookies/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publishers.html.txt",
+      "locator": "a[href] occurrence 24",
+      "href": "/privacy-and-terms/",
+      "url": "https://www.data.gov.uk/privacy-and-terms/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publishers.html.txt",
+      "locator": "a[href] occurrence 25",
+      "href": "/team/",
+      "url": "https://www.data.gov.uk/team/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publishers.html.txt",
+      "locator": "a[href] occurrence 26",
+      "href": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+      "url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publishers.html.txt",
+      "locator": "a[href] occurrence 27",
+      "href": "https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/",
+      "url": "https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publish-and-manage.html.txt",
+      "locator": "a[href] occurrence 1",
+      "href": "#content",
+      "url": "https://guidance.data.gov.uk/publish_and_manage_data/#content",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "publish-and-manage.html.txt",
+      "locator": "a[href] occurrence 2",
+      "href": "https://data.gov.uk/",
+      "url": "https://data.gov.uk/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publish-and-manage.html.txt",
+      "locator": "a[href] occurrence 3",
+      "href": "https://data.gov.uk/publishers",
+      "url": "https://data.gov.uk/publishers",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publish-and-manage.html.txt",
+      "locator": "a[href] occurrence 4",
+      "href": "/",
+      "url": "https://guidance.data.gov.uk/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publish-and-manage.html.txt",
+      "locator": "a[href] occurrence 5",
+      "href": "https://data.gov.uk/support",
+      "url": "https://data.gov.uk/support",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publish-and-manage.html.txt",
+      "locator": "a[href] occurrence 6",
+      "href": "/",
+      "url": "https://guidance.data.gov.uk/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publish-and-manage.html.txt",
+      "locator": "a[href] occurrence 7",
+      "href": "/publish_and_manage_data/",
+      "url": "https://guidance.data.gov.uk/publish_and_manage_data/",
+      "captureStatus": "retained"
+    },
+    {
+      "parent": "publish-and-manage.html.txt",
+      "locator": "a[href] occurrence 8",
+      "href": "/publish_and_manage_data/get_and_manage_accounts/",
+      "url": "https://guidance.data.gov.uk/publish_and_manage_data/get_and_manage_accounts/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publish-and-manage.html.txt",
+      "locator": "a[href] occurrence 9",
+      "href": "/publish_and_manage_data/harvest_or_add_data/",
+      "url": "https://guidance.data.gov.uk/publish_and_manage_data/harvest_or_add_data/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publish-and-manage.html.txt",
+      "locator": "a[href] occurrence 10",
+      "href": "/publish_and_manage_data/harvest_or_add_data/harvest_data/",
+      "url": "https://guidance.data.gov.uk/publish_and_manage_data/harvest_or_add_data/harvest_data/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publish-and-manage.html.txt",
+      "locator": "a[href] occurrence 11",
+      "href": "/publish_and_manage_data/harvest_or_add_data/harvest_data/dcat/",
+      "url": "https://guidance.data.gov.uk/publish_and_manage_data/harvest_or_add_data/harvest_data/dcat/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publish-and-manage.html.txt",
+      "locator": "a[href] occurrence 12",
+      "href": "/publish_and_manage_data/harvest_or_add_data/harvest_data/ckan/",
+      "url": "https://guidance.data.gov.uk/publish_and_manage_data/harvest_or_add_data/harvest_data/ckan/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publish-and-manage.html.txt",
+      "locator": "a[href] occurrence 13",
+      "href": "/publish_and_manage_data/harvest_or_add_data/harvest_data/gemini/",
+      "url": "https://guidance.data.gov.uk/publish_and_manage_data/harvest_or_add_data/harvest_data/gemini/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publish-and-manage.html.txt",
+      "locator": "a[href] occurrence 14",
+      "href": "/publish_and_manage_data/harvest_or_add_data/add_data/",
+      "url": "https://guidance.data.gov.uk/publish_and_manage_data/harvest_or_add_data/add_data/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publish-and-manage.html.txt",
+      "locator": "a[href] occurrence 15",
+      "href": "/publish_and_manage_data/harvest_or_add_data/inspire/",
+      "url": "https://guidance.data.gov.uk/publish_and_manage_data/harvest_or_add_data/inspire/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publish-and-manage.html.txt",
+      "locator": "a[href] occurrence 16",
+      "href": "/publish_and_manage_data/harvest_or_add_data/local_authority_data_schemas/",
+      "url": "https://guidance.data.gov.uk/publish_and_manage_data/harvest_or_add_data/local_authority_data_schemas/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publish-and-manage.html.txt",
+      "locator": "a[href] occurrence 17",
+      "href": "/publish_and_manage_data/managing_published_data/",
+      "url": "https://guidance.data.gov.uk/publish_and_manage_data/managing_published_data/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publish-and-manage.html.txt",
+      "locator": "a[href] occurrence 18",
+      "href": "/get_data/",
+      "url": "https://guidance.data.gov.uk/get_data/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publish-and-manage.html.txt",
+      "locator": "a[href] occurrence 19",
+      "href": "/get_data/api_documentation/",
+      "url": "https://guidance.data.gov.uk/get_data/api_documentation/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publish-and-manage.html.txt",
+      "locator": "a[href] occurrence 20",
+      "href": "/support/",
+      "url": "https://guidance.data.gov.uk/support/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publish-and-manage.html.txt",
+      "locator": "a[href] occurrence 21",
+      "href": "/support/contribute/",
+      "url": "https://guidance.data.gov.uk/support/contribute/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publish-and-manage.html.txt",
+      "locator": "a[href] occurrence 22",
+      "href": "get_and_manage_accounts/#get-an-account",
+      "url": "https://guidance.data.gov.uk/publish_and_manage_data/get_and_manage_accounts/#get-an-account",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publish-and-manage.html.txt",
+      "locator": "a[href] occurrence 23",
+      "href": "get_and_manage_accounts/#add-or-remove-editors-and-admins",
+      "url": "https://guidance.data.gov.uk/publish_and_manage_data/get_and_manage_accounts/#add-or-remove-editors-and-admins",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publish-and-manage.html.txt",
+      "locator": "a[href] occurrence 24",
+      "href": "harvest_or_add_data/#harvest-or-add-data",
+      "url": "https://guidance.data.gov.uk/publish_and_manage_data/harvest_or_add_data/#harvest-or-add-data",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publish-and-manage.html.txt",
+      "locator": "a[href] occurrence 25",
+      "href": "managing_published_data/#managing-published-data",
+      "url": "https://guidance.data.gov.uk/publish_and_manage_data/managing_published_data/#managing-published-data",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publish-and-manage.html.txt",
+      "locator": "a[href] occurrence 26",
+      "href": "https://data.gov.uk",
+      "url": "https://data.gov.uk",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publish-and-manage.html.txt",
+      "locator": "a[href] occurrence 27",
+      "href": "https://forms.office.com/e/9V26PNFQaR",
+      "url": "https://forms.office.com/e/9V26PNFQaR",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publish-and-manage.html.txt",
+      "locator": "a[href] occurrence 28",
+      "href": "https://github.com/alphagov/datagovuk-tech-docs/blob/master/source/publish_and_manage_data/index.html.md.erb",
+      "url": "https://github.com/alphagov/datagovuk-tech-docs/blob/master/source/publish_and_manage_data/index.html.md.erb",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publish-and-manage.html.txt",
+      "locator": "a[href] occurrence 29",
+      "href": "https://github.com/alphagov/datagovuk-tech-docs/issues/new?body=Problem+with+%27Publish+and+manage+data%27+%28guidance.data.gov.uk%2Fpublish_and_manage_data%2F%29&labels=bug&title=Re%3A+%27Publish+and+manage+data%27",
+      "url": "https://github.com/alphagov/datagovuk-tech-docs/issues/new?body=Problem+with+%27Publish+and+manage+data%27+%28guidance.data.gov.uk%2Fpublish_and_manage_data%2F%29&labels=bug&title=Re%3A+%27Publish+and+manage+data%27",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publish-and-manage.html.txt",
+      "locator": "a[href] occurrence 30",
+      "href": "https://github.com/alphagov/datagovuk-tech-docs",
+      "url": "https://github.com/alphagov/datagovuk-tech-docs",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publish-and-manage.html.txt",
+      "locator": "a[href] occurrence 31",
+      "href": "/accessibility-statement.html",
+      "url": "https://guidance.data.gov.uk/accessibility-statement.html",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publish-and-manage.html.txt",
+      "locator": "a[href] occurrence 32",
+      "href": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+      "url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+      "captureStatus": "linked-not-acquired"
+    },
+    {
+      "parent": "publish-and-manage.html.txt",
+      "locator": "a[href] occurrence 33",
+      "href": "https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/",
+      "url": "https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/",
+      "captureStatus": "linked-not-acquired"
+    }
+  ],
+  "scope": "Three public pages and all captured a[href] references. Authentication, form submission and linked technical-document acquisition are separate actions."
+}
