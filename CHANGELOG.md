@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Reconcile the earlier Ask OKF dependency candidate with the newer adapter
+  2.1.2 and server/client 2.4.0 already on main. Preserve the current dependency
+  lockfile and security overrides, and clarify the maintenance history.
 - Expand the central bibliography to cover 33 referenced papers, with authors,
   dates, versioned arXiv source and PDF links, journal and conference editions,
   repository citation locations, and explicit access and verification limits.
