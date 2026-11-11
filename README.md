@@ -75,6 +75,8 @@ route, unresolved rights and geography gaps, and the existing Reader boundary.
 adds evidence about human selection, data currency, ownership, access contracts
 and service-specific engineering controls.
 
+[The live Defra trial and NDL link-scope audit](docs/analytical-live-trial-2026-11-11.md) validate a Warwick locality API snapshot and scope the legacy host across the public directory. They retain datetime, CRS, rights and national link-health gaps.
+
 ## Contribute
 
 Use the [development guide](docs/development.md) for locked setup, local builds,

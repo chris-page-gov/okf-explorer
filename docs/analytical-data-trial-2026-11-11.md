@@ -76,3 +76,7 @@ The dedicated companion journey also passed against the integrated build in inst
 ## Supplementary curation and service review
 
 The [NDL curation and DEFRA review](analytical-data-curation-review-2026-11-11.md) adds guidance that was absent from the initial trial evidence. The NDL trial exercised a directory record. Curated collection membership, demand, editorial selection and a maintained-publication review remain unverified. The [local assessment](analytical-data-curation-assessment-2026-11-11.json) records source period, data revision, metadata modification and acquisition as separate concepts, and retains the existing rights, access, geography and producer gaps. The candidate schema and original assurance observations retain their own versions and scope.
+
+## Later link-scope and live API evidence
+
+The [read-only follow-up](analytical-live-trial-2026-11-11.md) audits all 59 current Warwickshire records and the national public metadata index. It finds 66 denied legacy S3 resource occurrences and 62 responding exact-path GitHub candidates; historical equivalence, four missing paths and rights remain unresolved. A separate real Environment Agency API trial passes the candidate for five Warwick locality stations and 96 readings, with supplementary pagination, timestamp and spatial checks. These later observations supplement the original dated receipts.

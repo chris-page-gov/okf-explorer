@@ -802,3 +802,5 @@ polite to static hosts.
 - No secrets, tokens, API keys, passwords or live credentials are stored.
 - The pack has a task- and evidence-derived evaluation suite or a documented smaller
   acceptance suite for its first release.
+
+The [live Warwick API trial](analytical-live-trial-2026-11-11.md) shows a two-table analytical companion from a read-only API. Its adapter checks pagination and timestamps separately from RC.1 validation; spatial metadata retains its source and uncertainty.

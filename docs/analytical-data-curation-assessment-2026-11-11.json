@@ -128,5 +128,20 @@
     "helpLayout": "initial failure retained; isolated four-layout rerun passed",
     "existingWccProducerErrors": 13,
     "existingNdlProducerErrors": 1
+  },
+  "subsequentReadOnlyEvidence": {
+    "report": "analytical-live-trial-2026-11-11.md",
+    "wccRecords": 59,
+    "deniedLegacyResourceOccurrences": 66,
+    "exactPathRespondingCandidates": 62,
+    "missingCandidatePaths": 4,
+    "emptyResourceRecords": 18,
+    "historicalEquivalence": "unverified",
+    "publisherApproval": "pending",
+    "nationalOtherHostLinkHealth": "unassessed",
+    "defraLocalityStations": 5,
+    "defraReadings": 96,
+    "profileRevision": "1.0.0-rc.1",
+    "typedDatetimeAndSpatialContract": "unresolved"
   }
 }

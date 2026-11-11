@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- Scope the Warwickshire legacy S3 failure against all 60,155 observed public NDL
+  records; retain 66 denied resource occurrences, 62 responding GitHub candidates
+  and four missing paths without asserting historical byte equivalence. Add a
+  read-only live Environment Agency API trial with five Warwick locality stations,
+  96 readings, paging completion, timestamp and spatial checks. Preserve RC.1
+  datetime/CRS gaps and add reproducible offline evidence and regression tests.
+
 - Capture NDL curation and directly linked publisher guidance, plus selected
   DEFRA platform and engineering documentation. Distinguish directory records
   from human collection selection and add a local review of purpose, ownership,

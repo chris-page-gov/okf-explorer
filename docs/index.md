@@ -36,6 +36,8 @@ to this guide, worked examples and the GitHub repository.
 - [Warwickshire and NDL compatibility trial](analytical-data-trial-2026-11-11.md) captures all 333 real observations, conversion evidence, denied catalogue access and the Explorer application boundary.
 - [NDL curation and DEFRA review](analytical-data-curation-review-2026-11-11.md) assesses collection selection, currency, ownership and versioned service access, with a labelled local review proposal.
 
+- [Live Defra API and NDL link scope](analytical-live-trial-2026-11-11.md) covers real Warwick stations and readings, pagination, timestamps, spatial metadata and the public catalogue host census.
+
 - [Bundle authoring](okf-bundle-authoring.md): core fields, optional domain profiles and richer publication.
 - [Foundry prompt kit](okf-authoring-prompt-kit.md): governed production authoring after the small starter.
 - [Build and publication method](okf-build-and-publication-methodology.md): impact planning, source intake and release gates.
