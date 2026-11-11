@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- Update PDF.js from 6.4.299 to 6.5.438 and regenerate the dependency inventory.
+  Verify PDF rendering and page changes against the retained DWP fixture,
+  and refresh the exact-build Heritage browser evidence while preserving the
+  preceding receipt. Local research PDFs remain outside Git and Site inputs.
+- Defer Playwright 1.65.0 after reproducing its upstream Firefox ARIA
+  reflection crash. Keep the existing stable toolchain and full accessibility
+  gate for the independent PDF.js and framework updates.
 - Update the Explorer's Node type definitions to 26.6.6 with matching
   `undici-types` 8.9.0 and regenerate the dependency inventory. Retain the
   declared runtime minimum and security overrides.

@@ -1,5 +1,20 @@
 # Maintaining Explorer dependencies
 
+## Playwright update deferred — 11 November 2026
+
+PR #195 remains open because Playwright 1.65.0's Firefox 159 build crashes in
+three existing accessibility checks. The failures reproduce locally, including
+a direct native ARIA reflection read after a role or label locator. They match
+[Playwright issue #43967](https://github.com/microsoft/playwright/issues/43967)
+and [Mozilla bug 2090055](https://bugzilla.mozilla.org/show_bug.cgi?id=2090055).
+The latest stable npm version was still 1.65.0 when checked on 11 November.
+
+The independent PDF.js and framework updates retain Playwright 1.64.1 from
+main. Resume the browser update when a stable package contains the upstream
+fix, then run the complete Chrome, Firefox and WebKit acceptance gate. Keep
+all accessibility rules, tests and browser engines enabled. This deferral does
+not establish that the older toolchain has no other known defects.
+
 ## Node type definitions — 11 November 2026
 
 PR #190 updates the application's development-only `@types/node` resolution
@@ -206,3 +221,22 @@ in CI, shadow evaluation and Pages while preserving pnpm 10.34.7 and existing
 triggers and permissions. The action's upstream changes concern bootstrap and
 cache handling; protected CI and the exact Pages deployment verify its use in
 this repository.
+
+## PDF renderer maintenance — 11 November 2026
+
+The PDF.js update selects `pdfjs-dist` 6.5.438 and its optional canvas dependency
+`@napi-rs/canvas` 1.1.0. The renderer and worker remain from the same locked
+package; the update changes the generated application bytes. The SBOM records
+the resolved packages without changing the existing security overrides.
+
+The existing source-boundary browser test verifies the frozen DWP PDF checksum,
+renders a populated page, changes page and returns to it. It also loads all
+28 source cases. This local check uses the separately retained producer fixture;
+no PDF is copied into Explorer's Git history or Site inputs by the update.
+The 100-question Heritage suite and three local journeys supply fresh runtime
+evidence for the rebuilt application. The previous receipt and compressed
+results are retained under
+`validation/dependency-updates/2026-11-11/pre-pdfjs/`.
+
+Protected-branch CI and exact-commit Pages verification remain separate from
+these local observations.

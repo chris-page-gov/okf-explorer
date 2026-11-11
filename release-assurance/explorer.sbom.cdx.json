@@ -19,7 +19,7 @@
     "properties": [
       {
         "name": "okf:pnpm-lock-sha256",
-        "value": "8d14db01051bc3bdfca89d2439bec8959345cd7565be04f69ffb2bfe08f297a4"
+        "value": "4491eb234cf9a53cc49c193979b1a3f1101cfd3a4ace0dcaf9ff5eee205480ae"
       }
     ],
     "tools": {
@@ -190,158 +190,158 @@
       ]
     },
     {
-      "bom-ref": "pkg:npm/%40napi-rs/canvas-android-arm64@1.0.13",
+      "bom-ref": "pkg:npm/%40napi-rs/canvas-android-arm64@1.1.0",
       "name": "@napi-rs/canvas-android-arm64",
-      "purl": "pkg:npm/%40napi-rs/canvas-android-arm64@1.0.13",
+      "purl": "pkg:npm/%40napi-rs/canvas-android-arm64@1.1.0",
       "type": "library",
-      "version": "1.0.13",
+      "version": "1.1.0",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "b6b9fb01a0f343ec9e780d1ece1902edc0756433eda7851893412f07917caad60bf631155ad56b537d163a9239d83b33a13c5a4ec0a07f93cfe1955a3a53881d"
+          "content": "98aad2991ca158ae2aebdf50d71b616d92198bb241bcbb6c44d9ce64078568b3ce153d72a3ccbcd9a442da73596d74c625753b7d50ce3601903ebd2fa3791eaf"
         }
       ]
     },
     {
-      "bom-ref": "pkg:npm/%40napi-rs/canvas-darwin-arm64@1.0.13",
+      "bom-ref": "pkg:npm/%40napi-rs/canvas-darwin-arm64@1.1.0",
       "name": "@napi-rs/canvas-darwin-arm64",
-      "purl": "pkg:npm/%40napi-rs/canvas-darwin-arm64@1.0.13",
+      "purl": "pkg:npm/%40napi-rs/canvas-darwin-arm64@1.1.0",
       "type": "library",
-      "version": "1.0.13",
+      "version": "1.1.0",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "e98d9d8c47ad2fc728a717cd2ba860ee88a0ff1a93c0e721bf5f6104e9becc135d29cff4d99de48d9379c2b2f3bff9793b4e3f6c0412e88fc0950a700655e03e"
+          "content": "8aac124f8834a07fb1f150a9048621f8c62892ffe656f90cfaff6824607477d0373f6a81878da8809955c96abd4a93c2ac08d2eeda6531bd43dce21fc65faeb7"
         }
       ]
     },
     {
-      "bom-ref": "pkg:npm/%40napi-rs/canvas-darwin-x64@1.0.13",
+      "bom-ref": "pkg:npm/%40napi-rs/canvas-darwin-x64@1.1.0",
       "name": "@napi-rs/canvas-darwin-x64",
-      "purl": "pkg:npm/%40napi-rs/canvas-darwin-x64@1.0.13",
+      "purl": "pkg:npm/%40napi-rs/canvas-darwin-x64@1.1.0",
       "type": "library",
-      "version": "1.0.13",
+      "version": "1.1.0",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "399a0fc30bb84cc320f064c2141ae0f14144c7041353fe798b7b930bf8b30dab7a3c713eae8f5d8a6c90a0e6e815ff75f8d63b3e79fbd12711f1ff08f3e7995f"
+          "content": "8e4780f1e553c43ba6d372d3bdcdf6609dbc17a281d54d206309d631f38051066f596121fe4bce35bcb8896189c77f93c38e54a8c18c5e3b70d8628d5590e156"
         }
       ]
     },
     {
-      "bom-ref": "pkg:npm/%40napi-rs/canvas-linux-arm-gnueabihf@1.0.13",
+      "bom-ref": "pkg:npm/%40napi-rs/canvas-linux-arm-gnueabihf@1.1.0",
       "name": "@napi-rs/canvas-linux-arm-gnueabihf",
-      "purl": "pkg:npm/%40napi-rs/canvas-linux-arm-gnueabihf@1.0.13",
+      "purl": "pkg:npm/%40napi-rs/canvas-linux-arm-gnueabihf@1.1.0",
       "type": "library",
-      "version": "1.0.13",
+      "version": "1.1.0",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "75949868a44ebacc14d9e5161b96812a774d55eebc7a5a35617f77c6d45ac7babae7cb63f2b604f87c1dba8bd6260b3aab0bf5af5fc22d1eb49c37816f28efca"
+          "content": "638624286d628e8aa481475310404d1b893ed812b96d1e6318be92e7a63109760fc067d47799c40fcffbe31c9cef3f9ba62c4f6ac0a3498a0fdf160f38818dc7"
         }
       ]
     },
     {
-      "bom-ref": "pkg:npm/%40napi-rs/canvas-linux-arm64-gnu@1.0.13",
+      "bom-ref": "pkg:npm/%40napi-rs/canvas-linux-arm64-gnu@1.1.0",
       "name": "@napi-rs/canvas-linux-arm64-gnu",
-      "purl": "pkg:npm/%40napi-rs/canvas-linux-arm64-gnu@1.0.13",
+      "purl": "pkg:npm/%40napi-rs/canvas-linux-arm64-gnu@1.1.0",
       "type": "library",
-      "version": "1.0.13",
+      "version": "1.1.0",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "5ba173604f000c723ddc89f5be2f342812fa6ed0ed00cba3e740a1e69b64592f31ba7b72cdb4788792435265e86a4c599f6c8c22792cb9d4c4a95496a05a851a"
+          "content": "744fd7b61a9892259c055b4a16565b517c0061f0ee406a835a2c739e2a493667af2c6a69acd9d35506727ed9b545926e76420e9f6124cd864330c113334f11a3"
         }
       ]
     },
     {
-      "bom-ref": "pkg:npm/%40napi-rs/canvas-linux-arm64-musl@1.0.13",
+      "bom-ref": "pkg:npm/%40napi-rs/canvas-linux-arm64-musl@1.1.0",
       "name": "@napi-rs/canvas-linux-arm64-musl",
-      "purl": "pkg:npm/%40napi-rs/canvas-linux-arm64-musl@1.0.13",
+      "purl": "pkg:npm/%40napi-rs/canvas-linux-arm64-musl@1.1.0",
       "type": "library",
-      "version": "1.0.13",
+      "version": "1.1.0",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "fba7d0fab478f619006b8be8876b2d2c8c10fb8b7e826a2c78cf01739dff0e53176fbdc82b29833d62bd03f36d59ea935b88a35a9a58bb2bb14b684f23cb7334"
+          "content": "0ea67f08c707961539ea93e3bfd00fd21dd4ecc150e4bcc2d47cccc91328b4bf8f16c26664903fce20293d8572cb3efc0da54b848f2ddd2a37cedaad8a36d8a6"
         }
       ]
     },
     {
-      "bom-ref": "pkg:npm/%40napi-rs/canvas-linux-riscv64-gnu@1.0.13",
+      "bom-ref": "pkg:npm/%40napi-rs/canvas-linux-riscv64-gnu@1.1.0",
       "name": "@napi-rs/canvas-linux-riscv64-gnu",
-      "purl": "pkg:npm/%40napi-rs/canvas-linux-riscv64-gnu@1.0.13",
+      "purl": "pkg:npm/%40napi-rs/canvas-linux-riscv64-gnu@1.1.0",
       "type": "library",
-      "version": "1.0.13",
+      "version": "1.1.0",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "d7b5c430ededf515bf4ed1ed4857f60246925ae0967736cf7a2773ef3ace15ac07c682d22429e94c8d61379694beb64d9e434d9adfef655242874af251a8a4dc"
+          "content": "909ee6e67d957dfc565cce5019ae657eaf193782dd389128cf7680240988a98bca899c35811757aa9b9c9d15ec17a0fd9cb62288895ebda02d01c951edce6296"
         }
       ]
     },
     {
-      "bom-ref": "pkg:npm/%40napi-rs/canvas-linux-x64-gnu@1.0.13",
+      "bom-ref": "pkg:npm/%40napi-rs/canvas-linux-x64-gnu@1.1.0",
       "name": "@napi-rs/canvas-linux-x64-gnu",
-      "purl": "pkg:npm/%40napi-rs/canvas-linux-x64-gnu@1.0.13",
+      "purl": "pkg:npm/%40napi-rs/canvas-linux-x64-gnu@1.1.0",
       "type": "library",
-      "version": "1.0.13",
+      "version": "1.1.0",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "95ce3c23092754706c3735e7f57b393a452c457dfc325dd9d5a3b26d0e7598c13365c926f3ee00d2a44e97260712804fcebd642f7214f19500a836fbc2d757f3"
+          "content": "b90f49b89951850747cadb5c3163a2c0b91f22a92a681d1815455ef37e4b51ed764c7b766f9d475e44c8b6ad1fc564f58dd8543d7db2956675c1a9642720fa19"
         }
       ]
     },
     {
-      "bom-ref": "pkg:npm/%40napi-rs/canvas-linux-x64-musl@1.0.13",
+      "bom-ref": "pkg:npm/%40napi-rs/canvas-linux-x64-musl@1.1.0",
       "name": "@napi-rs/canvas-linux-x64-musl",
-      "purl": "pkg:npm/%40napi-rs/canvas-linux-x64-musl@1.0.13",
+      "purl": "pkg:npm/%40napi-rs/canvas-linux-x64-musl@1.1.0",
       "type": "library",
-      "version": "1.0.13",
+      "version": "1.1.0",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "6c6635af6e92d9bb3c50d14970f59c09235d0856ca7a9e4f013b2fb60b42f40e6ee92460af6fe3244fd19611cbe66f59a62c4d0e15642d8ff9875e8ac7957d60"
+          "content": "85ab3808f3c092409a73f2d9d77540c39a7e3092dd68a568cab86e98dfc0eee25debdeb4c5890934366051e6f2c6285af36005cd7c7a455f90260e6a186d3bf6"
         }
       ]
     },
     {
-      "bom-ref": "pkg:npm/%40napi-rs/canvas-win32-arm64-msvc@1.0.13",
+      "bom-ref": "pkg:npm/%40napi-rs/canvas-win32-arm64-msvc@1.1.0",
       "name": "@napi-rs/canvas-win32-arm64-msvc",
-      "purl": "pkg:npm/%40napi-rs/canvas-win32-arm64-msvc@1.0.13",
+      "purl": "pkg:npm/%40napi-rs/canvas-win32-arm64-msvc@1.1.0",
       "type": "library",
-      "version": "1.0.13",
+      "version": "1.1.0",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "daf44f059a1a22f26b5240e16531361e7d18ae7a49442595337109002a012a3b9623a5a03f11ad52844cb3146f882b3292cf1b293485772c35e027a59671b6a8"
+          "content": "3099e4b4b28d8a3997a9d8d3ba08470d9f530cb67db949b686f157a9a3aa9f4fb0ee5a615c59dfb7a6e94a040073d5357b1736d14188065cc6bbdfa48828fd02"
         }
       ]
     },
     {
-      "bom-ref": "pkg:npm/%40napi-rs/canvas-win32-x64-msvc@1.0.13",
+      "bom-ref": "pkg:npm/%40napi-rs/canvas-win32-x64-msvc@1.1.0",
       "name": "@napi-rs/canvas-win32-x64-msvc",
-      "purl": "pkg:npm/%40napi-rs/canvas-win32-x64-msvc@1.0.13",
+      "purl": "pkg:npm/%40napi-rs/canvas-win32-x64-msvc@1.1.0",
       "type": "library",
-      "version": "1.0.13",
+      "version": "1.1.0",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "0d4956de564fcfade462c7fc9b1832c99b9ebe1947d13dff0463fd97e35ace1074175fa02fa0f886a65d9e1669c36e03956993a404c373261266524e8be0dd7d"
+          "content": "d3ce7be5b164ee289a7716a9e21f89c601aeb7dc43087006ba6eb08747889cde77cc43089a49841e2e4cbac857d853a634eeea44d5fb04f8830b96580701de12"
         }
       ]
     },
     {
-      "bom-ref": "pkg:npm/%40napi-rs/canvas@1.0.13",
+      "bom-ref": "pkg:npm/%40napi-rs/canvas@1.1.0",
       "name": "@napi-rs/canvas",
-      "purl": "pkg:npm/%40napi-rs/canvas@1.0.13",
+      "purl": "pkg:npm/%40napi-rs/canvas@1.1.0",
       "type": "library",
-      "version": "1.0.13",
+      "version": "1.1.0",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "6fceee819a50e558b0a950648deaefc69c1ad069893ec2872c136864de86a6359e1f34db0d41abcab8aafb60d85b65db07ec42a92208350cac0b4fc8f3b9cf6f"
+          "content": "93ea61fc3f07f464bc659e3ca24bc7aca789ca792a000d64314651bb34563654140c75e782aee845a58c64176649f77d661572f5bc0d29e8bfef031ba08fee32"
         }
       ]
     },
@@ -1490,15 +1490,15 @@
       ]
     },
     {
-      "bom-ref": "pkg:npm/pdfjs-dist@6.4.299",
+      "bom-ref": "pkg:npm/pdfjs-dist@6.5.438",
       "name": "pdfjs-dist",
-      "purl": "pkg:npm/pdfjs-dist@6.4.299",
+      "purl": "pkg:npm/pdfjs-dist@6.5.438",
       "type": "library",
-      "version": "6.4.299",
+      "version": "6.5.438",
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "015975dfccc02ed7da00fbc00ee944d0f65385b6330814bbf672f8a4e48bffa4a6ff8007e40db5043f551edf7b3a50aecc9b82a66799b40b648a78ac17855bd6"
+          "content": "be0f0fc35c7e0052b2e00303be1b9697970e615f1debdf14a0400da0516173bf61a970e7650aa7397a31c371c6f74ed61ce8352583af2e13fbe7a6e875d171a4"
         }
       ]
     },
@@ -1917,7 +1917,7 @@
         "pkg:npm/%40sveltejs/vite-plugin-svelte@7.3.1",
         "pkg:npm/%40types/node@26.6.6",
         "pkg:npm/%40vitest/coverage-v8@4.1.12",
-        "pkg:npm/pdfjs-dist@6.4.299",
+        "pkg:npm/pdfjs-dist@6.5.438",
         "pkg:npm/svelte-check@4.7.7",
         "pkg:npm/svelte@5.57.2",
         "pkg:npm/typescript@6.0.3",
