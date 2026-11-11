@@ -49,7 +49,14 @@
         {
           "path": "outputs/Deep Research Report_ Ask OKF, Bounded Evidence Packages, and DWP Imprisonment_Hospital Guidance.pdf",
           "bytes": 668127,
-          "sha256": "edac2b2d0ea9da4257869ca2d6f91f0b55832e2a344eb7d8d55c1ac41a7838c3"
+          "sha256": "edac2b2d0ea9da4257869ca2d6f91f0b55832e2a344eb7d8d55c1ac41a7838c3",
+          "retention": {
+            "updated_on": "2026-11-11",
+            "location": ".local-research/bep-research-2026-09-19/outputs/Deep Research Report_ Ask OKF, Bounded Evidence Packages, and DWP Imprisonment_Hospital Guidance.pdf",
+            "git": "excluded from current tree; earlier commits retain the historical copy",
+            "site": "excluded",
+            "integrity": "original byte size and SHA-256 unchanged"
+          }
         },
         {
           "path": "outputs/Research B \u2014 Storage, deterministic compilation and efficient BEP serving.docx",
@@ -64,7 +71,14 @@
         {
           "path": "outputs/Research B \u2014 Storage, deterministic compilation and efficient BEP serving.pdf",
           "bytes": 379526,
-          "sha256": "c1c03b4103c95e0b1515d794d19b8b660c88631c63b2306d2e8d808ba7ffc2c8"
+          "sha256": "c1c03b4103c95e0b1515d794d19b8b660c88631c63b2306d2e8d808ba7ffc2c8",
+          "retention": {
+            "updated_on": "2026-11-11",
+            "location": ".local-research/bep-research-2026-09-19/outputs/Research B \u2014 Storage, deterministic compilation and efficient BEP serving.pdf",
+            "git": "excluded from current tree; earlier commits retain the historical copy",
+            "site": "excluded",
+            "integrity": "original byte size and SHA-256 unchanged"
+          }
         },
         {
           "path": "sources.json",
@@ -371,5 +385,9 @@
       "reason": "Explicitly deferred from this publication."
     }
   ],
-  "originals_retention": "Original paths identify the historical intake locations. After hash verification the owner retained all original files in a private external-drive archive; this public inventory is not a public mirror of excluded material."
+  "originals_retention": "Original paths identify the historical intake locations. After hash verification the owner retained all original files in a private external-drive archive; this public inventory is not a public mirror of excluded material.",
+  "retention_update": {
+    "updated_on": "2026-11-11",
+    "note": "The capture counts and original paths remain historical evidence. PDF exports now have explicit local retention locations outside Git and Site inputs; other captured files remain at their curated paths."
+  }
 }
