@@ -16,3 +16,5 @@ research/bep_research_A_RECONSTRUCTED_2026-09-19/** -text
 sources/analytical-data-trial-2026-11-11/** -text
 sources/analytical-data-trial-2026-11-11/*.txt -whitespace
 sources/analytical-data-trial-2026-11-11/warwickshire-original.csv -whitespace
+sources/analytical-data-trial-2026-11-11/ndl-curation/*.txt -whitespace
+sources/analytical-data-trial-2026-11-11/defra-learning/*.txt -whitespace

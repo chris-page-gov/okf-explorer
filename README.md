@@ -71,6 +71,9 @@ Reader checks across the estate.
 [The Warwickshire and NDL trial](docs/analytical-data-trial-2026-11-11.md)
 records a passed 333-observation local projection, a denied catalogue download
 route, unresolved rights and geography gaps, and the existing Reader boundary.
+[The NDL curation and DEFRA review](docs/analytical-data-curation-review-2026-11-11.md)
+adds evidence about human selection, data currency, ownership, access contracts
+and service-specific engineering controls.
 
 ## Contribute
 

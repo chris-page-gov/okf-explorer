@@ -72,3 +72,7 @@ The candidate was replayed onto current `main` at `dcd0c43e`, which contains Exp
 Fresh integration checks passed 563 Python tests, 25 runtime-acceptance Node tests, Svelte checking, the deterministic v0.8.1 app build, SBOM and the source, semantic, registry and documentation gates. The original Vitest, MCP and full Chrome observations retain their original base. Their eight skipped checks and intermittent help-layout failure remain explicit in both verification records. The compatibility gaps retain their open status during draft review.
 
 The dedicated companion journey also passed against the integrated build in installed Chrome. Its receipt binds the exact v0.8.1 app manifest and tree alongside the analytical manifest, schema and CSV digests. The original full UI suite observation retains its separate date and scope.
+
+## Supplementary curation and service review
+
+The [NDL curation and DEFRA review](analytical-data-curation-review-2026-11-11.md) adds guidance that was absent from the initial trial evidence. The NDL trial exercised a directory record. Curated collection membership, demand, editorial selection and a maintained-publication review remain unverified. The [local assessment](analytical-data-curation-assessment-2026-11-11.json) records source period, data revision, metadata modification and acquisition as separate concepts, and retains the existing rights, access, geography and producer gaps. The candidate schema and original assurance observations retain their own versions and scope.

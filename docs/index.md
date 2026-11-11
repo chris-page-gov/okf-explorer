@@ -34,6 +34,7 @@ to this guide, worked examples and the GitHub repository.
 - [Learning presentation](learning-presentation.md): design goal-led journeys and conceptual filters.
 - [Analytical Data profile v1](../profiles/analytical-data/v1/index.md) and [estate rollout](analytical-data-profile-rollout.md) cover versioned CSV packages, identifier declarations and validation.
 - [Warwickshire and NDL compatibility trial](analytical-data-trial-2026-11-11.md) captures all 333 real observations, conversion evidence, denied catalogue access and the Explorer application boundary.
+- [NDL curation and DEFRA review](analytical-data-curation-review-2026-11-11.md) assesses collection selection, currency, ownership and versioned service access, with a labelled local review proposal.
 
 - [Bundle authoring](okf-bundle-authoring.md): core fields, optional domain profiles and richer publication.
 - [Foundry prompt kit](okf-authoring-prompt-kit.md): governed production authoring after the small starter.

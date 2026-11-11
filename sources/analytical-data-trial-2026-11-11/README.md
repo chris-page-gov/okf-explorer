@@ -9,3 +9,12 @@ The [reviewed local projection](projection.json) controls the field mapping, tri
 Warwickshire County Council publishes the 2008 data and credits the Office for National Statistics, Mid-2008 Super-Output Area Population Estimates. Its dataset-specific page links [CC BY-SA 2.0 UK](https://creativecommons.org/licenses/by-sa/2.0/uk/). Retain that attribution and licence with the original and converted CSV. The conversion renames headers, removes numeric formatting characters and adds a reference year. The NDL directory declares UK OGL, creating the unresolved discrepancy recorded in the trial. The NDL public page uses the [OGL v3 notice](https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/) for its editorial content. A licence declaration in either catalogue needs to retain its own provenance.
 
 The denied S3 responses are retained as failure evidence. The WCC GitHub distribution is a separate acquired resource. It supplies no proof of equivalence to the inaccessible S3 object. The [trial report](../../docs/analytical-data-trial-2026-11-11.md) describes the measured scope and unresolved gaps.
+
+Supplementary [NDL curation captures](ndl-curation/source-register.json) and
+[DEFRA learning captures](defra-learning/source-register.json) retain separate
+inventories. The original seven-file trial register keeps its original
+population. The later registers distinguish HTTP HTML and browser-rendered
+representations and record onward references with their acquisition status.
+Editorial content retains each publisher's OGL notice and exceptions. Dataset
+and service terms have their own scope. The [curation and engineering review](../../docs/analytical-data-curation-review-2026-11-11.md)
+records the source statements and local proposals.

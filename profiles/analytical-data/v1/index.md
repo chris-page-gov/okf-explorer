@@ -52,6 +52,8 @@ The receipt includes the profile version and status, schema, validator and toolc
 
 ## Version and adoption
 
+The [NDL curation and DEFRA review](../../../docs/analytical-data-curation-review-2026-11-11.md) adds a supplementary local assessment of audience, demand, ownership, currency, rights and versioned access. NDL collections have a human editorial selection process. A directory record retains its own publication route. The analytical receipt supplies evidence for the integrity part of that wider review. Future typed datetime or spatial validation needs an explicit contract revision.
+
 The [11 November 2026 Warwickshire and NDL trial](../../../docs/analytical-data-trial-2026-11-11.md) checks a real 333-observation local projection and captures the separate catalogue's denied download and rights discrepancy. It also defines the current Explorer interface boundary. The trial keeps the candidate schema and validator at their pinned revision.
 
 A producer pins the profile URI, exact version, descriptor and schema digest, and records the validator digest in its acceptance receipt. Dataset release versions track the source data separately. Assign a new release candidate number when candidate contract bytes change. Freeze the accepted contract and schema at release. A change that alters validation or interpretation gets a distinct versioned profile route and explicit compatibility tests. Existing producers can adopt an analytical companion per dataset through the [estate rollout](../../../docs/analytical-data-profile-rollout.md).

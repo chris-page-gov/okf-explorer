@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- Capture NDL curation and directly linked publisher guidance, plus selected
+  DEFRA platform and engineering documentation. Distinguish directory records
+  from human collection selection and add a local review of purpose, ownership,
+  demand, currency, rights and versioned access. Retain service-specific limits,
+  representation evidence, future datetime and spatial gaps, and the original
+  skipped checks and intermittent UI observation.
+
 - Test Analytical Data 1.0.0-rc.1 against all 333 observations in Warwickshire's
   historical ageing-population CSV and its NDL directory record. Retain pinned
   sources, a reproducible conversion, seven rejection probes and a bounded

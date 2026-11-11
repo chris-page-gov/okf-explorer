@@ -25,6 +25,12 @@ an ordinary record linked to a separately validated analytical companion. The
 existing Reader can display those links. Typed CSV inspection and receipt
 interpretation would require a separate application feature.
 
+For discovery and maintained analytical publications, retain a human review of
+audience, demand, owner, currency, rights and access with the package. The
+[NDL curation and DEFRA review](analytical-data-curation-review-2026-11-11.md)
+distinguishes the official service guidance from the proposed local review
+structure and future contract work.
+
 ## Choose The Bundle Shape
 
 | Use this | When | Output |
