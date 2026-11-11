@@ -1874,8 +1874,11 @@ def is_component_source_allowed(relative: Path) -> bool:
         relative.name in FORBIDDEN_NAMES
         or relative.name.startswith("~$")
         or relative.suffix.lower() in FORBIDDEN_SUFFIXES
-        # Research drafts are local working documents, not Site transport assets.
-        or (relative.parts[:1] == ("research",) and relative.suffix.lower() == ".docx")
+        # Retained research PDFs and Word drafts are not Site transport assets.
+        or (
+            relative.parts[:1] == ("research",)
+            and relative.suffix.lower() in {".docx", ".pdf"}
+        )
         # The reconstructed archive keeps original HTML in Git; the Site renders
         # the same-stem Markdown at these routes instead.
         or (

@@ -44,3 +44,5 @@ postmortem/
 
 # Retained research inputs live outside the public Site input directories.
 /.local-research/
+# Research PDF copies belong in .local-research, including report exports.
+/research/**/*.[pP][dD][fF]
