@@ -1,6 +1,7 @@
 # Bounded evidence package research
 
-Status: curated research record, 26 September 2026. This page helps readers
+Status: curated research record, 26 September 2026; bibliography and PDF
+retention updated on 11 November 2026. This page helps readers
 find the supplied 19 September work. It does not adopt a bounded evidence
 package (BEP) standard, change Ask OKF, establish source authority or provide
 DWP entitlement guidance. The separate [implementation status](bep-implementation-status.md)
@@ -8,6 +9,9 @@ compares these proposals with the code and recorded checks at a named revision.
 
 ## Start with the research
 
+- The [central bibliography](../sources-index.md#research-benchmarks) records
+  the papers cited here, their versioned retrieval URLs where available and
+  the limits of the bibliographic checks. It does not revalidate report claims.
 - [Original research handover](../research/bep-research-2026-09-19/00_START_HERE.md)
   states the two tasks, their baseline and unresolved questions. Its
   [source register](../research/bep-research-2026-09-19/SOURCES.md) and
@@ -35,20 +39,27 @@ compares these proposals with the code and recorded checks at a named revision.
 ## What was curated
 
 The [curation inventory](../research/bep-curation-inventory.json) lists the
-source and copied SHA-256 for each of the 66 retained files. Both supplied
+source and copied SHA-256 for each of the 66 files captured on 26 September
+2026. Its retention fields record the later move of two PDF exports into
+local storage; the remaining 64 files stay in Git. Both supplied
 package directories were copied byte for byte from an untracked local Explorer
 checkout. Its Git commit identifies the surrounding code, **not** the
 untracked research bytes. The first handover manifest covers five starting
 files; the curation inventory additionally covers its six report formats and
 one manifest. The reconstructed package retains its own 52-file manifest and
 checksum index. Narrow Git attributes preserve the supplied line endings, including four CRLF
-CSV files; staged Git blobs are checked against the same inventory. Copy and hash checks establish byte custody only. We did not
+CSV files; the retained bytes are checked against the same inventory. Copy and hash checks establish byte custody only. We did not
 execute the supplied research scripts, reproduce model work, re-audit external
 citations or run a new benchmark.
 
-Each report has one primary Markdown link above. PDF, Word and HTML versions
-remain in the package to preserve delivery history. Git retains the Word
-files and the reconstructed package’s original HTML. The Site serves its
+Each report has one primary Markdown link above. The PDF exports now remain
+only in `.local-research/bep-research-2026-09-19/outputs/`, with their original
+filenames, byte sizes and SHA-256 checksums recorded in the curation inventory.
+They are ignored by Git and excluded from Site assembly, including if a PDF
+is accidentally put back under `research/`. Earlier Git commits still contain
+the historical PDF copies; this change does not rewrite history.
+Git retains the Word files and the reconstructed package’s original HTML.
+The Site serves its
 Markdown-derived reading pages at the HTML routes, avoiding same-name route
 collisions. The reconstructed ZIP was left out
 because it duplicates all 54 retained directory files byte for byte. macOS
