@@ -9,6 +9,8 @@ Use the [public bundle access directory](public-bundle-access.md) for the exact
 Pages descriptors, semantic entrypoints and verified matching GitHub fallbacks
 across the public `okf-*` producers. It includes a prompt for ChatGPT Voice and
 records where Pages and GitHub expose different candidates.
+The guide's project discovery link opens the served JSON on the same Pages
+site; its GitHub alternatives are listed separately.
 
 ## Choose an access route
 

@@ -482,9 +482,9 @@ def repository_source_is_copied_to_site(relative: Path) -> bool:
         return False
     if externalized_publication_target(relative) is not None:
         return False
-    if len(relative.parts) == 1:
-        return relative.as_posix() in PUBLIC_ROOT_FILES
-    return relative.parts[0] in PUBLIC_DIRS
+    return relative.as_posix() in PUBLIC_ROOT_FILES or (
+        bool(relative.parts) and relative.parts[0] in PUBLIC_DIRS
+    )
 
 
 def rewrite_beginner_href(href: str, source: Path) -> str:
