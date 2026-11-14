@@ -123,3 +123,7 @@ Third-party sources retain their own rights and attribution.
 See [governed Pages publication](docs/development.md#github-pages).
 
 For Ask OKF ambiguity and input limits, see [alternative meanings and bounded loading](docs/context-alternatives-and-bounded-loading.md).
+
+## Review on 14 November 2026
+
+[Feature, plan and acceptance status](docs/feature-status.md) distinguishes shipped code, experimental profiles, proposed functionality and independent acceptance. Standards/source consolidation is producer-compatible; typed datetime, richer spatial rules and CSV previews need a separately versioned optional contract. WCC follow-up remains parked.

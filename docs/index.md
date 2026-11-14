@@ -85,3 +85,7 @@ sets British English and plain-language conventions.
 Use the [example catalogue](onboarding/examples.md) for named experiences,
 readiness, limits and the date of verified journeys. `govuk-webmcp` remains an
 external frozen competition candidate.
+
+## Review on 14 November 2026
+
+[Feature, plan and acceptance status](feature-status.md) distinguishes shipped code, experimental profiles, proposed functionality and independent acceptance. Standards/source consolidation is producer-compatible; typed datetime, richer spatial rules and CSV previews need a separately versioned optional contract. WCC follow-up remains parked.

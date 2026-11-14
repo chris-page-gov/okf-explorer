@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased — feature and plan review
+
+- Reconcile local Explorer with GitHub main and inventory implemented, experimental, proposed, deferred and unverified capabilities across maintained plans.
+- Record standards/public companion compatibility, frozen Analytical Data RC.1 boundaries and remaining datetime, spatial and preview work.
+- Retain complete check evidence, external-input skips, the reproduced intermittent Chrome help failure and the local Firefox startup blocker separately.
+
 ## Unreleased
 
 - Record the successful 0.8.0 Sites deployment and public legacy SDK observation

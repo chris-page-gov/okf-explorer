@@ -35,3 +35,7 @@ Draft PR preparation uses current `main` at `dcd0c43e` with Explorer v0.8.1. The
 Before a collection or maintained analytical publication adopts a companion, the proposed local review records its audience and demand evidence, source-selection rationale, owner, currency and access contract. The Warwickshire trial has a pending human curation review and unverified collection membership. DEFRA adds service-specific lessons about metadata dates, lineage, spatial information, bulk access, request limits and API migrations. [Curation and service review](analytical-data-curation-review-2026-11-11.md)
 
 The [live Defra and NDL follow-up](analytical-live-trial-2026-11-11.md) adds a five-station Warwick locality fixture and 96 readings with complete bounded paging controls. A national public-index census confines the observed legacy host to Warwickshire; other hosts’ link health remains unassessed. RC.1 datetime, CRS and application gaps require explicit versioned follow-up.
+
+## Review on 14 November 2026
+
+[Current estate impact and unfinished capabilities](feature-status.md) distinguishes shipped code, experimental profiles, proposed functionality and independent acceptance. Standards/source consolidation is producer-compatible; typed datetime, richer spatial rules and CSV previews need a separately versioned optional contract. WCC follow-up remains parked.
