@@ -1,0 +1,27 @@
+{
+  "schema": "okf-graph-evidence-admission.v1",
+  "publication_status": "pinned",
+  "source_repository": "https://github.com/chris-page-gov/okf-dwp",
+  "source_commit": "2e12f20cfd20e62a67197e7aade4ea612b873684",
+  "graph_sha256": "ff51d877ed13f7089e7512224a4a8dcd356d0ae8e5964fe33349edf0a263b426",
+  "engine_id": "urn:okf:graph-engine:sha256:c75b01d322236e4c13fc1ad72a7e3424203dbae2413c4e6be64b960d8566cb42",
+  "engine_admission": {
+    "schema": "okf-graph-engine-admission.v1",
+    "modules": {
+      "graph_evidence_runtime.mjs": "b27743365b5c1d5f0f6ceea7cb07e045ecf2c439e798cf043e18a0f2b3de8673",
+      "insufficiency_categories.mjs": "bcfc97ebea773d743ecf8f9bfc70db5ae5510668cc30c0a592f840873ae1a770"
+    },
+    "resolver": {
+      "repository": "https://github.com/chris-page-gov/okf-explorer",
+      "commit": "d6930bbcddaab616deec002d9e6efff6e3aae953",
+      "files": {
+        "index.ts": "689f8b8ab1cfb5ccc21b6dd9b5527fcad04de01f5876b44cbb2dc0240fceb010",
+        "corpus.ts": "a770352c6e4628f0c391b0c12bbdaf185b476a714ca212e99459d135f8f57f6f",
+        "corpusV3.ts": "944617e1630362b7a41d60da92651007b96252eff3075eb4c4b852f420f5a5c0",
+        "types.ts": "febf83b5c65153fd2e49ac070b6117525463034fb1b33534a086a1cc7bbb42cc",
+        "unit.ts": "7cd989c00564ad2e0469073c66685ffb5111809e7f598dc42b6f3df1bf693aa6"
+      }
+    }
+  },
+  "client_sha256": "abfe05763112e482fb63c2c0bb01c6fee6dfe6aab38f752def0a244687a096ab"
+}

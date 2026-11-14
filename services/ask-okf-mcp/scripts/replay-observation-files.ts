@@ -30,8 +30,9 @@ const inputs = new Set([
   '../../apps/okf-explorer/src/lib/context/corpusV3.ts',
   '../../apps/okf-explorer/src/lib/context/unit.ts', '../../profiles/context-assembly/v1/evidence-unit.schema.json',
   '../../profiles/context-assembly/v1/common.schema.json', '../../profiles/context-assembly/v1/package.schema.json',
-  'package-lock.json', 'package.json', 'scripts/build.mjs', 'scripts/engine-admission.mjs',
-  ...['bundles', 'contracts', 'corpusAssets', 'corpusFetch', 'deliveryContracts', 'enginePolicy', 'engines', 'landing', 'node', 'registry', 'replay', 'replayDelivery', 'review', 'service', 'worker'].map(name => `src/${name}.ts`),
+  'package-lock.json', 'package.json', 'scripts/build.mjs', 'scripts/engine-admission.mjs', 'scripts/prepare-graph-evidence-release.mjs', 'scripts/verify-graph-remote.mjs',
+  ...['bundles', 'contracts', 'corpusAssets', 'corpusFetch', 'deliveryContracts', 'enginePolicy', 'engines', 'graphContracts', 'graphEvidence', 'landing', 'node', 'registry', 'replay', 'replayDelivery', 'review', 'service', 'worker'].map(name => `src/${name}.ts`),
+  ...['admission.json', 'graph.json', 'graph_evidence_runtime.mjs', 'graph_evidence_client.mjs', 'insufficiency_categories.mjs'].map(name => `vendor/graph-evidence/${name}`),
   ...['assembly-index', 'corpus-manifest', 'descriptor', 'evidence-connect-corpus-manifest', 'evidence-connect-corpus-release', 'evidence-connect-descriptor', 'household-corpus-manifest', 'previous-corpus-manifest', 'staff-corpus-manifest', 'corpus-release', 'household-corpus-release', 'previous-corpus-release', 'staff-corpus-release'].map(name => `vendor/okf-dwp-${name}.json`),
   ...['corpus.ts', 'corpusV3.ts', 'index.ts', 'types.ts', 'unit.ts', 'manifest.json'].map(name => `vendor/engines/d6930bbcddaab616deec002d9e6efff6e3aae953/${name}`),
   ...['b9a3b68b6dbf222f9a73cc8f450dd53f126e1b55', 'c4f2de0a99b7bc2f8b8c8a06a3c715fb56b66d8e'].flatMap(commit =>
@@ -45,7 +46,9 @@ export async function verifiedBuild(root: string) {
   assert.deepEqual(Object.keys(value.inputs).sort(), [...inputs].sort(), 'Exact approved build-input inventory required');
   assert.deepEqual(Object.keys(value.outputs).sort(), ['dist/node.mjs', 'dist/server/index.js']);
   for (const [path, digest] of Object.entries({ ...value.inputs, ...value.outputs })) {
-    assert.match(String(digest), /^[a-f0-9]{64}$/); assert.equal(sha(await boundedFile(resolve(root, path))), digest);
+    const limit = path === 'vendor/graph-evidence/graph.json' ? 16 * 1024 * 1024
+      : ['dist/server/index.js', 'dist/node.mjs'].includes(path) ? 32 * 1024 * 1024 : 8 * 1024 * 1024;
+    assert.match(String(digest), /^[a-f0-9]{64}$/); assert.equal(sha(await boundedFile(resolve(root, path), limit)), digest);
   }
   return { raw, value };
 }

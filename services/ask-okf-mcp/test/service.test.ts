@@ -16,7 +16,7 @@ const indexText = await readFile(new URL('../vendor/okf-dwp-assembly-index.json'
 const descriptorText = await readFile(new URL('../vendor/okf-dwp-descriptor.json', import.meta.url), 'utf8');
 const approved = await verifyBundledContext(indexText, descriptorText);
 const expected = await assembleContext(approved.index, question, undefined, approved.binding);
-const url = `${PUBLIC_ORIGIN}/mcp`;
+const url = `${PUBLIC_ORIGIN}/okf/mcp`;
 const input = { bundle: 'okf-dwp', version: BUNDLE_VERSION, question };
 const headers = { 'content-type': 'application/json', accept: 'application/json, text/event-stream' };
 function service(log: Diagnostic[] = []) {
@@ -84,7 +84,7 @@ test('official v2 SDK calls current HTTP and receives exact complete core packag
     const list = await client.listTools();
     assert.deepEqual(list.tools.map(t => t.name), ['ask_okf', 'ask_okf_manifest', 'read_okf_evidence']);
     assert.equal(list.tools[0].annotations?.readOnlyHint, true);
-    assert.deepEqual(list.tools[0].outputSchema, OUTPUT_SCHEMA);
+    assert.deepEqual(list.tools.find(tool => tool.name === 'ask_okf')!.outputSchema, OUTPUT_SCHEMA);
     const result = await client.callTool({ name: 'ask_okf', arguments: input });
     assert.equal(result.isError, undefined);
     assert.equal(canonicalJson(result.structuredContent), canonicalJson(expected));
@@ -206,7 +206,7 @@ test('request rate is bounded per instance without retaining client identities',
   assert.equal(response.headers.get('retry-after'), '60'); await s.close();
 });
 
-test('host-compatible /okf/mcp alias returns the same complete package as /mcp', async () => {
+test('historical /okf/mcp retains the exact full-package contract', async () => {
   const s = service();
   try {
     const message = { jsonrpc: '2.0', id: 1, method: 'tools/call', params: { name: 'ask_okf', arguments: input } };

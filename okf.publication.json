@@ -610,7 +610,8 @@
         "check-remote-mcp",
         "test-remote-mcp",
         "build-remote-mcp",
-        "test-context-archive"
+        "test-context-archive",
+        "check-graph-sdk-source"
       ]
     },
     {
@@ -1113,6 +1114,19 @@
         "network": "none",
         "mutates": "none",
         "timeout_minutes": 5
+      },
+      {
+        "id": "check-graph-sdk-source",
+        "kind": "check",
+        "planes": [
+          "application"
+        ],
+        "command": "node services/ask-okf-mcp/scripts/verify-graph-remote.mjs --dwp-root .ci/okf-dwp-graph",
+        "source": "services/ask-okf-mcp/README.md",
+        "review_status": "unreviewed",
+        "network": "none",
+        "mutates": "none",
+        "timeout_minutes": 5
       }
     ]
   },
@@ -1258,6 +1272,7 @@
   "limitations": [
     "GitHub Releases remain a manually governed frozen-snapshot boundary and are not triggered by the Pages workflow.",
     "The estate registry reports dated reviewed state; it does not confer publication authority on another repository.",
-    "COMMIT_SHA in the verifier declaration is a required full Git commit supplied by the protected deployment workflow, not a shell command or branch name."
+    "COMMIT_SHA in the verifier declaration is a required full Git commit supplied by the protected deployment workflow, not a shell command or branch name.",
+    "Ask OKF 0.8.0 admits a separate source-bound experimental context-index graph by immutable DWP commit, graph, engine and client hashes. Navigation repairs and concept bridges remain model-derived and unreviewed; no canonical semantic-profile or legal-sufficiency upgrade is claimed. Public SDK replay at /graph/mcp and native Sites plugin invocation at /mcp require separate observations. CI reads only the exact pinned graph evaluation source blobs; public execution is explicit, paced and bounded."
   ]
 }

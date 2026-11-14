@@ -15,6 +15,31 @@ well as their service documentation. The pull-request impact gate checks that
 requirement before deciding which expensive checks are needed; Pages checks it
 again before publication.
 
+## Source-route retrieval candidate: 14 November 2026
+
+Service 0.8.0 prepares two bounded tools: `plan_okf_evidence` and
+`read_okf_planned_evidence`. They follow declared source routes in a separately
+authored DWP graph and preserve exact source text, provenance, requirement paths
+and explicit gaps. Start with the plan, retain its graph, engine and plan
+identities, then follow the needed read continuations. The default complete
+response envelope is at most 8 KiB; a larger selected package is read in parts.
+
+The native Sites plugin uses `/mcp` after the Site is published with its MCP
+capability. Direct public SDK verification uses the identical graph handler at
+`/graph/mcp`. The earlier `/okf/mcp` connection continues to expose the historical
+three tools and frozen source/engine pairs. Refresh installed tool metadata
+after a new publication; an existing historical connection will continue to
+offer its earlier tools until the new connection is selected.
+
+The [service guide](../services/ask-okf-mcp/README.md) records the admission and
+local checks. Producer evaluation reaches every declared persona, custody and
+UC target; all eight authored personas and their 21 interest areas are covered.
+This is scoped retrieval success. Every plan remains insufficient, with no AI
+answer or entitlement decision. Navigation repairs and concept bridges remain
+model-derived, and legal applicability and specialist acceptance remain open.
+The shared recorded deployment below retains its historical identity until new
+hosting, public SDK and actual native-tool observations are recorded separately.
+
 ## Dependency review on 23 October 2026
 
 The reviewed service candidate combines PRs #172, #174, #175 and #176:

@@ -1,0 +1,312 @@
+{
+  "config": {
+    "argv": [
+      "/opt/homebrew/Cellar/node/26.7.0/bin/node",
+      "/private/tmp/okf-explorer-truncation-20261114/apps/okf-explorer/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "playwright.service-review.config.ts",
+      "--project",
+      "chrome"
+    ],
+    "configFile": "/private/tmp/okf-explorer-truncation-20261114/apps/okf-explorer/playwright.service-review.config.ts",
+    "rootDir": "/private/tmp/okf-explorer-truncation-20261114/apps/okf-explorer/tests/service-review",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "observationOutput": "/tmp/okf-service-browser-final-20261114",
+      "externalService": false,
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/tmp/okf-service-browser-final-20261114/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "observationOutput": "/tmp/okf-service-browser-final-20261114",
+          "externalService": false,
+          "actualWorkers": 1
+        },
+        "id": "chrome",
+        "name": "chrome",
+        "testDir": "/private/tmp/okf-explorer-truncation-20261114/apps/okf-explorer/tests/service-review",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "/tmp/okf-service-browser-final-20261114/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "observationOutput": "/tmp/okf-service-browser-final-20261114",
+          "externalService": false,
+          "actualWorkers": 1
+        },
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "/private/tmp/okf-explorer-truncation-20261114/apps/okf-explorer/tests/service-review",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "/tmp/okf-service-browser-final-20261114/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "observationOutput": "/tmp/okf-service-browser-final-20261114",
+          "externalService": false,
+          "actualWorkers": 1
+        },
+        "id": "webkit",
+        "name": "webkit",
+        "testDir": "/private/tmp/okf-explorer-truncation-20261114/apps/okf-explorer/tests/service-review",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 45000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "/tmp/okf-service-browser-final-20261114/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "observationOutput": "/tmp/okf-service-browser-final-20261114",
+          "externalService": false,
+          "actualWorkers": 1
+        },
+        "name": "chrome",
+        "testDir": "/private/tmp/okf-explorer-truncation-20261114/apps/okf-explorer/tests/service-review",
+        "snapshotDir": "/private/tmp/okf-explorer-truncation-20261114/apps/okf-explorer/tests/service-review",
+        "testIgnore": [],
+        "testMatch": "**/*.@(spec|test).?(c|m)[jt]s?(x)",
+        "timeout": 45000,
+        "use": {
+          "baseURL": "http://127.0.0.1:8787",
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "screenshot": "only-on-failure",
+          "trace": "retain-on-failure",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36",
+          "screen": {
+            "width": 1920,
+            "height": 1080
+          },
+          "deviceScaleFactor": 1,
+          "isMobile": false,
+          "hasTouch": false,
+          "defaultBrowserType": "chromium",
+          "channel": "chrome"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": "chrome"
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/tmp/okf-service-browser-final-20261114/results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.1",
+    "workers": 1,
+    "webServer": {
+      "command": "npm --prefix ../../services/ask-okf-mcp run build && npm --prefix ../../services/ask-okf-mcp start",
+      "url": "http://127.0.0.1:8787/review/",
+      "reuseExistingServer": true,
+      "timeout": 120000
+    }
+  },
+  "suites": [
+    {
+      "title": "evidence-review.spec.ts",
+      "file": "evidence-review.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "built script loads inert replay, exact source evidence, metadata, diagnostics and bounded parts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 778,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-14T18:48:11.194Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "45f62f41201ab3c47054-4208978115787620893e",
+          "file": "evidence-review.spec.ts",
+          "line": 42,
+          "column": 1
+        },
+        {
+          "title": "replay links are removed when changing or recreating a context and regenerated for the new identity",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 390,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-14T18:48:12.301Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "45f62f41201ab3c47054-97bd0c19f98c0293a947",
+          "file": "evidence-review.spec.ts",
+          "line": 165,
+          "column": 1
+        },
+        {
+          "title": "question change discards a late replay response",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 201,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-14T18:48:12.696Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "45f62f41201ab3c47054-4405be414055cdfd7a71",
+          "file": "evidence-review.spec.ts",
+          "line": 199,
+          "column": 1
+        },
+        {
+          "title": "invalid fragment is inert and synthetic returned markup renders as text",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chrome",
+              "projectName": "chrome",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 253,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-14T18:48:12.902Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "45f62f41201ab3c47054-de284e577492299e7a57",
+          "file": "evidence-review.spec.ts",
+          "line": 225,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-14T18:48:10.139Z",
+    "duration": 3080.721,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

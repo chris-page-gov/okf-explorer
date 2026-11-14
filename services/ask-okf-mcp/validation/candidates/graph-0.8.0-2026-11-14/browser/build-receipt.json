@@ -1,0 +1,102 @@
+{
+  "schema": "okf-remote-mcp-build.v1",
+  "service_version": "0.8.0",
+  "inputs": {
+    "../../apps/okf-explorer/src/lib/context/corpus.ts": "a770352c6e4628f0c391b0c12bbdaf185b476a714ca212e99459d135f8f57f6f",
+    "../../apps/okf-explorer/src/lib/context/corpusV3.ts": "944617e1630362b7a41d60da92651007b96252eff3075eb4c4b852f420f5a5c0",
+    "../../apps/okf-explorer/src/lib/context/delivery.ts": "5df92c0e7edf437f9ff23b25b9a812e947930dd2369f2e954104962f04c91d90",
+    "../../apps/okf-explorer/src/lib/context/index.ts": "689f8b8ab1cfb5ccc21b6dd9b5527fcad04de01f5876b44cbb2dc0240fceb010",
+    "../../apps/okf-explorer/src/lib/context/unit.ts": "7cd989c00564ad2e0469073c66685ffb5111809e7f598dc42b6f3df1bf693aa6",
+    "../../profiles/context-assembly/v1/common.schema.json": "e53099c72351860fd34c26dd88914f5984d749d4eec13aef4fa151d1c96713e2",
+    "../../profiles/context-assembly/v1/evidence-unit.schema.json": "9d86a7343b3f0da70e115fec8fa7e4bea1627fec89d95e0a6a45d2dd976833a6",
+    "../../profiles/context-assembly/v1/package.schema.json": "c97dfacbd77d2b5ca1a92db65aa446613e0df58eeb24179be4b1720d1e0ff610",
+    "package-lock.json": "762e1437b2530f8251da62788c7d63eb409815c7f9d1024f8c20f822a7b6448a",
+    "package.json": "253c8ca664249a44a1cd693ef60c6c1ba8887cfa4c25ee937c2768f34b52e308",
+    "vendor/okf-dwp-assembly-index.json": "38159445a60d4bcabc23cb2cf728e14cbd0a4b55013276c291356e7a1452ff54",
+    "vendor/okf-dwp-corpus-manifest.json": "be9fb7be5d942a74a550812e3ca858b4fbbca81f8afaf8d14b5f731eca08212a",
+    "vendor/okf-dwp-descriptor.json": "9881779ab550efe9f73da1e16acd8c8dcb64933c9981bb290b66ff51572853f3",
+    "vendor/okf-dwp-evidence-connect-corpus-manifest.json": "4e65253f72b2d771164d5ddd64374ed8142cf66b4a249f193a1fe44d5679f519",
+    "vendor/okf-dwp-household-corpus-manifest.json": "06362458d013322b565e13884066fd896b68986df8be93c09a02979eab8f199b",
+    "vendor/okf-dwp-previous-corpus-manifest.json": "aa9726ba72b7495323b031f149fa13cffeae0aa8fc868af63b7af3cac0e6be95",
+    "vendor/okf-dwp-staff-corpus-manifest.json": "9d20d0a6af54050bdddcd3550a2c01abe26c360754a27d2f7781dd03054db265",
+    "scripts/build.mjs": "3cdcbf3c6dcdf937a5d5516295e1c675acce9463b54acb8c647e1fe66d989b00",
+    "scripts/engine-admission.mjs": "d4bd23ca758036e07cb561a0d0983c305c8183548f695d1760b360eb567ba559",
+    "scripts/prepare-graph-evidence-release.mjs": "f9086189a78af966603145091308bc1582f125b74edd15d15ae81e64a4fafd96",
+    "scripts/verify-graph-remote.mjs": "53899b238ce43910cb8f11440fdf33b6baada23a5ac82be8e2ca34bad913e2ef",
+    "src/bundles.ts": "a9f773482aed0a311dca1ce8cb16d8ced22f8f9e7ab381562cf3565f75aac8f8",
+    "src/contracts.ts": "70e87ce728409095af97a92eab6f1998c65e09d053d44138508938bb5742aedc",
+    "src/corpusAssets.ts": "3fc39ba203024c5465515a9061ab079f8548f850588e82de316f29cd12fd5bb2",
+    "src/corpusFetch.ts": "40eea3db05182f3e252e3c06a998a5b571825f8a096564b2e3bf3e351a504306",
+    "src/deliveryContracts.ts": "87ffa6ead9608fb1745c8fc4cdec3a737b697e5538a0a9fa86e6b18c03294eb1",
+    "src/enginePolicy.ts": "bc65739ba8568d160710cf403ea22f4bb57d03ac87a70291b634dbcfd8ec60c6",
+    "src/engines.ts": "ae4131cff3ceeeb4f244f2d9d60eabd33e7e8383b66fbe998ada1b49cb841493",
+    "src/graphContracts.ts": "51504a911758dfc434500bff7f3b4ceadbc1bc5286600910adec22131ff0de00",
+    "src/graphEvidence.ts": "b0ca3ed26c6da189a3acaed33431a167f70487ea41d37b08e436e72f71659d4c",
+    "src/landing.ts": "eeca4d0ac8d6f0a1495f4f75238491ba73f65d4ad21f4dda217cbf1164f04a72",
+    "src/node.ts": "acc948573787ec2c97392aba4c5b65d809cfccf13ff99688a2224860575c435f",
+    "src/registry.ts": "a40d5dbef33ce3fd09ba7574f28e093774071d47657f96e2b1095fa5e944bcd1",
+    "src/replay.ts": "bbcd411d6b2db5e85e03d4230afc855f56190eb0f8795788bd961e8cbfd7b0a7",
+    "src/replayDelivery.ts": "a192c5d16c6625c5fc29edff7e8e259333cc52b86a7143666faf674cc133fa52",
+    "src/review.ts": "21056187213ac6efa2461e2a375e0c02b07ecd37e0c09898447cd43b8eedacb3",
+    "src/service.ts": "2db387b85244ebfbc679aacbcaab34525c744a9254d6844b640a86b82c49d1ce",
+    "src/worker.ts": "b8c64b7091c54d16a2bce49a5b081f80a297131778fc5d3de443c75e1e819981",
+    "vendor/engines/b9a3b68b6dbf222f9a73cc8f450dd53f126e1b55/corpus.ts": "72fec179d1015df39fd16834d5876740b95a6477f70b6013821f24398a69eb65",
+    "vendor/engines/b9a3b68b6dbf222f9a73cc8f450dd53f126e1b55/index.ts": "bade207cbc414b9a057778fdc28564d1c0f9c03e7548b3644a3fb9ec9b8731e6",
+    "vendor/engines/b9a3b68b6dbf222f9a73cc8f450dd53f126e1b55/manifest.json": "2a36610b52ef0e5415c008b39a597dd20b54b935e9db2ef0051b79451fcae117",
+    "vendor/engines/b9a3b68b6dbf222f9a73cc8f450dd53f126e1b55/types.ts": "248b7db16fa1faf2cb6c5c07c8347b926ae649a528b79e92bca3816829938b65",
+    "vendor/engines/c4f2de0a99b7bc2f8b8c8a06a3c715fb56b66d8e/corpus.ts": "72fec179d1015df39fd16834d5876740b95a6477f70b6013821f24398a69eb65",
+    "vendor/engines/c4f2de0a99b7bc2f8b8c8a06a3c715fb56b66d8e/index.ts": "cc9fe1c162e1ad505f080712b6eacf0bad843f0e32d6f953b697b8349b2c4ca8",
+    "vendor/engines/c4f2de0a99b7bc2f8b8c8a06a3c715fb56b66d8e/manifest.json": "592dbb65ce150dc6c1892457f2799dd9d12d245a1dc83a2ae6bc292da8bfcc0e",
+    "vendor/engines/c4f2de0a99b7bc2f8b8c8a06a3c715fb56b66d8e/types.ts": "d9eff934ec504c3fbd2afff672ae1d3a8a275e84cc11b71fed8a3e1b0edfdcf3",
+    "vendor/engines/d6930bbcddaab616deec002d9e6efff6e3aae953/corpus.ts": "a770352c6e4628f0c391b0c12bbdaf185b476a714ca212e99459d135f8f57f6f",
+    "vendor/engines/d6930bbcddaab616deec002d9e6efff6e3aae953/corpusV3.ts": "944617e1630362b7a41d60da92651007b96252eff3075eb4c4b852f420f5a5c0",
+    "vendor/engines/d6930bbcddaab616deec002d9e6efff6e3aae953/index.ts": "689f8b8ab1cfb5ccc21b6dd9b5527fcad04de01f5876b44cbb2dc0240fceb010",
+    "vendor/engines/d6930bbcddaab616deec002d9e6efff6e3aae953/manifest.json": "98ab2934210410279ca61138e3d3992fba99472d6541df46920063d95d3848ed",
+    "vendor/engines/d6930bbcddaab616deec002d9e6efff6e3aae953/types.ts": "febf83b5c65153fd2e49ac070b6117525463034fb1b33534a086a1cc7bbb42cc",
+    "vendor/engines/d6930bbcddaab616deec002d9e6efff6e3aae953/unit.ts": "7cd989c00564ad2e0469073c66685ffb5111809e7f598dc42b6f3df1bf693aa6",
+    "vendor/graph-evidence/admission.json": "21cac8813dd83afb06ae4c04764d3a1f4e25de349215b0a28f224706b276f302",
+    "vendor/graph-evidence/graph.json": "ff51d877ed13f7089e7512224a4a8dcd356d0ae8e5964fe33349edf0a263b426",
+    "vendor/graph-evidence/graph_evidence_client.mjs": "abfe05763112e482fb63c2c0bb01c6fee6dfe6aab38f752def0a244687a096ab",
+    "vendor/graph-evidence/graph_evidence_runtime.mjs": "b27743365b5c1d5f0f6ceea7cb07e045ecf2c439e798cf043e18a0f2b3de8673",
+    "vendor/graph-evidence/insufficiency_categories.mjs": "bcfc97ebea773d743ecf8f9bfc70db5ae5510668cc30c0a592f840873ae1a770",
+    "vendor/okf-dwp-corpus-release.json": "5d4bc788eb7f550dacbcb0597b11cdf986ab45814cbd8c749b27af16c1cadd3e",
+    "vendor/okf-dwp-evidence-connect-corpus-release.json": "11f6f9769234e0cf8986daa7561ca6ad0abe463c6170cdf16cc6223d66677e12",
+    "vendor/okf-dwp-evidence-connect-descriptor.json": "749c19b034df38e6d7b745f38d743ba688a79ca782de2e25eb3060717d272f68",
+    "vendor/okf-dwp-household-corpus-release.json": "cdb8332cc0a0d608bcb52e8bcf7fbf7111a7db8d370fe0862967edf2863a1baf",
+    "vendor/okf-dwp-previous-corpus-release.json": "ebcdf9b3b400cd9a39acff8ef969161396023b958f5b09d8b7892af4834cb08d",
+    "vendor/okf-dwp-staff-corpus-release.json": "9cfe03d547c33ae00b297041f4d941ce51584c28adcc4c940a6293cc1d996985"
+  },
+  "graph_release": {
+    "publication_status": "pinned",
+    "source_commit": "2e12f20cfd20e62a67197e7aade4ea612b873684",
+    "graph_sha256": "ff51d877ed13f7089e7512224a4a8dcd356d0ae8e5964fe33349edf0a263b426",
+    "engine_id": "urn:okf:graph-engine:sha256:c75b01d322236e4c13fc1ad72a7e3424203dbae2413c4e6be64b960d8566cb42"
+  },
+  "engines": [
+    {
+      "engine_id": "urn:okf:context-engine:sha256:256b19d6d8a2e16191866ead0ffd48d9edb7f705143bd8a91597b19f242c0968",
+      "source_commit": "d6930bbcddaab616deec002d9e6efff6e3aae953"
+    },
+    {
+      "engine_id": "urn:okf:context-engine:sha256:e94ce301033de019d1051684acfd02803a3fe306fd963b44bd3f4b7dba16f652",
+      "source_commit": "c4f2de0a99b7bc2f8b8c8a06a3c715fb56b66d8e"
+    },
+    {
+      "engine_id": "urn:okf:context-engine:sha256:5d4cecab049b371d90b2fe1f3a2d1e9663910b5fdac044e091b0b40bc1c6bf73",
+      "source_commit": "b9a3b68b6dbf222f9a73cc8f450dd53f126e1b55"
+    }
+  ],
+  "outputs": {
+    "dist/server/index.js": "c5cf076b16e254657396047636709720931fcfc5220c46f8ffdbfa25982ddaa1",
+    "dist/node.mjs": "6eb973c4fc1066d624ea2134ecb4add9defc77d3b6b404d819f5451883765372"
+  },
+  "worker_node_dependencies": false,
+  "bundle_version": "7eeded763042ddd0070f4fed834c6074149e8e2f",
+  "historical_bundle_versions": [
+    "723bcc5b015ab38a026625c2148edbd784edf7c7",
+    "3ef0e786e9a18e76fa17c7d925ff509d6d6c9f84",
+    "9de52acf1db84b27f8933d80480eaa850e74fa33",
+    "bf50ef8d91b9f1ccc2cbdb354198eae74c9ed752",
+    "efb05c66616a9cd4328a86cf412780fe7bc7cf0b"
+  ]
+}

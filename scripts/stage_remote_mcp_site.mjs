@@ -22,7 +22,7 @@ for (const file of files) {
   if (file.split('/').includes('..') || file.startsWith('/')) throw new Error('Unsafe Git path.');
   const destination = resolve(output, file);
   mkdirSync(dirname(destination), { recursive: true });
-  writeFileSync(destination, execFileSync('git', ['show', `${commit}:${file}`], { cwd: repo }));
+  writeFileSync(destination, execFileSync('git', ['show', `${commit}:${file}`], { cwd: repo, maxBuffer: 32 * 1024 * 1024 }));
 }
 writeFileSync(resolve(output, 'upstream.json'), JSON.stringify({ repository: 'https://github.com/chris-page-gov/okf-explorer', commit, paths, files }, null, 2) + '\n');
 writeFileSync(resolve(output, 'package.json'), JSON.stringify({ name: 'ask-okf-service-deployment', private: true, type: 'module', scripts: { build: 'npm --prefix services/ask-okf-mcp run build && node stage-build.mjs' } }, null, 2) + '\n');
