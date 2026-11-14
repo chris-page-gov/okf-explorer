@@ -2,6 +2,8 @@
 
 Reviewed implementation baseline: `5755359efd54b14a356dbff67d6082db1b195a91`, fetched from GitHub main on 14 November 2026. App release `0.8.1` and Analytical Data `1.0.0-rc.1` are independent versions. This inventory records code/contract maturity separately from domain acceptance, host compatibility, deployment and source completeness. The latest check results are in the [check record](feature-review-2026-11-14.json).
 
+Main advanced during this review. Local main was subsequently fast-forwarded to `3f211964` (PRs #206, #207 and #210), and that revision was merged into the inventory/candidate work. The historical baseline check record remains tied to `5755359e`; it does not automatically validate these additions. Current candidate assurance is separate.
+
 Implemented means the stated code and local contract exist. Experimental means a bounded candidate exists with unresolved adoption/compatibility. Proposed and deferred mean no accepted implementation is claimed. An acceptance gap can remain against implemented code. Historical documents retain their dated baseline; a title containing “plan” is not a promise that every historical idea is still scheduled.
 
 ## Reader and governed knowledge
@@ -14,6 +16,7 @@ Implemented means the stated code and local contract exist. Experimental means a
 | Deterministic bundle, registry, viewer and site generation | Implemented | [Publication contract](../okf.publication.json); exact candidate assurance remains revision-specific. |
 | Canonical profile vendoring and estate reconciliation | Implemented | [Estate tracker](okf-estate-standardisation-tracker.md); each producer's current adoption requires its own check. |
 | Independent bundle registry and federation | Implemented | [Federation](federated-bundles.md); admission and source coverage are producer responsibilities. |
+| Public bundle access directory and discovery routes | Implemented in upstream main | [Access directory](public-bundle-access.md), `okf-public-access.json`, `/.well-known/okf.json` and `llms.txt`; retained HTTP observations do not establish browser, Voice, rights or answer acceptance. Nested discovery links retain their Pages path prefix. |
 | Small bundle loading and bounded YAML-LD parsing | Implemented | `src/lib/sources/smallBundle.ts`; arbitrary remote contexts are not executed. |
 | Large sharded corpus loading | Implemented | `src/lib/sources/largeCorpus.ts`; resource limits and missing shards remain visible. |
 | Digest-bound relationship runtime and route loading | Implemented | [Rich graph architecture](okf-bundle-wiki-architecture-2026-07-11.md); historical/rejected planes remain separate. |
@@ -79,6 +82,7 @@ Implemented means the stated code and local contract exist. Experimental means a
 | Resource/scale and storage decision protocol | Proposed acceptance programme | Measure bytes, latency, cancellation and peak memory before architectural replacement. |
 | Analytical Data profile | Experimental `1.0.0-rc.1` | [Rollout](analytical-data-profile-rollout.md); optional tabular contract, not a new universal OKF core. |
 | CSV checksum, dialect, declared types, keys and missing-value checks | Implemented in candidate validator | `scripts/check_analytical_data.py`; candidate conformance does not establish analytical utility. |
+| Native DfE EES CSV/metadata pair inspection | Implemented in upstream main | [EES Reader](dfe-ees-reader.md), `/data/`; exact sidecar joins, raw/numeric views, bounds and hash-bound download. Separate from the optional analytical manifest/profile and `/inspect-data/`; no upload or automatic conversion/adoption. |
 | Frozen Warwickshire and NDL trial | Retained evidence; follow-up parked | [Trial](analytical-data-trial-2026-11-11.md); preserve compatibility gaps and original hashes. |
 | Frozen Defra API pagination/time/spatial trial | Retained evidence | [Live-trial report](analytical-live-trial-2026-11-11.md); observation is not general API or county-coverage certification. |
 | Data curation and Defra learning | Local assessment | [Curation review](analytical-data-curation-review-2026-11-11.md); source obligations need scoped adoption. |
