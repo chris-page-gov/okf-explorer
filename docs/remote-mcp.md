@@ -17,7 +17,7 @@ again before publication.
 
 ## Source-route retrieval candidate: 14 November 2026
 
-Service 0.8.0 prepares two bounded tools: `plan_okf_evidence` and
+Service 0.8.0 provides two bounded tools: `plan_okf_evidence` and
 `read_okf_planned_evidence`. They follow declared source routes in a separately
 authored DWP graph and preserve exact source text, provenance, requirement paths
 and explicit gaps. Start with the plan, retain its graph, engine and plan
@@ -37,8 +37,15 @@ UC target; all eight authored personas and their 21 interest areas are covered.
 This is scoped retrieval success. Every plan remains insufficient, with no AI
 answer or entitlement decision. Navigation repairs and concept bridges remain
 model-derived, and legal applicability and specialist acceptance remain open.
-The shared recorded deployment below retains its historical identity until new
-hosting, public SDK and actual native-tool observations are recorded separately.
+The dated record below records the 0.8.0 hosting and legacy SDK observation.
+Graph-specific public SDK results and native plugin use are separate evidence;
+the legacy observation does not establish either.
+
+For the additive DWP graph route, see the DWP
+[connection guide](https://github.com/chris-page-gov/okf-dwp/blob/main/docs/graph-evidence-connection.md)
+and [graph service status](https://github.com/chris-page-gov/okf-dwp/blob/main/docs/graph-service-publication.md).
+These records distinguish graph retrieval and connected-client checks from the
+legacy replay below.
 
 ## Dependency review on 23 October 2026
 
@@ -75,25 +82,26 @@ merely to fit a chat message: assembly selects evidence; delivery controls
 how much of that evidence crosses the connection at once.
 
 <!-- ask-okf-publication:start -->
-## Recorded public deployment: 0.7.0
+## Recorded public deployment: 0.8.0
 
 For the **latest recorded deployment and verification**, use the shared
 [DWP service publication status](https://github.com/chris-page-gov/okf-dwp/blob/main/docs/service-publication.md). This dated observation is not a live health check.
 
-On 25 September 2026, the [hosting record](https://github.com/chris-page-gov/okf-dwp/blob/0858f6318188f7812eaff78fce81bda7a5531f5b/validation/compact-delivery/v0.7.0/deployment.json)
-records service **0.7.0** as deployed. The separate
-[public SDK observation](https://github.com/chris-page-gov/okf-dwp/blob/0858f6318188f7812eaff78fce81bda7a5531f5b/validation/compact-delivery/v0.7.0/sdk/attempt-01/observation.json)
-passed **12 evidence cases and 135 requests**,
+On 14 November 2026, the [hosting record](https://github.com/chris-page-gov/okf-dwp/blob/15268c562c3f00d47577f71b62702daca5a89a98/validation/compact-delivery/v0.8.0/deployment.json)
+records service **0.8.0** as deployed. The separate
+[public SDK observation](https://github.com/chris-page-gov/okf-dwp/blob/15268c562c3f00d47577f71b62702daca5a89a98/validation/compact-delivery/v0.8.0/sdk/attempt-01/observation.json)
+passed **12 evidence cases**, including **10 approved source/engine pairs**,
+with **135 requests**,
 reconstructing complete packages from bounded reads. It recorded
-11,974,541 received bytes, no automatic retries and no model calls.
+11,975,076 received bytes, no automatic retries and no model calls.
 
 | Identity | Recorded value |
 | --- | --- |
 | DWP source | `7eeded763042ddd0070f4fed834c6074149e8e2f` |
 | Context engine | `d6930bbcddaab616deec002d9e6efff6e3aae953` |
-| Deployed runtime | `31d8c3436ed289bfd694b7889a9e5edea834ea8b` |
-| SDK verifier | `31d8c3436ed289bfd694b7889a9e5edea834ea8b` |
-| Local Worker SHA-256 | `9c7f31dc62e40b69de10a22aa7685becb16bbe22531d6ee78a9bbc357adfc680` |
+| Deployed runtime | `e6af80e6759c1d7b59dbfc9b9cf31a9c48ad62f1` |
+| SDK verifier | `e6af80e6759c1d7b59dbfc9b9cf31a9c48ad62f1` |
+| Local Worker SHA-256 | `c5cf076b16e254657396047636709720931fcfc5220c46f8ffdbfa25982ddaa1` |
 
 The hosting record and public health report have different scopes: health does not
 independently attest hosted Worker bytes. Delivery checks do not establish complete

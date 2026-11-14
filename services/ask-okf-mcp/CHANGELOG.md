@@ -17,6 +17,17 @@
 - Label new live observations with the SDK versions from their committed
   comparator lock, preserving earlier receipts and their original version labels.
 
+## 0.8.0 public legacy observation — 14 November 2026
+
+- Retain the successful Sites hosting record and a separate public legacy SDK
+  replay from DWP commit `15268c562c3f00d47577f71b62702daca5a89a98`.
+  The replay passed 12 evidence cases, including 10 approved source/engine
+  pairs, across 135 HTTP requests with no retries or model calls.
+- Keep the DWP source (`7eeded763042ddd0070f4fed834c6074149e8e2f`), compatible
+  context engine (`d6930bbcddaab616deec002d9e6efff6e3aae953`), deployed Explorer
+  runtime and SDK verifier identities separate. This legacy
+  observation does not establish graph-suite or native plugin acceptance.
+
 ## Development dependency follow-up — 23 October 2026
 
 - Update only fast-uri 3.1.8 to 3.1.9 in the lockfile to address four newly
@@ -68,25 +79,26 @@
   publication record below; code and local tests do not establish client access.
 
 <!-- ask-okf-publication:start -->
-## Recorded public deployment: 0.7.0
+## Recorded public deployment: 0.8.0
 
 For the **latest recorded deployment and verification**, use the shared
 [DWP service publication status](https://github.com/chris-page-gov/okf-dwp/blob/main/docs/service-publication.md). This dated observation is not a live health check.
 
-On 25 September 2026, the [hosting record](https://github.com/chris-page-gov/okf-dwp/blob/0858f6318188f7812eaff78fce81bda7a5531f5b/validation/compact-delivery/v0.7.0/deployment.json)
-records service **0.7.0** as deployed. The separate
-[public SDK observation](https://github.com/chris-page-gov/okf-dwp/blob/0858f6318188f7812eaff78fce81bda7a5531f5b/validation/compact-delivery/v0.7.0/sdk/attempt-01/observation.json)
-passed **12 evidence cases and 135 requests**,
+On 14 November 2026, the [hosting record](https://github.com/chris-page-gov/okf-dwp/blob/15268c562c3f00d47577f71b62702daca5a89a98/validation/compact-delivery/v0.8.0/deployment.json)
+records service **0.8.0** as deployed. The separate
+[public SDK observation](https://github.com/chris-page-gov/okf-dwp/blob/15268c562c3f00d47577f71b62702daca5a89a98/validation/compact-delivery/v0.8.0/sdk/attempt-01/observation.json)
+passed **12 evidence cases**, including **10 approved source/engine pairs**,
+with **135 requests**,
 reconstructing complete packages from bounded reads. It recorded
-11,974,541 received bytes, no automatic retries and no model calls.
+11,975,076 received bytes, no automatic retries and no model calls.
 
 | Identity | Recorded value |
 | --- | --- |
 | DWP source | `7eeded763042ddd0070f4fed834c6074149e8e2f` |
 | Context engine | `d6930bbcddaab616deec002d9e6efff6e3aae953` |
-| Deployed runtime | `31d8c3436ed289bfd694b7889a9e5edea834ea8b` |
-| SDK verifier | `31d8c3436ed289bfd694b7889a9e5edea834ea8b` |
-| Local Worker SHA-256 | `9c7f31dc62e40b69de10a22aa7685becb16bbe22531d6ee78a9bbc357adfc680` |
+| Deployed runtime | `e6af80e6759c1d7b59dbfc9b9cf31a9c48ad62f1` |
+| SDK verifier | `e6af80e6759c1d7b59dbfc9b9cf31a9c48ad62f1` |
+| Local Worker SHA-256 | `c5cf076b16e254657396047636709720931fcfc5220c46f8ffdbfa25982ddaa1` |
 
 The hosting record and public health report have different scopes: health does not
 independently attest hosted Worker bytes. Delivery checks do not establish complete

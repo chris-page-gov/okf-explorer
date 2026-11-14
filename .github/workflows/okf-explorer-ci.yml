@@ -118,6 +118,8 @@ jobs:
       OKF_DWP_ROOT: ${{ github.workspace }}/.ci/okf-dwp-graph
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Set up locked Python toolchain
+        uses: ./.github/actions/setup-locked-python
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: '26.12.1'
@@ -235,6 +237,19 @@ jobs:
             structured-context/relationships/f9.json.gz
             structured-context/relationships/fb.json.gz
             structured-context/relationships/fc.json.gz
+      - name: Check out the immutable 0.8.0 public receipt blobs
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          repository: chris-page-gov/okf-dwp
+          ref: 15268c562c3f00d47577f71b62702daca5a89a98
+          path: .ci/okf-dwp-receipts
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            validation/compact-delivery/v0.8.0/deployment.json
+            validation/compact-delivery/v0.8.0/sdk/attempt-01/observation.json
+      - name: Verify the dated legacy receipt binding
+        run: uv run --locked python scripts/check_remote_release_docs.py --dwp-root .ci/okf-dwp-receipts
       - name: Install locked remote service dependencies
         working-directory: services/ask-okf-mcp
         run: npm ci --ignore-scripts

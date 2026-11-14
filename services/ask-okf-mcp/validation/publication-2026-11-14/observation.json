@@ -1,0 +1,2296 @@
+{
+  "schema": "okf-versioned-remote-verification.v1",
+  "classification": "actual-public-http",
+  "passed": true,
+  "started_at": "2026-11-14T19:41:37.485Z",
+  "completed_at": "2026-11-14T19:44:52.479Z",
+  "origin": "https://ask-okf.crpage.chatgpt.site",
+  "expected_service_version": "0.8.0",
+  "expected_worker_sha256": "c5cf076b16e254657396047636709720931fcfc5220c46f8ffdbfa25982ddaa1",
+  "deployed_worker_bytes_independently_verified": false,
+  "comparison_commit": "e6af80e6759c1d7b59dbfc9b9cf31a9c48ad62f1",
+  "current_source_version": "7eeded763042ddd0070f4fed834c6074149e8e2f",
+  "engine_catalogue": [
+    {
+      "engine_id": "urn:okf:context-engine:sha256:256b19d6d8a2e16191866ead0ffd48d9edb7f705143bd8a91597b19f242c0968",
+      "source_commit": "d6930bbcddaab616deec002d9e6efff6e3aae953",
+      "source_versions": [
+        "7eeded763042ddd0070f4fed834c6074149e8e2f"
+      ]
+    },
+    {
+      "engine_id": "urn:okf:context-engine:sha256:e94ce301033de019d1051684acfd02803a3fe306fd963b44bd3f4b7dba16f652",
+      "source_commit": "c4f2de0a99b7bc2f8b8c8a06a3c715fb56b66d8e",
+      "source_versions": [
+        "723bcc5b015ab38a026625c2148edbd784edf7c7",
+        "3ef0e786e9a18e76fa17c7d925ff509d6d6c9f84",
+        "9de52acf1db84b27f8933d80480eaa850e74fa33",
+        "bf50ef8d91b9f1ccc2cbdb354198eae74c9ed752",
+        "efb05c66616a9cd4328a86cf412780fe7bc7cf0b"
+      ]
+    },
+    {
+      "engine_id": "urn:okf:context-engine:sha256:5d4cecab049b371d90b2fe1f3a2d1e9663910b5fdac044e091b0b40bc1c6bf73",
+      "source_commit": "b9a3b68b6dbf222f9a73cc8f450dd53f126e1b55",
+      "source_versions": [
+        "3ef0e786e9a18e76fa17c7d925ff509d6d6c9f84",
+        "9de52acf1db84b27f8933d80480eaa850e74fa33",
+        "bf50ef8d91b9f1ccc2cbdb354198eae74c9ed752",
+        "efb05c66616a9cd4328a86cf412780fe7bc7cf0b"
+      ]
+    }
+  ],
+  "observed_health": {
+    "service": "ask-okf",
+    "version": "0.8.0",
+    "ready": true,
+    "bundle": "okf-dwp",
+    "bundle_version": "7eeded763042ddd0070f4fed834c6074149e8e2f",
+    "snapshot": "evidence-connect-754be67f82c82e31d17c",
+    "index_sha256": "4e65253f72b2d771164d5ddd64374ed8142cf66b4a249f193a1fe44d5679f519",
+    "approved_versions": [
+      "7eeded763042ddd0070f4fed834c6074149e8e2f",
+      "723bcc5b015ab38a026625c2148edbd784edf7c7",
+      "3ef0e786e9a18e76fa17c7d925ff509d6d6c9f84",
+      "9de52acf1db84b27f8933d80480eaa850e74fa33",
+      "bf50ef8d91b9f1ccc2cbdb354198eae74c9ed752",
+      "efb05c66616a9cd4328a86cf412780fe7bc7cf0b"
+    ],
+    "engine": "okf-context-assembly.v1",
+    "engine_id": "urn:okf:context-engine:sha256:256b19d6d8a2e16191866ead0ffd48d9edb7f705143bd8a91597b19f242c0968",
+    "approved_engines": [
+      {
+        "engine_id": "urn:okf:context-engine:sha256:256b19d6d8a2e16191866ead0ffd48d9edb7f705143bd8a91597b19f242c0968",
+        "source_commit": "d6930bbcddaab616deec002d9e6efff6e3aae953",
+        "source_versions": [
+          "7eeded763042ddd0070f4fed834c6074149e8e2f"
+        ]
+      },
+      {
+        "engine_id": "urn:okf:context-engine:sha256:e94ce301033de019d1051684acfd02803a3fe306fd963b44bd3f4b7dba16f652",
+        "source_commit": "c4f2de0a99b7bc2f8b8c8a06a3c715fb56b66d8e",
+        "source_versions": [
+          "723bcc5b015ab38a026625c2148edbd784edf7c7",
+          "3ef0e786e9a18e76fa17c7d925ff509d6d6c9f84",
+          "9de52acf1db84b27f8933d80480eaa850e74fa33",
+          "bf50ef8d91b9f1ccc2cbdb354198eae74c9ed752",
+          "efb05c66616a9cd4328a86cf412780fe7bc7cf0b"
+        ]
+      },
+      {
+        "engine_id": "urn:okf:context-engine:sha256:5d4cecab049b371d90b2fe1f3a2d1e9663910b5fdac044e091b0b40bc1c6bf73",
+        "source_commit": "b9a3b68b6dbf222f9a73cc8f450dd53f126e1b55",
+        "source_versions": [
+          "3ef0e786e9a18e76fa17c7d925ff509d6d6c9f84",
+          "9de52acf1db84b27f8933d80480eaa850e74fa33",
+          "bf50ef8d91b9f1ccc2cbdb354198eae74c9ed752",
+          "efb05c66616a9cd4328a86cf412780fe7bc7cf0b"
+        ]
+      }
+    ],
+    "graph_engine_id": "urn:okf:graph-engine:sha256:c75b01d322236e4c13fc1ad72a7e3424203dbae2413c4e6be64b960d8566cb42",
+    "graph_sha256": "ff51d877ed13f7089e7512224a4a8dcd356d0ae8e5964fe33349edf0a263b426",
+    "graph_publication_status": "pinned"
+  },
+  "build_receipt_sha256": "64e7f6f345491a64ee7958dfd6744ca3310816e746a0e2b19631112c3713b47b",
+  "runner_sha256": "dbcb0216b8ca50bcca286caf0e3f93d23e8498dfe635efdc975391574e429edd",
+  "original_0_5_receipt_sha256": "44f6018ace34f72ce0f6085e92c51f3d2d9b57ecd223f7c37a3ddc7141d2c56b",
+  "tools_canonical_sha256": "f3274288b2f6155d737bcab2716198b87030ced8d6b578a39078a4c1f22fc3aa",
+  "tool_discovery": {
+    "sdk_v2": {
+      "result_sha256": "f3274288b2f6155d737bcab2716198b87030ced8d6b578a39078a4c1f22fc3aa",
+      "envelope_sha256": "c3bca573060d3ebbd919b86dd5aab62780eba22347c0037d1681e97049e304ac",
+      "tools_sha256": "8b7fe4f993b14105354aae120541f23893573704f15b5ae681c9fd4485101e1d",
+      "tool_count": 3
+    },
+    "sdk_v1": {
+      "result_sha256": "1aeac920716b58a11184102c8b53cc655b82e83d73f37ddb7eb10ad915cc3251",
+      "envelope_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "tools_sha256": "8b7fe4f993b14105354aae120541f23893573704f15b5ae681c9fd4485101e1d",
+      "tool_count": 3
+    }
+  },
+  "complete_tool_rows_equal": true,
+  "sdk_v2": "2.4.0 / 2026-07-28",
+  "sdk_v1": "1.32.2",
+  "sdk_version_basis": "committed comparator package-lock.json",
+  "predicted_request_upper_bound": 138,
+  "transport": {
+    "request_count": 135,
+    "received_bytes": 11975076,
+    "interval_ms": 750,
+    "minimum_observed_interval_ms": 750.0640410000051,
+    "automatic_retries": 0,
+    "events": [
+      {
+        "sequence": 1,
+        "method": "GET",
+        "path": "/health",
+        "rpc_method": null,
+        "tool": null,
+        "request_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "started_at": "2026-11-14T19:41:44.870Z",
+        "status": 200,
+        "response_bytes": 1940,
+        "response_sha256": "70caf6bfba1e57253e9a67f9549754971f766dc348cb6cf957b092a896e4f6bc"
+      },
+      {
+        "sequence": 2,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "server/discover",
+        "tool": null,
+        "request_sha256": "58c2b1d21192eb76332f56cc8a816307a08e11ca4007c58313e752529f760fb0",
+        "started_at": "2026-11-14T19:41:45.622Z",
+        "status": 200,
+        "response_bytes": 663,
+        "response_sha256": "a3b613a7e0522a0293e044892e9c36b10bb23fffec6b9c33b959c7f7bf182f11"
+      },
+      {
+        "sequence": 3,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/list",
+        "tool": null,
+        "request_sha256": "6fd984d40e6a15183c2ca727a4682f5e4558ded8e6a05a59f06216042b5ba8d5",
+        "started_at": "2026-11-14T19:41:46.374Z",
+        "status": 200,
+        "response_bytes": 40112,
+        "response_sha256": "74256fe280a462ac2574f19c63736af59fb2db91c2f91b290d8569341e172ee0"
+      },
+      {
+        "sequence": 4,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "ask_okf_manifest",
+        "request_sha256": "8f91bbc6393fe93350b27a5e243b4f3ce22a6bfd894f9857cc5542c7f31717fb",
+        "started_at": "2026-11-14T19:41:47.125Z",
+        "status": 200,
+        "response_bytes": 34753,
+        "response_sha256": "dd19e4fa636899d52e33866d2b951b9e7339f549147f44f1cc22606763495b1b"
+      },
+      {
+        "sequence": 5,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "ask_okf_manifest",
+        "request_sha256": "6415fd6cf6e1ea810830bcc910bb44dd5caa3ad275a14d64db00cf2ed04966cf",
+        "started_at": "2026-11-14T19:42:06.114Z",
+        "status": 200,
+        "response_bytes": 12623,
+        "response_sha256": "45278103eeb76aa98f09ae8fd52815a91513ce212cd0bbec48ca26bb6d53a6e4"
+      },
+      {
+        "sequence": 6,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "7f1c3e0502306ba011d5a1f8d14bf4aba7ff7f09f8569959cbc76e04c3d35ba8",
+        "started_at": "2026-11-14T19:42:11.331Z",
+        "status": 200,
+        "response_bytes": 135024,
+        "response_sha256": "8efaea89788e454035916030c727c60896d6fb00c7ca668af5a4e70042e2b68f"
+      },
+      {
+        "sequence": 7,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "cfe7f525f0deb4b056ca58191f814448c1b88cf1bfa098d16e5d221308a3ae07",
+        "started_at": "2026-11-14T19:42:13.958Z",
+        "status": 200,
+        "response_bytes": 136890,
+        "response_sha256": "6b032776e7ffbfccd0bb2669e016e7b0d141cdb0dfd051c17d29d6676c984539"
+      },
+      {
+        "sequence": 8,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "98ddad1de0e62e3ede72ac1384b7e0a9e9f4607fa064c3a70b2e30031df22d07",
+        "started_at": "2026-11-14T19:42:18.191Z",
+        "status": 200,
+        "response_bytes": 135870,
+        "response_sha256": "9bc4fdea5ce980988cea26f2b3774362cfa6bc52dd5a1ab1682dbcd837629ac4"
+      },
+      {
+        "sequence": 9,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "aeafe3596eba4c6cca718a183bdb1fca536d2f8827486bb9c135b3c6cac6c5a1",
+        "started_at": "2026-11-14T19:42:20.749Z",
+        "status": 200,
+        "response_bytes": 134654,
+        "response_sha256": "8dfb4d2f9244bbaf4616c583482372d71eb4884ddd6fc1405a1fd908e763313d"
+      },
+      {
+        "sequence": 10,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "dedfb3e98ebba692ff379158416be6f7897e58a3a0b2b645f4adfbe745a6d431",
+        "started_at": "2026-11-14T19:42:24.802Z",
+        "status": 200,
+        "response_bytes": 135042,
+        "response_sha256": "320d7cf1e83c31db4bf90e198ccb88a5784c37d096e53c3ad45b80853c8fb34a"
+      },
+      {
+        "sequence": 11,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "ce1768f6f1a47f544126bc47d1825a7c70d8a57b948184c844c6a3481643deb7",
+        "started_at": "2026-11-14T19:42:27.664Z",
+        "status": 200,
+        "response_bytes": 137278,
+        "response_sha256": "ea76419b4c6c3ffeb3e12aa7795edd0e95c77c5c8647778d758439aea093043c"
+      },
+      {
+        "sequence": 12,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "3fc4ceeec3b35262f9c08aa72e3ac82925630f7ddfc163cf161ab33b5f95df1b",
+        "started_at": "2026-11-14T19:42:30.359Z",
+        "status": 200,
+        "response_bytes": 136754,
+        "response_sha256": "f2196b3236d28f24cece28cfbdb04338b45bd9c35d6ba11a71f47e7ce54bb78f"
+      },
+      {
+        "sequence": 13,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "fb80fa1c5cbabe8a82b57dd7b4cd9cf53dda96f063c7d1d8d7b41c953fb4be25",
+        "started_at": "2026-11-14T19:42:34.783Z",
+        "status": 200,
+        "response_bytes": 136287,
+        "response_sha256": "93874b04524dbe6118ab8b8cba4d348f9c21899d5aa234afeb947374e9791988"
+      },
+      {
+        "sequence": 14,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "6487262328c02bde2a9f5a72cb558ce7bb4bb36ac3bbb01f3ad274bdd0cbc279",
+        "started_at": "2026-11-14T19:42:37.342Z",
+        "status": 200,
+        "response_bytes": 47597,
+        "response_sha256": "b18a90787cf0e9d54521a88419c21ac09c6978962619b2bcf84de2f2070c00dc"
+      },
+      {
+        "sequence": 15,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "1e38af3b07aebe029865f4504ec4ead8ae90e6fa831d4d10da1dce938d3e602b",
+        "started_at": "2026-11-14T19:42:39.950Z",
+        "status": 200,
+        "response_bytes": 5462,
+        "response_sha256": "4c69eb3f1f872015b5a4f8473857f2c65c1b7d7d2ed2c2dd5807a3e1fa7fbe42"
+      },
+      {
+        "sequence": 16,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "fc04391e1858ce22aa88fcb9c3294d6fd6c3ff47f189c94a2bf09afb8da1252e",
+        "started_at": "2026-11-14T19:42:43.533Z",
+        "status": 200,
+        "response_bytes": 14015,
+        "response_sha256": "91f88034d08d47269bf73d3e37660ba2ca84540a9fda1c0d23d9f0d998ae5a04"
+      },
+      {
+        "sequence": 17,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "d6e0b6bd0149b2daff977145094086a1bacab08350e366f0c91e25bc89d24188",
+        "started_at": "2026-11-14T19:42:45.941Z",
+        "status": 200,
+        "response_bytes": 134645,
+        "response_sha256": "b6fcc6f48cbb95a791560f92d4e6f7e29ae642d52515664306c182662a2d4085"
+      },
+      {
+        "sequence": 18,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "13b0d335512613bc1feb20127c45a0057f2cd4953e376f0eecffd7c292bbf120",
+        "started_at": "2026-11-14T19:42:48.554Z",
+        "status": 200,
+        "response_bytes": 134699,
+        "response_sha256": "624f6653e534891791dd7f4567ea280163fbb636f2a8f854dea3abe1eeefb468"
+      },
+      {
+        "sequence": 19,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "d66645042418b9e365cf0406f65e2fe5b0bc2faffd63d6784d86f92d7dc52e2a",
+        "started_at": "2026-11-14T19:42:51.208Z",
+        "status": 200,
+        "response_bytes": 134675,
+        "response_sha256": "ee121dc9e113f24cdf63b6632abb22c3ef969b15f26b8dd5a23dd60d77ac6fba"
+      },
+      {
+        "sequence": 20,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "ce4e5b94b8d7cd827a658dbfb7b3035abf4aa876a8d02dfc9bc95365e572f2f1",
+        "started_at": "2026-11-14T19:42:53.579Z",
+        "status": 200,
+        "response_bytes": 136911,
+        "response_sha256": "f0841fd5fd6009ffe79cabf93a0470b70e6ca7b5e98970fd073ebeb9bfe1481f"
+      },
+      {
+        "sequence": 21,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "1b338dde62e083054c8dce9ce99e1e2ac7b9a88ecb81845ccc7f6cc353615fd2",
+        "started_at": "2026-11-14T19:42:55.910Z",
+        "status": 200,
+        "response_bytes": 112539,
+        "response_sha256": "d074651fc71cde33b22b36a242ac7bf94533788dabf71bc11d7c2746cb84aae8"
+      },
+      {
+        "sequence": 22,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "ask_okf_manifest",
+        "request_sha256": "0d2680df8a34cef64c3388d78423a418a31113914f991cb65401629428b6f010",
+        "started_at": "2026-11-14T19:42:58.293Z",
+        "status": 200,
+        "response_bytes": 34664,
+        "response_sha256": "ac62580ad29c620437f7eb6e3f26e8912073b3df9babc9d5a96e2e04bf85ed13"
+      },
+      {
+        "sequence": 23,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "ask_okf_manifest",
+        "request_sha256": "66e97c64c766c6bc92338f9e2e8e00d1c43e3e0a82511182d07b63402f8ca3c2",
+        "started_at": "2026-11-14T19:43:01.482Z",
+        "status": 200,
+        "response_bytes": 34420,
+        "response_sha256": "52456c3c1b6531b63c1e6a20b638bbeebd15f72cc975abf3dc79f5755ddfa4fc"
+      },
+      {
+        "sequence": 24,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "ask_okf_manifest",
+        "request_sha256": "684c43caab811d27b918ef93d51840dea6845b673ae12ca87fd71f727e5c7ce8",
+        "started_at": "2026-11-14T19:43:02.245Z",
+        "status": 200,
+        "response_bytes": 17576,
+        "response_sha256": "9190b52a5ecd50a4f687fb315b9918cd8cd3df9e3ec79cf97d623e789d3f9320"
+      },
+      {
+        "sequence": 25,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "97d05b2b30fa9b42e0a34d8bf9d3e768cef022e100b5866988f74e89be0e693b",
+        "started_at": "2026-11-14T19:43:03.059Z",
+        "status": 200,
+        "response_bytes": 137737,
+        "response_sha256": "9f1949fb92cb4993bcafa295db711eda5dcca55aa6bcd5935fc21ac89879c4c0"
+      },
+      {
+        "sequence": 26,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "d1fdc0700ebe888426a964ca0d0166dcddfe900e5c03a1f874c1efe62a3e6559",
+        "started_at": "2026-11-14T19:43:04.067Z",
+        "status": 200,
+        "response_bytes": 138031,
+        "response_sha256": "f234f4739558015653020564622fd9e5027eb0ce494a80dfa5d57de4ad32b119"
+      },
+      {
+        "sequence": 27,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "cdae2c578d5f8a32cd0ee7af90c895091e31dafa07943a9190ea657baa67ea2e",
+        "started_at": "2026-11-14T19:43:04.865Z",
+        "status": 200,
+        "response_bytes": 137703,
+        "response_sha256": "4877816c358b95e2dddaa6eda6d97a32aa172b41ed4ab8a3c6fd0d99f83dcfbe"
+      },
+      {
+        "sequence": 28,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "6a1eaa35b8a359d4baf5459ed8a2a1c77db7ff3abb6076ad07f795eef726be43",
+        "started_at": "2026-11-14T19:43:06.564Z",
+        "status": 200,
+        "response_bytes": 135959,
+        "response_sha256": "f584b821c28b5f6a1702c6843d4d53e68f926aab9a4225f4232c2ecd5f77c8a4"
+      },
+      {
+        "sequence": 29,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "2bca04223ab8bd990989a1deed8f779e497fe0649782d6779c8d18ca26007aef",
+        "started_at": "2026-11-14T19:43:07.384Z",
+        "status": 200,
+        "response_bytes": 136277,
+        "response_sha256": "c0d79292beb77be31d0a1f5cbfb0eeaf099e74953482ba302911d03585c80396"
+      },
+      {
+        "sequence": 30,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "b622c05af16ff19e47c9e8c0cfe9fef7f6229eb3f53f6ccf4885aa296b1a5162",
+        "started_at": "2026-11-14T19:43:08.498Z",
+        "status": 200,
+        "response_bytes": 136319,
+        "response_sha256": "c444c9b9bc0c212fe534735c95e15ba4961f1484acdb36c680f258d7a1628066"
+      },
+      {
+        "sequence": 31,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "044a917d41dc2668ec197f9c100067438042510e3d6d05bb2ecdff0934072cee",
+        "started_at": "2026-11-14T19:43:09.343Z",
+        "status": 200,
+        "response_bytes": 135869,
+        "response_sha256": "f812ec752f0b62a67b558c8927dae66b5687522c36576fa0b0d14cedc7c40e34"
+      },
+      {
+        "sequence": 32,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "294bb4316be0c8870b1f7767483678d0621c28b36f3a83fff6147cd21a42add0",
+        "started_at": "2026-11-14T19:43:10.153Z",
+        "status": 200,
+        "response_bytes": 136397,
+        "response_sha256": "7a8c7b3cb6f7a07b50e3628d8f0273321a3f80e4689124f78906efd8c8832f00"
+      },
+      {
+        "sequence": 33,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "838d913cc2ff48d5b5fb1bfff6e7030df881af56303c63b6e80e229845c5614a",
+        "started_at": "2026-11-14T19:43:10.977Z",
+        "status": 200,
+        "response_bytes": 66517,
+        "response_sha256": "acd00affadbaaef55928a25b9c40be48eba35b4d5c1dd6573f011fb1e5e5c699"
+      },
+      {
+        "sequence": 34,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "ask_okf_manifest",
+        "request_sha256": "b5682b8e14fe5da414126171d57cd9400e88a0d819cb22c5c88498e4ca1148b1",
+        "started_at": "2026-11-14T19:43:11.873Z",
+        "status": 200,
+        "response_bytes": 34838,
+        "response_sha256": "32e56830a698d64cb221bc47d925da9fbee135805cecac2465c33979d2eafc9f"
+      },
+      {
+        "sequence": 35,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "ask_okf_manifest",
+        "request_sha256": "a9292eb46adebb2c9af93ae14ff56240806a9c9dddfa652c0789eb282b966fc3",
+        "started_at": "2026-11-14T19:43:15.268Z",
+        "status": 200,
+        "response_bytes": 34618,
+        "response_sha256": "db54359b4d47ae25ae33174ed78a393a4895a1505e299d5a44b76ef2876d6f93"
+      },
+      {
+        "sequence": 36,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "ask_okf_manifest",
+        "request_sha256": "b5409982ff38b86345225093cccf8a046c591b70ec1e69def145803c48c99167",
+        "started_at": "2026-11-14T19:43:16.020Z",
+        "status": 200,
+        "response_bytes": 29416,
+        "response_sha256": "f8748809b8b9cc3793da48000e4dc3ea0bcb043b5c70c6a3d1d19b93078e3c62"
+      },
+      {
+        "sequence": 37,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "c527404dcdf4665c6906960b0114ab7d32bc0bf2d25276b4f21dec60aaf9fcc5",
+        "started_at": "2026-11-14T19:43:16.772Z",
+        "status": 200,
+        "response_bytes": 138103,
+        "response_sha256": "dc9baa41374d4393dff4ec1387313f6c04517360b0e5a149f319c9505707d3d7"
+      },
+      {
+        "sequence": 38,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "15a14327e6539ee323d39d5e0d145d2d97de9b1e1b5af907139035d55283b790",
+        "started_at": "2026-11-14T19:43:17.890Z",
+        "status": 200,
+        "response_bytes": 137677,
+        "response_sha256": "3eb631e1c9df24261fd288732b05db896f1e78eab65b749983b9e4825f3a58f4"
+      },
+      {
+        "sequence": 39,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "2cf25c9817c889201f5b2428bfc555a77f617d54952b8cf9e11f14ea87f65c26",
+        "started_at": "2026-11-14T19:43:18.644Z",
+        "status": 200,
+        "response_bytes": 138053,
+        "response_sha256": "eb3ccd881e1379ae435c5fea0744e8d22726b023dfb13e4af67ad2fb342de780"
+      },
+      {
+        "sequence": 40,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "7e82300771470c6027ed3295bc895ba3facf1274084e22f1ebeaba2b299a2f00",
+        "started_at": "2026-11-14T19:43:19.427Z",
+        "status": 200,
+        "response_bytes": 137049,
+        "response_sha256": "1dd7f72a689bef4ae66f336e77098815e48bb8e3e093ac24c7a1b3b5de97e0bb"
+      },
+      {
+        "sequence": 41,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "479a29528205bc9162fa0906924d6b0bab391999819dbc55ff89269bdbb841b0",
+        "started_at": "2026-11-14T19:43:21.065Z",
+        "status": 200,
+        "response_bytes": 136731,
+        "response_sha256": "d7f231142ec2ab5280904d6ad44ae2f5edb7afbc37cdd008bdc92ed91a2688ed"
+      },
+      {
+        "sequence": 42,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "407ab797d76a3d2fb6951e1699b1b11151cf53f12c38c363dcefebd21c69e980",
+        "started_at": "2026-11-14T19:43:21.816Z",
+        "status": 200,
+        "response_bytes": 136485,
+        "response_sha256": "07c19cbdb5e018a0d291dd2df066cd3f644938751f177a7b9383af1bd4468624"
+      },
+      {
+        "sequence": 43,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "1129eb1ef00e5ab3920fad04227fc8f631bf26e937ecd6658a4576f2b9e8d5cc",
+        "started_at": "2026-11-14T19:43:22.569Z",
+        "status": 200,
+        "response_bytes": 134475,
+        "response_sha256": "44e3fbc691056221c018342d160e30350e23488f28c8fad2e9b2642e7bc18b7f"
+      },
+      {
+        "sequence": 44,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "2d9836092939278975069ea23cb1dcdc18e6cff712f6e3839b44feae49aebded",
+        "started_at": "2026-11-14T19:43:23.319Z",
+        "status": 200,
+        "response_bytes": 136053,
+        "response_sha256": "f795dda7324d7664aabd288236c8047ce6f00a4df4dd89938dca88a4c4dff963"
+      },
+      {
+        "sequence": 45,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "8d75984a7b8ed34873fc16140d008e5305f4b0de7bfcec852d5db131c70c21d7",
+        "started_at": "2026-11-14T19:43:24.140Z",
+        "status": 200,
+        "response_bytes": 12877,
+        "response_sha256": "36c81b225173fd30cb9032e3745bd72ce8bcf2958d336370f1132a0cd7de2efc"
+      },
+      {
+        "sequence": 46,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "ask_okf_manifest",
+        "request_sha256": "a3af2cf21a8f907e4b1abf09ac70edf9539a71f6a9ea11f5e0e22c4c81e253e5",
+        "started_at": "2026-11-14T19:43:24.891Z",
+        "status": 200,
+        "response_bytes": 33588,
+        "response_sha256": "18b4d50adc062f0f210306df8b23c57ab3130f4a9eb3052e23af00d50fee1280"
+      },
+      {
+        "sequence": 47,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "ask_okf_manifest",
+        "request_sha256": "82b8d53aa8d19edb40c78447d5ae98801a5afad5f3518e1cccf14e2ab440c688",
+        "started_at": "2026-11-14T19:43:25.644Z",
+        "status": 200,
+        "response_bytes": 34738,
+        "response_sha256": "ed54e3dbed00a5846750e4ad39eed31c5074566ec4b925cd38901bd4c3a7099d"
+      },
+      {
+        "sequence": 48,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "ask_okf_manifest",
+        "request_sha256": "865f56f98aea07472fa9724e88c47336bd18364afb80f835929b692f643c190e",
+        "started_at": "2026-11-14T19:43:26.395Z",
+        "status": 200,
+        "response_bytes": 30220,
+        "response_sha256": "d338aa2c040d92da416810d1bb0893e90a22cfca98de998dfe77717679c7dc10"
+      },
+      {
+        "sequence": 49,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "03032e9dfe8e978d0101e0b13c79b5eb60e23d2bd8a0403e0578b61601842271",
+        "started_at": "2026-11-14T19:43:27.147Z",
+        "status": 200,
+        "response_bytes": 137923,
+        "response_sha256": "6f58872be64e6641a4a33639fab99ea96864f8452749a617be5c9fa0f180e209"
+      },
+      {
+        "sequence": 50,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "e9faf63ac45d9d255bac3b539d8bb785ee85cedaffcadf1497bc48244c548e22",
+        "started_at": "2026-11-14T19:43:28.132Z",
+        "status": 200,
+        "response_bytes": 137841,
+        "response_sha256": "3b57dcb9f3162e37d13107a529bef50f709caa9f2157d1720f91f3325ab19947"
+      },
+      {
+        "sequence": 51,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "ee05b78907fc40098f2e4677d36b0248e654ffeb552b919395c5e5d1a80a98e5",
+        "started_at": "2026-11-14T19:43:28.950Z",
+        "status": 200,
+        "response_bytes": 137991,
+        "response_sha256": "1dd2ae03ccfddb7a85d313a224eab86c1b154af8d55fa8b75f88d6052f566ec9"
+      },
+      {
+        "sequence": 52,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "ea55ec709f36e24792694ebdaf72829f5772d736f1dc27d6790fce626474cf51",
+        "started_at": "2026-11-14T19:43:30.388Z",
+        "status": 200,
+        "response_bytes": 136555,
+        "response_sha256": "40b6f7cb9556ab196652f0721500720cd2cc87a5fe9aad942e4bc8a186787304"
+      },
+      {
+        "sequence": 53,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "121e353ed7e87867786eece2b1eb05e9e66d49cb223c87cae2f48a9d5b7faeb2",
+        "started_at": "2026-11-14T19:43:31.139Z",
+        "status": 200,
+        "response_bytes": 135773,
+        "response_sha256": "c9a3b46f190f9e9afab05294f61a44c79ca44d7223861854bfc26c89b5c4e1f1"
+      },
+      {
+        "sequence": 54,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "9180944c68c7f6dbd8ead2787d79b316a6f224e740881d245768952980c343ff",
+        "started_at": "2026-11-14T19:43:31.891Z",
+        "status": 200,
+        "response_bytes": 136567,
+        "response_sha256": "9bf148150331177713126acbea258aa01e8811dd666bdec2d451ad52e549ee8d"
+      },
+      {
+        "sequence": 55,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "44ef5e581a45c516699f0ee9a3a6436cd9b6f59eb2d6e6d2ab813da3fc69cf43",
+        "started_at": "2026-11-14T19:43:32.642Z",
+        "status": 200,
+        "response_bytes": 136167,
+        "response_sha256": "8cfbe467f0169e4d42bdd366c8476355d9b5383746515deee84cbac2267d795e"
+      },
+      {
+        "sequence": 56,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "20109482a5f4a072d450d20d357b543f174535dd380106c96ee07f9fe7f53353",
+        "started_at": "2026-11-14T19:43:33.393Z",
+        "status": 200,
+        "response_bytes": 110213,
+        "response_sha256": "d7d374c3bd2a0d8f5fd434857f6efff57b0d96c4d2c6637bc9edb5b02ca40dba"
+      },
+      {
+        "sequence": 57,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "ask_okf_manifest",
+        "request_sha256": "500aaade3c69972c1a56e49aee19a0777b4ceaf50a5978874bbb56070da95e1a",
+        "started_at": "2026-11-14T19:43:34.144Z",
+        "status": 200,
+        "response_bytes": 34092,
+        "response_sha256": "2d6b25fdb90fcecfdccfabb4162f7ccec38cdc523f9f9704d383598ee231712b"
+      },
+      {
+        "sequence": 58,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "ask_okf_manifest",
+        "request_sha256": "b687466dc1ad7f12a492473b29f5ece8b6fcda0b97d48ad2ff2159ffe0596e12",
+        "started_at": "2026-11-14T19:43:36.911Z",
+        "status": 200,
+        "response_bytes": 34614,
+        "response_sha256": "cf6b9a82343699a63ba9cb7c1ab072f7c2d622fd612a34d61b507a3a60ecfd58"
+      },
+      {
+        "sequence": 59,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "ask_okf_manifest",
+        "request_sha256": "b90ca60bc2c8d7cdf80c90940f307d83b87c393ab61a783f48d8bf326b7cb50a",
+        "started_at": "2026-11-14T19:43:37.695Z",
+        "status": 200,
+        "response_bytes": 16712,
+        "response_sha256": "fd5d23eb1a0384715cac2fb4242497c5670bf5086ba3b1cb819571706d7ae208"
+      },
+      {
+        "sequence": 60,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "ca5741d3f6293ceb2de1f5422f912c01bcb6e7f454556faa70cdca53fe00f51d",
+        "started_at": "2026-11-14T19:43:38.880Z",
+        "status": 200,
+        "response_bytes": 138169,
+        "response_sha256": "3ac09d643b8820cd37ea53384618876382266e2a247541b28b8c72acfb0059d6"
+      },
+      {
+        "sequence": 61,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "733d70d280ad09935d487625862045c1b140864ab81ae1a58655f1ff5d0bb511",
+        "started_at": "2026-11-14T19:43:39.631Z",
+        "status": 200,
+        "response_bytes": 137063,
+        "response_sha256": "39241ca47cf190e085b40e8592d853aeb33700a1edb406819696965f3b7b808e"
+      },
+      {
+        "sequence": 62,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "b7b4e239183efd451113d08065d898ff0b17fac0bb30cf3b622d1bef7c12a6dd",
+        "started_at": "2026-11-14T19:43:40.384Z",
+        "status": 200,
+        "response_bytes": 136781,
+        "response_sha256": "31fb85f0bef86577f6773a61fb40c2a9727f62e433ac97f4309eaff569a5dedb"
+      },
+      {
+        "sequence": 63,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "25f8fb1a2038f0f70f75d30d148b027bcafc6c7a2b2fad60e0af8805f5ef90e5",
+        "started_at": "2026-11-14T19:43:41.135Z",
+        "status": 200,
+        "response_bytes": 137387,
+        "response_sha256": "fc739593bbc57b79c470427d6d3577bed553c96054554e69509518bbacff1805"
+      },
+      {
+        "sequence": 64,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "7a4bc03fdf69cc995f228f90308a25821967629db4bd07594c7ce72d1bae70c3",
+        "started_at": "2026-11-14T19:43:41.887Z",
+        "status": 200,
+        "response_bytes": 62603,
+        "response_sha256": "3e152c11c1c1f35f7f4f1bfc68cd316811371b335004d79a1197c5e0daea883c"
+      },
+      {
+        "sequence": 65,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "ask_okf_manifest",
+        "request_sha256": "4306e62c4b49058ea792bf4103dca42ac0530c8fe39a5e4a17431d8841e11a4b",
+        "started_at": "2026-11-14T19:43:42.638Z",
+        "status": 200,
+        "response_bytes": 34092,
+        "response_sha256": "3251694011d7b7678c5359397f9bad4cb65c6e2a4f654dc89ebaafba983de511"
+      },
+      {
+        "sequence": 66,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "ask_okf_manifest",
+        "request_sha256": "f3d9a40e91e180aa9874e92cc9ada9e6445a82b610c3f53c7c69be39dfd1f28e",
+        "started_at": "2026-11-14T19:43:43.390Z",
+        "status": 200,
+        "response_bytes": 34614,
+        "response_sha256": "2bb2bad84d2cf1a60b797e740fa7f851432ff6d20bb8be980b7fbdd7043c5271"
+      },
+      {
+        "sequence": 67,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "ask_okf_manifest",
+        "request_sha256": "b22b598b6b0ea56df65603360492b742fbcbe31abe613415a7a0f3310974e558",
+        "started_at": "2026-11-14T19:43:44.140Z",
+        "status": 200,
+        "response_bytes": 16712,
+        "response_sha256": "4c9d691af0995d61a96b3884fbf038aa8640b095435c6bd7804e082d1159f832"
+      },
+      {
+        "sequence": 68,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "a98a48fd6c2fe0b6320526a0009c677b111eb6ed608995258e42fee8dc1f82d3",
+        "started_at": "2026-11-14T19:43:44.892Z",
+        "status": 200,
+        "response_bytes": 138169,
+        "response_sha256": "6c1fe0c894dbcc2e6bbb7994bd27f812e412034bc0bb2cfe30aa5751f1034890"
+      },
+      {
+        "sequence": 69,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "de3d47e9e655101ba1bd47d056fba9facbf4ec86112fb45b3ae0b4deda719bbc",
+        "started_at": "2026-11-14T19:43:45.643Z",
+        "status": 200,
+        "response_bytes": 137063,
+        "response_sha256": "f180ad36c67f1b395c17fdd7579a39fcad5bbcaef028b1d5a8d929c917506bf7"
+      },
+      {
+        "sequence": 70,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "358531413632e1c880b6a46a9c715e50625dea03be616f89dc52fa6c006a3d28",
+        "started_at": "2026-11-14T19:43:46.395Z",
+        "status": 200,
+        "response_bytes": 136781,
+        "response_sha256": "4c9fe4618119368a3c7a9090a24e7d48806be0e82550a7770430a4db2f2c7b49"
+      },
+      {
+        "sequence": 71,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "f4531cb69a08abb53d72324f54ca37b6bcf55a47e12fdc88c71468bff60e131d",
+        "started_at": "2026-11-14T19:43:47.688Z",
+        "status": 200,
+        "response_bytes": 137387,
+        "response_sha256": "d61233ce303e960b5a57540befbddc58cc83f604b5c815c4916f9943f91e19ff"
+      },
+      {
+        "sequence": 72,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "b7b7d925f17a34d93660ac998981b7d219942951234a0f286caf1520a449ce6e",
+        "started_at": "2026-11-14T19:43:48.438Z",
+        "status": 200,
+        "response_bytes": 62603,
+        "response_sha256": "e373aad68aadf8be394e6653febbb83b159b12fa0828606147b1ee81f9189df5"
+      },
+      {
+        "sequence": 73,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "ask_okf_manifest",
+        "request_sha256": "c41ac1f110861220b4fa39b4f00da8b5761fc68d325a5306405481e59f300d49",
+        "started_at": "2026-11-14T19:43:49.190Z",
+        "status": 200,
+        "response_bytes": 34520,
+        "response_sha256": "928f1347f573eaf5550902aecaee2ed4ccf8733943916cadded47eb798fc7a84"
+      },
+      {
+        "sequence": 74,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "ask_okf_manifest",
+        "request_sha256": "fd24ddd3a0591781a3a6566a6f675a1132779a82a92b84089af18e14eeee5289",
+        "started_at": "2026-11-14T19:43:52.061Z",
+        "status": 200,
+        "response_bytes": 34082,
+        "response_sha256": "d1394b9f987cc8b43455e8b042ad6c600c1e2b2050524aa3060138fe31130b41"
+      },
+      {
+        "sequence": 75,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "ask_okf_manifest",
+        "request_sha256": "65398024b87fc8066219dba66b35b5b5c3685cd52b59c619f9f0bf9561c076f4",
+        "started_at": "2026-11-14T19:43:52.813Z",
+        "status": 200,
+        "response_bytes": 30046,
+        "response_sha256": "37654ff0729b494f8f36b1ceecfb52819a1618d9409fbe8ccfcb4a8c5a7f7239"
+      },
+      {
+        "sequence": 76,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "cd9ee4a24add5bdf222ce408beb00c237d8f93a13cf9459a8deb9daa2a345866",
+        "started_at": "2026-11-14T19:43:53.661Z",
+        "status": 200,
+        "response_bytes": 137293,
+        "response_sha256": "2da6144cb84c4259d8fe9bb9afbdb2ad7c29e633583a019ab687ba3ad6077410"
+      },
+      {
+        "sequence": 77,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "b525e5fa803fa7bce1a821f087c2bca394ee7896cdb4e1a734a3afbb2108aa35",
+        "started_at": "2026-11-14T19:43:54.412Z",
+        "status": 200,
+        "response_bytes": 137307,
+        "response_sha256": "7821d077abfb38e6a40ad502fb492545ae1ee19ec31d938e8550239e2b836ebd"
+      },
+      {
+        "sequence": 78,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "2e83d9c37a1beb948493630ada3a0cea4cc261579a0f46d359e8f267113b6c97",
+        "started_at": "2026-11-14T19:43:55.164Z",
+        "status": 200,
+        "response_bytes": 137773,
+        "response_sha256": "d4b279c8e41b685dd334c2e2ce9496786a35dcad44fb64402a3cf58ddcad8ed0"
+      },
+      {
+        "sequence": 79,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "3f1aa7193b1ea526fb34e4b1704f2887ac625a2ae37fc29dda5787a3e706c4a3",
+        "started_at": "2026-11-14T19:43:56.022Z",
+        "status": 200,
+        "response_bytes": 136193,
+        "response_sha256": "4136f3c33738372d63086f49ed3c48756ef6128f3c1f95945942ea14e72e0bbf"
+      },
+      {
+        "sequence": 80,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "128928365f12e3f90ffa61638b96ded4cdb50830d7aadf7a0be70c3adefe3b81",
+        "started_at": "2026-11-14T19:43:56.773Z",
+        "status": 200,
+        "response_bytes": 136461,
+        "response_sha256": "444d850742f985a558866c093dfcaa76cbcb288030e3980790fc780167465622"
+      },
+      {
+        "sequence": 81,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "873d9844339fabb6d2f7fe68b0a84e5c38de0839b2ae63da2c123c15702d861a",
+        "started_at": "2026-11-14T19:43:57.525Z",
+        "status": 200,
+        "response_bytes": 136061,
+        "response_sha256": "7ef815e200a1374919d2a4e8f0239b547d05fdf838b1e94761e0ad504f8c67bf"
+      },
+      {
+        "sequence": 82,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "ac2df8c78f21860f2affe0beb59ed7a19d9a86a2fd2f5ad94809f8d1cb6c30c6",
+        "started_at": "2026-11-14T19:43:58.465Z",
+        "status": 200,
+        "response_bytes": 135925,
+        "response_sha256": "d3bca1e8f3677c9addc45746aba728b585959e43dbc37fc7a7de8fa5fe6a5193"
+      },
+      {
+        "sequence": 83,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "cc59228ea6f5b2673d329a4cc3c5da61918b00eeb23dd9792c9294259cafac63",
+        "started_at": "2026-11-14T19:43:59.215Z",
+        "status": 200,
+        "response_bytes": 90663,
+        "response_sha256": "fce221e1dd04b92c989a23f51d1d085130e22d506a40729b9498077a421c69f0"
+      },
+      {
+        "sequence": 84,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "ask_okf_manifest",
+        "request_sha256": "7fe513d84b832077748cbe232d5dd75e5fba2003c23fbc2d5b026ce1b9f47f0d",
+        "started_at": "2026-11-14T19:43:59.967Z",
+        "status": 200,
+        "response_bytes": 34520,
+        "response_sha256": "60fcfc908df1c9f55c2e2a234aae416a98f1990675e7d885e26077be7eae3d92"
+      },
+      {
+        "sequence": 85,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "ask_okf_manifest",
+        "request_sha256": "31007a780d22488384b10accbe6a47b3fc8b990bbb6ba820129be5db41c121aa",
+        "started_at": "2026-11-14T19:44:00.918Z",
+        "status": 200,
+        "response_bytes": 34082,
+        "response_sha256": "eeae5eabff3db2ff3b23aa571389065a82ff64daf1b04613a0ae3058f049dea3"
+      },
+      {
+        "sequence": 86,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "ask_okf_manifest",
+        "request_sha256": "bd1f54c8f0d5e27a4aa09781c4a7cb93523c93ceeac2bee39821719e67e63aea",
+        "started_at": "2026-11-14T19:44:01.670Z",
+        "status": 200,
+        "response_bytes": 30046,
+        "response_sha256": "ee3ae4211b83f956a4a69ec2977f1e8d97e75c5c030d30a76c911ea88c976023"
+      },
+      {
+        "sequence": 87,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "6a4c3ef67d790b28a38237760a27cf13fb1d02ba4bffe756fefd238cbff49fd3",
+        "started_at": "2026-11-14T19:44:02.421Z",
+        "status": 200,
+        "response_bytes": 137293,
+        "response_sha256": "a3cb8fa942fde75bc1a77681e752f43bce45f5782117633551346915cacdc517"
+      },
+      {
+        "sequence": 88,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "a7a439b1d46f03b2bc32e8d676dcb0ce76527fa8511f1d7e946a039e7a8e3848",
+        "started_at": "2026-11-14T19:44:03.172Z",
+        "status": 200,
+        "response_bytes": 137307,
+        "response_sha256": "e76e027ea24d494adfbdb46c839f077f6675e598a992410a0bce051b166d7217"
+      },
+      {
+        "sequence": 89,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "5e9ad47dfac2ee7727f3ad3fbbc918ab5a520d32c865e4ddd998e2f9ec974429",
+        "started_at": "2026-11-14T19:44:04.280Z",
+        "status": 200,
+        "response_bytes": 137773,
+        "response_sha256": "a3617794f4bad4f7c5eab7ea2baa82c82433f3ef709465dce2bad015d5b10e66"
+      },
+      {
+        "sequence": 90,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "0d68f681b906e481a5a133e8e966d393ff44dff13a4bbb5384fab54c8b7080e3",
+        "started_at": "2026-11-14T19:44:05.032Z",
+        "status": 200,
+        "response_bytes": 136193,
+        "response_sha256": "aab00cbb8e0071053d226d1f65c14962461149a3d019bd4377c4aeb25cdc9f91"
+      },
+      {
+        "sequence": 91,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "28cb170707eabec3a5c7f186396054704997febc1316e2b3ad887e7243c5793b",
+        "started_at": "2026-11-14T19:44:05.784Z",
+        "status": 200,
+        "response_bytes": 136461,
+        "response_sha256": "fb03a3c94cdb5a3026aa4d45cbfb4ddad56a2bf1adcecd08b274bf9cb17b9341"
+      },
+      {
+        "sequence": 92,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "0b8bbce5c4f333b54b33718e5ae4bc040352ca11169a051293f990fa1cfb1b34",
+        "started_at": "2026-11-14T19:44:06.535Z",
+        "status": 200,
+        "response_bytes": 136061,
+        "response_sha256": "d7cd490966cb39f09d15818db39c8270e11a8f21e1e186965b8a915594b14e37"
+      },
+      {
+        "sequence": 93,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "b8b0309e340d5eb7f622f8aeaf3446a858aac7f1b426e8ebc3f7430275281825",
+        "started_at": "2026-11-14T19:44:07.287Z",
+        "status": 200,
+        "response_bytes": 135925,
+        "response_sha256": "143cccc21ef3b0b7a02377785aaee1b659588443021f4818e90b42379298a2f5"
+      },
+      {
+        "sequence": 94,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "70e8b93b35a044521c7bfd70ade778fd6236e13bd920c95219f5e78be2f6c6f0",
+        "started_at": "2026-11-14T19:44:08.039Z",
+        "status": 200,
+        "response_bytes": 90663,
+        "response_sha256": "88a483b60064ff4555cf6c240e5c89eeb7bac874594c5ddcda0ddd66323ccf0d"
+      },
+      {
+        "sequence": 95,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "ask_okf_manifest",
+        "request_sha256": "9c3c39837712259ed39c804d3e4a802b44243ffe69ff73b575ec6b25915d14af",
+        "started_at": "2026-11-14T19:44:08.792Z",
+        "status": 200,
+        "response_bytes": 34424,
+        "response_sha256": "a7601cabda22da651684c7bcef72ac15b0843b0721fdd713f1309d4590989b9f"
+      },
+      {
+        "sequence": 96,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "ask_okf_manifest",
+        "request_sha256": "3f4cf00b5f62d811594819c30d4be1f566bb2111356e3c5c518cebcad13023d2",
+        "started_at": "2026-11-14T19:44:09.543Z",
+        "status": 200,
+        "response_bytes": 34498,
+        "response_sha256": "2fbea3ad43fc9f170f1c4225c5bcbc523ef094ae5d208989a4eba9bc64def916"
+      },
+      {
+        "sequence": 97,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "ask_okf_manifest",
+        "request_sha256": "30c61d65902e076220c4d45cb43753d5b76fe16d62fa4a9a50fd8c301d93d20d",
+        "started_at": "2026-11-14T19:44:10.295Z",
+        "status": 200,
+        "response_bytes": 11034,
+        "response_sha256": "091e1825fc54b0c3904651ad8bc7e4dda0314284548fa21bb9017897f905fa77"
+      },
+      {
+        "sequence": 98,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "ea861148f0d0aa09aa460b32e2e856d4ce79ea838740fa82aada3e4f8963481b",
+        "started_at": "2026-11-14T19:44:11.048Z",
+        "status": 200,
+        "response_bytes": 137255,
+        "response_sha256": "4e838495e6296e1ea312650bbb42f0ad300e713ad8834ca08abc3093cb2b33ba"
+      },
+      {
+        "sequence": 99,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "69c1badc853b10aa3d73ed4f76b73626449e7698909a22494759e950fba832d3",
+        "started_at": "2026-11-14T19:44:11.800Z",
+        "status": 200,
+        "response_bytes": 137305,
+        "response_sha256": "93df8aa76b03a311132718e64dc29a8cffec366fa2cde760ead54a45582c3034"
+      },
+      {
+        "sequence": 100,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "9514817acfba0d7475b5811b4863e045513d05855258ff190724713226b681d2",
+        "started_at": "2026-11-14T19:44:12.551Z",
+        "status": 200,
+        "response_bytes": 137345,
+        "response_sha256": "84d048717993a893eea49423dc473417fa288d28ffdd938f1160fce4b5841a9d"
+      },
+      {
+        "sequence": 101,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "0c5a35e51ab4f0f77ad9d8f64d09298bfff0d022e276c93f2bc293fbaca0f0ef",
+        "started_at": "2026-11-14T19:44:13.302Z",
+        "status": 200,
+        "response_bytes": 136579,
+        "response_sha256": "b4f4c9b348ac200d14a4ba54bc6b5bebf75fba8a561651c292d42f86180da1b0"
+      },
+      {
+        "sequence": 102,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "62c6347d7a2adcf3c23d63b486c78f0d0a892e74a9bed7daee6e9c3baadab452",
+        "started_at": "2026-11-14T19:44:14.055Z",
+        "status": 200,
+        "response_bytes": 135757,
+        "response_sha256": "ff2c895d2c3afe0763cc1995ebd14059eb7162ae9ceddcb7bd496d677241833e"
+      },
+      {
+        "sequence": 103,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "805eb834b00a099979cdc806d1cae68c2722511cc68023856cd02ce3d7d65113",
+        "started_at": "2026-11-14T19:44:14.806Z",
+        "status": 200,
+        "response_bytes": 135930,
+        "response_sha256": "27cf7c1bff8bf0825e68fbca83c496e5db6a69d0152ad5ac0e766852d20aef5c"
+      },
+      {
+        "sequence": 104,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "7a23a9bd849215c2a5f8af747e7304d1f9944a68e85525543c636d2d95ef8d71",
+        "started_at": "2026-11-14T19:44:15.557Z",
+        "status": 200,
+        "response_bytes": 71750,
+        "response_sha256": "1ed85c5fb22263f247a71ecbf18668f617c0c38823e0ac0936bdfb6399e09a5c"
+      },
+      {
+        "sequence": 105,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "ask_okf_manifest",
+        "request_sha256": "367a8df06c6845953f202371aff3a107fd4ae579a5c4a985fbaed796790ca93c",
+        "started_at": "2026-11-14T19:44:16.309Z",
+        "status": 200,
+        "response_bytes": 34425,
+        "response_sha256": "247630c5ab1f0cd1f4ea4b3fb008b368698313f545eae405ef7b41ba1583befc"
+      },
+      {
+        "sequence": 106,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "ask_okf_manifest",
+        "request_sha256": "824a3b111cb9d873076636549991355459a838843263d6e8fbf28ad8aed66fb1",
+        "started_at": "2026-11-14T19:44:17.061Z",
+        "status": 200,
+        "response_bytes": 34499,
+        "response_sha256": "721e81a5d2f0caa555edf7b325ae6d87483a696cb67737f2555146cb7e5ef1a0"
+      },
+      {
+        "sequence": 107,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "ask_okf_manifest",
+        "request_sha256": "8eb885d5580bc856171b1f23ae1db91b87783b51af80e155669d88109d1bcde7",
+        "started_at": "2026-11-14T19:44:17.811Z",
+        "status": 200,
+        "response_bytes": 11035,
+        "response_sha256": "5347d379f8c102cfdc33dcbec91fa51c3680d375db71dffdc699c7956df0c323"
+      },
+      {
+        "sequence": 108,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "d56b1a6c980a55bf888fac2f248d8527e372884fdac9c431a947506869edbd28",
+        "started_at": "2026-11-14T19:44:18.563Z",
+        "status": 200,
+        "response_bytes": 137256,
+        "response_sha256": "cd59adff5279badc208ddb4a6e06bd86e7645c1d4ae30dbd2837eccb60522a65"
+      },
+      {
+        "sequence": 109,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "456381b134ee1547474a6c32a1b8f3f76f7774f01e0a00d00228481c2422cd09",
+        "started_at": "2026-11-14T19:44:19.314Z",
+        "status": 200,
+        "response_bytes": 137306,
+        "response_sha256": "b70b4bd28ddf830e01f5be641fcbc90309803b9a210ee7444a058a425b6b210e"
+      },
+      {
+        "sequence": 110,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "b5281ff7adb7cafcc7ca1fce772056154e6f4dac2b78130e2c8783c5b6cdc675",
+        "started_at": "2026-11-14T19:44:20.065Z",
+        "status": 200,
+        "response_bytes": 137346,
+        "response_sha256": "e4b659788cf558c630dea8adbfe71f0784a28f1cace46b5b2b9d4c3820e495e3"
+      },
+      {
+        "sequence": 111,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "cf8a435358d65e1c19007cf98955ea54dd3c7941ba3a484d5137634d2497774f",
+        "started_at": "2026-11-14T19:44:20.817Z",
+        "status": 200,
+        "response_bytes": 136580,
+        "response_sha256": "d173846f7713ea30f0862f1e03a075bf9e06b070242ed2bb2d99a58dbeab04a6"
+      },
+      {
+        "sequence": 112,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "faf0922d47819ba679de0f80255e9c7e053e3f446bc3db73c03784beee6e5c75",
+        "started_at": "2026-11-14T19:44:21.569Z",
+        "status": 200,
+        "response_bytes": 135758,
+        "response_sha256": "150f7a7c1a80b4520a0dfb27bc0c66fb498395bbb70bb9a1eeef496b54bc472f"
+      },
+      {
+        "sequence": 113,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "96400263f3f425afd9248fbb6c2e10596ca84c408d70a10e68fe11f29fdd72d9",
+        "started_at": "2026-11-14T19:44:22.320Z",
+        "status": 200,
+        "response_bytes": 135930,
+        "response_sha256": "5dacd44342edeaa498e1aafd589d3abbe05c3d79154b35a9c15bd63b2574f930"
+      },
+      {
+        "sequence": 114,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "1f9b99b0369b1a7340b0aa02ac20a1cfc4a5ee3da6ee9c71d17f18debe374e58",
+        "started_at": "2026-11-14T19:44:23.072Z",
+        "status": 200,
+        "response_bytes": 71750,
+        "response_sha256": "ce162c241195dc96eec82540d3d1bbde8858b6b91cfd4f20955525f2c1aae011"
+      },
+      {
+        "sequence": 115,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "ask_okf_manifest",
+        "request_sha256": "8b3dc503471a7580fee6ca1d8d1d0bfa1108dfdbf31a85f7512b43aa352ee6a5",
+        "started_at": "2026-11-14T19:44:23.825Z",
+        "status": 200,
+        "response_bytes": 6763,
+        "response_sha256": "942fb9d40b489589c016158dc622fa7277f847b5572a56ed58e180edce4eaa65"
+      },
+      {
+        "sequence": 116,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "af018b268b25d286c232b85fccdb33adcc6c1b1fdf5d21a29ce702cece4ba906",
+        "started_at": "2026-11-14T19:44:24.576Z",
+        "status": 200,
+        "response_bytes": 13192,
+        "response_sha256": "97d249b613a2291ea4647a93842cc55f0a78a116665128bd789e581e2d3e1616"
+      },
+      {
+        "sequence": 117,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "ask_okf_manifest",
+        "request_sha256": "181a5ba675c26c2db30786bafd046ad9889272883f5e31a8bf75f4792630c7a5",
+        "started_at": "2026-11-14T19:44:25.327Z",
+        "status": 200,
+        "response_bytes": 34837,
+        "response_sha256": "43985223df7c9f020bc998af953c3b7aa41c9675dd21eab08111d8bd1a6871b3"
+      },
+      {
+        "sequence": 118,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "ask_okf_manifest",
+        "request_sha256": "b68e5c5495de6e269bb04494275c631b2196701ff87f5b07d47cc9cd274bc50f",
+        "started_at": "2026-11-14T19:44:26.808Z",
+        "status": 200,
+        "response_bytes": 21303,
+        "response_sha256": "ad96422d8610b48786458ed68f81e686367bc452493aaaf642845493bf5e7979"
+      },
+      {
+        "sequence": 119,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "388d4323e2bfada966db5f8d6bf489a67a001608b2ac8a7e131db01835ec754d",
+        "started_at": "2026-11-14T19:44:27.767Z",
+        "status": 200,
+        "response_bytes": 138022,
+        "response_sha256": "d19f43e39641df17000ee0a764a1ecacfe76a4f1f338351f455362598a8890c9"
+      },
+      {
+        "sequence": 120,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "2c0b4f1ea0bcdad4a3bdf0b1561fb36e1a27cedadfa97b6b62db826b1acb68db",
+        "started_at": "2026-11-14T19:44:28.518Z",
+        "status": 200,
+        "response_bytes": 137380,
+        "response_sha256": "78311b27f705f9f91add45c6e438945047bcba217fd7e12d6c57415d0f528459"
+      },
+      {
+        "sequence": 121,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "a366dfe0ba91ac3bd9a7615e2c91fe539a119c7873a007b09e01fa042b6bfd39",
+        "started_at": "2026-11-14T19:44:29.312Z",
+        "status": 200,
+        "response_bytes": 136188,
+        "response_sha256": "111fe479b4acac45405133eb4ac23da42becfc13f368f2c08699451e4da60e38"
+      },
+      {
+        "sequence": 122,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "c12ec848a4fc3b67445c01765fc0555694cea76db6f1d14a894bf6b120bed839",
+        "started_at": "2026-11-14T19:44:30.122Z",
+        "status": 200,
+        "response_bytes": 135628,
+        "response_sha256": "dba32912349307499f0e0270dd8b3752bbd3461122b9b554d3ac8c1dae0ad5a8"
+      },
+      {
+        "sequence": 123,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "029ad2e65698aa2dab95c20480b519586a87838ef479c948d599ec2d684fded9",
+        "started_at": "2026-11-14T19:44:31.415Z",
+        "status": 200,
+        "response_bytes": 25194,
+        "response_sha256": "896b271495a44a547cdadcdb4460cc8949763e5ab9abca0b098fd2f3345b11b7"
+      },
+      {
+        "sequence": 124,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "6c842fe0b4e6cc5feaa03c3c31de060dee6c86bc93f4fa52d1610a71662f5567",
+        "started_at": "2026-11-14T19:44:32.166Z",
+        "status": 200,
+        "response_bytes": 7344,
+        "response_sha256": "d84493b8ff02a387dc78bd141333ada8d3baed2b6eee6d0891145100e31a7a2c"
+      },
+      {
+        "sequence": 125,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "fd0833b7396f33c89838ff7f289d0a53ed9f4392b8c281820f9e398db98285df",
+        "started_at": "2026-11-14T19:44:32.916Z",
+        "status": 200,
+        "response_bytes": 11100,
+        "response_sha256": "dc56b07e10ef08b284c66acb06ec5776c410873333ae33af9549c3404b4cd6f0"
+      },
+      {
+        "sequence": 126,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "read_okf_evidence",
+        "request_sha256": "c879b29a782ad28cbe2f91700af9408e0199e981c4b27b2a544dbbf13d19dc81",
+        "started_at": "2026-11-14T19:44:33.667Z",
+        "status": 200,
+        "response_bytes": 80024,
+        "response_sha256": "d6c9f79491a432a5d7e8fde8693ae13d6d918f464ee0e760e4fcf58673dd248b"
+      },
+      {
+        "sequence": 127,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "initialize",
+        "tool": null,
+        "request_sha256": "76911b02e89c7fe8cb534c12b401e0d874b46d0f743f5654c1497e5b9b63d3f3",
+        "started_at": "2026-11-14T19:44:34.418Z",
+        "status": 200,
+        "response_bytes": 567,
+        "response_sha256": "f9bb30042ba1f48eb8cdddf60bceb2f731967e340923e8f530f60cc19996ebd6"
+      },
+      {
+        "sequence": 128,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "notifications/initialized",
+        "tool": null,
+        "request_sha256": "1991440c743375cc3f711ec3788c732cfff71984933a8bf73701ff563427860d",
+        "started_at": "2026-11-14T19:44:35.171Z",
+        "status": 202,
+        "response_bytes": 0,
+        "response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "sequence": 129,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/list",
+        "tool": null,
+        "request_sha256": "75f0c7627a35c7e96a0a88482622a0d1ec7e81c0eb5414a88ba7aab9450cf73b",
+        "started_at": "2026-11-14T19:44:35.924Z",
+        "status": 200,
+        "response_bytes": 39994,
+        "response_sha256": "9e73118b0fa52b25a1b2ae41a93ea0a8112a776a202995fb6938c3f8fb3c2b21"
+      },
+      {
+        "sequence": 130,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "ask_okf_manifest",
+        "request_sha256": "4b7e00b6dca9d8cd0c344829ab651b5a8e6e7456b4a747b2c8dd81d4e07e4ae7",
+        "started_at": "2026-11-14T19:44:36.676Z",
+        "status": 200,
+        "response_bytes": 34668,
+        "response_sha256": "96bf9d2c7c4eacc08066a81a8ee3b7b5c2ba2f0ecf4955d6fa7be65ba256b34a"
+      },
+      {
+        "sequence": 131,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "ask_okf_manifest",
+        "request_sha256": "26a701f50c7cae93c89c560ad7dd61a8b7bde42ad456b4ec7588bcdec12bcda0",
+        "started_at": "2026-11-14T19:44:43.090Z",
+        "status": 200,
+        "response_bytes": 573,
+        "response_sha256": "a8cda86beec3ee4cc3b3704baac70c2afb6f8465931540fdc61c8e16ce034927"
+      },
+      {
+        "sequence": 132,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "ask_okf_manifest",
+        "request_sha256": "2417035dcc9f770830987bfb51592056cfef6e0139f53163661ca24c5bf8668d",
+        "started_at": "2026-11-14T19:44:43.841Z",
+        "status": 200,
+        "response_bytes": 542,
+        "response_sha256": "d4b43559dc8db9c228c2ac15fdba34e02c4f4a1aafd846d6977dbf0294f6db00"
+      },
+      {
+        "sequence": 133,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "ask_okf_manifest",
+        "request_sha256": "91676765a6f7b2434125af8026cdb7fcfe1f36a8385e95bc91aec9e49ed3902c",
+        "started_at": "2026-11-14T19:44:44.592Z",
+        "status": 200,
+        "response_bytes": 205,
+        "response_sha256": "38957d1507dd3645cf82431e6e72f3fdc3860203c762deba6bcd35309085a0c0"
+      },
+      {
+        "sequence": 134,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "ask_okf_manifest",
+        "request_sha256": "3bfa134121b78c71f5ee495dd83931e2a3d5285f801ebee619d6a4a58fc86792",
+        "started_at": "2026-11-14T19:44:48.204Z",
+        "status": 200,
+        "response_bytes": 271,
+        "response_sha256": "2c7d410c487c93da7a4365eaad3c8c0d89c00a8ab32e9b497d37ae50f0d7ad0f"
+      },
+      {
+        "sequence": 135,
+        "method": "POST",
+        "path": "/okf/mcp",
+        "rpc_method": "tools/call",
+        "tool": "ask_okf_manifest",
+        "request_sha256": "22ce83b7babf5906210467c6bd5018f3f98d38b11f6091dff0a02e57238ffd2d",
+        "started_at": "2026-11-14T19:44:52.394Z",
+        "status": 200,
+        "response_bytes": 176,
+        "response_sha256": "cfb355f7dbae2bddd923ca6c0f49f896e3400cb383315cd858790bd1802fd137"
+      }
+    ]
+  },
+  "cases": [
+    {
+      "id": "pair-00",
+      "case_kind": "approved-source-engine-pair",
+      "question_sha256": "b2062ebdff2c9f2b60ae9c10a26077260fd282d8cefe66cb4ea15285decd20b6",
+      "context_budget": {
+        "max_nodes": 64,
+        "max_relationships": 128,
+        "max_depth": 6,
+        "max_bytes": 524288
+      },
+      "compact_text_structured_values_equal": true,
+      "source_version": "7eeded763042ddd0070f4fed834c6074149e8e2f",
+      "engine_id": "urn:okf:context-engine:sha256:256b19d6d8a2e16191866ead0ffd48d9edb7f705143bd8a91597b19f242c0968",
+      "context_id": "urn:sha256:b4d7ae65a9c0db00dda64462da364506c131e663a4a459eaa4e2fa35c3ec25b0",
+      "canonical_package_sha256": "14a8669434e156fa970585bb35080ae2ba739b3aeccf806ad643b358cc88acf5",
+      "package_bytes": 517473,
+      "evidence_status": "insufficient",
+      "selected_records": 25,
+      "relationships": 44,
+      "catalogue_pages": 2,
+      "ordered_catalogue": true,
+      "complete_package_matches_local_reference": true,
+      "provenance_sha256": "a5ad049b553c6b7ad518a100c2b5a5e633cc9a39ffcdb8e875cd23d830dd09db",
+      "historical_origin": "explicit-pinned-reconstruction",
+      "reads": [
+        {
+          "section": "package",
+          "record_id": null,
+          "slices": 9,
+          "content_sha256": "14a8669434e156fa970585bb35080ae2ba739b3aeccf806ad643b358cc88acf5",
+          "characters": 517369
+        },
+        {
+          "section": "record_text",
+          "record_id": "https://chris-page-gov.github.io/okf-dwp/id/unit/dmg/dmg-vol13-ch78/v1-c7f24aafefd355c2/spc-permanent-78088-6bbece132cda",
+          "slices": 1,
+          "content_sha256": "c14ad2e638624be95e663922a7a304ad6d69c69bd2ae7d0a28b22e338a518a81",
+          "characters": 1378
+        },
+        {
+          "section": "record_metadata",
+          "record_id": "https://chris-page-gov.github.io/okf-dwp/id/unit/dmg/dmg-vol13-ch78/v1-c7f24aafefd355c2/spc-permanent-78088-6bbece132cda",
+          "slices": 1,
+          "content_sha256": "8b8a8f359cb34f790718f03509baf71487b6658bdca163a94fc2fbc6c31cea08",
+          "characters": 5229
+        },
+        {
+          "section": "diagnostics",
+          "record_id": null,
+          "slices": 5,
+          "content_sha256": "2a30d85cdbb6040405aa74a931091663d2ff42c8e9b6f47b03103b265a201597",
+          "characters": 300520
+        }
+      ]
+    },
+    {
+      "id": "pair-01",
+      "case_kind": "approved-source-engine-pair",
+      "question_sha256": "b2062ebdff2c9f2b60ae9c10a26077260fd282d8cefe66cb4ea15285decd20b6",
+      "context_budget": {
+        "max_nodes": 64,
+        "max_relationships": 128,
+        "max_depth": 6,
+        "max_bytes": 524288
+      },
+      "compact_text_structured_values_equal": true,
+      "source_version": "723bcc5b015ab38a026625c2148edbd784edf7c7",
+      "engine_id": "urn:okf:context-engine:sha256:e94ce301033de019d1051684acfd02803a3fe306fd963b44bd3f4b7dba16f652",
+      "context_id": "urn:sha256:105c374369738df67296a27c5111ef2745b4c068d3572b8e75cbb116a569f5bf",
+      "canonical_package_sha256": "cb7e8e6f62a49a15907b09d2a32d525539c6853d5344ebcd5566bf616315e8f7",
+      "package_bytes": 523326,
+      "evidence_status": "insufficient",
+      "selected_records": 55,
+      "relationships": 115,
+      "catalogue_pages": 3,
+      "ordered_catalogue": true,
+      "complete_package_matches_local_reference": true,
+      "provenance_sha256": "a4f126bf72bca5ac3e39543db0e756270924b0cb4ce9069413a4332415691953",
+      "historical_origin": "explicit-pinned-reconstruction",
+      "reads": [
+        {
+          "section": "package",
+          "record_id": null,
+          "slices": 9,
+          "content_sha256": "cb7e8e6f62a49a15907b09d2a32d525539c6853d5344ebcd5566bf616315e8f7",
+          "characters": 522994
+        }
+      ]
+    },
+    {
+      "id": "pair-02",
+      "case_kind": "approved-source-engine-pair",
+      "question_sha256": "b2062ebdff2c9f2b60ae9c10a26077260fd282d8cefe66cb4ea15285decd20b6",
+      "context_budget": {
+        "max_nodes": 64,
+        "max_relationships": 128,
+        "max_depth": 6,
+        "max_bytes": 524288
+      },
+      "compact_text_structured_values_equal": true,
+      "source_version": "3ef0e786e9a18e76fa17c7d925ff509d6d6c9f84",
+      "engine_id": "urn:okf:context-engine:sha256:e94ce301033de019d1051684acfd02803a3fe306fd963b44bd3f4b7dba16f652",
+      "context_id": "urn:sha256:efdfd3930446a1e2a7c5e32897f90595d068b9774a3686ebe0da98b7013fb8ed",
+      "canonical_package_sha256": "e886f365723899f70bb390a60520beac8f51281e5610c570c166bd1ec40e736d",
+      "package_bytes": 498196,
+      "evidence_status": "insufficient",
+      "selected_records": 64,
+      "relationships": 128,
+      "catalogue_pages": 3,
+      "ordered_catalogue": true,
+      "complete_package_matches_local_reference": true,
+      "provenance_sha256": "bb9ecbfff4bb980d38c69a8326927d8982bb73790962f14349d9a08b2f04e759",
+      "historical_origin": "explicit-pinned-reconstruction",
+      "reads": [
+        {
+          "section": "package",
+          "record_id": null,
+          "slices": 9,
+          "content_sha256": "e886f365723899f70bb390a60520beac8f51281e5610c570c166bd1ec40e736d",
+          "characters": 497673
+        }
+      ]
+    },
+    {
+      "id": "pair-03",
+      "case_kind": "approved-source-engine-pair",
+      "question_sha256": "b2062ebdff2c9f2b60ae9c10a26077260fd282d8cefe66cb4ea15285decd20b6",
+      "context_budget": {
+        "max_nodes": 64,
+        "max_relationships": 128,
+        "max_depth": 6,
+        "max_bytes": 524288
+      },
+      "compact_text_structured_values_equal": true,
+      "source_version": "3ef0e786e9a18e76fa17c7d925ff509d6d6c9f84",
+      "engine_id": "urn:okf:context-engine:sha256:5d4cecab049b371d90b2fe1f3a2d1e9663910b5fdac044e091b0b40bc1c6bf73",
+      "context_id": "urn:sha256:8171073573ed7ee28b0e2461e8719ac3aba680dababdd8bbd2c8e79c744d791a",
+      "canonical_package_sha256": "5cac32cd0d4a95ca6e03329185850caa5e003df2cba73eb908733dd0ac1f2c59",
+      "package_bytes": 481453,
+      "evidence_status": "insufficient",
+      "selected_records": 64,
+      "relationships": 118,
+      "catalogue_pages": 3,
+      "ordered_catalogue": true,
+      "complete_package_matches_local_reference": true,
+      "provenance_sha256": "631989086b6b361ec43a73e32dc441b7ec4ec55799d1bf9d8aeb5c0c396b4f9f",
+      "historical_origin": "explicit-pinned-reconstruction",
+      "reads": [
+        {
+          "section": "package",
+          "record_id": null,
+          "slices": 8,
+          "content_sha256": "5cac32cd0d4a95ca6e03329185850caa5e003df2cba73eb908733dd0ac1f2c59",
+          "characters": 480959
+        }
+      ]
+    },
+    {
+      "id": "pair-04",
+      "case_kind": "approved-source-engine-pair",
+      "question_sha256": "b2062ebdff2c9f2b60ae9c10a26077260fd282d8cefe66cb4ea15285decd20b6",
+      "context_budget": {
+        "max_nodes": 64,
+        "max_relationships": 128,
+        "max_depth": 6,
+        "max_bytes": 524288
+      },
+      "compact_text_structured_values_equal": true,
+      "source_version": "9de52acf1db84b27f8933d80480eaa850e74fa33",
+      "engine_id": "urn:okf:context-engine:sha256:e94ce301033de019d1051684acfd02803a3fe306fd963b44bd3f4b7dba16f652",
+      "context_id": "urn:sha256:2ef0f1379079c08f239d4cd2b3b90348abea99bd479d681ea22045ecabbe2552",
+      "canonical_package_sha256": "cba1b92e0d4e4e6087e2d1884833c3f74e998a77c3d6f2598cc995e972fc876f",
+      "package_bytes": 273185,
+      "evidence_status": "insufficient",
+      "selected_records": 55,
+      "relationships": 58,
+      "catalogue_pages": 3,
+      "ordered_catalogue": true,
+      "complete_package_matches_local_reference": true,
+      "provenance_sha256": "90772e606269426319a8828d40e4a943be1b08813240a8b68a6ff2ef21757540",
+      "historical_origin": "explicit-pinned-reconstruction",
+      "reads": [
+        {
+          "section": "package",
+          "record_id": null,
+          "slices": 5,
+          "content_sha256": "cba1b92e0d4e4e6087e2d1884833c3f74e998a77c3d6f2598cc995e972fc876f",
+          "characters": 272995
+        }
+      ]
+    },
+    {
+      "id": "pair-05",
+      "case_kind": "approved-source-engine-pair",
+      "question_sha256": "b2062ebdff2c9f2b60ae9c10a26077260fd282d8cefe66cb4ea15285decd20b6",
+      "context_budget": {
+        "max_nodes": 64,
+        "max_relationships": 128,
+        "max_depth": 6,
+        "max_bytes": 524288
+      },
+      "compact_text_structured_values_equal": true,
+      "source_version": "9de52acf1db84b27f8933d80480eaa850e74fa33",
+      "engine_id": "urn:okf:context-engine:sha256:5d4cecab049b371d90b2fe1f3a2d1e9663910b5fdac044e091b0b40bc1c6bf73",
+      "context_id": "urn:sha256:2ef0f1379079c08f239d4cd2b3b90348abea99bd479d681ea22045ecabbe2552",
+      "canonical_package_sha256": "cba1b92e0d4e4e6087e2d1884833c3f74e998a77c3d6f2598cc995e972fc876f",
+      "package_bytes": 273185,
+      "evidence_status": "insufficient",
+      "selected_records": 55,
+      "relationships": 58,
+      "catalogue_pages": 3,
+      "ordered_catalogue": true,
+      "complete_package_matches_local_reference": true,
+      "provenance_sha256": "90772e606269426319a8828d40e4a943be1b08813240a8b68a6ff2ef21757540",
+      "historical_origin": "explicit-pinned-reconstruction",
+      "reads": [
+        {
+          "section": "package",
+          "record_id": null,
+          "slices": 5,
+          "content_sha256": "cba1b92e0d4e4e6087e2d1884833c3f74e998a77c3d6f2598cc995e972fc876f",
+          "characters": 272995
+        }
+      ]
+    },
+    {
+      "id": "pair-06",
+      "case_kind": "approved-source-engine-pair",
+      "question_sha256": "b2062ebdff2c9f2b60ae9c10a26077260fd282d8cefe66cb4ea15285decd20b6",
+      "context_budget": {
+        "max_nodes": 64,
+        "max_relationships": 128,
+        "max_depth": 6,
+        "max_bytes": 524288
+      },
+      "compact_text_structured_values_equal": true,
+      "source_version": "bf50ef8d91b9f1ccc2cbdb354198eae74c9ed752",
+      "engine_id": "urn:okf:context-engine:sha256:e94ce301033de019d1051684acfd02803a3fe306fd963b44bd3f4b7dba16f652",
+      "context_id": "urn:sha256:e0ed64c15864809c7b93e8407ddd7a5d61383860281ff6b17bdf4116202fa722",
+      "canonical_package_sha256": "b997c30a1f8acec78e853757e9fd03c0b233743d38aeeb8310dc7edf6bfeb060",
+      "package_bytes": 473474,
+      "evidence_status": "insufficient",
+      "selected_records": 61,
+      "relationships": 89,
+      "catalogue_pages": 3,
+      "ordered_catalogue": true,
+      "complete_package_matches_local_reference": true,
+      "provenance_sha256": "4bfcae9c4786a8979e7acb9a9c9cccc23cbd0bb121eded6fb204a51a2a03921e",
+      "historical_origin": "explicit-pinned-reconstruction",
+      "reads": [
+        {
+          "section": "package",
+          "record_id": null,
+          "slices": 8,
+          "content_sha256": "b997c30a1f8acec78e853757e9fd03c0b233743d38aeeb8310dc7edf6bfeb060",
+          "characters": 473200
+        }
+      ]
+    },
+    {
+      "id": "pair-07",
+      "case_kind": "approved-source-engine-pair",
+      "question_sha256": "b2062ebdff2c9f2b60ae9c10a26077260fd282d8cefe66cb4ea15285decd20b6",
+      "context_budget": {
+        "max_nodes": 64,
+        "max_relationships": 128,
+        "max_depth": 6,
+        "max_bytes": 524288
+      },
+      "compact_text_structured_values_equal": true,
+      "source_version": "bf50ef8d91b9f1ccc2cbdb354198eae74c9ed752",
+      "engine_id": "urn:okf:context-engine:sha256:5d4cecab049b371d90b2fe1f3a2d1e9663910b5fdac044e091b0b40bc1c6bf73",
+      "context_id": "urn:sha256:e0ed64c15864809c7b93e8407ddd7a5d61383860281ff6b17bdf4116202fa722",
+      "canonical_package_sha256": "b997c30a1f8acec78e853757e9fd03c0b233743d38aeeb8310dc7edf6bfeb060",
+      "package_bytes": 473474,
+      "evidence_status": "insufficient",
+      "selected_records": 61,
+      "relationships": 89,
+      "catalogue_pages": 3,
+      "ordered_catalogue": true,
+      "complete_package_matches_local_reference": true,
+      "provenance_sha256": "4bfcae9c4786a8979e7acb9a9c9cccc23cbd0bb121eded6fb204a51a2a03921e",
+      "historical_origin": "explicit-pinned-reconstruction",
+      "reads": [
+        {
+          "section": "package",
+          "record_id": null,
+          "slices": 8,
+          "content_sha256": "b997c30a1f8acec78e853757e9fd03c0b233743d38aeeb8310dc7edf6bfeb060",
+          "characters": 473200
+        }
+      ]
+    },
+    {
+      "id": "pair-08",
+      "case_kind": "approved-source-engine-pair",
+      "question_sha256": "b2062ebdff2c9f2b60ae9c10a26077260fd282d8cefe66cb4ea15285decd20b6",
+      "context_budget": {
+        "max_nodes": 64,
+        "max_relationships": 128,
+        "max_depth": 6,
+        "max_bytes": 524288
+      },
+      "compact_text_structured_values_equal": true,
+      "source_version": "efb05c66616a9cd4328a86cf412780fe7bc7cf0b",
+      "engine_id": "urn:okf:context-engine:sha256:e94ce301033de019d1051684acfd02803a3fe306fd963b44bd3f4b7dba16f652",
+      "context_id": "urn:sha256:298e959875bbe378c33fb43d9eaa2f09881215b6e5d69a70e2e1b54c8d40aaca",
+      "canonical_package_sha256": "a5d7df5101e0c8ef79a662b9981ab8dd70dbe9da647c07e4737df5d9638bfe44",
+      "package_bytes": 402894,
+      "evidence_status": "insufficient",
+      "selected_records": 45,
+      "relationships": 89,
+      "catalogue_pages": 3,
+      "ordered_catalogue": true,
+      "complete_package_matches_local_reference": true,
+      "provenance_sha256": "7ae314ee413d288308ea38a15a9b217904d0115ba066824f50cb467bff4ab5f2",
+      "historical_origin": "explicit-pinned-reconstruction",
+      "reads": [
+        {
+          "section": "package",
+          "record_id": null,
+          "slices": 7,
+          "content_sha256": "a5d7df5101e0c8ef79a662b9981ab8dd70dbe9da647c07e4737df5d9638bfe44",
+          "characters": 402706
+        }
+      ]
+    },
+    {
+      "id": "pair-09",
+      "case_kind": "approved-source-engine-pair",
+      "question_sha256": "b2062ebdff2c9f2b60ae9c10a26077260fd282d8cefe66cb4ea15285decd20b6",
+      "context_budget": {
+        "max_nodes": 64,
+        "max_relationships": 128,
+        "max_depth": 6,
+        "max_bytes": 524288
+      },
+      "compact_text_structured_values_equal": true,
+      "source_version": "efb05c66616a9cd4328a86cf412780fe7bc7cf0b",
+      "engine_id": "urn:okf:context-engine:sha256:5d4cecab049b371d90b2fe1f3a2d1e9663910b5fdac044e091b0b40bc1c6bf73",
+      "context_id": "urn:sha256:298e959875bbe378c33fb43d9eaa2f09881215b6e5d69a70e2e1b54c8d40aaca",
+      "canonical_package_sha256": "a5d7df5101e0c8ef79a662b9981ab8dd70dbe9da647c07e4737df5d9638bfe44",
+      "package_bytes": 402894,
+      "evidence_status": "insufficient",
+      "selected_records": 45,
+      "relationships": 89,
+      "catalogue_pages": 3,
+      "ordered_catalogue": true,
+      "complete_package_matches_local_reference": true,
+      "provenance_sha256": "7ae314ee413d288308ea38a15a9b217904d0115ba066824f50cb467bff4ab5f2",
+      "historical_origin": "explicit-pinned-reconstruction",
+      "reads": [
+        {
+          "section": "package",
+          "record_id": null,
+          "slices": 7,
+          "content_sha256": "a5d7df5101e0c8ef79a662b9981ab8dd70dbe9da647c07e4737df5d9638bfe44",
+          "characters": 402706
+        }
+      ]
+    },
+    {
+      "id": "current-unknown-empty-control",
+      "case_kind": "current-empty-control",
+      "question_sha256": "0417b8cdfe57daa0291146845ff1f57b1aa58ef8237e2f15169ddb56f0d864a1",
+      "context_budget": {
+        "max_nodes": 64,
+        "max_relationships": 128,
+        "max_depth": 6,
+        "max_bytes": 524288
+      },
+      "compact_text_structured_values_equal": true,
+      "source_version": "7eeded763042ddd0070f4fed834c6074149e8e2f",
+      "engine_id": "urn:okf:context-engine:sha256:256b19d6d8a2e16191866ead0ffd48d9edb7f705143bd8a91597b19f242c0968",
+      "context_id": "urn:sha256:07fb109fb39dc65ee6232d3952f46b9c5ba04fda7141ce7cbc4b1ccd0ef56ca3",
+      "canonical_package_sha256": "10e51863ecdd498c920fae041efb7296504780c0b58ed36d9eb0475748ac6be9",
+      "package_bytes": 4882,
+      "evidence_status": "insufficient",
+      "selected_records": 0,
+      "relationships": 0,
+      "catalogue_pages": 1,
+      "ordered_catalogue": true,
+      "complete_package_matches_local_reference": true,
+      "provenance_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "historical_origin": "explicit-pinned-reconstruction",
+      "reads": [
+        {
+          "section": "package",
+          "record_id": null,
+          "slices": 1,
+          "content_sha256": "10e51863ecdd498c920fae041efb7296504780c0b58ed36d9eb0475748ac6be9",
+          "characters": 4882
+        }
+      ]
+    },
+    {
+      "id": "original-0.5-care-home-unspecified-engine",
+      "case_kind": "historical-original-package",
+      "question_sha256": "b2062ebdff2c9f2b60ae9c10a26077260fd282d8cefe66cb4ea15285decd20b6",
+      "context_budget": {
+        "max_nodes": 64,
+        "max_relationships": 128,
+        "max_depth": 6,
+        "max_bytes": 262144
+      },
+      "compact_text_structured_values_equal": true,
+      "source_version": "3ef0e786e9a18e76fa17c7d925ff509d6d6c9f84",
+      "engine_id": "urn:okf:context-engine:sha256:5d4cecab049b371d90b2fe1f3a2d1e9663910b5fdac044e091b0b40bc1c6bf73",
+      "context_id": "urn:sha256:6cdc3dd154d4f11e1fb8b9dd1b99c42da59856ba7857de5a3fe04d6f3ab86078",
+      "canonical_package_sha256": "454b793795579f7bdda1e94f435ed30d5cdcb551e56dca2f1df8c8ba545f5af3",
+      "package_bytes": 257105,
+      "evidence_status": "insufficient",
+      "selected_records": 35,
+      "relationships": 50,
+      "catalogue_pages": 2,
+      "ordered_catalogue": true,
+      "complete_package_matches_local_reference": true,
+      "provenance_sha256": "28b722250ff6679a1fdce1b7ec12e5dd01045e04f387b63be73b019072a3944a",
+      "historical_origin": "unspecified",
+      "reads": [
+        {
+          "section": "package",
+          "record_id": null,
+          "slices": 5,
+          "content_sha256": "454b793795579f7bdda1e94f435ed30d5cdcb551e56dca2f1df8c8ba545f5af3",
+          "characters": 256885
+        },
+        {
+          "section": "record_text",
+          "record_id": "https://chris-page-gov.github.io/okf-dwp/id/page/78/0025",
+          "slices": 1,
+          "content_sha256": "a1e2462f65812d22a647562270b9ebb3a3d64c4c76a205bd5cf6d243e607b193",
+          "characters": 2346
+        },
+        {
+          "section": "record_metadata",
+          "record_id": "https://chris-page-gov.github.io/okf-dwp/id/page/78/0025",
+          "slices": 1,
+          "content_sha256": "cad9566b22bc56203d8c473ded5bf31220f7f4c09a8935a91b70de8503d37bd4",
+          "characters": 3949
+        },
+        {
+          "section": "diagnostics",
+          "record_id": null,
+          "slices": 1,
+          "content_sha256": "bfb0f7104e98d9f766072b9579f04f1f9a4398cda89c0f83e63b6d8ae37997c4",
+          "characters": 35185
+        }
+      ]
+    }
+  ],
+  "negative_controls": [
+    {
+      "id": "unknown-engine",
+      "no_evidence_returned": true,
+      "expected_error_canonical_sha256": "541cb51e33c9a980840a1d2fac25a6c6b37542c8a319cbe293ed6f5bf3b601a5"
+    },
+    {
+      "id": "unknown-source",
+      "no_evidence_returned": true,
+      "expected_error_canonical_sha256": "3a2c31d85bfb39217f3923ac143d3da3402fa169aa75165b05d61593a2a95ba3"
+    },
+    {
+      "id": "pinned-context-mismatch",
+      "no_evidence_returned": true,
+      "expected_error_canonical_sha256": "f50a6bd54814ff0f39342f13cbb56b1f2a0e775b37fd853e5522d58ae265dac8"
+    },
+    {
+      "id": "historical-unavailable",
+      "no_evidence_returned": true,
+      "expected_error_canonical_sha256": "7e77b6ab9b8b1e8bdaee9be4d60e3bce93469bf4d59e62fb5e6693683a24d6c3"
+    },
+    {
+      "id": "incompatible-engine-source",
+      "no_evidence_returned": true,
+      "expected_error_canonical_sha256": "8a29aa02edc8e88c85f0f7e0b2de914364dcd662e8b9b93f800eb7d7f9f659a3"
+    }
+  ],
+  "incompatible_pair_control": "passed",
+  "artifacts": {
+    "plan.json": {
+      "bytes": 58871,
+      "sha256": "631c397c82748cf8aa71da50d798d63b1837396f676a35ba1ecf4de464b6d3b6"
+    },
+    "executed-verifier.ts": {
+      "bytes": 48352,
+      "sha256": "dbcb0216b8ca50bcca286caf0e3f93d23e8498dfe635efdc975391574e429edd"
+    },
+    "build-receipt.json": {
+      "bytes": 8903,
+      "sha256": "64e7f6f345491a64ee7958dfd6744ca3310816e746a0e2b19631112c3713b47b"
+    },
+    "pair-00.received-package.json.gz": {
+      "bytes": 57746,
+      "sha256": "e9aa5a065b4e2d40c76283519906047f039673d347302f92238bd3b5aa277d04"
+    },
+    "pair-01.received-package.json.gz": {
+      "bytes": 64950,
+      "sha256": "10aafba322c05b530c610d253314346644752ff0e52856bf8c2c8794640cc4c6"
+    },
+    "pair-02.received-package.json.gz": {
+      "bytes": 69996,
+      "sha256": "196e6704af1ac7a61dede6f65317275aeb70afb1eb3e92b85a2b8368d95b979a"
+    },
+    "pair-03.received-package.json.gz": {
+      "bytes": 71325,
+      "sha256": "be3b0e9c254ff62b4a06afd5095c19a77bf1e389caecca6bc40565c43593b144"
+    },
+    "pair-04.received-package.json.gz": {
+      "bytes": 38697,
+      "sha256": "4e1aedcf4cc75375f1fd73de30c87ec62cae24aa08dfa231fb4d4d73749d8c86"
+    },
+    "pair-05.received-package.json.gz": {
+      "bytes": 38697,
+      "sha256": "4e1aedcf4cc75375f1fd73de30c87ec62cae24aa08dfa231fb4d4d73749d8c86"
+    },
+    "pair-06.received-package.json.gz": {
+      "bytes": 60341,
+      "sha256": "2c9034e79bf7a8613102777099572dbbc452bd03bd4d9f2edfda25c048d62f60"
+    },
+    "pair-07.received-package.json.gz": {
+      "bytes": 60341,
+      "sha256": "2c9034e79bf7a8613102777099572dbbc452bd03bd4d9f2edfda25c048d62f60"
+    },
+    "pair-08.received-package.json.gz": {
+      "bytes": 49236,
+      "sha256": "c081940d25b79180075fb3a87578299c1b894f379fe40a8d6c561e962d663307"
+    },
+    "pair-09.received-package.json.gz": {
+      "bytes": 49236,
+      "sha256": "c081940d25b79180075fb3a87578299c1b894f379fe40a8d6c561e962d663307"
+    },
+    "current-unknown-empty-control.received-package.json.gz": {
+      "bytes": 2158,
+      "sha256": "7f9292b2772bb828e573f0f4a1eb7a2d83284d5a9c8d0e1decc21d08b5e1ec35"
+    },
+    "original-0.5-care-home-unspecified-engine.received-package.json.gz": {
+      "bytes": 37826,
+      "sha256": "b1c87f83de5fd0ddd976d6f53f8764c9e05a16103626b2ccd4eaa60ad8fcf357"
+    }
+  },
+  "model_calls": 0,
+  "full_ask_okf_calls": 0,
+  "limitations": [
+    "Hosting evidence is required to attest deployed Worker bytes; health alone establishes only reported source/engine/service identities.",
+    "Exact package/provenance delivery is not legal correctness, complete evidence, specialist acceptance, ChatGPT or Voice acceptance.",
+    "The retained packages contain only the two fixed public acceptance questions. Anonymous user questions are never sampled."
+  ]
+}
