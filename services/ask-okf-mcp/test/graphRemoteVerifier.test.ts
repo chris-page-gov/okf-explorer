@@ -121,7 +121,17 @@ test('loads only source-commit blobs and builds the target-bound 108-case suite'
   assert.equal(suite.release.publication_status, 'pinned');
   assert.equal(suite.verifierProvenance.worker_matches_build_receipt, true);
   assert.equal(suite.verifierProvenance.worker_hash_scope, 'local dist/server/index.js only; not a remote deployment attestation');
-  assert.match(suite.verifierProvenance.source_identity_status, /no pin claim/);
+  const provenance = suite.verifierProvenance;
+  assert(['tracked-source-and-local-worker-match', 'local-uncommitted-or-incomplete-build; no pin claim']
+    .includes(provenance.source_identity_status));
+  if (provenance.source_identity_status === 'tracked-source-and-local-worker-match') {
+    assert.equal(provenance.verifier_matches_git_head, true);
+    assert.equal(provenance.package_lock_matches_git_head, true);
+    assert.equal(provenance.worker_matches_build_receipt, true);
+    assert.equal(provenance.package_lock_matches_build_receipt, true);
+    assert.equal(provenance.verifier_matches_build_receipt, true);
+    assert.equal(provenance.build_receipt_inputs_match_worktree, true);
+  }
   assert(suite.suite.every((row: any) => row.package_sha256 && row.plan_id));
   assert(suite.suite.every((row: any) => !Object.keys(row).some((key: string) => /target_ids|expected_records/.test(key))));
   const boundary = suite.suite.flatMap((row: any) => row.expectations).filter((row: any) => row.negative_boundary);
