@@ -1,9 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtemp, writeFile, rm, symlink } from 'node:fs/promises';
+import { mkdtemp, readFile, writeFile, rm, symlink } from 'node:fs/promises';
+import { execFileSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
-import { parseArguments, approvedPairs, enforceCensus, boundedRemoteFetch, boundedFile, noLinks,
+import { parseArguments, approvedPairs, enforceCensus, boundedRemoteFetch, boundedFile, gitFile, lockedSdkVersions, noLinks,
   verifyDelivery, validateToolDiscovery, compareToolDiscovery, discoveryDiagnostic, LIMITS, PUBLIC_QUESTION, canonical, sha } from '../scripts/verify-versioned-remote.ts';
 
 const origin = 'https://ask-okf.example.test';
@@ -13,6 +15,24 @@ const message = () => ({ jsonrpc: '2.0', id: 1, method: 'tools/call', params: {
   name: 'ask_okf_manifest', arguments: { question: PUBLIC_QUESTION } } });
 const post = (body: unknown = message()) => ({ method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
 function clock() { let now = 0; return { now: () => now, sleep: async (ms: number) => { now += ms; }, advance: (ms: number) => { now += ms; } }; }
+
+test('new observation SDK labels come from the immutable comparator lock', () => {
+  const lock = { packages: { 'node_modules/@modelcontextprotocol/client': { version: '2.4.0' },
+    'node_modules/@modelcontextprotocol/sdk': { version: '1.32.2' } } };
+  assert.deepEqual(lockedSdkVersions(lock), { sdk_v2: '2.4.0 / 2026-07-28', sdk_v1: '1.32.2',
+    sdk_version_basis: 'committed comparator package-lock.json' });
+  assert.throws(() => lockedSdkVersions({ packages: {} }));
+});
+
+test('the admitted graph above 8 MiB has the same bounded immutable Git bytes as its local source', async () => {
+  const root = fileURLToPath(new URL('../../..', import.meta.url));
+  const commit = execFileSync('git', ['-C', root, 'rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
+  const relative = 'services/ask-okf-mcp/vendor/graph-evidence/graph.json';
+  const source = await readFile(join(root, relative));
+  assert(source.length > LIMITS.local_file_bytes && source.length < 16 * 1024 * 1024);
+  const immutable = gitFile(root, commit, relative, { bytes: source.length, sha256: sha(source) });
+  assert.deepEqual(immutable, source);
+});
 
 test('public execution is explicit; identity arguments and origin cannot be omitted or smuggled', () => {
   assert.equal(parseArguments(cli).executePublic, false);

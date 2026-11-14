@@ -32,6 +32,17 @@ interpretation and any authorised action remain separate responsibilities.
 
 ## Record a subsequent publication
 
+For the 0.8.0 graph candidate, first pin `vendor/graph-evidence/admission.json`
+to the reviewed DWP producer commit. An ordinary build must pass without the
+candidate override. Stage the exact reviewed Explorer source, then copy the
+assured Worker and receipt into the separate Sites checkout. Verify the Worker
+digest before packaging; the publication archive carries those exact bytes.
+Declare `capabilities: ["mcp"]` in the preserved hosting manifest. This
+provisions or refreshes the owner's native plugin at `/mcp`; anonymous SDK
+verification uses the identical `/graph/mcp` handler. Test actual native tool
+discovery and invocation separately from the SDK route. Preserve the public
+audience and every earlier deployment and failure receipt.
+
 1. Retain the new hosting and public-client receipts in DWP. Preserve failed
    attempts. Use DWP's status generator and check to update the shared page;
    its receipt census rejects an overlooked later deployment or observation.

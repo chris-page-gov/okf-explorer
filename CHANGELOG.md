@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- Prepare Ask OKF 0.8.0 with two bounded graph-guided evidence tools at `/mcp`,
+  exact producer admission and complete source-text verification. Retain the
+  historical three-tool endpoint and frozen packages. Local source-retrieval
+  and delivery checks remain separate from public service and client acceptance.
+- Add an explicit, paced public graph SDK verifier with immutable producer
+  expectations and complete received-package retention. CI supplies only the
+  exact pinned producer blobs needed by its source-integration tests.
+
 - Remove the vulnerable development-only `deepmerge` dependency through a
   hash-bound backport of the Svelte plugin's proposed internal configuration
   merge. Retain patch provenance in the SBOM and test prototype-poisoning

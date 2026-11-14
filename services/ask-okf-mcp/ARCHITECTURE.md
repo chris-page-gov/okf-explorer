@@ -1,6 +1,6 @@
 # Remote Ask OKF transport
 
-Decision: 19 September 2026; updated 25 September 2026 for service 0.7.0.
+Decision: 19 September 2026; updated 14 November 2026 for the 0.8.0 candidate.
 For the latest recorded deployment and separate verification, see the
 [shared publication status](https://github.com/chris-page-gov/okf-dwp/blob/main/docs/service-publication.md).
 The original full-source HTTPS deployment and official SDK package parity were
@@ -10,7 +10,44 @@ household/statutory-evidence implementation has separate local verification.
 Hosting, SDK and client acceptance each require their own receipts. See the
 [initial execution record](../../docs/remote-mcp.md#initial-full-source-https-verification).
 
-The remote service is a tool-only adapter. It statically imports three frozen
+## Bounded graph connection
+
+Service 0.8.0 adds a distinct `/mcp` handler with only
+`plan_okf_evidence` and `read_okf_planned_evidence`. The legacy three tools
+remain on `/okf/mcp`. Separate handler registries prevent the native connection
+from discovering the historical full-package tool. Both endpoints retain the
+same public read-only request admission, origin and rate boundaries.
+
+`/graph/mcp` is a public alias of the bounded graph handler for direct SDK
+verification. Sites manages the native `/mcp` connection and its caller access;
+an observed SDK result on the alias does not prove native plugin invocation.
+
+The graph is a separate experimental context-index projection. Its source-bound
+directed repairs and compositional concept bridges are model-derived navigation
+hypotheses. Each requirement must be reached from its own active root; an
+unrelated route cannot satisfy it. Ambiguous alternatives do not silently
+activate requirements. The planner returns exact source text, paths and
+unresolved obligations without generating an answer.
+
+The producer, graph, portable runtime, classifier, five frozen resolver modules
+and portable collector have immutable digests. Release admission reads a full
+reviewed producer commit through Git and verifies every bound source file.
+Candidate admission is rejected by ordinary release builds. At request time
+the service verifies its bundled graph and recomputes a deterministic plan;
+it keeps no question cache. Every continuation binds the question, graph,
+engine and plan identities.
+
+Envelope sizing covers both result copies and reserves the worst accepted
+128-character escaped JSON-RPC identifier plus SSE framing. Default evidence
+responses are bounded to 8,192 bytes. Both supported SDK generations and the
+built Worker with string code generation prohibited exercise this route.
+The collector requires complete catalogue pages and contiguous Unicode-safe
+package slices, then verifies package and source-text digests. Complete delivery
+remains distinct from applicability, legal version and specialist review.
+
+## Historical source assembly
+
+The historical transport statically imports three frozen
 versions of Explorer's deterministic context assembly. Their manifests bind
 exact modules from commits `d6930bbcddaab616deec002d9e6efff6e3aae953`,
 `c4f2de0a99b7bc2f8b8c8a06a3c715fb56b66d8e` and

@@ -21,9 +21,19 @@ const ORIGINAL_RECEIPT_SHA = '44f6018ace34f72ce0f6085e92c51f3d2d9b57ecd223f7c37a
 const HASH = /^[a-f0-9]{64}$/, COMMIT = /^[a-f0-9]{40}$/;
 const serviceRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const repositoryRoot = resolve(serviceRoot, '../..');
+const comparatorFileLimit = (path: string) => path.endsWith('/vendor/graph-evidence/graph.json') ? 16 * 1024 * 1024
+  : /(?:^|\/)dist\/(?:server\/index\.js|node\.mjs)$/.test(path) ? 32 * 1024 * 1024 : LIMITS.local_file_bytes;
 export const sha = (raw: string | Uint8Array) => createHash('sha256').update(raw).digest('hex');
 export const canonical = (value: any): string => Array.isArray(value) ? `[${value.map(canonical).join(',')}]`
   : value && typeof value === 'object' ? `{${Object.keys(value).sort().filter(key => value[key] !== undefined).map(key => `${JSON.stringify(key)}:${canonical(value[key])}`).join(',')}}` : JSON.stringify(value);
+export function lockedSdkVersions(lock: any) {
+  const v2 = lock?.packages?.['node_modules/@modelcontextprotocol/client']?.version;
+  const v1 = lock?.packages?.['node_modules/@modelcontextprotocol/sdk']?.version;
+  assert.match(v2 ?? '', /^\d+\.\d+\.\d+$/);
+  assert.match(v1 ?? '', /^\d+\.\d+\.\d+$/);
+  return { sdk_v2: `${v2} / 2026-07-28`, sdk_v1: v1,
+    sdk_version_basis: 'committed comparator package-lock.json' };
+}
 function equal(actual: unknown, expected: unknown, label: string) { if (canonical(actual) !== canonical(expected)) throw new Error(label); }
 
 export type ToolContract = readonly [string, unknown, unknown];
@@ -99,11 +109,11 @@ export function safeRepositoryPath(path: string) {
   assert.match(path, /^[a-zA-Z0-9_.-]+(?:\/[a-zA-Z0-9_.-]+)*$/);
   assert.ok(!path.split('/').some(part => part === '.' || part === '..'), 'Unsafe immutable path');
 }
-function gitFile(root: string, commit: string, path: string, expected?: { bytes: number; sha256: string }) {
+export function gitFile(root: string, commit: string, path: string, expected?: { bytes: number; sha256: string }) {
   assert.match(commit, COMMIT); safeRepositoryPath(path);
   const key = `${commit}:${path}`;
   const length = Number(execFileSync('git', ['cat-file', '-s', key], { cwd: root, maxBuffer: 100, timeout: 10000 }).toString().trim());
-  assert.ok(Number.isSafeInteger(length) && length >= 0 && length <= LIMITS.local_file_bytes, 'Immutable input exceeds its bound');
+  assert.ok(Number.isSafeInteger(length) && length >= 0 && length <= comparatorFileLimit(path), 'Immutable input exceeds its bound');
   if (expected) assert.equal(length, expected.bytes);
   const raw = execFileSync('git', ['show', key], { cwd: root, maxBuffer: length + 1, timeout: 10000 });
   assert.equal(raw.length, length); if (expected) assert.equal(sha(raw), expected.sha256);
@@ -226,8 +236,8 @@ async function preparation(args: Arguments) {
     const absolute = resolve(serviceRoot, path); const local = relative(repositoryRoot, absolute).replaceAll('\\', '/');
     safeRepositoryPath(local);
     if (inputs[local]) { if (digest) assert.equal(inputs[local].sha256, digest); return; }
-    assert.ok(/^(services\/ask-okf-mcp\/(src\/[^/]+\.ts|scripts\/(build\.mjs|engine-admission\.mjs|verify-approved-versions\.ts|verify-delivery\.mjs|verification-cases\.mjs|verify-versioned-remote\.ts)|vendor\/[^/]+\.json|vendor\/engines\/[a-f0-9]{40}\/(index\.ts|corpus\.ts|corpusV3\.ts|types\.ts|unit\.ts|manifest\.json)|package(?:-lock)?\.json)|apps\/okf-explorer\/src\/lib\/context\/(index|types|corpus|corpusV3|delivery|unit)\.ts|profiles\/context-assembly\/v1\/(common|package|evidence-unit)\.schema\.json)$/.test(local), 'Build input is outside the reviewed runtime families');
-    const raw = await boundedFile(absolute); if (digest) assert.equal(sha(raw), digest);
+    assert.ok(/^(services\/ask-okf-mcp\/(src\/[^/]+\.ts|scripts\/(build\.mjs|engine-admission\.mjs|prepare-graph-evidence-release\.mjs|verify-graph-remote\.mjs|verify-approved-versions\.ts|verify-delivery\.mjs|verification-cases\.mjs|verify-versioned-remote\.ts)|vendor\/[^/]+\.json|vendor\/graph-evidence\/(admission\.json|graph\.json|graph_evidence_runtime\.mjs|graph_evidence_client\.mjs|insufficiency_categories\.mjs)|vendor\/engines\/[a-f0-9]{40}\/(index\.ts|corpus\.ts|corpusV3\.ts|types\.ts|unit\.ts|manifest\.json)|package(?:-lock)?\.json)|apps\/okf-explorer\/src\/lib\/context\/(index|types|corpus|corpusV3|delivery|unit)\.ts|profiles\/context-assembly\/v1\/(common|package|evidence-unit)\.schema\.json)$/.test(local), 'Build input is outside the reviewed runtime families');
+    const raw = await boundedFile(absolute, comparatorFileLimit(local)); if (digest) assert.equal(sha(raw), digest);
     equal(sha(gitFile(repositoryRoot, args.comparisonCommit, local)), sha(raw), 'Comparator input differs from exact commit');
     inputs[local] = { bytes: raw.length, sha256: sha(raw) };
     // Bind every statically imported local helper before evaluation. The build
@@ -241,7 +251,7 @@ async function preparation(args: Arguments) {
   for (const [path, digest] of Object.entries(build.inputs)) { assert.match(String(digest), HASH); await check(path, String(digest)); }
   for (const path of ['scripts/verify-versioned-remote.ts', 'scripts/verify-approved-versions.ts', 'scripts/verify-delivery.mjs', 'scripts/verification-cases.mjs', '../../apps/okf-explorer/src/lib/context/types.ts']) await check(path);
   for (const [path, digest] of Object.entries(build.outputs)) {
-    assert.ok(['dist/server/index.js', 'dist/node.mjs'].includes(path)); assert.equal(sha(await boundedFile(resolve(serviceRoot, path))), digest);
+    assert.ok(['dist/server/index.js', 'dist/node.mjs'].includes(path)); assert.equal(sha(await boundedFile(resolve(serviceRoot, path), comparatorFileLimit(path))), digest);
   }
   // Imports happen only after all executable comparator inputs and erased types
   // match the operator's immutable comparison commit.
@@ -464,6 +474,7 @@ export async function main(argv = process.argv.slice(2)) {
   const discoveries: Partial<Record<'sdk_v1' | 'sdk_v2', ReturnType<typeof discoveryDiagnostic>>> = {};
   try {
     prepared = await preparation(args);
+    const sdkVersions = lockedSdkVersions(JSON.parse((await boundedFile(resolve(serviceRoot, 'package-lock.json'))).toString()));
     const plan = { schema: 'okf-versioned-remote-plan.v1', classification: 'offline-local-reference-plan',
       origin: args.origin, expected_service_version: args.serviceVersion, expected_current_source: args.sourceVersion,
       expected_worker_sha256: args.worker, comparison_commit: args.comparisonCommit,
@@ -474,7 +485,7 @@ export async function main(argv = process.argv.slice(2)) {
       negative_controls: prepared.negatives.map(row => ({ id: row.id, expected_error: row.expected })),
       incompatible_pair_control: prepared.incompatible ?? 'No incompatible pair among this release registry; not claimed as tested.',
       question_sha256: sha(PUBLIC_QUESTION), public_question_sha256: PUBLIC_QUESTIONS.map(sha), full_ask_okf_calls: 0, network_calls: 0,
-      comparator_inputs: prepared.inputs, source_files: prepared.files, source_bytes: prepared.sourceBytes,
+      comparator_inputs: prepared.inputs, source_files: prepared.files, source_bytes: prepared.sourceBytes, ...sdkVersions,
       worker_identity_boundary: 'Expected Worker digest verifies the exact local comparator. Health cannot attest hosted Worker bytes; separate hosting publication evidence is required.' };
     await writeFile(resolve(args.output, 'plan.json'), JSON.stringify(plan, null, 2) + '\n', { flag: 'wx' });
     await writeFile(resolve(args.output, 'executed-verifier.ts'), runnerRaw, { flag: 'wx' });
@@ -490,6 +501,11 @@ export async function main(argv = process.argv.slice(2)) {
       bundle_version: args.sourceVersion, snapshot: registry.APPROVED_BUNDLE.snapshot, index_sha256: registry.APPROVED_BUNDLE.index_sha256,
       approved_versions: [...registry.APPROVED_VERSIONS], engine: 'okf-context-assembly.v1', engine_id: engines.CURRENT_ENGINE_ID,
       approved_engines: engines.ENGINE_CATALOGUE };
+    if (args.serviceVersion === '0.8.0') {
+      const admission = JSON.parse((await boundedFile(fileURLToPath(new URL('../vendor/graph-evidence/admission.json', import.meta.url)))).toString());
+      Object.assign(expectedHealth, { graph_engine_id: admission.engine_id, graph_sha256: admission.graph_sha256,
+        graph_publication_status: admission.publication_status });
+    }
     equal(health, expectedHealth, 'Actual health/source/engine catalogue differs from the approved comparator');
     stage = 'sdk-imports';
     const [{ Client, StreamableHTTPClientTransport }, { CfWorkerJsonSchemaValidator }, oldClient, oldTransport, contracts, delivery] = await Promise.all([
@@ -538,7 +554,7 @@ export async function main(argv = process.argv.slice(2)) {
     }
     stage = 'post-run-immutable-inputs';
     // A local source or verifier edit during the live run invalidates acceptance.
-    for (const [path, ref] of Object.entries(prepared.inputs)) assert.equal(sha(await boundedFile(resolve(repositoryRoot, path))), ref.sha256);
+    for (const [path, ref] of Object.entries(prepared.inputs)) assert.equal(sha(await boundedFile(resolve(repositoryRoot, path), comparatorFileLimit(path))), ref.sha256);
     assert.equal(sha(await boundedFile(fileURLToPath(import.meta.url))), sha(runnerRaw));
     const artifacts: Record<string, any> = {};
     for (const name of ['plan.json', 'executed-verifier.ts', 'build-receipt.json', ...prepared.cases.map(item => `${item.id}.received-package.json.gz`)]) {
@@ -551,7 +567,7 @@ export async function main(argv = process.argv.slice(2)) {
       deployed_worker_bytes_independently_verified: false, comparison_commit: args.comparisonCommit,
       current_source_version: args.sourceVersion, engine_catalogue: health.approved_engines, observed_health: health,
       build_receipt_sha256: sha(prepared.buildRaw), runner_sha256: sha(runnerRaw), original_0_5_receipt_sha256: prepared.oldReceiptSha,
-      tools_canonical_sha256: discoveries.sdk_v2!.result_sha256, tool_discovery: discoveries, complete_tool_rows_equal: true, sdk_v2: '2.0.0 / 2026-07-28', sdk_v1: '1.30.0',
+      tools_canonical_sha256: discoveries.sdk_v2!.result_sha256, tool_discovery: discoveries, complete_tool_rows_equal: true, ...sdkVersions,
       predicted_request_upper_bound: prepared.predicted, transport: remote.receipt, cases: completed,
       negative_controls: negatives.map(row => ({ id: row.id, no_evidence_returned: true, expected_error_canonical_sha256: sha(canonical(row.expected)) })),
       incompatible_pair_control: prepared.incompatible ? 'passed' : 'not-applicable-no-incompatible-approved-pair',

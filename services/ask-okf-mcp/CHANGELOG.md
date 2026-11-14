@@ -1,5 +1,22 @@
 # Ask OKF service changelog
 
+## 0.8.0 candidate — 14 November 2026
+
+- Expose two bounded graph evidence tools at `/mcp`, retaining the historical
+  three-tool connection at `/okf/mcp` and all immutable replay packages.
+- Admit a separately reviewed source-bound graph and portable planner/client
+  by exact Git commit and content hashes. Ordinary builds reject pending
+  producer admission. Preserve model-derived navigation and insufficient status.
+- Bound full duplicated MCP response envelopes, including worst-case accepted
+  JSON-RPC identifiers and SSE framing. Verify complete package and source-text
+  reconstruction through both supported SDK generations and the built Worker.
+- Record local preparation separately from public deployment and client acceptance.
+- Keep the legacy live comparator's graph and compiled-artefact limits explicit
+  and consistent for filesystem and immutable Git reads, with unchanged digests
+  and aggregate source ceilings.
+- Label new live observations with the SDK versions from their committed
+  comparator lock, preserving earlier receipts and their original version labels.
+
 ## Development dependency follow-up — 23 October 2026
 
 - Update only fast-uri 3.1.8 to 3.1.9 in the lockfile to address four newly

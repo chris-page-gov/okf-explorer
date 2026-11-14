@@ -7,6 +7,23 @@ import { validateEngineManifest, verifyEngineModule } from './engine-admission.m
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 process.chdir(root);
 const hash = value => createHash('sha256').update(value).digest('hex');
+const graphRelease = JSON.parse(await readFile('vendor/graph-evidence/admission.json', 'utf8'));
+const canonical = value => Array.isArray(value) ? '[' + value.map(canonical).join(',') + ']'
+  : value && typeof value === 'object' ? '{' + Object.keys(value).sort().map(key => JSON.stringify(key) + ':' + canonical(value[key])).join(',') + '}' : JSON.stringify(value);
+if (graphRelease.engine_id !== 'urn:okf:graph-engine:sha256:' + hash(canonical(graphRelease.engine_admission))) throw new Error('Graph engine admission identity differs.');
+const graphCandidate = process.env.OKF_GRAPH_CANDIDATE_BUILD === '1';
+if (graphRelease.schema !== 'okf-graph-evidence-admission.v1'
+  || (!graphCandidate && (graphRelease.publication_status !== 'pinned' || !/^[a-f0-9]{40}$/.test(graphRelease.source_commit)))) {
+  throw new Error('Pin the reviewed immutable graph release before a publication build.');
+}
+if (hash(await readFile('vendor/graph-evidence/graph.json')) !== graphRelease.graph_sha256) throw new Error('Graph evidence digest differs.');
+if (hash(await readFile('vendor/graph-evidence/graph_evidence_client.mjs')) !== graphRelease.client_sha256) throw new Error('Graph evidence verifier digest differs.');
+for (const [name, digest] of Object.entries(graphRelease.engine_admission.modules)) {
+  if (hash(await readFile(`vendor/graph-evidence/${name}`)) !== digest) throw new Error('Graph runtime module differs: ' + name);
+}
+for (const [name, digest] of Object.entries(graphRelease.engine_admission.resolver.files)) {
+  if (hash(await readFile(`../../apps/okf-explorer/src/lib/context/${name}`)) !== digest) throw new Error('Graph resolver differs: ' + name);
+}
 const engineManifests = [];
 for (const commit of ['d6930bbcddaab616deec002d9e6efff6e3aae953', 'c4f2de0a99b7bc2f8b8c8a06a3c715fb56b66d8e', 'b9a3b68b6dbf222f9a73cc8f450dd53f126e1b55']) {
   const base = `vendor/engines/${commit}`;
@@ -59,13 +76,16 @@ if (Object.keys(worker.metafile.inputs).some(p => /shimsNode|ajvProvider|node:/.
 await build({ ...shared, entryPoints: ['src/node.ts'], outfile: 'dist/node.mjs', platform: 'node', packages: 'external' });
 const inputs = {};
 for (const path of [...new Set([...Object.keys(worker.metafile.inputs).filter(p => !p.startsWith('node_modules/')),
-  'scripts/build.mjs', 'scripts/engine-admission.mjs', 'src/node.ts', 'package.json', 'package-lock.json',
+  'scripts/build.mjs', 'scripts/engine-admission.mjs', 'scripts/prepare-graph-evidence-release.mjs', 'scripts/verify-graph-remote.mjs',
+  'vendor/graph-evidence/graph_evidence_client.mjs', 'src/node.ts', 'package.json', 'package-lock.json',
   'vendor/okf-dwp-evidence-connect-descriptor.json',
   ...engineManifests.flatMap(engine => [...engine.files, 'manifest.json'].map(name => `vendor/engines/${engine.source_commit}/${name}`))])].sort()) {
   const localPath = path.replace(/^raw:/, '');
   inputs[localPath] = hash(await readFile(localPath));
 }
-const receipt = { schema: 'okf-remote-mcp-build.v1', service_version: '0.7.0', inputs,
+const receipt = { schema: 'okf-remote-mcp-build.v1', service_version: '0.8.0', inputs,
+  graph_release: { publication_status: graphCandidate ? 'candidate' : graphRelease.publication_status,
+    source_commit: graphRelease.source_commit, graph_sha256: graphRelease.graph_sha256, engine_id: graphRelease.engine_id },
   engines: engineManifests.map(({ engine_id, source_commit }) => ({ engine_id, source_commit })),
   outputs: { 'dist/server/index.js': hash(await readFile('dist/server/index.js')), 'dist/node.mjs': hash(await readFile('dist/node.mjs')) },
   worker_node_dependencies: false, bundle_version: evidenceConnectRelease.version,

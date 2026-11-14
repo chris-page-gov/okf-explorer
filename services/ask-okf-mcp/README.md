@@ -9,6 +9,87 @@ official DWP service or individual benefits advice.
 [Publication procedure](../../docs/remote-mcp-publication.md). Software preparation
 and recorded public deployment are separate states.
 
+## Graph-guided 0.8.0 candidate
+
+The new `/mcp` connection exposes two read-only tools:
+`plan_okf_evidence` and `read_okf_planned_evidence`. It follows the separately
+authored, source-bound DWP navigation graph and delivers complete source plans
+in verified parts. The default full response envelope is at most 8 KiB,
+including both MCP result copies, JSON-RPC framing and the maximum accepted
+escaped request identifier. The historical three-tool interface remains at
+`/okf/mcp`, with its frozen source/engine pairs and package hashes.
+
+Every continuation repeats the exact question and the returned graph, engine
+and plan identities. The portable collector at
+`vendor/graph-evidence/graph_evidence_client.mjs` verifies catalogue coverage,
+contiguous Unicode-safe slices, complete package and source-text hashes.
+The runtime never accepts evaluation target IDs, external URLs or claimant
+data. All plans remain `insufficient`, with `ai_answer: null`; graph navigation
+is an unreviewed research proposal and does not determine legal applicability.
+
+The identical graph handler is available at `/graph/mcp` for anonymous public
+SDK verification. Sites manages its native plugin connection at `/mcp` when
+the hosting capability is enabled. These two access routes have separate live
+checks; the public SDK route does not attest native plugin discovery.
+
+The producer evaluation covers all eight authored personas and 21 interest
+areas: 263/263 persona targets, 35/35 custody targets and 4/4 UC targets. A
+separate frozen withheld wording trial reaches 45/45 targets and passes 12/12
+negative controls. These local measurements do not establish public deployment,
+actual connected-client behaviour, legal completeness or specialist acceptance.
+
+The [local preparation record](validation/candidates/graph-0.8.0-2026-11-14/README.md)
+retains the 114 passing service tests, one existing skip and four passing Chrome
+acceptance tests with their exact build receipt and scope.
+
+Release preparation reads exact Git blobs from the reviewed DWP commit:
+
+```sh
+node scripts/prepare-graph-evidence-release.mjs \
+  --dwp-root /path/to/okf-dwp --source-commit FULL_REVIEWED_COMMIT
+npm run build
+npm run check
+OKF_DWP_ROOT=/path/to/okf-dwp npm test
+```
+
+The preparer checks every graph source binding and records graph, runtime,
+classifier, resolver and client digests in `vendor/graph-evidence/admission.json`.
+An ordinary build rejects a pending source commit. During local development
+only, `--candidate` and `OKF_GRAPH_CANDIDATE_BUILD=1` explicitly label the build
+as unreviewed; that candidate is not eligible for release publication. No
+dependency change, model call or API key is needed.
+
+The graph SDK integration tests read only the immutable producer commit from
+`OKF_DWP_ROOT`; its working branch may differ. CI checks out the exact 103
+required source blobs and supplies this variable. Without the external source
+checkout, local source-integration tests are explicitly skipped; CI requires it.
+
+Preflight the complete remote suite without making HTTP requests:
+
+```sh
+node scripts/verify-graph-remote.mjs --dwp-root /path/to/okf-dwp
+```
+
+After the exact Worker is reviewed and deployed, run a new observation directory:
+
+```sh
+node scripts/verify-graph-remote.mjs --dwp-root /path/to/okf-dwp \
+  --execute-public --origin https://ask-okf.crpage.chatgpt.site \
+  --output-dir /path/to/new-graph-observation
+```
+
+This uses official SDK v2 to replay 106 unique questions representing 108 case
+occurrences and SDK v1 to reconstruct the UC control. It checks exact plan and
+package identities, all declared source targets and paths, text hashes, unchanged
+insufficiency and open original obligations. Received packages and per-question
+checkpoints are retained. It paces requests at least 750 ms apart, disables
+automatic retries and caps each full evidence HTTP response at 8 KiB, the run
+at 12,000 requests, 256 MiB and four hours. The first preflight predicts about
+7,261 requests; host framing may change the number of bounded slices. The
+withheld cases are the recorded post-review regression, not a new blind trial.
+Native plugin invocation remains a separate observation from this public SDK
+route. No model or paid API call is made.
+
 The 23 October P0 review updates the source dependency pin to Zod 4.6.7 for
 [GHSA-mrhx-c7xc-m3w5](https://github.com/advisories/GHSA-mrhx-c7xc-m3w5).
 Frozen source/engine pairs and recorded deployments remain unchanged.
@@ -77,9 +158,10 @@ npm run build
 npm start
 ```
 
-The local development endpoint is `http://127.0.0.1:8787/mcp`. The equivalent
-`/okf/mcp` route avoids a hosting-platform-reserved `/mcp` path; the public
-landing page advertises `/okf/mcp`. Both routes use the same handler and tools.
+The local development endpoint is `http://127.0.0.1:8787/mcp` for the two graph
+tools. `/okf/mcp` retains the three historical tools. The Sites publication must
+declare the `mcp` hosting capability to provision the native connection on
+`/mcp`; actual public routing and installed-tool discovery require live checks.
 `GET /health`
 verifies the vendored default corpus manifest and reports its immutable identity,
 current `engine_id` and the approved source/engine compatibility pairs.

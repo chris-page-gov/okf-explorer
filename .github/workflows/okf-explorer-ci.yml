@@ -114,6 +114,8 @@ jobs:
     needs: adversarial-gate
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    env:
+      OKF_DWP_ROOT: ${{ github.workspace }}/.ci/okf-dwp-graph
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
@@ -121,6 +123,118 @@ jobs:
           node-version: '26.12.1'
           cache: npm
           cache-dependency-path: services/ask-okf-mcp/package-lock.json
+      - name: Check out only the immutable graph evaluation source blobs
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          repository: chris-page-gov/okf-dwp
+          ref: 2e12f20cfd20e62a67197e7aade4ea612b873684
+          path: .ci/okf-dwp-graph
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            combined/context/assembly-index.json
+            domain-profile/context-recovery/policy.yamlld
+            domain-profile/retrieval-graph/concept-bridges.yamlld
+            domain-profile/retrieval-graph/navigation-repairs.yamlld
+            domain-profile/retrieval-graph/policy.yamlld
+            domain-profile/retrieval-graph/topic-profiles.yamlld
+            evaluation/context-assembly/imprisonment-case.json
+            evaluation/context-assembly/source-check.json
+            evaluation/manual-structure/original-acceptance/protocol.json
+            evaluation/out-of-sample/uc-disabled-child-supersession-001.json
+            evaluation/remote-mcp/hospital-case.json
+            evaluation/retrieval-gate/graph-evaluation.json
+            evaluation/retrieval-gate/persona-cases.json
+            evaluation/retrieval-gate/withheld/attempt-02/freeze.json
+            evaluation/retrieval-gate/withheld/attempt-02/protocol.json
+            evaluation/retrieval-gate/withheld/attempt-02/receipt.json
+            evaluation/retrieval-gate/withheld/attempt-02/run.mjs
+            evaluation/truncation/recovery-cases.json
+            full-dmg/context/assembly-index.json
+            retrieval-graph/graph.json
+            structured-context/evidence-connect-manifest.json
+            structured-context/evidence-connect/base-index.json
+            structured-context/evidence-connect/records.json.gz
+            structured-context/evidence-connect/relationships/12.json.gz
+            structured-context/evidence-connect/relationships/14.json.gz
+            structured-context/evidence-connect/relationships/3d.json.gz
+            structured-context/evidence-connect/relationships/64.json.gz
+            structured-context/evidence-connect/relationships/8f.json.gz
+            structured-context/evidence-connect/relationships/95.json.gz
+            structured-context/evidence-connect/relationships/ad.json.gz
+            structured-context/evidence-connect/relationships/b4.json.gz
+            structured-context/evidence-connect/relationships/b6.json.gz
+            structured-context/evidence-connect/relationships/bf.json.gz
+            structured-context/evidence-connect/relationships/d6.json.gz
+            structured-context/evidence-connect/relationships/e7.json.gz
+            structured-context/evidence-connect/relationships/e8.json.gz
+            structured-context/records/0005.json.gz
+            structured-context/records/0015.json.gz
+            structured-context/records/0023.json.gz
+            structured-context/records/0024.json.gz
+            structured-context/records/0037.json.gz
+            structured-context/records/0055.json.gz
+            structured-context/records/0057.json.gz
+            structured-context/records/0089.json.gz
+            structured-context/records/0115.json.gz
+            structured-context/records/0130.json.gz
+            structured-context/records/0141.json.gz
+            structured-context/records/0152.json.gz
+            structured-context/records/0153.json.gz
+            structured-context/records/0156.json.gz
+            structured-context/records/0166.json.gz
+            structured-context/records/0167.json.gz
+            structured-context/records/0168.json.gz
+            structured-context/records/0180.json.gz
+            structured-context/records/0181.json.gz
+            structured-context/records/0183.json.gz
+            structured-context/records/0184.json.gz
+            structured-context/records/0194.json.gz
+            structured-context/records/0198.json.gz
+            structured-context/records/0199.json.gz
+            structured-context/records/0234.json.gz
+            structured-context/records/0247.json.gz
+            structured-context/records/0258.json.gz
+            structured-context/records/0285.json.gz
+            structured-context/records/0286.json.gz
+            structured-context/records/0304.json.gz
+            structured-context/records/0305.json.gz
+            structured-context/records/0371.json.gz
+            structured-context/records/0374.json.gz
+            structured-context/records/0405.json.gz
+            structured-context/records/0406.json.gz
+            structured-context/records/0418.json.gz
+            structured-context/records/0419.json.gz
+            structured-context/relationships/01.json.gz
+            structured-context/relationships/0a.json.gz
+            structured-context/relationships/11.json.gz
+            structured-context/relationships/16.json.gz
+            structured-context/relationships/1a.json.gz
+            structured-context/relationships/1c.json.gz
+            structured-context/relationships/38.json.gz
+            structured-context/relationships/3f.json.gz
+            structured-context/relationships/40.json.gz
+            structured-context/relationships/46.json.gz
+            structured-context/relationships/4c.json.gz
+            structured-context/relationships/51.json.gz
+            structured-context/relationships/60.json.gz
+            structured-context/relationships/6b.json.gz
+            structured-context/relationships/76.json.gz
+            structured-context/relationships/7e.json.gz
+            structured-context/relationships/8c.json.gz
+            structured-context/relationships/91.json.gz
+            structured-context/relationships/94.json.gz
+            structured-context/relationships/98.json.gz
+            structured-context/relationships/9b.json.gz
+            structured-context/relationships/a4.json.gz
+            structured-context/relationships/a5.json.gz
+            structured-context/relationships/c8.json.gz
+            structured-context/relationships/d1.json.gz
+            structured-context/relationships/d3.json.gz
+            structured-context/relationships/e0.json.gz
+            structured-context/relationships/f9.json.gz
+            structured-context/relationships/fb.json.gz
+            structured-context/relationships/fc.json.gz
       - name: Install locked remote service dependencies
         working-directory: services/ask-okf-mcp
         run: npm ci --ignore-scripts
