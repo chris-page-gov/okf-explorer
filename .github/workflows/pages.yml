@@ -136,6 +136,7 @@ jobs:
           --check
       - name: Validate YAML-LD registry and constraint ledger
         run: |
+          uv run --locked python scripts/build_public_bundle_access.py --check
           uv run --locked python scripts/build_okf_registry.py --check
           uv run --locked python scripts/build_learning_example.py --check
           uv run --locked python scripts/build_okf_estate_registry.py --check
@@ -211,10 +212,20 @@ jobs:
           --candidate-receipt "$RUNNER_TEMP/candidate/site-candidate-receipt.json"
           --expected-commit "${{ github.sha }}"
           --output "$RUNNER_TEMP/live-deployment-receipt.json"
+      - name: Verify the exact public access directory in runner Chrome
+        run: >-
+          node apps/okf-explorer/scripts/verify_okf_deployment.mjs
+          --contract okf.publication.json
+          --journey public-bundle-access
+          --candidate-receipt "$RUNNER_TEMP/candidate/site-candidate-receipt.json"
+          --expected-commit "${{ github.sha }}"
+          --output "$RUNNER_TEMP/public-access-live-receipt.json"
       - name: Upload exact live-browser evidence
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
           name: pages-live-deployment-receipt
-          path: ${{ runner.temp }}/live-deployment-receipt.json
+          path: |
+            ${{ runner.temp }}/live-deployment-receipt.json
+            ${{ runner.temp }}/public-access-live-receipt.json
           if-no-files-found: warn

@@ -26,7 +26,7 @@ Start with a bounded fixture and reconcile its native source names, observation 
 
 The local checkout observations above were made on 10 November 2026. The estate registry remains the source for reviewed producer identities and publication state. This is a candidate rollout order and adoption needs evidence from each affected producer. [Estate standardisation tracker](okf-estate-standardisation-tracker.md)
 
-The 11 November trial confirms the offline analytical check and supplies a bounded two-record Reader journey with ordinary companion links. In-browser typed data inspection and validation-receipt interpretation require a separately scoped application feature. [Explorer update assessment](analytical-data-trial-2026-11-11.md#does-okf-explorer-need-an-update)
+The 11 November trial confirms the offline analytical check and supplies a bounded two-record Reader journey with ordinary companion links. The subsequent [native DfE paired-CSV Reader](dfe-ees-reader.md) accepts EES data with its original metadata sidecar, preserving symbols and names. General analytical-manifest inspection, typed datetime/spatial validation and validation-receipt interpretation remain separate. [Original Explorer update assessment](analytical-data-trial-2026-11-11.md#does-okf-explorer-need-an-update)
 
 Read-only shared-profile reconciliation also records 13 existing WCC producer errors and one existing NDL producer error. The original Explorer checker reproduces both sets. These producer contract migrations retain their own review scope. [Pinned reconciliation results](analytical-data-trial-2026-11-11-producers.json)
 

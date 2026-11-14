@@ -23,3 +23,6 @@ sources/analytical-data-trial-2026-11-11/ndl-link-audit/** -whitespace
 
 # Unified patch context deliberately retains upstream tabs and blank lines.
 apps/okf-explorer/patches/*.patch -whitespace
+
+# Public DfE examples retain the exact bytes bound by their source record.
+apps/okf-explorer/static/examples/dfe-ees/*.csv -text
