@@ -1,5 +1,7 @@
 # Warwickshire and National Data Library Analytical Data trial
 
+Later application update: the [DfE paired-CSV Reader](dfe-ees-reader.md) now supports native EES data and metadata sidecars. The dated trial and general analytical-manifest interface assessment below retain their original scope.
+
 The Analytical Data `1.0.0-rc.1` candidate passed a local conversion of all 333 observations in Warwickshire County Council's historical Ageing population 2008 CSV. The corresponding National Data Library directory record was captured and checked separately. Its recorded CSV URL and the HTTPS form both returned 403 AccessDenied, leaving that distribution unassessed. The trial covers one real dataset and one catalogue record describing it. [Warwickshire record](https://www.warwickshire.gov.uk/directory-record/6300/ageing-population-2008) · [NDL directory record](https://www.data.gov.uk/dataset/89e5101a-2064-46e7-955e-4cac2fb31c7c/warwickshire-ageing-population)
 
 ## Measured results

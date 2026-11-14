@@ -15,12 +15,14 @@ to this guide, worked examples and the GitHub repository.
 - [Try a bundle with AI](onboarding/try-a-bundle.md): a worked evidence question with a human fallback.
 - [Choose an example](onboarding/examples.md): one catalogue, grouped by purpose.
 - [Choose an AI access route](ai-okf-usage.md): files, public links, local agents, Copilot and experimental page tools.
+- [Find a public bundle](public-bundle-access.md): exact Pages descriptors, semantic entrypoints, pinned GitHub fallbacks and a Voice prompt.
 - [Choose your journey](onboarding/audience-journeys.md): different tasks and successful stopping points.
 - [Make your first bundle](onboarding/first-bundle.md): a complete fictional starter, exact commands and expected checks.
 
 ## Use and learn
 
 - [Use Explorer](use-okf-explorer.md): current search, facets, highlighting, keeping sets, panels and evidence.
+- [Read DfE CSV and metadata](dfe-ees-reader.md): inspect an EES data/sidecar pair, exact values, field meanings and scope.
 - [Inspect a retained evidence example](retained-evidence-demo.md): a seven-step demonstration of a fixed package, its source links and its limits.
 - [AI Infrastructure walkthrough](ai-infrastructure-knowledge-graph-walkthrough.md): one concept across Markdown and Explorer.
 - [Beginner reference](beginners/index.md): explanations when you need them, without required sequential reading.

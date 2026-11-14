@@ -33,6 +33,8 @@ jobs:
         uses: ./.github/actions/setup-locked-python
       - name: Check documentation lockstep
         run: uv run --locked python scripts/check_documentation_lockstep.py --base "origin/${{ github.event.pull_request.base.ref || 'main' }}...HEAD"
+      - name: Check public bundle access projections
+        run: uv run --locked python scripts/build_public_bundle_access.py --check
       - name: Check receipt-backed remote release documentation
         run: |
           uv run --locked python scripts/check_remote_release_docs.py
