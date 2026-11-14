@@ -13,7 +13,7 @@ import stat
 import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
-RECEIPTS = Path('services/ask-okf-mcp/validation/publication-2026-09-25')
+RECEIPTS = Path('services/ask-okf-mcp/validation/publication-2026-11-14')
 DOCS = ('docs/remote-mcp.md', 'services/ask-okf-mcp/README.md',
         'services/ask-okf-mcp/CHANGELOG.md')
 GUIDES = ('services/ask-okf-mcp/ARCHITECTURE.md', 'docs/adr-versioned-evidence-replay.md')
@@ -21,9 +21,10 @@ START = '<!-- ask-okf-publication:start -->'
 END = '<!-- ask-okf-publication:end -->'
 CURRENT = 'https://github.com/chris-page-gov/okf-dwp/blob/main/docs/service-publication.md'
 SOURCE_PATHS = {
-    'deployment.json': 'validation/compact-delivery/v0.7.0/deployment.json',
-    'observation.json': 'validation/compact-delivery/v0.7.0/sdk/attempt-01/observation.json',
+    'deployment.json': 'validation/compact-delivery/v0.8.0/deployment.json',
+    'observation.json': 'validation/compact-delivery/v0.8.0/sdk/attempt-01/observation.json',
 }
+SOURCE_COMMIT = '15268c562c3f00d47577f71b62702daca5a89a98'
 
 
 def require(ok, message):
@@ -72,6 +73,14 @@ def validate(deployment, observation):
     require(cases and len({c['id'] for c in cases}) == len(cases)
             and all(c['complete_package_matches_local_reference'] is True for c in cases),
             'Complete-package case checks differ')
+    kinds = [c['case_kind'] for c in cases]
+    pairs = {(c['source_version'], c['engine_id']) for c in cases if c['case_kind'] == 'approved-source-engine-pair'}
+    expected_pairs = {(version, engine['engine_id']) for engine in o['engine_catalogue']
+                      for version in engine['source_versions']}
+    require(len(cases) == 12 and kinds.count('approved-source-engine-pair') == 10
+            and len(pairs) == 10 and pairs == expected_pairs
+            and kinds.count('current-empty-control') == kinds.count('historical-original-package') == 1,
+            'Legacy source/engine pair or control census differs')
     health = o['observed_health']
     engines = [e for e in health['approved_engines'] if e['engine_id'] == health['engine_id']]
     require(len(engines) == 1 and d['source_commit'] in engines[0]['source_versions'],
@@ -85,7 +94,7 @@ def load(root=ROOT, dwp_root=None):
     directory = root / RECEIPTS
     binding = json.loads(bounded_file(directory / 'source.json', 16384))
     require(binding['repository'] == 'chris-page-gov/okf-dwp'
-            and re.fullmatch('[0-9a-f]{40}', binding['commit']), 'Invalid receipt repository binding')
+            and binding['commit'] == SOURCE_COMMIT, 'Unexpected immutable DWP receipt commit')
     require(set(binding['files']) == set(SOURCE_PATHS), 'Receipt census differs')
     loaded = {}
     for name, path in SOURCE_PATHS.items():
@@ -116,7 +125,8 @@ For the **latest recorded deployment and verification**, use the shared
 On {date}, the [hosting record]({base}{SOURCE_PATHS['deployment.json']})
 records service **{d['service_version']}** as deployed. The separate
 [public SDK observation]({base}{SOURCE_PATHS['observation.json']})
-passed **{len(o['cases'])} evidence cases and {o['transport']['request_count']} requests**,
+passed **{len(o['cases'])} evidence cases**, including **10 approved source/engine pairs**,
+with **{o['transport']['request_count']} requests**,
 reconstructing complete packages from bounded reads. It recorded
 {o['transport']['received_bytes']:,} received bytes, no automatic retries and no model calls.
 

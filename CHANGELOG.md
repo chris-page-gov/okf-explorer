@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Record the successful 0.8.0 Sites deployment and public legacy SDK observation
+  in a new immutable dated directory. Preserve the September 0.7.0 receipt and
+  distinguish the legacy source/engine replay from pending graph-specific
+  public SDK or native plugin evidence.
 - Prepare Ask OKF 0.8.0 with two bounded graph-guided evidence tools at `/mcp`,
   exact producer admission and complete source-text verification. Retain the
   historical three-tool endpoint and frozen packages. Local source-retrieval

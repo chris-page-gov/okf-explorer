@@ -1,0 +1,16 @@
+{
+  "repository": "chris-page-gov/okf-dwp",
+  "commit": "15268c562c3f00d47577f71b62702daca5a89a98",
+  "files": {
+    "deployment.json": {
+      "path": "validation/compact-delivery/v0.8.0/deployment.json",
+      "bytes": 2426,
+      "sha256": "41d50af99e182cbb6217d97c984bc447ea17fe8692809277cea88ea3375832de"
+    },
+    "observation.json": {
+      "path": "validation/compact-delivery/v0.8.0/sdk/attempt-01/observation.json",
+      "bytes": 90683,
+      "sha256": "a25c5f2adc97d0762cf01b6b4954fc9dfb6351141dbf5eee5e98a180442dee02"
+    }
+  }
+}
