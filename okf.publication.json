@@ -1,6 +1,6 @@
 {
   "schema": "okf-repository-publication-contract.v1",
-  "modified": "2026-11-11",
+  "modified": "2026-11-14",
   "locale": "en-GB",
   "time_zone": "Europe/London",
   "repository": {
@@ -492,6 +492,54 @@
           "check-remote-mcp",
           "test-remote-mcp"
         ]
+      },
+      {
+        "path": "okf-public-access.json",
+        "role": "registry-projection",
+        "plane": "runtime",
+        "required": true,
+        "build_command_ids": [
+          "build-public-access"
+        ],
+        "check_command_ids": [
+          "check-public-access"
+        ]
+      },
+      {
+        "path": ".well-known/okf.json",
+        "role": "registry-projection",
+        "plane": "runtime",
+        "required": true,
+        "build_command_ids": [
+          "build-public-access"
+        ],
+        "check_command_ids": [
+          "check-public-access"
+        ]
+      },
+      {
+        "path": "llms.txt",
+        "role": "other",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-public-access"
+        ],
+        "check_command_ids": [
+          "check-public-access"
+        ]
+      },
+      {
+        "path": "docs/public-bundle-access.md",
+        "role": "other",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-public-access"
+        ],
+        "check_command_ids": [
+          "check-public-access"
+        ]
       }
     ]
   },
@@ -556,7 +604,8 @@
     {
       "id": "runtime",
       "depends_on": [
-        "semantic"
+        "semantic",
+        "source"
       ],
       "paths": [
         "okf-bundle.json",
@@ -564,13 +613,18 @@
         "okf-estate-registry.json",
         "apps/okf-explorer/static/**",
         "explorer/**",
-        "scripts/build_okf_estate_registry.py"
+        "scripts/build_okf_estate_registry.py",
+        "okf-public-access.json",
+        ".well-known/okf.json",
+        "scripts/build_public_bundle_access.py"
       ],
       "command_ids": [
         "build-estate-registry",
         "check-estate-registry",
         "update-viewer",
-        "check-viewer"
+        "check-viewer",
+        "build-public-access",
+        "check-public-access"
       ]
     },
     {
@@ -585,11 +639,13 @@
         "PUBLICATION.md",
         "docs/**",
         "sources-index.md",
-        "AGENTS.md"
+        "AGENTS.md",
+        "llms.txt"
       ],
       "command_ids": [
         "check-lockstep",
-        "check-british-english"
+        "check-british-english",
+        "check-public-access"
       ]
     },
     {
@@ -1127,6 +1183,34 @@
         "network": "none",
         "mutates": "none",
         "timeout_minutes": 5
+      },
+      {
+        "id": "build-public-access",
+        "kind": "build",
+        "planes": [
+          "runtime",
+          "documentation"
+        ],
+        "command": "uv run --locked python scripts/build_public_bundle_access.py",
+        "source": "docs/public-bundle-access.md",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "generated-only",
+        "timeout_minutes": 5
+      },
+      {
+        "id": "check-public-access",
+        "kind": "check",
+        "planes": [
+          "runtime",
+          "documentation"
+        ],
+        "command": "uv run --locked python scripts/build_public_bundle_access.py --check",
+        "source": "docs/public-bundle-access.md",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "none",
+        "timeout_minutes": 5
       }
     ]
   },
@@ -1260,6 +1344,36 @@
             "kind": "link",
             "href_contains": "/profile/publication-method/v1/",
             "expected_text": "Read publication method profile v1"
+          }
+        ]
+      },
+      {
+        "id": "public-bundle-access",
+        "url": "https://chris-page-gov.github.io/okf-explorer/docs/public-bundle-access.html",
+        "expected_identity": "Public OKF bundle access",
+        "steps": [
+          "Open the public access directory and identify all twelve public producer entries.",
+          "Follow the machine-readable directory and project-relative discovery JSON.",
+          "Identify the text discovery index and the declared GitHub fallback limits."
+        ],
+        "checks": [
+          {
+            "id": "public-access-json",
+            "kind": "linked-json",
+            "href_contains": "okf-public-access.json",
+            "expected_schema": "okf-public-access-directory.v1"
+          },
+          {
+            "id": "project-discovery-json",
+            "kind": "linked-json",
+            "href_contains": "/.well-known/okf.json",
+            "expected_schema": "okf-public-access-directory.v1"
+          },
+          {
+            "id": "text-discovery",
+            "kind": "link",
+            "href_contains": "llms.txt",
+            "expected_text": "Text discovery index"
           }
         ]
       }

@@ -5,6 +5,11 @@ First [try an existing bundle](onboarding/try-a-bundle.md) or use the
 question and evidence your AI can actually read. A bundle URL is not, by itself,
 a connection, an upload or a guarantee that linked records were retrieved.
 
+Use the [public bundle access directory](public-bundle-access.md) for the exact
+Pages descriptors, semantic entrypoints and verified matching GitHub fallbacks
+across the public `okf-*` producers. It includes a prompt for ChatGPT Voice and
+records where Pages and GitHub expose different candidates.
+
 ## Choose an access route
 
 | Your tools | What to supply | Check before asking for an answer |

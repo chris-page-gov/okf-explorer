@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- Add a public access directory for all twelve public `okf-*` producers,
+  with exact descriptors, semantic entrypoints and matching pinned GitHub
+  alternatives. Publish supplemental `llms.txt` and project-relative
+  `.well-known/okf.json` discovery files. Keep Reader admission and Voice
+  acceptance separate; record the ONS generated-only and living snapshot limits.
+  Bind the new files into deployment identity and verify the published
+  directory and JSON links through the existing hosted Chrome gate.
+
 - Record the successful 0.8.0 Sites deployment and public legacy SDK observation
   in a new immutable dated directory. Preserve the September 0.7.0 receipt and
   distinguish the legacy source/engine replay from pending graph-specific
