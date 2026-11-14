@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Read native DfE EES data CSVs with their metadata sidecars in a local browser
+  page. Preserve source names and values, expose labels, units, precision and
+  exact filters, distinguish special symbols from zero, and export a hash-bound
+  inspection report. Include the attributed public DfE example and bounded
+  parser/Chrome checks. The separate candidate analytical profile is unchanged.
+
 - Record the successful 0.8.0 Sites deployment and public legacy SDK observation
   in a new immutable dated directory. Preserve the September 0.7.0 receipt and
   distinguish the legacy source/engine replay from pending graph-specific
