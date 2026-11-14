@@ -14,6 +14,8 @@
 - Keep the legacy live comparator's graph and compiled-artefact limits explicit
   and consistent for filesystem and immutable Git reads, with unchanged digests
   and aggregate source ceilings.
+- Label new live observations with the SDK versions from their committed
+  comparator lock, preserving earlier receipts and their original version labels.
 
 ## Development dependency follow-up — 23 October 2026
 

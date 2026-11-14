@@ -39,7 +39,7 @@ negative controls. These local measurements do not establish public deployment,
 actual connected-client behaviour, legal completeness or specialist acceptance.
 
 The [local preparation record](validation/candidates/graph-0.8.0-2026-11-14/README.md)
-retains the 113 passing service tests, one existing skip and four passing Chrome
+retains the 114 passing service tests, one existing skip and four passing Chrome
 acceptance tests with their exact build receipt and scope.
 
 Release preparation reads exact Git blobs from the reviewed DWP commit:

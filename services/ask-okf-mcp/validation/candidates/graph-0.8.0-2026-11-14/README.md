@@ -12,7 +12,7 @@ The admission, portable client and runtime are verified by the ordinary build
 without a candidate override. Navigation remains model-derived and unreviewed;
 all graph plans retain insufficient status, no AI answer and open obligations.
 
-The complete service suite passes 113 tests with one existing skip. Its new
+The complete service suite passes 114 tests with one existing skip. Its new
 SDK verifier tests exercise both supported SDK generations, source-text and
 obligation mutations, duplicate provenance, schema drift, streamed response
 ceilings, cancellation, aborts and fixed origins. Preflight binds 106 unique

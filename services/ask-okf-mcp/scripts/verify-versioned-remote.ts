@@ -26,6 +26,14 @@ const comparatorFileLimit = (path: string) => path.endsWith('/vendor/graph-evide
 export const sha = (raw: string | Uint8Array) => createHash('sha256').update(raw).digest('hex');
 export const canonical = (value: any): string => Array.isArray(value) ? `[${value.map(canonical).join(',')}]`
   : value && typeof value === 'object' ? `{${Object.keys(value).sort().filter(key => value[key] !== undefined).map(key => `${JSON.stringify(key)}:${canonical(value[key])}`).join(',')}}` : JSON.stringify(value);
+export function lockedSdkVersions(lock: any) {
+  const v2 = lock?.packages?.['node_modules/@modelcontextprotocol/client']?.version;
+  const v1 = lock?.packages?.['node_modules/@modelcontextprotocol/sdk']?.version;
+  assert.match(v2 ?? '', /^\d+\.\d+\.\d+$/);
+  assert.match(v1 ?? '', /^\d+\.\d+\.\d+$/);
+  return { sdk_v2: `${v2} / 2026-07-28`, sdk_v1: v1,
+    sdk_version_basis: 'committed comparator package-lock.json' };
+}
 function equal(actual: unknown, expected: unknown, label: string) { if (canonical(actual) !== canonical(expected)) throw new Error(label); }
 
 export type ToolContract = readonly [string, unknown, unknown];
@@ -466,6 +474,7 @@ export async function main(argv = process.argv.slice(2)) {
   const discoveries: Partial<Record<'sdk_v1' | 'sdk_v2', ReturnType<typeof discoveryDiagnostic>>> = {};
   try {
     prepared = await preparation(args);
+    const sdkVersions = lockedSdkVersions(JSON.parse((await boundedFile(resolve(serviceRoot, 'package-lock.json'))).toString()));
     const plan = { schema: 'okf-versioned-remote-plan.v1', classification: 'offline-local-reference-plan',
       origin: args.origin, expected_service_version: args.serviceVersion, expected_current_source: args.sourceVersion,
       expected_worker_sha256: args.worker, comparison_commit: args.comparisonCommit,
@@ -476,7 +485,7 @@ export async function main(argv = process.argv.slice(2)) {
       negative_controls: prepared.negatives.map(row => ({ id: row.id, expected_error: row.expected })),
       incompatible_pair_control: prepared.incompatible ?? 'No incompatible pair among this release registry; not claimed as tested.',
       question_sha256: sha(PUBLIC_QUESTION), public_question_sha256: PUBLIC_QUESTIONS.map(sha), full_ask_okf_calls: 0, network_calls: 0,
-      comparator_inputs: prepared.inputs, source_files: prepared.files, source_bytes: prepared.sourceBytes,
+      comparator_inputs: prepared.inputs, source_files: prepared.files, source_bytes: prepared.sourceBytes, ...sdkVersions,
       worker_identity_boundary: 'Expected Worker digest verifies the exact local comparator. Health cannot attest hosted Worker bytes; separate hosting publication evidence is required.' };
     await writeFile(resolve(args.output, 'plan.json'), JSON.stringify(plan, null, 2) + '\n', { flag: 'wx' });
     await writeFile(resolve(args.output, 'executed-verifier.ts'), runnerRaw, { flag: 'wx' });
@@ -558,7 +567,7 @@ export async function main(argv = process.argv.slice(2)) {
       deployed_worker_bytes_independently_verified: false, comparison_commit: args.comparisonCommit,
       current_source_version: args.sourceVersion, engine_catalogue: health.approved_engines, observed_health: health,
       build_receipt_sha256: sha(prepared.buildRaw), runner_sha256: sha(runnerRaw), original_0_5_receipt_sha256: prepared.oldReceiptSha,
-      tools_canonical_sha256: discoveries.sdk_v2!.result_sha256, tool_discovery: discoveries, complete_tool_rows_equal: true, sdk_v2: '2.0.0 / 2026-07-28', sdk_v1: '1.30.0',
+      tools_canonical_sha256: discoveries.sdk_v2!.result_sha256, tool_discovery: discoveries, complete_tool_rows_equal: true, ...sdkVersions,
       predicted_request_upper_bound: prepared.predicted, transport: remote.receipt, cases: completed,
       negative_controls: negatives.map(row => ({ id: row.id, no_evidence_returned: true, expected_error_canonical_sha256: sha(canonical(row.expected)) })),
       incompatible_pair_control: prepared.incompatible ? 'passed' : 'not-applicable-no-incompatible-approved-pair',

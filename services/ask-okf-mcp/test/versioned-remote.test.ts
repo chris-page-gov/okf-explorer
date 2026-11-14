@@ -5,7 +5,7 @@ import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
-import { parseArguments, approvedPairs, enforceCensus, boundedRemoteFetch, boundedFile, gitFile, noLinks,
+import { parseArguments, approvedPairs, enforceCensus, boundedRemoteFetch, boundedFile, gitFile, lockedSdkVersions, noLinks,
   verifyDelivery, validateToolDiscovery, compareToolDiscovery, discoveryDiagnostic, LIMITS, PUBLIC_QUESTION, canonical, sha } from '../scripts/verify-versioned-remote.ts';
 
 const origin = 'https://ask-okf.example.test';
@@ -15,6 +15,14 @@ const message = () => ({ jsonrpc: '2.0', id: 1, method: 'tools/call', params: {
   name: 'ask_okf_manifest', arguments: { question: PUBLIC_QUESTION } } });
 const post = (body: unknown = message()) => ({ method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
 function clock() { let now = 0; return { now: () => now, sleep: async (ms: number) => { now += ms; }, advance: (ms: number) => { now += ms; } }; }
+
+test('new observation SDK labels come from the immutable comparator lock', () => {
+  const lock = { packages: { 'node_modules/@modelcontextprotocol/client': { version: '2.4.0' },
+    'node_modules/@modelcontextprotocol/sdk': { version: '1.32.2' } } };
+  assert.deepEqual(lockedSdkVersions(lock), { sdk_v2: '2.4.0 / 2026-07-28', sdk_v1: '1.32.2',
+    sdk_version_basis: 'committed comparator package-lock.json' });
+  assert.throws(() => lockedSdkVersions({ packages: {} }));
+});
 
 test('the admitted graph above 8 MiB has the same bounded immutable Git bytes as its local source', async () => {
   const root = fileURLToPath(new URL('../../..', import.meta.url));
