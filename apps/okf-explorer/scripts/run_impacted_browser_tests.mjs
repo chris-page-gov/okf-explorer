@@ -90,6 +90,10 @@ const SUITES = {
     family: 'ui',
     file: 'tests/ui/learner-hub.spec.ts'
   },
+  dfe_data: {
+    family: 'ui',
+    file: 'tests/ui/dfe-ees.spec.ts'
+  },
   beginner_navigation: {
     family: 'foundry',
     file: 'tests/foundry/beginner-guide-navigation.spec.ts'
@@ -145,7 +149,7 @@ export const TEST_TAG_SUITES = Object.freeze({
   browser: ALL_SUITES,
   consumer: ALL_UI,
   contract: ['ask_okf', 'okf_plus_context', 'small_bundle', 'foundry_pages'],
-  data: ['small_bundle', 'large_corpus', 'map'],
+  data: ['small_bundle', 'large_corpus', 'map', 'dfe_data'],
   denominator: ['conceptual_navigation', 'large_corpus', 'facets'],
   descriptor: ['small_bundle', 'foundry_pages'],
   determinism: ['small_bundle'],

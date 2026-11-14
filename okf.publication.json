@@ -144,6 +144,66 @@
       "limitations": [
         "Lifecycle publication scope is separate from a bundle's semantic status."
       ]
+    },
+    {
+      "id": "dfe-public-ees-example",
+      "label": "Public DfE EES example pair",
+      "description": "Original public data CSV and EES metadata example linked from DfE guidance; used for the native paired reader.",
+      "kind": "structured-data-folder",
+      "paths": [
+        "apps/okf-explorer/static/examples/dfe-ees/**"
+      ],
+      "formats": [
+        "text/csv",
+        "application/json"
+      ],
+      "origin": "acquired",
+      "authority": "official",
+      "snapshot_policy": "pinned-revision",
+      "inventory": {
+        "method": "content-addressed-manifest",
+        "manifest_path": "apps/okf-explorer/static/examples/dfe-ees/source.json",
+        "identity": [
+          "relative-path",
+          "sha256"
+        ]
+      },
+      "rights": {
+        "status": "approved",
+        "evidence": [
+          "https://dfe-analytical-services.github.io/analysts-guide/statistics-production/ud.html",
+          "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
+        ],
+        "limitations": [
+          "Attribution retained for the public guide example. This does not assess rights to user-selected CSVs."
+        ]
+      },
+      "sensitivity": {
+        "status": "public-no-personal-data",
+        "assessment": "Fifteen illustrative aggregate example rows, four metadata definitions and public source attribution; no private research packet.",
+        "evidence": []
+      },
+      "extraction": {
+        "mode": "deterministic-local",
+        "network_access": "prohibited",
+        "command_ids": [
+          "build-app",
+          "build-site"
+        ],
+        "limitations": [
+          "Builds copy the retained public examples; they do not reacquire data or upload local files."
+        ]
+      },
+      "invalidates": [
+        "source",
+        "documentation",
+        "runtime",
+        "browser",
+        "deployment"
+      ],
+      "limitations": [
+        "Pair inspection is separate from the DfE screener and the candidate analytical-package validator."
+      ]
     }
   ],
   "boundaries": {
@@ -1237,7 +1297,8 @@
       "uk-government-apis/**",
       "legislation/**",
       "services/ask-okf-mcp/**",
-      "tools/context-archive/**"
+      "tools/context-archive/**",
+      "apps/okf-explorer/static/examples/dfe-ees/**"
     ],
     "documentation_paths": [
       "README.md",
