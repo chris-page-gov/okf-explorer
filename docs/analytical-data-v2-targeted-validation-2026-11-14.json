@@ -1,0 +1,35 @@
+{
+  "schema": "analytical-data-v2-targeted-validation.v1",
+  "reviewed_at": "2026-11-14",
+  "parent_commit": "eb86e1b6edb2d6ee6b75a27d8763210080b88e65",
+  "candidate": "2.0.0-rc.1; unreleased local proposal",
+  "source_sha256": {
+    "profiles/analytical-data/v2/package.schema.json": "242e98494e834a26b6c0ad207feb1c46715b9fd6548ce9361dba7955560834c8",
+    "profiles/analytical-data/v2/profile.json": "fcb1e6087ea906220cbd3b16fdc59c90a0196211aab751b20511c773ee0e27c7",
+    "profiles/analytical-data/v2/conformance-vectors.json": "b5588626acd4acb8f5b01e3f09a653b06053b73201de6ac40dc2ee4d76e9caa2",
+    "scripts/check_analytical_data_v2.py": "4cd1fb4990e7cee6ea277fd0276e97bb64d81df581927714ff8818269a53d9de",
+    "apps/okf-explorer/src/lib/analytical/preview.ts": "af25e81df35a4d15dee609ceb2cf63f8236af1190a42d9b92ef13995ea4b0b7a",
+    "apps/okf-explorer/src/routes/inspect-data/+page.svelte": "401a7ae0b7378cc99978919172c7839a1d2844cc27418bbf17da92a0b8290b6c",
+    "apps/okf-explorer/tests/ui/analytical-preview.spec.ts": "0de9eb43e78a2ab5abf94552e38c51971578ab0adfcb4b181703a97b06ab42be"
+  },
+  "checks": {
+    "python": "14 passed",
+    "browser_logic": "37 passed",
+    "chrome_webkit": "12 passed, including keyboard/mobile/axe and clear-during-read; 0 automated accessibility violations",
+    "svelte": "0 errors, 0 warnings",
+    "browser_selection": "24 registered suites; full suite includes analytical preview; unmapped v2 schema invokes fail-closed full CI",
+    "full_candidate": "pending; targeted results do not stand in for full CI"
+  },
+  "v1_unchanged": {
+    "validator_sha256": "8c4e65c7fe1165d784c4447a80d35e4425702d67b7650a0529f123b0505874c9",
+    "schema_sha256": "676cbd90441f31b3b9babcca1c23618b5e7ce1113e9eba9972f02fe9942a7ccb"
+  },
+  "limits": "Full Python package/schema gate remains separate from the bounded selected-table browser checks. No uploads, persistence, AI page tools, reprojection or lending actions.",
+  "remaining": [
+    "Independent adoption/domain/rights and human assistive-technology review.",
+    "Local Firefox profile-startup blocker; exact-head CI engine evidence separate.",
+    "Historical intermittent Chrome help PageDown failure remains unresolved.",
+    "Browser full-schema parity, additional CRS/geometries, wrapping extents and broader temporal formats remain unsupported.",
+    "WCC live work stays parked."
+  ]
+}

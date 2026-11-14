@@ -1,0 +1,7 @@
+{
+  "id": "https://chris-page-gov.github.io/okf-explorer/profile/analytical-data/v2/",
+  "version": "2.0.0-rc.1",
+  "status": "candidate",
+  "schema": "package.schema.json",
+  "schemaSha256": "242e98494e834a26b6c0ad207feb1c46715b9fd6548ce9361dba7955560834c8"
+}

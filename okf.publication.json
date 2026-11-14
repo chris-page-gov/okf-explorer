@@ -1,6 +1,6 @@
 {
   "schema": "okf-repository-publication-contract.v1",
-  "modified": "2026-11-11",
+  "modified": "2026-11-14",
   "locale": "en-GB",
   "time_zone": "Europe/London",
   "repository": {
@@ -143,6 +143,74 @@
       ],
       "limitations": [
         "Lifecycle publication scope is separate from a bundle's semantic status."
+      ]
+    },
+    {
+      "id": "analytical-data-v2-candidate",
+      "label": "Optional tabular v2 candidate and local preview",
+      "description": "Repository-authored, separately versioned contract, validator, bounded browser preview and synthetic fixtures; no source data acquisition.",
+      "kind": "mixed",
+      "paths": [
+        "profiles/analytical-data/v2/**",
+        "scripts/check_analytical_data_v2.py",
+        "apps/okf-explorer/src/lib/analytical/**",
+        "apps/okf-explorer/src/routes/inspect-data/**"
+      ],
+      "formats": [
+        "application/json",
+        "text/csv",
+        "text/markdown",
+        "text/x-python",
+        "text/typescript"
+      ],
+      "origin": "authored",
+      "authority": "editorial",
+      "snapshot_policy": "pinned-revision",
+      "inventory": {
+        "method": "pinned-source-register",
+        "manifest_path": "profiles/analytical-data/v2/profile.json",
+        "identity": [
+          "relative-path",
+          "source-version",
+          "sha256"
+        ]
+      },
+      "rights": {
+        "status": "approved",
+        "evidence": [
+          "https://github.com/chris-page-gov/okf-explorer/blob/main/LICENSE.md"
+        ],
+        "limitations": [
+          "Approval covers publishing repository-authored code and synthetic fixtures, not third-party source bodies or organisational adoption. The synthetic dataset deliberately retains unverified rights metadata as a teaching gap."
+        ]
+      },
+      "sensitivity": {
+        "status": "public-no-personal-data",
+        "assessment": "Synthetic observations only. User-selected files remain in browser memory and are not uploaded, persisted or returned by page tools.",
+        "evidence": [
+          "https://chris-page-gov.github.io/okf-explorer/docs/source-constraint-ledger.html"
+        ]
+      },
+      "extraction": {
+        "mode": "none",
+        "network_access": "prohibited",
+        "command_ids": [],
+        "limitations": [
+          "No source URL is fetched; validation reads explicit local files."
+        ]
+      },
+      "invalidates": [
+        "source",
+        "runtime",
+        "application",
+        "documentation",
+        "browser",
+        "release",
+        "deployment"
+      ],
+      "limitations": [
+        "Local experimental profile, not official UK policy or universal OKF core. Frozen RC.1 and historical trials are unchanged.",
+        "Browser selected-table checks do not replace full Python package/schema validation."
       ]
     }
   ],
@@ -521,13 +589,15 @@
         "tests/test_analytical_data_profile.py",
         "tests/test_analytical_data_trial.py",
         ".gitattributes",
-        "tests/test_analytical_live_trial.py"
+        "tests/test_analytical_live_trial.py",
+        "tests/test_analytical_data_v2.py"
       ],
       "command_ids": [
         "check-source-constraints",
         "check-analytical-data",
         "check-analytical-trial",
-        "check-analytical-live-trial"
+        "check-analytical-live-trial",
+        "check-analytical-data-v2"
       ]
     },
     {
@@ -1124,6 +1194,19 @@
         "command": "node services/ask-okf-mcp/scripts/verify-graph-remote.mjs --dwp-root .ci/okf-dwp-graph",
         "source": "services/ask-okf-mcp/README.md",
         "review_status": "unreviewed",
+        "network": "none",
+        "mutates": "none",
+        "timeout_minutes": 5
+      },
+      {
+        "id": "check-analytical-data-v2",
+        "kind": "check",
+        "planes": [
+          "source"
+        ],
+        "command": "uv run --locked python -m unittest tests.test_analytical_data_v2 -v",
+        "source": "profiles/analytical-data/v2/index.md",
+        "review_status": "reviewed-local-guidance",
         "network": "none",
         "mutates": "none",
         "timeout_minutes": 5

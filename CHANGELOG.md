@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased — optional tabular v2 candidate
+
+- Add a separately versioned 2.0.0-rc.1 profile/validator for exact typed datetimes and declared spatial axes, units, extents and vertical-reference gaps. Keep RC.1 and its validator bytes frozen.
+- Add a bounded read-only local CSV preview with integrity, typed-key/state checks, escaped literal display, no uploads/storage or page tools, and a synthetic library-observations example.
+- Register the browser journey in full terminal assurance; retain Firefox startup, intermittent help scrolling, formal browser schema parity and independent adoption/accessibility gaps.
+
 ## Unreleased — feature and plan review
 
 - Reconcile local Explorer with GitHub main and inventory implemented, experimental, proposed, deferred and unverified capabilities across maintained plans.

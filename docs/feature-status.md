@@ -1,6 +1,6 @@
 # Feature and plan status — 14 November 2026
 
-Reviewed implementation baseline: `5755359efd54b14a356dbff67d6082db1b195a91`, fetched from GitHub main on 14 November 2026. App release `0.8.1` and Analytical Data `1.0.0-rc.1` are independent versions. This inventory records code/contract maturity separately from domain acceptance, host compatibility, deployment and source completeness. The latest check results are in the [check record](feature-review-2026-11-14.json).
+Pre-existing implementation baseline: `5755359efd54b14a356dbff67d6082db1b195a91`, fetched from GitHub main on 14 November 2026. App release `0.8.1` and Analytical Data `1.0.0-rc.1` are independent versions. This inventory records code/contract maturity separately from domain acceptance, host compatibility, deployment and source completeness. The historical baseline checks are in the [check record](feature-review-2026-11-14.json). The unreleased v2 extension below is separately bound by the [targeted receipt](analytical-data-v2-targeted-validation-2026-11-14.json) and its final candidate CI; it is not attributed to the older baseline.
 
 Implemented means the stated code and local contract exist. Experimental means a bounded candidate exists with unresolved adoption/compatibility. Proposed and deferred mean no accepted implementation is claimed. An acceptance gap can remain against implemented code. Historical documents retain their dated baseline; a title containing “plan” is not a promise that every historical idea is still scheduled.
 
@@ -82,9 +82,9 @@ Implemented means the stated code and local contract exist. Experimental means a
 | Frozen Warwickshire and NDL trial | Retained evidence; follow-up parked | [Trial](analytical-data-trial-2026-11-11.md); preserve compatibility gaps and original hashes. |
 | Frozen Defra API pagination/time/spatial trial | Retained evidence | [Live-trial report](analytical-live-trial-2026-11-11.md); observation is not general API or county-coverage certification. |
 | Data curation and Defra learning | Local assessment | [Curation review](analytical-data-curation-review-2026-11-11.md); source obligations need scoped adoption. |
-| Typed datetime validation | Proposed distinct version | RC.1 does not supply complete typed datetime semantics; retain literals/timezones and freeze compatibility vectors before adoption. |
-| Richer spatial validation | Proposed distinct version | Need explicit CRS/axes/units/extent rules; no inferred reprojection or geometry completeness. |
-| In-browser analytical CSV previews | Proposed | Existing geospatial previews are narrower; bounded, local/read-only CSV inspection and its tests remain to implement. |
+| Typed datetime validation | Experimental v2 candidate | [Implementation](analytical-data-v2-preview.md): exact nanosecond keys and a declared limited timestamp subset; RC.1 unchanged. Independent adoption remains open. |
+| Richer spatial validation | Experimental v2 candidate | Explicit supported CRS/axes/units, decimal-string extents, paired coordinates and vertical datum gaps; no reprojection, geometry or coverage certification. |
+| In-browser analytical CSV previews | Experimental local feature | `/inspect-data/` checks one local CSV with bounded resources, escaped literals and explicit gaps. Full schema/package conformance and independent analyst/accessibility acceptance remain separate. |
 | RC.1 estate migration | Not automatic | No producer or pinned Reader is silently upgraded by a new candidate. |
 | Controlled-language renderer | Isolated experiment | [Experiment](controlled-language-experiment.md); measured wording is not semantic fidelity. |
 | Independent rendering/comprehension comparison | Proposed | Plan F requires equal evidence, retained model settings/outputs, negative controls and independent assessment. |

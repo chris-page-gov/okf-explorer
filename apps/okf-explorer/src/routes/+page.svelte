@@ -107,6 +107,8 @@
   </nav>
 
   <main>
+  <p class="local-data-link"><a href="./inspect-data/">Inspect a local CSV package</a> — a bounded, read-only preview with explicit profile and data gaps.</p>
+
     <section class="hero" id="start" aria-labelledby="hero-title">
       <div class="hero-copy">
         <p class="eyebrow">A practical project for curious people</p>
