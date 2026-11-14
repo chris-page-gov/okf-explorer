@@ -1,5 +1,7 @@
 # Typed datetimes, spatial declarations and local CSV previews
 
+The native [DfE EES pair Reader](dfe-ees-reader.md) at `/data/` is a separate upstream feature. This `/inspect-data/` route requires its versioned analytical manifest and one selected CSV; neither route silently converts the other's contract.
+
 This is an unreleased, local candidate. The [v2 contract](../profiles/analytical-data/v2/index.md) uses a new URI and `2.0.0-rc.1` because datetime key interpretation and metadata rules change. Frozen v1 `1.0.0-rc.1`, its schema digest, validator bytes and historical Warwickshire/NDL/Defra trials remain unchanged. No producer pin, research release or public learning Reader is silently updated.
 
 ## Functionality implemented
@@ -49,3 +51,7 @@ The optional v2 inputs are declared in the publication source family and their o
 The [candidate assurance checkpoint](analytical-data-v2-candidate-assurance-2026-11-14.json) records the complete local planes, the real CI preset failure and its correction, explicit integration skips and the unresolved help/Firefox issues. The [reviewed plan register](feature-status.md#reviewed-plan-register) separates delivery commitments from historical and subject-matter documents.
 
 The [help-scrolling investigation](validation/reading-help-scroll-2026-11-14.json) retains the original assertion and explicitly unavailable trace, unchanged component hash and twenty new synthetic trace identities. No speculative scrolling fix or timeout increase is included.
+
+## Current-main integration
+
+Main advanced during this work. Local main and this candidate now include `3f211964` (native DfE pair Reader, public bundle access and nested discovery-link fix). The combined code passed 946 app and 595 Python tests, the 141-component SBOM, 370 registered Chrome/WebKit UI cases and 52 Foundry cases. Ten external-corpus cases skipped; the separate source-bound `.mjs` integration also lacks its required producer input and records two additional skips. All 417 documentation pages/10,391 links passed. These are local results; exact-head CI, local Firefox startup, the unresolved help issue and independent adoption/accessibility remain separate.
