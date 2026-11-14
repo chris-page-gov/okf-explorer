@@ -1,0 +1,28 @@
+{
+  "schema": "analytical-data-v2-candidate-assurance.v1",
+  "checkpoint": "2026-11-14T23:10:00Z",
+  "implementation_commit": "4c581be74fe2501c7ba574bbefdad85f3a5b9e54",
+  "semantic_contract_correction_commit": "37e8bbf49c7745d1bd0e3d1117e5795b92dca7a3",
+  "local_results": {
+    "app": "928 passed; deterministic 46-material build passed",
+    "python_before_contract_change": "588 passed; this did not cover the later generated-contract edit",
+    "ci_4c581be": "Python failed the reviewed semantic-preset equality assertion; retained as an actual failure",
+    "corrected_contract_and_frozen_trials": "48 passed",
+    "python_after_correction": "588 passed",
+    "svelte": "0 errors and 0 warnings",
+    "sbom": "141 pinned package components passed",
+    "complete_ui_chrome_webkit": "366 passed; 12 external-input skips",
+    "complete_foundry_chrome_webkit": "52 passed",
+    "new_preview_journeys": "12 passed, including asynchronous clearing, no uploads/storage, inert text, checksums, typed keys, keyboard/mobile and automated accessibility",
+    "site": "414 documentation pages and 10259 links validated; 46 app materials; no deployment claimed"
+  },
+  "help_scroll_investigation": {
+    "original_result": "Earlier baseline Chrome run failed the narrow help PageDown scrollTop assertion; affected rerun passed",
+    "repeat_result": "20 isolated narrow-layout Chrome repetitions passed; original cause not established and issue not closed",
+    "trace_retention": "New repetitions use an owned unique output directory. The initial failing trace was superseded by later local test output; its assertion/log digest remains in the baseline review record. No missing trace is represented as retained."
+  },
+  "ci": "Exact corrected-head CI is pending at this checkpoint; later PR checks are authoritative for their own revision. Local Firefox cannot start its profile and is not a local pass.",
+  "acceptance": "Structural, integrity and browser evidence are separate from independent domain/rights, producer adoption, representative analyst and human accessibility acceptance.",
+  "wcc": "Live acquisition, probing, coverage work and remediation remain parked. Frozen offline regressions only.",
+  "publication": "Draft PRs only; no main merge, tag, estate-wide migration or deployment."
+}

@@ -45,3 +45,7 @@ Use the manifest and CSV in `profiles/analytical-data/v2/examples/library-observ
 The [targeted validation receipt](analytical-data-v2-targeted-validation-2026-11-14.json) binds these results to source hashes; it does not assert the pending complete candidate suite.
 
 The optional v2 inputs are declared in the publication source family and their own profile descriptor. They do not enter the default semantic graph. CI caught an inappropriate hand edit to the generated semantic contract; regeneration from the unchanged reviewed preset corrected it without altering the shared path/URL helper or frozen v1 trials.
+
+The [candidate assurance checkpoint](analytical-data-v2-candidate-assurance-2026-11-14.json) records the complete local planes, the real CI preset failure and its correction, explicit integration skips and the unresolved help/Firefox issues. The [reviewed plan register](feature-status.md#reviewed-plan-register) separates delivery commitments from historical and subject-matter documents.
+
+The [help-scrolling investigation](validation/reading-help-scroll-2026-11-14.json) retains the original assertion and explicitly unavailable trace, unchanged component hash and twenty new synthetic trace identities. No speculative scrolling fix or timeout increase is included.
