@@ -11,6 +11,9 @@
   JSON-RPC identifiers and SSE framing. Verify complete package and source-text
   reconstruction through both supported SDK generations and the built Worker.
 - Record local preparation separately from public deployment and client acceptance.
+- Keep the legacy live comparator's graph and compiled-artefact limits explicit
+  and consistent for filesystem and immutable Git reads, with unchanged digests
+  and aggregate source ceilings.
 
 ## Development dependency follow-up — 23 October 2026
 

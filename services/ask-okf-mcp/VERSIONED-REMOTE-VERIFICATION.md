@@ -106,6 +106,11 @@ silently omit pairs, evidence slices or checks.
 | Local immutable source bytes | 64 MiB |
 | Individual local input | 8 MiB |
 
+The 0.8.0 comparator has explicit exceptions for the admitted graph JSON
+(16 MiB) and compiled Node/Worker artefacts (32 MiB). These apply to both
+filesystem and immutable Git reads; source digests and the aggregate source
+byte ceiling remain enforced. Other inputs retain the 8 MiB limit.
+
 Bodies are counted while streaming. Headers alone do not establish size. The
 run has no automatic retries or redirects and admits only the exact HTTPS
 origin, `GET /health` and the reviewed read-only MCP methods at `POST /okf/mcp`.

@@ -101,11 +101,11 @@ export function safeRepositoryPath(path: string) {
   assert.match(path, /^[a-zA-Z0-9_.-]+(?:\/[a-zA-Z0-9_.-]+)*$/);
   assert.ok(!path.split('/').some(part => part === '.' || part === '..'), 'Unsafe immutable path');
 }
-function gitFile(root: string, commit: string, path: string, expected?: { bytes: number; sha256: string }) {
+export function gitFile(root: string, commit: string, path: string, expected?: { bytes: number; sha256: string }) {
   assert.match(commit, COMMIT); safeRepositoryPath(path);
   const key = `${commit}:${path}`;
   const length = Number(execFileSync('git', ['cat-file', '-s', key], { cwd: root, maxBuffer: 100, timeout: 10000 }).toString().trim());
-  assert.ok(Number.isSafeInteger(length) && length >= 0 && length <= LIMITS.local_file_bytes, 'Immutable input exceeds its bound');
+  assert.ok(Number.isSafeInteger(length) && length >= 0 && length <= comparatorFileLimit(path), 'Immutable input exceeds its bound');
   if (expected) assert.equal(length, expected.bytes);
   const raw = execFileSync('git', ['show', key], { cwd: root, maxBuffer: length + 1, timeout: 10000 });
   assert.equal(raw.length, length); if (expected) assert.equal(sha(raw), expected.sha256);
