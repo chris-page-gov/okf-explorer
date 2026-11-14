@@ -69,5 +69,9 @@
         "sha256": "4fcef434875b8e9d19994cfa114a1a89c210b8fe295a1bc21f49b0640ef975d3"
       }
     ]
+  },
+  "additional_browser_retry": {
+    "evidence": "docs/validation/facet-touch-retry-2026-11-14.json",
+    "result": "Superseded 2a8fdc8 CI had one WebKit facet count retry; 20 current-code isolated repetitions passed; cause unresolved and original trace artifact unavailable. Overall old run cancelled, not passed."
   }
 }

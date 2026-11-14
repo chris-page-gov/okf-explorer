@@ -55,3 +55,5 @@ The [help-scrolling investigation](validation/reading-help-scroll-2026-11-14.jso
 ## Current-main integration
 
 Main advanced during this work. Local main and this candidate now include `3f211964` (native DfE pair Reader, public bundle access and nested discovery-link fix). The combined code passed 946 app and 595 Python tests, the 141-component SBOM, 370 registered Chrome/WebKit UI cases and 52 Foundry cases. Ten external-corpus cases skipped; the separate source-bound `.mjs` integration also lacks its required producer input and records two additional skips. All 417 documentation pages/10,391 links passed. These are local results; exact-head CI, local Firefox startup, the unresolved help issue and independent adoption/accessibility remain separate.
+
+The [additional WebKit facet retry](validation/facet-touch-retry-2026-11-14.json) in superseded CI remains an open UI reliability observation despite twenty passing isolated repetitions. It is separate from the help-scroll issue and does not establish a v2 regression or a verified fix.

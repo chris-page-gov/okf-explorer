@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased — browser retry evidence
+
+- Retain the superseded WebKit facet-count retry, unavailable original trace and twenty passing synthetic repetitions. Keep the cause open and separate from the help-scroll issue; no speculative UI or timeout change.
+
 ## Unreleased — optional tabular v2 candidate
 
 - Keep the generated core semantic contract at its reviewed preset; declare optional v2 inputs in their separate publication/data contract.
