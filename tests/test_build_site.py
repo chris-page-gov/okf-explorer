@@ -20,6 +20,18 @@ import build_site  # noqa: E402
 
 
 class BuildSiteTests(unittest.TestCase):
+    def test_nested_root_file_keeps_its_published_discovery_link(self) -> None:
+        self.assertTrue(build_site.repository_source_is_copied_to_site(Path(".well-known/okf.json")))
+        self.assertFalse(build_site.repository_source_is_copied_to_site(Path(".well-known/unlisted.json")))
+        self.assertEqual(
+            "../.well-known/okf.json",
+            build_site.rewrite_published_href(
+                "../.well-known/okf.json",
+                ROOT / "docs/public-bundle-access.md",
+                Path("docs/public-bundle-access.html"),
+            ),
+        )
+
     def test_docs_fingerprint_tracks_transitive_reading_sources_only(self) -> None:
         with tempfile.TemporaryDirectory(prefix="okf-docs-fingerprint-") as temporary:
             root = Path(temporary)

@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Keep links to explicitly published nested files, including
+  `.well-known/okf.json`, on the Pages site. The public-directory browser gate
+  exposed the renderer's incorrect GitHub rewrite; retain that same-origin gate
+  and cover the nested file-list rule with a regression test.
+
 - Add a public access directory for all twelve public `okf-*` producers,
   with exact descriptors, semantic entrypoints and matching pinned GitHub
   alternatives. Publish supplemental `llms.txt` and project-relative
