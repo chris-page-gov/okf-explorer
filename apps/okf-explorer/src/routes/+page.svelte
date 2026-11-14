@@ -95,6 +95,7 @@
       <a href="./docs/onboarding/index.html">Start here</a>
       <a href="#bundles">Examples</a>
       <a href="#people">People</a>
+      <a href="./data/">Inspect CSV data</a>
       <a href="./docs/beginners/index.html">Beginner guide</a>
     </nav>
     <a class="header-action" href={workedExampleHref}>Open worked example</a>

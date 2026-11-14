@@ -1,0 +1,14 @@
+{
+  "schema": "okf-public-example-source.v1",
+  "publisher": "Department for Education",
+  "guide": "https://dfe-analytical-services.github.io/analysts-guide/statistics-production/ud.html",
+  "observed_on": "2026-11-14",
+  "acquisition": "Two bounded public HTTPS GETs from the official guide links; no credentials or private packet copied.",
+  "rights_evidence": "The guide states that EES data is released under the Open Government Licence. The source example is retained with attribution; no rights to unrelated user files are inferred.",
+  "licence_url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+  "files": [
+    {"path": "ees_demo_datafile.csv", "url": "https://dfe-analytical-services.github.io/analysts-guide/data_examples/ees_demo_datafile.csv", "bytes": 1369, "sha256": "01ef02f49d504fd48dd6e8c7f89d1ae23bb1001c367cfa430f84248063e5f3a3"},
+    {"path": "ees_demo_datafile.meta.csv", "url": "https://dfe-analytical-services.github.io/analysts-guide/data_examples/ees_demo_datafile.meta.csv", "bytes": 309, "sha256": "36f5265ad9810750022cb635b2ce91a34a74e928a3331a616af8d6a6e9951390"}
+  ],
+  "limits": ["Example data, not a live statistical release or proof of DfE screener compatibility.", "Source labels, the original geography spelling and CSV values are preserved."]
+}

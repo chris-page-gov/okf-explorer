@@ -21,6 +21,7 @@ to this guide, worked examples and the GitHub repository.
 ## Use and learn
 
 - [Use Explorer](use-okf-explorer.md): current search, facets, highlighting, keeping sets, panels and evidence.
+- [Read DfE CSV and metadata](dfe-ees-reader.md): inspect an EES data/sidecar pair, exact values, field meanings and scope.
 - [Inspect a retained evidence example](retained-evidence-demo.md): a seven-step demonstration of a fixed package, its source links and its limits.
 - [AI Infrastructure walkthrough](ai-infrastructure-knowledge-graph-walkthrough.md): one concept across Markdown and Explorer.
 - [Beginner reference](beginners/index.md): explanations when you need them, without required sequential reading.
