@@ -43,3 +43,5 @@ pnpm --dir apps/okf-explorer exec playwright test tests/ui/analytical-preview.sp
 Use the manifest and CSV in `profiles/analytical-data/v2/examples/library-observations/` for the manual preview. This is a synthetic library observation table, separate from the standards repository's lending-action boundary. Source facts and published specifications inform the design; the new table contract and limits are local proposals pending adoption.
 
 The [targeted validation receipt](analytical-data-v2-targeted-validation-2026-11-14.json) binds these results to source hashes; it does not assert the pending complete candidate suite.
+
+The optional v2 inputs are declared in the publication source family and their own profile descriptor. They do not enter the default semantic graph. CI caught an inappropriate hand edit to the generated semantic contract; regeneration from the unchanged reviewed preset corrected it without altering the shared path/URL helper or frozen v1 trials.
