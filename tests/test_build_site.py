@@ -140,11 +140,18 @@ class BuildSiteTests(unittest.TestCase):
                 "okf.publication.json",
                 "okf-estate-registry.json",
                 "okf-registry.json",
+                "okf-public-access.json",
+                ".well-known/okf.json",
+                "llms.txt",
             ):
+                (output / name).parent.mkdir(parents=True, exist_ok=True)
                 (output / name).write_bytes((ROOT / name).read_bytes())
             route = output / "registry" / "estate" / "index.html"
             route.parent.mkdir(parents=True)
             route.write_text("<!doctype html><title>Registry</title>\n")
+            access_route = output / "docs/public-bundle-access.html"
+            access_route.parent.mkdir(parents=True)
+            access_route.write_text("<!doctype html><title>Public OKF bundle access</title>\n")
             with mock.patch.object(build_site, "OUT", output):
                 identity = build_site.publication_identity(commit)
                 self.assertEqual(
@@ -157,6 +164,8 @@ class BuildSiteTests(unittest.TestCase):
                 self.assertIn("okf.publication.json", materials)
                 self.assertIn("okf-estate-registry.json", materials)
                 self.assertIn("registry/estate/index.html", materials)
+                for name in ("docs/public-bundle-access.html", "okf-public-access.json", ".well-known/okf.json", "llms.txt"):
+                    self.assertEqual(materials[name]["sha256"], hashlib.sha256((output / name).read_bytes()).hexdigest())
                 build_site.write_publication_identity(commit)
                 receipt = build_site.publication_identity_receipt()
         self.assertIsNotNone(receipt)

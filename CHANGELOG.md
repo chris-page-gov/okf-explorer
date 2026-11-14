@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- Add a public access directory for all twelve public `okf-*` producers,
+  with exact descriptors, semantic entrypoints and matching pinned GitHub
+  alternatives. Publish supplemental `llms.txt` and project-relative
+  `.well-known/okf.json` discovery files. Keep Reader admission and Voice
+  acceptance separate; record the ONS generated-only and living snapshot limits.
+  Bind the new files into deployment identity and verify the published
+  directory and JSON links through the existing hosted Chrome gate.
+
 - Read native DfE EES data CSVs with their metadata sidecars in a local browser
   page. Preserve source names and values, expose labels, units, precision and
   exact filters, distinguish special symbols from zero, and export a hash-bound

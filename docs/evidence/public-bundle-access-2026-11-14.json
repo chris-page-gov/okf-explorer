@@ -1,0 +1,456 @@
+{
+  "schema": "okf-public-access-http-check.v1",
+  "observed_at": "2026-11-14T22:04:40.243669+00:00",
+  "scope": "Exact descriptors, declared overview/data JSON entrypoints and semantic HTTP availability only. Browser use, all records, semantic correctness and ChatGPT Voice are not tested.",
+  "repositories": [
+    {
+      "repository": "https://github.com/chris-page-gov/okf-ai-infrastructure",
+      "checks": [
+        {
+          "kind": "descriptor",
+          "url": "https://chris-page-gov.github.io/okf-ai-infrastructure/okf-bundle.json",
+          "status": 200,
+          "sha256": "f2e0060feeba21a6665435ee3fca8c6f06ae1fe9d99b8ff3f3550a36189ef8c4",
+          "schema": "okf-explorer-bundle.v0"
+        },
+        {
+          "kind": "raw-fallback",
+          "url": "https://raw.githubusercontent.com/chris-page-gov/okf-ai-infrastructure/39c82b51cb1dd824ab8208b56b247ae3cc1d7dd5/bundle/okf-bundle.json",
+          "status": 200,
+          "sha256": "f2e0060feeba21a6665435ee3fca8c6f06ae1fe9d99b8ff3f3550a36189ef8c4",
+          "schema": "okf-explorer-bundle.v0"
+        },
+        {
+          "kind": "semantic-route-http-only",
+          "url": "https://chris-page-gov.github.io/okf-ai-infrastructure/okf-bundle.yamlld",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "repository": "https://github.com/chris-page-gov/okf-dwp",
+      "checks": [
+        {
+          "kind": "descriptor",
+          "url": "https://raw.githubusercontent.com/chris-page-gov/okf-dwp/3d45b47763c204b1264b5d1d7897d583361f25bd/combined/okf-explorer.json",
+          "status": 200,
+          "sha256": "4ecb1ee17bf273fbd64170031a9567cabbe83ff08e3994ec4e81dfb78dcf93dc",
+          "schema": "okf-explorer-large-corpus.v1"
+        },
+        {
+          "kind": "descriptor:overview_index",
+          "url": "https://raw.githubusercontent.com/chris-page-gov/okf-dwp/3d45b47763c204b1264b5d1d7897d583361f25bd/combined/data/overview.json",
+          "status": 200
+        },
+        {
+          "kind": "descriptor:data_manifest",
+          "url": "https://raw.githubusercontent.com/chris-page-gov/okf-dwp/3d45b47763c204b1264b5d1d7897d583361f25bd/combined/data/manifest.json",
+          "status": 200
+        },
+        {
+          "kind": "semantic-route-http-only",
+          "url": "https://raw.githubusercontent.com/chris-page-gov/okf-dwp/3d45b47763c204b1264b5d1d7897d583361f25bd/combined/okf-bundle.yamlld",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "repository": "https://github.com/chris-page-gov/okf-els-api",
+      "checks": [
+        {
+          "kind": "descriptor",
+          "url": "https://chris-page-gov.github.io/okf-els-api/okf-explorer.json",
+          "status": 200,
+          "sha256": "1437c0d0ecbc077873ce6906892630110fda1f59266e14518a6e78f7af39ce91",
+          "schema": "okf-explorer-large-corpus.v1"
+        },
+        {
+          "kind": "descriptor:overview_index",
+          "url": "https://chris-page-gov.github.io/okf-els-api/data/overview.json",
+          "status": 200
+        },
+        {
+          "kind": "descriptor:data_manifest",
+          "url": "https://chris-page-gov.github.io/okf-els-api/data/manifest.json",
+          "status": 200
+        },
+        {
+          "kind": "raw-fallback",
+          "url": "https://raw.githubusercontent.com/chris-page-gov/okf-els-api/811a688183b0cd150a2fd9ccf3d414d48c112da6/bundle/okf-explorer.json",
+          "status": 200,
+          "sha256": "1437c0d0ecbc077873ce6906892630110fda1f59266e14518a6e78f7af39ce91",
+          "schema": "okf-explorer-large-corpus.v1"
+        },
+        {
+          "kind": "raw-fallback:overview_index",
+          "url": "https://raw.githubusercontent.com/chris-page-gov/okf-els-api/811a688183b0cd150a2fd9ccf3d414d48c112da6/bundle/data/overview.json",
+          "status": 200
+        },
+        {
+          "kind": "raw-fallback:data_manifest",
+          "url": "https://raw.githubusercontent.com/chris-page-gov/okf-els-api/811a688183b0cd150a2fd9ccf3d414d48c112da6/bundle/data/manifest.json",
+          "status": 200
+        },
+        {
+          "kind": "semantic-route-http-only",
+          "url": "https://chris-page-gov.github.io/okf-els-api/okf-bundle.yamlld",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "repository": "https://github.com/chris-page-gov/okf-explorer",
+      "checks": [
+        {
+          "kind": "descriptor",
+          "url": "https://chris-page-gov.github.io/okf-explorer/okf-bundle.json",
+          "status": 200,
+          "sha256": "320628dff8373b54e142ddcf83edf8ea1fcf0bb4c65b0ad70bda2fa633e220b2",
+          "schema": "okf-explorer-bundle.v0"
+        },
+        {
+          "kind": "raw-fallback",
+          "url": "https://raw.githubusercontent.com/chris-page-gov/okf-explorer/5755359efd54b14a356dbff67d6082db1b195a91/okf-bundle.json",
+          "status": 200,
+          "sha256": "320628dff8373b54e142ddcf83edf8ea1fcf0bb4c65b0ad70bda2fa633e220b2",
+          "schema": "okf-explorer-bundle.v0"
+        },
+        {
+          "kind": "semantic-route-http-only",
+          "url": "https://chris-page-gov.github.io/okf-explorer/okf-bundle.yamlld",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "repository": "https://github.com/chris-page-gov/okf-govuk-content",
+      "checks": [
+        {
+          "kind": "descriptor",
+          "url": "https://chris-page-gov.github.io/okf-govuk-content/okf-explorer.json",
+          "status": 200,
+          "sha256": "f4695b19d542789bb5f2a948921e29fc36ab4076859433cc28b73602bf8da1be",
+          "schema": "okf-explorer-large-corpus.v1"
+        },
+        {
+          "kind": "descriptor:overview_index",
+          "url": "https://chris-page-gov.github.io/okf-govuk-content/data/overview.json",
+          "status": 200
+        },
+        {
+          "kind": "descriptor:data_manifest",
+          "url": "https://chris-page-gov.github.io/okf-govuk-content/data/manifest.json",
+          "status": 200
+        },
+        {
+          "kind": "raw-fallback",
+          "url": "https://raw.githubusercontent.com/chris-page-gov/okf-govuk-content/ef5575d2dccdab7999fc8fdc3cbdd2e47b4f6247/bundle/okf-explorer.json",
+          "status": 200,
+          "sha256": "f4695b19d542789bb5f2a948921e29fc36ab4076859433cc28b73602bf8da1be",
+          "schema": "okf-explorer-large-corpus.v1"
+        },
+        {
+          "kind": "raw-fallback:overview_index",
+          "url": "https://raw.githubusercontent.com/chris-page-gov/okf-govuk-content/ef5575d2dccdab7999fc8fdc3cbdd2e47b4f6247/bundle/data/overview.json",
+          "status": 200
+        },
+        {
+          "kind": "raw-fallback:data_manifest",
+          "url": "https://raw.githubusercontent.com/chris-page-gov/okf-govuk-content/ef5575d2dccdab7999fc8fdc3cbdd2e47b4f6247/bundle/data/manifest.json",
+          "status": 200
+        },
+        {
+          "kind": "semantic-route-http-only",
+          "url": "https://chris-page-gov.github.io/okf-govuk-content/okf-bundle.yamlld",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "repository": "https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire",
+      "checks": [
+        {
+          "kind": "descriptor",
+          "url": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/okf-explorer.json",
+          "status": 200,
+          "sha256": "97c8c3aa1dbaa48cad06d9a1fec3c1b125a681c7642b418bddbbccc32e27a5da",
+          "schema": "okf-explorer-large-corpus.v1"
+        },
+        {
+          "kind": "descriptor:overview_index",
+          "url": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/data/overview.json",
+          "status": 200
+        },
+        {
+          "kind": "descriptor:data_manifest",
+          "url": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/data/manifest.json",
+          "status": 200
+        },
+        {
+          "kind": "raw-fallback",
+          "url": "https://raw.githubusercontent.com/chris-page-gov/okf-heritage-coventry-warwickshire/2c5c73ac5c54e71a73b4fd3556470bbd9ab9359e/site/okf-explorer.json",
+          "status": 200,
+          "sha256": "97c8c3aa1dbaa48cad06d9a1fec3c1b125a681c7642b418bddbbccc32e27a5da",
+          "schema": "okf-explorer-large-corpus.v1"
+        },
+        {
+          "kind": "raw-fallback:overview_index",
+          "url": "https://raw.githubusercontent.com/chris-page-gov/okf-heritage-coventry-warwickshire/2c5c73ac5c54e71a73b4fd3556470bbd9ab9359e/site/data/overview.json",
+          "status": 200
+        },
+        {
+          "kind": "raw-fallback:data_manifest",
+          "url": "https://raw.githubusercontent.com/chris-page-gov/okf-heritage-coventry-warwickshire/2c5c73ac5c54e71a73b4fd3556470bbd9ab9359e/site/data/manifest.json",
+          "status": 200
+        },
+        {
+          "kind": "semantic-route-http-only",
+          "url": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/okf-bundle.yamlld",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "repository": "https://github.com/chris-page-gov/okf-LandRegistry",
+      "checks": [
+        {
+          "kind": "descriptor",
+          "url": "https://chris-page-gov.github.io/okf-LandRegistry/okf-explorer.json",
+          "status": 200,
+          "sha256": "36d21eee6b3fcf85ea1a9f9a6501e39d73acba3aef9904c4120075878d4b4b5d",
+          "schema": "okf-explorer-large-corpus.v1"
+        },
+        {
+          "kind": "descriptor:overview_index",
+          "url": "https://chris-page-gov.github.io/okf-LandRegistry/data/explorer/overview.json",
+          "status": 200
+        },
+        {
+          "kind": "descriptor:data_manifest",
+          "url": "https://chris-page-gov.github.io/okf-LandRegistry/data/explorer/manifest.json",
+          "status": 200
+        },
+        {
+          "kind": "raw-fallback",
+          "url": "https://raw.githubusercontent.com/chris-page-gov/okf-LandRegistry/4580c9e4afef10a102b852b01083ee5cb7d34018/bundle/okf-explorer.json",
+          "status": 200,
+          "sha256": "36d21eee6b3fcf85ea1a9f9a6501e39d73acba3aef9904c4120075878d4b4b5d",
+          "schema": "okf-explorer-large-corpus.v1"
+        },
+        {
+          "kind": "raw-fallback:overview_index",
+          "url": "https://raw.githubusercontent.com/chris-page-gov/okf-LandRegistry/4580c9e4afef10a102b852b01083ee5cb7d34018/bundle/data/explorer/overview.json",
+          "status": 200
+        },
+        {
+          "kind": "raw-fallback:data_manifest",
+          "url": "https://raw.githubusercontent.com/chris-page-gov/okf-LandRegistry/4580c9e4afef10a102b852b01083ee5cb7d34018/bundle/data/explorer/manifest.json",
+          "status": 200
+        },
+        {
+          "kind": "semantic-route-http-only",
+          "url": "https://chris-page-gov.github.io/okf-LandRegistry/okf-bundle.yamlld",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "repository": "https://github.com/chris-page-gov/okf-ons",
+      "checks": [
+        {
+          "kind": "descriptor",
+          "url": "https://chris-page-gov.github.io/okf-ons/okf-explorer.json",
+          "status": 200,
+          "sha256": "65287c9b5eea689d527e9c12876e0bc0e12512a67650ffebd06432116977b770",
+          "schema": "okf-explorer-large-corpus.v1"
+        },
+        {
+          "kind": "descriptor:overview_index",
+          "url": "https://chris-page-gov.github.io/okf-ons/data/overview.json",
+          "status": 200
+        },
+        {
+          "kind": "descriptor:data_manifest",
+          "url": "https://chris-page-gov.github.io/okf-ons/data/manifest.json",
+          "status": 200
+        },
+        {
+          "kind": "semantic-route-http-only",
+          "url": "https://chris-page-gov.github.io/okf-ons/okf-bundle.yamlld",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "repository": "https://github.com/chris-page-gov/okf-planning",
+      "checks": [
+        {
+          "kind": "descriptor",
+          "url": "https://chris-page-gov.github.io/okf-planning/okf-explorer.json",
+          "status": 200,
+          "sha256": "b2296d1b416bf421eea872bdb702bbf3acda87c280f46ab0ec81ef841cab7d02",
+          "schema": "okf-explorer-large-corpus.v1"
+        },
+        {
+          "kind": "descriptor:overview_index",
+          "url": "https://chris-page-gov.github.io/okf-planning/data/overview.json",
+          "status": 200
+        },
+        {
+          "kind": "descriptor:data_manifest",
+          "url": "https://chris-page-gov.github.io/okf-planning/data/manifest.json",
+          "status": 200
+        },
+        {
+          "kind": "raw-fallback",
+          "url": "https://raw.githubusercontent.com/chris-page-gov/okf-planning/9941f9e4ec17345a26e99421a016f94c69cd2a31/bundle/okf-explorer.json",
+          "status": 200,
+          "sha256": "b2296d1b416bf421eea872bdb702bbf3acda87c280f46ab0ec81ef841cab7d02",
+          "schema": "okf-explorer-large-corpus.v1"
+        },
+        {
+          "kind": "raw-fallback:overview_index",
+          "url": "https://raw.githubusercontent.com/chris-page-gov/okf-planning/9941f9e4ec17345a26e99421a016f94c69cd2a31/bundle/data/overview.json",
+          "status": 200
+        },
+        {
+          "kind": "raw-fallback:data_manifest",
+          "url": "https://raw.githubusercontent.com/chris-page-gov/okf-planning/9941f9e4ec17345a26e99421a016f94c69cd2a31/bundle/data/manifest.json",
+          "status": 200
+        },
+        {
+          "kind": "semantic-route-http-only",
+          "url": "https://chris-page-gov.github.io/okf-planning/okf-bundle.yamlld",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "repository": "https://github.com/chris-page-gov/okf-uk-government-apis",
+      "checks": [
+        {
+          "kind": "descriptor",
+          "url": "https://chris-page-gov.github.io/okf-uk-government-apis/okf-explorer.json",
+          "status": 200,
+          "sha256": "620b790fa27666d9b95230d47a2d863978d159fa59eff4e415e6eedd0c05520b",
+          "schema": "okf-explorer-large-corpus.v1"
+        },
+        {
+          "kind": "descriptor:overview_index",
+          "url": "https://chris-page-gov.github.io/okf-uk-government-apis/data/overview.json",
+          "status": 200
+        },
+        {
+          "kind": "descriptor:data_manifest",
+          "url": "https://chris-page-gov.github.io/okf-uk-government-apis/data/manifest.json",
+          "status": 200
+        },
+        {
+          "kind": "raw-fallback",
+          "url": "https://raw.githubusercontent.com/chris-page-gov/okf-uk-government-apis/61047d3824c3ddc9ff5ac1c0c8c398fd6b2aa261/bundle/okf-explorer.json",
+          "status": 200,
+          "sha256": "620b790fa27666d9b95230d47a2d863978d159fa59eff4e415e6eedd0c05520b",
+          "schema": "okf-explorer-large-corpus.v1"
+        },
+        {
+          "kind": "raw-fallback:overview_index",
+          "url": "https://raw.githubusercontent.com/chris-page-gov/okf-uk-government-apis/61047d3824c3ddc9ff5ac1c0c8c398fd6b2aa261/bundle/data/overview.json",
+          "status": 200
+        },
+        {
+          "kind": "raw-fallback:data_manifest",
+          "url": "https://raw.githubusercontent.com/chris-page-gov/okf-uk-government-apis/61047d3824c3ddc9ff5ac1c0c8c398fd6b2aa261/bundle/data/manifest.json",
+          "status": 200
+        },
+        {
+          "kind": "semantic-route-http-only",
+          "url": "https://chris-page-gov.github.io/okf-uk-government-apis/okf-bundle.yamlld",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "repository": "https://github.com/chris-page-gov/okf-uk-legislation",
+      "checks": [
+        {
+          "kind": "descriptor",
+          "url": "https://chris-page-gov.github.io/okf-uk-legislation/okf-explorer.json",
+          "status": 200,
+          "sha256": "65427bc18f0091758a1033c5874e7370b235bbced607e6f736861a290726ae11",
+          "schema": "okf-explorer-large-corpus.v1"
+        },
+        {
+          "kind": "descriptor:overview_index",
+          "url": "https://chris-page-gov.github.io/okf-uk-legislation/data/overview.json",
+          "status": 200
+        },
+        {
+          "kind": "descriptor:data_manifest",
+          "url": "https://chris-page-gov.github.io/okf-uk-legislation/data/manifest.json",
+          "status": 200
+        },
+        {
+          "kind": "raw-fallback",
+          "url": "https://raw.githubusercontent.com/chris-page-gov/okf-uk-legislation/379ec9e08d8bb07d90ededdff5c6c841f4cf7ffc/bundle/okf-explorer.json",
+          "status": 200,
+          "sha256": "65427bc18f0091758a1033c5874e7370b235bbced607e6f736861a290726ae11",
+          "schema": "okf-explorer-large-corpus.v1"
+        },
+        {
+          "kind": "raw-fallback:overview_index",
+          "url": "https://raw.githubusercontent.com/chris-page-gov/okf-uk-legislation/379ec9e08d8bb07d90ededdff5c6c841f4cf7ffc/bundle/data/overview.json",
+          "status": 200
+        },
+        {
+          "kind": "raw-fallback:data_manifest",
+          "url": "https://raw.githubusercontent.com/chris-page-gov/okf-uk-legislation/379ec9e08d8bb07d90ededdff5c6c841f4cf7ffc/bundle/data/manifest.json",
+          "status": 200
+        },
+        {
+          "kind": "semantic-route-http-only",
+          "url": "https://chris-page-gov.github.io/okf-uk-legislation/okf-bundle.yamlld",
+          "status": 200
+        }
+      ],
+      "errors": []
+    },
+    {
+      "repository": "https://github.com/chris-page-gov/okf-uk-living",
+      "checks": [
+        {
+          "kind": "descriptor",
+          "url": "https://chris-page-gov.github.io/okf-uk-living/okf-explorer.json",
+          "status": 200,
+          "sha256": "ff69f0162a4ba93156b150ae4eea0070c8c8a81187ed5cc7d2425f37b8db34dc",
+          "schema": "okf-explorer-large-corpus.v1"
+        },
+        {
+          "kind": "descriptor:overview_index",
+          "url": "https://chris-page-gov.github.io/okf-uk-living/large/data/overview.json",
+          "status": 200
+        },
+        {
+          "kind": "descriptor:data_manifest",
+          "url": "https://chris-page-gov.github.io/okf-uk-living/large/data/manifest.json",
+          "status": 200
+        },
+        {
+          "kind": "semantic-route-http-only",
+          "url": "https://chris-page-gov.github.io/okf-uk-living/generated/semantic/life-course-corpus.yamlld",
+          "status": 200
+        }
+      ],
+      "errors": []
+    }
+  ]
+}

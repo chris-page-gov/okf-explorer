@@ -15,6 +15,7 @@ to this guide, worked examples and the GitHub repository.
 - [Try a bundle with AI](onboarding/try-a-bundle.md): a worked evidence question with a human fallback.
 - [Choose an example](onboarding/examples.md): one catalogue, grouped by purpose.
 - [Choose an AI access route](ai-okf-usage.md): files, public links, local agents, Copilot and experimental page tools.
+- [Find a public bundle](public-bundle-access.md): exact Pages descriptors, semantic entrypoints, pinned GitHub fallbacks and a Voice prompt.
 - [Choose your journey](onboarding/audience-journeys.md): different tasks and successful stopping points.
 - [Make your first bundle](onboarding/first-bundle.md): a complete fictional starter, exact commands and expected checks.
 

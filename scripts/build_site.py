@@ -138,6 +138,9 @@ PUBLIC_ROOT_FILES = [
     "okf-registry.json",
     "okf-registry.jsonld",
     "okf-estate-registry.json",
+    "okf-public-access.json",
+    ".well-known/okf.json",
+    "llms.txt",
     "okf.publication.json",
     "README.md",
     "mcp/README.md",
@@ -1441,6 +1444,10 @@ def publication_identity(commit: str) -> dict[str, object]:
         Path("okf-estate-registry.json"),
         Path("okf-registry.json"),
         Path("registry/estate/index.html"),
+        Path("docs/public-bundle-access.html"),
+        Path("okf-public-access.json"),
+        Path(".well-known/okf.json"),
+        Path("llms.txt"),
     ):
         path = OUT / relative
         raw = path.read_bytes()
