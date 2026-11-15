@@ -1,5 +1,11 @@
 # Ask OKF remote MCP service
 
+Dependency maintenance, 15 November 2026: PR #203 updates the transitive Hono
+lock resolution to 4.13.18. The [maintenance review](../../docs/dependency-maintenance.md#hono-dependency-repair-15-november-2026)
+and [top-level client guide](../../docs/remote-mcp.md#dependency-maintenance-15-november-2026)
+retain the scope and release boundary. Existing deployed Worker and frozen
+source/engine pairs are not replaced by a dependency PR.
+
 A read-only remote transport for Explorer's existing governed context assembly
 engine. It serves approved immutable public OKF-DWP versions anonymously. It makes no
 model calls and requires no API key. This is an independent experiment, not an
