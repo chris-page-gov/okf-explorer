@@ -1,5 +1,10 @@
 # Changelog
 
+## Inventory clarification — 15 November 2026
+
+- Consolidate remaining work, evidence limits and proposed closure conditions in the feature inventory, including help/facet intermittency, local Firefox startup, broader producer Reader/package proofs, data compatibility, dependency PRs and independent acceptance.
+- Separate the passing `b3f83ce` main/Pages checks from older baselines. Record Hono #203 as merged and Playwright #195 as blocked; describe optional analytical v2 as implemented and experimental, with adoption/conformance work still open. Keep WCC parked.
+
 ## Dependency repairs — 15 November 2026
 
 - Retain a fresh Playwright 1.65.1/Firefox 1572 probe: the control passes and both cross-world ARIA cases crash. Keep PR #195 blocked pending a fixed stable browser, with all rules and engines retained.

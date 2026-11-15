@@ -1,8 +1,45 @@
-# Feature and plan status — 14 November 2026
+# Feature and plan status — 15 November 2026
 
-Pre-existing implementation baseline: `5755359efd54b14a356dbff67d6082db1b195a91`, fetched from GitHub main on 14 November 2026. App release `0.8.1` and Analytical Data `1.0.0-rc.1` are independent versions. This inventory records code/contract maturity separately from domain acceptance, host compatibility, deployment and source completeness. The historical baseline checks are in the [check record](feature-review-2026-11-14.json). The unreleased v2 extension below is separately bound by the [targeted receipt](analytical-data-v2-targeted-validation-2026-11-14.json) and its final candidate CI; it is not attributed to the older baseline.
+Last complete implementation check: merged main `b3f83cede346d76699529e4a7dadfae24d5d99a8`.
+The [full main run](https://github.com/chris-page-gov/okf-explorer/actions/runs/43758093745)
+passed 597 Python, 946 app, 555 UI and 78 Foundry cases, with the UI/Foundry
+journeys across Chrome, Firefox and WebKit. The [Pages run](https://github.com/chris-page-gov/okf-explorer/actions/runs/43758075502)
+passed exact-revision and real-Chrome estate/public-access journeys. These
+receipts apply to that revision and their declared scope; they do not close
+the outstanding work below.
 
-Main advanced during this review. Local main was subsequently fast-forwarded to `3f211964` (PRs #206, #207 and #210), and that revision was merged into the inventory/candidate work. The historical baseline check record remains tied to `5755359e`; it does not automatically validate these additions. Current candidate assurance is separate.
+App `0.8.1`, frozen Analytical Data v1 `1.0.0-rc.1` and optional v2
+`2.0.0-rc.1` are independent versions. Typed datetime, spatial declarations
+and `/inspect-data/` are implemented on main as experimental v2 features.
+Their broader schema parity, adoption and independent acceptance remain open.
+No producer or pinned Reader is migrated automatically.
+
+## Remaining work and closure conditions
+
+This is the current work inventory. Closure conditions are proposed evidence
+requirements, not a claim that a fix, approval or additional scope exists.
+Producer assurance belongs to the producer as well as its pinned Reader;
+passing Explorer CI does not renew a producer's older acceptance receipt.
+
+| ID and area | Current state and evidence | Remaining work and closure evidence |
+| --- | --- | --- |
+| REM-01: help scrolling | Open intermittency. The narrow-layout Chrome PageDown failure was observed; later isolated repetitions passed without an established cause. The original failing trace was overwritten. See the [help investigation](validation/reading-help-scroll-2026-11-14.json). | Retain a fresh failing trace and exact source/browser/state identities, establish the cause, add a discriminating regression and verify the correction. Passing repetitions alone do not establish closure. |
+| REM-02: WebKit facets | Open intermittency. An expanded facet expected ten values and initially returned zero, then passed on retry. Twenty isolated repeats passed; no original trace artefact was listed. See the [facet retry record](validation/facet-touch-retry-2026-11-14.json). | Capture and explain the failing expansion/selection state, retain the original trace and verify any correction on the affected engine. The superseded cancelled run is not an all-engine pass. |
+| REM-03: local Firefox startup | Open environment blocker before application load on macOS. Fresh owned cache/profile attempts did not resolve it. Current Linux CI passes Firefox. See the [historical local check](feature-review-2026-11-14.json). | Obtain a successful controlled local launch and the actual Reader journeys, with retained package/browser/profile diagnostics. Keep this distinct from REM-04. |
+| REM-04: Playwright PR #195 | Blocked and unmerged. Latest stable 1.65.1's Firefox revision 1572 still crashes in both cross-world ARIA probes; the control passes. Main retains 1.64.1. See the [fresh probe](validation/playwright-firefox-aria-2026-11-15.json) and [PR #195](https://github.com/chris-page-gov/okf-explorer/pull/195). | A stable package must first pass the focused probe. Then reconcile the dependency branch, update related packages/docs/SBOM together and pass the full Chrome/Firefox/WebKit gate. Retain every accessibility rule and engine. |
+| REM-05: broader producer Reader/package proofs | Open producer assurance. Older broad portable, TOM and security Reader/package receipts are stale against current producer outputs. Current scoped AI/ORUK evidence does not renew that broader scope. This is separate from the green Explorer implementation and Pages checks above. | Re-run each broader producer journey against its exact current bundle digest and pinned Reader, then revalidate the matching package. Retain separate receipts and scope limits. Protected contents and detailed private findings stay in the producer's authorised private storage. |
+| REM-06: data compatibility and coverage | Open publisher-specific gaps. DfE geography-header naming, retained Warwickshire/NDL compatibility/access gaps and bounded Defra pagination/time/spatial observations do not establish general interoperability or county coverage. See the [profile rollout](analytical-data-profile-rollout.md) and [curation review](analytical-data-curation-review-2026-11-11.md). | Resolve each publisher's contract/access question with versioned evidence before claiming support. WCC live acquisition, CSV diagnosis, feed probes, coverage and remediation stay parked; only frozen offline regressions are in scope. |
+| REM-07: optional analytical v2 | Code is implemented, with experimental adoption and conformance boundaries. Browser preview is one bounded selected CSV, not full Python package/schema validation; broader datetime/CRS/geometry needs remain unsupported. See the [v2 boundary](analytical-data-v2-preview.md). | Independent schema/domain review, representative analyst and human accessibility tasks, explicit browser/CLI parity decisions and a governed adoption/migration decision. Additional formats or spatial operations need separately reviewed scope and versioning. |
+| REM-08: conditional and opt-in checks | Open coverage limits. Full main CI skips 15 external-corpus UI cases, one Evidence Connect source integration and one genuine-CDP observer. All 115 service tests pass locally with both pinned source environments; the local CDP observer remains skipped. Two additional standalone producer-integration skips are outside the registered terminal runner. | Supply the declared immutable inputs or explicit opt-in, execute the affected checks and retain exact revision/environment results. Missing input is not passing integration evidence. Do not reacquire parked WCC data to clear a skip. |
+| REM-09: independent acceptance and architecture B–F | Outstanding. Domain/rights and information-owner decisions, held-back response assessment, client-visible completeness, representative users/new authors, human assistive technology, second-domain scale and comparative rendering retain their own criteria. See the [plan register](#reviewed-plan-register). | Complete the applicable agreed protocols with independent reviewers, actual outputs, failures/retests and bounded conclusions. Automated structure, transport, axe or delivery checks do not supply these decisions. Local roles/thresholds and real model/library/service production integration also need owner acceptance. |
+| REM-10: Hono PR #203 and Worker promotion | Repository repair complete: [#203](https://github.com/chris-page-gov/okf-explorer/pull/203) merged Hono 4.13.18 after green checks; full main and Pages receipts are linked above. The remote Worker and frozen source/engine pairs retain separate deployment identities. | No Hono repository repair remains open. A Worker promotion, if required and authorised, needs its own exact build/deployment/client receipts. Neither green CI nor a lockfile update establishes deployed exposure or alert closure. |
+| REM-11: deferred or proposed scope | Voice, general cross-client host support, broader standalone legacy links, integrated novice authoring, storage replacement and other plan suggestions retain the dispositions below. | Make an explicit compatibility/scope/adoption decision before treating a proposal as a committed feature. Retain the acceptance evidence for any adopted scope; do not silently mark it implemented. |
+
+## Historical baselines and interpretation
+
+Pre-existing implementation baseline: `5755359efd54b14a356dbff67d6082db1b195a91`, fetched from GitHub main on 14 November 2026. App release `0.8.1` and Analytical Data `1.0.0-rc.1` are independent versions. This inventory records code/contract maturity separately from domain acceptance, host compatibility, deployment and source completeness. The historical baseline checks are in the [check record](feature-review-2026-11-14.json). The then-unmerged v2 extension is separately bound by the [targeted receipt](analytical-data-v2-targeted-validation-2026-11-14.json) and its final candidate CI; it is not attributed to the older baseline.
+
+Main advanced during this review. Local main was subsequently fast-forwarded to `3f211964` (PRs #206, #207 and #210), and that revision was merged into the inventory/candidate work. The historical baseline check record remains tied to `5755359e`; it does not automatically validate these additions. The later implementation and main assurance above supersede that candidate state.
 
 Implemented means the stated code and local contract exist. Experimental means a bounded candidate exists with unresolved adoption/compatibility. Proposed and deferred mean no accepted implementation is claimed. An acceptance gap can remain against implemented code. Historical documents retain their dated baseline; a title containing “plan” is not a promise that every historical idea is still scheduled.
 
@@ -24,7 +61,7 @@ Implemented means the stated code and local contract exist. Experimental means a
 | Search and static search indexes | Implemented | [Search/filter manual](static-search-filtering-manual.md); source coverage bounds results. |
 | Facets, explicit missing values and selection state | Implemented | [Facet gates](foundry-facets.md); producer-specific distinctions need actual output/Reader evidence. |
 | Record cards, detail, graph and relationship inspection | Implemented | [Interaction implementation](explorer-interaction-implementation.md); presentation grouping is not identity. |
-| Timeline and date-role presentation | Implemented | `src/lib/viewer/smallTimeline.ts`, `largeTimeline.ts`; does not supply tabular datetime typing. |
+| Timeline and date-role presentation | Implemented | `src/lib/viewer/smallTimeline.ts`, `largeTimeline.ts`; presentation alone does not supply tabular typing. Optional v2 validates its declared datetime subset separately. |
 | Bookmarks and workspace navigation | Implemented | `src/lib/viewer/bookmarks.ts`, `workspaceNavigation.ts`; browser state is not an audit repository. |
 | Source inspector and local source exploration | Implemented | `src/lib/viewer/SourceInspector.svelte`; visible source gaps remain explicit. |
 | Governed terms and concept navigation | Implemented | [Conceptual navigation](conceptual-navigation.md); similarity does not establish semantic identity. |
@@ -108,10 +145,10 @@ Implemented means the stated code and local contract exist. Experimental means a
 | Chrome/Firefox/WebKit terminal browser suite | Implemented | Full-suite outcome applies to its exact candidate; an intermittent help-layout failure remains a known regression risk until evidenced closed. |
 | Foundry adversarial fixtures | Implemented | Negative controls complement source, semantic and runtime checks; fixtures are not independent producer acceptance. |
 | Candidate manifests, promotion envelopes and deployment verification | Implemented mechanism | [Publication methodology](okf-build-and-publication-methodology.md); merge, deployment and acceptance are separate gates. |
-| PWA/static site publication | Implemented mechanism | No new deployment is asserted by this review. Verify the exact HTTPS identity and human journey before publishing a current URL. |
+| PWA/static site publication | Implemented and checked for stated revision | The main/Pages checks for the stated revision above passed both real-Chrome journeys. Other revisions and broader human/domain acceptance need their own evidence. |
 | Whole-implementation P0 source review | Completed historical baseline | [23 October review](p0-implementation-review-2026-10-23.md); later changes need impact review, not inherited blanket approval. |
 | Independent specialist/security review | Scoped/acceptance outstanding | No broad certification is established by the source review or green CI. |
-| External dependency PRs | Separate review queue | PRs #195 and #203 were open at review; their failures do not become passing main evidence. Do not auto-merge them through this consolidation. |
+| External dependency PRs | #203 merged; #195 blocked | Hono 4.13.18 passed required PR/full-main gates. Playwright retains the upstream Firefox blocker, focused probe and full three-engine merge condition; see REM-04/REM-10. |
 
 The maintained architecture plan remains the delivery coordinator: A has a completed historical source-review baseline; B–F retain the individual acceptance criteria recorded above. This inventory does not mark them complete merely because related modules now exist. The YAML-LD migration plan, facet experiments, learner-hub specification, search/filtering design, geospatial persona/design notes, GOV CKAN journey design, postmortems and dated code reviews are retained design/history inputs. Their implemented portions are represented above; any remaining suggestion without current acceptance evidence is proposed or unverified, not an undisclosed completed feature. Domain postmortem registers retain their own case-by-case decisions.
 
@@ -119,9 +156,9 @@ The maintained architecture plan remains the delivery coordinator: A has a compl
 
 Public-source AI/architecture notes, a private evidence archive and a public learning supplement require producer/export/publication checks. They do not require a breaking change to OKF 0.2, Bundle Wiki v1, the context identity contract or the existing pinned Reader. Private archive material must never enter public artifacts. Public learning companion pages are distinct from the frozen tool-indexed evidence graph.
 
-Typed datetime, spatial contract changes and a CSV preview would affect optional profile schemas/validators, UI/parser limits, negative fixtures, browser journeys and publication docs. Preserve RC.1, historical trial hashes and producer pins; introduce any changed interpretation through a distinct versioned route and an explicit migration decision. WCC acquisitions, probes, county coverage and remediation remain parked; frozen offline regressions do not reopen that investigation.
+The implemented optional v2 datetime/spatial contract and CSV preview span separate schemas/validators, UI/parser limits, negative fixtures, browser journeys and publication docs. REM-07 records their remaining conformance and adoption boundaries. Preserve RC.1, historical trial hashes and producer pins; introduce any changed interpretation through a distinct versioned route and an explicit migration decision. WCC acquisitions, probes, county coverage and remediation remain parked; frozen offline regressions do not reopen that investigation.
 
-Local checks ran on the implementation baseline above. The check record preserves the first-run Chrome failure, affected rerun, WebKit success, conditional skips and Firefox startup blocker. This is not a clean three-engine pass.
+Historical local checks ran on the 14 November implementation baseline. The check record preserves the first-run Chrome failure, affected rerun, WebKit success, conditional skips and Firefox startup blocker. That interrupted local run is not a clean three-engine pass; later Linux main CI is separately recorded above.
 
 ## Reviewed plan register
 
@@ -141,11 +178,11 @@ This table accounts for every tracked Markdown filename matching plan, roadmap, 
 
 The profile rollout, provider-datapack, map/persona, Project Studio, consumer/Voice, controlled-language and domain postmortem records are also represented in the feature rows above even where their filenames do not contain these terms. Their remaining acceptance criteria are retained, rather than silently treated as complete.
 
-The current-main integration at `5460ef56` passed 946 app and 595 Python tests, the deterministic 53-material app build, SBOM and the full registered Chrome/WebKit terminal browser run (370 UI passes, ten external-corpus skips; 52 Foundry passes). The standalone source-bound producer `.mjs` integration needs `DWP_PASSAGE_REVIEW_DIR` and is not selected by that registered runner: its two additional missing-input skips are explicit. The site validated 417 pages and 10,391 links. Earlier baseline records remain historical; exact-head CI and independent acceptance remain separate.
+The historical candidate integration at `5460ef56` passed 946 app and 595 Python tests, the deterministic 53-material app build, SBOM and the full registered Chrome/WebKit terminal browser run (370 UI passes, ten external-corpus skips; 52 Foundry passes). The standalone source-bound producer `.mjs` integration needs `DWP_PASSAGE_REVIEW_DIR` and is not selected by that registered runner: its two additional missing-input skips are explicit. The site validated 417 pages and 10,391 links. Earlier baseline records remain historical; exact-head CI and independent acceptance remain separate.
 
 The [WebKit facet retry record](validation/facet-touch-retry-2026-11-14.json) retains another observed intermittent case: the superseded 2a8fdc8 CI expected ten expanded values and initially saw zero, then passed on retry. Twenty isolated repetitions passed on unchanged facet code; cause unresolved. No original browser trace artifact was listed. The old run was cancelled and is not an all-engine CI pass. This is separate from the earlier help-scroll issue.
 
-## Merge and main assurance — 15 November 2026
+## Merge history — 15 November 2026
 
 PRs #208 and #209 merged after green checks; the squash reconciliation preserved the complete reviewed file tree. Typed datetime/spatial validation and `/inspect-data/` are implemented on main as optional experimental v2, with no automatic producer migration or stable-profile adoption. Manual CI now explicitly requests every declared plane, fixture and job with `--full`; an empty diff must not turn main assurance into an empty selection. PR routing and frozen profile populations are unchanged. The listed external-input skips, standalone source-bound integration, local Firefox startup and help/facet observations remain open, alongside independent analyst/accessibility/domain acceptance.
 
