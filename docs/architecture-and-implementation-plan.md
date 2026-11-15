@@ -1,7 +1,9 @@
 # OKF Explorer architecture and implementation plan
 
-Assessment date: 23 October 2026. Implementation baseline:
+Historical plan baseline: 23 October 2026. Implementation baseline:
 `460f7245352e5d1e407d37e9d40a9b2b6b55ee0a`.
+
+Current review: the [14 November feature and plan inventory](feature-status.md) records GitHub main `5755359efd54b14a356dbff67d6082db1b195a91`, including later retrieval and data-profile work. Its implementation inventory supersedes the dated capability snapshot below. B–F retain their explicit acceptance criteria.
 
 Status: maintained architecture and prioritised delivery plan. The capability
 inventory below records the implementation at that baseline. Planned acceptance

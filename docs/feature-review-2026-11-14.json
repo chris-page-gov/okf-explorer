@@ -1,0 +1,89 @@
+{
+  "schema": "okf-feature-review.v1",
+  "reviewed_at": "2026-11-14",
+  "implementation_commit": "5755359efd54b14a356dbff67d6082db1b195a91",
+  "review_scope": "Current implementation contracts, maintained architecture acceptance criteria and retained design/experiment plans. Documentation-only inventory; no model or production acceptance.",
+  "checks": [
+    {
+      "plane": "svelte",
+      "command": "pnpm --dir apps/okf-explorer check",
+      "result": "passed: 0 errors, 0 warnings",
+      "retained_log_sha256": "158bb89942553152bbb3b5b91478c4b2a9aee712e6059ec14d7fa91d60e7b664"
+    },
+    {
+      "plane": "app",
+      "command": "pnpm --dir apps/okf-explorer test",
+      "result": "891 Vitest cases passed; dependency/build/Node batches passed after loopback permission rerun; one environment-guarded Node case skipped",
+      "retained_log_sha256": "567c81c35f0d0463f946db83ea2682901a671f07778bc158ead8c070ddc87adf"
+    },
+    {
+      "plane": "node-loopback",
+      "command": "node --test scripts/app_build_manifest.test.mjs scripts/pages_fallback.test.mjs scripts/runtime_acceptance_contract.test.mjs scripts/external_bundle_acceptance_contract.test.mjs scripts/acceptance_invocation_lock.test.mjs scripts/run_impacted_browser_tests.test.mjs scripts/observe_protected_links.test.mjs scripts/verify_okf_deployment.test.mjs",
+      "result": "passed after sandbox loopback denial; 1 explicit skip",
+      "retained_log_sha256": "533bfffd670fab94ffad767e0830e0d6ee0413cb2c63a5bc8fec1687437f374a"
+    },
+    {
+      "plane": "python",
+      "command": "uv run --locked python -m unittest discover -s tests -v",
+      "result": "574 passed",
+      "retained_log_sha256": "21c6faa0c0824a0d894a689a07e4dd97c0ebbb72dcf0fbd642947db01bdb90fa"
+    },
+    {
+      "plane": "mcp",
+      "command": "npm --prefix services/ask-okf-mcp run check; npm --prefix services/ask-okf-mcp test; npm --prefix services/ask-okf-mcp run build",
+      "result": "111 passed, 4 explicit skips; type/build passed",
+      "retained_log_sha256": "8492c7b5d11a0363a8b96cdb475349605dbc949a39ce3e4eecafa9766f76c472"
+    },
+    {
+      "plane": "sbom",
+      "command": "pnpm --dir apps/okf-explorer sbom:check",
+      "result": "passed: 141 pinned package components",
+      "retained_log_sha256": "69e72d362ae577456d38323bd611c73e105e2d8a365fa320faccf3edf569adde"
+    },
+    {
+      "plane": "site",
+      "command": "uv run --locked python scripts/build_site.py",
+      "result": "passed: 408 readable documentation pages, 10101 links; no deployment claimed",
+      "retained_log_sha256": "920df2f4c220809465916f9f217f2107139e332b01c7c3a59e5d68f6e0162e1f"
+    },
+    {
+      "plane": "chrome-full",
+      "command": "pnpm --dir apps/okf-explorer test:e2e:terminal",
+      "result": "initial full UI plane reproduced narrow-layout reading-help PageDown failure; run stopped during Firefox startup failures",
+      "retained_log_sha256": "d3f3f04d24f206ac4dfcd2e75917f75632dfb20975e3dcfb502481e32616a090"
+    },
+    {
+      "plane": "chrome-help-rerun",
+      "command": "pnpm exec playwright test tests/ui/reading-help-corpus.spec.ts --project=chrome",
+      "result": "10 passed; first-run intermittent failure remains unresolved",
+      "retained_log_sha256": "dd1248f0ca110b1f92e2b476cbea8a41fb04db4ffbc345d81de7fde78fa66050"
+    },
+    {
+      "plane": "chrome-foundry",
+      "command": "pnpm exec playwright test --config=playwright.foundry.config.ts tests/foundry/beginner-guide-navigation.spec.ts tests/foundry/foundry-docs.spec.ts --project=chrome",
+      "result": "26 passed",
+      "retained_log_sha256": "9f2bf408a83162060f3e51ba0ea5c5ca4fc92cdcdb5fd08de2c604f760a4c205"
+    },
+    {
+      "plane": "webkit",
+      "command": "node scripts/run_impacted_browser_tests.mjs --full --engines-json [webkit]",
+      "result": "177 UI passed, 5 external-input skips; 26 Foundry passed",
+      "retained_log_sha256": "ebcefbcad2335a41b066b94110313200461cf4f349c04768388e35cb021a3196"
+    },
+    {
+      "plane": "firefox-preflight",
+      "command": "firefox.launch via lockfile-pinned Playwright; existing and fresh owned browser cache",
+      "result": "blocked before application load: Could not find profile folder; writable TMPDIR and fresh pinned install did not resolve it; no Firefox conformance claim",
+      "retained_log_sha256": "a36c72379ecb86c06092235ca05996d1469fffa2a5608365c512febf4834e8c0"
+    }
+  ],
+  "skips": "External DWP pilot/combined/curriculum and source-bound corpus fixtures are conditional; missing inputs are not passing integration evidence. MCP/Node environment guards retain their separate skips.",
+  "wcc": "Parked: no new requests, acquisition, feed probes or remediation; offline frozen regressions only.",
+  "release_state": "No new merge, tag, deployment or live-client acceptance is asserted.",
+  "remaining": [
+    "Intermittent Chrome help PageDown/focus scrolling defect reproduced; one rerun passing does not close it.",
+    "Firefox local process/profile startup unresolved; Linux CI/browser evidence is separate.",
+    "Typed datetime, richer spatial validation and bounded browser CSV preview require a new optional contract.",
+    "Architecture B-F individual acceptance criteria remain proposed or unverified; independent domain, human accessibility and client-visible completeness need their own evidence."
+  ]
+}
