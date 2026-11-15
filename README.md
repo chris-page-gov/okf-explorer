@@ -130,3 +130,7 @@ For Ask OKF ambiguity and input limits, see [alternative meanings and bounded lo
 [Feature, plan and acceptance status](docs/feature-status.md) distinguishes shipped code, experimental profiles, proposed functionality and independent acceptance. Standards/source consolidation is producer-compatible; typed datetime, richer spatial rules and CSV previews need a separately versioned optional contract. WCC follow-up remains parked.
 
 The [unreleased v2 candidate and local CSV preview](docs/analytical-data-v2-preview.md) add bounded datetime/spatial checks on a separate versioned route. Frozen RC.1 and its historical trial evidence remain unchanged; no automatic estate migration or WCC follow-up is performed.
+
+## Main assurance — 15 November 2026
+
+The reviewed inventory and optional analytical v2 changes are merged. A manual **OKF Explorer CI** run uses the planner’s explicit `--full` option so unchanged main still checks every declared plane and job. Pull requests retain impact routing. Full registered browser coverage keeps conditional external-corpus skips explicit; standalone producer integration, local Firefox startup, help/facet intermittency and independent acceptance remain separate.

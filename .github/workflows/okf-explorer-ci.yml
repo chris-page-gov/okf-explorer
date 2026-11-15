@@ -41,12 +41,18 @@ jobs:
           uv run --locked python -m unittest tests.test_remote_release_docs -v
       - name: Build fail-closed impact plan
         id: plan
-        run: >-
-          uv run --locked python scripts/plan_evaluation_foundry_impact.py
-          --changed-from "origin/${{ github.event.pull_request.base.ref || 'main' }}"
-          --output impact-plan.json
-          --github-output "$GITHUB_OUTPUT"
-          --explain
+        env:
+          OKF_FULL_ASSURANCE: ${{ github.event_name == 'workflow_dispatch' && 'true' || 'false' }}
+        run: |
+          assurance_full_args=()
+          if [ "$OKF_FULL_ASSURANCE" = true ]; then
+            assurance_full_args+=(--full)
+          fi
+          uv run --locked python scripts/plan_evaluation_foundry_impact.py \
+            --changed-from "origin/${{ github.event.pull_request.base.ref || 'main' }}" \
+            --output impact-plan.json \
+            --github-output "$GITHUB_OUTPUT" \
+            --explain "${assurance_full_args[@]}"
       - name: Upload impact plan
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:

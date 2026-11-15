@@ -499,6 +499,7 @@ def build_impact_plan(
     fixtures: Iterable[str] = (),
     test_tags: Iterable[str] = (),
     journey_groups: Iterable[str] = (),
+    full: bool = False,
 ) -> dict[str, Any]:
     contract, rules = _contract(profile)
     catalog = selector_catalog(profile)
@@ -688,7 +689,8 @@ def build_impact_plan(
                 )
         return closure_nodes, closure_planes, closure_validations
 
-    if fail_closed:
+    select_all = fail_closed or full
+    if select_all:
         affected_nodes = set(nodes)
         affected_planes = set(catalog["planes"])
         validation_ids = {
@@ -746,20 +748,20 @@ def build_impact_plan(
         if isinstance(plane, dict) and isinstance(plane.get("id"), str)
     }
     affected_planes = _filtered_or_requested(
-        affected_planes, requested_planes, fail_closed=fail_closed
+        affected_planes, requested_planes, fail_closed=select_all
     )
     selected_fixtures = _filtered_or_requested(
-        selected_fixtures, requested_fixtures, fail_closed=fail_closed
+        selected_fixtures, requested_fixtures, fail_closed=select_all
     )
     selected_tags = _filtered_or_requested(
-        selected_tags, requested_tags, fail_closed=fail_closed
+        selected_tags, requested_tags, fail_closed=select_all
     )
     selected_groups = _filtered_or_requested(
-        selected_groups, requested_groups, fail_closed=fail_closed
+        selected_groups, requested_groups, fail_closed=select_all
     )
     for plane_id in affected_planes:
         selected_jobs.update(PLANE_JOB_DEFAULTS.get(plane_roles.get(plane_id, ""), set()))
-    if requested_planes and not affected_planes and not fail_closed:
+    if requested_planes and not affected_planes and not select_all:
         selected_jobs.clear()
 
     jobs = {job: job in selected_jobs for job in JOB_IDS}
@@ -864,6 +866,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--fixture", action="append", default=[])
     parser.add_argument("--test-tag", action="append", default=[])
     parser.add_argument("--journey-group", action="append", default=[])
+    parser.add_argument("--full", action="store_true", help="select every declared plane, fixture and job, even with no changes")
     parser.add_argument("--output", type=Path)
     parser.add_argument("--github-output", type=Path)
     parser.add_argument(
@@ -905,6 +908,7 @@ def main(argv: list[str] | None = None) -> int:
             fixtures=args.fixture,
             test_tags=args.test_tag,
             journey_groups=args.journey_group,
+            full=args.full,
         )
     except (ImpactPlanError, OSError) as error:
         print(f"impact planning failed: {error}", file=sys.stderr)
@@ -923,7 +927,9 @@ def main(argv: list[str] | None = None) -> int:
         for item in plan["explanations"]:
             rule_text = ", ".join(item["rule_ids"]) or "FAIL-CLOSED"
             print(f"{item['path']}: {rule_text}: {item['reason']}", file=sys.stderr)
-        if not plan["explanations"]:
+        if args.full:
+            print("explicit full run: every declared plane, fixture and job selected", file=sys.stderr)
+        elif not plan["explanations"]:
             print("no changed paths: no jobs selected", file=sys.stderr)
     return 0
 

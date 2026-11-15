@@ -45,6 +45,23 @@ SHADOW_CASES_PATH = (
 
 
 class EvaluationFoundryImpactTests(unittest.TestCase):
+    def test_explicit_full_run_preserves_all_declared_selectors(self) -> None:
+        plan = impact.build_impact_plan(self.profile, [], full=True, planes=['data'], fixtures=['tiny'])
+        self.assert_valid_plan(plan)
+        self.assertFalse(plan['fail_closed'])
+        self.assertTrue(all(plan['selectors']['jobs'].values()))
+        catalog = impact.selector_catalog(self.profile)
+        self.assertEqual(set(catalog['planes']), set(plan['selectors']['planes']))
+        self.assertEqual(set(catalog['fixtures']), set(plan['selectors']['fixtures']))
+
+    def test_full_cli_selects_jobs_for_an_unchanged_revision(self) -> None:
+        result = subprocess.run([sys.executable, str(ROOT / 'scripts/plan_evaluation_foundry_impact.py'), '--changed-from', 'HEAD', '--changed-to', 'HEAD', '--full'], cwd=ROOT, capture_output=True, text=True)
+        self.assertEqual(0, result.returncode, result.stderr)
+        plan = json.loads(result.stdout)
+        self.assert_valid_plan(plan)
+        self.assertEqual([], plan['changed_paths'])
+        self.assertTrue(all(plan['selectors']['jobs'].values()))
+
     @classmethod
     def setUpClass(cls) -> None:
         cls.profile = check_evaluation_foundry.load_document(PROFILE_PATH)

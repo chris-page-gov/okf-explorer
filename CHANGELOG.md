@@ -1,5 +1,10 @@
 # Changelog
 
+## Main assurance — 15 November 2026
+
+- Merge the reviewed inventory/v2 candidate without changing its file tree. Keep experimental adoption and all recorded gaps explicit.
+- Make manual CI request full declared coverage on unchanged main. Add empty-diff and no-narrowing regressions without changing the frozen profile/schema or PR impact routing.
+
 ## Unreleased — browser retry evidence
 
 - Retain the superseded WebKit facet-count retry, unavailable original trace and twenty passing synthetic repetitions. Keep the cause open and separate from the help-scroll issue; no speculative UI or timeout change.
