@@ -148,3 +148,19 @@ The [WebKit facet retry record](validation/facet-touch-retry-2026-11-14.json) re
 ## Merge and main assurance — 15 November 2026
 
 PRs #208 and #209 merged after green checks; the squash reconciliation preserved the complete reviewed file tree. Typed datetime/spatial validation and `/inspect-data/` are implemented on main as optional experimental v2, with no automatic producer migration or stable-profile adoption. Manual CI now explicitly requests every declared plane, fixture and job with `--full`; an empty diff must not turn main assurance into an empty selection. PR routing and frozen profile populations are unchanged. The listed external-input skips, standalone source-bound integration, local Firefox startup and help/facet observations remain open, alongside independent analyst/accessibility/domain acceptance.
+
+## Dependency follow-up — 15 November 2026
+
+Hono 4.13.18 updates the remote service lock resolution in PR #203; the prior
+lockstep failure is corrected by accompanying service/top-level docs and the
+changelog. Source-bound service tests can run against the existing immutable
+DWP Git objects without network acquisition. Worker deployment and frozen
+source/engine pairs remain separate. Exact-head PR and final-main CI outcomes
+remain in GitHub rather than being inferred from a lockfile edit.
+
+PR #195 still awaits a fixed stable Playwright browser: the latest 1.65.1
+Firefox 1572 crashes in both cross-world ARIA cases on the fresh focused probe.
+See the [dependency review](dependency-maintenance.md) and its complete receipt.
+This upstream blocker is separate from main's local Firefox startup problem,
+help/facet intermittency, external-input skips and independent acceptance.
+WCC live work remains parked.

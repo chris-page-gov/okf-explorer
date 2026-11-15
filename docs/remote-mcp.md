@@ -15,6 +15,15 @@ well as their service documentation. The pull-request impact gate checks that
 requirement before deciding which expensive checks are needed; Pages checks it
 again before publication.
 
+## Dependency maintenance — 15 November 2026
+
+PR #203 updates the transitive Hono resolution to 4.13.18 and retains the
+existing Node-server override. See the [dependency review](dependency-maintenance.md#hono-dependency-repair-15-november-2026)
+for upstream scope and check evidence. This repository change has no remote
+Worker deployment step; existing receipt-bound service versions, source pairs
+and public observations retain their original identities. The source-bound
+service integrations read immutable local Git blobs. WCC live work stays parked.
+
 ## Source-route retrieval candidate: 14 November 2026
 
 Service 0.8.0 provides two bounded tools: `plan_okf_evidence` and

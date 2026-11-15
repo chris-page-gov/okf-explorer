@@ -1,0 +1,44 @@
+{
+  "schema": "playwright-firefox-aria-probe.v1",
+  "observed_at": "2026-11-15T20:14:43+00:00",
+  "status": "blocked-upstream",
+  "platform": "macOS arm64",
+  "node": "v26.7.0",
+  "playwright_core": "1.65.1",
+  "firefox": {
+    "name": "firefox",
+    "revision": "1572",
+    "installByDefault": true,
+    "browserVersion": "159.0",
+    "title": "Firefox"
+  },
+  "browsers_manifest_sha256": "38368519e09a8a988fdfdcc5b352d269bee040d4536c1cbd0ede48ffa8dde4a4",
+  "reproducer_sha256": "11499caa6e822633d1e83cb7d3127e1e6935f94e784fbf495d145fa9ea2e844e",
+  "reproducer_source": "import { createRequire } from 'node:module';\nimport { firefox } from 'playwright-core';\n\nconst require = createRequire(import.meta.url);\nconsole.log('Playwright', require('playwright-core/package.json').version);\nconsole.log('Firefox executable', firefox.executablePath());\nconst html = '<span id=\"l\">Save</span><button id=\"b\" aria-labelledby=\"l\"></button>';\nlet failures = 0;\nfor (const scenario of ['same-world control', 'main world then role locator', 'role locator then main world']) {\n  const browser = await firefox.launch({ headless: true });\n  const page = await browser.newPage();\n  page.setDefaultTimeout(10000);\n  let crashed = false;\n  page.on('crash', () => { crashed = true; });\n  try {\n    await page.setContent(html);\n    const readMain = () => page.evaluate(() => document.getElementById('b').ariaLabelledByElements.length);\n    const readRole = () => page.getByRole('button', { name: 'Save' }).click({ trial: true });\n    if (scenario === 'same-world control') {\n      await readMain();\n      await readMain();\n    } else if (scenario === 'main world then role locator') {\n      await readMain();\n      await readRole();\n    } else {\n      await readRole();\n      await readMain();\n    }\n    console.log(JSON.stringify({ scenario, result: 'PASS', crashed }));\n  } catch (error) {\n    failures++;\n    console.log(JSON.stringify({ scenario, result: 'FAIL', crashed, error: error.message }));\n  } finally {\n    await browser.close();\n  }\n}\nprocess.exitCode = failures ? 1 : 0;\n",
+  "raw_log_sha256": "64507f05ec212b5364b48cfcec13c866edba96dc35c5f5948e4691d8929330b1",
+  "scenarios": [
+    {
+      "scenario": "same-world control",
+      "result": "PASS",
+      "crashed": false
+    },
+    {
+      "scenario": "main world then role locator",
+      "result": "FAIL",
+      "crashed": true,
+      "error": "locator.click: Page crashed\nCall log:\n  - waiting for getByRole('button', { name: 'Save' })\n"
+    },
+    {
+      "scenario": "role locator then main world",
+      "result": "FAIL",
+      "crashed": true,
+      "error": "page.evaluate: Page crashed"
+    }
+  ],
+  "upstream": [
+    "https://github.com/microsoft/playwright/releases/tag/v1.65.1",
+    "https://github.com/microsoft/playwright/issues/43967",
+    "https://bugzilla.mozilla.org/show_bug.cgi?id=2090055"
+  ],
+  "scope": "Focused local latest-stable probe only; not a fresh full three-engine candidate suite. No source data acquisition or WCC request. The existing dependency branch and stable-fixed-browser merge condition remain unchanged."
+}

@@ -1,5 +1,23 @@
 # Maintaining Explorer dependencies
 
+## Hono dependency repair — 15 November 2026
+
+PR #203 updates the remote service's transitive Hono lock resolution from
+4.13.13 to 4.13.18, through `@modelcontextprotocol/node` and the development
+SDK. The existing `@hono/node-server` 2.1.6 override is retained. The upstream
+[4.13.18 release](https://github.com/honojs/hono/releases/tag/v4.13.18) fixes
+validator media-type handling, bounded body buffering, custom mount paths and
+static-path decoding. This is an upstream change summary, not a finding that
+all four middleware paths are used or exploitable in this service.
+
+The original impact gate correctly rejected a lockfile-only change without
+contract-declared documentation or a changelog entry. This candidate adds both
+and preserves the gate. Frozen installation, service type/build checks and the
+complete pinned-source service suite must pass before merge. Deployment of the
+remote Worker remains a separate release boundary: updating this repository
+neither replaces its recorded 0.8.0 source/engine pairs nor deploys a Worker.
+WCC live checks remain parked; no lending or source-data action is added.
+
 ## Deepmerge removal — 11 November 2026
 
 Alert #92 ([GHSA-gcqx-w48m-w2h4](https://github.com/advisories/GHSA-gcqx-w48m-w2h4))
@@ -29,6 +47,17 @@ consistently, as CI does. Replace this backport with a compatible upstream
 release only after checking that the dependency is absent and these tests pass.
 
 ## Playwright update deferred — 11 November 2026
+
+Rechecked on 15 November: npm and the official release list still identify
+1.65.1 as latest stable. Its bundled Firefox revision 1572/version 159.0 fails
+both cross-world ARIA scenarios; the same-world control passes. The
+[complete focused receipt](validation/playwright-firefox-aria-2026-11-15.json)
+retains the reproducer, package/browser identities, three outcomes and log
+hash. The upstream issue being closed does not establish a fixed stable roll.
+PR #195 remains blocked and its dependency branch is unchanged. No assertion,
+accessibility rule or browser engine is removed; the existing fixed-stable
+condition and full three-engine acceptance still apply. The following
+11 November details retain their dated context.
 
 PR #195 remains open because Playwright 1.65.0's Firefox 159 build crashes in
 three existing accessibility checks. The failures reproduce locally, including

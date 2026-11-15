@@ -1,5 +1,11 @@
 # Changelog
 
+## Dependency repairs — 15 November 2026
+
+- Retain a fresh Playwright 1.65.1/Firefox 1572 probe: the control passes and both cross-world ARIA cases crash. Keep PR #195 blocked pending a fixed stable browser, with all rules and engines retained.
+- Update the remote service's transitive Hono lock resolution to 4.13.18; retain the Node-server override and receipt-bound service/deployment identities.
+- Supply the required service and top-level documentation with the changelog so the dependency PR passes the existing lockstep gate. Keep WCC live work parked and independent acceptance/browser gaps explicit.
+
 ## Main assurance — 15 November 2026
 
 - Merge the reviewed inventory/v2 candidate without changing its file tree. Keep experimental adoption and all recorded gaps explicit.
