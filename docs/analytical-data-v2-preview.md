@@ -2,7 +2,7 @@
 
 The native [DfE EES pair Reader](dfe-ees-reader.md) at `/data/` is a separate upstream feature. This `/inspect-data/` route requires its versioned analytical manifest and one selected CSV; neither route silently converts the other's contract.
 
-This is an unreleased, local candidate. The [v2 contract](../profiles/analytical-data/v2/index.md) uses a new URI and `2.0.0-rc.1` because datetime key interpretation and metadata rules change. Frozen v1 `1.0.0-rc.1`, its schema digest, validator bytes and historical Warwickshire/NDL/Defra trials remain unchanged. No producer pin, research release or public learning Reader is silently updated.
+This experimental implementation is merged on main; stable adoption and independent acceptance remain open. See the [current inventory](feature-status.md#remaining-work-and-closure-conditions) for completed main checks and remaining work. The [v2 contract](../profiles/analytical-data/v2/index.md) uses a new URI and `2.0.0-rc.1` because datetime key interpretation and metadata rules change. Frozen v1 `1.0.0-rc.1`, its schema digest, validator bytes and historical Warwickshire/NDL/Defra trials remain unchanged. No producer pin, research release or public learning Reader is silently updated.
 
 ## Functionality implemented
 
@@ -29,7 +29,7 @@ The CSV preview recognises either frozen v1 or the new v2 candidate. It never tr
 
 Shared vectors challenge calendar/offset validity, equal instants, distinct nanoseconds and exact decimal identities across Python and browser logic. Python tests also freeze v1 hashes and challenge spatial metadata, state/zero collisions, unknown datums and silent migration. Browser tests cover uploads/storage absence, inert text, checksum/key failures, clear-during-read behaviour, keyboard scrolling, automated accessibility and narrow layouts.
 
-Current local targeted results: 14 Python cases and 37 browser-logic cases passed; all twelve targeted Chrome/WebKit journeys passed after fixing the early file-selection race, including asynchronous clearing. Final complete-suite and CI results are tracked separately. Local Firefox startup remains blocked before application load, and the earlier intermittent Chrome help PageDown failure remains explicit. Later CI evidence must name its exact commit, engines and skips.
+Historical local targeted results, 14 November 2026: 14 Python cases and 37 browser-logic cases passed; all twelve targeted Chrome/WebKit journeys passed after fixing the early file-selection race, including asynchronous clearing. Later complete-suite and CI results are tracked separately in the current inventory. Local Firefox startup remains blocked before application load, and the earlier intermittent Chrome help PageDown failure remains explicit. Later CI evidence must name its exact commit, engines and skips.
 
 Independent schema/domain review, producer migration decisions, representative analyst tasks and human assistive-technology acceptance remain outstanding. Browser formal schema parity, broader CRS/geometry support, wraparound extents and unknown/high-precision temporal formats remain unsupported. WCC live work stays parked. The feature inventory's wider architecture B–F acceptance programme is not discharged by this bounded implementation.
 
@@ -52,7 +52,7 @@ The [candidate assurance checkpoint](analytical-data-v2-candidate-assurance-2026
 
 The [help-scrolling investigation](validation/reading-help-scroll-2026-11-14.json) retains the original assertion and explicitly unavailable trace, unchanged component hash and twenty new synthetic trace identities. No speculative scrolling fix or timeout increase is included.
 
-## Current-main integration
+## Historical candidate integration
 
 Main advanced during this work. Local main and this candidate now include `3f211964` (native DfE pair Reader, public bundle access and nested discovery-link fix). The combined code passed 946 app and 595 Python tests, the 141-component SBOM, 370 registered Chrome/WebKit UI cases and 52 Foundry cases. Ten external-corpus cases skipped; the separate source-bound `.mjs` integration also lacks its required producer input and records two additional skips. All 417 documentation pages/10,391 links passed. These are local results; exact-head CI, local Firefox startup, the unresolved help issue and independent adoption/accessibility remain separate.
 

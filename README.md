@@ -125,11 +125,11 @@ See [governed Pages publication](docs/development.md#github-pages).
 
 For Ask OKF ambiguity and input limits, see [alternative meanings and bounded loading](docs/context-alternatives-and-bounded-loading.md).
 
-## Review on 14 November 2026
+## Feature and remaining-work review — 15 November 2026
 
-[Feature, plan and acceptance status](docs/feature-status.md) distinguishes shipped code, experimental profiles, proposed functionality and independent acceptance. Standards/source consolidation is producer-compatible; typed datetime, richer spatial rules and CSV previews need a separately versioned optional contract. WCC follow-up remains parked.
+[Feature, plan and acceptance status](docs/feature-status.md) now starts with a [current remaining-work table](docs/feature-status.md#remaining-work-and-closure-conditions), covering help/facet intermittency, local Firefox startup, broader producer Reader/package proofs, data compatibility, dependency PRs and independent acceptance. Optional v2 datetime/spatial/CSV features are implemented and experimental; their adoption remains separate. WCC follow-up stays parked.
 
-The [unreleased v2 candidate and local CSV preview](docs/analytical-data-v2-preview.md) add bounded datetime/spatial checks on a separate versioned route. Frozen RC.1 and its historical trial evidence remain unchanged; no automatic estate migration or WCC follow-up is performed.
+The [experimental v2 profile and local CSV preview](docs/analytical-data-v2-preview.md) add bounded datetime/spatial checks on a separate versioned route. Frozen RC.1 and its historical trial evidence remain unchanged; no automatic estate migration or WCC follow-up is performed.
 
 ## Main assurance — 15 November 2026
 
