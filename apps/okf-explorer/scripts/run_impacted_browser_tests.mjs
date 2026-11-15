@@ -6,6 +6,7 @@ import { pathToFileURL } from 'node:url';
 export const PLAN_SCHEMA = 'okf-impacted-browser-plan.v1';
 
 const SUITES = {
+  analytical_preview: { family: 'ui', file: 'tests/ui/analytical-preview.spec.ts' },
   accessibility: {
     family: 'ui',
     file: 'tests/ui/accessibility.spec.ts'

@@ -39,3 +39,5 @@ The [live Defra and NDL follow-up](analytical-live-trial-2026-11-11.md) adds a f
 ## Review on 14 November 2026
 
 [Current estate impact and unfinished capabilities](feature-status.md) distinguishes shipped code, experimental profiles, proposed functionality and independent acceptance. Standards/source consolidation is producer-compatible; typed datetime, richer spatial rules and CSV previews need a separately versioned optional contract. WCC follow-up remains parked.
+
+The [unreleased v2 candidate and local CSV preview](analytical-data-v2-preview.md) add bounded datetime/spatial checks on a separate versioned route. Frozen RC.1 and its historical trial evidence remain unchanged; no automatic estate migration or WCC follow-up is performed.

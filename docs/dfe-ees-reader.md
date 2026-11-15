@@ -1,5 +1,7 @@
 # Read DfE CSV data with its metadata sidecar
 
+Use this `/data/` route for native EES pairs. The separate experimental [v2 manifest/CSV preview](analytical-data-v2-preview.md) uses `/inspect-data/`; it adds typed datetime and explicit spatial checks without converting EES files automatically or changing RC.1.
+
 Explorer can open an Explore Education Statistics (EES) data CSV with its matching `.meta.csv` file. The [DfE Open Data Standards](https://dfe-analytical-services.github.io/analysts-guide/statistics-production/ud.html) describe this paired publishing format. The sidecar defines filters and indicators; standard time and geography columns do not need those definitions.
 
 ## Open a pair

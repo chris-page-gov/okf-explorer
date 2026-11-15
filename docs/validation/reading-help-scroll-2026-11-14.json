@@ -1,0 +1,127 @@
+{
+  "schema": "reading-help-scroll-investigation.v1",
+  "observed_at": "2026-11-14",
+  "implementation_baseline": "5755359efd54b14a356dbff67d6082db1b195a91",
+  "unchanged_component": "apps/okf-explorer/src/routes/reading-help/corpus/+page.svelte",
+  "component_sha256": "fea9b0a3cc8c6635fa0e46363f811a294015def35d70360a29cec41ef776fc13",
+  "original_failure": {
+    "test": "help stays visible without page scrolling in the narrow layout",
+    "source": "apps/okf-explorer/tests/ui/reading-help-corpus.spec.ts:114",
+    "assertion": "After PageDown, Selected reference details scrollTop must be greater than 0",
+    "expected": "> 0",
+    "received": 0,
+    "timeout_ms": 10000,
+    "source_log_sha256": "d3f3f04d24f206ac4dfcd2e75917f75632dfb20975e3dcfb502481e32616a090",
+    "original_trace": "unavailable; overwritten by later default-output runs, not claimed retained"
+  },
+  "bounded_followup": {
+    "command": "TMPDIR=/private/tmp PLAYWRIGHT_PORT=44183 pnpm --dir apps/okf-explorer exec playwright test tests/ui/reading-help-corpus.spec.ts --project=chrome --grep 'help stays visible without page scrolling in the narrow layout' --repeat-each=20 --trace on --output=OWNED_UNIQUE_DIRECTORY",
+    "passed": 20,
+    "failed": 0,
+    "log_sha256": "b8dfb98022753a7ec6942a1242fdd4b01c4540a473974a9818d6a569747eac39",
+    "trace_scope": "Synthetic fixture traces retained locally in an owned unique directory; contents are not public artifacts.",
+    "trace_inventory": [
+      {
+        "path": "reading-help-corpus-help-s-73664-olling-in-the-narrow-layout-chrome/trace.zip",
+        "bytes": 1202658,
+        "sha256": "944b741ec982660a3baef1f31b8991daee2bae6eda157ac6a64a6b2632e465b6"
+      },
+      {
+        "path": "reading-help-corpus-help-s-73664-olling-in-the-narrow-layout-chrome-repeat1/trace.zip",
+        "bytes": 1245702,
+        "sha256": "a69e1023c2ec7cf6247fbb006d97c554216494ec137a15608032e964629a8e6b"
+      },
+      {
+        "path": "reading-help-corpus-help-s-73664-olling-in-the-narrow-layout-chrome-repeat10/trace.zip",
+        "bytes": 1281478,
+        "sha256": "ae9ba98fb7a0ecfca9c0d96dc886a7088b04333476c709fa6250380c2177e7b9"
+      },
+      {
+        "path": "reading-help-corpus-help-s-73664-olling-in-the-narrow-layout-chrome-repeat11/trace.zip",
+        "bytes": 1281872,
+        "sha256": "8fa80d4ee541dc6ff22d71db05625e9036cbc17b496ab39dab6bb401c20ccc60"
+      },
+      {
+        "path": "reading-help-corpus-help-s-73664-olling-in-the-narrow-layout-chrome-repeat12/trace.zip",
+        "bytes": 1265942,
+        "sha256": "6b0c047e99a1abd32c8d4978667984e9d550d9071f6cf88ac989f234d8c20b25"
+      },
+      {
+        "path": "reading-help-corpus-help-s-73664-olling-in-the-narrow-layout-chrome-repeat13/trace.zip",
+        "bytes": 1266888,
+        "sha256": "a7c46cc6d24e02a5f946f0433f814d55763421d14cced206b780e16807d691f3"
+      },
+      {
+        "path": "reading-help-corpus-help-s-73664-olling-in-the-narrow-layout-chrome-repeat14/trace.zip",
+        "bytes": 1279922,
+        "sha256": "9ad33f2a29bccf36f37278c99b757da1eed7d705afe11e6446dd7336e43d86fc"
+      },
+      {
+        "path": "reading-help-corpus-help-s-73664-olling-in-the-narrow-layout-chrome-repeat15/trace.zip",
+        "bytes": 1281559,
+        "sha256": "07675c5999cdcbadf6165ee9a33ce12913504a182e1a30bc920b0850b1f9fe5d"
+      },
+      {
+        "path": "reading-help-corpus-help-s-73664-olling-in-the-narrow-layout-chrome-repeat16/trace.zip",
+        "bytes": 1295014,
+        "sha256": "3dcf53f41f6f1bb87e27c6ee2326284c9169ebd7e1a1411689089c0e7c748f00"
+      },
+      {
+        "path": "reading-help-corpus-help-s-73664-olling-in-the-narrow-layout-chrome-repeat17/trace.zip",
+        "bytes": 1266841,
+        "sha256": "404cde0396eb39fde7cff450cee2133680353fd8f7b1747c56ad9027e01a6c79"
+      },
+      {
+        "path": "reading-help-corpus-help-s-73664-olling-in-the-narrow-layout-chrome-repeat18/trace.zip",
+        "bytes": 1280911,
+        "sha256": "61d48b024fd3eb04720021ad219195dedb2c2fb241a92743cca92cd90896dbf9"
+      },
+      {
+        "path": "reading-help-corpus-help-s-73664-olling-in-the-narrow-layout-chrome-repeat19/trace.zip",
+        "bytes": 1239034,
+        "sha256": "5e60e91aeeefb8d38aca7581bd49ecb06ef8ff5598dad310fac8f987c8112a7e"
+      },
+      {
+        "path": "reading-help-corpus-help-s-73664-olling-in-the-narrow-layout-chrome-repeat2/trace.zip",
+        "bytes": 1245114,
+        "sha256": "8baea77b662ffbec784d0eb30fb5f1cc85e68db5b44180953c019e51426ba776"
+      },
+      {
+        "path": "reading-help-corpus-help-s-73664-olling-in-the-narrow-layout-chrome-repeat3/trace.zip",
+        "bytes": 1244997,
+        "sha256": "beb1019917e78a0e775a081b9b4c13a93e6515660ea23cab1b0c5ec6d4cb5365"
+      },
+      {
+        "path": "reading-help-corpus-help-s-73664-olling-in-the-narrow-layout-chrome-repeat4/trace.zip",
+        "bytes": 1219534,
+        "sha256": "0092b3eec0cd888ae9a4e4d7f0d544a84a47e6288be3b942bfbc675ba1f4fc92"
+      },
+      {
+        "path": "reading-help-corpus-help-s-73664-olling-in-the-narrow-layout-chrome-repeat5/trace.zip",
+        "bytes": 1244757,
+        "sha256": "a8dc8be8455eae4d6a9b8831af5a6586f294fc62f251e25c93ecc00b83382ade"
+      },
+      {
+        "path": "reading-help-corpus-help-s-73664-olling-in-the-narrow-layout-chrome-repeat6/trace.zip",
+        "bytes": 1254228,
+        "sha256": "cb0c3d3c246c91b2363f15f17646af31217f5432d5ad5e0896727f81e5260af3"
+      },
+      {
+        "path": "reading-help-corpus-help-s-73664-olling-in-the-narrow-layout-chrome-repeat7/trace.zip",
+        "bytes": 1282897,
+        "sha256": "04eca49df9bb16be2fd31017f18513dd9792bc998d020758a63de1b27e945ae7"
+      },
+      {
+        "path": "reading-help-corpus-help-s-73664-olling-in-the-narrow-layout-chrome-repeat8/trace.zip",
+        "bytes": 1265477,
+        "sha256": "ea54530aad640c8ce01416698feab49c35786715464a11ee2bde388b3213bcde"
+      },
+      {
+        "path": "reading-help-corpus-help-s-73664-olling-in-the-narrow-layout-chrome-repeat9/trace.zip",
+        "bytes": 1266408,
+        "sha256": "7b6fb7ed00c362d332df8768129be30f6eba7c1974f457ce4619d3bece42b00c"
+      }
+    ]
+  },
+  "assessment": "Original failure remains a real unresolved observation. Twenty non-reproductions and a passing complete Chrome/WebKit run do not establish the cause or close intermittency. No speculative product or timeout change was made."
+}
