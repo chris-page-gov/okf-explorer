@@ -127,7 +127,7 @@ For Ask OKF ambiguity and input limits, see [alternative meanings and bounded lo
 
 ## Feature and remaining-work review — 15 November 2026
 
-[Feature, plan and acceptance status](docs/feature-status.md) now starts with a [current remaining-work table](docs/feature-status.md#remaining-work-and-closure-conditions), covering help/facet intermittency, local Firefox startup, broader producer Reader/package proofs, data compatibility, dependency PRs and independent acceptance. Optional v2 datetime/spatial/CSV features are implemented and experimental; their adoption remains separate. WCC follow-up stays parked.
+[Feature, plan and acceptance status](docs/feature-status.md) now starts with a [current remaining-work table](docs/feature-status.md#remaining-work-and-closure-conditions), covering help/facet intermittency, local Firefox startup, broader producer Reader/package proofs, data compatibility, dependency PRs and independent acceptance. REM-05 records the TOM as **Restricted — HMG only**, with original OFFICIAL marking preserved. The user approved the existing private storage and collaborators; new recipients/destinations and wider circulation require separate approval. Optional v2 datetime/spatial/CSV features are implemented and experimental; their adoption remains separate. WCC follow-up stays parked.
 
 The [experimental v2 profile and local CSV preview](docs/analytical-data-v2-preview.md) add bounded datetime/spatial checks on a separate versioned route. Frozen RC.1 and its historical trial evidence remain unchanged; no automatic estate migration or WCC follow-up is performed.
 

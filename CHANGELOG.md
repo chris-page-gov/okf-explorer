@@ -1,5 +1,10 @@
 # Changelog
 
+## TOM handling notice — 15 November 2026
+
+- Record Restricted — HMG only for the TOM and all derivatives in REM-05. Preserve the original OFFICIAL marking and keep only handling metadata in this public inventory.
+- Record user approval for the existing private storage and collaborators. Require separate approval for new recipients/destinations or wider circulation; private storage or government sign-in alone does not establish eligibility. Retain exact restricted Reader/package proof as an outstanding gate. Protected contents/findings remain excluded from public outputs. WCC stays parked.
+
 ## Inventory clarification — 15 November 2026
 
 - Consolidate remaining work, evidence limits and proposed closure conditions in the feature inventory, including help/facet intermittency, local Firefox startup, broader producer Reader/package proofs, data compatibility, dependency PRs and independent acceptance.
