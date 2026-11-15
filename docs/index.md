@@ -15,12 +15,14 @@ to this guide, worked examples and the GitHub repository.
 - [Try a bundle with AI](onboarding/try-a-bundle.md): a worked evidence question with a human fallback.
 - [Choose an example](onboarding/examples.md): one catalogue, grouped by purpose.
 - [Choose an AI access route](ai-okf-usage.md): files, public links, local agents, Copilot and experimental page tools.
+- [Find a public bundle](public-bundle-access.md): exact Pages descriptors, semantic entrypoints, pinned GitHub fallbacks and a Voice prompt.
 - [Choose your journey](onboarding/audience-journeys.md): different tasks and successful stopping points.
 - [Make your first bundle](onboarding/first-bundle.md): a complete fictional starter, exact commands and expected checks.
 
 ## Use and learn
 
 - [Use Explorer](use-okf-explorer.md): current search, facets, highlighting, keeping sets, panels and evidence.
+- [Read DfE CSV and metadata](dfe-ees-reader.md): inspect an EES data/sidecar pair, exact values, field meanings and scope.
 - [Inspect a retained evidence example](retained-evidence-demo.md): a seven-step demonstration of a fixed package, its source links and its limits.
 - [AI Infrastructure walkthrough](ai-infrastructure-knowledge-graph-walkthrough.md): one concept across Markdown and Explorer.
 - [Beginner reference](beginners/index.md): explanations when you need them, without required sequential reading.
@@ -85,3 +87,9 @@ sets British English and plain-language conventions.
 Use the [example catalogue](onboarding/examples.md) for named experiences,
 readiness, limits and the date of verified journeys. `govuk-webmcp` remains an
 external frozen competition candidate.
+
+## Review on 14 November 2026
+
+[Feature, plan and acceptance status](feature-status.md) distinguishes shipped code, experimental profiles, proposed functionality and independent acceptance. Standards/source consolidation is producer-compatible; typed datetime, richer spatial rules and CSV previews need a separately versioned optional contract. WCC follow-up remains parked.
+
+The [unreleased v2 candidate and local CSV preview](analytical-data-v2-preview.md) add bounded datetime/spatial checks on a separate versioned route. Frozen RC.1 and its historical trial evidence remain unchanged; no automatic estate migration or WCC follow-up is performed.

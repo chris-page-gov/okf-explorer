@@ -1,0 +1,99 @@
+{
+  "schema": "analytical-data-v2-conformance.v1",
+  "datetime": [
+    {
+      "literal": "2026-11-14T10:00:00Z",
+      "valid": true
+    },
+    {
+      "literal": "2026-11-14T11:00:00+01:00",
+      "valid": true
+    },
+    {
+      "literal": "2024-02-29T23:59:59.123456789Z",
+      "valid": true
+    },
+    {
+      "literal": "0001-01-01T00:00:00Z",
+      "valid": true
+    },
+    {
+      "literal": "9999-12-31T23:59:59.999999999Z",
+      "valid": true
+    },
+    {
+      "literal": "2026-11-14T10:00:00.000000001Z",
+      "valid": true
+    },
+    {
+      "literal": "2026-11-14T10:00:00",
+      "valid": false
+    },
+    {
+      "literal": "2026-11-14 10:00:00Z",
+      "valid": false
+    },
+    {
+      "literal": "2026-11-14t10:00:00z",
+      "valid": false
+    },
+    {
+      "literal": "2026-11-14T10:00:00-00:00",
+      "valid": false
+    },
+    {
+      "literal": "2026-11-14T24:00:00Z",
+      "valid": false
+    },
+    {
+      "literal": "2026-11-14T10:00:60Z",
+      "valid": false
+    },
+    {
+      "literal": "2025-02-29T10:00:00Z",
+      "valid": false
+    },
+    {
+      "literal": "0000-01-01T00:00:00Z",
+      "valid": false
+    },
+    {
+      "literal": "2026-11-14T10:00:00.1234567890Z",
+      "valid": false
+    },
+    {
+      "literal": "2026-11-14T10:00:00+24:00",
+      "valid": false
+    },
+    {
+      "literal": "2026-11-14T10:00:00Z[Europe/London]",
+      "valid": false
+    }
+  ],
+  "equivalent_instants": [
+    "2026-11-14T10:00:00Z",
+    "2026-11-14T11:00:00+01:00"
+  ],
+  "distinct_instants": [
+    "2026-11-14T10:00:00Z",
+    "2026-11-14T10:00:00.000000001Z"
+  ],
+  "decimal_equal": [
+    [
+      "0",
+      "-0.0"
+    ],
+    [
+      "1.00",
+      "1e0"
+    ],
+    [
+      ".01",
+      "1e-2"
+    ],
+    [
+      "1000000000000000000001",
+      "1000000000000000000001.0"
+    ]
+  ]
+}

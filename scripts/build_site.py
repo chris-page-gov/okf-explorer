@@ -138,6 +138,9 @@ PUBLIC_ROOT_FILES = [
     "okf-registry.json",
     "okf-registry.jsonld",
     "okf-estate-registry.json",
+    "okf-public-access.json",
+    ".well-known/okf.json",
+    "llms.txt",
     "okf.publication.json",
     "README.md",
     "mcp/README.md",
@@ -479,9 +482,9 @@ def repository_source_is_copied_to_site(relative: Path) -> bool:
         return False
     if externalized_publication_target(relative) is not None:
         return False
-    if len(relative.parts) == 1:
-        return relative.as_posix() in PUBLIC_ROOT_FILES
-    return relative.parts[0] in PUBLIC_DIRS
+    return relative.as_posix() in PUBLIC_ROOT_FILES or (
+        bool(relative.parts) and relative.parts[0] in PUBLIC_DIRS
+    )
 
 
 def rewrite_beginner_href(href: str, source: Path) -> str:
@@ -1441,6 +1444,10 @@ def publication_identity(commit: str) -> dict[str, object]:
         Path("okf-estate-registry.json"),
         Path("okf-registry.json"),
         Path("registry/estate/index.html"),
+        Path("docs/public-bundle-access.html"),
+        Path("okf-public-access.json"),
+        Path(".well-known/okf.json"),
+        Path("llms.txt"),
     ):
         path = OUT / relative
         raw = path.read_bytes()

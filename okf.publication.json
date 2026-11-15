@@ -1,6 +1,6 @@
 {
   "schema": "okf-repository-publication-contract.v1",
-  "modified": "2026-11-11",
+  "modified": "2026-11-14",
   "locale": "en-GB",
   "time_zone": "Europe/London",
   "repository": {
@@ -143,6 +143,134 @@
       ],
       "limitations": [
         "Lifecycle publication scope is separate from a bundle's semantic status."
+      ]
+    },
+    {
+      "id": "analytical-data-v2-candidate",
+      "label": "Optional tabular v2 candidate and local preview",
+      "description": "Repository-authored, separately versioned contract, validator, bounded browser preview and synthetic fixtures; no source data acquisition.",
+      "kind": "mixed",
+      "paths": [
+        "profiles/analytical-data/v2/**",
+        "scripts/check_analytical_data_v2.py",
+        "apps/okf-explorer/src/lib/analytical/**",
+        "apps/okf-explorer/src/routes/inspect-data/**"
+      ],
+      "formats": [
+        "application/json",
+        "text/csv",
+        "text/markdown",
+        "text/x-python",
+        "text/typescript"
+      ],
+      "origin": "authored",
+      "authority": "editorial",
+      "snapshot_policy": "pinned-revision",
+      "inventory": {
+        "method": "pinned-source-register",
+        "manifest_path": "profiles/analytical-data/v2/profile.json",
+        "identity": [
+          "relative-path",
+          "source-version",
+          "sha256"
+        ]
+      },
+      "rights": {
+        "status": "approved",
+        "evidence": [
+          "https://github.com/chris-page-gov/okf-explorer/blob/main/LICENSE.md"
+        ],
+        "limitations": [
+          "Approval covers publishing repository-authored code and synthetic fixtures, not third-party source bodies or organisational adoption. The synthetic dataset deliberately retains unverified rights metadata as a teaching gap."
+        ]
+      },
+      "sensitivity": {
+        "status": "public-no-personal-data",
+        "assessment": "Synthetic observations only. User-selected files remain in browser memory and are not uploaded, persisted or returned by page tools.",
+        "evidence": [
+          "https://chris-page-gov.github.io/okf-explorer/docs/source-constraint-ledger.html"
+        ]
+      },
+      "extraction": {
+        "mode": "none",
+        "network_access": "prohibited",
+        "command_ids": [],
+        "limitations": [
+          "No source URL is fetched; validation reads explicit local files."
+        ]
+      },
+      "invalidates": [
+        "source",
+        "runtime",
+        "application",
+        "documentation",
+        "browser",
+        "release",
+        "deployment"
+      ],
+      "limitations": [
+        "Local experimental profile, not official UK policy or universal OKF core. Frozen RC.1 and historical trials are unchanged.",
+        "Browser selected-table checks do not replace full Python package/schema validation."
+      ]
+    },
+    {
+      "id": "dfe-public-ees-example",
+      "label": "Public DfE EES example pair",
+      "description": "Original public data CSV and EES metadata example linked from DfE guidance; used for the native paired reader.",
+      "kind": "structured-data-folder",
+      "paths": [
+        "apps/okf-explorer/static/examples/dfe-ees/**"
+      ],
+      "formats": [
+        "text/csv",
+        "application/json"
+      ],
+      "origin": "acquired",
+      "authority": "official",
+      "snapshot_policy": "pinned-revision",
+      "inventory": {
+        "method": "content-addressed-manifest",
+        "manifest_path": "apps/okf-explorer/static/examples/dfe-ees/source.json",
+        "identity": [
+          "relative-path",
+          "sha256"
+        ]
+      },
+      "rights": {
+        "status": "approved",
+        "evidence": [
+          "https://dfe-analytical-services.github.io/analysts-guide/statistics-production/ud.html",
+          "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
+        ],
+        "limitations": [
+          "Attribution retained for the public guide example. This does not assess rights to user-selected CSVs."
+        ]
+      },
+      "sensitivity": {
+        "status": "public-no-personal-data",
+        "assessment": "Fifteen illustrative aggregate example rows, four metadata definitions and public source attribution; no private research packet.",
+        "evidence": []
+      },
+      "extraction": {
+        "mode": "deterministic-local",
+        "network_access": "prohibited",
+        "command_ids": [
+          "build-app",
+          "build-site"
+        ],
+        "limitations": [
+          "Builds copy the retained public examples; they do not reacquire data or upload local files."
+        ]
+      },
+      "invalidates": [
+        "source",
+        "documentation",
+        "runtime",
+        "browser",
+        "deployment"
+      ],
+      "limitations": [
+        "Pair inspection is separate from the DfE screener and the candidate analytical-package validator."
       ]
     }
   ],
@@ -492,6 +620,54 @@
           "check-remote-mcp",
           "test-remote-mcp"
         ]
+      },
+      {
+        "path": "okf-public-access.json",
+        "role": "registry-projection",
+        "plane": "runtime",
+        "required": true,
+        "build_command_ids": [
+          "build-public-access"
+        ],
+        "check_command_ids": [
+          "check-public-access"
+        ]
+      },
+      {
+        "path": ".well-known/okf.json",
+        "role": "registry-projection",
+        "plane": "runtime",
+        "required": true,
+        "build_command_ids": [
+          "build-public-access"
+        ],
+        "check_command_ids": [
+          "check-public-access"
+        ]
+      },
+      {
+        "path": "llms.txt",
+        "role": "other",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-public-access"
+        ],
+        "check_command_ids": [
+          "check-public-access"
+        ]
+      },
+      {
+        "path": "docs/public-bundle-access.md",
+        "role": "other",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-public-access"
+        ],
+        "check_command_ids": [
+          "check-public-access"
+        ]
       }
     ]
   },
@@ -521,13 +697,15 @@
         "tests/test_analytical_data_profile.py",
         "tests/test_analytical_data_trial.py",
         ".gitattributes",
-        "tests/test_analytical_live_trial.py"
+        "tests/test_analytical_live_trial.py",
+        "tests/test_analytical_data_v2.py"
       ],
       "command_ids": [
         "check-source-constraints",
         "check-analytical-data",
         "check-analytical-trial",
-        "check-analytical-live-trial"
+        "check-analytical-live-trial",
+        "check-analytical-data-v2"
       ]
     },
     {
@@ -556,7 +734,8 @@
     {
       "id": "runtime",
       "depends_on": [
-        "semantic"
+        "semantic",
+        "source"
       ],
       "paths": [
         "okf-bundle.json",
@@ -564,13 +743,18 @@
         "okf-estate-registry.json",
         "apps/okf-explorer/static/**",
         "explorer/**",
-        "scripts/build_okf_estate_registry.py"
+        "scripts/build_okf_estate_registry.py",
+        "okf-public-access.json",
+        ".well-known/okf.json",
+        "scripts/build_public_bundle_access.py"
       ],
       "command_ids": [
         "build-estate-registry",
         "check-estate-registry",
         "update-viewer",
-        "check-viewer"
+        "check-viewer",
+        "build-public-access",
+        "check-public-access"
       ]
     },
     {
@@ -585,11 +769,13 @@
         "PUBLICATION.md",
         "docs/**",
         "sources-index.md",
-        "AGENTS.md"
+        "AGENTS.md",
+        "llms.txt"
       ],
       "command_ids": [
         "check-lockstep",
-        "check-british-english"
+        "check-british-english",
+        "check-public-access"
       ]
     },
     {
@@ -1127,6 +1313,47 @@
         "network": "none",
         "mutates": "none",
         "timeout_minutes": 5
+      },
+      {
+        "id": "check-analytical-data-v2",
+        "kind": "check",
+        "planes": [
+          "source"
+        ],
+        "command": "uv run --locked python -m unittest tests.test_analytical_data_v2 -v",
+        "source": "profiles/analytical-data/v2/index.md",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "none",
+        "timeout_minutes": 5
+      },
+      {
+        "id": "build-public-access",
+        "kind": "build",
+        "planes": [
+          "runtime",
+          "documentation"
+        ],
+        "command": "uv run --locked python scripts/build_public_bundle_access.py",
+        "source": "docs/public-bundle-access.md",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "generated-only",
+        "timeout_minutes": 5
+      },
+      {
+        "id": "check-public-access",
+        "kind": "check",
+        "planes": [
+          "runtime",
+          "documentation"
+        ],
+        "command": "uv run --locked python scripts/build_public_bundle_access.py --check",
+        "source": "docs/public-bundle-access.md",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "none",
+        "timeout_minutes": 5
       }
     ]
   },
@@ -1153,7 +1380,8 @@
       "uk-government-apis/**",
       "legislation/**",
       "services/ask-okf-mcp/**",
-      "tools/context-archive/**"
+      "tools/context-archive/**",
+      "apps/okf-explorer/static/examples/dfe-ees/**"
     ],
     "documentation_paths": [
       "README.md",
@@ -1260,6 +1488,36 @@
             "kind": "link",
             "href_contains": "/profile/publication-method/v1/",
             "expected_text": "Read publication method profile v1"
+          }
+        ]
+      },
+      {
+        "id": "public-bundle-access",
+        "url": "https://chris-page-gov.github.io/okf-explorer/docs/public-bundle-access.html",
+        "expected_identity": "Public OKF bundle access",
+        "steps": [
+          "Open the public access directory and identify all twelve public producer entries.",
+          "Follow the machine-readable directory and project-relative discovery JSON.",
+          "Identify the text discovery index and the declared GitHub fallback limits."
+        ],
+        "checks": [
+          {
+            "id": "public-access-json",
+            "kind": "linked-json",
+            "href_contains": "okf-public-access.json",
+            "expected_schema": "okf-public-access-directory.v1"
+          },
+          {
+            "id": "project-discovery-json",
+            "kind": "linked-json",
+            "href_contains": "/.well-known/okf.json",
+            "expected_schema": "okf-public-access-directory.v1"
+          },
+          {
+            "id": "text-discovery",
+            "kind": "link",
+            "href_contains": "llms.txt",
+            "expected_text": "Text discovery index"
           }
         ]
       }

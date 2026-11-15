@@ -1,0 +1,119 @@
+{
+  "schema": "explorer-facet-touch-retry.v1",
+  "observed_at": "2026-11-14T23:49:52+00:00",
+  "source_head": "2a8fdc8b5ca8e74f339aa755c09c22b607c17a47",
+  "ci_run": "https://github.com/chris-page-gov/okf-explorer/actions/runs/43652229063",
+  "overall_conclusion": "cancelled after being superseded; not a passing run",
+  "observed_browser_steps": {
+    "ui": "548 passed, one flaky, 15 skipped across Chrome/Firefox/WebKit",
+    "foundry": "78 passed"
+  },
+  "failure": {
+    "test": "FACET-E2E-TOUCH keeps skewed proportional bars and usable controls at 1440px",
+    "engine": "webkit",
+    "file": "apps/okf-explorer/tests/ui/large-corpus-facets.spec.ts",
+    "line": 296,
+    "assertion": "Expanded population_type facet .facet-values .facet-value count",
+    "expected": 10,
+    "received": 0,
+    "timeout_ms": 10000,
+    "retry": "passed on retry"
+  },
+  "original_trace": "No browser trace artifact was listed for the completed cancelled run. The log prints a trace path; that is not retained trace evidence.",
+  "raw_ci_log_sha256": "59ada5a266830b681ecd88af2392d970ff6f9cf6563391c375f32a4c8eae9b54",
+  "investigation": {
+    "candidate_code": "c58478c7cb5b98e1905070f1a5dc3062c75e846f",
+    "unchanged_since_baseline": "FacetPanel, explore page and facet test bytes are identical to 5755359e",
+    "source_sha256": {
+      "apps/okf-explorer/src/lib/components/FacetPanel.svelte": "d0f452db001f71068b268c0ac626aafa1c7c1d67e4ead577ebb7e8a718727137",
+      "apps/okf-explorer/src/routes/explore/+page.svelte": "176784422ab820d2945d9a577fc91e4d0e8875fc5e7db55155104ed19759b2e6",
+      "apps/okf-explorer/tests/ui/large-corpus-facets.spec.ts": "f331a47eaf38805686cd3211176720dcf31611a501e97eafdce368b7d9d36753"
+    },
+    "isolated_webkit_repeats": 20,
+    "result": "20 passed in 42.0 seconds; cause not established, issue remains open",
+    "log_sha256": "0d576738c083099f102503b4d0602ef9a30865612e09ccce797134f9108f1da6",
+    "trace_inventory": [
+      {
+        "name": "large-corpus-facets-large--f41fb-d-usable-controls-at-1440px-webkit/trace.zip",
+        "sha256": "ea13ecd2c627939a861a11e39f792d7da0c4846a42cdbba3d1e60effea813afd"
+      },
+      {
+        "name": "large-corpus-facets-large--f41fb-d-usable-controls-at-1440px-webkit-repeat1/trace.zip",
+        "sha256": "598672c8819f4ba6aae8f7e235addb3513e71db90345eee6993e50bc64336e92"
+      },
+      {
+        "name": "large-corpus-facets-large--f41fb-d-usable-controls-at-1440px-webkit-repeat10/trace.zip",
+        "sha256": "ef5859786e18a2258382f89b7da092bfb83d24d37d34684f42242f51dff81ff0"
+      },
+      {
+        "name": "large-corpus-facets-large--f41fb-d-usable-controls-at-1440px-webkit-repeat11/trace.zip",
+        "sha256": "2b0e68945e98c9255b4c0834ad839702751e355f03c30ae41ab97c27dcec9f47"
+      },
+      {
+        "name": "large-corpus-facets-large--f41fb-d-usable-controls-at-1440px-webkit-repeat12/trace.zip",
+        "sha256": "46c5594f41c64c92971f63ba8c3f13a196447528d02aece3dbeb968a9c4b7ee2"
+      },
+      {
+        "name": "large-corpus-facets-large--f41fb-d-usable-controls-at-1440px-webkit-repeat13/trace.zip",
+        "sha256": "f7f4f3633deabf93270ee4c3e891470473a6a5f598ef49b7ca0d7bdbe66a6f3a"
+      },
+      {
+        "name": "large-corpus-facets-large--f41fb-d-usable-controls-at-1440px-webkit-repeat14/trace.zip",
+        "sha256": "538a4b76febc56182fc65e9551ba55456e11ea58718d08f395837a7f48cce4db"
+      },
+      {
+        "name": "large-corpus-facets-large--f41fb-d-usable-controls-at-1440px-webkit-repeat15/trace.zip",
+        "sha256": "00d953b3745a8674067166f1a26001a0df0cd287291fac66ff1ec51628333e6c"
+      },
+      {
+        "name": "large-corpus-facets-large--f41fb-d-usable-controls-at-1440px-webkit-repeat16/trace.zip",
+        "sha256": "2f3655d02914e6a069ba7c5d3f5df83041c1b6603c65a5797f717b6343e76098"
+      },
+      {
+        "name": "large-corpus-facets-large--f41fb-d-usable-controls-at-1440px-webkit-repeat17/trace.zip",
+        "sha256": "4007d493e9f0875ecc39010763ba938e09064ad34f383937415577c16c7c2155"
+      },
+      {
+        "name": "large-corpus-facets-large--f41fb-d-usable-controls-at-1440px-webkit-repeat18/trace.zip",
+        "sha256": "54d95a8c7b5cd67e97eda676d2437a8b9b3f3c4d1ea5d1f981915baf396b7c2a"
+      },
+      {
+        "name": "large-corpus-facets-large--f41fb-d-usable-controls-at-1440px-webkit-repeat19/trace.zip",
+        "sha256": "a079963bfe441f05719d68b68ee41f48676384759c5be7c9f4622e26c976fb91"
+      },
+      {
+        "name": "large-corpus-facets-large--f41fb-d-usable-controls-at-1440px-webkit-repeat2/trace.zip",
+        "sha256": "015ef2cf982cefb739af43f5e5b66f0c1d3e1fd9010f6af61bc0b5e905e4c0bb"
+      },
+      {
+        "name": "large-corpus-facets-large--f41fb-d-usable-controls-at-1440px-webkit-repeat3/trace.zip",
+        "sha256": "915003c7e72536e7c19be145f9c97d679f6b1f400a8faf4900aaebef9e90da3a"
+      },
+      {
+        "name": "large-corpus-facets-large--f41fb-d-usable-controls-at-1440px-webkit-repeat4/trace.zip",
+        "sha256": "659f0bb96f3ce6feeda19a2eb75f5856f18460e35b15574a671b6a058b5daad0"
+      },
+      {
+        "name": "large-corpus-facets-large--f41fb-d-usable-controls-at-1440px-webkit-repeat5/trace.zip",
+        "sha256": "78ca77e4b41151dda20b09b7f4c9bd270f535f55b7651171cbdbe3778f54e4f2"
+      },
+      {
+        "name": "large-corpus-facets-large--f41fb-d-usable-controls-at-1440px-webkit-repeat6/trace.zip",
+        "sha256": "4a9a3a532b5c8b6e707c0e8d96a436be331bf299b21379d3c5c465d307f71a7c"
+      },
+      {
+        "name": "large-corpus-facets-large--f41fb-d-usable-controls-at-1440px-webkit-repeat7/trace.zip",
+        "sha256": "3b4a18e87ac335935d39fae3a414ab6df4627cd7dae2d10517f6b885281133bf"
+      },
+      {
+        "name": "large-corpus-facets-large--f41fb-d-usable-controls-at-1440px-webkit-repeat8/trace.zip",
+        "sha256": "80125bf813c183bc2efb764a1434093fb55dac57e6d808c48f97e44e582e0138"
+      },
+      {
+        "name": "large-corpus-facets-large--f41fb-d-usable-controls-at-1440px-webkit-repeat9/trace.zip",
+        "sha256": "224ba00d69935a98f841d5f69d20540ade9495db10a09d1277f8cdf15d81d539"
+      }
+    ]
+  },
+  "scope": "Synthetic fixture only; no WCC acquisition or production control/independent acceptance. No speculative product change or timeout increase."
+}

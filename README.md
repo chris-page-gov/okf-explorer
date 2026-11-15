@@ -20,6 +20,7 @@ access page tools, links or files. Explorer does not itself run an AI model.
 | --- | --- |
 | Get oriented | [Start here](docs/onboarding/index.md) |
 | Find a relevant collection | [Example catalogue](docs/onboarding/examples.md) |
+| Find exact web and GitHub bundle routes | [Public bundle access directory](docs/public-bundle-access.md) |
 | Connect evidence to your tools | [AI access routes](docs/ai-okf-usage.md) |
 | Find an answer, review a subject, work or learn | [Audience journeys](docs/onboarding/audience-journeys.md) |
 | Create a small collection | [First bundle: files, commands and expected answers](docs/onboarding/first-bundle.md) |
@@ -123,3 +124,13 @@ Third-party sources retain their own rights and attribution.
 See [governed Pages publication](docs/development.md#github-pages).
 
 For Ask OKF ambiguity and input limits, see [alternative meanings and bounded loading](docs/context-alternatives-and-bounded-loading.md).
+
+## Review on 14 November 2026
+
+[Feature, plan and acceptance status](docs/feature-status.md) distinguishes shipped code, experimental profiles, proposed functionality and independent acceptance. Standards/source consolidation is producer-compatible; typed datetime, richer spatial rules and CSV previews need a separately versioned optional contract. WCC follow-up remains parked.
+
+The [unreleased v2 candidate and local CSV preview](docs/analytical-data-v2-preview.md) add bounded datetime/spatial checks on a separate versioned route. Frozen RC.1 and its historical trial evidence remain unchanged; no automatic estate migration or WCC follow-up is performed.
+
+## Main assurance — 15 November 2026
+
+The reviewed inventory and optional analytical v2 changes are merged. A manual **OKF Explorer CI** run uses the planner’s explicit `--full` option so unchanged main still checks every declared plane and job. Pull requests retain impact routing. Full registered browser coverage keeps conditional external-corpus skips explicit; standalone producer integration, local Firefox startup, help/facet intermittency and independent acceptance remain separate.

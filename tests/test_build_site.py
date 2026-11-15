@@ -20,6 +20,18 @@ import build_site  # noqa: E402
 
 
 class BuildSiteTests(unittest.TestCase):
+    def test_nested_root_file_keeps_its_published_discovery_link(self) -> None:
+        self.assertTrue(build_site.repository_source_is_copied_to_site(Path(".well-known/okf.json")))
+        self.assertFalse(build_site.repository_source_is_copied_to_site(Path(".well-known/unlisted.json")))
+        self.assertEqual(
+            "../.well-known/okf.json",
+            build_site.rewrite_published_href(
+                "../.well-known/okf.json",
+                ROOT / "docs/public-bundle-access.md",
+                Path("docs/public-bundle-access.html"),
+            ),
+        )
+
     def test_docs_fingerprint_tracks_transitive_reading_sources_only(self) -> None:
         with tempfile.TemporaryDirectory(prefix="okf-docs-fingerprint-") as temporary:
             root = Path(temporary)
@@ -140,11 +152,18 @@ class BuildSiteTests(unittest.TestCase):
                 "okf.publication.json",
                 "okf-estate-registry.json",
                 "okf-registry.json",
+                "okf-public-access.json",
+                ".well-known/okf.json",
+                "llms.txt",
             ):
+                (output / name).parent.mkdir(parents=True, exist_ok=True)
                 (output / name).write_bytes((ROOT / name).read_bytes())
             route = output / "registry" / "estate" / "index.html"
             route.parent.mkdir(parents=True)
             route.write_text("<!doctype html><title>Registry</title>\n")
+            access_route = output / "docs/public-bundle-access.html"
+            access_route.parent.mkdir(parents=True)
+            access_route.write_text("<!doctype html><title>Public OKF bundle access</title>\n")
             with mock.patch.object(build_site, "OUT", output):
                 identity = build_site.publication_identity(commit)
                 self.assertEqual(
@@ -157,6 +176,8 @@ class BuildSiteTests(unittest.TestCase):
                 self.assertIn("okf.publication.json", materials)
                 self.assertIn("okf-estate-registry.json", materials)
                 self.assertIn("registry/estate/index.html", materials)
+                for name in ("docs/public-bundle-access.html", "okf-public-access.json", ".well-known/okf.json", "llms.txt"):
+                    self.assertEqual(materials[name]["sha256"], hashlib.sha256((output / name).read_bytes()).hexdigest())
                 build_site.write_publication_identity(commit)
                 receipt = build_site.publication_identity_receipt()
         self.assertIsNotNone(receipt)

@@ -1,0 +1,77 @@
+{
+  "schema": "analytical-data-v2-candidate-assurance.v1",
+  "checkpoint": "2026-11-14T23:10:00Z",
+  "implementation_commit": "4c581be74fe2501c7ba574bbefdad85f3a5b9e54",
+  "semantic_contract_correction_commit": "37e8bbf49c7745d1bd0e3d1117e5795b92dca7a3",
+  "local_results": {
+    "app": "928 passed; deterministic 46-material build passed",
+    "python_before_contract_change": "588 passed; this did not cover the later generated-contract edit",
+    "ci_4c581be": "Python failed the reviewed semantic-preset equality assertion; retained as an actual failure",
+    "corrected_contract_and_frozen_trials": "48 passed",
+    "python_after_correction": "588 passed",
+    "svelte": "0 errors and 0 warnings",
+    "sbom": "141 pinned package components passed",
+    "complete_ui_chrome_webkit": "366 passed; 12 external-input skips",
+    "complete_foundry_chrome_webkit": "52 passed",
+    "new_preview_journeys": "12 passed, including asynchronous clearing, no uploads/storage, inert text, checksums, typed keys, keyboard/mobile and automated accessibility",
+    "site": "414 documentation pages and 10259 links validated; 46 app materials; no deployment claimed"
+  },
+  "help_scroll_investigation": {
+    "original_result": "Earlier baseline Chrome run failed the narrow help PageDown scrollTop assertion; affected rerun passed",
+    "repeat_result": "20 isolated narrow-layout Chrome repetitions passed; original cause not established and issue not closed",
+    "trace_retention": "New repetitions use an owned unique output directory. The initial failing trace was superseded by later local test output; its assertion/log digest remains in the baseline review record. No missing trace is represented as retained."
+  },
+  "ci": "Exact corrected-head CI is pending at this checkpoint; later PR checks are authoritative for their own revision. Local Firefox cannot start its profile and is not a local pass.",
+  "acceptance": "Structural, integrity and browser evidence are separate from independent domain/rights, producer adoption, representative analyst and human accessibility acceptance.",
+  "wcc": "Live acquisition, probing, coverage work and remediation remain parked. Frozen offline regressions only.",
+  "publication": "Draft PRs only; no main merge, tag, estate-wide migration or deployment.",
+  "upstream_integration": {
+    "observed_at": "2026-11-14T23:37:16+00:00",
+    "main_commit": "3f2119645a8daff0f173e56a4287a26593c39c78",
+    "candidate_code_commit": "5460ef56e70b081e00adc5ebb139850caadc0549",
+    "upstream_prs": [
+      206,
+      207,
+      210
+    ],
+    "resolution": "Preserved both publication source families and reviewed commands; registered terminal suite population is 25, including EES and v2 preview. Both local data routes remain distinct.",
+    "svelte": "0 errors, 0 warnings",
+    "app": "946 passed; 53 deterministic app materials",
+    "python": "595 passed",
+    "sbom": "141 pinned components passed",
+    "registered_terminal_browsers": "370 Chrome/WebKit UI passed, ten external-corpus skips; 52 Foundry passed. Standalone source-bound producer integration is outside this registered runner and is recorded separately.",
+    "standalone_source_bound_integration": "requires DWP_PASSAGE_REVIEW_DIR; unavailable in this run; two Chrome/WebKit skips, not producer acceptance",
+    "site": {
+      "pages": 417,
+      "links": 10391,
+      "files": 10883,
+      "bytes": 832674192,
+      "deployment": false
+    },
+    "app_tree_sha256": "be0317fedb78907c28ce436d0a13a5d7b1b8ab97a79a2958475cb6ad4f3b16a5",
+    "app_manifest_sha256": "a41c932553247ca0a99c491d674cb23f369ccfc86ee71e45c560a19dae9b4cdb",
+    "ci": "Final integration PR CI follows this documentation checkpoint; read exact-head PR checks. The earlier 2a8fdc8 browser run was still pending at this observation.",
+    "logs": [
+      {
+        "name": "analytical-upstream-app.log",
+        "sha256": "252776394e8ea1e35f38a5c71f882d646d8e3278ea7604c2b9ba8a87cb7457bc"
+      },
+      {
+        "name": "analytical-upstream-python.log",
+        "sha256": "e347e94e0a535e2c73205210b49fc758d9d10f871588f8e2618da9b63c841594"
+      },
+      {
+        "name": "analytical-upstream-site.log",
+        "sha256": "d237f792038e75b4ce11e212a2e1000389f56dd406217fb79575a8d30cbad054"
+      },
+      {
+        "name": "analytical-upstream-full-browser.log",
+        "sha256": "4fcef434875b8e9d19994cfa114a1a89c210b8fe295a1bc21f49b0640ef975d3"
+      }
+    ]
+  },
+  "additional_browser_retry": {
+    "evidence": "docs/validation/facet-touch-retry-2026-11-14.json",
+    "result": "Superseded 2a8fdc8 CI had one WebKit facet count retry; 20 current-code isolated repetitions passed; cause unresolved and original trace artifact unavailable. Overall old run cancelled, not passed."
+  }
+}

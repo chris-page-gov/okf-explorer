@@ -48,10 +48,12 @@ audience and every earlier deployment and failure receipt.
    its receipt census rejects an overlooked later deployment or observation.
 2. Keep an unmatched deployment labelled as awaiting verification. Preserve
    source, engine, deployed runtime and verifier identities separately.
-3. Explorer's dated observation remains valid history. To add a new observation,
-   copy only approved public receipts into a new dated directory and record
-   their exact DWP commit, paths, byte counts and SHA-256 digests. Update the
-   generator's declared receipt location and paths in the same reviewed change.
+3. Preserve the 25 September 2026 observation in its existing dated directory.
+   The 14 November 2026 observation has its own receipts and immutable DWP
+   commit. To add a later observation, copy only approved public receipts into
+   a new dated directory and record their exact DWP commit, paths, byte counts
+   and SHA-256 digests. Update the generator's declared receipt location and
+   paths and pinned source commit in the same reviewed change.
 4. Refresh the marked blocks, then compare their inputs to the original Git
    objects. Neither command contacts the service or calls a model:
 

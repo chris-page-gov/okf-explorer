@@ -95,6 +95,7 @@
       <a href="./docs/onboarding/index.html">Start here</a>
       <a href="#bundles">Examples</a>
       <a href="#people">People</a>
+      <a href="./data/">Inspect CSV data</a>
       <a href="./docs/beginners/index.html">Beginner guide</a>
     </nav>
     <a class="header-action" href={workedExampleHref}>Open worked example</a>
@@ -107,6 +108,8 @@
   </nav>
 
   <main>
+  <p class="local-data-link"><a href="./inspect-data/">Inspect a local CSV package</a> — a bounded, read-only preview with explicit profile and data gaps.</p>
+
     <section class="hero" id="start" aria-labelledby="hero-title">
       <div class="hero-copy">
         <p class="eyebrow">A practical project for curious people</p>

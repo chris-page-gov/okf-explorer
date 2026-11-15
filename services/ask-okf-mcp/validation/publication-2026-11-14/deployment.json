@@ -1,0 +1,45 @@
+{
+  "schema": "okf-compact-delivery-deployment.v1",
+  "service_version": "0.8.0",
+  "source_commit": "7eeded763042ddd0070f4fed834c6074149e8e2f",
+  "runtime_commit": "e6af80e6759c1d7b59dbfc9b9cf31a9c48ad62f1",
+  "runtime_worker_sha256": "c5cf076b16e254657396047636709720931fcfc5220c46f8ffdbfa25982ddaa1",
+  "build_receipt_sha256": "64e7f6f345491a64ee7958dfd6744ca3310816e746a0e2b19631112c3713b47b",
+  "graph_evidence": {
+    "producer_commit": "2e12f20cfd20e62a67197e7aade4ea612b873684",
+    "graph_sha256": "ff51d877ed13f7089e7512224a4a8dcd356d0ae8e5964fe33349edf0a263b426",
+    "engine_id": "urn:okf:graph-engine:sha256:c75b01d322236e4c13fc1ad72a7e3424203dbae2413c4e6be64b960d8566cb42"
+  },
+  "review": {
+    "pull_request": "https://github.com/chris-page-gov/okf-explorer/pull/204",
+    "merge_commit": "37c0fa81ca494e226acb52d9ed90835f358a6553",
+    "reviewed_runtime_inputs_match_merged_tree": true
+  },
+  "site_source_commit": "9541793aaded2900b321783ef4fb427020097125",
+  "site_version_id": "appgprj_6aaa652874f48191a8281478fe48e936~appgver_515d18b4ee0c819198f0612f0a0823c2",
+  "site_version_number": 13,
+  "archive_storage": {
+    "archive_format": "tar",
+    "sediment_file_id": "file_000000007c988210b7ca5431a3ad2ad4",
+    "content_hash": "sha256:4964f79c7edd8814e37de7dca39c4a4b7b6e09c216e477162f4aed95d4ed42a1",
+    "size_bytes": 13496320,
+    "file_count": 2
+  },
+  "deployment": {
+    "id": "appgdep_6af8b90d92d48191a996ca5beb2254f1",
+    "project_id": "appgprj_6aaa652874f48191a8281478fe48e936",
+    "title": "Ask OKF evidence service",
+    "version_id": "appgprj_6aaa652874f48191a8281478fe48e936~appgver_515d18b4ee0c819198f0612f0a0823c2",
+    "type": "publish",
+    "status": "succeeded",
+    "url": "https://ask-okf.crpage.chatgpt.site",
+    "has_mcp": true,
+    "screenshot_asset_pointer": null,
+    "provider_deployment_id": "site---6aaa652874f48191a8281478fe48e936",
+    "failure_message": null,
+    "env_set_revision": 0,
+    "updated_at": "2026-11-14T19:40:08.549506+00:00"
+  },
+  "boundary": "The exact locally tested Worker and two-file MCP archive are bound to the hosting publication record. The public health endpoint does not independently attest Worker bytes. Legacy source and graph producer identities are separate. No legal, specialist, native-client or Voice acceptance follows from publication.",
+  "archive_sha256": "sha256:86763fa28cd1000440e9edca15d8495e173372c94c965e11ece7f72bb3557b99"
+}

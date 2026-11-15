@@ -29,8 +29,8 @@ is an unreviewed research proposal and does not determine legal applicability.
 
 The identical graph handler is available at `/graph/mcp` for anonymous public
 SDK verification. Sites manages its native plugin connection at `/mcp` when
-the hosting capability is enabled. These two access routes have separate live
-checks; the public SDK route does not attest native plugin discovery.
+the hosting capability is enabled. The two access routes require separate
+live checks; the public SDK route does not attest native plugin discovery.
 
 The producer evaluation covers all eight authored personas and 21 interest
 areas: 263/263 persona targets, 35/35 custody targets and 4/4 UC targets. A
@@ -41,6 +41,11 @@ actual connected-client behaviour, legal completeness or specialist acceptance.
 The [local preparation record](validation/candidates/graph-0.8.0-2026-11-14/README.md)
 retains the 114 passing service tests, one existing skip and four passing Chrome
 acceptance tests with their exact build receipt and scope.
+
+The DWP [graph connection guide](https://github.com/chris-page-gov/okf-dwp/blob/main/docs/graph-evidence-connection.md)
+and [graph service status](https://github.com/chris-page-gov/okf-dwp/blob/main/docs/graph-service-publication.md)
+track graph retrieval and native plugin observations separately. The legacy SDK
+receipt below does not establish graph-suite or native plugin acceptance.
 
 Release preparation reads exact Git blobs from the reviewed DWP commit:
 
@@ -109,25 +114,26 @@ tool metadata after publication and test the intended client session using the
 [connection guide](../../docs/remote-mcp.md#connect-in-chatgpt).
 
 <!-- ask-okf-publication:start -->
-## Recorded public deployment: 0.7.0
+## Recorded public deployment: 0.8.0
 
 For the **latest recorded deployment and verification**, use the shared
 [DWP service publication status](https://github.com/chris-page-gov/okf-dwp/blob/main/docs/service-publication.md). This dated observation is not a live health check.
 
-On 25 September 2026, the [hosting record](https://github.com/chris-page-gov/okf-dwp/blob/0858f6318188f7812eaff78fce81bda7a5531f5b/validation/compact-delivery/v0.7.0/deployment.json)
-records service **0.7.0** as deployed. The separate
-[public SDK observation](https://github.com/chris-page-gov/okf-dwp/blob/0858f6318188f7812eaff78fce81bda7a5531f5b/validation/compact-delivery/v0.7.0/sdk/attempt-01/observation.json)
-passed **12 evidence cases and 135 requests**,
+On 14 November 2026, the [hosting record](https://github.com/chris-page-gov/okf-dwp/blob/15268c562c3f00d47577f71b62702daca5a89a98/validation/compact-delivery/v0.8.0/deployment.json)
+records service **0.8.0** as deployed. The separate
+[public SDK observation](https://github.com/chris-page-gov/okf-dwp/blob/15268c562c3f00d47577f71b62702daca5a89a98/validation/compact-delivery/v0.8.0/sdk/attempt-01/observation.json)
+passed **12 evidence cases**, including **10 approved source/engine pairs**,
+with **135 requests**,
 reconstructing complete packages from bounded reads. It recorded
-11,974,541 received bytes, no automatic retries and no model calls.
+11,975,076 received bytes, no automatic retries and no model calls.
 
 | Identity | Recorded value |
 | --- | --- |
 | DWP source | `7eeded763042ddd0070f4fed834c6074149e8e2f` |
 | Context engine | `d6930bbcddaab616deec002d9e6efff6e3aae953` |
-| Deployed runtime | `31d8c3436ed289bfd694b7889a9e5edea834ea8b` |
-| SDK verifier | `31d8c3436ed289bfd694b7889a9e5edea834ea8b` |
-| Local Worker SHA-256 | `9c7f31dc62e40b69de10a22aa7685becb16bbe22531d6ee78a9bbc357adfc680` |
+| Deployed runtime | `e6af80e6759c1d7b59dbfc9b9cf31a9c48ad62f1` |
+| SDK verifier | `e6af80e6759c1d7b59dbfc9b9cf31a9c48ad62f1` |
+| Local Worker SHA-256 | `c5cf076b16e254657396047636709720931fcfc5220c46f8ffdbfa25982ddaa1` |
 
 The hosting record and public health report have different scopes: health does not
 independently attest hosted Worker bytes. Delivery checks do not establish complete

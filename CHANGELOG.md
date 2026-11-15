@@ -1,7 +1,53 @@
 # Changelog
 
+## Main assurance — 15 November 2026
+
+- Merge the reviewed inventory/v2 candidate without changing its file tree. Keep experimental adoption and all recorded gaps explicit.
+- Make manual CI request full declared coverage on unchanged main. Add empty-diff and no-narrowing regressions without changing the frozen profile/schema or PR impact routing.
+
+## Unreleased — browser retry evidence
+
+- Retain the superseded WebKit facet-count retry, unavailable original trace and twenty passing synthetic repetitions. Keep the cause open and separate from the help-scroll issue; no speculative UI or timeout change.
+
+## Unreleased — optional tabular v2 candidate
+
+- Keep the generated core semantic contract at its reviewed preset; declare optional v2 inputs in their separate publication/data contract.
+
+- Add a separately versioned 2.0.0-rc.1 profile/validator for exact typed datetimes and declared spatial axes, units, extents and vertical-reference gaps. Keep RC.1 and its validator bytes frozen.
+- Add a bounded read-only local CSV preview with integrity, typed-key/state checks, escaped literal display, no uploads/storage or page tools, and a synthetic library-observations example.
+- Register the browser journey in full terminal assurance; retain Firefox startup, intermittent help scrolling, formal browser schema parity and independent adoption/accessibility gaps.
+
+## Unreleased — feature and plan review
+
+- Reconcile local Explorer with GitHub main and inventory implemented, experimental, proposed, deferred and unverified capabilities across maintained plans.
+- Record standards/public companion compatibility, frozen Analytical Data RC.1 boundaries and remaining datetime, spatial and preview work.
+- Retain complete check evidence, external-input skips, the reproduced intermittent Chrome help failure and the local Firefox startup blocker separately.
+
 ## Unreleased
 
+- Keep links to explicitly published nested files, including
+  `.well-known/okf.json`, on the Pages site. The public-directory browser gate
+  exposed the renderer's incorrect GitHub rewrite; retain that same-origin gate
+  and cover the nested file-list rule with a regression test.
+
+- Add a public access directory for all twelve public `okf-*` producers,
+  with exact descriptors, semantic entrypoints and matching pinned GitHub
+  alternatives. Publish supplemental `llms.txt` and project-relative
+  `.well-known/okf.json` discovery files. Keep Reader admission and Voice
+  acceptance separate; record the ONS generated-only and living snapshot limits.
+  Bind the new files into deployment identity and verify the published
+  directory and JSON links through the existing hosted Chrome gate.
+
+- Read native DfE EES data CSVs with their metadata sidecars in a local browser
+  page. Preserve source names and values, expose labels, units, precision and
+  exact filters, distinguish special symbols from zero, and export a hash-bound
+  inspection report. Include the attributed public DfE example and bounded
+  parser/Chrome checks. The separate candidate analytical profile is unchanged.
+
+- Record the successful 0.8.0 Sites deployment and public legacy SDK observation
+  in a new immutable dated directory. Preserve the September 0.7.0 receipt and
+  distinguish the legacy source/engine replay from pending graph-specific
+  public SDK or native plugin evidence.
 - Prepare Ask OKF 0.8.0 with two bounded graph-guided evidence tools at `/mcp`,
   exact producer admission and complete source-text verification. Retain the
   historical three-tool endpoint and frozen packages. Local source-retrieval
