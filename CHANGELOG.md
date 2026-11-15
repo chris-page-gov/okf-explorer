@@ -2,7 +2,7 @@
 
 ## TOM handling notice — 15 November 2026
 
-- Record Restricted — HMG only for the TOM and all derivatives in REM-05. Preserve the original OFFICIAL marking and keep only handling metadata in this public inventory.
+- Record Restricted — HMG only for the TOM and all derivatives in REM-05. Preserve the original OFFICIAL marking and keep only handling metadata in this public inventory. Mark the earlier scoped AI/ORUK Reader receipt historical after the changed producer digests; broader proof stays open.
 - Record user approval for the existing private storage and collaborators. Require separate approval for new recipients/destinations or wider circulation; private storage or government sign-in alone does not establish eligibility. Retain exact restricted Reader/package proof as an outstanding gate. Protected contents/findings remain excluded from public outputs. WCC stays parked.
 
 ## Inventory clarification — 15 November 2026
