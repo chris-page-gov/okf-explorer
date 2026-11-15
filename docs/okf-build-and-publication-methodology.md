@@ -207,3 +207,7 @@ edited by hand.
 
 Do not copy a neighbouring repository's commands, scope claims or publication
 mode merely because its data looks similar.
+
+## Complete manual main runs
+
+A `workflow_dispatch` invocation of **OKF Explorer CI** passes `--full` to the impact planner. This selects all declared profile planes, fixtures and jobs even when main has no changed paths, while keeping unknown-path failure distinct from an intentional full request. Explicit narrowing cannot reduce a full run. PRs continue to use impact selection; conditional fixture skips and actual browser engines remain separate evidence.
