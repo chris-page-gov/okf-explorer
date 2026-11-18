@@ -21,8 +21,10 @@ change tied to the same source and baseline hashes. `added_spans` explicitly
 names source bytes outside the old passage. Preview rejects stale identities,
 invalid spans, lost or overlapping bytes, undeclared additions, changed text
 and undeclared joiners. It keeps failed previews visible and never edits the
-producer's files. The four impact scales retain supplied baseline counts and
-report the local unit delta. Full document and corpus after-counts remain
+producer's files. A passed preview displays the verified before and after
+text for the edited correction. Its impact names the retained, retired and
+introduced unit IDs in that case. The four impact scales retain supplied
+baseline counts and report the local unit delta. Full document and corpus after-counts remain
 `unknown` because this isolated preview has no validated catalogue of other
 units or IDs; added spans may also overlap untouched units. Supplied producer
 case evidence for dependencies, discovery records, question packages and

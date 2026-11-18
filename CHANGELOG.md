@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased — beginner life-course example
+
+- Follow a fictional person through ten public-service events in England.
+  Trace one relationship to its source and practise modelling, recording and
+  reviewing claims with three worked exercises available without JavaScript.
+- Compare the verified passages before and after an edited correction in
+  the Evidence workbench. Record retained, retired and introduced unit IDs
+  within the reviewed case.
+
 ## Unreleased — search and source inspection
 
 - Evaluate the effective sort when the canonical route omits its default.

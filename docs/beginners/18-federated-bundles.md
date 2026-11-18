@@ -196,6 +196,10 @@ It adds a controlled discovery layer above them.
 
 ## Continue
 
+The [worked school application](25-life-course-worked-example.md#trace-one-relationship-to-its-evidence)
+shows how to attribute an assertion within a single bundle before linking
+between publishers.
+
 Read [Federated OKF bundles](../federated-bundles.md) and the
 [federation profile](../../profiles/federation/v1/index.md) for the exact
 contract.

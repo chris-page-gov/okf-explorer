@@ -266,5 +266,8 @@ semantic graph as claims about the world.
 
 ## Next
 
+Practise identifying entities and writing a directed relationship in the
+[life-course exercises](25-life-course-worked-example.md#exercise-1-recognise-entities-and-concepts).
+
 [The semantic web and ontologies](07-semantic-web-and-ontologies.md) introduces
 the standards used to give graph statements shared, machine-readable meaning.

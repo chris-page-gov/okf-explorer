@@ -33,6 +33,9 @@ test('navigates 28 source-bound cases, previews a split and exports review evide
   }
   await page.getByRole('button', { name: 'Preview correction' }).click();
   await expect(page.getByText('Preview passed')).toBeVisible();
+  const comparison = page.getByRole('region', { name: 'Verified correction comparison' });
+  await expect(comparison.locator('section').first().locator('pre')).toHaveText(/Alpha\s+Beta/);
+  await expect(comparison.locator('section').last().locator('pre')).toHaveText(['Alpha', 'Beta']);
   await page.getByLabel('Reviewer').fill('A reviewer');
   await page.getByLabel('Review date').fill('2026-09-25');
   await page.getByLabel('Reason').fill('Check against source.');
@@ -47,6 +50,7 @@ test('navigates 28 source-bound cases, previews a split and exports review evide
   await page.getByRole('button', { name: 'Preview correction' }).click();
   await expect(page.getByText('Preview rejected')).toBeVisible();
   await expect(page.getByText(/Stale source or baseline/)).toBeVisible();
+  await expect(comparison).toHaveCount(0);
   await correction.fill(await original);
   await expect(page.getByText('Preview rejected')).toBeVisible();
   await expect(page.getByText(/result is retained for comparison/)).toBeVisible();
