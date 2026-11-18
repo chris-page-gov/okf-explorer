@@ -19,3 +19,23 @@ it('uses declared sections independently of route prefixes and slashless IDs', (
 it('uses the normaliser root section when no section is declared', () => {
   expect(smallFacetValues({ id: 'record/a', title: 'A' }, 'section')).toEqual(['root']);
 });
+
+it('counts high-cardinality facets without rescanning the scope for each value', () => {
+  let reads = 0;
+  const nodes: OkfNode[] = Array.from({ length: 200 }, (_, index) => ({
+    id: `node-${index}`,
+    title: `Record ${index}`,
+    get type() {
+      reads += 1;
+      return `Type ${index}`;
+    }
+  }));
+  const scope = nodes.slice(10, 110);
+  const rows = smallFacetRows(nodes, scope, {}, 'type');
+
+  expect(rows).toHaveLength(200);
+  expect(rows.filter(row => row.count === 1)).toHaveLength(100);
+  expect(rows.find(row => row.value === 'Type 10')).toMatchObject({ count: 1, highlighted: 0 });
+  expect(rows.find(row => row.value === 'Type 0')).toMatchObject({ count: 0, highlighted: 0 });
+  expect(reads).toBeLessThanOrEqual(nodes.length + scope.length);
+});

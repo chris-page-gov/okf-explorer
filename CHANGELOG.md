@@ -1,7 +1,16 @@
 # Changelog
 
+## Unreleased — sourced Hansard dates and summaries
+
+- Show contribution timecodes, section markers and source item positions
+  separately. Preserve day precision when only the sitting date is known.
+- Show producer-supplied summaries beside the exact Hansard source link and
+  retain keyboard focus when switching card sides.
+
 ## Unreleased — Explorer navigation
 
+- Keep long producer facet labels compact when folded, and count facet
+  membership in one pass so the full Hansard walkthrough remains responsive.
 - Restore local result browsing after unfolding a group. Clear the facet
   summary and its row height when the selection is cleared.
 

@@ -91,7 +91,9 @@ Expected behaviour:
 - If the facet needs full record hydration, it should show a loading state in
   the facet body and then show values without requiring a second click.
 - Only the open facet renders its values. Closed facets show counts and any
-  current selection. Clearing a selection leaves its controls in place.
+  current selection. Long labels take up at most two lines while folded.
+  Open the facet to read the full label. Clearing a selection leaves its
+  controls in place.
 - High-cardinality facets expose an in-facet search box and paged values.
 - A plain click on a strip segment or value toggles its highlight. The URL
   retains the shared selection. Ctrl-click or Cmd-click enables multiple values.
@@ -247,6 +249,11 @@ Expected behaviour:
 - In Reader, the current record and the scope of the browse count are shown
   separately. Use **Copy link to this view** to share the view and selection
   of a hosted bundle.
+- Hansard cards show an editorial summary when the producer supplies one for
+  the exact contribution. **Read in Hansard** opens the official contribution
+  from either side of the card. In Timeline, contribution times, section
+  markers, sitting dates and capture dates have distinct labels. Within a
+  section, untimed contributions keep their source position.
 - **Back to start** returns to the loaded bundle's opening view. Use
   **Clear search and selections** to keep your view while clearing your
   exploration.

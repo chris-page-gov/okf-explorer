@@ -207,10 +207,13 @@ test.describe('large-corpus facet interaction contract', () => {
   for (const width of [1440, 650, 390, 320]) {
     test(`FACET-E2E-DENSITY keeps folded colour bars compact and accessible at ${width}px`, async ({ page }) => {
       await page.setViewportSize({ width, height: 900 });
-      await openOnsFacetFixture(page, [], { skewedCounts: true });
+      const longLabel = 'Programmes, reviews and technology';
+      await openOnsFacetFixture(page, [], { skewedCounts: true, populationFacetLabel: longLabel });
       if (width < 1100) await page.getByRole('navigation', { name: 'Workspace panels' }).getByRole('button', { name: /^Search & (facets|details)$/ }).click();
       const facet = facetSection(page, 'population_type');
       const toggle = facet.locator('.facet-toggle');
+      await expect(toggle).toHaveAccessibleName(/^Programmes, reviews and technology/);
+      await expect(toggle.locator('strong')).toHaveAttribute('title', longLabel);
       await expect(toggle).toHaveAttribute('aria-expanded', 'false');
       await expect(toggle.locator('.facet-disclosure')).toHaveText('▸');
       await toggle.focus();
@@ -252,6 +255,8 @@ test.describe('large-corpus facet interaction contract', () => {
       await rare.press('Escape');
       await expect(summary).toBeFocused();
       await expect(rare).toBeHidden();
+      await expect(toggle.locator('.selection-summary')).toBeVisible();
+      expect((await facet.boundingBox())!.height).toBeLessThanOrEqual(64);
       // These labels contain no numbers, so counts in their human labels cannot
       // accidentally mask a missing visible colour index in an accessible name.
       const labelledFacet = facetSection(page, 'derivation_mode');

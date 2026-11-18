@@ -2161,7 +2161,7 @@ function normalizeRichRelationshipRows(
       ...(supportingAssertions ? { supporting_assertions: supportingAssertions } : {}),
       ...(reviewStatus ? { review_status: reviewStatus } : {})
     };
-    for (const field of ['stale_after', 'freshness', 'support_profile'] as const) {
+    for (const field of ['stale_after', 'freshness', 'support_profile', 'source_label', 'target_label'] as const) {
       const text = richRuntimeOptionalText(row, field, `${label} ${field}`);
       if (text !== undefined) projected[field] = text;
     }

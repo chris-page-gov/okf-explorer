@@ -13,9 +13,10 @@ export const SMALL_FACETS = [
 export function smallFacetValues(node: OkfNode, key: string, learningKeys: string[] = [], semanticKeys: string[] = []): string[] {
   if (key === 'type') return [node.type || 'Node'];
   if (key === 'section') return [node.section || 'root'];
-  const presentation = okfConceptPresentation(node);
-  if (key === 'trust') return [trustTierLabel(presentation.trustTier)];
-  if (key === 'lifecycle') return [presentation.status];
+  if (key === 'trust' || key === 'lifecycle') {
+    const presentation = okfConceptPresentation(node);
+    return key === 'trust' ? [trustTierLabel(presentation.trustTier)] : [presentation.status];
+  }
   if (semanticKeys.includes(key)) return semanticFacetValues(node, key);
   return learningKeys.includes(key) ? conceptualFacetValues(node, key) : [];
 }
@@ -26,9 +27,18 @@ export function smallIsHighlighted(node: OkfNode, selection: FacetSelection, lea
 
 /** Count every facet against the same searched, reduced and map-scoped universe. */
 export function smallFacetRows(all: OkfNode[], scope: OkfNode[], selection: FacetSelection, key: string, learningKeys: string[] = [], semanticKeys: string[] = []) {
-  return [...new Set(all.flatMap(node => smallFacetValues(node, key, learningKeys, semanticKeys)))].map(value => {
-    const members = scope.filter(node => smallFacetValues(node, key, learningKeys, semanticKeys).includes(value));
-    return { value, label: value, count: members.length,
-      highlighted: members.filter(node => smallIsHighlighted(node, selection, learningKeys, semanticKeys)).length };
-  }).sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
+  const valuesFor = (node: OkfNode) => smallFacetValues(node, key, learningKeys, semanticKeys);
+  const values = new Set(all.flatMap(valuesFor));
+  const rows = new Map([...values].map(value => [value, { value, label: value, count: 0, highlighted: 0 }]));
+  for (const node of scope) {
+    const memberValues = new Set(valuesFor(node));
+    const highlighted = memberValues.size > 0 && smallIsHighlighted(node, selection, learningKeys, semanticKeys);
+    for (const value of memberValues) {
+      const row = rows.get(value);
+      if (!row) continue;
+      row.count += 1;
+      if (highlighted) row.highlighted += 1;
+    }
+  }
+  return [...rows.values()].sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
 }
