@@ -7987,6 +7987,9 @@
               filter={geospatialFilter}
               selectedRoute={largeInspectedRoute || largeSelectedRoute}
               loading={largeFullLoading}
+              boundary={source.descriptor.entrypoints.boundary_pack
+                ? { base: source.baseUrl, reference: source.descriptor.entrypoints.boundary_pack }
+                : undefined}
               onselect={selectLargeRoute}
               onfilter={setGeospatialFilter}
             />

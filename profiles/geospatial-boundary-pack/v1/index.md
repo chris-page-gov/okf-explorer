@@ -1,9 +1,11 @@
 # Geospatial boundary pack v1 candidate
 
-This proposed profile defines a manifest for two display representations of
-one geography family and vintage. An optional bundle descriptor extension
-would bind the manifest by same-origin relative path, byte count and SHA-256.
-The candidate uses `okf-geospatial-boundary-pack.v1` as its schema identifier.
+This candidate profile defines a manifest for two display representations of
+one geography family and vintage. A large bundle can declare an optional
+`entrypoints.boundary_pack` object with a package-relative `path`, exact
+`bytes` and `sha256`. The manifest uses `okf-geospatial-boundary-pack.v1` as
+its schema identifier. A vintage can identify an exact month or date as
+reported by the source.
 See the [manifest schema](manifest.schema.json).
 
 The manifest identifies the geography family, code scheme, boundary vintage
@@ -42,9 +44,41 @@ four nations and islands. OS Boundary-Line supplies Great Britain coverage.
 Northern Ireland requires an appropriate separate authority when using OS
 Boundary-Line. Retain the source licence and attribution per layer. [ONS digital boundaries](https://www.ons.gov.uk/methodology/geography/geographicalproducts/digitalboundaries), [OS Boundary-Line](https://www.ordnancesurvey.co.uk/products/boundary-line)
 
-The schema is the first review increment for
-[issue #84](https://github.com/chris-page-gov/okf-explorer/issues/84). An
-adopted pack still needs reviewed source bytes, a reproducible builder,
-runtime validation and map and offline acceptance. The current Explorer
-retains its labelled schematic locator outline. OpenStreetMap tiles are
-outside this pack contract.
+## UK countries display example
+
+The [example manifest](examples/uk-countries-december-2025/manifest.json)
+binds the December 2025 ONS BUC and BGC country representations. Both levels
+contain all four ONS country codes. The overview is approximately 0.8 MB and
+the focused detail is approximately 2.5 MB. The pack excludes the Crown
+dependencies and overseas territories. [BUC source](https://www.arcgis.com/home/item.html?id=818212ae5b2948bcb352842081c03762), [BGC source](https://www.arcgis.com/home/item.html?id=c8bea35f51054f0c95aa876f66fe027c)
+
+Build it offline from retained ONS FeatureServer layer 0 GeoJSON queries with
+`where=1=1`, `outFields=CTRY25CD,CTRY25NM`, `outSR=4326` and `f=geojson`.
+The builder checks the two exact source digests before using GDAL 3.13.2 and
+GEOS 3.14.1. The output directory must be new.
+
+```sh
+uv run --locked python scripts/build_ons_country_boundary_pack.py \
+  --buc BUC.geojson --bgc BGC.geojson --output /tmp/uk-countries-december-2025
+```
+
+The [build receipt](examples/uk-countries-december-2025/receipt.json) records
+no geometry or coverage findings in the retained inputs or the display
+outputs. The detail simplifies the BGC coverage at 0.001 degrees and contains
+one fewer polygon component for England. Use the original product for
+analysis that depends on exact geometry or small islands.
+
+The [companion Explorer descriptor](examples/uk-countries-december-2025/okf-explorer.json)
+binds this exact manifest. It has one record per country so it can run the
+overview, focused map and text alternatives without any other bundle.
+
+When you open Map with a bundle that declares a pack, Explorer verifies and
+loads only the overview. The focused map fetches detail and brings the
+selected record into view. The text alternative lists the geography codes.
+Each level shows the vintage and attribution, with the source, variant and
+limitations under **Boundary source and scale**. If the bytes cannot be
+verified, Explorer labels the schematic outline and keeps the record list.
+The pack route uses the trusted bundle
+origin and does not request OpenStreetMap tiles. An already opened Map view
+reuses its checked layers when changing scale. Cross-session and offline
+cache acceptance remain covered by [issue #84](https://github.com/chris-page-gov/okf-explorer/issues/84).

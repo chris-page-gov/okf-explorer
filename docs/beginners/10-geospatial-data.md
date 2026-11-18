@@ -190,11 +190,12 @@ redistribution and caching.
 
 ## Proposed boundary packs (not yet implemented)
 
-**Status: planned, not implemented.** The current UK locator is a very small
-hand-authored outline drawn from a handful of hard-coded coordinates. That
-explains why its coastline can look angular or visibly wrong at the scale
-shown. It is a temporary presentation aid, not a supplied boundary and not
-evidence about any record.
+**Status: candidate under review.** Bundles without a pack use a labelled
+schematic UK locator drawn from a small set of coordinates. Use it for
+orientation. The [boundary pack profile](../../profiles/geospatial-boundary-pack/v1/index.md)
+includes an ONS example and a browser implementation for declaring, verifying
+and switching between two display levels. The public release and offline
+acceptance are tracked in issue #84.
 
 The proposed replacement is a **boundary pack**: an optional, cached
 [sidecar](16-beginner-glossary.md#sidecar) whose geometry is connected to the
@@ -221,26 +222,21 @@ records the acceptance detail. An illustrative descriptor reference is:
 
 ```json
 {
-  "geometry_packs": [
-    {
-      "id": "ons-countries-dec-2025-uk-buc",
-      "manifest": "geometry/ons-countries-dec-2025-uk-buc/manifest.json",
-      "manifest_schema": "okf-geometry-pack.v1",
-      "media_type": "application/json",
+  "entrypoints": {
+    "boundary_pack": {
+      "path": "geometry/uk-countries/manifest.json",
       "bytes": 12345,
-      "sha256": "<SHA-256 of the exact manifest bytes>",
-      "required": false
+      "sha256": "<SHA-256 of the exact manifest bytes>"
     }
-  ]
+  }
 }
 ```
 
-The root descriptor, rather than the manifest itself, binds the manifest's
-schema version, media type, exact byte count and detached
-[digest](16-beginner-glossary.md#digest). The Reader would reject an
-over-budget, short or long response before parsing JSON, then verify the
-digest. The manifest must not claim its own digest as the binding proof. The
-names above are illustrative and are not an accepted schema.
+The root descriptor binds the manifest’s local path, byte count and detached
+[digest](16-beginner-glossary.md#digest). The Map reader checks the response
+media type, exact byte length and digest before parsing JSON, then checks the
+schema identifier. Copy the field names from the profile and replace the
+example values with the exact path, byte count and digest for your pack.
 
 The manifest would bind:
 

@@ -2,6 +2,11 @@
 
 ## Unreleased — Explorer presentation
 
+- Verify a bundle's declared boundary-pack manifest and fetch the matching
+  overview or focused detail. Keep the source attribution and geography codes
+  available in Map. Stage the December 2025 ONS UK countries display example
+  with reproducible geometry and coverage checks.
+
 - Add a system, light and dark appearance setting to the Explorer. Remember
   an explicit choice and use the light palette for print.
 - Keep view selection and focus visible in forced colours. Apply the shared

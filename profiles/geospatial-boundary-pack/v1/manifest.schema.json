@@ -10,7 +10,12 @@
     "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$", "maxLength": 100 },
     "geography_family": { "type": "string", "minLength": 1, "maxLength": 100 },
     "identifier_scheme": { "type": "string", "format": "uri" },
-    "vintage": { "type": "string", "format": "date" },
+    "vintage": {
+      "oneOf": [
+        { "type": "string", "format": "date" },
+        { "type": "string", "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$" }
+      ]
+    },
     "coverage": {
       "type": "object",
       "additionalProperties": false,

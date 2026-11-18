@@ -67,6 +67,18 @@ class GeospatialBoundaryPackTest(unittest.TestCase):
     def test_admits_two_declared_representations(self):
         self.validator.validate(self.pack)
 
+    def test_checks_the_staged_ons_bundle_and_its_manifest_binding(self):
+        root = SCHEMA_PATH.parent / "examples" / "uk-countries-december-2025"
+        descriptor = json.loads((root / "okf-explorer.json").read_bytes())
+        receipt = json.loads((root / "receipt.json").read_bytes())
+        binding = descriptor["entrypoints"]["boundary_pack"]
+        manifest = root / binding["path"]
+        self.assertEqual(binding["bytes"], manifest.stat().st_size)
+        result = check_pack(manifest)
+        self.assertEqual(binding["sha256"], result["manifest_sha256"])
+        self.assertEqual(receipt["validation"], result)
+        self.assertEqual(result["features"], 4)
+
     def test_rejects_unbound_or_unsafe_representations(self):
         changes = {
             "path": "data/../elsewhere.geojson",

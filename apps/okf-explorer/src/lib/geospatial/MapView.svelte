@@ -15,12 +15,15 @@
     type GeospatialPreview,
     type PreviewDrawing
   } from './preview';
+  import type { LargeResourceReference } from '$lib/types';
+  import { loadBoundaryPack, type BoundaryLayer, type BoundaryPack } from './boundaryPack';
 
   interface Props {
     records: GeospatialRecord[];
     filter: string;
     selectedRoute: string;
     loading?: boolean;
+    boundary?: { base: string; reference: LargeResourceReference };
     onselect: (route: string) => void;
     onfilter: (filter: string) => void;
   }
@@ -34,12 +37,47 @@
     records: GeospatialRecord[];
   };
 
-  let { records, filter, selectedRoute, loading = false, onselect, onfilter }: Props = $props();
+  let { records, filter, selectedRoute, loading = false, boundary, onselect, onfilter }: Props = $props();
   let preview = $state<GeospatialPreview | null>(null);
   let previewDrawing = $state<PreviewDrawing | null>(null);
   let previewLoading = $state(false);
   let previewError = $state('');
   let previewResource = $state<GeospatialResource | null>(null);
+  let boundaryPack = $state.raw<BoundaryPack | null>(null);
+  let boundaryLayer = $state.raw<BoundaryLayer | null>(null);
+  let boundaryError = $state('');
+  let focusedMap = $state(false);
+
+  $effect(() => {
+    const current = boundary;
+    boundaryPack = null;
+    boundaryLayer = null;
+    boundaryError = '';
+    focusedMap = false;
+    if (!current) return;
+    let active = true;
+    void loadBoundaryPack(current.base, current.reference).then((pack) => {
+      if (active) boundaryPack = pack;
+    }).catch(() => {
+      if (active) boundaryError = 'The declared boundary pack could not be verified.';
+    });
+    return () => { active = false; };
+  });
+
+  $effect(() => {
+    const pack = boundaryPack;
+    const zoom = focusedMap && pack ? pack.detailMinZoom : 0;
+    if (!pack) return;
+    boundaryError = '';
+    boundaryLayer = null;
+    let active = true;
+    void pack.load(zoom).then((layer) => {
+      if (active) boundaryLayer = layer;
+    }).catch(() => {
+      if (active) boundaryError = 'This boundary level could not be verified.';
+    });
+    return () => { active = false; };
+  });
 
   const visibleRecords = $derived(records.filter((record) => geospatialFilterMatches(record, filter)));
   const selectedRecord = $derived(records.find((record) => record.route === selectedRoute) || visibleRecords[0]);
@@ -48,6 +86,10 @@
   const coverageCounts = $derived.by(() => countCoverage(records));
   const markers = $derived.by(() => markerGroups(visibleRecords));
   const unlocatedCount = $derived(visibleRecords.filter((record) => !record.point).length);
+  const boundaryPaths = $derived(boundaryLayer?.features.map((feature) => ({
+    id: feature.id, name: feature.name,
+    path: feature.polygons.flatMap((polygon) => polygon.map(locatorPath)).join(' ')
+  })) || []);
 
   const MAP_WIDTH = 512;
   const MAP_HEIGHT = 512;
@@ -121,6 +163,21 @@
       return `${index ? 'L' : 'M'}${point.x.toFixed(1)},${point.y.toFixed(1)}`;
     }).join(' ') + ' Z';
   }
+
+  function mapViewport(): { x: number; y: number; size: number } {
+    if (!focusedMap || !boundaryPack) return { x: 0, y: 0, size: MAP_WIDTH };
+    const size = MAP_WIDTH / 2 ** Math.min(3, Math.max(1, boundaryPack.detailMinZoom - BASEMAP_ZOOM));
+    const point = selectedRecord?.point;
+    const centre = point ? mapPoint(point.longitude, point.latitude) : { x: MAP_WIDTH / 2, y: MAP_HEIGHT / 2 };
+    const origin = (value: number) => Math.max(0, Math.min(MAP_WIDTH - size, value - size / 2));
+    return { x: origin(centre.x), y: origin(centre.y), size };
+  }
+
+  const viewport = $derived(mapViewport());
+  const viewportMarkers = $derived(!focusedMap ? markers : markers.filter((marker) =>
+    marker.x >= viewport.x && marker.x <= viewport.x + viewport.size
+    && marker.y >= viewport.y && marker.y <= viewport.y + viewport.size
+  ));
 
   function markerGroups(values: GeospatialRecord[]): MarkerGroup[] {
     const groups = new Map<string, MarkerGroup>();
@@ -243,14 +300,35 @@
     </div>
 
     <div class="map-workspace">
-      <section class="locator-card">
+      <section class="locator-card" class:has-pack={Boolean(boundary)}>
         <div class="locator-note">
           <strong>UK reference map</strong>
           <span>Solid markers show source coordinates. Rings show representative centroids.</span>
-          <span>The fallback outlines are schematic and suitable for orientation only.</span>
-          <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">© OpenStreetMap contributors</a>
+          {#if boundaryPack}
+            <button type="button" onclick={() => { focusedMap = !focusedMap; }}>
+              {focusedMap ? 'Show UK overview' : 'Show focused map'}
+            </button>
+          {/if}
+          {#if boundaryLayer && boundaryPack}
+            <span>{boundaryPack.family} · {boundaryPack.vintage} · {boundaryLayer.level}</span>
+            <a href={boundaryLayer.representation.source.licence}>{boundaryLayer.representation.source.attribution}</a>
+            <details>
+              <summary>Boundary source and scale</summary>
+              <p>{boundaryLayer.representation.generalisation} {boundaryPack.limitations}</p>
+              <p>Coastal variant {boundaryLayer.representation.coastalVariant.replaceAll('-', ' ')}.</p>
+              <a href={boundaryLayer.representation.source.url}>{boundaryLayer.representation.source.product}</a>
+            </details>
+          {:else}
+            <span>The fallback outlines are schematic and suitable for orientation only.</span>
+            {#if boundary}
+              <span role="status">{boundaryError || 'Checking the declared boundary pack…'}</span>
+            {:else}
+              <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">© OpenStreetMap contributors</a>
+            {/if}
+          {/if}
         </div>
-        <svg class="locator-map" viewBox={`0 0 ${MAP_WIDTH} ${MAP_HEIGHT}`} role="img" aria-label="UK reference map with spatial record markers">
+        <svg class="locator-map" viewBox={`${viewport.x} ${viewport.y} ${viewport.size} ${viewport.size}`} role="img" aria-label="UK reference map with spatial record markers">
+          {#if !boundary}
           <g class="locator-basemap" aria-hidden="true">
             {#each BASEMAP_TILES as tile}
               <image
@@ -263,8 +341,15 @@
               ></image>
             {/each}
           </g>
-          <path class="locator-land" d={locatorPath(GREAT_BRITAIN)}></path>
-          <path class="locator-land" d={locatorPath(NORTHERN_IRELAND)}></path>
+          {/if}
+          {#if boundaryLayer}
+            {#each boundaryPaths as feature (feature.id)}
+              <path class="locator-land" data-boundary-code={feature.id} d={feature.path} fill-rule="evenodd" vector-effect="non-scaling-stroke"></path>
+            {/each}
+          {:else}
+            <path class="locator-land" d={locatorPath(GREAT_BRITAIN)}></path>
+            <path class="locator-land" d={locatorPath(NORTHERN_IRELAND)}></path>
+          {/if}
           <g class="locator-grid" aria-hidden="true">
             {#each [52, 54, 56, 58] as latitude}
               {@const start = mapPoint(UK_BOUNDS.west, latitude)}
@@ -272,7 +357,7 @@
               <line x1={start.x} y1={start.y} x2={end.x} y2={end.y}></line>
             {/each}
           </g>
-          {#each markers as marker, index}
+          {#each viewportMarkers as marker, index}
             <g
               class="locator-marker"
               class:representative={!marker.explicit}
@@ -290,6 +375,16 @@
             </g>
           {/each}
         </svg>
+        {#if boundaryLayer}
+          <details>
+            <summary>Boundaries and geography codes</summary>
+            <ul>
+              {#each boundaryPaths as feature (feature.id)}
+                <li>{feature.name === feature.id ? feature.id : `${feature.name} (${feature.id})`}</li>
+              {/each}
+            </ul>
+          </details>
+        {/if}
         <p class="locator-summary">
           {markers.reduce((total, marker) => total + marker.records.length, 0).toLocaleString()} located records in {markers.length.toLocaleString()} marker groups.
           {#if unlocatedCount}{unlocatedCount.toLocaleString()} spatial records have no locatable coordinate or recognised UK area and remain in the list.{/if}
@@ -412,6 +507,7 @@
   .map-chips button.active { border-color: #1d70b8; background: light-dark(#e6f2fb, #294663); box-shadow: inset 0 0 0 1px #1d70b8; }
   .map-workspace { display: grid; grid-template-columns: minmax(320px, 1.15fr) minmax(280px, 0.85fr); gap: 14px; height: clamp(520px, 64dvh, 720px); min-height: 0; }
   .locator-card { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; min-width: 0; min-height: 0; overflow: hidden; background: light-dark(#eaf4f9, #243448); }
+  .locator-card.has-pack { grid-template-rows: auto minmax(220px, 1fr) auto auto; overflow: auto; }
   .locator-note { display: grid; gap: 2px; padding: 12px 14px; border-bottom: 1px solid light-dark(#c8d4df, #526981); background: light-dark(rgb(255 255 255 / 88%), rgb(27 38 52 / 94%)); }
   .locator-note span, .locator-note a, .locator-summary { color: light-dark(#526b80, #bbc9d9); font-size: 0.78rem; }
   .locator-note a { width: fit-content; }
