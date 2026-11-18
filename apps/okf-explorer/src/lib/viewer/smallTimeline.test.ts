@@ -81,4 +81,23 @@ describe('small-bundle Timeline date provenance', () => {
     const later = { id: 'summer', title: 'Summer release', 'schema:datePublished': '2026-07-20', generated: { at: '2026-08-01' } };
     expect(smallTimelineRows([earlier, later]).map(({ node }) => node.id)).toEqual(['summer', 'resource/handbook']);
   });
+
+  it('orders comparable Hansard times and keeps untimed slots and ties in source order', () => {
+    const section = { schema: 'okf-hansard-proceedings.v1', section_id: 'debate/fixture',
+      section_title: 'Fixture proceedings', sitting_date: '2026-07-15', house: 'Commons' };
+    const contribution = (id: string, item: number, time?: string): OkfNode => ({
+      id, title: id, hansard_proceedings: { ...section, source_item: item, contribution_time: time },
+      retrieved_at: '2026-07-16T03:00:00Z'
+    });
+    const result = smallTimelineRows([
+      contribution('tie', 4, '2026-07-15T18:15:00Z'),
+      contribution('late', 1, '2026-07-15T19:20:00+01:00'),
+      contribution('untimed', 2),
+      contribution('early', 3, '2026-07-15T19:15:00+01:00'),
+    ]);
+    expect(result.map(({ node }) => node.id)).toEqual(['early', 'untimed', 'tie', 'late']);
+    expect(result[0].primary.display).toContain('19:15:00 BST');
+    expect(result[1].primary).toMatchObject({ label: 'Sitting date', value: '2026-07-15', precision: 'day' });
+    expect(result[1].audit[0].label).toBe('Captured');
+  });
 });

@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased — sourced Hansard dates and summaries
+
+- Show contribution timecodes, section markers and source item positions
+  separately. Preserve day precision when only the sitting date is known.
+- Show producer-supplied summaries beside the exact Hansard source link and
+  retain keyboard focus when switching card sides.
+
 ## Unreleased — Explorer navigation
 
 - Restore local result browsing after unfolding a group. Clear the facet
