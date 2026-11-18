@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from build_site import heading_slug  # noqa: E402
+from scripts.build_governed_vocabulary_examples import example  # noqa: E402
 
 
 PROFILE = ROOT / "profiles" / "governed-vocabulary" / "v1"
@@ -75,3 +76,11 @@ class GovernedVocabularyTest(unittest.TestCase):
             triple for predicate in predicates for triple in graph.triples((None, predicate, None))
         }
         self.assertEqual(expected_mappings, actual_mappings)
+
+    def test_reader_and_validation_examples_match_their_pinned_inputs(self):
+        shapes = (PROFILE / "shapes.ttl").read_bytes()
+        for name, missing_label in (("vocabulary", False), ("missing-csv-label", True)):
+            graph = Graph().parse(PROFILE / "vocabulary.ttl", format="turtle")
+            for path, body in example(graph, shapes, missing_label=missing_label).items():
+                with self.subTest(example=name, path=path):
+                    self.assertEqual((PROFILE / "examples" / name / path).read_bytes(), body)

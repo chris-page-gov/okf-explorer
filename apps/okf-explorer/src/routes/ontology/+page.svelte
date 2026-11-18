@@ -4,7 +4,7 @@
   import { webIri } from '$lib/sources/governedDescriptor';
   import { sourceRecordLink, validationLink } from '$lib/validation/findings';
   import {
-    isMappingStrength, isTermKind, kindLabels, loadOntology, mappingStrengths, termKinds, termLabel
+    hierarchyMembers, isMappingStrength, isTermKind, kindLabels, loadOntology, mappingStrengths, termKinds, termLabel
   } from '$lib/ontology/ontologyIndex';
 
   const size = 30;
@@ -16,6 +16,7 @@
   const lowerQuery = $derived(query.toLocaleLowerCase('en-GB'));
   const termId = $derived((page.url.searchParams.get('term') || '').slice(0, 2048));
   const parentId = $derived((page.url.searchParams.get('within') || '').slice(0, 2048));
+  const nested = $derived(page.url.searchParams.get('within_depth') === 'nested');
   const mappingParam = $derived(page.url.searchParams.get('mapping'));
   const mapping = $derived(isMappingStrength(mappingParam) ? mappingParam : '');
   const requestedPage = $derived(Number(page.url.searchParams.get('page') || '1'));
@@ -24,7 +25,7 @@
   let failure = $state('');
   const selected = $derived(loaded?.byId.get(termId));
   const parent = $derived(loaded?.byId.get(parentId));
-  const childrenInScope = $derived(new Set(parent ? loaded?.children.get(parent.id)?.map(edge => edge.from) : []));
+  const childrenInScope = $derived(parent && loaded ? hierarchyMembers(loaded.children, parent.id, nested) : new Set<string>());
   const filtered = $derived(loaded?.terms.filter(term =>
     (!kind || term.kinds.includes(kind))
     && (!parent || childrenInScope.has(term.id))
@@ -53,9 +54,10 @@
     return () => { active = false; };
   });
 
-  function link(overrides: Partial<{ kind: string; term: string; within: string; mapping: string; page: string }> = {}) {
+  function link(overrides: Partial<{ kind: string; term: string; within: string; within_depth: string; mapping: string; page: string }> = {}) {
     const params = new URLSearchParams();
-    const state = { bundle, kind, q: query, term: termId, within: parentId, mapping, page: position > 1 ? String(position) : '', ...overrides };
+    const state = { bundle, kind, q: query, term: termId, within: parentId, within_depth: parentId && nested ? 'nested' : '',
+      mapping, page: position > 1 ? String(position) : '', ...overrides };
     for (const [key, value] of Object.entries(state)) if (value) params.set(key, value);
     return path + '?' + params.toString();
   }
@@ -109,6 +111,7 @@
         <input type="hidden" name="bundle" value={bundle} />
         {#if kind}<input type="hidden" name="kind" value={kind} />{/if}
         {#if parent}<input type="hidden" name="within" value={parent.id} />{/if}
+        {#if parent && nested}<input type="hidden" name="within_depth" value="nested" />{/if}
         <label for="search-terms">Search by term label or identifier</label>
         <div class="controls"><input id="search-terms" name="q" type="search" value={query} maxlength="160" /><button>Search terms</button></div>
       </form>
@@ -120,7 +123,12 @@
           {/each}
         </ul>
       </nav>
-      {#if parent}<p>Showing direct children of <strong>{termLabel(parent)}</strong>. <a href={link({ within: '', page: '' })}>Clear hierarchy filter</a></p>{/if}
+      {#if parent}
+        <p>Showing {nested ? 'nested and direct children' : 'direct children'} of <strong>{termLabel(parent)}</strong>.
+          <a href={link({ within_depth: nested ? '' : 'nested', page: '' })}>{nested ? 'Show direct children only' : 'Include nested children'}</a>
+          · <a href={link({ within: '', within_depth: '', page: '' })}>Clear hierarchy filter</a>
+        </p>
+      {/if}
       {#if termId && !selected}<p role="status">This term is unavailable in the published index.</p>{/if}
       {#if parentId && !parent}<p role="status">The requested hierarchy filter is unavailable.</p>{/if}
       <div class="results">
@@ -162,7 +170,7 @@
               </ul>
               {#if parents.length > size}<p>Showing {size} of {parents.length} parent statements.</p>{/if}
               {#if children.length}
-                <p><a href={link({ within: selected.id, kind: '', page: '' })}>Filter results to all direct children</a></p>
+                <p><a href={link({ within: selected.id, within_depth: '', kind: '', page: '' })}>Filter results to all direct children</a></p>
               {/if}
             {/if}
             {#if loaded.mappings.has(selected.id)}

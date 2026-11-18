@@ -56,6 +56,17 @@ test('Ontology shares direct hierarchy filters and preserves the declared scope'
   await page.reload();
   await expect(page.getByText('Showing direct children of', { exact: false })).toBeVisible();
   await expect(results).toContainText('2 matching terms');
+  await page.getByRole('link', { name: 'Include nested children' }).click();
+  await expect(page).toHaveURL(/within_depth=nested/);
+  await expect(results).toContainText('3 matching terms');
+  await expect(results.getByRole('link', { name: 'Buses', exact: true })).toBeVisible();
+  await page.getByRole('searchbox', { name: 'Search by term label or identifier' }).fill('buses');
+  await page.getByRole('button', { name: 'Search terms' }).click();
+  await expect(results).toContainText('1 matching term');
+  await page.reload();
+  await expect(results.getByRole('link', { name: 'Buses', exact: true })).toBeVisible();
+  await page.getByRole('link', { name: 'Show direct children only' }).click();
+  await expect(results).toContainText('0 matching terms');
   await page.getByRole('link', { name: 'Clear hierarchy filter' }).click();
   await page.getByRole('link', { name: 'Properties', exact: true }).click();
   await page.getByRole('searchbox', { name: 'Search by term label or identifier' }).fill('open file');

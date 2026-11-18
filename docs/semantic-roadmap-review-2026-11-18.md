@@ -39,8 +39,8 @@ inference. See the [consumer and authoring contract](okf-0.2-yaml-ld-semantic-au
 | --- | --- | --- | --- |
 | #49 | Three SKOS schemes, explicit mappings, registry and Reader example | Check the deployed term resolver, sample descriptor and label-only compatibility | Further public-sector terms follow reviewed revisions |
 | #50 | Pinned SHACL Core, stable findings, filters, remediation and source links | Check both published examples and the finding-to-source round trip | SHACL 1.2 experiments and ontology consistency assessment have separate scope |
-| #51 | Bounded subclass materialisation, supporting assertions, derivation activities and status counts | Verify the published comparison and a reviewed producer rule application | Additional rules need their own bounded evaluation |
-| #52 | Class, property and SKOS navigation, mapping filters, shared URLs and explicit record links | Record representative discovery and ontology-engineering tasks against the published build | Additional hierarchy-driven retrieval needs separate policy and evidence |
+| #51 | Bounded subclass materialisation, supporting assertions, derivation activities and status counts. The PROV-O example retains two source assertions and one separate inference. | Verify the published comparison and a reviewed producer rule application | Additional rules need their own bounded evaluation |
+| #52 | Class, property and SKOS navigation, scoped hierarchy search, mapping filters, shared URLs and explicit record links | Record representative discovery and ontology-engineering tasks against the published build | Hierarchy expansion of bundle record search needs separate policy and evidence |
 | #54 | DCAT-AP, OpenAPI, DQV and Site activity exporters with deterministic checks | Link production export artefacts to source records and bind build, review and deployment activity | Further standards profiles need versioned input contracts |
 
 Keep #54 as one integration issue while the four exporters share source
@@ -156,6 +156,17 @@ selection or current relationship page. Source records retain their existing
 assertion status. Rule approval and integration with producer validation and
 publication remain open. [OWL 2 Profiles Recommendation](https://www.w3.org/TR/owl2-profiles/)
 
+The worked example takes two subclass statements from W3C PROV-O. The
+comparison adds one transitive subclass statement from Revision to Entity
+Influence. Select its supporting assertions to see the W3C source for
+each direct link. The derivation export includes the rule manifest and
+activity for the same inferred statement. [Source-only bundle](../profiles/bounded-inference/v1/asserted.json),
+[comparison bundle](../profiles/bounded-inference/v1/comparison.json),
+[derivation export](../profiles/bounded-inference/v1/derivation.json)
+
+Reproduce and check the example with
+`uv run --locked python -m scripts.build_subclass_inference_example --check`.
+
 ## Candidate ontology navigation index
 
 `scripts/build_ontology_navigation_index.py` projects explicitly declared
@@ -166,7 +177,10 @@ Declare the index under `entrypoints.ontology_navigation` with a relative
 JSON path, exact byte length and SHA-256. The Explorer checks that binding
 and the index's source IRI against the descriptor's `@id`. Use the Ontology
 view to search labels, choose a term kind, follow declared parents and
-children, and filter the results to direct children. Mapping filters
+children, and filter results to direct children. Select **Include nested
+children** to follow the declared subclass, subproperty or narrower-concept
+paths within that hierarchy. The scope remains visible while searching.
+Mapping filters
 preserve the recorded predicate and strength. The view records its search,
 filters and selection in the URL and links to the bundle's validation and
 assertion-status views. The governed vocabulary example links the exact Reader
@@ -175,16 +189,28 @@ task-based evaluation remain open.
 
 ## Independent work
 
-- **#76** is a source-inspection correctness issue. Route official CLML and
-  other declared media to an appropriate inspector or download. Keep the
-  producer's typed source references and the Explorer routing change on
-  separately verified release paths. [Source inspection issue](https://github.com/chris-page-gov/okf-explorer/issues/76)
-- **#53** can proceed independently. Its release evidence needs light, dark,
-  system and forced-colours behaviour with keyboard focus, graph, maps and
-  print checked. [Accessible theme issue](https://github.com/chris-page-gov/okf-explorer/issues/53)
+- **#76** is a source-inspection correctness priority. Explorer
+  `4d23db57ff5d2dba32edd9936254f33c2b7cded9` passed the published dated CLML
+  journey. The legislation producer still needs a versioned typed Reader
+  transport that preserves the frozen audit material. It consumes
+  `okf-explorer-large-corpus.v1` and the existing
+  [resource source access contract](large-record-narrative-source-contract.md).
+  [Source inspection issue](https://github.com/chris-page-gov/okf-explorer/issues/76)
+- **#53** is an independent accessibility priority. Its release evidence
+  needs light, dark, system and forced-colours behaviour with keyboard
+  focus, Graph, Map and print checked. [Accessible theme issue](https://github.com/chris-page-gov/okf-explorer/issues/53)
 - **#84** needs a reusable boundary-pack contract and exact data provenance.
   The map can begin with a separately versioned sidecar. Any semantic joins
   should use governed identifiers and remain independently verifiable. [Boundary pack issue](https://github.com/chris-page-gov/okf-explorer/issues/84)
+- **#100** needs an exact deployed guide audit across three browser engines
+  and a review of every chapter and external reference. [Learning path issue](https://github.com/chris-page-gov/okf-explorer/issues/100)
+- **#150** adds source-bound review in Evidence. Keep producer adoption
+  separate from the Explorer release, and obtain the DWP specialist
+  assessment before accepting a passage-boundary change. [DWP producer review](https://github.com/chris-page-gov/okf-dwp/issues/42)
+
+The first three release phases also resolved #216, #217, #218, #219, #220,
+#221, #222, #223, #89 and #92. The release tracker records the exact
+deployments and browser journeys for those closed issues. [Phased release tracker](https://github.com/chris-page-gov/okf-explorer/pull/227)
 
 Producer migrations keep their own locked source, schema, Reader and package
 identities. Existing mirrors that claim the Bundle Wiki v1 URI retain its

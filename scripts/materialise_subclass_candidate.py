@@ -8,7 +8,10 @@ from hashlib import sha256
 import json
 from pathlib import Path
 
-from normalise_shacl_report import canonical_json, reference
+if __package__:
+    from .normalise_shacl_report import canonical_json, reference
+else:
+    from normalise_shacl_report import canonical_json, reference
 
 
 RULE = "urn:okf:rule:subclass-transitive:v1"

@@ -47,6 +47,32 @@ export function termLabel(term: Term): string {
     || term.labels[0])?.value || term.id;
 }
 
+export function hierarchyMembers(children: ReadonlyMap<string, HierarchyEdge[]>, parent: string, nested: boolean) {
+  const direct = children.get(parent) || [];
+  const members = new Set(direct.map(edge => edge.from));
+  if (nested) {
+    const visited = new Set<string>();
+    const queue = direct.map(edge => ({
+      id: edge.from,
+      predicate: edge.predicate === skos + 'inScheme' ? skos + 'broader' : edge.predicate
+    }));
+    for (let position = 0; position < queue.length; position += 1) {
+      const { id, predicate } = queue[position];
+      const key = predicate + '\u0000' + id;
+      if (id === parent || visited.has(key)) continue;
+      visited.add(key);
+      for (const edge of children.get(id) || []) {
+        if (edge.predicate === predicate) {
+          members.add(edge.from);
+          queue.push({ id: edge.from, predicate });
+        }
+      }
+    }
+  }
+  members.delete(parent);
+  return members;
+}
+
 export function parseOntologyIndex(value: unknown, expectedBundle: string) {
   const raw = objectRow(value);
   if (raw.schema !== 'okf-ontology-navigation-index.v1' || raw.source !== expectedBundle) {

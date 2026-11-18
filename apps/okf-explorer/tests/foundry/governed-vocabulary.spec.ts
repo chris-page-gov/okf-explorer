@@ -40,3 +40,30 @@ test('the two published SHACL examples report the exact conforming and correctiv
   await page.reload();
   await expect(details.getByText('Stable finding ID')).toBeVisible();
 });
+
+test('the PROV-O example keeps source assertions and the inferred subclass distinct', async ({ page, baseURL }) => {
+  const root = new URL('.', baseURL);
+  const example = new URL('profile/bounded-inference/v1/', root);
+  const explorer = new URL('explore/', root);
+  explorer.searchParams.set('bundle', new URL('asserted.json', example).href);
+  explorer.searchParams.set('view', 'links');
+  await page.goto(explorer.href);
+  const comparison = page.getByRole('region', { name: 'Assertion status comparison' });
+  await expect(comparison).toContainText('Source-asserted2');
+  await expect(comparison).toContainText('Inferred0');
+  explorer.searchParams.set('bundle', new URL('comparison.json', example).href);
+  await page.goto(explorer.href);
+  await expect(comparison).toContainText('Source-asserted2');
+  await expect(comparison).toContainText('Inferred1');
+  const filter = comparison.getByRole('combobox', { name: 'Show links by assertion status' });
+  await filter.selectOption('inferred');
+  await page.locator('.links-view').getByRole('button').click();
+  const details = page.getByRole('complementary', { name: 'Record details' });
+  await expect(details.getByText('urn:okf:rule:subclass-transitive:v1', { exact: true })).toBeVisible();
+  const output = await (await page.request.get(new URL('derivation.json', example).href)).json();
+  await expect(details.getByText(output.activity, { exact: true })).toBeVisible();
+  const support = output.assertions[0].supporting_assertions;
+  expect(support).toEqual(['urn:okf:example:prov-o:Revision:Derivation', 'urn:okf:example:prov-o:Derivation:EntityInfluence']);
+  await details.getByRole('button', { name: 'Inspect ' + support[0] }).click();
+  await expect(details.locator('a[href="https://www.w3.org/TR/2013/REC-prov-o-20130430/#Revision"]')).toBeVisible();
+});

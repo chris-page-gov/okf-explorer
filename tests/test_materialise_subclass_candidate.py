@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
 import materialise_subclass_candidate as candidate  # noqa: E402
+from scripts.build_subclass_inference_example import OUTPUT, example  # noqa: E402
 
 
 def assertion(identifier: str, source: str, target: str, **fields) -> dict[str, str]:
@@ -25,6 +26,11 @@ def assertion(identifier: str, source: str, target: str, **fields) -> dict[str, 
 
 
 class MaterialiseSubclassCandidateTest(unittest.TestCase):
+    def test_reader_example_matches_materialised_assertions(self):
+        for name, body in example().items():
+            with self.subTest(path=name):
+                self.assertEqual((OUTPUT / name).read_bytes(), body)
+
     def test_transitivity_preserves_exact_support_and_skips_other_statuses(self):
         source = [assertion("a", "A", "B"), assertion("b", "B", "C"),
                   assertion("c", "C", "D", assertion_status="normalized")]
