@@ -17,13 +17,14 @@
   } from './preview';
   import type { LargeResourceReference } from '$lib/types';
   import { loadBoundaryPack, type BoundaryLayer, type BoundaryPack } from './boundaryPack';
+  import { saveBoundaryMap } from './saveBoundaryMap';
 
   interface Props {
     records: GeospatialRecord[];
     filter: string;
     selectedRoute: string;
     loading?: boolean;
-    boundary?: { base: string; reference: LargeResourceReference };
+    boundary?: { base: string; descriptor: string; reference: LargeResourceReference };
     onselect: (route: string) => void;
     onfilter: (filter: string) => void;
   }
@@ -47,6 +48,28 @@
   let boundaryLayer = $state.raw<BoundaryLayer | null>(null);
   let boundaryError = $state('');
   let focusedMap = $state(false);
+  let savingOffline = $state(false);
+  let offlineMessage = $state('');
+  const offlineDescriptor = $derived.by(() => {
+    if (typeof window === 'undefined' || !boundary || !navigator.serviceWorker) return null;
+    const url = new URL(boundary.descriptor, window.location.href);
+    return url.origin === window.location.origin ? url : null;
+  });
+
+  async function keepMapOffline() {
+    const pack = boundaryPack;
+    if (!offlineDescriptor || !pack?.offlineFiles) return;
+    savingOffline = true;
+    offlineMessage = '';
+    try {
+      await saveBoundaryMap(offlineDescriptor, pack.offlineFiles);
+      if (pack === boundaryPack) offlineMessage = 'Map saved. Reopen this Map address when offline.';
+    } catch (error) {
+      if (pack === boundaryPack) offlineMessage = error instanceof Error ? error.message : 'The map could not be saved.';
+    } finally {
+      savingOffline = false;
+    }
+  }
 
   $effect(() => {
     const current = boundary;
@@ -54,6 +77,7 @@
     boundaryLayer = null;
     boundaryError = '';
     focusedMap = false;
+    offlineMessage = '';
     if (!current) return;
     let active = true;
     void loadBoundaryPack(current.base, current.reference).then((pack) => {
@@ -312,6 +336,12 @@
           {#if boundaryLayer && boundaryPack}
             <span>{boundaryPack.family} · {boundaryPack.vintage} · {boundaryLayer.level}</span>
             <a href={boundaryLayer.representation.source.licence}>{boundaryLayer.representation.source.attribution}</a>
+            {#if offlineDescriptor && boundaryPack.offlineFiles}
+              <button type="button" onclick={keepMapOffline} disabled={savingOffline}>
+                {savingOffline ? 'Saving map…' : 'Save map for offline use'}
+              </button>
+              {#if offlineMessage}<span role="status">{offlineMessage}</span>{/if}
+            {/if}
             <details>
               <summary>Boundary source and scale</summary>
               <p>{boundaryLayer.representation.generalisation} {boundaryPack.limitations}</p>

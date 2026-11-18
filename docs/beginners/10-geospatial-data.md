@@ -425,9 +425,10 @@ support, immutable cache semantics and an object-consistency rule ensuring
 that every range comes from the same unchanged version. Same-origin delivery
 is simpler and is the preferred default.
 
-The current publication deliberately retires its old service worker, so this
-proposal also requires new, bounded cache lifecycle and eviction behaviour if
-offline use is promised. A missing, corrupt, unlicensed or
+The candidate uses a service worker confined to the Explorer route when
+a reader explicitly saves a supported same-origin map. It verifies the static
+files needed to reopen Map and replaces the single saved snapshot once the new
+one is ready. A missing, corrupt, unlicensed or
 identifier-incompatible pack must fail closed: the map can retain markers and
 explain that boundary geometry is unavailable, but it must not silently draw a
 different or guessed boundary.

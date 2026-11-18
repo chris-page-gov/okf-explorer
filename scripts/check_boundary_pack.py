@@ -94,6 +94,16 @@ def check_pack(manifest_path: Path) -> dict[str, object]:
         )
     if sets["overview"] != sets["detail"]:
         raise ValueError("Overview and detail feature identifiers differ")
+    resources = manifest.get("offline_resources", [])
+    if len({row["path"] for row in resources}) != len(resources):
+        raise ValueError("Offline map resource paths must be unique")
+    for row in resources:
+        path = root / row["path"]
+        if path.resolve(strict=True) != path or not path.is_file():
+            raise ValueError("Offline map resources must be regular files within the manifest directory")
+        content = read_bounded(path, row["bytes"])
+        if len(content) != row["bytes"] or sha256(content).hexdigest() != row["sha256"]:
+            raise ValueError(f"Offline file {row['path']} differs from its manifest binding")
     return {"pack": manifest["id"], "manifest_sha256": sha256(raw).hexdigest(), "features": len(sets["overview"])}
 
 

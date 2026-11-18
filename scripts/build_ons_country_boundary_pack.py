@@ -124,8 +124,8 @@ def build_representation(source: Path, role: str, work: Path, destination: Path)
     return result, checks
 
 
-def write_example_bundle(root: Path, manifest_path: Path, validation: dict) -> None:
-    """Publish a minimal companion descriptor so the pack has a Map journey."""
+def write_example_data(root: Path) -> tuple[dict, list[dict]]:
+    """Build the records and integrity inventory for the example Map journey."""
     title = "ONS UK countries boundary pack example"
     names = {"E92000001": "England", "N92000002": "Northern Ireland", "S92000003": "Scotland", "W92000004": "Wales"}
     counts = {"datasets": len(names), "records": len(names), "publishers": 0, "resources": 0, "relationships": 0}
@@ -139,10 +139,6 @@ def write_example_bundle(root: Path, manifest_path: Path, validation: dict) -> N
         "title": title, "snapshot": snapshot, "counts": counts,
         "entrypoints": {
             "data_manifest": "data/manifest.json", "overview_index": "data/overview.json",
-            "boundary_pack": {
-                "path": manifest_path.name, "bytes": manifest_path.stat().st_size,
-                "sha256": validation["manifest_sha256"],
-            },
         },
     }
     manifest = {
@@ -151,10 +147,14 @@ def write_example_bundle(root: Path, manifest_path: Path, validation: dict) -> N
         "chunks": {"datasets": ["data/datasets-0.json"], "resources": [], "publishers": [], "relationships": []},
     }
     overview = {"schema": "okf-overview.v1", "title": title, "generated_at": snapshot, "counts": counts}
-    (root / "okf-explorer.json").write_bytes(canonical_json(descriptor))
-    (root / "data/manifest.json").write_bytes(canonical_json(manifest))
-    (root / "data/overview.json").write_bytes(canonical_json(overview))
-    (root / "data/datasets-0.json").write_bytes(canonical_json(works))
+    resources = []
+    for path, content in {
+        "data/manifest.json": manifest, "data/overview.json": overview, "data/datasets-0.json": works,
+    }.items():
+        body = canonical_json(content)
+        (root / path).write_bytes(body)
+        resources.append({"path": path, "bytes": len(body), "sha256": sha256(body).hexdigest()})
+    return descriptor, resources
 
 
 def main() -> int:
@@ -176,6 +176,7 @@ def main() -> int:
         representations, checks = {}, {}
         for role, source in (("overview", args.buc), ("detail", args.bgc)):
             representations[role], checks[role] = build_representation(source, role, work, pack / "data" / f"{role}.geojson")
+        descriptor, offline_resources = write_example_data(pack)
         manifest = {
             "schema": "okf-geospatial-boundary-pack.v1", "id": "ons-uk-countries-december-2025",
             "geography_family": "United Kingdom countries", "vintage": "2025-12", "detail_min_zoom": 7,
@@ -186,6 +187,7 @@ def main() -> int:
                 "limitations": "Two cartographic representations of UK countries. Coastlines are clipped to Mean High Water. Small islands are subject to scale generalisation. Use source geometry for analysis.",
             },
             "representations": representations,
+            "offline_resources": offline_resources,
         }
         manifest_path = pack / "manifest.json"
         manifest_path.write_bytes(canonical_json(manifest))
@@ -194,7 +196,11 @@ def main() -> int:
             "validation": check_pack(manifest_path), "checks": checks,
         }
         (pack / "receipt.json").write_bytes(canonical_json(receipt))
-        write_example_bundle(pack, manifest_path, receipt["validation"])
+        descriptor["entrypoints"]["boundary_pack"] = {
+            "path": manifest_path.name, "bytes": manifest_path.stat().st_size,
+            "sha256": receipt["validation"]["manifest_sha256"],
+        }
+        (pack / "okf-explorer.json").write_bytes(canonical_json(descriptor))
         pack.rename(args.output)
     print(json.dumps(receipt, sort_keys=True))
     return 0

@@ -122,6 +122,25 @@ class GeospatialBoundaryPackTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "open ring"):
                 check_pack(manifest)
 
+    def test_checks_offline_records_before_shipping_the_pack(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            (root / "data").mkdir()
+            for role in ("overview", "detail"):
+                self.write_geometry(root, role, "A")
+            records = root / "data" / "records.json"
+            body = b"[]"
+            records.write_bytes(body)
+            self.pack["offline_resources"] = [
+                {"path": "data/records.json", "bytes": len(body), "sha256": sha256(body).hexdigest()}
+            ]
+            manifest = root / "manifest.json"
+            manifest.write_text(json.dumps(self.pack), encoding="utf-8")
+            self.assertEqual(1, check_pack(manifest)["features"])
+            records.write_bytes(b"{}")
+            with self.assertRaisesRegex(ValueError, "differs from its manifest binding"):
+                check_pack(manifest)
+
     def write_geometry(self, root: Path, role: str, code: str, *, close_ring=True):
         ring = [[-1, 51], [0, 51], [0, 52], [-1, 52]]
         if close_ring:

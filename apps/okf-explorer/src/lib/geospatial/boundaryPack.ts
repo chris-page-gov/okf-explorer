@@ -20,6 +20,7 @@ export type BoundaryPack = {
   vintage: string;
   limitations: string;
   detailMinZoom: number;
+  offlineFiles?: { url: string; bytes: number; sha256: string }[];
   load: (zoom: number) => Promise<BoundaryLayer>;
 };
 
@@ -137,10 +138,28 @@ export async function loadBoundaryPack(base: string, declared: LargeResourceRefe
   const detail = representation(representations.detail);
   const detailMinZoom = integer(row.detail_min_zoom, 18);
   if (overview.featureCount !== detail.featureCount || overview.path === detail.path) throw new Error('Boundary levels disagree');
+  const packBase = new URL('.', manifestUrl);
+  let offlineFiles: BoundaryPack['offlineFiles'];
+  if ('offline_resources' in row) {
+    if (!Array.isArray(row.offline_resources) || !row.offline_resources.length || row.offline_resources.length > 12) {
+      throw new Error('Invalid offline map resource list');
+    }
+    const resources = row.offline_resources.map((resource) => binding(resource, 1024 * 1024));
+    if (resources.some(({ path }) => !/^data\/(?:[a-z0-9_-]+\/)*[a-z0-9_-]+\.json(?:\.gz)?$/.test(path))
+        || new Set(resources.map(({ path }) => path)).size !== resources.length) {
+      throw new Error('Invalid offline map resource paths');
+    }
+    offlineFiles = [
+      { url: manifestUrl.href, bytes: ref.bytes, sha256: ref.sha256 },
+      ...[overview, detail, ...resources].map(({ path, bytes, sha256 }) => ({
+        url: new URL(path, packBase).href, bytes, sha256
+      }))
+    ];
+  }
   const cache = new Map<Level, Promise<BoundaryLayer>>();
   let featureIds: Set<string> | undefined;
   return {
-    family: text(row.geography_family, 100), vintage, detailMinZoom,
+    family: text(row.geography_family, 100), vintage, detailMinZoom, offlineFiles,
     limitations: text(object(row.coverage).limitations, 1000),
     load(zoom: number) {
       const level = zoom >= detailMinZoom ? 'detail' : 'overview';

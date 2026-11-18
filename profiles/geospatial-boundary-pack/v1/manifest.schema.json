@@ -31,6 +31,22 @@
       }
     },
     "detail_min_zoom": { "type": "integer", "minimum": 1, "maximum": 18 },
+    "offline_resources": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 12,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "bytes", "sha256"],
+        "properties": {
+          "path": { "type": "string", "pattern": "^data/(?:[a-z0-9_-]+/)*[a-z0-9_-]+\\.json(?:\\.gz)?$", "maxLength": 200 },
+          "bytes": { "type": "integer", "minimum": 1, "maximum": 1048576 },
+          "sha256": { "$ref": "#/$defs/sha256" }
+        }
+      }
+    },
     "representations": {
       "type": "object",
       "additionalProperties": false,

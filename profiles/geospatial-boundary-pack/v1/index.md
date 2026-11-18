@@ -78,7 +78,15 @@ selected record into view. The text alternative lists the geography codes.
 Each level shows the vintage and attribution, with the source, variant and
 limitations under **Boundary source and scale**. If the bytes cannot be
 verified, Explorer labels the schematic outline and keeps the record list.
-The pack route uses the trusted bundle
-origin and does not request OpenStreetMap tiles. An already opened Map view
-reuses its checked layers when changing scale. Cross-session and offline
-cache acceptance remain covered by [issue #84](https://github.com/chris-page-gov/okf-explorer/issues/84).
+The pack route uses static files on the bundle origin. Explorer reuses the
+checked layers when changing scale.
+
+An optional `offline_resources` list binds up to 12 JSON or gzip-compressed
+JSON files by path, byte count and SHA-256. List the data needed to open and
+use Map, including the record manifest and displayed records. Each file has a
+1 MiB limit. A same-origin pack with this declaration offers **Save map for
+offline use**. The saved snapshot includes the Explorer shell, exact
+descriptor, both boundary levels and the declared map data, with an overall
+16 MiB limit. Reopen the same Map address to use it after losing connectivity.
+Saving another map replaces it on that browser. Browsers can evict local
+storage. The map fetches ordinary routes from the network when available.

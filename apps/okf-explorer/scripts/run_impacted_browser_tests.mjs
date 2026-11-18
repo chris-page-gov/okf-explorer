@@ -36,6 +36,10 @@ const SUITES = {
     family: 'ui',
     file: 'tests/ui/geospatial-map.spec.ts'
   },
+  offline_map: {
+    family: 'foundry',
+    file: 'tests/foundry/boundary-offline.spec.ts'
+  },
   facets: {
     family: 'ui',
     file: 'tests/ui/large-corpus-facets.spec.ts'
@@ -158,7 +162,7 @@ export const TEST_TAG_SUITES = Object.freeze({
   browser: ALL_SUITES,
   consumer: ALL_UI,
   contract: ['ask_okf', 'okf_plus_context', 'small_bundle', 'foundry_pages'],
-  data: ['small_bundle', 'large_corpus', 'map', 'dfe_data'],
+  data: ['small_bundle', 'large_corpus', 'map', 'offline_map', 'dfe_data'],
   denominator: ['conceptual_navigation', 'large_corpus', 'facets'],
   descriptor: ['small_bundle', 'foundry_pages'],
   determinism: ['small_bundle'],

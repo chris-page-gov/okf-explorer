@@ -2,6 +2,10 @@
 
 ## Unreleased — Explorer presentation
 
+- Offer an explicit offline save for small published boundary maps. Verify
+  the selected Explorer shell, both geometry levels and the map's record data
+  before replacing the saved snapshot.
+
 - Verify a bundle's declared boundary-pack manifest and fetch the matching
   overview or focused detail. Keep the source attribution and geography codes
   available in Map. Stage the December 2025 ONS UK countries display example
