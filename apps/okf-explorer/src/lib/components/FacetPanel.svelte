@@ -40,7 +40,17 @@
     {@const rows = facet.rows.filter(row => row.label.toLocaleLowerCase('en-GB').includes((searches[facet.key] || '').toLocaleLowerCase('en-GB')))}
     <section class="facet-section" class:open={facet.open} class:pinned={facet.pinned} data-facet-key={facet.key} aria-label={`${facet.label} facet`}>
       <div class="facet-header">
-        <button class="facet-toggle" aria-expanded={facet.open} aria-controls={`facet-values-${facet.key}`} onclick={() => onopen(facet.key)}><span class="facet-heading-label"><strong>{facet.label}</strong><span class="selection-summary" title={chosen.map(value => facet.rows.find(row => row.value === value)?.label || value).join(' or ')}>{chosen.map(value => facet.rows.find(row => row.value === value)?.label || value).join(' or ') || '\u00a0'}</span></span><small>{facet.rows.length} values</small></button>
+        <button type="button" class="facet-toggle" aria-expanded={Boolean(facet.open)} aria-controls={`facet-values-${facet.key}`} onclick={() => onopen(facet.key)}>
+          <span class="facet-disclosure" aria-hidden="true">{facet.open ? '▾' : '▸'}</span>
+          <span class="facet-heading-label">
+            <strong>{facet.label}</strong>
+            {#if chosen.length}
+              {@const summary = chosen.map(value => facet.rows.find(row => row.value === value)?.label || value).join(' or ')}
+              <span class="selection-summary" title={summary}>{summary}</span>
+            {/if}
+          </span>
+          <small>{facet.rows.length} values</small>
+        </button>
         <details class="facet-quick-values" name="facet-colour-controls"><summary aria-label={`Colour controls for ${facet.label}`} title={`Colour controls for ${facet.label}`} onkeydown={closeColourControls}><span class="colour-control-icon" aria-hidden="true"><i></i><i></i><i></i><i></i></span></summary><div class="quick-grid" role="group" aria-label={`${facet.label} numbered colour controls`}>
           {#each segments(facet.rows) as row, index}
             {@const other = 'other' in row && row.other}
@@ -95,6 +105,8 @@
           {#if rows.length > (limits[facet.key] || 40)}<button onclick={() => limits = { ...limits, [facet.key]: (limits[facet.key] || 40) + 80 }}>Show more values</button>{/if}
           {#if !rows.length}<p>No values match.</p>{/if}
         </div>
+      {:else}
+        <div id={`facet-values-${facet.key}`} hidden></div>
       {/if}
     </section>
   {/each}
@@ -106,15 +118,16 @@
   .facet-instructions summary::before { content:'▸'; margin-right:4px; } .facet-instructions details[open] summary::before { content:'▾'; }
   .facet-sections { gap:4px; }
   .facet-section { margin:0; border:1px solid #9fb4ca; border-left:4px solid #0068bc; border-radius:6px; background:white; overflow:visible; }
-  .facet-header { position:relative; display:flex; align-items:center; gap:3px; padding:2px 3px; } .facet-header button { min-height:36px; padding:5px; }
-  .facet-toggle { flex:1; display:flex; gap:6px; align-items:center; justify-content:space-between; min-width:0; border:0; text-align:left; } .facet-toggle strong { overflow:hidden; text-overflow:ellipsis; }
+  .facet-header { position:relative; display:flex; align-items:center; gap:3px; padding:0 3px; } .facet-header button { min-height:36px; padding:5px; }
+  .facet-toggle { flex:1; display:flex; gap:4px; align-items:center; min-width:0; border:0; text-align:left; } .facet-toggle strong { overflow:hidden; text-overflow:ellipsis; }
+  .facet-disclosure { flex:none; width:.8em; }
   .facet-toggle small { font-size:.7rem; white-space:nowrap; }
-  .facet-heading-label { display:grid; grid-template-rows:18px 12px; min-width:0; }
+  .facet-heading-label { flex:1; display:grid; min-width:0; }
   .facet-heading-label strong { line-height:18px; }
   .facet-heading-label .selection-summary { display:block; min-width:0; height:12px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:11px; line-height:12px; font-weight:600; }
   .facet-header .facet-toggle { padding:3px 5px; }
   .bar-legend { font-size:.75rem; line-height:1.4; color:#243746; } .selection-word { font-size:.75rem; }
-  .facet-distribution { width:calc(100% - 8px); margin:0 4px 4px; padding:0; background:#ffffff; }
+  .facet-distribution { width:calc(100% - 8px); margin:0 4px 2px; padding:0; background:#ffffff; }
   .proportional-bar { display:flex; width:100%; height:12px; overflow:hidden; }
   .bar-segment { flex-basis:0; min-width:0; background:var(--bar-colour); position:relative; height:12px; }
   .facet-quick-values { margin:0; padding:0; border:0; }

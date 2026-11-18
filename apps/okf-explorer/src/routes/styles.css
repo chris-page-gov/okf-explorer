@@ -442,6 +442,13 @@ input:focus {
   white-space: nowrap;
 }
 
+.reader-scope {
+  margin: 8px 0;
+  color: var(--muted);
+  font-size: .875rem;
+  overflow-wrap: anywhere;
+}
+
 .stage-actions,
 .chips,
 .detail-actions {

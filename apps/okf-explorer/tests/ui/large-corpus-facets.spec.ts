@@ -212,6 +212,14 @@ test.describe('large-corpus facet interaction contract', () => {
       const facet = facetSection(page, 'population_type');
       const toggle = facet.locator('.facet-toggle');
       await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+      await expect(toggle.locator('.facet-disclosure')).toHaveText('▸');
+      await toggle.focus();
+      await toggle.press('Space');
+      await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+      await expect(toggle.locator('.facet-disclosure')).toHaveText('▾');
+      await toggle.press('Enter');
+      await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+      await expect(toggle).toBeFocused();
       await expect(page.locator('.facet-instructions .bar-legend')).toBeHidden();
       const before = (await facet.boundingBox())!;
       expect(before.height).toBeLessThanOrEqual(64);
@@ -938,7 +946,7 @@ test.describe('large-corpus facet interaction contract', () => {
     await expect(page.getByRole('tablist', { name: 'Relationship data card' })).toBeVisible();
     expect(await graph.locator('.edge-hit').first().evaluate((edge) => getComputedStyle(edge).outlineStyle)).toBe('none');
 
-    await page.locator('.stage-bar').getByRole('button', { name: 'Copy route', exact: true }).click();
+    await page.locator('.stage-bar').getByRole('button', { name: 'Copy link to this view', exact: true }).click();
     const copied = await page.evaluate(() => navigator.clipboard.readText());
     expect(new URL(copied).searchParams.get('graph.edge')).toBe(selectedEdgeKey);
     await page.goto(copied);

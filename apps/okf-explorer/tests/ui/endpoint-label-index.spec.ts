@@ -448,7 +448,7 @@ test.describe('governed endpoint labels', () => {
     await expect(page.locator('main')).toContainText('Prepare the application');
     await expect(page.locator('.stage')).not.toContainText('process-internal-1');
 
-    await page.locator('.stage-bar').getByRole('button', { name: 'Copy route', exact: true }).click();
+    await page.locator('.stage-bar').getByRole('button', { name: 'Copy link to this view', exact: true }).click();
     const copied = await page.evaluate(() => navigator.clipboard.readText());
     await page.goto(copied);
     await expect(page.locator('main')).toContainText('Applying for probate guidance');

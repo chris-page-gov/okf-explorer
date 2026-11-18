@@ -19,7 +19,7 @@
     <button disabled={!selected || busy || !canFold || highlighted === total} onclick={() => onfold(false)}>Fold unhighlighted</button>
     <button disabled={!selected || busy} onclick={onclear}>Clear highlight</button>
     <button disabled={!exploration.reductions.length || busy} onclick={onundo}>Undo keep ({exploration.reductions.length})</button>
-    <button disabled={busy} onclick={onreset}>Reset view</button>
+    <button disabled={busy} onclick={onreset}>Clear search and selections</button>
   </div>
   {#if selected && !canFold}<small>Folding needs complete membership within the 50,000-record local limit. Narrow this set first.</small>{/if}
   {#each folds as fold (fold.id)}

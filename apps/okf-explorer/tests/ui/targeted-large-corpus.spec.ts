@@ -829,7 +829,7 @@ test.describe('targeted large-corpus relationship hydration', () => {
     expect(selectedKey).toBeTruthy();
     await expect(page.getByRole('tablist', { name: 'Relationship data card' })).toBeVisible();
 
-    await page.locator('.stage-bar').getByRole('button', { name: 'Copy route', exact: true }).click();
+    await page.locator('.stage-bar').getByRole('button', { name: 'Copy link to this view', exact: true }).click();
     const copied = await page.evaluate(() => navigator.clipboard.readText());
     expect(new URL(copied).searchParams.get('graph.edge')).toBe(selectedKey);
     // Leave the application before opening the shared URL so this proves a
@@ -1046,7 +1046,7 @@ test.describe('targeted large-corpus relationship hydration', () => {
       await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}&view=resources#${RECORD_ROUTE}`);
       await page.locator('.resource-stack-view').getByRole('button', { name: /Target Act HTML/ }).click();
       if (view === 'reader') await page.getByLabel('Views').getByRole('button', { name: 'Reader', exact: true }).click();
-      await page.locator('.right-panel').getByRole('button', { name: 'Copy route', exact: true }).click();
+      await page.locator('.right-panel').getByRole('button', { name: 'Copy link to this view', exact: true }).click();
       const copied = await page.evaluate(() => navigator.clipboard.readText());
       expect(new URL(copied).searchParams.get('graph.center')).toBe(RECORD_ROUTE);
       expect(new URL(copied).hash).toBe('#resource/target-act-html');

@@ -240,6 +240,14 @@ Expected behaviour:
   licences, tags and host/other nodes.
 - Plus/minus controls zoom; the graph can be panned.
 - Single-click inspects a real node in the right card.
+- Selecting another record takes the details pane to its heading and keeps
+  the graph in place.
+- In Reader, the current record and the scope of the browse count are shown
+  separately. Use **Copy link to this view** to share the view and selection
+  of a hosted bundle.
+- **Back to start** returns to the loaded bundle's opening view. Use
+  **Clear search and selections** to keep your view while clearing your
+  exploration.
 - Clicking a relationship row inspects that relationship and keeps the exact
   edge visibly selected on the graph.
 - Double-click navigates or reduces context.

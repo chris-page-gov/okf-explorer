@@ -19,7 +19,7 @@
   import { learningPresentation, semanticFacetPresentation, initialSmallRoute } from '$lib/viewer/smallPresentation';
   import { SMALL_FACETS, smallFacetValues, smallFacetRows, smallIsHighlighted } from '$lib/viewer/smallExploration';
   import { BOOKMARK_STORAGE_KEY, addBookmark, readBookmarks, type Bookmark } from '$lib/viewer/bookmarks';
-  import { displayedRoute, type WorkspacePanel } from '$lib/viewer/workspaceNavigation';
+  import { DEFAULT_DETAILS_WIDTH, DEFAULT_NAVIGATION_WIDTH, displayedRoute, type WorkspacePanel } from '$lib/viewer/workspaceNavigation';
   import { routeHash, routeFromHash } from '$lib/viewer/routeHash';
   import { pushState, replaceState } from '$app/navigation';
   import type {
@@ -459,9 +459,11 @@
   let visibleTypes = $state(new Set<string>());
   let leftCollapsed = $state(false);
   let rightCollapsed = $state(false);
-  let leftWidth = $state(320);
-  let rightWidth = $state(420);
+  let leftWidth = $state(DEFAULT_NAVIGATION_WIDTH);
+  let rightWidth = $state(DEFAULT_DETAILS_WIDTH);
   let activePanel = $state<WorkspacePanel>('content');
+  let workspaceScrollReset = $state(0);
+  let copyRouteStatus = $state('');
   let resultLayout = $state<'cards' | 'list'>('cards');
   let reductions = $state<Reduction[]>([]);
   let foldedSets = $state<FoldedSet[]>([]);
@@ -830,11 +832,61 @@
     if (last) setExploration({ preview: last.selection, reductions: reductions.slice(0, -1) });
     refreshExploration();
   }
-  function resetExploration() {
+  function clearExplorationState() {
     setExploration(emptyExploration()); foldedSets = []; geospatialFilter = '';
     if (source?.kind === 'large') { largeFacetFilters = {}; largeQuery = ''; }
     else { visibleTypes = new Set(typeList); smallQuery = ''; }
+  }
+
+  function resetExploration() {
+    clearExplorationState();
     refreshExploration();
+  }
+
+  function returnToBundleStart() {
+    if (!source) return;
+    clearExplorationState();
+    retrievalSort = defaultRetrievalSort('');
+    activeView = 'reader';
+    interactionMode = 'search';
+    activePanel = 'content';
+    leftCollapsed = source.kind === 'large' && narrowExplorerViewport();
+    rightCollapsed = source.kind === 'large' || Boolean(learning);
+    leftWidth = DEFAULT_NAVIGATION_WIDTH;
+    rightWidth = DEFAULT_DETAILS_WIDTH;
+    resultLayout = 'cards';
+    multiSelect = false;
+    copyRouteStatus = '';
+    activeHelpKey = '';
+    graphLayoutControlsOpen = false;
+    graphExpandedRelationshipGroups = [];
+    graphRelationshipPage = { route: '', offset: 0 };
+    linkRelationshipPage = { key: '', offset: 0 };
+    timelineResolution = 'latest';
+    timelineDateScope = 'all';
+    applyGraphState(new URLSearchParams());
+    resetGraphView();
+
+    if (source.kind === 'large') {
+      clearLargeRouteContext();
+      largeExpandedStackRoute = '';
+      largeSearchPendingQuery = '';
+      activeFacetKey = '';
+      openedPinnedFacets = [];
+      detailPanelTab = providerDefaultDetailTab();
+      leftPanelTab = providerDefaultLeftTab();
+    } else {
+      selectedId = federationOverview ? '' : initialSmallRoute(source.corpus);
+      inspectedId = '';
+      smallInspectedRelationship = null;
+      smallOpenFacet = learning?.facets[0]?.key || '';
+      smallPinnedFacets = [];
+      smallOpenedPinnedFacets = [];
+      if (conversationPresentation(source.corpus.nodes[selectedId])) activeView = 'narrative';
+    }
+    syncExplorerUrl(true);
+    if (source.kind === 'large') clearLargeSearch();
+    workspaceScrollReset += 1;
   }
 
   function foldExploration(highlighted: boolean) {
@@ -2441,7 +2493,7 @@
     syncExplorerUrl(true);
   }
 
-  function copyRoute(routeOverride?: string | Event) {
+  async function copyRoute(routeOverride?: string | Event) {
     const explicitRoute = typeof routeOverride === 'string' ? routeOverride : '';
     let route = location.href;
     if (source?.kind === 'small' && detailNode) {
@@ -2449,7 +2501,13 @@
     } else if (source?.kind === 'large') {
       route = buildExplorerUrl(explicitRoute || largeInspectedRoute || largeSelectedRoute);
     }
-    void navigator.clipboard?.writeText(route);
+    copyRouteStatus = '';
+    try {
+      await navigator.clipboard.writeText(route);
+      copyRouteStatus = 'Link to this view copied.';
+    } catch {
+      copyRouteStatus = 'Could not copy the link to this view.';
+    }
   }
 
   function pinRoute(route = source?.kind === 'large' ? displayedRoute(largeInspectedRoute, largeSelectedRoute) : displayedRoute(inspectedId, selectedId)) {
@@ -6618,6 +6676,7 @@
       result={exploratoryPublication}
       feedbackUrl={exploratoryFeedbackHref()}
     />
+    <div class:status={Boolean(copyRouteStatus)} aria-live="polite" aria-atomic="true">{copyRouteStatus}</div>
     {#if appAlertMessages.length}
       <div
         class="error"
@@ -6671,7 +6730,7 @@
       {/if}
   {/snippet}
 
-  <WorkspaceShell actions={selectionActions} bind:activePanel bind:leftCollapsed bind:rightCollapsed bind:leftWidth bind:rightWidth navigationSummary={selectionLabel(largeFacetHighlights) || 'Search and facets'} detailSummary={source?.kind === 'large' ? largeLabelForRoute(largeInspectedRoute || largeSelectedRoute) || 'Bundle details' : detailNode?.title || 'Bundle details'} resultSummary={highlightedCount ? highlightedCount + ' highlighted' : String(scopeCount)}>
+  <WorkspaceShell actions={selectionActions} bind:activePanel bind:leftCollapsed bind:rightCollapsed bind:leftWidth bind:rightWidth navigationSummary={selectionLabel(largeFacetHighlights) || 'Search and facets'} detailSummary={source?.kind === 'large' ? largeLabelForRoute(largeInspectedRoute || largeSelectedRoute) || 'Bundle details' : detailNode?.title || 'Bundle details'} detailKey={`${bundleUrl}#${source?.kind === 'large' ? displayedRoute(largeInspectedRoute, largeSelectedRoute) : detailNode?.id || ''}`} resultSummary={highlightedCount ? highlightedCount + ' highlighted' : String(scopeCount)} scrollReset={workspaceScrollReset}>
     {#snippet navigation()}
         {#if source}
           <div class="context-mode-controls" role="group" aria-label="Search or assemble evidence">
@@ -6949,10 +7008,11 @@
           {#if detailNode} / {detailNode.title}{/if}
         </div>
         <div class="stage-actions">
+          {#if source}<button type="button" onclick={returnToBundleStart}>Back to start</button>{/if}
           {#if largeSourceInspectorOpen}
             <button type="button" onclick={closeSourceInspector}>Back to record</button>
           {:else}
-            <button type="button" onclick={copyRoute}>Copy route</button>
+            <button type="button" onclick={copyRoute}>Copy link to this view</button>
             <button type="button" onclick={() => pinRoute()}>Pin</button>
             <button type="button" onclick={() => { rightCollapsed = false; activePanel = 'details'; }}>Inspect</button>
           {/if}
@@ -6989,6 +7049,15 @@
             </aside>
           {/if}
           {#if activeView === 'reader'}
+            <p class="reader-scope">
+              {#if largeInspectedRoute || largeSelectedRoute}
+                <strong>Current record</strong> {largeLabelForRoute(largeInspectedRoute || largeSelectedRoute)}.
+              {/if}
+              {#if geospatialFilter}Counts describe the current map selection.
+              {:else if largeQuery.trim()}Counts describe the current search and filters.
+              {:else if activeLargeFilterCount || reductions.length || foldedSets.length}Counts describe the current filters and groups.
+              {:else}Counts describe the whole bundle.{/if}
+            </p>
             <div class="metrics">
               {#each largeContextMetrics() as metric}
                 <article data-metric={metric.label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}><strong>{metric.value.toLocaleString()}</strong><span>{metric.label}</span></article>
@@ -7006,7 +7075,7 @@
           {/if}
 
           {#if activeView === 'reader'}
-            {#if largeQuery || activeLargeFilterCount || hasSelection(largeFacetHighlights) || reductions.length || foldedSets.length || largeSearchResponse || (!largeSearchClient && largeIndex)}
+            {#if largeQuery || activeLargeFilterCount || hasSelection(largeFacetHighlights) || reductions.length || foldedSets.length || largeSearchResponse || (!largeSearchClient && largeIndex && !largeIsOverviewContext())}
               <div class="view-heading"><h2>Results</h2><span>{largeSearching ? 'Updating results…' : searchResultSummary()}</span></div>
               <ResultList items={largeReaderResults} busy={largeSearching || Boolean(geospatialFilter && largeFullLoading)} selected={largeInspectedRoute || largeSelectedRoute} bind:layout={resultLayout} query={largeAppliedQuery} onselect={(route) => { const result = largeResults.find(row => datasetRoute(row) === route); if (result) chooseLargeResult(result); else selectLargeRoute(route); }} />
             {:else if largeHasAnalysisOverview('reader')}
@@ -7050,7 +7119,7 @@
                   </section>
                 {/if}
               </div>
-            {:else if largeIndex}
+            {:else if largeIndex && !largeIsOverviewContext()}
               <div class="view-heading">
                 <h2>{capitalise(recordPlural())}</h2>
                 <span>{largeVisibleDatasets.length.toLocaleString()} in current reduction</span>
@@ -8003,12 +8072,16 @@
               onloadchild={loadFederationChild}
             />
           {:else}
+            {@const browseCount = `${smallResults.length.toLocaleString('en-GB')} ${smallResults.length === 1 ? 'record' : 'records'}`}
+            {@const browseScope = smallQuery.trim() ? 'Current search' : reductions.length || foldedSets.length || visibleTypes.size !== typeList.length ? 'Current filters and groups' : 'Whole bundle'}
             <section class="reader-view shared-reader">
+              {#if detailNode}<p class="reader-scope"><strong>Current record</strong> {detailNode.title}</p>{/if}
               {#if learning && !smallQuery.trim() && !explorationActive}
                 <LearningReader corpus={smallCorpus} presentation={learning} selected={selectedId} onselect={selectLearningNode} />
-                <details><summary>Browse all {smallResults.length} records</summary><ResultList items={smallResults} selected={inspectedId || selectedId} bind:layout={resultLayout} query={smallQuery} onselect={selectNode} /></details>
+                <details><summary>Browse {browseScope.toLowerCase()} ({browseCount})</summary><ResultList items={smallResults} selected={inspectedId || selectedId} bind:layout={resultLayout} query={smallQuery} onselect={selectNode} /></details>
               {:else}
                 {#if learning}<button type="button" onclick={() => { resetExploration(); setSmallQuery(''); selectLearningNode(learning!.start_route); }}>← Learning path</button>{/if}
+                <p class="reader-scope">{browseScope} · {browseCount}</p>
                 <ResultList items={smallResults} selected={inspectedId || selectedId} bind:layout={resultLayout} query={smallQuery} onselect={selectNode} />
               {/if}
             </section>
@@ -8612,7 +8685,7 @@
               <div class="detail-actions">
                 <button type="button" onclick={() => recenterLargeRoute(largeDetail.route)}>Graph</button>
                 <button type="button" onclick={() => pinRoute(largeDetail?.route)}>Pin</button>
-                <button type="button" onclick={() => copyRoute(largeDetail.route)}>Copy route</button>
+                <button type="button" onclick={() => copyRoute(largeDetail.route)}>Copy link to this view</button>
                 {#each sourceAccessRows as access}
                   {#if canDisplaySourceInline(access)}
                     <button class="primary-action" type="button" title={access.label} onclick={() => void loadLargeSource(largeDetail.route, access)}>
@@ -8929,7 +9002,7 @@
               <div class="detail-actions">
                 <button type="button" onclick={() => largeDetail?.kind === 'resource' && selectLargeRoute(datasetRoute(largeDetail.dataset || { name: largeDetail.resource.dataset, title: largeDetail.resource.dataset }))}>{capitalise(recordSingular())}</button>
                 <button type="button" onclick={() => pinRoute(largeDetail?.route)}>Pin</button>
-                <button type="button" onclick={() => copyRoute(largeDetail.route)}>Copy route</button>
+                <button type="button" onclick={() => copyRoute(largeDetail.route)}>Copy link to this view</button>
                 {#if largeInspectedRoute}<button type="button" onclick={clearInspection}>Clear inspection</button>{/if}
               </div>
               <details class="metadata-section disclosure-section" open>
@@ -8982,7 +9055,7 @@
               <div class="detail-actions">
                 <button type="button" onclick={() => recenterLargeRoute(largeDetail.route)}>Graph</button>
                 <button type="button" onclick={() => pinRoute(largeDetail?.route)}>Pin</button>
-                <button type="button" onclick={() => copyRoute(largeDetail.route)}>Copy route</button>
+                <button type="button" onclick={() => copyRoute(largeDetail.route)}>Copy link to this view</button>
               </div>
               <details class="metadata-section disclosure-section" open>
                 <summary>Overview</summary>
@@ -9107,7 +9180,7 @@
                 <button type="button" onclick={() => recenterLargeRoute(largeDetail.route)}>Graph related records</button>
                 {#if metadataFacet}<button type="button" onclick={() => showMetadataRouteRecords(largeDetail.route)}>View related {recordPlural()}</button>{/if}
                 <button type="button" onclick={() => pinRoute(largeDetail?.route)}>Pin</button>
-                <button type="button" onclick={() => copyRoute(largeDetail.route)}>Copy route</button>
+                <button type="button" onclick={() => copyRoute(largeDetail.route)}>Copy link to this view</button>
               </div>
               <p class="context-note">{metadataMembershipDescription(largeDetail.route)}</p>
               <dl>
