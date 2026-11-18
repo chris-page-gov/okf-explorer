@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased — semantic guidance
+
+- Explain the published Ontology, Validation and Links capabilities in the
+  beginner guide. Link the exact release evidence and record the features
+  that need further review.
+
 ## Unreleased — governed vocabulary examples
 
 - Stage a vocabulary Reader example and a separate missing-label exercise

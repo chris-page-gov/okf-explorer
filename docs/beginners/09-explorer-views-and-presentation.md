@@ -224,22 +224,26 @@ Visual encodings require text equivalents:
 An accessible alternative is not a lesser “fallback.” It can also be the
 clearest way to audit dense evidence.
 
-## Current Behaviour Versus Roadmap
+## Current behaviour versus roadmap
 
 The current Explorer supports the listed coordinated views, small and large
 pack loading, predicate-aware graph grouping, durable retrieval state,
 geospatial discovery and legislation detail.
 
-Proposed future semantic views include:
+For bundles that publish the relevant checked index or report, the
+Explorer also supports:
 
-- class hierarchy;
-- property hierarchy;
-- SKOS concept schemes;
-- provenance paths;
-- validation results;
-- asserted-versus-inferred comparison.
+- class and property hierarchies, SKOS schemes, and explicit direct or
+  nested scope in Ontology;
+- validation results with source records and remediation guidance;
+- assertion status filters and separate source and inferred counts in Links,
+  with the rule, derivation activity and supporting evidence.
 
-Documentation should label these as candidate or planned until implemented.
+The examples in the [semantic roadmap and release evidence](../semantic-roadmap-review-2026-11-18.md)
+show which materials a producer supplies for these views. Collection
+grouping, searching alternative labels and extending record search across
+hierarchies are future work. Additional inference rules need their own
+review and bounds.
 
 ## Next
 
