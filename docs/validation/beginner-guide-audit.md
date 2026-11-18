@@ -39,6 +39,10 @@ Run the guide browser test with `OKF_BEGINNER_RELEASE_AUDIT=1` and
 projects with the JSON reporter. The test records the exact Site identity,
 application manifest, browser version and observed routes for each run.
 
+The **Audit the deployed beginner guide** GitHub workflow runs this check
+against the live Site when given its full deployed commit. Download the
+`beginner-guide-live-browser-report` artifact after the workflow passes.
+
 ```sh
 cd apps/okf-explorer
 OKF_BEGINNER_RELEASE_AUDIT=1 pnpm exec playwright test \
