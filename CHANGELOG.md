@@ -12,6 +12,8 @@
 - Scope ontology searches to the direct children of a selected term, with
   an explicit option to include terms further down its declared hierarchy.
 - Regenerate the analytical trial receipts against the locked SHACL toolchain.
+- Declare explicit DCAT-AP landing pages as documents so the export passes
+  the official range check.
 
 ## Unreleased — semantic foundations
 

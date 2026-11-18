@@ -109,6 +109,8 @@ and a `datasets` array. The catalogue requires `id`, `title`, `description`,
 Each dataset requires `id`, `title`, `description`, `source_record`, `themes`
 and `distributions`. Optional fields are `publisher` and `landing_page`.
 Supply each theme's stable concept `id` and its declared preferred `label`.
+The export types a declared landing page as `foaf:Document` for the
+DCAT-AP range check.
 
 Each distribution requires `id`, `title`, `access_url` and `source_record`.
 Add `download_url`, `licence`, `media_type` and `bytes` when the source

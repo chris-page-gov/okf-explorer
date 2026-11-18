@@ -108,7 +108,9 @@ def export_catalogue(raw: bytes) -> bytes:
         if "publisher" in row:
             graph.add((dataset, DCTERMS.publisher, publisher(graph, row["publisher"], language)))
         if "landing_page" in row:
-            graph.add((dataset, DCAT.landingPage, named(row["landing_page"], web=True)))
+            landing_page = named(row["landing_page"], web=True)
+            graph.add((dataset, DCAT.landingPage, landing_page))
+            graph.add((landing_page, RDF.type, FOAF.Document))
         for theme in entries(row["themes"], 64):
             tag = object_record(theme, {"id", "label"})
             concept = named(tag["id"])

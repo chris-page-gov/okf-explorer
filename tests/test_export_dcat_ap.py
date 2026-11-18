@@ -4,7 +4,7 @@ from pathlib import Path
 import sys
 import unittest
 
-from rdflib import DCAT, DCTERMS, Graph, Literal, PROV, RDF, URIRef, XSD
+from rdflib import DCAT, DCTERMS, FOAF, Graph, Literal, PROV, RDF, URIRef, XSD
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
@@ -13,6 +13,7 @@ from export_dcat_ap import PROFILE, export_catalogue  # noqa: E402
 
 CATALOGUE = "https://catalogue.example.test/catalogue"
 DATASET = "https://catalogue.example.test/dataset/counts"
+LANDING_PAGE = DATASET + "/about"
 DISTRIBUTION = DATASET + "/csv"
 THEME = "http://publications.europa.eu/resource/authority/data-theme/EDUC"
 LICENCE = "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
@@ -35,6 +36,7 @@ def example():
             "id": DATASET,
             "title": "Pupil counts",
             "description": "Counts by reporting area.",
+            "landing_page": LANDING_PAGE,
             "source_record": SOURCE,
             "themes": [{"id": THEME, "label": "Education, culture and sport"}],
             "distributions": [{
@@ -63,6 +65,8 @@ class ExportDcatApTest(unittest.TestCase):
         self.assertIn((catalogue, DCAT.dataset, dataset), graph)
         self.assertIn((dataset, RDF.type, DCAT.Dataset), graph)
         self.assertIn((dataset, PROV.wasDerivedFrom, URIRef(SOURCE)), graph)
+        self.assertIn((dataset, DCAT.landingPage, URIRef(LANDING_PAGE)), graph)
+        self.assertIn((URIRef(LANDING_PAGE), RDF.type, FOAF.Document), graph)
         self.assertIn((dataset, DCAT.distribution, distribution), graph)
         self.assertIn((dataset, DCAT.theme, URIRef(THEME)), graph)
         self.assertIn((distribution, DCAT.accessURL, dataset), graph)
