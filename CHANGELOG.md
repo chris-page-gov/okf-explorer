@@ -2,6 +2,9 @@
 
 ## Unreleased — Explorer presentation
 
+- Keep a high-contrast dotted keyboard focus indicator on Graph edges in
+  both colour schemes.
+
 - Offer an explicit offline save for small published boundary maps. Verify
   the selected Explorer shell, both geometry levels and the map's record data
   before replacing the saved snapshot.

@@ -7507,10 +7507,10 @@
               >
                 <defs>
                   <marker id="graph-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="userSpaceOnUse">
-                    <path d="M 0 0 L 8 4 L 0 8 z" fill="#9aaaba"></path>
+                    <path class="edge-arrow" d="M 0 0 L 8 4 L 0 8 z"></path>
                   </marker>
                   <marker id="graph-arrow-highlight" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="userSpaceOnUse">
-                    <path d="M 0 0 L 8 4 L 0 8 z" fill="#1d70b8"></path>
+                    <path class="edge-arrow-selected" d="M 0 0 L 8 4 L 0 8 z"></path>
                   </marker>
                 </defs>
                 {#if focusTitleLines.length}
@@ -8174,10 +8174,10 @@
             >
               <defs>
                 <marker id="small-graph-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth">
-                  <path d="M 0 0 L 8 4 L 0 8 z" fill="#9aaaba"></path>
+                  <path class="edge-arrow" d="M 0 0 L 8 4 L 0 8 z"></path>
                 </marker>
                 <marker id="small-graph-arrow-highlight" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth">
-                  <path d="M 0 0 L 8 4 L 0 8 z" fill="#1d70b8"></path>
+                  <path class="edge-arrow-selected" d="M 0 0 L 8 4 L 0 8 z"></path>
                 </marker>
               </defs>
               {#each model.relationships as relationship}

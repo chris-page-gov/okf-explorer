@@ -72,3 +72,25 @@ test('the selected view and keyboard focus remain visible in forced colours', as
     await expect(graph).toHaveCSS('border-top-style', 'double');
   }
 });
+
+test('keyboard focus draws a distinct Graph edge marker in light and dark themes', async ({ page }) => {
+  await page.goto('./explore/');
+  await page.getByRole('navigation', { name: 'Views' }).getByRole('button', { name: 'Graph', exact: true }).click();
+  const edge = page.locator('.graph .edge-hit').first();
+  const arrow = page.locator('.graph .edge-arrow').first();
+  await expect(edge).toBeAttached();
+  const theme = page.getByRole('combobox', { name: 'Theme' });
+  for (const [mode, ink, arrowColour] of [
+    ['light', 'rgb(23, 32, 42)', 'rgb(96, 120, 145)'],
+    ['dark', 'rgb(241, 245, 251)', 'rgb(164, 181, 201)']
+  ]) {
+    await theme.selectOption(mode);
+    await edge.focus();
+    await page.keyboard.press('Shift');
+    await expect(edge).toBeFocused();
+    await expect(edge).toHaveCSS('stroke', ink);
+    await expect(edge).toHaveCSS('opacity', '1');
+    await expect(edge).toHaveCSS('stroke-linecap', 'round');
+    await expect(arrow).toHaveCSS('fill', arrowColour);
+  }
+});
