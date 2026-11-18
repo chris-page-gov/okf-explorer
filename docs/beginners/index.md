@@ -241,6 +241,10 @@ then gives an optional Obsidian route.
 If you want to practise modelling from a source, go to the
 [life-course exercises](25-life-course-worked-example.md#exercise-1-recognise-entities-and-concepts).
 
+The guide's browser checks cover navigation, generated heading fragments and
+automated accessibility rules for each published chapter. The test evidence
+retains the remaining manual checks.
+
 If you want to contribute code, read chapters 1 through 9, then 13 through 21.
 The domain chapters are still important before changing Map or legislation
 features.

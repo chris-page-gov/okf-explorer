@@ -11,6 +11,7 @@
 - Exercise every generated chapter-heading fragment and run automated
   accessibility checks on each guide page. Retain the observed routes,
   fragments and checks that need manual review as test evidence.
+- Register the theme and guide audit suites in browser assurance.
 - Normalise bounded SHACL Core reports into stable, digest-bound finding IDs
   for the planned validation view.
 - Add an opt-in subclass inference candidate with fixed processing limits and

@@ -11,6 +11,7 @@ const SUITES = {
     family: 'ui',
     file: 'tests/ui/accessibility.spec.ts'
   },
+  theme: { family: 'ui', file: 'tests/ui/theme.spec.ts' },
   ask_okf: {
     family: 'ui',
     file: 'tests/ui/ask-okf.spec.ts'
@@ -99,6 +100,7 @@ const SUITES = {
     family: 'foundry',
     file: 'tests/foundry/beginner-guide-navigation.spec.ts'
   },
+  beginner_audit: { family: 'foundry', file: 'tests/foundry/beginner-guide-fragments.spec.ts' },
   foundry_pages: {
     family: 'foundry',
     file: 'tests/foundry/foundry-docs.spec.ts'
@@ -126,6 +128,7 @@ export const JOURNEY_GROUP_SUITES = Object.freeze({
     'exploratory_publication',
     'learner_hub',
     'beginner_navigation',
+    'beginner_audit',
     'foundry_pages'
   ],
   reader: ['learning_path', 'okf_plus_context', 'ask_okf', 'conceptual_navigation', 'small_bundle', 'facets', 'large_corpus', 'legislation_structure', 'reading_help_corpus', 'reading_help_related', 'endpoint_labels', 'exploratory_publication'],
@@ -136,6 +139,7 @@ export const JOURNEY_GROUP_SUITES = Object.freeze({
 export const TEST_TAG_SUITES = Object.freeze({
   accessibility: [
     'accessibility',
+    'theme',
     'ask_okf',
     'okf_plus_context',
     'relationship_pagination',
@@ -143,6 +147,7 @@ export const TEST_TAG_SUITES = Object.freeze({
     'small_bundle',
     'map',
     'beginner_navigation',
+    'beginner_audit',
     'foundry_pages'
   ],
   adversarial: ['ask_okf', 'small_bundle', 'large_corpus', 'foundry_pages'],
@@ -167,6 +172,7 @@ export const TEST_TAG_SUITES = Object.freeze({
   misspelling: ['large_corpus', 'facets'],
   presentation: [
     'accessibility',
+    'theme',
     'conceptual_navigation',
     'ask_okf',
     'okf_plus_context',
@@ -175,6 +181,7 @@ export const TEST_TAG_SUITES = Object.freeze({
     'exploratory_publication',
     'learner_hub',
     'beginner_navigation',
+    'beginner_audit',
     'foundry_pages'
   ],
   producer: ['conceptual_producer_acceptance', 'small_bundle', 'large_corpus'],
@@ -186,10 +193,10 @@ export const TEST_TAG_SUITES = Object.freeze({
   relationship: ['small_bundle', 'large_corpus', 'relationship_pagination', 'federation'],
   release: ['foundry_pages'],
   repository: ['foundry_pages'],
-  route: ['okf_plus_context', 'exploratory_publication', 'learner_hub', 'beginner_navigation', 'foundry_pages'],
+  route: ['okf_plus_context', 'exploratory_publication', 'learner_hub', 'beginner_navigation', 'beginner_audit', 'foundry_pages'],
   runtime: ALL_UI,
   search: ['small_bundle', 'facets', 'large_corpus'],
-  site: ['learner_hub', 'beginner_navigation', 'foundry_pages'],
+  site: ['learner_hub', 'beginner_navigation', 'beginner_audit', 'foundry_pages'],
   source: ['okf_plus_context', 'small_bundle', 'large_corpus', 'legislation_structure', 'reading_help_corpus', 'reading_help_related'],
   validator: ['foundry_pages'],
   workflow: ['foundry_pages'],
