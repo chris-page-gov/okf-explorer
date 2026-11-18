@@ -125,11 +125,12 @@
 
     {#if !provisions.length}
       <button class="load-button" type="button" disabled={loading || !structureUrl} onclick={() => void loadStructure()}>
-        {loading ? 'Loading official CLML…' : 'Load every Part, Chapter, section, article and nested provision'}
+        {loading ? 'Loading official text…' : 'Explore official text'}
       </button>
-      <p class="progressive-note">Loaded on demand from legislation.gov.uk. Large source files have a stated limit; open the official CLML directly if it is reached.</p>
+      <p class="progressive-note">Load the Parts, Chapters, sections, articles and nested provisions from legislation.gov.uk.</p>
     {/if}
-    {#if error}<p class="error" role="alert">{error} <a href={structureUrl} target="_blank" rel="noopener">Open the official CLML directly</a>.</p>{/if}
+    {#if structureUrl}<p><a href={structureUrl} target="_blank" rel="noopener">Open official XML</a></p>{/if}
+    {#if error}<p class="error" role="alert">{error}</p>{/if}
 
     {#if provisions.length}
       <details><summary>Downloaded CLML source identity</summary><p>{sourceByteLength.toLocaleString()} bytes · SHA-256 <code>{sourceSha256}</code></p><button type="button" onclick={downloadClml}>Download captured CLML</button></details>

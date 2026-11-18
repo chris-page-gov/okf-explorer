@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased — search and source inspection
+
+- Evaluate the effective sort when the canonical route omits its default.
+  Keep lexical results when an older publisher facet supplies a label without
+  record membership.
+- Record the ordered canonical search results from repeated fresh contexts
+  after checking that each context fetched the same bytes.
+- Route exact official CLML to the legislation viewer. Give older XML, tabular
+  and document links an appropriate destination and report incompatible media
+  types before attempting to parse them.
+
 ## Unreleased — sourced Hansard dates and summaries
 
 - Show contribution timecodes, section markers and source item positions

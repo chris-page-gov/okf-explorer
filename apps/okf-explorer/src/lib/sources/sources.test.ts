@@ -461,6 +461,12 @@ describe('fetch helpers', () => {
     );
   });
 
+  it('reports a source media-type mismatch before parsing the response', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () => new Response('<html>Error</html>', { headers: { 'content-type': 'text/html; charset=UTF-8' } })));
+    await expect(fetchSourceResponse('https://example.test/route.xml', 'xml', 'application/xml', 15000, 1, 0))
+      .rejects.toThrow('Expected XML from the source. It returned text/html.');
+  });
+
   it('requests plain text without applying the JSON endpoint fallback', async () => {
     const fetchMock = vi.fn(async () => new Response('Current official guidance', { headers: { 'content-type': 'text/plain' } }));
     vi.stubGlobal('fetch', fetchMock);

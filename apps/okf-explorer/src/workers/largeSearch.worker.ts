@@ -666,8 +666,11 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
   if (rawTokens.length > SEARCH_MANIFEST_LIMITS.maxQueryTokens) {
     throw new Error('Search query exceeds the supported token limit');
   }
-  const entityRecognition = await recognizedEntity(query);
-  const recognizedOrdinals = entityRecognition ? await entityOrdinals(entityRecognition.entity) : null;
+  const recognized = await recognizedEntity(query);
+  const recognizedOrdinals = recognized ? await entityOrdinals(recognized.entity) : null;
+  // A legacy facet can advertise a label and count without any membership.
+  // Keep the full lexical query when that label cannot resolve to ordinals.
+  const entityRecognition = manifest.query_policy || recognizedOrdinals !== null ? recognized : null;
   const exactPolicyEntity = Boolean(
     manifest.query_policy &&
       entityRecognition &&
