@@ -150,7 +150,7 @@ identifier model to a wider repertoire of characters while retaining defined
 mapping and syntax rules.
 
 **Boundary and example.** RDF uses IRIs to identify resources and properties.
-This project's material semantic nodes and predicates use absolute IRIs plus
+This project's material semantic nodes and [predicates](16-beginner-glossary.md#predicate) use absolute IRIs plus
 validated local Explorer routes. An IRI can identify without being a page the
 Reader may fetch. See [URI](#uri), [identifier](#identifier),
 [RFC 3987](24-authoritative-source-register.md#s06-rfc-3987) and
@@ -162,7 +162,7 @@ In the life-course example, [read a predicate IRI](25-life-course-worked-example
 
 **Definition.** A category whose members are things of a described kind.
 
-**Boundary and example.** Public Service can be a class; one council's
+**Boundary and example.** Public Service can be a [class](16-beginner-glossary.md#class); one council's
 missed-collection route can be an [instance](#instance). A class is not simply
 a display group or a tag, and membership should have declared semantics. In
 RDFS and OWL, class statements can participate in inference; validation is a
@@ -276,7 +276,7 @@ In the life-course example, [identify whose authority applies](25-life-course-wo
 **Definition.** Information about the origin, custody and transformation of a
 claim, record or artefact.
 
-**Boundary and example.** Provenance can record which source supplied a rule,
+**Boundary and example.** [Provenance](16-beginner-glossary.md#provenance) can record which source supplied a rule,
 when it was observed, which activity normalised it and which output was
 generated. Provenance supports assessment but does not itself decide trust or
 truth. See [evidence](#evidence), [observation time](#observation-time),
@@ -514,3 +514,16 @@ The definitions are meant to be used together:
 
 That chain is a modelling aid, not a claim that every person experiences one
 linear journey.
+
+## Learning path connections
+
+- [Learning path overview](index.md#learning-path)
+- Previous chapter is [Evaluation Foundry And YAML-LD](22-evaluation-foundry-and-yaml-ld.md#learning-path-connections).
+- Next chapter is [Annotated Authoritative-Source Register](24-authoritative-source-register.md#learning-path-connections).
+- Glossary terms in this chapter include [Assertion](16-beginner-glossary.md#assertion),
+  [Class](16-beginner-glossary.md#class),
+  [Instance](16-beginner-glossary.md#instance),
+  [IRI](16-beginner-glossary.md#iri),
+  [Predicate](16-beginner-glossary.md#predicate),
+  [Provenance](16-beginner-glossary.md#provenance).
+- Apply this chapter in [exercise 1](25-life-course-worked-example.md#exercise-1-recognise-entities-and-concepts).

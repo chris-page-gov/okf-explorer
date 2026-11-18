@@ -10,7 +10,7 @@ progressive.
 A menu does not bring every dish to the table. It gives enough information to
 choose, then the kitchen prepares what was selected.
 
-A large OKF descriptor plays the role of the menu. It states what the
+A large OKF [descriptor](16-beginner-glossary.md#descriptor) plays the role of the menu. It states what the
 collection is, which artefacts exist and where to find them. Search indexes
 and compact result records help the user choose. Full records and relationship
 neighbourhoods load only when needed.
@@ -45,13 +45,13 @@ publication but does not contain every record.
 
 ## Manifest
 
-A **manifest** inventories artefacts in a publication. The data manifest can
+A **[manifest](16-beginner-glossary.md#manifest)** inventories artefacts in a publication. The data manifest can
 point to:
 
 - overview and analysis files;
 - search indexes;
 - facets;
-- full-record chunks;
+- full-record [chunks](16-beginner-glossary.md#chunk);
 - resource and publisher chunks;
 - relationship indexes and adjacency buckets;
 - provider datapacks;
@@ -67,7 +67,7 @@ These terms are borrowed from distributed systems.
 The **control plane** tells the application what exists and how to access it:
 descriptor, manifest, version, snapshot, counts, schemas and entrypoints.
 
-The **data plane** carries the substantial content: records, search postings,
+The **[data plane](16-beginner-glossary.md#data-plane)** carries the substantial content: records, search postings,
 relationships, resources and compressed packs.
 
 Keeping them separate lets the Explorer make a plan from a small trusted
@@ -88,7 +88,7 @@ data/records-000.json
 data/records-001.json
 ```
 
-A **shard** is a partition selected by a deterministic key. Search terms might
+A **[shard](16-beginner-glossary.md#shard)** is a partition selected by a deterministic key. Search terms might
 be divided by their first characters, while relationships can be divided by a
 hash of the selected route.
 
@@ -105,7 +105,7 @@ Examples include:
 - a search lexicon mapping terms to postings;
 - a facet index mapping a value to matching record numbers;
 - a document map translating record IDs to numeric positions;
-- a relationship adjacency index locating the edges near one route;
+- a relationship [adjacency index](16-beginner-glossary.md#adjacency-index) locating the edges near one route;
 - sort values aligned to record positions.
 
 Indexes duplicate selected information intentionally. The canonical record is
@@ -131,16 +131,16 @@ The normal large-corpus sequence is:
 7. load its resources or relationship neighbourhood on demand;
 8. fetch external source material only after a deliberate user action.
 
-This is also called **lazy loading**: defer work until it can provide value.
+This is also called **[lazy loading](16-beginner-glossary.md#lazy-loading)**: defer work until it can provide value.
 
-Progressive loading is not an excuse for hidden incompleteness. The interface
+[Progressive loading](16-beginner-glossary.md#progressive-loading) is not an excuse for hidden incompleteness. The interface
 must say when a total is exact, a lower bound or unknown, and when a result was
 truncated by a budget.
 
 ## Compression
 
 Repeated text in JSON compresses well. Large artefacts may be published with
-gzip compression to reduce transfer size.
+gzip [compression](16-beginner-glossary.md#compression) to reduce transfer size.
 
 Compression introduces two sizes:
 
@@ -241,3 +241,21 @@ Neither is “more OKF.” They are publication shapes for different scales.
 [Search, filters, facets and context](05-search-filters-facets-and-context.md)
 explains the most important indexes and how their results should be
 interpreted.
+
+## Learning path connections
+
+- [Learning path overview](index.md#learning-path)
+- Previous chapter is [Markdown, OKF And Small Bundles](03-markdown-okf-and-small-bundles.md#learning-path-connections).
+- Next chapter is [Search, Filters, Facets And Context](05-search-filters-facets-and-context.md#learning-path-connections).
+- Glossary terms in this chapter include [Adjacency index](16-beginner-glossary.md#adjacency-index),
+  [Chunk](16-beginner-glossary.md#chunk),
+  [Compression](16-beginner-glossary.md#compression),
+  [Corpus](16-beginner-glossary.md#corpus),
+  [Data plane](16-beginner-glossary.md#data-plane),
+  [Descriptor](16-beginner-glossary.md#descriptor),
+  [Hydration](16-beginner-glossary.md#hydration),
+  [Lazy loading](16-beginner-glossary.md#lazy-loading),
+  [Manifest](16-beginner-glossary.md#manifest),
+  [Monolithic bundle](16-beginner-glossary.md#monolithic-bundle),
+  [Progressive loading](16-beginner-glossary.md#progressive-loading),
+  [Shard](16-beginner-glossary.md#shard).

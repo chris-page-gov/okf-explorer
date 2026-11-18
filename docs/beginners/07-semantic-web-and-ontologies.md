@@ -1,6 +1,6 @@
 # The Semantic Web And Ontologies
 
-This chapter introduces RDF, JSON-LD, RDFS, SKOS and OWL from one small
+This chapter introduces RDF, [JSON-LD](16-beginner-glossary.md#json-ld), RDFS, SKOS and OWL from one small
 example. These technologies overlap, but they do different jobs.
 
 ## The Goal
@@ -18,7 +18,7 @@ Another system might use `owner`, `publishingBody` or `organisation`. A person
 can infer that the fields may be related, but software needs shared
 identifiers and declared mappings.
 
-The semantic web approach gives things and properties global identifiers, then
+The [semantic web](16-beginner-glossary.md#semantic-web) approach gives things and properties global identifiers, then
 represents statements as a graph.
 
 ## RDF: The Graph Model
@@ -63,7 +63,7 @@ description matter.
 ## Serialisation
 
 RDF is an abstract graph model, not one file syntax. It can be written as
-Turtle, JSON-LD and other serialisations.
+Turtle, JSON-LD and other [serialisations](16-beginner-glossary.md#serialisation).
 
 ### Turtle
 
@@ -152,7 +152,7 @@ a different layer.
 ## SKOS: Concept Schemes
 
 Simple Knowledge Organization System, or **SKOS**, is intended for thesauri,
-taxonomies and controlled concept schemes.
+taxonomies and controlled [concept schemes](16-beginner-glossary.md#concept-scheme).
 
 Useful terms include:
 
@@ -196,7 +196,7 @@ Examples include:
 - property chains;
 - identity with `owl:sameAs`.
 
-These declarations support **inference**: deriving statements that were not
+These declarations support **[inference](16-beginner-glossary.md#inference)**: deriving statements that were not
 written explicitly but follow from the rules.
 
 ### Example Inference
@@ -223,7 +223,7 @@ Full ontology reasoning can be expensive and difficult to explain. OWL defines
 profiles suited to different needs. The architecture proposes a deliberately
 bounded, OWL 2 RL-style rule set.
 
-The builder can **materialise** selected entailments: calculate them once,
+The builder can **materialise** selected [entailments](16-beginner-glossary.md#entailment): calculate them once,
 publish them as derived edges and record how they were produced. The browser
 then filters and displays those edges without running an unrestricted
 description-logic reasoner.
@@ -232,7 +232,7 @@ This supports static reliability and auditability.
 
 ## Open-World Assumption
 
-RDF, RDFS and OWL usually use the **open-world assumption**:
+RDF, RDFS and OWL usually use the **[open-world assumption](16-beginner-glossary.md#open-world-assumption)**:
 
 > Not knowing a statement does not make the statement false.
 
@@ -288,7 +288,7 @@ presentation and compatibility with label-only relationships. It does not
 claim that every loaded bundle is an ontology, and it does not perform
 unbounded OWL inference in the browser.
 
-The advanced semantic extension, vocabulary registry, validation views and
+The advanced semantic extension, [vocabulary](16-beginner-glossary.md#vocabulary) registry, validation views and
 materialised inference have separate implementation states. Governed term
 definitions and semantic assertions are present; class/property/inference views
 remain named future capabilities. Consult the [implementation ledger](../okf-0.2-yaml-ld-semantic-authoring.md)
@@ -300,3 +300,26 @@ turn proposals into current behaviour.
 [Validation, provenance and catalogue standards](08-validation-provenance-and-catalogue-standards.md)
 explains how a publication is checked and how evidence survives
 transformation.
+
+## Learning path connections
+
+- [Learning path overview](index.md#learning-path)
+- Previous chapter is [Knowledge Graphs And Stable Identifiers](06-knowledge-graphs-and-identifiers.md#learning-path-connections).
+- Next chapter is [Validation, Provenance And Catalogue Standards](08-validation-provenance-and-catalogue-standards.md#learning-path-connections).
+- Glossary terms in this chapter include [Concept scheme](16-beginner-glossary.md#concept-scheme),
+  [Context, JSON-LD](16-beginner-glossary.md#context-json-ld),
+  [Entailment](16-beginner-glossary.md#entailment),
+  [Inference](16-beginner-glossary.md#inference),
+  [JSON-LD](16-beginner-glossary.md#json-ld),
+  [Materialisation](16-beginner-glossary.md#materialisation),
+  [Open-world assumption](16-beginner-glossary.md#open-world-assumption),
+  [OWL](16-beginner-glossary.md#owl),
+  [RDF](16-beginner-glossary.md#rdf),
+  [RDFS](16-beginner-glossary.md#rdfs),
+  [Semantic web](16-beginner-glossary.md#semantic-web),
+  [Serialisation](16-beginner-glossary.md#serialisation),
+  [SKOS](16-beginner-glossary.md#skos),
+  [Taxonomy](16-beginner-glossary.md#taxonomy),
+  [Turtle](16-beginner-glossary.md#turtle),
+  [Vocabulary](16-beginner-glossary.md#vocabulary).
+- Apply this chapter in [exercise 2](25-life-course-worked-example.md#exercise-2-author-a-directed-relationship).

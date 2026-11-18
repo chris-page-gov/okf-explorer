@@ -97,7 +97,7 @@ descriptor
 ```
 
 The UK API and legislation builders produce related but domain-specific
-artefacts. Before changing a manifest field:
+[artefacts](16-beginner-glossary.md#artefact). Before changing a manifest field:
 
 1. find its TypeScript type;
 2. find the builder output;
@@ -311,3 +311,14 @@ verification state.
 Use the [Beginner glossary](16-beginner-glossary.md) as a quick reference, read
 chapters 17 through 20 for the current v0.2, federation, Foundry and assurance
 contracts, then continue with the advanced document for your contribution area.
+
+## Learning path connections
+
+- [Learning path overview](index.md#learning-path)
+- Previous chapter is [Building, Testing And Publishing](14-building-testing-and-publishing.md#learning-path-connections).
+- Next chapter is [Beginner Glossary](16-beginner-glossary.md#learning-path-connections).
+- Glossary terms in this chapter include [Artefact](16-beginner-glossary.md#artefact),
+  [Descriptor](16-beginner-glossary.md#descriptor),
+  [Registry](16-beginner-glossary.md#registry),
+  [Release root](16-beginner-glossary.md#release-root),
+  [Static application](16-beginner-glossary.md#static-application).

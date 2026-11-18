@@ -7,7 +7,7 @@ API descriptions, spreadsheets, official feeds and specialist websites. A
 person can open those files one at a time, but it is difficult to answer
 questions across them:
 
-- What records exist?
+- What [records](16-beginner-glossary.md#record) exist?
 - Which organisation published them?
 - What topics and formats do they cover?
 - How are two records related?
@@ -144,7 +144,7 @@ file can hold every node and relationship. It is a good fit for the original
 Markdown research corpus.
 
 The **large-corpus path** starts with a descriptor and loads separate
-artefacts. It is used for collections such as national data catalogues and the
+[artefacts](16-beginner-glossary.md#artefact). It is used for collections such as national data catalogues and the
 complete work-level UK legislation catalogue. It avoids making every user
 download every full record before seeing anything useful.
 
@@ -170,3 +170,14 @@ look like a directly observed source fact.
 
 [Web and browser foundations](02-web-and-browser-foundations.md) explains how
 the Explorer can provide this experience as a static application.
+
+## Learning path connections
+
+- [Learning path overview](index.md#learning-path)
+- Previous chapter is [From A Missed Collection To An Ontology](00-data-information-knowledge-and-ontology.md#learning-path-connections).
+- Next chapter is [Web And Browser Foundations](02-web-and-browser-foundations.md#learning-path-connections).
+- Glossary terms in this chapter include [Active context](16-beginner-glossary.md#active-context),
+  [Artefact](16-beginner-glossary.md#artefact),
+  [Bundle or pack](16-beginner-glossary.md#bundle-or-pack),
+  [Record](16-beginner-glossary.md#record).
+- Apply this chapter in [exercise 1](25-life-course-worked-example.md#exercise-1-recognise-entities-and-concepts).

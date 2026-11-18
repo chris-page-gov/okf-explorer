@@ -36,7 +36,7 @@ The local small-bundle build:
 1. parses configured Markdown;
 2. resolves links;
 3. creates normalised records and relationships;
-4. writes deterministic JSON.
+4. writes [deterministic](16-beginner-glossary.md#deterministic) JSON.
 
 The Svelte build:
 
@@ -215,7 +215,7 @@ A deterministic builder:
 - avoids volatile timestamps where no source changed;
 - uses explicit normalisation rules;
 - records source and pipeline versions;
-- produces the same hash from the same inputs.
+- produces the same [hash](16-beginner-glossary.md#hash) from the same inputs.
 
 The production application build additionally publishes a canonical manifest
 of every build material. Final site assembly rehashes the complete declared
@@ -316,3 +316,15 @@ acceptance.
 
 [A contributor's repository tour](15-contributor-repository-tour.md) maps each
 kind of change to files and checks.
+
+## Learning path connections
+
+- [Learning path overview](index.md#learning-path)
+- Previous chapter is [Security, Privacy, Accessibility And Responsible Use](13-security-privacy-accessibility-and-responsible-use.md#learning-path-connections).
+- Next chapter is [A Contributor's Repository Tour](15-contributor-repository-tour.md#learning-path-connections).
+- Glossary terms in this chapter include [Content-addressed](16-beginner-glossary.md#content-addressed),
+  [Deterministic](16-beginner-glossary.md#deterministic),
+  [Digest](16-beginner-glossary.md#digest),
+  [Hash](16-beginner-glossary.md#hash),
+  [SBOM](16-beginner-glossary.md#sbom),
+  [Source of truth](16-beginner-glossary.md#source-of-truth).

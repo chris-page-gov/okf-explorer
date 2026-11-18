@@ -13,7 +13,7 @@ For the choices a graph modeller makes before writing a record, read
 
 ## Follow Alex through ten life events
 
-A person, service, organisation or episode can be an entity in the model.
+A person, service, organisation or episode can be an [entity](16-beginner-glossary.md#entity) in the model.
 A [class](23-foundational-definitions.md#class) groups similar entities, and
 an [instance](23-foundational-definitions.md#instance) is one particular
 member. Alex is an instance of `Person`. A fictional school application is
@@ -90,6 +90,12 @@ is when the note was consulted, at day precision.
 
 ## Exercise 1. Recognise entities and concepts
 
+Related chapters include [From A Missed Collection To An Ontology](00-data-information-knowledge-and-ontology.md#learning-path-connections),
+[The Product In Plain Language](01-product-in-plain-language.md#learning-path-connections),
+[Markdown, OKF And Small Bundles](03-markdown-okf-and-small-bundles.md#learning-path-connections),
+[Search, Filters, Facets And Context](05-search-filters-facets-and-context.md#learning-path-connections),
+[Foundational Definitions](23-foundational-definitions.md#learning-path-connections).
+
 **Task.** Identify two entities in this extract and choose a stage label
 from the example [controlled vocabulary](23-foundational-definitions.md#controlled-vocabulary)
 `education`, `health`, `tax`.
@@ -112,6 +118,13 @@ the individual episode and the public offer.
 service while retaining its own identifier? Yes.
 
 ## Exercise 2. Author a directed relationship
+
+Related chapters include [Knowledge Graphs And Stable Identifiers](06-knowledge-graphs-and-identifiers.md#learning-path-connections),
+[The Semantic Web And Ontologies](07-semantic-web-and-ontologies.md#learning-path-connections),
+[Explorer Views And Presentation](09-explorer-views-and-presentation.md#learning-path-connections),
+[Geospatial Data](10-geospatial-data.md#learning-path-connections),
+[Federated Bundles](18-federated-bundles.md#learning-path-connections),
+[Foundry Authoring And Domain Profiles](19-foundry-authoring-and-domain-profiles.md#learning-path-connections).
 
 **Task.** Give the source identifier, predicate IRI and target identifier for
 the school application. Say which evidence supports the relationship and
@@ -139,6 +152,15 @@ The guidance still supports the service description. The Alex-specific
 relationship then lacks evidence.
 
 ## Exercise 3. Review the status of a claim
+
+Related chapters include [Validation, Provenance And Catalogue Standards](08-validation-provenance-and-catalogue-standards.md#learning-path-connections),
+[UK Legislation Data](11-uk-legislation-data.md#learning-path-connections),
+[Security, Privacy, Accessibility And Responsible Use](13-security-privacy-accessibility-and-responsible-use.md#learning-path-connections),
+[OKF v0.2 Trust, Lifecycle And Attestation](17-okf-v02-trust-lifecycle-and-attestation.md#learning-path-connections),
+[Governed Enrichment And Release Assurance](20-governed-enrichment-and-release-assurance.md#learning-path-connections),
+[Release Gates, Evidence And Owner Review](21-release-gates-evidence-and-owner-review.md#learning-path-connections),
+[Evaluation Foundry And YAML-LD](22-evaluation-foundry-and-yaml-ld.md#learning-path-connections),
+[Annotated Authoritative-Source Register](24-authoritative-source-register.md#learning-path-connections).
 
 **Task.** Decide which of the four statements is asserted, inferred, proposed
 or unsupported. Record the reason for each [status](23-foundational-definitions.md#status).
@@ -175,3 +197,12 @@ publish related evidence with separate responsibilities. Use
 [the authoritative-source register](24-authoritative-source-register.md)
 to review the source's remit before applying a definition or rule. Return to
 [the beginner learning path](index.md) to choose another route.
+
+## Learning path connections
+
+- [Learning path overview](index.md#learning-path)
+- Previous chapter is [Annotated Authoritative-Source Register](24-authoritative-source-register.md#learning-path-connections).
+- Glossary terms in this chapter include [Assertion](16-beginner-glossary.md#assertion),
+  [Entity](16-beginner-glossary.md#entity),
+  [Provenance](16-beginner-glossary.md#provenance),
+  [Triple](16-beginner-glossary.md#triple).

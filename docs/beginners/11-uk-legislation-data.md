@@ -80,7 +80,7 @@ Legal documents contain nested structural units:
 - explanatory and signed sections.
 
 The work-level catalogue contains discovery metadata. When a user selects a
-work, the Explorer can fetch official CLML and build its provision tree on
+work, the Explorer can fetch official [CLML](16-beginner-glossary.md#clml) and build its provision tree on
 demand.
 
 This is **progressive completeness**:
@@ -235,3 +235,13 @@ and [Getting started](../uk-legislation/getting-started.md).
 
 [AI infrastructure and federated AI](12-ai-infrastructure-and-federated-ai.md)
 introduces the subject matter of the original Markdown sample corpus.
+
+## Learning path connections
+
+- [Learning path overview](index.md#learning-path)
+- Previous chapter is [Geospatial Data](10-geospatial-data.md#learning-path-connections).
+- Next chapter is [AI Infrastructure And Federated AI](12-ai-infrastructure-and-federated-ai.md#learning-path-connections).
+- Glossary terms in this chapter include [CLML](16-beginner-glossary.md#clml),
+  [Projection](16-beginner-glossary.md#projection),
+  [Source family](16-beginner-glossary.md#source-family).
+- Apply this chapter in [exercise 3](25-life-course-worked-example.md#exercise-3-review-the-status-of-a-claim).

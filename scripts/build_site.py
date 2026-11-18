@@ -788,6 +788,9 @@ def write_beginner_guide() -> None:
         )
     copy_file(BEGINNER_GUIDE_CSS, target_dir / "guide.css")
     copy_file(BEGINNER_GUIDE_JS, target_dir / "guide.js")
+    write_beginner_reference_report(
+        target_dir, [source.with_suffix(".html").name for source in sources]
+    )
 
 
 def foundry_markdown_renderer() -> MarkdownIt:
@@ -1762,6 +1765,133 @@ class ReadingPageLinks(HTMLParser):
                 url = candidate.strip().split(maxsplit=1)[0]
                 if url:
                     self.references.append((f"{tag}[srcset]", url))
+
+
+class BeginnerGuideReferences(ReadingPageLinks):
+    def __init__(self) -> None:
+        super().__init__()
+        self.in_article = False
+        self.section = ""
+        self.sections: dict[str, str] = {}
+        self.authored_links: list[tuple[str, str]] = []
+
+    def handle_starttag(self, tag: str, attrs) -> None:
+        super().handle_starttag(tag, attrs)
+        attributes = dict(attrs)
+        if tag == "article" and attributes.get("class") == "guide-content":
+            self.in_article = True
+        if not self.in_article:
+            return
+        if re.fullmatch(r"h[1-6]", tag) and (identifier := attributes.get("id")):
+            self.section = identifier
+            self.sections[identifier] = tag
+        if (
+            tag == "a"
+            and attributes.get("class") != "heading-permalink"
+            and (href := attributes.get("href"))
+        ):
+            self.authored_links.append((self.section, href))
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag == "article":
+            self.in_article = False
+
+
+def write_beginner_reference_report(directory: Path, routes: list[str]) -> None:
+    guide = Path("docs/beginners")
+    connections = "learning-path-connections"
+    overview = "index.html"
+    path_section = "learning-path"
+    glossary = "16-beginner-glossary.html"
+    worked_example = "25-life-course-worked-example.html"
+    pages = {}
+    for route in routes:
+        page = BeginnerGuideReferences()
+        page.feed((directory / route).read_text(encoding="utf-8"))
+        if page.duplicate_identifiers:
+            raise ValueError(f"Duplicate beginner anchors in {route}: {sorted(page.duplicate_identifiers)}")
+        pages[route] = page
+
+    local_links: set[tuple[str, str, str, str]] = set()
+    further_references: set[tuple[str, str, str]] = set()
+    for route, page in pages.items():
+        for section, href in page.authored_links:
+            link = local_site_path(guide / route, href)
+            if link and link[0].parent == guide and link[0].name in pages:
+                target, fragment = link
+                if fragment and fragment not in pages[target.name].identifiers:
+                    raise ValueError(f"Broken beginner link from {route}#{section} to {href}")
+                local_links.add((route, section, target.name, fragment))
+            else:
+                further_references.add((route, section, href))
+
+    def require_link(source, section, target, fragment):
+        if (source, section, target, fragment) not in local_links:
+            raise ValueError(f"Missing beginner link from {source}#{section} to {target}#{fragment}")
+
+    chapters = [route for route in routes if route != overview]
+    for chapter in chapters:
+        require_link(chapter, connections, overview, path_section)
+        require_link(overview, path_section, chapter, "")
+    for previous, following in zip(chapters, chapters[1:]):
+        require_link(previous, connections, following, connections)
+        require_link(following, connections, previous, connections)
+
+    terms = [identifier for identifier, tag in pages[glossary].sections.items() if tag == "h3"]
+    for term in terms:
+        if not any(
+            target == glossary and fragment == term and section == connections
+            and (glossary, term, source, section) in local_links
+            for source, section, target, fragment in local_links
+        ):
+            raise ValueError(f"Glossary definition lacks a reciprocal chapter link: {term}")
+
+    exercises = [identifier for identifier in pages[worked_example].sections if identifier.startswith("exercise-")]
+    if len(exercises) < 3:
+        raise ValueError("The learning path requires three worked exercises.")
+    for exercise in exercises:
+        exercise_links = {
+            (source, section) for source, section, target, fragment in local_links
+            if target == worked_example and fragment == exercise and section == connections
+        }
+        if not exercise_links:
+            raise ValueError(f"Exercise lacks an authored chapter link: {exercise}")
+        for source, section in exercise_links:
+            require_link(worked_example, exercise, source, section)
+
+    def link_kind(source: str, section: str, target: str, fragment: str) -> str:
+        if source == target:
+            return "same-page"
+        if (target, fragment, source, section) in local_links:
+            return "reciprocal"
+        if (
+            (source == overview and section == path_section and not fragment)
+            or (target == overview and fragment == path_section and section == connections)
+        ):
+            return "learning-path-index"
+        return "supporting-reference"
+
+    report = {
+        "schema": "okf-beginner-guide-cross-references.v1",
+        "pages": {route: list(page.sections) for route, page in pages.items()},
+        "glossary_terms": terms,
+        "exercises": exercises,
+        "guide_links": [
+            {
+                "source": f"{source}#{section}",
+                "target": f"{target}#{fragment}" if fragment else target,
+                "kind": link_kind(source, section, target, fragment),
+            }
+            for source, section, target, fragment in sorted(local_links)
+        ],
+        "further_references": [
+            {"source": f"{source}#{section}", "target": href}
+            for source, section, href in sorted(further_references)
+        ],
+    }
+    (directory / "cross-references.json").write_text(
+        json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
 
 
 def local_site_path(source_route: Path, href: str) -> tuple[Path, str] | None:

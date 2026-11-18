@@ -393,3 +393,13 @@ navigation and semantics.
 
 Apply the same modelling steps to
 [ten fictional life events](25-life-course-worked-example.md#follow-alex-through-ten-life-events).
+
+## Learning path connections
+
+- [Learning path overview](index.md#learning-path)
+- Next chapter is [The Product In Plain Language](01-product-in-plain-language.md#learning-path-connections).
+- Glossary terms in this chapter include [Entity](16-beginner-glossary.md#entity),
+  [Knowledge graph](16-beginner-glossary.md#knowledge-graph),
+  [Ontology](16-beginner-glossary.md#ontology),
+  [Triple](16-beginner-glossary.md#triple).
+- Apply this chapter in [exercise 1](25-life-course-worked-example.md#exercise-1-recognise-entities-and-concepts).

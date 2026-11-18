@@ -32,7 +32,7 @@ Web data commonly uses WGS 84 longitude and latitude:
 }
 ```
 
-In GeoJSON the order is longitude, then latitude. This is easy to reverse.
+In [GeoJSON](16-beginner-glossary.md#geojson) the order is longitude, then latitude. This is easy to reverse.
 
 The identifier `EPSG:4326` commonly names WGS 84. UK analytical data may use
 British National Grid, `EPSG:27700`, measured in metres. Plotting one as the
@@ -169,7 +169,7 @@ It does not probe private layers or insert credentials.
 
 The current locator requests four raster tiles from
 `tile.openstreetmap.org` at zoom level 5 and draws the hand-authored UK outline
-over them. It displays OpenStreetMap attribution, but it is not presently a
+over them. It displays OpenStreetMap [attribution](16-beginner-glossary.md#attribution), but it is not presently a
 self-contained or offline map. Opening Map discloses the tile requests to that
 service, and a network or policy failure can leave only the local outline,
 markers and grid.
@@ -521,3 +521,23 @@ for the implementation contract.
 
 [UK legislation data](11-uk-legislation-data.md) introduces a second specialist
 domain where identity, versions and authority are critical.
+
+## Learning path connections
+
+- [Learning path overview](index.md#learning-path)
+- Previous chapter is [Explorer Views And Presentation](09-explorer-views-and-presentation.md#learning-path-connections).
+- Next chapter is [UK Legislation Data](11-uk-legislation-data.md#learning-path-connections).
+- Glossary terms in this chapter include [Attribution](16-beginner-glossary.md#attribution),
+  [BFC, BFE, BGC, BSC and BUC](16-beginner-glossary.md#bfc-bfe-bgc-and-buc),
+  [Boundary generalisation](16-beginner-glossary.md#boundary-generalisation),
+  [Boundary variant](16-beginner-glossary.md#boundary-variant),
+  [Boundary vintage](16-beginner-glossary.md#boundary-vintage),
+  [CRS](16-beginner-glossary.md#crs),
+  [GeoJSON](16-beginner-glossary.md#geojson),
+  [Geometry representation](16-beginner-glossary.md#geometry-representation),
+  [GSS code](16-beginner-glossary.md#gss-code),
+  [Join table](16-beginner-glossary.md#join-table),
+  [Level of detail, LOD](16-beginner-glossary.md#level-of-detail-lod),
+  [Semantic geography](16-beginner-glossary.md#semantic-geography),
+  [Sidecar](16-beginner-glossary.md#sidecar).
+- Apply this chapter in [exercise 2](25-life-course-worked-example.md#exercise-2-author-a-directed-relationship).

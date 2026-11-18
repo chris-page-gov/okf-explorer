@@ -1,7 +1,7 @@
 # OKF v0.2 Trust, Lifecycle And Attestation
 
 OKF Explorer now targets the permissive OKF v0.2 core while retaining
-compatibility with older v0.1 bundles. The core and the richer Explorer profile
+compatibility with older v0.1 bundles. The core and the richer Explorer [profile](16-beginner-glossary.md#profile)
 must not be confused.
 
 ## Core Versus Profile
@@ -17,7 +17,7 @@ The **Explorer bundle-wiki profile** adds optional production capabilities:
 - federation;
 - governed terms;
 - facets and presentation;
-- integrity and release evidence.
+- [integrity](16-beginner-glossary.md#integrity) and release evidence.
 
 A profile can require more from its own publications without claiming that
 every requirement belongs to OKF core.
@@ -121,7 +121,7 @@ Relevant fields can include:
 - `stale_after`;
 - source observation windows;
 - replacement or supersession identifiers;
-- release version and snapshot.
+- release version and [snapshot](16-beginner-glossary.md#snapshot).
 
 The Explorer should not turn missing lifecycle metadata into an invented
 positive state beyond a documented compatibility default.
@@ -147,7 +147,7 @@ Opening a bundle never:
 - treats a declared contract as a passing receipt.
 
 Execution requires an explicit, separately authorised runtime. The Explorer
-can display missing contract fields without claiming an attestation result.
+can display missing contract fields without claiming an [attestation](16-beginner-glossary.md#attestation) result.
 
 ## Compatibility With v0.1
 
@@ -185,3 +185,15 @@ deployment and public verification.
 
 [Federated bundles](18-federated-bundles.md) explains how independently
 published OKF collections are discovered without loading all of them.
+
+## Learning path connections
+
+- [Learning path overview](index.md#learning-path)
+- Previous chapter is [Beginner Glossary](16-beginner-glossary.md#learning-path-connections).
+- Next chapter is [Federated Bundles](18-federated-bundles.md#learning-path-connections).
+- Glossary terms in this chapter include [Attestation](16-beginner-glossary.md#attestation),
+  [Conformance](16-beginner-glossary.md#conformance),
+  [Integrity](16-beginner-glossary.md#integrity),
+  [Profile](16-beginner-glossary.md#profile),
+  [Snapshot](16-beginner-glossary.md#snapshot).
+- Apply this chapter in [exercise 3](25-life-course-worked-example.md#exercise-3-review-the-status-of-a-claim).

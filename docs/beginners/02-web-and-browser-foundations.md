@@ -69,7 +69,7 @@ not just performance tweaks.
 An **origin** is the combination of protocol, host and port. A browser protects
 one origin from silently reading arbitrary responses from another.
 
-Cross-Origin Resource Sharing, or **CORS**, is the mechanism by which a server
+Cross-Origin Resource Sharing, or **[CORS](16-beginner-glossary.md#cors)**, is the mechanism by which a server
 allows a browser application on another origin to read its response. A public
 pack can be downloadable in a browser tab yet still fail to load inside the
 Explorer if its server does not send suitable CORS headers.
@@ -91,7 +91,7 @@ different screen sizes and visible keyboard focus.
 
 ### JavaScript And TypeScript
 
-JavaScript is the programming language executed by the browser. TypeScript
+JavaScript is the programming language executed by the browser. [TypeScript](16-beginner-glossary.md#typescript)
 adds development-time type checking so the code can state what shape of value
 it expects. TypeScript is compiled to JavaScript before publication.
 
@@ -142,7 +142,7 @@ GitHub Pages is the static host used by this repository.
 
 The canonical Explorer is written with:
 
-- **Svelte**, a component system for building reactive interfaces;
+- **[Svelte](16-beginner-glossary.md#svelte)**, a component system for building reactive interfaces;
 - **SvelteKit**, the application structure and static-site adapter;
 - **Vite**, the development and production build tool.
 
@@ -156,7 +156,7 @@ installed to visit the published Explorer.
 
 ## Progressive Web App
 
-A Progressive Web App, or **PWA**, is a web application with installable and
+A Progressive Web App, or **[PWA](16-beginner-glossary.md#pwa)**, is a web application with installable and
 offline-oriented capabilities supplied through a web manifest and, commonly,
 a service worker.
 
@@ -180,14 +180,14 @@ one browser's storage.
 JavaScript normally updates the interface on the browser's main thread. A
 large search could make buttons and scrolling feel frozen.
 
-A **Web Worker** runs JavaScript in a background browser context. The large
+A **[Web Worker](16-beginner-glossary.md#web-worker)** runs JavaScript in a background browser context. The large
 search index is queried in a worker, which sends structured results back to
 the interface. The worker cannot directly manipulate the page, which helps
 keep retrieval logic separate from presentation logic.
 
 ## Responsive And Accessible Interaction
 
-The same static application must work with:
+The same [static application](16-beginner-glossary.md#static-application) must work with:
 
 - mouse, touch and keyboard input;
 - narrow and wide screens;
@@ -219,3 +219,17 @@ between pre-publication builders and the browser.
 
 [Markdown, OKF and small bundles](03-markdown-okf-and-small-bundles.md)
 explains the simplest source and publication path.
+
+## Learning path connections
+
+- [Learning path overview](index.md#learning-path)
+- Previous chapter is [The Product In Plain Language](01-product-in-plain-language.md#learning-path-connections).
+- Next chapter is [Markdown, OKF And Small Bundles](03-markdown-okf-and-small-bundles.md#learning-path-connections).
+- Glossary terms in this chapter include [Cache](16-beginner-glossary.md#cache),
+  [CORS](16-beginner-glossary.md#cors),
+  [JSON](16-beginner-glossary.md#json),
+  [PWA](16-beginner-glossary.md#pwa),
+  [Static application](16-beginner-glossary.md#static-application),
+  [Svelte](16-beginner-glossary.md#svelte),
+  [TypeScript](16-beginner-glossary.md#typescript),
+  [Web Worker](16-beginner-glossary.md#web-worker).

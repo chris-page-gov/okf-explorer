@@ -5,6 +5,8 @@
 - Follow a fictional person through ten public-service events in England.
   Trace one relationship to its source and practise modelling, recording and
   reviewing claims with three worked exercises available without JavaScript.
+- Link the learning path, all glossary definitions and the exercises in both
+  directions. Publish a deterministic report of authored guide references.
 - Compare the verified passages before and after an edited correction in
   the Evidence workbench. Record retained, retired and introduced unit IDs
   within the reviewed case.

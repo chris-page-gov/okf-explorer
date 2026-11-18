@@ -142,6 +142,14 @@ to build one idea at a time and show where it appears in the implementation.
 
 ## Learning Path
 
+Use the connections at the end of each chapter to find related glossary
+definitions, prerequisites, next steps and relevant worked exercises.
+The [cross-reference report](cross-references.json) lists the authored
+links and stable heading addresses. The build checks the reciprocal chapter,
+glossary and exercise links. The report also lists contextual references for
+editorial review. External availability and authority are part of the source
+audit.
+
 Read the chapters in order if the subject is new to you:
 
 0. [From a missed collection to an ontology](00-data-information-knowledge-and-ontology.md)

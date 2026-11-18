@@ -123,7 +123,7 @@ test('chapter navigation forms a keyboard-accessible persistent rail', async ({ 
 
   await Promise.all([
     page.waitForURL((url) => url.pathname.endsWith(firstChapterRoute)),
-    page.getByRole('link', { name: 'The Product In Plain Language', exact: true }).click()
+    sidebar.getByRole('link', { name: 'The Product In Plain Language', exact: true }).click()
   ]);
   await page.mouse.move(700, 300);
   await expect(page.locator('html')).toHaveAttribute('data-guide-sidebar-collapsed', 'true');
@@ -156,7 +156,7 @@ test('chapter navigation forms a keyboard-accessible persistent rail', async ({ 
 
   await Promise.all([
     page.waitForURL(/02-web-and-browser-foundations\.html$/),
-    page.getByRole('link', { name: 'Web And Browser Foundations', exact: true }).click()
+    sidebar.getByRole('link', { name: 'Web And Browser Foundations', exact: true }).click()
   ]);
   await page.mouse.move(700, 300);
   await expect(page.locator('html')).toHaveAttribute('data-guide-sidebar-pinned', 'true');

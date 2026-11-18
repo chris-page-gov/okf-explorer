@@ -31,7 +31,7 @@ Network loading uses:
 - response byte limits;
 - decompression limits;
 - expected content forms;
-- integrity checks where the pack declares hashes;
+- [integrity](16-beginner-glossary.md#integrity) checks where the pack declares hashes;
 - failure states that preserve the source URL.
 
 Retries need limits and backoff. Repeating a non-idempotent external operation
@@ -163,7 +163,7 @@ supports recovery.
 
 ## Accessibility
 
-Accessibility means people with different sensory, physical and cognitive
+[Accessibility](16-beginner-glossary.md#accessibility) means people with different sensory, physical and cognitive
 needs can perceive, understand and operate the product.
 
 The project targets the principles behind WCAG 2.2 level AA and public-service
@@ -256,3 +256,13 @@ No automated scanner can decide every authority, licensing or usability issue.
 
 [Building, testing and publishing](14-building-testing-and-publishing.md)
 shows where these checks run in the repository workflow.
+
+## Learning path connections
+
+- [Learning path overview](index.md#learning-path)
+- Previous chapter is [AI Infrastructure And Federated AI](12-ai-infrastructure-and-federated-ai.md#learning-path-connections).
+- Next chapter is [Building, Testing And Publishing](14-building-testing-and-publishing.md#learning-path-connections).
+- Glossary terms in this chapter include [Accessibility](16-beginner-glossary.md#accessibility),
+  [Integrity](16-beginner-glossary.md#integrity),
+  [Residual risk](16-beginner-glossary.md#residual-risk).
+- Apply this chapter in [exercise 3](25-life-course-worked-example.md#exercise-3-review-the-status-of-a-claim).

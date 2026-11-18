@@ -1,6 +1,6 @@
 # Federated Bundles
 
-A federation lets one Explorer landing describe several independently
+A [federation](16-beginner-glossary.md#federation) lets one Explorer landing describe several independently
 published OKF bundles. It is a discovery control plane, not one enormous merged
 corpus.
 
@@ -209,3 +209,13 @@ contract.
 [Foundry authoring and domain profiles](19-foundry-authoring-and-domain-profiles.md)
 explains how a new domain is researched before its bundle architecture is
 chosen.
+
+## Learning path connections
+
+- [Learning path overview](index.md#learning-path)
+- Previous chapter is [OKF v0.2 Trust, Lifecycle And Attestation](17-okf-v02-trust-lifecycle-and-attestation.md#learning-path-connections).
+- Next chapter is [Foundry Authoring And Domain Profiles](19-foundry-authoring-and-domain-profiles.md#learning-path-connections).
+- Glossary terms in this chapter include [Federation](16-beginner-glossary.md#federation),
+  [Manifest](16-beginner-glossary.md#manifest),
+  [Progressive loading](16-beginner-glossary.md#progressive-loading).
+- Apply this chapter in [exercise 2](25-life-course-worked-example.md#exercise-2-author-a-directed-relationship).

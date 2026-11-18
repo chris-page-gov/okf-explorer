@@ -14,12 +14,12 @@ who is allowed to decide it and what a beginner should ask to see.
 
 Everything in this chapter builds from five ideas:
 
-1. A **gate** is a question that must be answered before work moves forward.
+1. A **[gate](16-beginner-glossary.md#gate)** is a question that must be answered before work moves forward.
 2. A **check** is the test or review used to answer part of that question.
 3. **Evidence** is the material that shows what actually happened.
 4. A **receipt** is the durable record that connects the evidence to exact
    inputs and outputs.
-5. **Approval** is a person's decision to proceed after reading the relevant
+5. **[Approval](16-beginner-glossary.md#approval)** is a person's decision to proceed after reading the relevant
    evidence and accepting the remaining risk.
 
 These are related, but they are not interchangeable.
@@ -132,7 +132,7 @@ of records?
 - authority rules;
 - rights, privacy and access constraints;
 - coverage denominator or an honest bounded-partial statement;
-- material user tasks and hard failures;
+- material user tasks and [hard failures](16-beginner-glossary.md#hard-failure);
 - applicable standards;
 - target publication architecture;
 - exact downstream consumer inventory and lock;
@@ -350,7 +350,7 @@ Evaluation can include:
 
 ### Independence
 
-An independent reviewer did not author the behaviour or expectations they are
+An [independent reviewer](16-beginner-glossary.md#independent-reviewer) did not author the behaviour or expectations they are
 reviewing, or has a clearly separated role and held-out material.
 
 Independence reduces self-confirmation. It does not magically create a human
@@ -822,3 +822,21 @@ Review:
 
 Return to the [learning-path index](index.md) when you are ready to choose
 another topic.
+
+## Learning path connections
+
+- [Learning path overview](index.md#learning-path)
+- Previous chapter is [Governed Enrichment And Release Assurance](20-governed-enrichment-and-release-assurance.md#learning-path-connections).
+- Next chapter is [Evaluation Foundry And YAML-LD](22-evaluation-foundry-and-yaml-ld.md#learning-path-connections).
+- Glossary terms in this chapter include [Approval](16-beginner-glossary.md#approval),
+  [Candidate](16-beginner-glossary.md#candidate),
+  [Gate](16-beginner-glossary.md#gate),
+  [Gate catalogue](16-beginner-glossary.md#gate-catalogue),
+  [Hard failure](16-beginner-glossary.md#hard-failure),
+  [Independent reviewer](16-beginner-glossary.md#independent-reviewer),
+  [Material, release](16-beginner-glossary.md#material-release),
+  [Owner, project or release](16-beginner-glossary.md#owner-project-or-release),
+  [Receipt](16-beginner-glossary.md#receipt),
+  [Residual risk](16-beginner-glossary.md#residual-risk),
+  [Waiver](16-beginner-glossary.md#waiver).
+- Apply this chapter in [exercise 3](25-life-course-worked-example.md#exercise-3-review-the-status-of-a-claim).

@@ -11,10 +11,10 @@ A **model** maps input to output. A language model can generate text or
 structured values, but it does not automatically have permission or the
 ability to act.
 
-An **agent** combines a model with instructions, tools, state and a control
+An **[agent](16-beginner-glossary.md#agent)** combines a model with instructions, tools, state and a control
 loop that decides what to do next.
 
-A **tool** is a callable capability: search, a function, an API, code execution
+A **tool** is a callable capability: search, a function, an [API](16-beginner-glossary.md#api), code execution
 or a workflow.
 
 Tool use introduces questions that plain text generation does not:
@@ -300,3 +300,14 @@ and [research](../../research/index.md) indexes.
 
 [Security, privacy, accessibility and responsible use](13-security-privacy-accessibility-and-responsible-use.md)
 returns to the safeguards that apply across the Explorer itself.
+
+## Learning path connections
+
+- [Learning path overview](index.md#learning-path)
+- Previous chapter is [UK Legislation Data](11-uk-legislation-data.md#learning-path-connections).
+- Next chapter is [Security, Privacy, Accessibility And Responsible Use](13-security-privacy-accessibility-and-responsible-use.md#learning-path-connections).
+- Glossary terms in this chapter include [Agent](16-beginner-glossary.md#agent),
+  [API](16-beginner-glossary.md#api),
+  [Control plane](16-beginner-glossary.md#control-plane),
+  [Data plane](16-beginner-glossary.md#data-plane),
+  [Token, security](16-beginner-glossary.md#token-security).

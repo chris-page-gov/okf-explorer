@@ -402,3 +402,14 @@ The [foundational definitions](23-foundational-definitions.md) apply those
 rules term by term. Chapter 8 explains why
 [conformance and validation](08-validation-provenance-and-catalogue-standards.md#conformance-and-validation)
 must name their exact profile and evidence.
+
+## Learning path connections
+
+- [Learning path overview](index.md#learning-path)
+- Previous chapter is [Foundational Definitions](23-foundational-definitions.md#learning-path-connections).
+- Next chapter is [A fictional life in public services](25-life-course-worked-example.md#learning-path-connections).
+- Glossary terms in this chapter include [API](16-beginner-glossary.md#api),
+  [Conformance](16-beginner-glossary.md#conformance),
+  [Distribution](16-beginner-glossary.md#distribution),
+  [Validation](16-beginner-glossary.md#validation).
+- Apply this chapter in [exercise 3](25-life-course-worked-example.md#exercise-3-review-the-status-of-a-claim).

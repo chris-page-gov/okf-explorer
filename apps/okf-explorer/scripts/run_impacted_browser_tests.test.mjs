@@ -76,6 +76,7 @@ test('publication selectors include rendered Foundry pages and request Site asse
       'exploratory_publication',
       'learner_hub',
       'beginner_navigation',
+      'beginner_audit',
       'foundry_pages'
     ]
   );
@@ -92,7 +93,7 @@ test('full terminal assurance covers both suite families in all three engines', 
   });
   assert.equal(plan.mode, 'full');
   assert.equal(plan.requires_site, true);
-  assert.equal(plan.suites.length, 25);
+  assert.equal(plan.suites.length, 26);
   const declaredUiFiles = readdirSync(new URL('../tests/ui/', import.meta.url))
     .filter((name) => name.endsWith('.spec.ts')).map((name) => `tests/ui/${name}`).sort();
   assert.deepEqual(plan.suites.filter((suite) => suite.family === 'ui').map((suite) => suite.file).sort(), declaredUiFiles);
@@ -107,7 +108,7 @@ test('full terminal assurance covers both suite families in all three engines', 
 test('empty and unknown selectors fail closed instead of silently skipping', () => {
   const empty = buildBrowserPlan();
   assert.equal(empty.mode, 'fail-closed-full');
-  assert.equal(empty.suites.length, 25);
+  assert.equal(empty.suites.length, 26);
   assert.ok(empty.commands.some((command) => command.args.includes('tests/ui/ask-okf.spec.ts')));
   assert.throws(
     () => buildBrowserPlan({ testTags: ['new-unmapped-tag'] }),
@@ -180,18 +181,15 @@ test('relationship windows and graph or Links changes select pagination assuranc
   assert.ok(runtime.jobs.includes('browser_full'));
 });
 
-test('learning-path navigation is selected by its publication and quality surfaces', () => {
+test('learning-path navigation and audit are selected by their publication and quality surfaces', () => {
   const publication = buildBrowserPlan({ journeyGroups: ['publication'] });
-  assert.ok(
-    publication.suites.some((suite) => suite.id === 'beginner_navigation')
-  );
-
-  for (const tag of ['accessibility', 'presentation', 'route', 'site']) {
-    const plan = buildBrowserPlan({ testTags: [tag] });
-    assert.ok(
-      plan.suites.some((suite) => suite.id === 'beginner_navigation'),
-      `${tag} must select beginner_navigation`
-    );
+  const plans = [publication, ...['accessibility', 'presentation', 'route', 'site'].map(testTag =>
+    buildBrowserPlan({ testTags: [testTag] })
+  )];
+  for (const plan of plans) {
+    for (const id of ['beginner_navigation', 'beginner_audit']) {
+      assert.ok(plan.suites.some(suite => suite.id === id));
+    }
   }
 });
 
