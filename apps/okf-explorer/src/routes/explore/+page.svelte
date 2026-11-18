@@ -1,6 +1,8 @@
 <script lang="ts">
   import { onMount, tick } from 'svelte';
   import BookmarkShelf from '$lib/components/BookmarkShelf.svelte';
+  import AssertionStatusFilter from '$lib/components/AssertionStatusFilter.svelte';
+  import { assertionFilter, assertionStatus, countAssertionStatuses, type AssertionFilter } from '$lib/viewer/assertionStatus';
   import AskOkf from '$lib/components/AskOkf.svelte';
   import OkfPlusContext from '$lib/viewer/OkfPlusContext.svelte';
   import SmallRecordInspector from '$lib/components/SmallRecordInspector.svelte';
@@ -164,6 +166,8 @@
     parseStructuredDocumentText
   } from '$lib/sources/fetch';
   import { isLargeCorpusDescriptor, parseRelatedDescriptorLinks } from '$lib/sources/descriptor';
+  import { validationLink } from '$lib/validation/findings';
+  import { ontologyLink } from '$lib/ontology/ontologyIndex';
   import ExploratoryBanner from '$lib/publication/ExploratoryBanner.svelte';
   import {
     buildExploratoryFeedbackUrl,
@@ -499,6 +503,7 @@
   let largeExpandedGraphGroups = $state<string[]>([]);
   let graphRelationshipPage = $state({ route: '', offset: 0 });
   let linkRelationshipPage = $state({ key: '', offset: 0 });
+  let linkAssertionStatus = $state<AssertionFilter>('all');
   let largeFacetIndex = $state<Record<string, LargeFacetRow[]>>({});
   let largeFacetIndexLoaded = $state(false);
   let largeFacetIndexLoading = $state(false);
@@ -1016,6 +1021,7 @@
   }
 
   function applyGraphState(params: URLSearchParams) {
+    linkAssertionStatus = assertionFilter(params.get('links.assertion'));
     graphLayoutMode = params.get(GRAPH_LAYOUT_PARAM) === 'relationships' ? 'relationships' : 'auto';
     graphKeyMode = params.get(GRAPH_KEY_MODE_PARAM) === 'relationships' ? 'relationships' : 'nodes';
     graphLabelsPaused = params.get(GRAPH_LABELS_PARAM) === 'off';
@@ -1091,6 +1097,8 @@
     else next.searchParams.set('bundle', bundleUrl);
     if (activeView === 'reader') next.searchParams.delete('view');
     else next.searchParams.set('view', activeView);
+    if (activeView === 'links' && linkAssertionStatus !== 'all') next.searchParams.set('links.assertion', linkAssertionStatus);
+    else next.searchParams.delete('links.assertion');
     writeRetrievalState(next.searchParams, currentRetrievalState());
     writeExploration(next.searchParams, exploration);
     writeGraphState(next.searchParams, route);
@@ -6463,6 +6471,11 @@
     linkRelationshipPage = { key: linkRelationshipScopeKey(), offset };
   }
 
+  function selectLinkAssertionStatus(status: AssertionFilter) {
+    linkAssertionStatus = status;
+    syncExplorerUrl(true);
+  }
+
   function graphViewBox(): string {
     return `${graphViewport.x} ${graphViewport.y} ${graphViewport.w} ${graphViewport.h}`;
   }
@@ -7091,6 +7104,12 @@
               {:else if largeQuery.trim()}Counts describe the current search and filters.
               {:else if activeLargeFilterCount || reductions.length || foldedSets.length}Counts describe the current filters and groups.
               {:else}Counts describe the whole bundle.{/if}
+              {#if source.descriptor.entrypoints.shacl_findings && !largeSelectedRoute && !largeInspectedRoute}
+                <a href={validationLink(source.url)}>Inspect validation findings</a>
+              {/if}
+              {#if source.descriptor.entrypoints.ontology_navigation && !largeSelectedRoute && !largeInspectedRoute}
+                <a href={ontologyLink(source.url)}>Browse ontology</a>
+              {/if}
             </p>
             <div class="metrics">
               {#each largeContextMetrics() as metric}
@@ -7738,6 +7757,7 @@
             {:else}
               {@const boundedMetadataContext = largeHasBoundedMetadataRouteContext()}
               {@const linkWindow = currentLinkWindow()}
+              {@const matchingLinks = linkWindow.rows.filter(row => linkAssertionStatus === 'all' || assertionStatus(row.assertionStatus) === linkAssertionStatus)}
               <div class="view-heading">
                 <h2>Links</h2>
                 <span>{largeRelationships.length ? 'full relationship chunks loaded' : boundedMetadataContext ? 'bounded current-facet links' : 'current graph relationships'}</span>
@@ -7749,8 +7769,14 @@
                   <button type="button" disabled={linkWindow.next === null} onclick={() => showLinkRelationshipPage(linkWindow.next ?? 0)}>Next links</button>
                 </div>
               {/if}
+              <AssertionStatusFilter
+                counts={countAssertionStatuses(linkWindow.rows.map(row => row.assertionStatus))}
+                scope="Counts cover links on this page."
+                selected={linkAssertionStatus}
+                onselect={selectLinkAssertionStatus}
+              />
               <section class="links-view">
-                {#each linkWindow.rows as relationship}
+                {#each matchingLinks as relationship}
                   <button
                     data-relationship-authority={relationship.authorityClass || 'unclassified'}
                     data-relationship-status={relationship.assertionStatus || 'unclassified'}
@@ -7763,7 +7789,9 @@
                     <strong>{largeLabelForRoute(relationship.target)}</strong>
                   </button>
                 {:else}
-                  <p class="muted">Select a record or apply a supported facet to load bounded links.</p>
+                  <p class="muted">{linkAssertionStatus === 'all'
+                    ? 'Select a record or apply a supported facet to load bounded links.'
+                    : 'There are no links with this assertion status on the current page.'}</p>
                 {/each}
                 {#if !largeRelationships.length && !boundedMetadataContext}
                   <button type="button" onclick={() => void ensureLargeRelationships()}>
@@ -8258,6 +8286,12 @@
             </div>
           </div>
         {:else if activeView === 'links'}
+          <AssertionStatusFilter
+            counts={countAssertionStatuses(scopedRelationships.map(row => row.assertion_status))}
+            scope="Counts cover links in the current record selection."
+            selected={linkAssertionStatus}
+            onselect={selectLinkAssertionStatus}
+          />
           <div class="relationship-authority-strip" aria-label="Visible relationship authority summary">
             <span data-relationship-authority="official">Official <strong>{scopedRelationshipSummary.by_authority.official.toLocaleString()}</strong></span>
             <span data-relationship-authority="derived">Derived <strong>{scopedRelationshipSummary.by_authority.derived.toLocaleString()}</strong></span>
@@ -8270,7 +8304,7 @@
             {/if}
           </div>
           <section class="links-view">
-            {#each scopedRelationships as relationship}
+            {#each scopedRelationships.filter(row => linkAssertionStatus === 'all' || assertionStatus(row.assertion_status) === linkAssertionStatus) as relationship}
               {@const presentation = relationshipPresentation(relationship)}
               <button
                 data-relationship-authority={presentation.authorityClass}
@@ -8284,6 +8318,8 @@
                 <span>{smallRelationshipKind(relationship)} · {presentation.authorityLabel}{presentation.assertionStatus !== 'unclassified' ? ` · ${presentation.assertionStatus}` : ''}{presentation.assertionScope !== 'unclassified' ? ` · ${presentation.assertionScope}` : ''}</span>
                 <strong>{smallCorpus.nodes[relationship.target]?.title || relationship.target}</strong>
               </button>
+            {:else}
+              {#if linkAssertionStatus !== 'all'}<p class="muted">There are no links with this assertion status in the current selection.</p>{/if}
             {/each}
           </section>
         {:else if activeView === 'timeline'}
@@ -8433,6 +8469,12 @@
       {/if}
     {/snippet}
     {#snippet details()}
+        {#snippet ontologyRecord(term: unknown)}
+          {#if source?.kind === 'large' && source.descriptor.entrypoints.ontology_navigation
+              && typeof term === 'string' && term.length > 0 && term.length <= 2048}
+            <p><a href={ontologyLink(source.url, term)}>Inspect ontology term</a></p>
+          {/if}
+        {/snippet}
         {#if source?.kind === 'large'}
           {#if largeInspectedEdge}
             {@const relationshipEdges = inspectedRelationshipEdges()}
@@ -8654,6 +8696,7 @@
                 .filter((access) => source?.kind !== 'large' || !source.loadResourcesForRecord || !access.legacy)}
               <span class="badge">{recordTypeLabel(largeDetail.dataset, capitalise(recordSingular()))}</span>
               <h2>{largeLabelForRoute(largeDetail.route)}</h2>
+              {@render ontologyRecord(largeDetail.dataset.ontology_term)}
               {#if datasetMatchReason(largeDetail.dataset)}
                 <p class="match-explanation"><strong>Why this matched</strong> {datasetMatchReason(largeDetail.dataset)}</p>
               {/if}
@@ -9141,6 +9184,7 @@
             {:else if largeDetail.kind === 'search'}
               <span class="badge">{recordTypeLabel(largeDetail.result, capitalise(recordSingular()))}</span>
               <h2>{largeDatasetLabel(largeDetail.result)}</h2>
+              {@render ontologyRecord(largeDetail.result.ontology_term)}
               <div class="detail-actions primary-detail-actions">
                 {#if largeHasRecordLocator()}
                   <button class="primary-action" type="button" onclick={() => void ensureLargeDataset(largeDetail.route, largeDetail.result)}>
@@ -9359,7 +9403,17 @@
             {#if selectedSmallRelationshipPresentation.derivation}<dt>Derivation</dt><dd>{#if isUrl(selectedSmallRelationshipPresentation.derivation)}<a href={selectedSmallRelationshipPresentation.derivation} target="_blank" rel="noopener noreferrer">{selectedSmallRelationshipPresentation.derivation}</a>{:else}{selectedSmallRelationshipPresentation.derivation}{/if}</dd>{/if}
             {#if selectedSmallRelationshipPresentation.derivationActivity}<dt>Derivation activity</dt><dd>{#if isUrl(selectedSmallRelationshipPresentation.derivationActivity)}<a href={selectedSmallRelationshipPresentation.derivationActivity} target="_blank" rel="noopener noreferrer">{selectedSmallRelationshipPresentation.derivationActivity}</a>{:else}{selectedSmallRelationshipPresentation.derivationActivity}{/if}</dd>{/if}
             {#if selectedSmallRelationshipPresentation.rule}<dt>Rule</dt><dd>{#if isUrl(selectedSmallRelationshipPresentation.rule)}<a href={selectedSmallRelationshipPresentation.rule} target="_blank" rel="noopener noreferrer">{selectedSmallRelationshipPresentation.rule}</a>{:else}{selectedSmallRelationshipPresentation.rule}{/if}</dd>{/if}
-            {#if selectedSmallRelationshipPresentation.supportingAssertions.length}<dt>Supporting assertions</dt><dd>{selectedSmallRelationshipPresentation.supportingAssertions.join(', ')}</dd>{/if}
+            {#if selectedSmallRelationshipPresentation.supportingAssertions.length}
+              <dt>Supporting assertions</dt>
+              <dd><ul>
+                {#each selectedSmallRelationshipPresentation.supportingAssertions as identifier}
+                  {@const supporting = smallCorpus.relationships.find(relationship => relationship.id === identifier)}
+                  <li>{#if supporting}
+                    <button type="button" onclick={() => inspectSmallRelationship(supporting)}>Inspect {identifier}</button>
+                  {:else}<code>{identifier}</code>{/if}</li>
+                {/each}
+              </ul></dd>
+            {/if}
             {#if selectedSmallRelationshipPresentation.confidence}<dt>Confidence</dt><dd>{selectedSmallRelationshipPresentation.confidence}</dd>{/if}
             {#if selectedSmallRelationshipPresentation.observedAt}<dt>Observed</dt><dd>{selectedSmallRelationshipPresentation.observedAt}</dd>{/if}
             {#if selectedSmallRelationshipPresentation.staleAfter}<dt>Stale after</dt><dd>{selectedSmallRelationshipPresentation.staleAfter}</dd>{/if}

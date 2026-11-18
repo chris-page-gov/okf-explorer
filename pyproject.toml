@@ -16,6 +16,7 @@ dependencies = [
 [dependency-groups]
 dev = [
     "pillow>=13,<14",
+    "pyshacl==0.40.2",
     "python-docx>=1.2,<2",
 ]
 

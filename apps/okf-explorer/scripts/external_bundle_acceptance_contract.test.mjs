@@ -317,34 +317,40 @@ test('rejects missing, relative and credential-bearing canonical result URLs', a
   assert.equal(isCredentialFreeAbsoluteHttpUrl('https://example.test/result?password=secret'), false);
 });
 
-test('captures one coherent rank snapshot while a real page repeatedly rerenders', { timeout: 20_000 }, async () => {
-  const browser = await chromium.launch(chromiumLaunchOptions);
+test('captures one coherent rank snapshot while a real page repeatedly rerenders', { timeout: 50_000 }, async (t) => {
+  const browser = await chromium.launch({ ...chromiumLaunchOptions, timeout: 30_000 });
+  let phase = 'create the page';
   try {
     const page = await browser.newPage();
+    page.setDefaultTimeout(4_000);
+    phase = 'render the fixture';
     await page.setContent(`
       <main data-results></main>
       <script>
         let epoch = 0;
+        let scheduled = false;
+        const results = document.querySelector('[data-results]');
         const render = () => {
           epoch += 1;
-          document.querySelector('[data-results]').innerHTML = [1, 2, 3]
+          results.innerHTML = [1, 2, 3]
             .map((rank) => '<a data-okf-ranked-result data-result-canonical-url="https://example.test/result?epoch=' + epoch + '&rank=' + rank + '"></a>')
             .join('');
+          for (const row of results.children) {
+            const readAttribute = row.getAttribute.bind(row);
+            row.getAttribute = (name) => {
+              const value = readAttribute(name);
+              if (name === 'data-result-canonical-url' && !scheduled) {
+                scheduled = true;
+                queueMicrotask(() => {
+                  render();
+                  scheduled = false;
+                });
+              }
+              return value;
+            };
+          }
         };
         render();
-        const readAttribute = Element.prototype.getAttribute;
-        let scheduled = false;
-        Element.prototype.getAttribute = function (name) {
-          const value = readAttribute.call(this, name);
-          if (name === 'data-result-canonical-url' && !scheduled) {
-            scheduled = true;
-            queueMicrotask(() => {
-              render();
-              scheduled = false;
-            });
-          }
-          return value;
-        };
       </script>
     `);
     const action = {
@@ -355,11 +361,15 @@ test('captures one coherent rank snapshot while a real page repeatedly rerenders
       max_items: 3
     };
     for (let epoch = 1; epoch <= 3; epoch += 1) {
+      phase = `capture ranking epoch ${epoch}`;
       const observation = await captureAttributeObservation(page.locator(action.selector), action);
       assert.equal(observation.values.length, 3);
       assert.deepEqual(observation.values.map((value) => new URL(value).searchParams.get('epoch')), Array(3).fill(String(epoch)));
       assert.deepEqual(observation.values.map((value) => new URL(value).searchParams.get('rank')), ['1', '2', '3']);
     }
+  } catch (error) {
+    t.diagnostic(`The rank snapshot fixture could not ${phase}.`);
+    throw error;
   } finally {
     await browser.close();
   }

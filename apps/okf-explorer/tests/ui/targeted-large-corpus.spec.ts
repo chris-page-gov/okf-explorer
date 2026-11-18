@@ -91,6 +91,7 @@ async function installTargetedFixture(
     reusedResourceId?: boolean;
     sourceReleaseDate?: string;
     clmlVersion?: string;
+    documentUri?: string;
   } = {}
 ) {
   const RECORD_ROUTE = options.recordRoute || DEFAULT_RECORD_ROUTE;
@@ -116,7 +117,7 @@ async function installTargetedFixture(
       operational_metadata: { latest_release: { date: options.sourceReleaseDate } }
     } : {}),
     legislation_id_uri: 'https://www.legislation.gov.uk/id/ukpga/1998/42',
-    document_uri: 'https://www.legislation.gov.uk/ukpga/1998/42',
+    document_uri: options.documentUri || 'https://www.legislation.gov.uk/ukpga/1998/42',
     url: 'https://www.legislation.gov.uk/ukpga/1998/42',
     ...(options.clmlVersion ? {
       manifestations: { clml: `https://www.legislation.gov.uk/ukpga/1998/42/${options.clmlVersion}/data.xml` }
@@ -1396,6 +1397,7 @@ test.describe('targeted large-corpus relationship hydration', () => {
     const panel = page.locator('.law-panel');
     await expect(panel.getByRole('alert')).toHaveText('The source does not offer the requested format (HTTP 406).');
     await expect(panel.getByRole('link', { name: 'Open official XML' })).toHaveAttribute('href', xml);
+    await expect(panel.getByRole('link', { name: 'Open official work', exact: true })).toHaveAttribute('href', work);
     await expect(panel.getByRole('link', { name: 'Open this official version' })).toHaveAttribute('href', version);
     await panel.getByRole('button', { name: 'Explore official text' }).click();
     await expect(panel.getByRole('alert')).toHaveCount(0);
@@ -1403,6 +1405,19 @@ test.describe('targeted large-corpus relationship hydration', () => {
     await expect(panel.getByRole('link', { name: 'Selected passage' })
       .and(panel.locator(`a[href="${work}/article/1/${clmlVersion}"]`))).toBeVisible();
     expect(requestedTypes).toEqual(Array(2).fill('application/xml, text/xml;q=0.9'));
+  });
+
+  test('legislation detail labels an identically dated record as the official version', async ({ page }) => {
+    const clmlVersion = '2024-12-31';
+    const version = 'https://www.legislation.gov.uk/ukpga/1998/42/' + clmlVersion;
+    await installTargetedFixture(page.context(), [], { clmlVersion, documentUri: version });
+    await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}#overview`);
+    await page.getByPlaceholder('Search targeted legislation').fill('Target Act');
+    await page.locator('.result-list button').filter({ hasText: 'Target Act 1998' }).first().click();
+    const panel = page.getByRole('region', { name: 'Official legislation detail' });
+    await expect(panel.getByRole('link', { name: 'Open this official version', exact: true })).toHaveAttribute('href', version);
+    await expect(panel.getByRole('link', { name: 'Open official work', exact: true })).toHaveCount(0);
+    await expect(panel.getByRole('link', { name: 'Open official XML', exact: true })).toHaveAttribute('href', version + '/data.xml');
   });
 
   test('announces an incomplete v3 route and retries it without retaining model rows', async ({

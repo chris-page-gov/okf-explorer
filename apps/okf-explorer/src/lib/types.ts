@@ -368,6 +368,9 @@ export type LargeCorpusDescriptor = {
     data_manifest: string;
     markdown_index?: string;
     conformance?: LargeResourceReference;
+    shacl_findings?: LargeResourceReference;
+    shacl_review?: LargeResourceReference;
+    ontology_navigation?: LargeResourceReference;
     semantic_jsonld?: string;
     semantic_yamlld?: string;
     terms?: LargeResourceReference;
@@ -995,6 +998,7 @@ export type SearchResultDoc = {
   ordinal: number;
   name: string;
   title: string;
+  ontology_term?: string;
   publisher: string;
   publisher_title: string;
   resource_count: number;
@@ -1178,6 +1182,8 @@ export type LargeDataset = {
   /** Optional retained OKF+ source metadata; validated before presentation. */
   okf_plus?: unknown;
   id?: string;
+  /** Exact term IRI in the publisher's bound ontology index. */
+  ontology_term?: string;
   name: string;
   title: string;
   notes?: string;

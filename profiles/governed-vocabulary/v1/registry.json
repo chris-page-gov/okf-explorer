@@ -1,0 +1,14 @@
+{
+  "schema": "okf-governed-vocabulary.v1",
+  "version": "1.0.0-rc.1",
+  "authority": "OKF Explorer maintainers",
+  "path": "vocabulary.ttl",
+  "media_type": "text/turtle",
+  "bytes": 1783,
+  "sha256": "896587bfeeacc2712e209b3fd56e3e8f1d19ce62e9df5cbc0de96efc1e4aefa5",
+  "schemes": {
+    "topic": "https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#topics",
+    "format": "https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#formats",
+    "licence": "https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#licences"
+  }
+}

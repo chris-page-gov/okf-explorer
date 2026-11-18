@@ -28,6 +28,8 @@ const SUITES = {
     family: 'ui',
     file: 'tests/ui/timeline-provenance.spec.ts'
   },
+  validation: { family: 'ui', file: 'tests/ui/validation.spec.ts' },
+  ontology: { family: 'ui', file: 'tests/ui/ontology.spec.ts' },
   federation: {
     family: 'ui',
     file: 'tests/ui/federation-overview.spec.ts'
@@ -108,6 +110,10 @@ const SUITES = {
     family: 'foundry',
     file: 'tests/foundry/beginner-guide-fragments.spec.ts'
   },
+  governed_examples: {
+    family: 'foundry',
+    file: 'tests/foundry/governed-vocabulary.spec.ts'
+  },
   foundry_pages: {
     family: 'foundry',
     file: 'tests/foundry/foundry-docs.spec.ts'
@@ -151,6 +157,8 @@ export const TEST_TAG_SUITES = Object.freeze({
     'okf_plus_context',
     'relationship_pagination',
     'learner_hub',
+    'validation',
+    'ontology',
     'small_bundle',
     'map',
     'beginner_navigation',
@@ -164,7 +172,7 @@ export const TEST_TAG_SUITES = Object.freeze({
   contract: ['ask_okf', 'okf_plus_context', 'small_bundle', 'foundry_pages'],
   data: ['small_bundle', 'large_corpus', 'map', 'offline_map', 'dfe_data'],
   denominator: ['conceptual_navigation', 'large_corpus', 'facets'],
-  descriptor: ['small_bundle', 'foundry_pages'],
+  descriptor: ['small_bundle', 'validation', 'ontology', 'governed_examples', 'foundry_pages'],
   determinism: ['small_bundle'],
   digest: ['ask_okf', 'small_bundle'],
   evidence: ['evidence_workbench', 'passage_boundaries', 'ask_okf', 'okf_plus_context', 'small_bundle', 'foundry_pages'],
@@ -200,7 +208,7 @@ export const TEST_TAG_SUITES = Object.freeze({
   relationship: ['small_bundle', 'large_corpus', 'relationship_pagination', 'federation'],
   release: ['foundry_pages'],
   repository: ['foundry_pages'],
-  route: ['okf_plus_context', 'exploratory_publication', 'learner_hub', 'beginner_navigation', 'beginner_audit', 'foundry_pages'],
+  route: ['okf_plus_context', 'exploratory_publication', 'learner_hub', 'validation', 'ontology', 'beginner_navigation', 'beginner_audit', 'foundry_pages'],
   runtime: ALL_UI,
   search: ['small_bundle', 'facets', 'large_corpus'],
   site: ['learner_hub', 'beginner_navigation', 'beginner_audit', 'foundry_pages'],

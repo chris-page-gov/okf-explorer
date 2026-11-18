@@ -1,0 +1,31 @@
+<https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#cc-by-40> <http://purl.org/dc/terms/source> <https://creativecommons.org/licenses/by/4.0/> .
+<https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#cc-by-40> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#cc-by-40> <http://www.w3.org/2004/02/skos/core#altLabel> "CC BY 4.0"@en-GB .
+<https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#cc-by-40> <http://www.w3.org/2004/02/skos/core#definition> "The Creative Commons Attribution licence, international version 4.0."@en-GB .
+<https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#cc-by-40> <http://www.w3.org/2004/02/skos/core#exactMatch> <https://spdx.org/licenses/CC-BY-4.0> .
+<https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#cc-by-40> <http://www.w3.org/2004/02/skos/core#inScheme> <https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#licences> .
+<https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#cc-by-40> <http://www.w3.org/2004/02/skos/core#notation> "CC-BY-4.0" .
+<https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#cc-by-40> <http://www.w3.org/2004/02/skos/core#prefLabel> "Creative Commons Attribution 4.0 International"@en-GB .
+<https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#csv> <http://purl.org/dc/terms/source> <https://www.iana.org/assignments/media-types/text/csv> .
+<https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#csv> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#csv> <http://www.w3.org/2004/02/skos/core#altLabel> "CSV"@en-GB .
+<https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#csv> <http://www.w3.org/2004/02/skos/core#closeMatch> <http://publications.europa.eu/resource/authority/file-type/CSV> .
+<https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#csv> <http://www.w3.org/2004/02/skos/core#definition> "The registered text/csv media type."@en-GB .
+<https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#csv> <http://www.w3.org/2004/02/skos/core#inScheme> <https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#formats> .
+<https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#csv> <http://www.w3.org/2004/02/skos/core#notation> "text/csv" .
+<https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#education> <http://purl.org/dc/terms/source> <https://www.gov.uk/browse/education> .
+<https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#education> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#Concept> .
+<https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#education> <http://www.w3.org/2004/02/skos/core#broadMatch> <https://www.gov.uk/education> .
+<https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#education> <http://www.w3.org/2004/02/skos/core#definition> "Learning and services that support access to education."@en-GB .
+<https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#education> <http://www.w3.org/2004/02/skos/core#inScheme> <https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#topics> .
+<https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#education> <http://www.w3.org/2004/02/skos/core#notation> "education" .
+<https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#education> <http://www.w3.org/2004/02/skos/core#prefLabel> "Education"@en-GB .
+<https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#formats> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#ConceptScheme> .
+<https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#formats> <http://www.w3.org/2004/02/skos/core#hasTopConcept> <https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#csv> .
+<https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#formats> <http://www.w3.org/2004/02/skos/core#prefLabel> "Explorer data formats"@en-GB .
+<https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#licences> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#ConceptScheme> .
+<https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#licences> <http://www.w3.org/2004/02/skos/core#hasTopConcept> <https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#cc-by-40> .
+<https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#licences> <http://www.w3.org/2004/02/skos/core#prefLabel> "Explorer licences"@en-GB .
+<https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#topics> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2004/02/skos/core#ConceptScheme> .
+<https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#topics> <http://www.w3.org/2004/02/skos/core#hasTopConcept> <https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#education> .
+<https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#topics> <http://www.w3.org/2004/02/skos/core#prefLabel> "Explorer topics"@en-GB .

@@ -117,8 +117,8 @@
     </dl>
 
     <div class="law-actions">
-      {#if documentUri}<a class="law-button" href={documentUri} target="_blank" rel="noopener">Open official work</a>{/if}
-      {#if versionUri && versionUri !== documentUri}<a class="law-button" href={versionUri} target="_blank" rel="noopener">Open this official version</a>{/if}
+      {#if documentUri && documentUri !== versionUri}<a class="law-button" href={documentUri} target="_blank" rel="noopener">Open official work</a>{/if}
+      {#if versionUri}<a class="law-button" href={versionUri} target="_blank" rel="noopener">Open this official version</a>{/if}
       {#if record.table_of_contents_url}<a class="law-button" href={record.table_of_contents_url} target="_blank" rel="noopener">Official contents</a>{/if}
       {#if record.effects_made_url}<a class="law-button" href={record.effects_made_url} target="_blank" rel="noopener">Changes made</a>{/if}
       {#if record.effects_received_url}<a class="law-button" href={record.effects_received_url} target="_blank" rel="noopener">Changes received</a>{/if}

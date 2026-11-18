@@ -460,9 +460,9 @@ This phase is implemented in the Svelte Explorer.
 - Publish machine-readable validation reports. The first closed-world report
   now checks recognition, namespace expansion, provenance, kind, bounded use
   and artifact coverage.
-- Add a Validation view and source-linked remediation paths. Explorer now
-  provides searchable term details, source links, validation status and
-  limitations; a cross-bundle remediation workflow remains future work.
+- Show integrity-bound SHACL findings in the Validation view. Where the
+  publisher declares remediation and the participating source records,
+  link each record to the finding and preserve state on return.
 - Keep SHACL 1.2 experiments separate until the specification is stable.
 
 ### Phase 4: Bounded Inference

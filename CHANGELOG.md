@@ -1,5 +1,60 @@
 # Changelog
 
+## Unreleased — governed vocabulary examples
+
+- Stage a vocabulary Reader example and a separate missing-label exercise
+  with reproducible Ontology, SHACL and Data Quality Vocabulary exports.
+- Record the staged semantic work and its remaining release acceptance.
+- Add exact successful Pages jobs and live browser verification receipts to
+  the Site provenance export.
+- Demonstrate bounded subclass inference with two W3C PROV-O source
+  assertions, one inferred relationship and an export of its derivation.
+- Scope ontology searches to the direct children of a selected term, with
+  an explicit option to include terms further down its declared hierarchy.
+- Regenerate the analytical trial receipts against the locked SHACL toolchain.
+- Declare explicit DCAT-AP landing pages as documents so the export passes
+  the official range check.
+- Run the DCAT-AP and OpenAPI exporters through their documented module
+  commands. Record the exact Pages conformance step and assembly timing
+  when the matching build and deployment jobs are supplied.
+- Link the vocabulary examples to their exported quality measurements
+  and exact source SHACL reports from the Explorer.
+- Add a PROV-O class and property navigation example with the source
+  declarations, scoped filters and reversible Reader links.
+- Record optional timed PROV evidence for a real bounded enrichment run.
+  Preserve the deterministic result for users who reproduce the derivation.
+- Keep the rank snapshot replay bounded and isolate fixture mutations to
+  the rendered result rows.
+- Explain typed point-in-time legislation representations in the beginner
+  guide. Label a dated record link as the official version and keep the
+  official identifier and XML link available.
+
+## Unreleased — semantic foundations
+
+- Reconcile the semantic roadmap with the frozen OKF 0.2 profile and record
+  the acceptance work for each planned view.
+- Publish candidate topic, format and licence schemes with stable concept
+  identifiers, explicit external mappings and a checked SKOS vocabulary digest.
+- Export exact Site assembly provenance as deterministic PROV-O triples.
+- Derive stable finding IDs from bounded SHACL Core reports.
+- Run pinned local RDF and shapes through SHACL Core and record their
+  exact digests and validator version with the findings.
+- Export those report outcomes as DQV measurements and annotations tied to
+  the exact source report.
+- Export explicitly mapped catalogue metadata as source-linked DCAT-AP
+  3.0.1 datasets and distributions.
+- Extract selected, source-located operations from bounded OpenAPI 3.1 JSON.
+- Inspect integrity-bound SHACL findings in a dedicated Explorer view.
+  Open publisher-declared source records and return to the same finding.
+- Add an opt-in subclass inference candidate with explicit supporting
+  assertions and fixed processing limits.
+- Compare assertion statuses in Links, filter by status and inspect supporting
+  assertions. Export exact rule and activity provenance for bounded inference.
+- Index declared ontology hierarchies and SKOS mappings with the source
+  digest and the original mapping strength.
+- Browse declared ontology terms, direct hierarchy edges and mapping
+  strengths through a shareable, integrity-bound Explorer view.
+
 ## Unreleased — Explorer presentation
 
 - Keep a high-contrast dotted keyboard focus indicator on Graph edges in

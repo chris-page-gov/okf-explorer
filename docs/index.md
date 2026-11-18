@@ -33,6 +33,7 @@ to this guide, worked examples and the GitHub repository.
 ## Author and maintain
 
 - [Architecture and implementation plan](architecture-and-implementation-plan.md): current capability states, delivery priorities, acceptance criteria and the whole-implementation review scope.
+- [Semantic roadmap](semantic-roadmap-review-2026-11-18.md) records the order of the ontology, vocabulary, validation and inference work, with release evidence and the remaining acceptance.
 - [Learning presentation](learning-presentation.md): design goal-led journeys and conceptual filters.
 - [Analytical Data profile v1](../profiles/analytical-data/v1/index.md) and [estate rollout](analytical-data-profile-rollout.md) cover versioned CSV packages, identifier declarations and validation.
 - [Warwickshire and NDL compatibility trial](analytical-data-trial-2026-11-11.md) captures all 333 real observations, conversion evidence, denied catalogue access and the Explorer application boundary.
