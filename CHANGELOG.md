@@ -29,6 +29,9 @@
   reviewing claims with three worked exercises available without JavaScript.
 - Link the learning path, all glossary definitions and the exercises in both
   directions. Publish a deterministic report of authored guide references.
+- Require a worked example or exercise and its return link for every
+  chapter in the learning path.
+- Exercise every guide fragment in a fresh tab for each chapter.
 - Inventory and classify the guide's public source links and example
   identifiers. Record redirects, page titles and response evidence in a
   separate source audit. Link to the current ONS profile for the Coventry code.
@@ -36,6 +39,8 @@
   source inventory and a manual assessment of every chapter.
 - Run the exact deployed guide in Chrome, Firefox and WebKit on demand
   and retain the browser report for the release audit.
+- Keep the top of directly opened chapters visible on narrow screens and
+  preserve the skip link and section links.
 - Exercise atomic rank observations against a rerender triggered by the first
   attribute read in the browser fixture.
 - Compare the verified passages before and after an edited correction in

@@ -25,6 +25,18 @@ MANUAL_CHECKS = {
     "independent_sidebar_scrolling",
 }
 ENGINES = {"chrome": "chromium", "firefox": "firefox", "webkit": "webkit"}
+COMMANDS = {
+    "browser": (
+        "OKF_BEGINNER_RELEASE_AUDIT=1 PLAYWRIGHT_BASE_URL=<published-root> "
+        "pnpm exec playwright test --config=playwright.foundry.config.ts "
+        "tests/foundry/beginner-guide-fragments.spec.ts --project=chrome "
+        "--project=firefox --project=webkit --reporter=json"
+    ),
+    "sources": "uv run --locked python scripts/audit_beginner_guide_sources.py --site <site> --output <sources> --observe",
+    "receipt": "uv run --locked python scripts/build_beginner_guide_audit_receipt.py --guide-base <guide-base> "
+               "--candidate <candidate> --references <references> --sources <sources> --browser-report <report> "
+               "--manual <manual> --output <output>",
+}
 
 
 def read(path: Path, limit: int = 2 * 1024 * 1024) -> tuple[dict, str]:
@@ -139,7 +151,8 @@ def main() -> int:
             "guide_base": args.guide_base, "cross_references_sha256": reference_sha,
             "source_inventory_sha256": sources_sha, "browser_report_sha256": report_sha, "manual_sha256": manual_sha,
             "tool": "Playwright " + report["config"]["version"], "browsers": browsers, "manual": manual,
-            "source_summary": external, "limitations": ["URL observations describe availability and returned identity."],
+            "commands": COMMANDS, "source_summary": external,
+            "limitations": ["URL observations describe availability and returned identity."],
         }
         schema = json.loads(SCHEMA.read_bytes())
         Draft202012Validator(schema, format_checker=Draft202012Validator.FORMAT_CHECKER).validate(receipt)

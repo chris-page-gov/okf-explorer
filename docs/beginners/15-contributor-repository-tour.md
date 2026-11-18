@@ -317,6 +317,7 @@ contracts, then continue with the advanced document for your contribution area.
 - [Learning path overview](index.md#learning-path)
 - Previous chapter is [Building, Testing And Publishing](14-building-testing-and-publishing.md#learning-path-connections).
 - Next chapter is [Beginner Glossary](16-beginner-glossary.md#learning-path-connections).
+- [Author a directed relationship](25-life-course-worked-example.md#exercise-2-author-a-directed-relationship) for a small example of the source material a contributor prepares before building.
 - Glossary terms in this chapter include [Artefact](16-beginner-glossary.md#artefact),
   [Descriptor](16-beginner-glossary.md#descriptor),
   [Registry](16-beginner-glossary.md#registry),

@@ -88,7 +88,14 @@ statement came from and how the modeller obtained it. The
 note. The [observation time](23-foundational-definitions.md#observation-time)
 is when the note was consulted, at day precision.
 
+See [web and browser foundations](02-web-and-browser-foundations.md#learning-path-connections)
+for addresses and fragments, and [large corpora and progressive loading](04-large-corpora-and-progressive-loading.md#learning-path-connections)
+for fetching a selected record or relationship with its source evidence.
+
 ## Exercise 1. Recognise entities and concepts
+
+Use the [beginner glossary](16-beginner-glossary.md#learning-path-connections)
+alongside the source note to review the terms in this exercise.
 
 Related chapters include [From A Missed Collection To An Ontology](00-data-information-knowledge-and-ontology.md#learning-path-connections),
 [The Product In Plain Language](01-product-in-plain-language.md#learning-path-connections),
@@ -123,6 +130,7 @@ Related chapters include [Knowledge Graphs And Stable Identifiers](06-knowledge-
 [The Semantic Web And Ontologies](07-semantic-web-and-ontologies.md#learning-path-connections),
 [Explorer Views And Presentation](09-explorer-views-and-presentation.md#learning-path-connections),
 [Geospatial Data](10-geospatial-data.md#learning-path-connections),
+[the contributor's repository tour](15-contributor-repository-tour.md#learning-path-connections),
 [Federated Bundles](18-federated-bundles.md#learning-path-connections),
 [Foundry Authoring And Domain Profiles](19-foundry-authoring-and-domain-profiles.md#learning-path-connections).
 
@@ -155,7 +163,9 @@ relationship then lacks evidence.
 
 Related chapters include [Validation, Provenance And Catalogue Standards](08-validation-provenance-and-catalogue-standards.md#learning-path-connections),
 [UK Legislation Data](11-uk-legislation-data.md#learning-path-connections),
+[AI infrastructure and federated AI](12-ai-infrastructure-and-federated-ai.md#learning-path-connections),
 [Security, Privacy, Accessibility And Responsible Use](13-security-privacy-accessibility-and-responsible-use.md#learning-path-connections),
+[building, testing and publishing](14-building-testing-and-publishing.md#learning-path-connections),
 [OKF v0.2 Trust, Lifecycle And Attestation](17-okf-v02-trust-lifecycle-and-attestation.md#learning-path-connections),
 [Governed Enrichment And Release Assurance](20-governed-enrichment-and-release-assurance.md#learning-path-connections),
 [Release Gates, Evidence And Owner Review](21-release-gates-evidence-and-owner-review.md#learning-path-connections),
