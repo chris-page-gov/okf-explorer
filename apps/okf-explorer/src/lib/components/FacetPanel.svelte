@@ -45,7 +45,7 @@
           <span class="facet-disclosure" aria-hidden="true">{facet.open ? '▾' : '▸'}</span>
           <span class="facet-heading-label">
             <strong>{facet.label}</strong>
-            <span class="selection-summary" title={summary}>{summary}</span>
+            <span class="selection-summary" title={summary} hidden={!summary}>{summary}</span>
           </span>
           <small>{facet.rows.length} values</small>
         </button>
@@ -122,7 +122,7 @@
   .facet-toggle small { font-size:.7rem; white-space:nowrap; }
   .facet-heading-label { flex:1; display:grid; min-width:0; }
   .facet-heading-label strong { line-height:18px; }
-  .facet-heading-label .selection-summary { display:block; min-width:0; height:12px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:11px; line-height:12px; font-weight:600; }
+  .facet-heading-label .selection-summary { min-width:0; height:12px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:11px; line-height:12px; font-weight:600; }
   .facet-header .facet-toggle { padding:3px 5px; }
   .bar-legend { font-size:.75rem; line-height:1.4; color:#243746; } .selection-word { font-size:.75rem; }
   .facet-distribution { width:calc(100% - 8px); margin:0 4px 2px; padding:0; background:#ffffff; }

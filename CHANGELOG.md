@@ -2,8 +2,8 @@
 
 ## Unreleased — Explorer navigation
 
-- Restore local result browsing after unfolding a group and keep the facet
-  selection summary in place when the selection is cleared.
+- Restore local result browsing after unfolding a group. Clear the facet
+  summary and its row height when the selection is cleared.
 
 - Add **Back to start**, make Reader browse counts and share-link feedback
   explicit, and bring a new record's heading into view in the details pane.
