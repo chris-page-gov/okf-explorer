@@ -31,3 +31,40 @@ release audit. For example, keep a documented historical identifier in a
 worked example and link to the current authoritative lookup for readers.
 The local inventory and its observations form inputs to the exact deployed
 browser audit.
+
+## Record a deployed audit
+
+Run the guide browser test with `OKF_BEGINNER_RELEASE_AUDIT=1` and
+`PLAYWRIGHT_BASE_URL` set to the published Explorer root. Use all three
+projects with the JSON reporter. The test records the exact Site identity,
+application manifest, browser version and observed routes for each run.
+
+```sh
+cd apps/okf-explorer
+OKF_BEGINNER_RELEASE_AUDIT=1 pnpm exec playwright test \
+  --config=playwright.foundry.config.ts tests/foundry/beginner-guide-fragments.spec.ts \
+  --project=chrome --project=firefox --project=webkit --reporter=json \
+  > /tmp/okf-guide-browser-report.json
+```
+
+Record the manual review against the exact published chapter URLs. The
+[receipt schema](../../profiles/beginner-guide-audit/v1/receipt.schema.json)
+defines the reviewer, time, chapter checks and source exception notes. Use
+`passed`, `finding` or `not-applicable` for each of the 12 named checks in
+the receipt builder. Explain exemptions, open findings and any reviewed
+external access restrictions in the supplied notes.
+
+Use the pre-deployment Site candidate receipt and the source observations
+from that same build. Run the builder from the repository root. It writes
+the validated machine receipt and a readable summary to a new directory.
+
+```sh
+uv run --locked python scripts/build_beginner_guide_audit_receipt.py \
+  --guide-base "${PLAYWRIGHT_BASE_URL}docs/beginners/" \
+  --candidate /tmp/site-candidate-receipt.json \
+  --references _site/docs/beginners/cross-references.json \
+  --sources /tmp/okf-guide-source-observations.json \
+  --browser-report /tmp/okf-guide-browser-report.json \
+  --manual /tmp/okf-guide-manual-observations.json \
+  --output /tmp/okf-guide-release-audit
+```

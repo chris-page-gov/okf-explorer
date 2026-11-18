@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Beginner guide release audit",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "status", "commit", "site_sha256", "explorer_manifest_sha256", "guide_base", "cross_references_sha256", "source_inventory_sha256", "browser_report_sha256", "manual_sha256", "tool", "browsers", "manual", "source_summary", "limitations"],
+  "properties": {
+    "schema": {"const": "okf-beginner-guide-release-audit.v1"},
+    "status": {"enum": ["complete", "findings-open"]},
+    "commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "site_sha256": {"$ref": "#/$defs/digest"},
+    "explorer_manifest_sha256": {"$ref": "#/$defs/digest"},
+    "guide_base": {"type": "string", "pattern": "^https://"},
+    "cross_references_sha256": {"$ref": "#/$defs/digest"},
+    "source_inventory_sha256": {"$ref": "#/$defs/digest"},
+    "browser_report_sha256": {"$ref": "#/$defs/digest"},
+    "manual_sha256": {"$ref": "#/$defs/digest"},
+    "tool": {"type": "string", "minLength": 1, "maxLength": 100},
+    "browsers": {
+      "type": "array", "minItems": 3, "maxItems": 3,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["project", "engine", "version", "started_at", "observed_at", "chapters"],
+        "properties": {
+          "project": {"enum": ["chrome", "firefox", "webkit"]},
+          "engine": {"enum": ["chromium", "firefox", "webkit"]},
+          "version": {"type": "string", "minLength": 1, "maxLength": 50},
+          "started_at": {"type": "string", "format": "date-time"},
+          "observed_at": {"type": "string", "format": "date-time"},
+          "chapters": {
+            "type": "array", "minItems": 27, "maxItems": 100,
+            "items": {
+              "type": "object", "additionalProperties": false,
+              "required": ["route", "headings", "narrowWidth", "skipLinkChecked", "manualChecks"],
+              "properties": {
+                "route": {"type": "string", "format": "uri"},
+                "headings": {"type": "array", "uniqueItems": true, "minItems": 1, "maxItems": 150, "items": {"type": "string", "maxLength": 300}},
+                "narrowWidth": {"type": "integer", "minimum": 1, "maximum": 320},
+                "skipLinkChecked": {"const": true},
+                "manualChecks": {"type": "array", "maxItems": 75, "items": {"type": "string", "maxLength": 120}}
+              }
+            }
+          }
+        }
+      }
+    },
+    "manual": {
+      "type": "object", "additionalProperties": false,
+      "required": ["reviewer", "observed_at", "chapters", "source_exceptions"],
+      "properties": {
+        "reviewer": {"type": "string", "minLength": 1, "maxLength": 160},
+        "observed_at": {"type": "string", "format": "date-time"},
+        "chapters": {
+          "type": "object", "minProperties": 27, "maxProperties": 100,
+          "additionalProperties": {
+            "type": "object", "additionalProperties": false,
+            "required": ["checks", "notes"],
+            "properties": {
+              "checks": {
+                "type": "object", "minProperties": 12, "maxProperties": 12,
+                "additionalProperties": {"enum": ["passed", "finding", "not-applicable"]}
+              },
+              "notes": {"type": "string", "minLength": 1, "maxLength": 1500}
+            }
+          }
+        },
+        "source_exceptions": {
+          "type": "object", "maxProperties": 300,
+          "additionalProperties": {"type": "string", "minLength": 1, "maxLength": 500}
+        }
+      }
+    },
+    "source_summary": {
+      "type": "object", "additionalProperties": false,
+      "required": ["classified", "observed", "expected_no_fetch", "exceptions_open"],
+      "properties": {
+        "classified": {"type": "integer", "minimum": 1, "maximum": 300},
+        "observed": {"type": "integer", "minimum": 1, "maximum": 300},
+        "expected_no_fetch": {"type": "integer", "minimum": 0},
+        "exceptions_open": {"type": "array", "maxItems": 300, "items": {"type": "string", "format": "uri"}}
+      }
+    },
+    "limitations": {"type": "array", "maxItems": 10, "items": {"type": "string", "maxLength": 500}}
+  },
+  "$defs": {"digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+}
