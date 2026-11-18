@@ -21,7 +21,8 @@ test('home-page link opens the local table inspector and survives reload', async
   const inspector = new URL('inspect-data/', page.url());
   await page.getByRole('link', { name: 'Inspect a local CSV package', exact: true }).click();
   await expect(page).toHaveURL(inspector.href);
-  expect((await page.reload())?.status()).toBe(200);
+  // Firefox can expose the cache revalidation response on reload.
+  expect([200, 304]).toContain((await page.reload())?.status());
   await expect(page.getByRole('heading', { name: 'Inspect a local data table', exact: true })).toBeVisible();
   await expect(page.getByLabel('Package manifest (okf-analytical-data.json)', { exact: true })).toBeEnabled();
 });
