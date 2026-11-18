@@ -216,6 +216,7 @@
     timelineBucketFacetFilter
   } from '$lib/viewer/helpers';
   import '../styles.css';
+  import { applyExplorerTheme, readExplorerTheme, type ExplorerTheme } from '$lib/viewer/theme';
 
   const DEFAULT_BUNDLE = 'https://chris-page-gov.github.io/okf-ai-infrastructure/okf-bundle.json';
   const DEFAULT_REGISTRY = '../okf-registry.json';
@@ -945,7 +946,11 @@
     return 10;
   }
 
+  let explorerTheme = $state<ExplorerTheme>('system');
+
   onMount(() => {
+    explorerTheme = readExplorerTheme();
+    document.documentElement.dataset.explorerTheme = explorerTheme;
     void initialize();
     window.addEventListener('popstate', applyBrowserRoute);
     window.addEventListener('pointerdown', closeBundleSuggestionsOnPointerDown);
@@ -954,6 +959,7 @@
       if (activeView === 'graph' && !graphLabelsPaused) graphLabelPhase = (graphLabelPhase + 1) % 100000;
     }, 2000);
     return () => {
+      delete document.documentElement.dataset.explorerTheme;
       loadRequest += 1;
       largeSearchRequest += 1;
       window.removeEventListener('popstate', applyBrowserRoute);
@@ -6648,6 +6654,17 @@
       <p>{source?.kind === 'large' ? source.descriptor.title : source?.kind === 'small' ? source.corpus.title : 'No bundle loaded'}</p>
       <a class="changes-link" href="https://github.com/chris-page-gov/okf-explorer/blob/main/CHANGELOG.md" target="_blank" rel="noopener noreferrer">Explorer changes</a>
       <a class="changes-link" href="../evidence/">Evidence workbench</a>
+      <label class="theme-choice">
+        Theme
+        <select value={explorerTheme} onchange={(event) => {
+          explorerTheme = event.currentTarget.value as ExplorerTheme;
+          applyExplorerTheme(explorerTheme);
+        }}>
+          <option value="system">System</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </label>
       {#if relatedDescriptorLinks.length}
         <nav class="descriptor-related-links" aria-label="Related material">
           {#each relatedDescriptorLinks as link}
