@@ -27,6 +27,13 @@ test('built learner hub is static, small and split from Explorer', async () => {
   assert.ok(!root.includes(explorerPageModule), 'learner hub must not preload the Explorer page module');
 });
 
+test('built learner hub links to the local CSV inspector directory index', async () => {
+  const home = await readFile(new URL('../build/index.html', import.meta.url), 'utf8');
+  assert.match(home, /href="\.\/inspect-data\/">Inspect a local CSV package<\/a>/);
+  const inspector = await readFile(new URL('../build/inspect-data/index.html', import.meta.url), 'utf8');
+  assert.match(inspector, /<h1[^>]*>Inspect a local data table<\/h1>/);
+});
+
 test('landing-page bundle projection matches the governed registry', async () => {
   const governed = JSON.parse(await readFile(new URL('../static/okf-registry.json', import.meta.url), 'utf8'));
   const source = await readFile(new URL('../src/lib/learning-registry.ts', import.meta.url), 'utf8');

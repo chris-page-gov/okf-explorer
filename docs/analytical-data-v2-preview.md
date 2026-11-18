@@ -2,6 +2,8 @@
 
 The native [DfE EES pair Reader](dfe-ees-reader.md) at `/data/` is a separate upstream feature. This `/inspect-data/` route requires its versioned analytical manifest and one selected CSV; neither route silently converts the other's contract.
 
+On the learning home page, select **Inspect a local CSV package**. The static build serves this route from `inspect-data/index.html` under the site's base path. Browser tests follow the home-page link, reload the inspector and preview the synthetic library observations.
+
 This experimental implementation is merged on main; stable adoption and independent acceptance remain open. See the [current inventory](feature-status.md#remaining-work-and-closure-conditions) for completed main checks and remaining work. The [v2 contract](../profiles/analytical-data/v2/index.md) uses a new URI and `2.0.0-rc.1` because datetime key interpretation and metadata rules change. Frozen v1 `1.0.0-rc.1`, its schema digest, validator bytes and historical Warwickshire/NDL/Defra trials remain unchanged. No producer pin, research release or public learning Reader is silently updated.
 
 ## Functionality implemented

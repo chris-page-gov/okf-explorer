@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased — local CSV inspector route
+
+- Publish the local CSV package inspector at `/inspect-data/` so the home-page
+  link resolves on GitHub Pages. Check the static index and follow the link in
+  a browser before previewing a synthetic CSV.
+
 ## TOM handling notice — 15 November 2026
 
 - Record Restricted — HMG only for the TOM and all derivatives in REM-05. Preserve the original OFFICIAL marking and keep only handling metadata in this public inventory. Mark the earlier scoped AI/ORUK Reader receipt historical after the changed producer digests; broader proof stays open.
