@@ -264,6 +264,41 @@ test('keyboard inspection scrolls only the details pane to the new record headin
   await expect(graph).toHaveAttribute('viewBox', before!);
 });
 
+test('Hansard summaries keep the exact source link and keyboard focus on both sides of the card', async ({ context, page }) => {
+  const url = 'https://small.fixture.test/hansard.json';
+  const hansard = 'https://hansard.parliament.uk/Commons/2026-11-17/debates/fixture/Palantir#contribution-01';
+  const contextData = {
+    schema: 'okf-hansard-proceedings.v1', section_id: 'debate/palantir', section_title: 'Palantir',
+    sitting_date: '2026-11-17', house: 'Commons'
+  };
+  await context.route(url, route => route.fulfill({
+    contentType: 'application/json', headers: { 'access-control-allow-origin': '*' },
+    body: JSON.stringify({ okf_version: '0.2', title: 'Hansard summary fixture', nodes: {
+      audited: { id: 'audited', type: 'Contribution', title: 'Martin Wrigley · Palantir', url: hansard,
+        hansard_proceedings: { ...contextData, source_item: 4, speaker: 'Martin Wrigley' },
+        hansard_summary: { source: hansard, text: 'Wrigley asked for an independent audit.' } },
+      untitled: { id: 'untitled', type: 'Contribution', title: 'Another contribution', url: hansard.replace(/01$/, '02'),
+        hansard_proceedings: { ...contextData, source_item: 5 } }
+    }, relationships: [] })
+  }));
+  await page.goto(`?${new URLSearchParams({ bundle: url })}#audited`);
+  const card = page.locator('.stage .result-row').filter({ hasText: 'Martin Wrigley' });
+  const source = card.getByRole('link', { name: 'Read in Hansard' });
+  await expect(source).toHaveAttribute('href', hansard);
+  await expect(card).toContainText('Martin Wrigley · House of Commons · 17 November 2026');
+  const show = card.getByRole('button', { name: 'Show summary', exact: true });
+  await show.press('Enter');
+  await expect(card).toContainText('Wrigley asked for an independent audit.');
+  await expect(source).toHaveAttribute('href', hansard);
+  const details = card.getByRole('button', { name: 'Show record details', exact: true });
+  await expect(details).toBeFocused();
+  await details.press('Space');
+  await expect(show).toBeFocused();
+  const unsummarised = page.locator('.stage .result-row').filter({ hasText: 'Another contribution' });
+  await expect(unsummarised.getByRole('link', { name: 'Read in Hansard' })).toBeVisible();
+  await expect(unsummarised.getByRole('button', { name: 'Show summary' })).toHaveCount(0);
+});
+
 test('SMALL-E2E-04 renders exchange nodes as question-answer narrative and response timeline', async ({ page }) => {
   const params = new URLSearchParams({ bundle: BUNDLE_URL });
   await page.goto(`?${params.toString()}#exchange`);

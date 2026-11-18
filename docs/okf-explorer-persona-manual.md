@@ -245,6 +245,11 @@ Expected behaviour:
 - In Reader, the current record and the scope of the browse count are shown
   separately. Use **Copy link to this view** to share the view and selection
   of a hosted bundle.
+- Hansard cards show an editorial summary when the producer supplies one for
+  the exact contribution. **Read in Hansard** opens the official contribution
+  from either side of the card. In Timeline, contribution times, section
+  markers, sitting dates and capture dates have distinct labels. Within a
+  section, untimed contributions keep their source position.
 - **Back to start** returns to the loaded bundle's opening view. Use
   **Clear search and selections** to keep your view while clearing your
   exploration.
