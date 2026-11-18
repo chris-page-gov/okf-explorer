@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { LargeDataset, SearchResultDoc } from '$lib/types';
-  import { officialDocumentUrl, parseClml, readClmlBytes, type LegislationProvision } from './structure';
+  import { checkedSourceContentType, sourcePreviewHttpError, sourcePreviewRequestError } from '$lib/sources/fetch';
+  import { officialClmlExpressionUrl, officialClmlUrl, officialDocumentUrl, parseClml, readClmlBytes, type LegislationProvision } from './structure';
 
   let { record }: { record: Partial<LargeDataset & SearchResultDoc> } = $props();
   let provisions = $state<LegislationProvision[]>([]);
@@ -16,7 +17,8 @@
 
   const isLegislation = $derived(record.record_type === 'Legislation Work' || Boolean(record.legislation_id_uri));
   const documentUri = $derived(officialDocumentUrl(record.document_uri || record.url || ''));
-  const structureUrl = $derived(officialDocumentUrl(record.structure_url || (documentUri ? `${documentUri}/data.xml` : '')));
+  const structureUrl = $derived(officialClmlUrl(record));
+  const versionUri = $derived(officialClmlExpressionUrl(structureUrl));
   const manifestations = $derived(Object.entries(record.manifestations || {}).filter(([, url]) => /^https?:\/\//.test(url)));
   const visibleProvisions = $derived.by(() => {
     const query = filter.trim().toLowerCase();
@@ -44,15 +46,24 @@
     if (!structureUrl || loading) return;
     const requestedStructureUrl = structureUrl;
     const requestedDocumentUri = documentUri;
+    const passageDocumentUri = versionUri || requestedDocumentUri;
     const controller = new AbortController();
     loadController = controller;
     loading = true;
     error = '';
     try {
-      const response = await fetch(requestedStructureUrl, { headers: { Accept: 'application/xml, text/xml;q=0.9' }, signal: AbortSignal.any([controller.signal, AbortSignal.timeout(20_000)]), redirect: 'error', credentials: 'omit' });
-      if (!response.ok) throw new Error(`Official CLML request failed (${response.status})`);
-      const bytes = await readClmlBytes(response);
-      const parsed = parseClml(new TextDecoder('utf-8', { fatal: true }).decode(bytes), requestedDocumentUri);
+      const response = await fetch(requestedStructureUrl, {
+        headers: { Accept: 'application/xml, text/xml;q=0.9' },
+        signal: AbortSignal.any([controller.signal, AbortSignal.timeout(20_000)]),
+        redirect: 'error', credentials: 'omit'
+      }).catch(err => { throw sourcePreviewRequestError(err); });
+      if (!response.ok) throw sourcePreviewHttpError(response.status);
+      checkedSourceContentType(response, 'xml');
+      const bytes = await readClmlBytes(response).catch(err => { throw sourcePreviewRequestError(err); });
+      let xml: string;
+      try { xml = new TextDecoder('utf-8', { fatal: true }).decode(bytes); }
+      catch { throw new Error('The official XML could not be read as UTF-8. Open the original source to inspect it.'); }
+      const parsed = parseClml(xml, passageDocumentUri);
       const digest = await crypto.subtle.digest('SHA-256', new Uint8Array(bytes));
       if (loadController !== controller || requestedDocumentUri !== documentUri || requestedStructureUrl !== structureUrl) return;
       sourceBytes = bytes;
@@ -107,6 +118,7 @@
 
     <div class="law-actions">
       {#if documentUri}<a class="law-button" href={documentUri} target="_blank" rel="noopener">Open official work</a>{/if}
+      {#if versionUri && versionUri !== documentUri}<a class="law-button" href={versionUri} target="_blank" rel="noopener">Open this official version</a>{/if}
       {#if record.table_of_contents_url}<a class="law-button" href={record.table_of_contents_url} target="_blank" rel="noopener">Official contents</a>{/if}
       {#if record.effects_made_url}<a class="law-button" href={record.effects_made_url} target="_blank" rel="noopener">Changes made</a>{/if}
       {#if record.effects_received_url}<a class="law-button" href={record.effects_received_url} target="_blank" rel="noopener">Changes received</a>{/if}
@@ -125,11 +137,12 @@
 
     {#if !provisions.length}
       <button class="load-button" type="button" disabled={loading || !structureUrl} onclick={() => void loadStructure()}>
-        {loading ? 'Loading official CLML…' : 'Load every Part, Chapter, section, article and nested provision'}
+        {loading ? 'Loading official text…' : 'Explore official text'}
       </button>
-      <p class="progressive-note">Loaded on demand from legislation.gov.uk. Large source files have a stated limit; open the official CLML directly if it is reached.</p>
+      <p class="progressive-note">Load the Parts, Chapters, sections, articles and nested provisions from legislation.gov.uk.</p>
     {/if}
-    {#if error}<p class="error" role="alert">{error} <a href={structureUrl} target="_blank" rel="noopener">Open the official CLML directly</a>.</p>{/if}
+    {#if structureUrl}<p><a href={structureUrl} target="_blank" rel="noopener">Open official XML</a></p>{/if}
+    {#if error}<p class="error" role="alert">{error}</p>{/if}
 
     {#if provisions.length}
       <details><summary>Downloaded CLML source identity</summary><p>{sourceByteLength.toLocaleString()} bytes · SHA-256 <code>{sourceSha256}</code></p><button type="button" onclick={downloadClml}>Download captured CLML</button></details>

@@ -10,6 +10,16 @@ export const SEARCH_MANIFEST_LIMITS = Object.freeze({
   maxResultLimit: 500
 });
 
+export function supportsLegacyRecordTypeFacet(
+  manifest: LargeSearchManifest | null | undefined,
+  query: string
+): boolean {
+  return Boolean(
+    query.trim() && manifest?.schema === 'okf-static-search.v1'
+    && !manifest.query_policy && manifest.entrypoints.facets
+  );
+}
+
 export const POSTINGS_PARTITIONING_CONTRACT = Object.freeze({
   schema: 'okf-search-postings-partitioning.v1',
   algorithm: 'greedy-contiguous-token-range-exact-utf8-json-v1',

@@ -6,6 +6,7 @@ import type {
   LargeSourceAccess,
   LargeSourceDisplayMode
 } from '$lib/types';
+import { officialClmlUrl, officialDocumentUrl } from '$lib/legislation/structure';
 
 export type ResolvedLargeSourceAccess = LargeSourceAccess & {
   resourceId?: string;
@@ -13,6 +14,18 @@ export type ResolvedLargeSourceAccess = LargeSourceAccess & {
 };
 
 const DISPLAY_MODES = new Set<LargeSourceDisplayMode>(['link', 'json', 'xml', 'text']);
+type SourceFormat = Pick<LargeSourceAccess, 'label' | 'media_type' | 'display_mode'>;
+const XML: SourceFormat = { label: 'Source XML', media_type: 'application/xml', display_mode: 'xml' };
+const JSON_API: SourceFormat = { label: 'Source API', media_type: 'application/json', display_mode: 'json' };
+const LEGACY_FORMATS = new Map<string, SourceFormat>([
+  ['xml', XML],
+  ['clml', XML],
+  ['csv', { label: 'Source table', media_type: 'text/csv', display_mode: 'text' }],
+  ['tsv', { label: 'Source table', media_type: 'text/tab-separated-values', display_mode: 'text' }],
+  ['rdf', { label: 'Source document', media_type: 'application/rdf+xml', display_mode: 'link' }],
+  ['pdf', { label: 'Source document', media_type: 'application/pdf', display_mode: 'link' }],
+  ['html', { label: 'Source document', media_type: 'text/html', display_mode: 'link' }]
+]);
 
 function nonEmpty(value: unknown): value is string {
   return typeof value === 'string' && Boolean(value.trim());
@@ -87,15 +100,17 @@ export function sourceAccesses(dataset: LargeDataset, resources: LargeResource[]
   const deduplicated = new Map<string, ResolvedLargeSourceAccess>();
   for (const access of declared) deduplicated.set(`${access.display_mode}\u0000${access.url}`, access);
 
-  // Compatibility is intentionally JSON-only. A producer must publish a typed
-  // resource before Explorer will attempt to render XML or text.
   if (!deduplicated.size && nonEmpty(dataset.source_api_url) && httpUrl(dataset.source_api_url)) {
-    deduplicated.set(`json\u0000${dataset.source_api_url}`, {
-      url: dataset.source_api_url,
-      label: 'Source API',
-      media_type: 'application/json',
-      display_mode: 'json',
-      legacy: true
+    const url = new URL(dataset.source_api_url);
+    const legislative = dataset.record_type === 'Legislation Work' || Boolean(dataset.legislation_id_uri);
+    const structure = legislative ? officialClmlUrl(dataset) : '';
+    // The official legislation panel already renders this exact XML manifestation.
+    if (structure && officialDocumentUrl(url.href) === structure) return [];
+
+    const extension = url.pathname.match(/\.([a-z0-9]+)$/i)?.[1].toLowerCase() || '';
+    const format = LEGACY_FORMATS.get(extension) || JSON_API;
+    deduplicated.set(`${format.display_mode}\u0000${url.href}`, {
+      url: dataset.source_api_url, ...format, legacy: true
     });
   }
   return [...deduplicated.values()];

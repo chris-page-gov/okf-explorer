@@ -21,18 +21,15 @@ HERITAGE_EVALUATION = ROOT / "evaluation-foundry" / "fixtures" / "heritage-warwi
 SEARCH_FILTERING_MANUAL = ROOT / "docs" / "static-search-filtering-manual.md"
 SEARCH_FILTERING_ASSETS = ROOT / "docs" / "assets" / "okf-search-filtering-manual"
 HERITAGE_LOCAL_RECEIPT = HERITAGE_EVALUATION / "evidence" / "local-candidate-receipt.json"
+# The executed heritage results were retained in ff89db3e357d6a29c17f2d4660e7ce80f503a6c1.
+# A later evaluator change cannot change the identity of that execution.
+HERITAGE_RECORDED_EVALUATOR = {
+    "path": "scripts/evaluate_okf_explorer.mjs",
+    "sha256": "2dda10096ab2d0db7db037e8069186494a275d8c5cd5f9ce4dea5c446d8aee33",
+}
 
 
 class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
-    @staticmethod
-    def _evaluator_identity() -> dict[str, object]:
-        relative = "scripts/evaluate_okf_explorer.mjs"
-        raw = (ROOT / relative).read_bytes()
-        return {
-            "path": relative,
-            "sha256": hashlib.sha256(raw).hexdigest(),
-        }
-
     @staticmethod
     def _explorer_build_identity(base_url: str) -> dict[str, object]:
         manifest_path = (
@@ -378,7 +375,7 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
                 result["metadata"]["candidate_bundle_url"],
             )
             self.assertEqual(
-                self._evaluator_identity(),
+                HERITAGE_RECORDED_EVALUATOR,
                 result["metadata"]["evaluator"],
             )
             recorded_explorer_build = self._receipt_explorer_build_identity(
@@ -598,6 +595,30 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
             parsed["selected"],
         )
         self.assertEqual(["chromium", "firefox", "webkit"], parsed["calls"])
+
+    def test_default_relevance_is_effective_without_a_sort_parameter_or_control(self):
+        module_url = (ROOT / "scripts" / "evaluate_okf_explorer.mjs").as_uri()
+        program = f"""
+            import {{ evaluateJourneyAssertion }} from {json.dumps(module_url)};
+            const expectSort = {{ assertion: 'sort_value', value: 'relevance' }};
+            const evidence = {{ sortState: {{ value: 'relevance' }} }};
+            const probe = (query) => evaluateJourneyAssertion({{
+              url: () => `https://example.test/explore/?${{query}}`,
+              locator: () => ({{ first: () => ({{ count: async () => 0 }}) }})
+            }}, expectSort, evidence);
+            console.log(JSON.stringify([
+              await probe('q=Ordnance+Survey'), await probe('q=Ordnance+Survey&sort=title')
+            ]));
+        """
+        result = subprocess.run(
+            ["node", "--input-type=module", "--eval", program],
+            cwd=ROOT, check=True, capture_output=True, text=True,
+        )
+        canonical, explicit_other = json.loads(result.stdout)
+        self.assertTrue(canonical["passed"])
+        self.assertIsNone(canonical["actual"]["url"])
+        self.assertEqual("relevance", canonical["actual"]["effective"])
+        self.assertFalse(explicit_other["passed"])
 
     def test_evaluation_receipt_timestamp_matches_python_microsecond_rendering(self):
         module_url = (ROOT / "scripts" / "evaluate_okf_explorer.mjs").as_uri()

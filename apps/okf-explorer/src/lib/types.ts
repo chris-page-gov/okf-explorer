@@ -1168,6 +1168,9 @@ export type LargeSourceAccess = {
   label: string;
   media_type: string;
   display_mode: LargeSourceDisplayMode;
+  content_profile?: string;
+  representation_version?: string;
+  retrieval_mode?: 'live' | 'frozen';
 };
 
 export type LargeDataset = {
@@ -1273,6 +1276,8 @@ export type LargeDataset = {
   schema_org_type?: string;
   eli_class?: string;
   manifestations?: Record<string, string>;
+  /** A work may carry a bounded set of typed representations without a separate resource index. */
+  source_representations?: LargeResource[];
   effects_made_url?: string;
   effects_received_url?: string;
   [key: string]: unknown;
