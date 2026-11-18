@@ -9,6 +9,8 @@
 
 ## Unreleased — Explorer navigation
 
+- Keep long producer facet labels compact when folded, and count facet
+  membership in one pass so the full Hansard walkthrough remains responsive.
 - Restore local result browsing after unfolding a group. Clear the facet
   summary and its row height when the selection is cleared.
 

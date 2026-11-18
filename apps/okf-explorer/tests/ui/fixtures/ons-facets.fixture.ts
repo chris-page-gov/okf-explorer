@@ -548,6 +548,7 @@ export type OnsFacetFixtureOptions = {
   responseBytes?: number[];
   filterPaddingBytes?: number;
   skewedCounts?: boolean;
+  populationFacetLabel?: string;
 };
 
 async function json(route: Route, body: unknown, status = 200, responseBytes?: number[]) {
@@ -596,7 +597,12 @@ export async function installOnsFacetFixture(
           limitations: ['A mention is a discovery aid and does not establish applicability.'] }
       } : facet)
     } : analysis);
-    if (url.pathname === '/data/presentation.json') return respond(presentation);
+    if (url.pathname === '/data/presentation.json') return respond(options.populationFacetLabel ? {
+      ...presentation,
+      facets: presentation.facets.map(facet => facet.key === 'population_type'
+        ? { ...facet, label: options.populationFacetLabel }
+        : facet)
+    } : presentation);
     if (url.pathname === '/data/providers/manifest.json') return respond(providerDatapackManifest);
     if (url.pathname === '/data/providers/ons-explore-local-statistics.json') return respond(providerDatapack);
     if (url.pathname === '/data/facets.json') return respond(fixtureFacetRows);

@@ -44,7 +44,7 @@
         <button type="button" class="facet-toggle" aria-expanded={Boolean(facet.open)} aria-controls={`facet-values-${facet.key}`} onclick={() => onopen(facet.key)}>
           <span class="facet-disclosure" aria-hidden="true">{facet.open ? '▾' : '▸'}</span>
           <span class="facet-heading-label">
-            <strong>{facet.label}</strong>
+            <strong title={facet.label}>{facet.label}</strong>
             <span class="selection-summary" title={summary} hidden={!summary}>{summary}</span>
           </span>
           <small>{facet.rows.length} values</small>
@@ -121,7 +121,17 @@
   .facet-disclosure { flex:none; width:.8em; }
   .facet-toggle small { font-size:.7rem; white-space:nowrap; }
   .facet-heading-label { flex:1; display:grid; min-width:0; }
-  .facet-heading-label strong { line-height:18px; }
+  .facet-heading-label strong { line-height:18px; overflow-wrap:anywhere; }
+  .facet-section:not(.open) .facet-heading-label strong {
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:2;
+    line-clamp:2;
+  }
+  .facet-section:not(.open) .facet-heading-label:has(.selection-summary:not([hidden])) strong {
+    -webkit-line-clamp:1;
+    line-clamp:1;
+  }
   .facet-heading-label .selection-summary { min-width:0; height:12px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:11px; line-height:12px; font-weight:600; }
   .facet-header .facet-toggle { padding:3px 5px; }
   .bar-legend { font-size:.75rem; line-height:1.4; color:#243746; } .selection-word { font-size:.75rem; }

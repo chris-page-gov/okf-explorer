@@ -91,7 +91,9 @@ Expected behaviour:
 - If the facet needs full record hydration, it should show a loading state in
   the facet body and then show values without requiring a second click.
 - Only the open facet renders its values. Closed facets show counts and any
-  current selection. Clearing a selection leaves its controls in place.
+  current selection. Long labels take up at most two lines while folded.
+  Open the facet to read the full label. Clearing a selection leaves its
+  controls in place.
 - High-cardinality facets expose an in-facet search box and paged values.
 - A plain click on a strip segment or value toggles its highlight. The URL
   retains the shared selection. Ctrl-click or Cmd-click enables multiple values.
