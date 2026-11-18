@@ -77,3 +77,46 @@ test('the PROV-O example keeps source assertions and the inferred subclass disti
   await details.getByRole('button', { name: 'Inspect ' + support[0] }).click();
   await expect(details.locator('a[href="https://www.w3.org/TR/2013/REC-prov-o-20130430/#Revision"]')).toBeVisible();
 });
+
+test('the published PROV-O hierarchy preserves declared edges, scope and source routes', async ({ page, baseURL }) => {
+  const root = new URL('.', baseURL);
+  const descriptor = new URL('profile/bounded-inference/v1/ontology/okf-explorer.json', root);
+  const ontology = new URL('ontology/', root);
+  ontology.searchParams.set('bundle', descriptor.href);
+  await page.goto(ontology.href);
+  const results = page.getByRole('region', { name: 'Matching ontology terms' });
+  await expect(results).toContainText('6 matching terms');
+  await page.getByRole('link', { name: 'Classes', exact: true }).press('Enter');
+  await expect(results).toContainText('3 matching terms');
+  await results.getByRole('link', { name: 'EntityInfluence', exact: true }).press('Enter');
+  await page.getByRole('link', { name: 'Filter results to all direct children' }).press('Enter');
+  await expect(results).toContainText('1 matching term');
+  await expect(results.getByRole('link', { name: 'Derivation', exact: true })).toBeVisible();
+  await page.getByRole('link', { name: 'Include nested children' }).press('Enter');
+  await expect(results).toContainText('2 matching terms');
+  await results.getByRole('link', { name: 'Revision', exact: true }).press('Enter');
+  const revision = page.getByRole('article', { name: 'Revision' });
+  await expect(revision.getByText('Superclass', { exact: false })).toContainText('Derivation');
+  await expect(revision.getByRole('link', { name: 'EntityInfluence', exact: true })).toHaveCount(0);
+  const shared = page.url();
+  await page.reload();
+  await expect(page).toHaveURL(shared);
+  await expect(revision).toBeVisible();
+  await revision.getByRole('link', { name: 'Open term record in Explorer' }).press('Enter');
+  await expect(page).toHaveURL(/#dataset(?:\/|%2F)Revision$/);
+  const source = 'https://www.w3.org/TR/2013/REC-prov-o-20130430/#Revision';
+  await expect(page.locator(`a[href="${source}"]`).first()).toBeVisible();
+  await page.getByRole('link', { name: 'Inspect ontology term', exact: true }).press('Enter');
+  await expect(revision).toBeVisible();
+
+  await page.getByRole('link', { name: 'Properties', exact: true }).press('Enter');
+  await expect(results).toContainText('3 matching terms');
+  await results.getByRole('link', { name: 'wasRevisionOf', exact: true }).press('Enter');
+  const property = page.getByRole('article', { name: 'wasRevisionOf' });
+  await expect(property.getByText('Superproperty', { exact: false })).toContainText('wasDerivedFrom');
+  await expect(property.getByRole('link', { name: 'wasInfluencedBy', exact: true })).toHaveCount(0);
+  await property.getByRole('link', { name: 'wasDerivedFrom', exact: true }).press('Enter');
+  await expect(page.getByRole('article', { name: 'wasDerivedFrom' }).getByRole('link', {
+    name: 'wasInfluencedBy', exact: true
+  })).toBeVisible();
+});

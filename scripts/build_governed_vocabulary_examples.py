@@ -23,6 +23,24 @@ def binding(path: str, body: bytes) -> dict:
     return {"path": path, "bytes": len(body), "sha256": sha256(body).hexdigest()}
 
 
+def reader_files(title: str, index: dict, records: list[dict], relationships: list[dict]) -> tuple[dict, dict]:
+    routes = {record["id"]: f"dataset/{record['name']}" for record in records}
+    for term in index["terms"]:
+        term["route"] = routes[term["id"]]
+    counts = {"records": len(records), "datasets": len(records), "resources": 0, "relationships": len(relationships)}
+    return counts, {
+        "data/records.json": canonical_json(records),
+        "data/relationships.json": canonical_json(relationships),
+        "data/overview.json": canonical_json({"title": title, "counts": counts, "recent_datasets": records}),
+        "data/manifest.json": canonical_json({
+            "title": title, "counts": counts, "indexes": {"overview": "data/overview.json"},
+            "chunks": {"datasets": ["data/records.json"], "relationships": ["data/relationships.json"],
+                       "publishers": [], "resources": []},
+        }),
+        "data/ontology.json": canonical_json(index),
+    }
+
+
 def example(graph: Graph, shapes: bytes, *, missing_label: bool) -> dict[str, bytes]:
     csv = URIRef(PUBLIC + "#csv")
     label = graph.value(csv, SKOS.prefLabel, any=False)
@@ -46,29 +64,18 @@ def example(graph: Graph, shapes: bytes, *, missing_label: bool) -> dict[str, by
         for term in index["terms"]
     ]
     routes = {record["id"]: f"dataset/{record['name']}" for record in records}
-    for term in index["terms"]:
-        term["route"] = routes[term["id"]]
     relationships = [
         {"source": routes[edge["from"]], "target": routes[edge["to"]], "source_iri": edge["from"],
          "target_iri": edge["to"], "predicate": edge["predicate"], "kind": "belongs to concept scheme",
          "assertion_status": "normalized", "authority": "derived"}
         for edge in index["relationships"]
     ]
-    counts = {"records": len(records), "datasets": len(records), "resources": 0, "relationships": len(relationships)}
-    files = {
-        "data/records.json": canonical_json(records),
-        "data/relationships.json": canonical_json(relationships),
-        "data/overview.json": canonical_json({"title": title, "counts": counts, "recent_datasets": records}),
-        "data/manifest.json": canonical_json({
-            "title": title, "counts": counts, "indexes": {"overview": "data/overview.json"},
-            "chunks": {"datasets": ["data/records.json"], "relationships": ["data/relationships.json"],
-                       "publishers": [], "resources": []},
-        }),
-        "data/ontology.json": canonical_json(index),
+    counts, files = reader_files(title, index, records, relationships)
+    files.update({
         "data/shacl.json": canonical_json(report),
         "source.nt": raw,
         "validation-report.nt": canonical_report(report),
-    }
+    })
     example = "missing-csv-label" if missing_label else "vocabulary"
     example_url = PUBLIC + f"examples/{example}/"
     report_url = example_url + "validation-report.nt"

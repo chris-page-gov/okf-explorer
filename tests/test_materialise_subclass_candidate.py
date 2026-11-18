@@ -1,3 +1,5 @@
+from datetime import datetime, timezone
+from hashlib import sha256
 import json
 from pathlib import Path
 import sys
@@ -26,6 +28,23 @@ def assertion(identifier: str, source: str, target: str, **fields) -> dict[str, 
 
 
 class MaterialiseSubclassCandidateTest(unittest.TestCase):
+    def test_optional_execution_evidence_binds_times_agent_configuration_and_output(self):
+        source = [assertion("a", "A", "B"), assertion("b", "B", "C")]
+        raw = json.dumps(source).encode()
+        result = candidate.materialise(source, enabled=True)
+        start = datetime(2026, 11, 18, 19, 30, tzinfo=timezone.utc)
+        end = start.replace(second=1)
+        evidence = candidate.execution_provenance(raw, result, start, end)
+        graph = Graph().parse(data=json.dumps(evidence), format="json-ld")
+        activity, = graph.subjects(RDF.type, PROV.Activity)
+        self.assertIn((activity, PROV.wasAssociatedWith, URIRef(candidate.SOFTWARE)), graph)
+        self.assertIn((activity, PROV.used, URIRef(f"urn:okf:sha256:{sha256(raw).hexdigest()}")), graph)
+        expected_output = sha256(candidate.canonical_json(result)).hexdigest()
+        self.assertIn((URIRef(f"urn:okf:sha256:{expected_output}"), PROV.wasGeneratedBy, activity), graph)
+        self.assertEqual(next(graph.objects(activity, PROV.endedAtTime)).toPython(), end)
+        with self.assertRaisesRegex(ValueError, "ordered timestamps"):
+            candidate.execution_provenance(raw, result, end, start)
+
     def test_reader_example_matches_materialised_assertions(self):
         for name, body in example().items():
             with self.subTest(path=name):

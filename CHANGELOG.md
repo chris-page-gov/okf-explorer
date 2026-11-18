@@ -19,6 +19,12 @@
   when the matching build and deployment jobs are supplied.
 - Link the vocabulary examples to their exported quality measurements
   and exact source SHACL reports from the Explorer.
+- Add a PROV-O class and property navigation example with the source
+  declarations, scoped filters and reversible Reader links.
+- Record optional timed PROV evidence for a real bounded enrichment run.
+  Preserve the deterministic result for users who reproduce the derivation.
+- Keep the rank snapshot replay bounded and isolate fixture mutations to
+  the rendered result rows.
 
 ## Unreleased — semantic foundations
 

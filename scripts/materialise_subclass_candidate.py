@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 from collections import defaultdict, deque
+from datetime import datetime, timezone
 from hashlib import sha256
 import json
 from pathlib import Path
@@ -17,6 +18,8 @@ else:
 RULE = "urn:okf:rule:subclass-transitive:v1"
 SUBCLASS = "http://www.w3.org/2000/01/rdf-schema#subClassOf"
 PROV = "http://www.w3.org/ns/prov#"
+XSD_DATETIME = "http://www.w3.org/2001/XMLSchema#dateTime"
+SOFTWARE = "urn:okf:software:subclass-materialiser:v1"
 MAX_ASSERTIONS = 2048
 MAX_VISITS = 20_000
 MAX_SUPPORT_REFERENCES = 50_000
@@ -144,18 +147,60 @@ def materialise(assertions: list[dict[str, str]], *, enabled: bool) -> dict[str,
     return output
 
 
+def execution_provenance(
+    raw: bytes, result: dict[str, object], started_at: datetime, ended_at: datetime,
+) -> dict[str, list[dict]]:
+    logical_activity = result["activity"]
+    if (
+        not logical_activity
+        or any(time.utcoffset() is None for time in (started_at, ended_at))
+        or ended_at < started_at
+    ):
+        raise ValueError("Execution evidence requires enabled inference and ordered timestamps with time zones")
+    start, end = started_at.isoformat(), ended_at.isoformat()
+    source = f"urn:okf:sha256:{sha256(raw).hexdigest()}"
+    output = f"urn:okf:sha256:{sha256(canonical_json(result)).hexdigest()}"
+    identity = sha256(canonical_json([source, output, SOFTWARE, start, end])).hexdigest()
+    execution = f"urn:okf:enrichment-execution:{identity}"
+    return {"@graph": [
+        {"@id": source, "@type": f"{PROV}Entity"},
+        {"@id": output, "@type": f"{PROV}Entity", f"{PROV}wasGeneratedBy": {"@id": execution}},
+        {"@id": SOFTWARE, "@type": f"{PROV}SoftwareAgent"},
+        {
+            "@id": execution, "@type": f"{PROV}Activity",
+            f"{PROV}used": {"@id": source},
+            f"{PROV}wasAssociatedWith": {"@id": SOFTWARE},
+            "http://www.w3.org/2000/01/rdf-schema#seeAlso": {"@id": logical_activity},
+            f"{PROV}startedAtTime": {"@value": start, "@type": XSD_DATETIME},
+            f"{PROV}endedAtTime": {"@value": end, "@type": XSD_DATETIME},
+            f"{PROV}qualifiedAssociation": {
+                "@type": f"{PROV}Association",
+                f"{PROV}agent": {"@id": SOFTWARE},
+                f"{PROV}hadPlan": {"@id": RULE},
+            },
+        },
+    ]}
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--assertions", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--enable-subclass-transitivity", action="store_true")
+    parser.add_argument("--record-execution", action="store_true",
+                        help="Append observed provenance for this enrichment run")
     args = parser.parse_args()
+    if args.record_execution and not args.enable_subclass_transitivity:
+        parser.error("Recording enrichment execution requires enabled subclass inference")
     with args.assertions.open("rb") as stream:
         raw = stream.read(MAX_INPUT_BYTES + 1)
     if len(raw) > MAX_INPUT_BYTES:
         parser.error("Assertion input exceeds 2 MiB")
     try:
+        started_at = datetime.now(timezone.utc) if args.record_execution else None
         result = materialise(json.loads(raw), enabled=args.enable_subclass_transitivity)
+        if started_at is not None:
+            result["execution_provenance"] = execution_provenance(raw, result, started_at, datetime.now(timezone.utc))
         with args.output.open("xb") as stream:
             stream.write(canonical_json(result))
     except (KeyError, OSError, TypeError, ValueError) as error:

@@ -41,7 +41,7 @@ inference. See the [consumer and authoring contract](okf-0.2-yaml-ld-semantic-au
 | #50 | Pinned SHACL Core, stable findings, filters, remediation and source links | Check both published examples and the finding-to-source round trip | SHACL 1.2 experiments and ontology consistency assessment have separate scope |
 | #51 | Bounded subclass materialisation, supporting assertions, derivation activities and status counts. The PROV-O example retains two source assertions and one separate inference. | Verify the published comparison and a reviewed producer rule application | Additional rules need their own bounded evaluation |
 | #52 | Class, property and SKOS navigation, scoped hierarchy search, mapping filters, shared URLs and explicit record links | Record representative discovery and ontology-engineering tasks against the published build | Hierarchy expansion of bundle record search needs separate policy and evidence |
-| #54 | DCAT-AP, OpenAPI, DQV and Site activity exporters with deterministic checks. Site provenance covers validation, assembly, deployment and live verification. | Link production export artefacts to source records and retain independent review evidence | Further standards profiles need versioned input contracts |
+| #54 | DCAT-AP, OpenAPI and DQV exporters bind source evidence. PROV records Site validation, assembly, deployment, live verification and bounded enrichment. | Verify the published export links and retain the exact source, conformance and activity evidence | Publisher adoption, independent review activities and further standards profiles have their own release evidence |
 
 Keep #54 as one integration issue while the four exporters share source
 identity, validation and provenance evidence in the same release. Production
@@ -181,6 +181,14 @@ activity for the same inferred statement. [Source-only bundle](../profiles/bound
 Reproduce and check the example with
 `uv run --locked python -m scripts.build_subclass_inference_example --check`.
 
+For an observed enrichment run, add `--record-execution` to the
+materialisation command alongside `--enable-subclass-transitivity`.
+The additional PROV graph records real start and end times, the versioned
+software agent and its rule plan, and the exact input and deterministic
+result digests. The result digest covers the canonical output before the
+execution graph is attached. Use the default command for byte-for-byte
+reproduction of the logical derivation.
+
 ## Candidate ontology navigation index
 
 `scripts/build_ontology_navigation_index.py` projects explicitly declared
@@ -200,6 +208,21 @@ filters and selection in the URL and links to the bundle's validation and
 assertion-status views. The governed vocabulary example links the exact Reader
 record and ontology term in both directions. Published producer adoption and
 task-based evaluation remain open.
+
+Use the [class and property example](../profiles/bounded-inference/v1/ontology/okf-explorer.json)
+to trace six PROV-O terms and four direct hierarchy statements back to
+the dated W3C Recommendation. For a class task, open EntityInfluence,
+filter to direct children and then include nested children. Revision appears
+under Derivation. Its own record retains Derivation as the declared
+superclass and links to the source statement. For a property task, trace
+wasRevisionOf through wasDerivedFrom to wasInfluencedBy. The view retains
+the exact predicate direction and returns from the term record to Ontology.
+The published example contains the selected declarations and their source
+links. [W3C encoding](https://www.w3.org/ns/prov-o)
+
+The shared browser assurance suite checks that a rerender cannot mix ranking
+epochs in one observed result set. Its fixture schedules mutations only when
+the ranked rows are read and reports the stage if the run fails.
 
 ## Independent work
 
