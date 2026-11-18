@@ -10,6 +10,10 @@
 - Inventory and classify the guide's public source links and example
   identifiers. Record redirects, page titles and response evidence in a
   separate source audit. Link to the current ONS profile for the Coventry code.
+- Bind the release audit to the deployed commit, exact browser observations,
+  source inventory and a manual assessment of every chapter.
+- Exercise atomic rank observations against a rerender triggered by the first
+  attribute read in the browser fixture.
 - Compare the verified passages before and after an edited correction in
   the Evidence workbench. Record retained, retired and introduced unit IDs
   within the reviewed case.
