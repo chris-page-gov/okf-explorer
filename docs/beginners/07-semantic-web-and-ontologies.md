@@ -154,6 +154,10 @@ a different layer.
 Simple Knowledge Organization System, or **SKOS**, is intended for thesauri,
 taxonomies and controlled [concept schemes](16-beginner-glossary.md#concept-scheme).
 
+The [Explorer vocabulary candidate](../../profiles/governed-vocabulary/v1/index.md)
+shows separately versioned topic, format and licence schemes with stable
+concept identifiers and pinned vocabulary bytes.
+
 Useful terms include:
 
 - preferred, alternative and hidden labels;

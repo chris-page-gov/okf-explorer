@@ -1,5 +1,18 @@
 # Changelog
 
+## Unreleased — semantic foundations
+
+- Reconcile the semantic roadmap with the frozen OKF 0.2 profile and record
+  the acceptance work for each planned view.
+- Publish candidate topic, format and licence schemes with stable concept
+  identifiers and a checked SKOS vocabulary digest.
+- Export exact Site assembly provenance as deterministic PROV-O triples.
+- Derive stable finding IDs from bounded SHACL Core reports.
+- Add an opt-in subclass inference candidate with explicit supporting
+  assertions and fixed processing limits.
+- Index declared ontology hierarchies and SKOS mappings with the source
+  digest and the original mapping strength.
+
 ## Unreleased — Explorer presentation
 
 - Offer an explicit offline save for small published boundary maps. Verify
