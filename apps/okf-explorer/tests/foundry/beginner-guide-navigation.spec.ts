@@ -267,3 +267,19 @@ test('a 200 per cent reflow viewport and reduced motion remain usable', async ({
   expect(layout.pinDisplay).toBe('none');
   await expect(page.locator('.guide-sidebar li').last()).toBeVisible();
 });
+
+test('a keyboard focus indicator contrasts with both guide surfaces', async ({ page, browserName }) => {
+  await page.goto(indexRoute);
+  await page.keyboard.press(browserName === 'webkit' && process.platform === 'darwin' ? 'Alt+Tab' : 'Tab');
+  const skip = page.getByRole('link', { name: 'Skip to the guide' });
+  await expect(skip).toBeFocused();
+  await skip.press('Enter');
+  const main = page.locator('#main-content');
+  await expect(main).toBeFocused();
+  await expect(main).toHaveCSS('outline-color', 'rgb(17, 17, 17)');
+  await expect(main).toHaveCSS('outline-width', '2px');
+  await expect(main).toHaveCSS('box-shadow', 'rgb(255, 191, 71) 0px 0px 0px 4px');
+  await page.emulateMedia({ forcedColors: 'active' });
+  await expect(main).toHaveCSS('outline-style', 'solid');
+  await expect(main).toHaveCSS('outline-width', '2px');
+});

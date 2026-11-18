@@ -7,6 +7,8 @@ manual checks of full keyboard order, focus visibility,
 reflow, touch, reduced motion and sidebar behaviour alongside those results.
 The suite opens each chapter in a fresh tab so the browser applies its normal
 navigation limits separately to each chapter's fragment history.
+Check the dark and yellow focus bands against their adjacent surfaces and
+check that an outline remains visible in forced colours.
 
 Build the source inventory from the same Site’s `cross-references.json` and
 chapter HTML. The inventory covers external links and HTTP identifiers in
