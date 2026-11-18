@@ -403,6 +403,18 @@ Expected behaviour:
 
 ## Other UI Behaviours
 
+### Explorer theme
+
+In the Explorer header, choose **System**, **Light** or **Dark**. System
+uses your device's current appearance. The browser remembers an explicit
+choice on that device. You can return to System at any time. The printed
+Explorer uses the light palette.
+
+The initial theme candidate covers the Explorer shell, its shared controls,
+graph labels and the locator map. Per-view contrast, user-defined graph
+colours, forced-colours behaviour and full browser acceptance remain part
+of [the theme issue](https://github.com/chris-page-gov/okf-explorer/issues/53).
+
 | Behaviour | Expected result |
 |-----------|-----------------|
 | Bundle URL field | Paste a public HTTPS bundle or descriptor URL, click Load, or use a recent/suggested URL. Suggestions close when focus moves away. |

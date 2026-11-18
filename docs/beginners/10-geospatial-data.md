@@ -294,6 +294,9 @@ so the builder retains the exact source metadata and bytes.
 
 ### Use the right detail for the scale
 
+The [boundary-pack manifest candidate](../../profiles/geospatial-boundary-pack/v1/index.md)
+defines the proposed sidecar metadata and its source and digest requirements.
+
 One shape is rarely suitable at every scale. At a UK-wide zoom, a carefully
 generalised boundary usually looks better and transfers faster than an exact
 polygon containing thousands of points. At a local zoom, the Explorer can

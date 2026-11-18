@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased — Explorer presentation
+
+- Add a system, light and dark appearance setting to the Explorer. Remember
+  an explicit choice and use the light palette for print.
+- Label the schematic outlines in the locator map as orientation aids.
+- Define a candidate manifest for governed boundary packs with two levels of
+  detail, exact file identities and source attribution.
+
 ## Unreleased — beginner life-course example
 
 - Follow a fictional person through ten public-service events in England.
