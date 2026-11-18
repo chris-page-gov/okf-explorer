@@ -56,6 +56,8 @@
 
 - Keep a high-contrast dotted keyboard focus indicator on Graph edges in
   both colour schemes.
+- Outline guide keyboard focus with dark and yellow bands. Keep an outline
+  available in forced colours.
 
 - Offer an explicit offline save for small published boundary maps. Verify
   the selected Explorer shell, both geometry levels and the map's record data
