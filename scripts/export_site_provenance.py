@@ -3,12 +3,13 @@
 from __future__ import annotations
 
 import argparse
+from datetime import datetime
 from hashlib import sha256
 import json
 from pathlib import Path
 import re
 
-from rdflib import Graph, PROV, RDF, URIRef
+from rdflib import Graph, Literal, PROV, RDF, URIRef, XSD
 
 
 REPOSITORY = "https://github.com/chris-page-gov/okf-explorer"
@@ -21,7 +22,9 @@ def artifact(digest: str) -> URIRef:
     return URIRef(f"urn:okf:sha256:{digest}")
 
 
-def export_site_provenance(receipt_bytes: bytes, identity_bytes: bytes) -> bytes:
+def export_site_provenance(
+    receipt_bytes: bytes, identity_bytes: bytes, verification_bytes: bytes | None = None
+) -> bytes:
     receipt = json.loads(receipt_bytes)
     identity = json.loads(identity_bytes)
     if (
@@ -67,8 +70,50 @@ def export_site_provenance(receipt_bytes: bytes, identity_bytes: bytes) -> bytes
     graph.add((site_identity, PROV.wasGeneratedBy, activity))
     for entity in (source, configuration, app, site, site_identity):
         graph.add((entity, RDF.type, PROV.Entity))
+    if verification_bytes is not None:
+        add_verification(graph, verification_bytes, binding, configuration, site_identity, commit)
     statements = sorted(graph.serialize(format="nt").splitlines())
     return ("\n".join(statements) + "\n").encode("utf-8")
+
+
+def add_verification(
+    graph: Graph, raw: bytes, binding: dict, configuration: URIRef, site_identity: URIRef, commit: str
+) -> None:
+    verification = json.loads(raw)
+    if not isinstance(verification, dict):
+        raise ValueError("Expected a live verification receipt")
+    observed = verification.get("deployed_identity", {})
+    contract = verification.get("deployed_contract", {})
+    browser = verification.get("browser", {})
+    if (
+        verification.get("schema") != "okf-live-deployment-verification-receipt.v1"
+        or verification.get("repository", {}).get("url") != REPOSITORY
+        or verification.get("expected_commit") != commit
+        or verification.get("candidate_identity") != binding
+        or observed.get("commit") != commit
+        or observed.get("sha256") != binding["sha256"]
+        or artifact(contract.get("sha256")) != configuration
+        or verification.get("result") != "passed"
+        or browser.get("console_policy") != "no-errors"
+        or browser.get("console_errors") != []
+        or browser.get("page_errors") != []
+    ):
+        raise ValueError("Live verification does not match the exact candidate")
+    when = datetime.fromisoformat(verification["observed_at"])
+    if when.utcoffset() is None:
+        raise ValueError("Live verification requires an observation time with a time zone")
+    digest = sha256(raw).hexdigest()
+    activity = URIRef(f"urn:okf:site-verification:{digest}")
+    receipt = artifact(digest)
+    verifier = URIRef(f"{REPOSITORY}/blob/{commit}/apps/okf-explorer/scripts/verify_okf_deployment.mjs")
+    graph.add((activity, RDF.type, PROV.Activity))
+    graph.add((verifier, RDF.type, PROV.SoftwareAgent))
+    graph.add((activity, PROV.wasAssociatedWith, verifier))
+    graph.add((activity, PROV.used, configuration))
+    graph.add((activity, PROV.used, site_identity))
+    graph.add((receipt, RDF.type, PROV.Entity))
+    graph.add((receipt, PROV.wasGeneratedBy, activity))
+    graph.add((receipt, PROV.generatedAtTime, Literal(when, datatype=XSD.dateTime)))
 
 
 def read_evidence(path: Path) -> bytes:
@@ -83,10 +128,12 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--receipt", type=Path, required=True)
     parser.add_argument("--identity", type=Path, required=True)
+    parser.add_argument("--live-verification", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     try:
-        content = export_site_provenance(read_evidence(args.receipt), read_evidence(args.identity))
+        verification = read_evidence(args.live_verification) if args.live_verification else None
+        content = export_site_provenance(read_evidence(args.receipt), read_evidence(args.identity), verification)
         with args.output.open("xb") as stream:
             stream.write(content)
     except (AttributeError, KeyError, OSError, TypeError, ValueError) as error:

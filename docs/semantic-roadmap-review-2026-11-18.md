@@ -31,7 +31,22 @@ inference. See the [consumer and authoring contract](okf-0.2-yaml-ld-semantic-au
 | [#50 Validation and remediation](https://github.com/chris-page-gov/okf-explorer/issues/50) | Builder and profile checks can validate structure and policy. Producers may run versioned SHACL conformance separately. | Define stable findings and publish deterministic reports from pinned shapes. Add a validation view with severity, focus node, path, source and remediation. Test a round trip between findings and records, including multi-bundle findings. Retain SHACL 1.2 experiments as their own work. |
 | [#51 Bounded inference](https://github.com/chris-page-gov/okf-explorer/issues/51) | Assertion records have a status and derivation fields. Existing views preserve and display selected assertion evidence. | Implement an explicit allowlist of bounded rules with deterministic positive, negative, cycle and budget checks. Materialise results in the builder with supporting assertion IDs and a derivation activity. Add status filters, counts and a keyboard-accessible comparison in Explorer. |
 | [#52 Ontology navigation](https://github.com/chris-page-gov/okf-explorer/issues/52) | The Graph supports a predicate-aware neighbourhood, grouping and inspection for authored input. Existing faceting and grouping help users navigate records. | Add coordinated class, property and SKOS views with stable URLs, qualified hierarchy-aware search and reversible source navigation. Preserve mapping strength and consume the report, inference and provenance contracts. Evaluate supported discovery and ontology-engineering tasks, including keyboard and list alternatives. |
-| [#54 Standards and activity exports](https://github.com/chris-page-gov/okf-explorer/issues/54) | The standards crosswalk supplies mappings and limitations. Existing build receipts bind important inputs and outputs. | Keep #54 as the integration tracker. Deliver separate focused pull requests for DCAT-AP, OpenAPI, DQV and PROV. Each needs a versioned mapping, deterministic goldens, conformance checks and source navigation. The OpenAPI increment must retain parsed locations. The PROV increment must bind build and review activity without exposing secret material. |
+| [#54 Standards and activity exports](https://github.com/chris-page-gov/okf-explorer/issues/54) | The standards crosswalk supplies mappings and limitations. Existing build receipts bind important inputs and outputs. | Each exporter needs a versioned mapping, deterministic fixtures, conformance checks and source navigation. OpenAPI retains parsed locations. PROV binds reviewed inputs and activities. |
+
+### Acceptance to carry into the release
+
+| Issue | Staged implementation | Release evidence still needed | Deferred scope |
+| --- | --- | --- | --- |
+| #49 | Three SKOS schemes, explicit mappings, registry and Reader example | Check the deployed term resolver, sample descriptor and label-only compatibility | Further public-sector terms follow reviewed revisions |
+| #50 | Pinned SHACL Core, stable findings, filters, remediation and source links | Check both published examples and the finding-to-source round trip | SHACL 1.2 experiments and ontology consistency assessment have separate scope |
+| #51 | Bounded subclass materialisation, supporting assertions, derivation activities and status counts | Verify the published comparison and a reviewed producer rule application | Additional rules need their own bounded evaluation |
+| #52 | Class, property and SKOS navigation, mapping filters, shared URLs and explicit record links | Record representative discovery and ontology-engineering tasks against the published build | Additional hierarchy-driven retrieval needs separate policy and evidence |
+| #54 | DCAT-AP, OpenAPI, DQV and Site activity exporters with deterministic checks | Link production export artefacts to source records and bind build, review and deployment activity | Further standards profiles need versioned input contracts |
+
+Keep #54 as one integration issue while the four exporters share source
+identity, validation and provenance evidence in the same release. Production
+producer adapters can be verified independently as their input contracts are
+ready.
 
 Begin with **#49 → #50 → #51 → #52**. Build and review the PROV part of
 **#54** alongside the validation finding contract. Agree activity identifiers
@@ -51,10 +66,11 @@ request, tests and exact release evidence before updating the
 its exact publication identity into deterministic N-Triples. The graph links
 the assembly activity to the recorded source commit and publication
 configuration, the build script and Explorer manifest, and the generated Site
-tree and identity. It keeps only allowlisted identities. Assembly times are
-absent from these inputs, so the graph leaves them unspecified. This is a
-local candidate export. It supplies no deployment, validation or enrichment
-activity. [PROV-O Recommendation](https://www.w3.org/TR/prov-o/)
+tree and identity. The graph leaves assembly times unspecified. An optional
+`--live-verification` receipt adds the exact browser verification activity,
+its verifier, the candidate inputs and the recorded observation time.
+Deployment, validation and enrichment activities need their respective
+source evidence. [PROV-O Recommendation](https://www.w3.org/TR/prov-o/)
 
 ```sh
 uv run --locked python scripts/export_site_provenance.py \
@@ -153,8 +169,9 @@ view to search labels, choose a term kind, follow declared parents and
 children, and filter the results to direct children. Mapping filters
 preserve the recorded predicate and strength. The view records its search,
 filters and selection in the URL and links to the bundle's validation and
-assertion-status views. Producer adoption, navigation from source instances,
-and task-based evaluation remain open.
+assertion-status views. The governed vocabulary example links the exact Reader
+record and ontology term in both directions. Published producer adoption and
+task-based evaluation remain open.
 
 ## Independent work
 

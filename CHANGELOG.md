@@ -4,6 +4,8 @@
 
 - Stage a vocabulary Reader example and a separate missing-label exercise
   with reproducible Ontology, SHACL and Data Quality Vocabulary exports.
+- Record the staged semantic work and its remaining release acceptance.
+- Add exact live browser verification receipts to the Site provenance export.
 
 ## Unreleased — semantic foundations
 
