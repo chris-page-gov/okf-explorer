@@ -216,6 +216,7 @@
     timelineBucketFacetFilter
   } from '$lib/viewer/helpers';
   import '../styles.css';
+  import { applyExplorerTheme, readExplorerTheme, type ExplorerTheme } from '$lib/viewer/theme';
 
   const DEFAULT_BUNDLE = 'https://chris-page-gov.github.io/okf-ai-infrastructure/okf-bundle.json';
   const DEFAULT_REGISTRY = '../okf-registry.json';
@@ -945,7 +946,11 @@
     return 10;
   }
 
+  let explorerTheme = $state<ExplorerTheme>('system');
+
   onMount(() => {
+    explorerTheme = readExplorerTheme();
+    document.documentElement.dataset.explorerTheme = explorerTheme;
     void initialize();
     window.addEventListener('popstate', applyBrowserRoute);
     window.addEventListener('pointerdown', closeBundleSuggestionsOnPointerDown);
@@ -954,6 +959,7 @@
       if (activeView === 'graph' && !graphLabelsPaused) graphLabelPhase = (graphLabelPhase + 1) % 100000;
     }, 2000);
     return () => {
+      delete document.documentElement.dataset.explorerTheme;
       loadRequest += 1;
       largeSearchRequest += 1;
       window.removeEventListener('popstate', applyBrowserRoute);
@@ -6648,6 +6654,17 @@
       <p>{source?.kind === 'large' ? source.descriptor.title : source?.kind === 'small' ? source.corpus.title : 'No bundle loaded'}</p>
       <a class="changes-link" href="https://github.com/chris-page-gov/okf-explorer/blob/main/CHANGELOG.md" target="_blank" rel="noopener noreferrer">Explorer changes</a>
       <a class="changes-link" href="../evidence/">Evidence workbench</a>
+      <label class="theme-choice">
+        Theme
+        <select value={explorerTheme} onchange={(event) => {
+          explorerTheme = event.currentTarget.value as ExplorerTheme;
+          applyExplorerTheme(explorerTheme);
+        }}>
+          <option value="system">System</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </label>
       {#if relatedDescriptorLinks.length}
         <nav class="descriptor-related-links" aria-label="Related material">
           {#each relatedDescriptorLinks as link}
@@ -6658,7 +6675,7 @@
     </div>
     <nav class="tabs" aria-label="Views">
       {#each VIEW_MODES as view}
-        <button class:active={activeView === view.id} type="button" onclick={() => void selectView(view.id)}>{view.label}</button>
+        <button class:active={activeView === view.id} aria-pressed={activeView === view.id} type="button" onclick={() => void selectView(view.id)}>{view.label}</button>
       {/each}
     </nav>
     <form class="bundle-form" onsubmit={(event) => { event.preventDefault(); void openBundle(bundleInputUrl); }}>
@@ -7490,10 +7507,10 @@
               >
                 <defs>
                   <marker id="graph-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="userSpaceOnUse">
-                    <path d="M 0 0 L 8 4 L 0 8 z" fill="#9aaaba"></path>
+                    <path class="edge-arrow" d="M 0 0 L 8 4 L 0 8 z"></path>
                   </marker>
                   <marker id="graph-arrow-highlight" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="userSpaceOnUse">
-                    <path d="M 0 0 L 8 4 L 0 8 z" fill="#1d70b8"></path>
+                    <path class="edge-arrow-selected" d="M 0 0 L 8 4 L 0 8 z"></path>
                   </marker>
                 </defs>
                 {#if focusTitleLines.length}
@@ -7970,6 +7987,9 @@
               filter={geospatialFilter}
               selectedRoute={largeInspectedRoute || largeSelectedRoute}
               loading={largeFullLoading}
+              boundary={source.descriptor.entrypoints.boundary_pack
+                ? { base: source.baseUrl, descriptor: source.url, reference: source.descriptor.entrypoints.boundary_pack }
+                : undefined}
               onselect={selectLargeRoute}
               onfilter={setGeospatialFilter}
             />
@@ -8154,10 +8174,10 @@
             >
               <defs>
                 <marker id="small-graph-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth">
-                  <path d="M 0 0 L 8 4 L 0 8 z" fill="#9aaaba"></path>
+                  <path class="edge-arrow" d="M 0 0 L 8 4 L 0 8 z"></path>
                 </marker>
                 <marker id="small-graph-arrow-highlight" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth">
-                  <path d="M 0 0 L 8 4 L 0 8 z" fill="#1d70b8"></path>
+                  <path class="edge-arrow-selected" d="M 0 0 L 8 4 L 0 8 z"></path>
                 </marker>
               </defs>
               {#each model.relationships as relationship}

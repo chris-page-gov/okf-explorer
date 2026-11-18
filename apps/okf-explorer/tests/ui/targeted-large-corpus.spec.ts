@@ -1347,6 +1347,13 @@ test.describe('targeted large-corpus relationship hydration', () => {
     await page.keyboard.press('Enter');
     await expect(page.getByText(ending, { exact: false })).toBeVisible();
     await expect(page.getByRole('button', { name: 'Show excerpt' })).toHaveAttribute('aria-expanded', 'true');
+
+    const theme = page.getByRole('combobox', { name: 'Theme', exact: true });
+    await theme.selectOption('dark');
+    const panel = page.getByRole('region', { name: 'Official legislation detail' });
+    await expect(panel).toHaveCSS('background-color', 'rgb(34, 47, 64)');
+    const contrast = await new AxeBuilder({ page }).include('.law-panel').withRules(['color-contrast']).analyze();
+    expect(contrast.violations).toEqual([]);
   });
 
   test('legislation detail rejects a diverted or unavailable CLML response', async ({ page, browserName }) => {

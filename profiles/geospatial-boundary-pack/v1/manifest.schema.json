@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chris-page-gov.github.io/okf-explorer/profile/geospatial-boundary-pack/v1/manifest.schema.json",
+  "title": "OKF geospatial boundary pack v1 candidate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "id", "geography_family", "identifier_scheme", "vintage", "coverage", "detail_min_zoom", "representations"],
+  "properties": {
+    "schema": { "const": "okf-geospatial-boundary-pack.v1" },
+    "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$", "maxLength": 100 },
+    "geography_family": { "type": "string", "minLength": 1, "maxLength": 100 },
+    "identifier_scheme": { "type": "string", "format": "uri" },
+    "vintage": {
+      "oneOf": [
+        { "type": "string", "format": "date" },
+        { "type": "string", "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$" }
+      ]
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["nations", "crown_dependencies", "overseas_territories", "limitations"],
+      "properties": {
+        "nations": {
+          "type": "array", "minItems": 1, "uniqueItems": true,
+          "items": { "enum": ["England", "Scotland", "Wales", "Northern Ireland"] }
+        },
+        "crown_dependencies": { "enum": ["included", "excluded", "partial"] },
+        "overseas_territories": { "enum": ["included", "excluded", "partial"] },
+        "limitations": { "type": "string", "minLength": 1, "maxLength": 1000 }
+      }
+    },
+    "detail_min_zoom": { "type": "integer", "minimum": 1, "maximum": 18 },
+    "offline_resources": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 12,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "bytes", "sha256"],
+        "properties": {
+          "path": { "type": "string", "pattern": "^data/(?:[a-z0-9_-]+/)*[a-z0-9_-]+\\.json(?:\\.gz)?$", "maxLength": 200 },
+          "bytes": { "type": "integer", "minimum": 1, "maximum": 1048576 },
+          "sha256": { "$ref": "#/$defs/sha256" }
+        }
+      }
+    },
+    "representations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["overview", "detail"],
+      "properties": {
+        "overview": { "$ref": "#/$defs/representation" },
+        "detail": { "$ref": "#/$defs/representation" }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "https": { "type": "string", "format": "uri", "pattern": "^https://[^/@?#]+(?:[/?#]|$)" },
+    "representation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "bytes", "sha256", "media_type", "output_crs", "coastal_variant", "generalisation", "feature_id_property", "feature_count", "source"],
+      "properties": {
+        "path": { "type": "string", "pattern": "^data/(?:[a-z0-9_-]+/)*[a-z0-9_-]+\\.geojson$", "maxLength": 200 },
+        "bytes": { "type": "integer", "minimum": 1, "maximum": 5242880 },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "media_type": { "const": "application/geo+json" },
+        "output_crs": { "const": "OGC:CRS84" },
+        "coastal_variant": { "enum": ["coastline-clipped", "extent-of-realm", "other-described"] },
+        "generalisation": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "feature_id_property": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]{0,63}$" },
+        "feature_count": { "type": "integer", "minimum": 1, "maximum": 10000 },
+        "source": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["publisher", "product", "version", "url", "sha256", "source_crs", "retrieved_on", "licence", "attribution", "derivation"],
+          "properties": {
+            "publisher": { "type": "string", "minLength": 1, "maxLength": 200 },
+            "product": { "type": "string", "minLength": 1, "maxLength": 200 },
+            "version": { "type": "string", "minLength": 1, "maxLength": 200 },
+            "url": { "$ref": "#/$defs/https" },
+            "sha256": { "$ref": "#/$defs/sha256" },
+            "source_crs": { "type": "string", "minLength": 1, "maxLength": 100 },
+            "retrieved_on": { "type": "string", "format": "date" },
+            "licence": { "$ref": "#/$defs/https" },
+            "attribution": { "type": "string", "minLength": 1, "maxLength": 500 },
+            "derivation": { "type": "string", "minLength": 1, "maxLength": 1000 }
+          }
+        }
+      }
+    }
+  }
+}

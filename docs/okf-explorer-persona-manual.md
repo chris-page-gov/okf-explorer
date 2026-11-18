@@ -407,6 +407,23 @@ Expected behaviour:
 
 ## Other UI Behaviours
 
+### Explorer theme
+
+In the Explorer header, choose **System**, **Light** or **Dark**. System
+uses your device's current appearance. The browser remembers an explicit
+choice on that device. You can return to System at any time. The printed
+Explorer uses the light palette.
+
+The initial theme candidate covers the Explorer shell, its shared controls,
+graph labels and the locator map. Automated contrast checks cover both
+themes across the eight views of the sample bundle. In forced colours the
+active view has an underline and a double border. Keyboard focus uses the
+system highlight. A dotted line marks the focused Graph edge, and its
+arrowhead remains visible in either theme. The official legislation viewer
+uses the shared palette.
+The theme issue tracks manual contrast checks and user-defined graph colours.
+[Theme acceptance](https://github.com/chris-page-gov/okf-explorer/issues/53)
+
 | Behaviour | Expected result |
 |-----------|-----------------|
 | Bundle URL field | Paste a public HTTPS bundle or descriptor URL, click Load, or use a recent/suggested URL. Suggestions close when focus moves away. |

@@ -398,6 +398,7 @@ export type LargeCorpusDescriptor = {
     official_effects?: LargeResourceReference;
     operational_metadata?: string;
     provider_datapacks?: LargeResourceReference;
+    boundary_pack?: LargeResourceReference;
     release_data_plane?: LargeResourceReference;
   };
   entrypoint_integrity?: Record<string, Exclude<LargeResourceReference, string>>;

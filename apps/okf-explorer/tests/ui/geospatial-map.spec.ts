@@ -1,4 +1,6 @@
 import { expect, test, type BrowserContext, type Page, type Route } from '@playwright/test';
+import { createHash } from 'node:crypto';
+import { readFile } from 'node:fs/promises';
 
 const FIXTURE_ORIGIN = 'https://geo.fixture.test';
 const LARGE_ORIGIN = 'https://large-geo.fixture.test';
@@ -445,14 +447,42 @@ test.describe('geospatial Map state, accessibility and bounds', () => {
     await expect.poll(() => new URL(page.url()).hash).toBe('#scotland-statistics');
   });
 
-  test('GEO-E2E-15 exposes the large-corpus index-loading state and then renders Map', async ({ page }) => {
+  const boundaryCases = [
+    { mode: 'legacy', label: 'exposes the large-corpus index-loading state and then renders Map' },
+    { mode: 'verified', label: 'loads the verified UK overview before fetching focused detail' },
+    { mode: 'tampered', label: 'keeps the text results and labels the fallback when a layer fails integrity' }
+  ];
+  for (const { mode, label } of boundaryCases) test(`GEO-E2E-15 ${label}`, async ({ page }) => {
+    const packRoot = new URL('../../../../profiles/geospatial-boundary-pack/v1/examples/uk-countries-december-2025/', import.meta.url);
+    const manifest = mode === 'legacy' ? undefined : await readFile(new URL('manifest.json', packRoot));
+    const paths: string[] = [];
+    const tiles: string[] = [];
+    if (manifest) await page.context().route('https://tile.openstreetmap.org/**', (route) => {
+      tiles.push(route.request().url());
+      return route.abort();
+    });
     await page.context().route(`${LARGE_ORIGIN}/**`, async (route) => {
       const url = new URL(route.request().url());
+      paths.push(url.pathname);
+      if (manifest && url.pathname === '/boundary/manifest.json') return route.fulfill({
+        headers: { 'access-control-allow-origin': '*' }, contentType: 'application/json', body: manifest
+      });
+      if (manifest && /^\/boundary\/data\/(overview|detail)\.geojson$/.test(url.pathname)) {
+        const body = await readFile(new URL(url.pathname.slice('/boundary/'.length), packRoot));
+        if (mode === 'tampered') body[0] = 0x5b;
+        return route.fulfill({ headers: { 'access-control-allow-origin': '*' }, contentType: 'application/geo+json', body });
+      }
       if (url.pathname === '/okf-explorer.json') return json(route, {
         schema: 'okf-explorer-large-corpus.v1',
         kind: 'okf-large-corpus',
         title: 'Large geospatial fixture',
-        entrypoints: { data_manifest: 'data/manifest.json', overview_index: 'data/overview.json' },
+        entrypoints: {
+          data_manifest: 'data/manifest.json', overview_index: 'data/overview.json',
+          ...(manifest ? { boundary_pack: {
+            path: 'boundary/manifest.json', bytes: manifest.byteLength,
+            sha256: createHash('sha256').update(manifest).digest('hex')
+          } } : {})
+        },
         counts: { datasets: 1, resources: 1, publishers: 1, relationships: 0 }
       });
       if (url.pathname === '/data/manifest.json') return json(route, {
@@ -511,6 +541,34 @@ test.describe('geospatial Map state, accessibility and bounds', () => {
     await expect(page.getByText('1 records in the current search/facet context have spatial evidence.')).toBeVisible();
     await expect(mapRecord(page, 'Large England map service')).toBeVisible();
 
+    if (mode === 'verified') {
+      await expect(page.locator('[data-boundary-code]')).toHaveCount(4);
+      await expect(page.getByText('United Kingdom countries · 2025-12 · overview')).toBeVisible();
+      await page.getByText('Boundaries and geography codes', { exact: true }).click();
+      await expect(page.getByText('Northern Ireland (N92000002)', { exact: true })).toBeVisible();
+      expect(paths).not.toContain('/boundary/data/detail.geojson');
+      const zoom = page.getByRole('button', { name: 'Show focused map' });
+      await zoom.focus();
+      await zoom.press('Enter');
+      await expect(page.getByText('United Kingdom countries · 2025-12 · detail')).toBeVisible();
+      await expect(page.locator('[data-boundary-code]')).toHaveCount(4);
+      const map = page.getByRole('img', { name: 'UK reference map with spatial record markers' });
+      await expect(map).not.toHaveAttribute('viewBox', '0 0 512 512');
+      await page.context().setOffline(true);
+      try {
+        await page.getByRole('button', { name: 'Show UK overview' }).click();
+        await expect(page.getByText('United Kingdom countries · 2025-12 · overview')).toBeVisible();
+      } finally {
+        await page.context().setOffline(false);
+      }
+      expect(paths.filter(path => path === '/boundary/data/overview.geojson')).toHaveLength(1);
+      expect(paths.filter(path => path === '/boundary/data/detail.geojson')).toHaveLength(1);
+    } else if (mode === 'tampered') {
+      await expect(page.getByText('This boundary level could not be verified.')).toBeVisible();
+      await expect(page.getByText('The fallback outlines are schematic and suitable for orientation only.')).toBeVisible();
+      await expect(page.locator('[data-boundary-code]')).toHaveCount(0);
+    }
+    expect(tiles).toEqual([]);
     await page.getByRole('button', { name: 'Graph', exact: true }).click();
     await expect(page.getByRole('group', { name: 'Large corpus graph' })).toBeVisible();
     await expect(page.locator('.error')).toHaveCount(0);

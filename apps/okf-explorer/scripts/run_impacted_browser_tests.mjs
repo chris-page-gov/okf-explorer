@@ -11,6 +11,7 @@ const SUITES = {
     family: 'ui',
     file: 'tests/ui/accessibility.spec.ts'
   },
+  theme: { family: 'ui', file: 'tests/ui/theme.spec.ts' },
   ask_okf: {
     family: 'ui',
     file: 'tests/ui/ask-okf.spec.ts'
@@ -34,6 +35,10 @@ const SUITES = {
   map: {
     family: 'ui',
     file: 'tests/ui/geospatial-map.spec.ts'
+  },
+  offline_map: {
+    family: 'foundry',
+    file: 'tests/foundry/boundary-offline.spec.ts'
   },
   facets: {
     family: 'ui',
@@ -141,6 +146,7 @@ export const JOURNEY_GROUP_SUITES = Object.freeze({
 export const TEST_TAG_SUITES = Object.freeze({
   accessibility: [
     'accessibility',
+    'theme',
     'ask_okf',
     'okf_plus_context',
     'relationship_pagination',
@@ -156,7 +162,7 @@ export const TEST_TAG_SUITES = Object.freeze({
   browser: ALL_SUITES,
   consumer: ALL_UI,
   contract: ['ask_okf', 'okf_plus_context', 'small_bundle', 'foundry_pages'],
-  data: ['small_bundle', 'large_corpus', 'map', 'dfe_data'],
+  data: ['small_bundle', 'large_corpus', 'map', 'offline_map', 'dfe_data'],
   denominator: ['conceptual_navigation', 'large_corpus', 'facets'],
   descriptor: ['small_bundle', 'foundry_pages'],
   determinism: ['small_bundle'],
@@ -173,6 +179,7 @@ export const TEST_TAG_SUITES = Object.freeze({
   misspelling: ['large_corpus', 'facets'],
   presentation: [
     'accessibility',
+    'theme',
     'conceptual_navigation',
     'ask_okf',
     'okf_plus_context',

@@ -286,6 +286,8 @@ export type FetchJsonResourceOptions = {
   timeoutMs?: number;
   attempts?: number;
   retryDelayMs?: number;
+  rejectRedirects?: boolean;
+  acceptedMediaTypes?: string[];
 };
 
 async function readResponseBytes(response: Response, url: string, maxBytes: number): Promise<Uint8Array> {
@@ -382,7 +384,7 @@ export async function fetchJsonResource<T>(
     throw new Error('Release data-plane resources must stay on the bundle origin');
   }
   const expectedHash = distributed ? distributed.expectedPackedHash : resourceHash(reference);
-  if (!distributed && !expectedHash) {
+  if (!distributed && !expectedHash && !options.rejectRedirects && !options.acceptedMediaTypes) {
     return fetchJson<T>(
       url,
       options.timeoutMs ?? 30000,
@@ -401,6 +403,7 @@ export async function fetchJsonResource<T>(
       const response = await fetch(url, {
         cache: 'default',
         headers: distributed?.headers,
+        ...(options.rejectRedirects ? { redirect: 'error' } : {}),
         signal
       });
       if (!response.ok) {
@@ -411,6 +414,12 @@ export async function fetchJsonResource<T>(
           continue;
         }
         throw error;
+      }
+      if (options.acceptedMediaTypes) {
+        const contentType = response.headers.get('content-type')?.split(';')[0].trim().toLowerCase();
+        if (!contentType || !options.acceptedMediaTypes.includes(contentType)) {
+          throw new Error(`${url}: unexpected media type ${contentType || 'unknown'}`);
+        }
       }
       if (distributed) {
         if (response.status !== 206) throw new Error('Release pack server did not honour the bounded byte-range request');

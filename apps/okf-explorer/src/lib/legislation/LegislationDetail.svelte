@@ -184,23 +184,23 @@
 {/if}
 
 <style>
-  .law-panel { margin: 1.25rem 0; padding: 1rem; border: 1px solid #b1b4b6; border-left: .35rem solid #1d70b8; background: #f8f8f8; }
+  .law-panel { margin: 1.25rem 0; padding: 1rem; border: 1px solid var(--line-strong); border-left: .35rem solid var(--selected-edge); background: var(--surface-2); }
   .law-panel h3 { margin-top: 0; }
-  .warning { padding: .75rem; background: #fff7bf; border-left: .25rem solid #ffdd00; }
+  .warning { padding: .75rem; color: var(--status-warning); background: var(--status-warning-surface); border-left: .25rem solid var(--status-warning-border); }
   .law-actions { display: flex; flex-wrap: wrap; gap: .5rem; margin: .75rem 0; }
-  .law-button, .load-button { display: inline-block; padding: .55rem .75rem; border: 0; background: #00703c; color: white; text-decoration: none; font: inherit; cursor: pointer; }
-  .load-button { margin-top: .75rem; background: #1d70b8; }
-  .progressive-note { color: #505a5f; font-size: .9rem; }
+  .law-button, .load-button { display: inline-block; padding: .55rem .75rem; border: 1px solid transparent; background: var(--accent-2); color: var(--on-accent); text-decoration: none; font: inherit; cursor: pointer; }
+  .load-button { margin-top: .75rem; background: var(--accent); }
+  .progressive-note { color: var(--muted); font-size: .9rem; }
   .structure-tools { display: grid; gap: .35rem; margin: 1rem 0; }
   .structure-tools input { display: block; box-sizing: border-box; width: 100%; padding: .5rem; margin-top: .25rem; }
   .provision-tree { padding: 0; list-style: none; }
-  .provision-tree li { margin: .55rem 0 .55rem calc(var(--depth) * .75rem); padding: .65rem; border-left: 2px solid #b1b4b6; background: white; }
+  .provision-tree li { margin: .55rem 0 .55rem calc(var(--depth) * .75rem); padding: .65rem; border-left: 2px solid var(--line-strong); background: var(--surface); }
   .provision-heading { display: flex; flex-wrap: wrap; gap: .4rem; align-items: baseline; }
-  .provision-type { padding: .15rem .35rem; background: #e8f1f8; color: #003078; font-size: .78rem; text-transform: uppercase; }
+  .provision-type { padding: .15rem .35rem; background: var(--accent-soft); color: var(--ink); font-size: .78rem; text-transform: uppercase; }
   .provision-tree p { margin: .45rem 0; line-height: 1.45; }
-  .provision-links { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; font-size: .78rem; color: #505a5f; }
-  .provision-links button { border: 0; padding: 0; background: transparent; color: #1d70b8; text-decoration: underline; cursor: pointer; }
-  .full-text-button { margin: 0 0 .5rem; border: 0; padding: 0; background: transparent; color: #1d70b8; text-decoration: underline; font: inherit; cursor: pointer; }
+  .provision-links { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; font-size: .78rem; color: var(--muted); }
+  .provision-links button { border: 0; padding: 0; background: transparent; color: var(--selected-edge); text-decoration: underline; cursor: pointer; }
+  .full-text-button { margin: 0 0 .5rem; border: 0; padding: 0; background: transparent; color: var(--selected-edge); text-decoration: underline; font: inherit; cursor: pointer; }
   .provision-links code { overflow-wrap: anywhere; }
-  .error { color: #d4351c; }
+  .error { color: var(--status-error); }
 </style>

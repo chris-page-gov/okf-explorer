@@ -1,5 +1,29 @@
 # Changelog
 
+## Unreleased — Explorer presentation
+
+- Keep a high-contrast dotted keyboard focus indicator on Graph edges in
+  both colour schemes.
+- Outline guide keyboard focus with dark and yellow bands. Keep an outline
+  available in forced colours.
+
+- Offer an explicit offline save for small published boundary maps. Verify
+  the selected Explorer shell, both geometry levels and the map's record data
+  before replacing the saved snapshot.
+
+- Verify a bundle's declared boundary-pack manifest and fetch the matching
+  overview or focused detail. Keep the source attribution and geography codes
+  available in Map. Stage the December 2025 ONS UK countries display example
+  with reproducible geometry and coverage checks.
+
+- Add a system, light and dark appearance setting to the Explorer. Remember
+  an explicit choice and use the light palette for print.
+- Keep view selection and focus visible in forced colours. Apply the shared
+  light and dark palette to the official legislation viewer.
+- Label the schematic outlines in the locator map as orientation aids.
+- Define a candidate manifest for governed boundary packs with two levels of
+  detail, exact file identities and source attribution.
+
 ## Unreleased — beginner life-course example
 
 - Follow a fictional person through ten public-service events in England.
