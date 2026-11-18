@@ -7075,7 +7075,7 @@
           {/if}
 
           {#if activeView === 'reader'}
-            {#if largeQuery || activeLargeFilterCount || hasSelection(largeFacetHighlights) || reductions.length || foldedSets.length || largeSearchResponse || (!largeSearchClient && largeIndex && !largeIsOverviewContext())}
+            {#if largeQuery || activeLargeFilterCount || hasSelection(largeFacetHighlights) || reductions.length || foldedSets.length || largeSearchResponse || (!largeSearchClient && largeIndex)}
               <div class="view-heading"><h2>Results</h2><span>{largeSearching ? 'Updating results…' : searchResultSummary()}</span></div>
               <ResultList items={largeReaderResults} busy={largeSearching || Boolean(geospatialFilter && largeFullLoading)} selected={largeInspectedRoute || largeSelectedRoute} bind:layout={resultLayout} query={largeAppliedQuery} onselect={(route) => { const result = largeResults.find(row => datasetRoute(row) === route); if (result) chooseLargeResult(result); else selectLargeRoute(route); }} />
             {:else if largeHasAnalysisOverview('reader')}
@@ -7119,7 +7119,7 @@
                   </section>
                 {/if}
               </div>
-            {:else if largeIndex && !largeIsOverviewContext()}
+            {:else if largeIndex}
               <div class="view-heading">
                 <h2>{capitalise(recordPlural())}</h2>
                 <span>{largeVisibleDatasets.length.toLocaleString()} in current reduction</span>

@@ -36,6 +36,7 @@
 <div class="facet-sections" role="group" aria-label="Facet filters">
   {#each facets as facet (facet.key)}
     {@const chosen = selection[facet.key] || []}
+    {@const summary = chosen.map(value => facet.rows.find(row => row.value === value)?.label || value).join(' or ')}
     {@const total = facet.rows.reduce((sum, row) => sum + row.count, 0)}
     {@const rows = facet.rows.filter(row => row.label.toLocaleLowerCase('en-GB').includes((searches[facet.key] || '').toLocaleLowerCase('en-GB')))}
     <section class="facet-section" class:open={facet.open} class:pinned={facet.pinned} data-facet-key={facet.key} aria-label={`${facet.label} facet`}>
@@ -44,10 +45,7 @@
           <span class="facet-disclosure" aria-hidden="true">{facet.open ? '▾' : '▸'}</span>
           <span class="facet-heading-label">
             <strong>{facet.label}</strong>
-            {#if chosen.length}
-              {@const summary = chosen.map(value => facet.rows.find(row => row.value === value)?.label || value).join(' or ')}
-              <span class="selection-summary" title={summary}>{summary}</span>
-            {/if}
+            <span class="selection-summary" title={summary}>{summary}</span>
           </span>
           <small>{facet.rows.length} values</small>
         </button>
