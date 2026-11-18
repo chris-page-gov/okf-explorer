@@ -7,9 +7,12 @@ released that foundation at `4bb7b92a64b7ba69bde9b1e86786217338cd166d`.
 Its [vendored profile lock](../profiles/bundle-wiki/v1.vendor-lock.json)
 records the immutable profile identity
 `854d1853b71ec8bda3424924f0f0985fe24aa7bca4c180d15f359fe259ef4c7e`.
-The review below uses that baseline and the current source as inspected on
-18 November 2026. The roadmap items remain open while their acceptance
-evidence is outstanding. [Roadmap review issue](https://github.com/chris-page-gov/okf-explorer/issues/77)
+The review uses that baseline and the semantic release
+`9305d8875386156a123188c6168759ff41455865` on 18 November 2026.
+Five implementation issues closed after the published checks.
+[Release PR](https://github.com/chris-page-gov/okf-explorer/pull/232)
+[Pages verification](https://github.com/chris-page-gov/okf-explorer/actions/runs/44393063609)
+[Roadmap review issue](https://github.com/chris-page-gov/okf-explorer/issues/77)
 
 ## Released foundations
 
@@ -25,7 +28,7 @@ inference. See the [consumer and authoring contract](okf-0.2-yaml-ld-semantic-au
 
 ## Delivery and acceptance
 
-| Issue | Foundation in the repository | Remaining implementation and evidence |
+| Issue | Foundation in the repository before the semantic release | Acceptance work for the semantic release |
 | --- | --- | --- |
 | [#49 Governed vocabulary](https://github.com/chris-page-gov/okf-explorer/issues/49) | The semantic and assertion schemas, predicate registries and stable IRI rules cover directed relationships. Existing small graph generation projects its relationships into a registry. | Publish governed SKOS schemes with topic, format and licence identities, explicit mappings and integrity bindings. Check versioned exemplar consumption, resolution in the published site, authoring guidance and unchanged label-only fixtures. |
 | [#50 Validation and remediation](https://github.com/chris-page-gov/okf-explorer/issues/50) | Builder and profile checks can validate structure and policy. Producers may run versioned SHACL conformance separately. | Define stable findings and publish deterministic reports from pinned shapes. Add a validation view with severity, focus node, path, source and remediation. Test a round trip between findings and records, including multi-bundle findings. Retain SHACL 1.2 experiments as their own work. |
@@ -33,17 +36,17 @@ inference. See the [consumer and authoring contract](okf-0.2-yaml-ld-semantic-au
 | [#52 Ontology navigation](https://github.com/chris-page-gov/okf-explorer/issues/52) | The Graph supports a predicate-aware neighbourhood, grouping and inspection for authored input. Existing faceting and grouping help users navigate records. | Add coordinated class, property and SKOS views with stable URLs, qualified hierarchy-aware search and reversible source navigation. Preserve mapping strength and consume the report, inference and provenance contracts. Evaluate supported discovery and ontology-engineering tasks, including keyboard and list alternatives. |
 | [#54 Standards and activity exports](https://github.com/chris-page-gov/okf-explorer/issues/54) | The standards crosswalk supplies mappings and limitations. Existing build receipts bind important inputs and outputs. | Each exporter needs a versioned mapping, deterministic fixtures, conformance checks and source navigation. OpenAPI retains parsed locations. PROV binds reviewed inputs and activities. |
 
-### Acceptance to carry into the release
+### Published acceptance and follow-up
 
-| Issue | Staged implementation | Release evidence still needed | Deferred scope |
+| Issue | Published implementation | Verified evidence | Deferred scope |
 | --- | --- | --- | --- |
-| #49 | Three SKOS schemes, explicit mappings, registry and Reader example | Check the deployed term resolver, sample descriptor and label-only compatibility | Further public-sector terms follow reviewed revisions |
-| #50 | Pinned SHACL Core, stable findings, filters, remediation and source links | Check both published examples and the finding-to-source round trip | SHACL 1.2 experiments and ontology consistency assessment have separate scope |
-| #51 | Bounded subclass materialisation, supporting assertions, derivation activities and status counts. The PROV-O example retains two source assertions and one separate inference. | Verify the published comparison and a reviewed producer rule application | Additional rules need their own bounded evaluation |
-| #52 | Class, property and SKOS navigation, scoped hierarchy search, mapping filters, shared URLs and explicit record links | Record representative discovery and ontology-engineering tasks against the published build | Hierarchy expansion of bundle record search needs separate policy and evidence |
-| #54 | DCAT-AP, OpenAPI and DQV exporters bind source evidence. PROV records Site validation, assembly, deployment, live verification and bounded enrichment. | Verify the published export links and retain the exact source, conformance and activity evidence | Publisher adoption, independent review activities and further standards profiles have their own release evidence |
+| [#49](https://github.com/chris-page-gov/okf-explorer/issues/49) | Three SKOS schemes, explicit mappings, registry and Reader example | Six published anchors resolved. The Turtle digest matched the registry and the Reader round trip passed. The hosted matrix covered label-only readers. | Further terms follow reviewed revisions. |
+| [#50](https://github.com/chris-page-gov/okf-explorer/issues/50) | Pinned SHACL Core, stable findings, filters, remediation and source links | Zero findings in the conforming example and one missing-label finding in the exercise. Both source routes returned to the exact finding and filter. | SHACL 1.2 experiments and ontology consistency have separate scope. |
+| [#51](https://github.com/chris-page-gov/okf-explorer/issues/51) | Bounded subclass materialisation, supporting assertions, derivation activities and status counts | The published comparison kept two W3C source assertions and one inferred relationship. The rule and both supporting sources remained inspectable. | Additional rules need their own bounded evaluation. |
+| [#52](https://github.com/chris-page-gov/okf-explorer/issues/52) | Class, property and SKOS navigation, scoped hierarchy search, filters and explicit record links | The published task walkthrough checked direct and nested scope, predicate direction, mapping strength, shared state and the return to Reader. | Collection grouping, alternative-label search and hierarchy expansion of bundle record search need separate design and evidence. |
+| [#54](https://github.com/chris-page-gov/okf-explorer/issues/54) | DCAT-AP, OpenAPI and DQV exporters and PROV for Site validation, assembly, deployment, verification and bounded enrichment | The actual ONS and DfE selections passed their profile checks. The published DQV links and report digests matched. The Site provenance export recorded 52 RDF statements. | Publisher adoption, independent review activities and further standards profiles have their own release evidence. |
 
-Keep #54 as one integration issue while the four exporters share source
+The review kept #54 as one integration issue because the four exporters share source
 identity, validation and provenance evidence in the same release. Production
 producer adapters can be verified independently as their input contracts are
 ready.
@@ -54,11 +57,10 @@ before materialising inference. The DCAT-AP, OpenAPI and DQV parts can proceed
 when their inputs and mappings are ready. Incremental facet accessibility may
 ship independently. Any hierarchy-driven narrowing needs #49 and its tests.
 
-The planned views are class and property hierarchies, SKOS concept schemes,
-hierarchy-aware facets, provenance paths, validation findings, and asserted
-and inferred comparisons. Link each delivered view to its implementing pull
-request, tests and exact release evidence before updating the
-[beginner guide's status](beginners/09-explorer-views-and-presentation.md#current-behaviour-versus-roadmap).
+The [beginner guide's status](beginners/09-explorer-views-and-presentation.md#current-behaviour-versus-roadmap)
+links to this evidence. The Explorer uses the relevant published index or
+report where the producer has supplied one. Record the implementing pull
+request, checks and exact published journey when extending these views.
 
 ## First candidate export
 
@@ -206,8 +208,9 @@ Mapping filters
 preserve the recorded predicate and strength. The view records its search,
 filters and selection in the URL and links to the bundle's validation and
 assertion-status views. The governed vocabulary example links the exact Reader
-record and ontology term in both directions. Published producer adoption and
-task-based evaluation remain open.
+record and ontology term in both directions. The published task walkthrough
+verified the scoped hierarchy and source journeys. Producer adoption uses
+each producer's own reviewed contract and release.
 
 Use the [class and property example](../profiles/bounded-inference/v1/ontology/okf-explorer.json)
 to trace six PROV-O terms and four direct hierarchy statements back to
@@ -228,19 +231,21 @@ the ranked rows are read and reports the stage if the run fails.
 
 - **#76** is a source-inspection correctness priority. Explorer
   `4d23db57ff5d2dba32edd9936254f33c2b7cded9` passed the published dated CLML
-  journey. The legislation producer still needs a versioned typed Reader
-  transport that preserves the frozen audit material. It consumes
+  journey. The separate legislation producer release builds a versioned
+  typed Reader transport from the frozen audit material. It consumes
   `okf-explorer-large-corpus.v1` and the existing
   [resource source access contract](large-record-narrative-source-contract.md).
   [Source inspection issue](https://github.com/chris-page-gov/okf-explorer/issues/76)
-- **#53** is an independent accessibility priority. Its release evidence
-  needs light, dark, system and forced-colours behaviour with keyboard
-  focus, Graph, Map and print checked. [Accessible theme issue](https://github.com/chris-page-gov/okf-explorer/issues/53)
-- **#84** needs a reusable boundary-pack contract and exact data provenance.
-  The map can begin with a separately versioned sidecar. Any semantic joins
-  should use governed identifiers and remain independently verifiable. [Boundary pack issue](https://github.com/chris-page-gov/okf-explorer/issues/84)
-- **#100** needs an exact deployed guide audit across three browser engines
-  and a review of every chapter and external reference. [Learning path issue](https://github.com/chris-page-gov/okf-explorer/issues/100)
+  [Producer release](https://github.com/chris-page-gov/okf-uk-legislation/pull/27)
+- **#53** was an independent accessibility priority. The presentation
+  release passed the theme, keyboard, Graph, Map and print checks.
+  [Accessible theme issue](https://github.com/chris-page-gov/okf-explorer/issues/53)
+- **#84** published a versioned ONS boundary sidecar that reopened at both
+  scales in an offline Chrome tab. It shows the map source and stable
+  geography codes. [Boundary pack issue](https://github.com/chris-page-gov/okf-explorer/issues/84)
+- **#100** completed the published 27-page guide audit in three browser
+  engines, including review of the links and the corrected focus indicator.
+  [Learning path issue](https://github.com/chris-page-gov/okf-explorer/issues/100)
 - **#150** adds source-bound review in Evidence. Keep producer adoption
   separate from the Explorer release, and obtain the DWP specialist
   assessment before accepting a passage-boundary change. [DWP producer review](https://github.com/chris-page-gov/okf-dwp/issues/42)
