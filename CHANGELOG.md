@@ -10,6 +10,8 @@
 - Derive stable finding IDs from bounded SHACL Core reports.
 - Export those report outcomes as DQV measurements and annotations tied to
   the exact source report.
+- Export explicitly mapped catalogue metadata as source-linked DCAT-AP
+  3.0.1 datasets and distributions.
 - Inspect integrity-bound SHACL findings in a dedicated Explorer view.
   Open publisher-declared source records and return to the same finding.
 - Add an opt-in subclass inference candidate with explicit supporting

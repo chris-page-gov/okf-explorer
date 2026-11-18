@@ -83,7 +83,7 @@ for an observed multi-source pack, but it leaves clear gaps:
 | Export target | Current coverage | Remaining gap |
 |---|---|---|
 | DCAT `dcat:DataService` | API products, provider-native APIs and data-access endpoints are mapped to `dcat:DataService`; endpoint/documentation/publisher/licence fields are preserved when observed. | A DCAT-AP-conformant RDF exporter is not yet implemented; some records still lack explicit `dcat:endpointURL`, `dcat:endpointDescription`, licence or publisher evidence. |
-| DCAT `dcat:Dataset` | data.gov.uk and ONS data products map to `dcat:Dataset`; provider and licence inference is recorded with basis and confidence. | Dataset distributions, themes and provenance need richer source-specific export rules before claiming DCAT-AP profile conformance. |
+| DCAT `dcat:Dataset` | data.gov.uk and ONS data products map to `dcat:Dataset`. The candidate exporter preserves explicit distributions, themes, licences and record sources. | Producer-specific mappings and official profile validation remain open. |
 | OpenAPI service stub | API products and data endpoints can produce an `info`, `servers` and `externalDocs` skeleton where endpoint metadata exists. | Most harvested sources do not expose complete methods, paths, parameters, responses, schemas, examples or security flows, so generated OpenAPI is a stub unless a contract parser enriches it. |
 | OpenAPI operation fragment | OS and ONS operation-like records can be represented as operation fragments. | HTTP method, operationId, parameters, request/response schemas and error models are often missing and must not be invented. |
 | OpenAPI security schemes | `access_model` now maps to `apiKey`, `oauth2`, `none`, `metadata-only` or `unknown`. | The location/name of API keys, OAuth flow, scopes, token URLs and sender-constrained-token requirements need provider-specific contract parsing. |
@@ -96,6 +96,37 @@ time, but it should not claim `DCAT-AP conformant` or `OpenAPI conformant`
 until the relevant artefact is generated and validated.
 
 ## Export-readiness requirements
+
+### Candidate dataset catalogue export
+
+`scripts/export_dcat_ap.py` accepts an explicitly mapped, reviewed JSON
+selection. It emits deterministic N-Triples for the catalogue, datasets and
+distributions, targeting [DCAT-AP 3.0.1](https://semiceu.github.io/DCAT-AP/releases/3.0.1/).
+
+Use schema `okf-dcat-ap-input.v1` with a metadata `language`, one `catalogue`
+and a `datasets` array. The catalogue requires `id`, `title`, `description`,
+`publisher` and `source_record`. Supply a publisher's `id` and `name`.
+Each dataset requires `id`, `title`, `description`, `source_record`, `themes`
+and `distributions`. Optional fields are `publisher` and `landing_page`.
+Use stable, named concept IRIs in `themes`.
+
+Each distribution requires `id`, `title`, `access_url` and `source_record`.
+Add `download_url`, `licence`, `media_type` and `bytes` when the source
+records them. Use a media type IRI from the IANA register and include the
+original OKF record URL in `source_record`. The export carries those
+record links and binds the exact input bytes. It rejects duplicate resource
+identities, credential query fields and inputs over 2 MiB, 2,000 datasets
+or 4,000 distributions. The exporter reads local input files.
+
+```sh
+uv run --locked python -m scripts.export_dcat_ap \
+  --input catalogue-selection.json --output /tmp/catalogue.nt
+```
+
+A producer can link an exported artefact through its descriptor's
+`related_links`. Automated checks round-trip the declared RDF terms.
+Record official profile validation and the producer's mapping decisions
+in the release evidence before making a conformance claim.
 
 A DCAT export for an API-like record needs, at minimum:
 
