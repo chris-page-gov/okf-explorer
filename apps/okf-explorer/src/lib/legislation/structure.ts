@@ -1,3 +1,5 @@
+import type { LargeResource } from '$lib/types';
+
 export type LegislationProvision = {
   key: string;
   id: string;
@@ -33,6 +35,16 @@ export const MAX_CLML_PROVISIONS = 20_000;
 export const MAX_CLML_NESTING = 256;
 export const MAX_CLML_ELEMENTS = 200_000;
 export const PASSAGE_EXCERPT_CHARACTERS = 2400;
+const CLML_PROFILE = 'https://www.legislation.gov.uk/schema/legislation';
+const OFFICIAL_EXPRESSION = /\/(\d{4}-\d{2}-\d{2}|enacted|made|created|adopted|prospective)$/;
+const OFFICIAL_LANGUAGE = /\/(welsh|english)$/;
+
+function publicationRoute(path: string) {
+  const language = OFFICIAL_LANGUAGE.exec(path)?.[1];
+  const withoutLanguage = path.replace(OFFICIAL_LANGUAGE, '');
+  const version = OFFICIAL_EXPRESSION.exec(withoutLanguage)?.[1];
+  return { work: withoutLanguage.replace(OFFICIAL_EXPRESSION, ''), version, language };
+}
 
 export async function readClmlBytes(response: Response): Promise<Uint8Array> {
   if (Number(response.headers.get('content-length') || 0) > MAX_CLML_BYTES) {
@@ -116,13 +128,14 @@ function safeOfficialUrl(value: string | null, documentUri: string): string | un
   try {
     const url = new URL(value);
     const work = new URL(documentUri);
-    const requestedVersion = /\/(\d{4}-\d{2}-\d{2}|enacted|made)\/?$/.exec(work.pathname)?.[1];
-    const workPath = work.pathname.replace(/\/(?:\d{4}-\d{2}-\d{2}|enacted|made)\/?$/, '').replace(/\/$/, '');
+    const requested = publicationRoute(work.pathname.replace(/\/$/, ''));
+    const actual = publicationRoute(url.pathname.replace(/\/$/, ''));
     if (!['legislation.gov.uk', 'www.legislation.gov.uk'].includes(url.hostname) ||
       !['legislation.gov.uk', 'www.legislation.gov.uk'].includes(work.hostname) ||
       url.username || url.password || url.port || url.search ||
-      !url.pathname.startsWith(`${workPath}/`) ||
-      (requestedVersion && !url.pathname.endsWith(`/${requestedVersion}`))) return undefined;
+      (actual.work !== requested.work && !actual.work.startsWith(`${requested.work}/`)) ||
+      (requested.version && actual.version !== requested.version) ||
+      (requested.language && actual.language !== requested.language)) return undefined;
     url.protocol = 'https:';
     return url.href;
   } catch { return undefined; }
@@ -141,13 +154,42 @@ export function officialDocumentUrl(value: string): string {
 export function officialClmlUrl(record: {
   structure_url?: string;
   manifestations?: Record<string, string>;
+  source_representations?: LargeResource[];
   document_uri?: string;
   url?: string;
 }): string {
+  const document = officialDocumentUrl(record.document_uri || record.url || '');
+  if (document && Array.isArray(record.source_representations) && record.source_representations.length <= 16) {
+    const work = new URL(document);
+    const requested = publicationRoute(work.pathname);
+    const typedUrls = new Set(record.source_representations.flatMap(resource => {
+      const access = resource?.source_access;
+      if (resource?.resource_type !== 'authoritative-structure' || access?.content_profile !== CLML_PROFILE ||
+          access.media_type !== 'application/xml' || access.display_mode !== 'xml' ||
+          typeof access.url !== 'string') return [];
+      const url = officialDocumentUrl(access.url);
+      if (!url.endsWith('/data.xml')) return [];
+      const expression = new URL(url.slice(0, -'/data.xml'.length));
+      const actual = publicationRoute(expression.pathname);
+      if (expression.hostname.replace(/^www\./, '') !== work.hostname.replace(/^www\./, '') ||
+          actual.work !== requested.work ||
+          (requested.version && actual.version !== requested.version) ||
+          (requested.language && actual.language !== requested.language) ||
+          (access.representation_version && access.representation_version !== (actual.version ?? 'latest'))) return [];
+      return [url];
+    }));
+    if (typedUrls.size === 1) return [...typedUrls][0];
+  }
   const declared = record.structure_url || record.manifestations?.clml;
   if (declared) return officialDocumentUrl(declared);
-  const document = officialDocumentUrl(record.document_uri || record.url || '');
   return document ? `${document}/data.xml` : '';
+}
+
+export function officialClmlExpressionUrl(structureUrl: string): string {
+  if (!structureUrl.endsWith('/data.xml')) return '';
+  const document = structureUrl.slice(0, -'/data.xml'.length);
+  const { version, language } = publicationRoute(new URL(document).pathname);
+  return version || language ? document : '';
 }
 
 export function provisionType(sourceElement: string, id = ''): string {
@@ -186,10 +228,10 @@ export function provisionOfficialUrl(documentUri: string, id: string): string {
   const normalizedId = id.toLowerCase().replace(/_/g, '-');
   const representedId = path.replace(/^\//, '').replaceAll('/', '-');
   const nestedFragment = Boolean(path) && normalizedId !== representedId;
-  const date = /^(.*?)(\/(?:\d{4}-\d{2}-\d{2}|enacted|made))$/.exec(base);
-  const root = date ? date[1] : base;
+  const { work: root } = publicationRoute(base);
+  const expression = base.slice(root.length);
   const alreadySelected = Boolean(path) && (root.endsWith(path) || root.includes(`${path}/`));
-  const passage = `${root}${alreadySelected ? '' : path}${date ? date[2] : ''}`;
+  const passage = `${root}${alreadySelected ? '' : path}${expression}`;
   return `${passage}${!path || nestedFragment ? `#${encodeURIComponent(id)}` : ''}`;
 }
 

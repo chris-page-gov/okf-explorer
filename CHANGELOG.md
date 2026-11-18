@@ -2,6 +2,9 @@
 
 ## Unreleased — search and source inspection
 
+- Select an official CLML resource by its content profile and exact work
+  and expression. Preserve the existing legislation links for older bundles.
+
 - Evaluate the effective sort when the canonical route omits its default.
   Keep lexical results when an older publisher facet supplies a label without
   record membership.

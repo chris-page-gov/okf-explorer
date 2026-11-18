@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { LargeDataset, SearchResultDoc } from '$lib/types';
   import { checkedSourceContentType, sourcePreviewHttpError, sourcePreviewRequestError } from '$lib/sources/fetch';
-  import { officialClmlUrl, officialDocumentUrl, parseClml, readClmlBytes, type LegislationProvision } from './structure';
+  import { officialClmlExpressionUrl, officialClmlUrl, officialDocumentUrl, parseClml, readClmlBytes, type LegislationProvision } from './structure';
 
   let { record }: { record: Partial<LargeDataset & SearchResultDoc> } = $props();
   let provisions = $state<LegislationProvision[]>([]);
@@ -18,9 +18,7 @@
   const isLegislation = $derived(record.record_type === 'Legislation Work' || Boolean(record.legislation_id_uri));
   const documentUri = $derived(officialDocumentUrl(record.document_uri || record.url || ''));
   const structureUrl = $derived(officialClmlUrl(record));
-  const versionUri = $derived(/\/(?:\d{4}-\d{2}-\d{2}|enacted|made)\/data\.xml$/.test(structureUrl)
-    ? structureUrl.slice(0, -'/data.xml'.length)
-    : '');
+  const versionUri = $derived(officialClmlExpressionUrl(structureUrl));
   const manifestations = $derived(Object.entries(record.manifestations || {}).filter(([, url]) => /^https?:\/\//.test(url)));
   const visibleProvisions = $derived.by(() => {
     const query = filter.trim().toLowerCase();

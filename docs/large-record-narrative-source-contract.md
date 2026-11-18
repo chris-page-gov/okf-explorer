@@ -77,6 +77,17 @@ official text** and **Open official XML**. For a dated, enacted or made
 manifestation, the official version and provision links retain that version.
 New producers should declare a typed resource.
 
+Legislation works can carry up to 16 inline `source_representations` using
+the existing resource fields and `source_access`. Give each resource a stable
+`id`, its parent `dataset` and a human-readable title. The official CLML
+representation uses `resource_type: authoritative-structure`,
+`content_profile: https://www.legislation.gov.uk/schema/legislation`,
+`media_type: application/xml` and `display_mode: xml`. Put the profile
+and optional `representation_version` and `retrieval_mode` inside
+`source_access`. Preserve the provenance and exact official expression.
+The legislation viewer checks the work, the requested version and language,
+and the returned media type before opening the provision tree.
+
 ## Bounded references for a selected record
 
 Large bundles may declare an optional `record_resources` entry point in both
@@ -156,8 +167,8 @@ Remaining work under
   stable resource IDs, roles, media types and optional format profiles;
 - select a specialist renderer from an explicit content profile, including
   structured tabular and legal-document views;
-- move the legislation producer's CLML link from legacy JSON metadata into a
-  typed source resource and verify the worked point-in-time release journey.
+- publish the migrated legislation catalogue and verify the worked
+  point-in-time journey from the published descriptor.
 
 A specialist legislation view may reuse a typed XML representation, but its
 provision tree, legal status and point-in-time interpretation remain a separate
