@@ -146,7 +146,7 @@ test.describe('Explore OKF exploratory publication', () => {
     expect(restored.searchParams.get('inspect.node')).toBe('council');
     expect(restored.hash).toBe('#bins');
 
-    await page.getByRole('button', { name: 'Copy route', exact: true }).click();
+    await page.getByRole('button', { name: 'Copy link to this view', exact: true }).click();
     const copied = new URL(await page.evaluate(() => navigator.clipboard.readText()));
     expect(copied.searchParams.get('bundle')).toBe(BUNDLE_URL);
     expect(copied.searchParams.get('inspect.node')).toBe('council');

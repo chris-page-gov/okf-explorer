@@ -90,14 +90,16 @@ Expected behaviour:
 - Clicking a closed facet opens it immediately.
 - If the facet needs full record hydration, it should show a loading state in
   the facet body and then show values without requiring a second click.
-- Only the open facet renders its values. Closed facets show counts and selected
-  summaries only.
+- Only the open facet renders its values. Closed facets show counts and any
+  current selection. Clearing a selection leaves its controls in place.
 - High-cardinality facets expose an in-facet search box and paged values.
 - A plain click on a strip segment or value toggles its highlight. The URL
   retains the shared selection. Ctrl-click or Cmd-click enables multiple values.
 - Click or Enter highlights the focused value. Double-click or Alt+Enter keeps
   the highlighted set; **Keep unhighlighted** keeps its complement. Use the
   current interaction guide for folding, pins and multi-value selection.
+  Unfolding the last group restores the local result list when the bundle
+  has records available for browsing.
 - A direct star pins the facet open while another facet is explored. The drag
   handle reorders facets; Move earlier/Move later in the actions menu is the
   keyboard fallback where provided. Every newly opened bundle starts folded,
@@ -240,6 +242,14 @@ Expected behaviour:
   licences, tags and host/other nodes.
 - Plus/minus controls zoom; the graph can be panned.
 - Single-click inspects a real node in the right card.
+- Selecting another record takes the details pane to its heading and keeps
+  the graph in place.
+- In Reader, the current record and the scope of the browse count are shown
+  separately. Use **Copy link to this view** to share the view and selection
+  of a hosted bundle.
+- **Back to start** returns to the loaded bundle's opening view. Use
+  **Clear search and selections** to keep your view while clearing your
+  exploration.
 - Clicking a relationship row inspects that relationship and keeps the exact
   edge visibly selected on the graph.
 - Double-click navigates or reduces context.

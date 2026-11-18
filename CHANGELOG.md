@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased — Explorer navigation
+
+- Restore local result browsing after unfolding a group. Clear the facet
+  summary and its row height when the selection is cleared.
+
+- Add **Back to start**, make Reader browse counts and share-link feedback
+  explicit, and bring a new record's heading into view in the details pane.
+- Give the main view more room and show an open or closed indicator on facet
+  headings while preserving separate pin and colour controls.
+
 ## Unreleased — local CSV inspector route
 
 - Publish the local CSV package inspector at `/inspect-data/` so the home-page

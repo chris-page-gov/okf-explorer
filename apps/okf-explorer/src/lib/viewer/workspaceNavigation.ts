@@ -1,5 +1,7 @@
 export type WorkspacePanel = 'navigation' | 'content' | 'details';
 export const WORKSPACE_PANELS: WorkspacePanel[] = ['navigation', 'content', 'details'];
+export const DEFAULT_NAVIGATION_WIDTH = 280;
+export const DEFAULT_DETAILS_WIDTH = 420;
 export function adjacentPanel(panel: WorkspacePanel, delta: number): WorkspacePanel {
   return WORKSPACE_PANELS[Math.max(0, Math.min(2, WORKSPACE_PANELS.indexOf(panel) + delta))];
 }

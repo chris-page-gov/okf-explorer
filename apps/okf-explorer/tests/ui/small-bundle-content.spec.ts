@@ -213,6 +213,57 @@ test('SMALL-E2E-03 projects generated edges into Graph and Links views', async (
   await expect(page.locator('.links-view')).toContainText('Beta related record');
 });
 
+test('Reader explains the browse scope and can return to the loaded bundle start', async ({ page }) => {
+  let reloads = 0;
+  page.on('request', request => { if (request.url() === BUNDLE_URL) reloads += 1; });
+  await page.getByRole('button', { name: 'Graph', exact: true }).click();
+  const beta = page.locator('svg.graph [data-route="beta"]');
+  await beta.dblclick();
+  await page.getByRole('button', { name: 'Reader', exact: true }).click();
+  await expect(page.getByText('Current record Beta related record', { exact: true })).toBeVisible();
+  await expect(page.getByText('Whole bundle · 3 records', { exact: true })).toBeVisible();
+
+  await page.evaluate(() => Object.defineProperty(navigator, 'clipboard', {
+    configurable: true,
+    value: { writeText: async (url: string) => { document.body.dataset.copiedView = url; } }
+  }));
+  await page.getByRole('button', { name: 'Copy link to this view', exact: true }).click();
+  await expect(page.getByText('Link to this view copied.', { exact: true })).toBeVisible();
+  await expect(page.locator('body')).toHaveAttribute('data-copied-view', /#beta$/);
+
+  const search = page.getByRole('textbox', { name: 'Search nodes' });
+  await search.fill('beta');
+  await expect(page.getByText('Current search · 1 record', { exact: true })).toBeVisible();
+  await page.getByRole('button', { name: 'Graph', exact: true }).click();
+  await page.getByRole('button', { name: 'Back to start', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Reader', exact: true })).toHaveClass(/active/);
+  await expect(search).toHaveValue('');
+  await expect(page).toHaveURL(url => url.searchParams.get('bundle') === BUNDLE_URL
+    && !url.searchParams.has('q') && !url.searchParams.has('view') && url.hash === '#alpha');
+  await expect(page.getByText('Current record Alpha compatibility record', { exact: true })).toBeVisible();
+  expect(reloads).toBe(0);
+});
+
+test('keyboard inspection scrolls only the details pane to the new record heading', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 510 });
+  await page.getByRole('button', { name: 'Graph', exact: true }).click();
+  const graph = page.locator('svg.graph');
+  const beta = graph.locator('[data-route="beta"]');
+  const detail = page.locator('.right-panel .panel-scroll');
+  const before = await graph.getAttribute('viewBox');
+  await beta.focus();
+  const scrolled = await detail.evaluate(el => {
+    el.scrollTop = el.scrollHeight;
+    return el.scrollTop;
+  });
+  expect(scrolled).toBeGreaterThan(0);
+  await beta.press('Enter');
+  await expect(detail.getByRole('heading', { name: 'Beta related record', exact: true })).toBeVisible();
+  await expect.poll(() => detail.evaluate(el => el.scrollTop)).toBe(0);
+  await expect(beta).toBeFocused();
+  await expect(graph).toHaveAttribute('viewBox', before!);
+});
+
 test('SMALL-E2E-04 renders exchange nodes as question-answer narrative and response timeline', async ({ page }) => {
   const params = new URLSearchParams({ bundle: BUNDLE_URL });
   await page.goto(`?${params.toString()}#exchange`);

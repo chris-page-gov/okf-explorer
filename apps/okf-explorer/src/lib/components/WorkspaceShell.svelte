@@ -1,26 +1,40 @@
 <script lang="ts">
   import { tick, type Snippet } from 'svelte';
-  import { swipePanel, type WorkspacePanel } from '$lib/viewer/workspaceNavigation';
+  import { DEFAULT_DETAILS_WIDTH, DEFAULT_NAVIGATION_WIDTH, swipePanel, type WorkspacePanel } from '$lib/viewer/workspaceNavigation';
 
   let { navigation, content, details, actions, activePanel = $bindable('content'),
     leftCollapsed = $bindable(false), rightCollapsed = $bindable(false),
-    leftWidth = $bindable(320), rightWidth = $bindable(420),
-    navigationSummary = 'Search and facets', detailSummary = 'Details', resultSummary = ''
+    leftWidth = $bindable(DEFAULT_NAVIGATION_WIDTH), rightWidth = $bindable(DEFAULT_DETAILS_WIDTH),
+    navigationSummary = 'Search and facets', detailSummary = 'Details', detailKey = '', resultSummary = '', scrollReset = 0
   }: { navigation: Snippet; content: Snippet<[Snippet<[boolean]> | undefined]>; details: Snippet; actions?: Snippet<[boolean]>; activePanel?: WorkspacePanel;
     leftCollapsed?: boolean; rightCollapsed?: boolean; leftWidth?: number; rightWidth?: number;
-    navigationSummary?: string; detailSummary?: string; resultSummary?: string } = $props();
+    navigationSummary?: string; detailSummary?: string; detailKey?: string; resultSummary?: string;
+    scrollReset?: number } = $props();
 
   let viewportWidth = $state(1280);
   let paired = $derived(viewportWidth >= 600 && viewportWidth <= 1099);
   let showingPair = $derived(paired && activePanel !== 'content');
   let touch: { x: number; y: number; at: number } | null = null;
   let shell = $state<HTMLElement>();
+  let detailScroll = $state<HTMLElement>();
+  let previousDetailKey: string | undefined;
   let previousPanel: WorkspacePanel | undefined;
   let lastPaneFocus: HTMLElement | null = null;
   function rememberFocus(event: FocusEvent) {
     const target = event.target;
     lastPaneFocus = target instanceof HTMLElement && target.closest('.workspace-pane') ? target : null;
   }
+  $effect(() => {
+    if (!detailScroll || detailKey === previousDetailKey) return;
+    previousDetailKey = detailKey;
+    detailScroll.scrollTop = 0;
+  });
+  $effect(() => {
+    if (!scrollReset || !shell) return;
+    for (const pane of shell.querySelectorAll<HTMLElement>(':scope > .stage, :scope > aside > .panel-scroll')) {
+      pane.scrollTop = 0;
+    }
+  });
   $effect(() => {
     const panel = activePanel;
     const width = viewportWidth;
@@ -90,7 +104,7 @@
   <div class="splitter" role="separator" tabindex={rightCollapsed ? -1 : 0} aria-label="Resize details" aria-orientation="vertical" aria-valuemin="280" aria-valuemax="640" aria-valuenow={rightWidth} onkeydown={(event) => resizeKey('right', event)} onpointerdown={(event) => startResize('right', event)}></div>
   <aside tabindex="-1" data-panel="details" class="right-panel workspace-pane" class:mobile-active={activePanel === 'details'} class:rail={rightCollapsed} aria-label="Record details">
     <div class="panel-bar"><button aria-label="Toggle details" aria-expanded={!rightCollapsed} onclick={() => rightCollapsed = !rightCollapsed}>{rightCollapsed ? '‹' : '›'}</button><span class="panel-rail-label" title={detailSummary}>{detailSummary}</span></div>
-    <div class="detail panel-scroll">{@render details()}</div>
+    <div class="detail panel-scroll" bind:this={detailScroll}>{@render details()}</div>
   </aside>
   <nav class="panel-footer" class:paired aria-label="Workspace panels">
     {#if paired}
