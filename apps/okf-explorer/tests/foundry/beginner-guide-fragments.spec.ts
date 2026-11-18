@@ -1,6 +1,8 @@
+import AxeBuilder from '@axe-core/playwright';
+
 import { expect, test } from '../browserDiagnostics';
 
-test('each beginner guide chapter exposes its declared heading fragments', async ({ page }, info) => {
+test('all beginner guide pages pass fragment and automated accessibility checks', async ({ page }, info) => {
   test.setTimeout(120_000);
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('docs/beginners/index.html');
@@ -11,7 +13,7 @@ test('each beginner guide chapter exposes its declared heading fragments', async
   expect(routes.length).toBeGreaterThanOrEqual(27);
   expect(new Set(routes).size).toBe(routes.length);
 
-  const chapters: Array<{ route: string; headings: string[] }> = [];
+  const chapters: Array<{ route: string; headings: string[]; manualChecks: string[] }> = [];
   for (const route of routes) {
     const response = await page.goto(route);
     expect([200, 304], route).toContain(response?.status());
@@ -35,7 +37,11 @@ test('each beginner guide chapter exposes its declared heading fragments', async
     await page.goto(deepLink.href);
     await page.reload();
     await expect(main.locator(':target')).toHaveAttribute('id', last);
-    chapters.push({ route, headings });
+
+    const scan = await new AxeBuilder({ page })
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze();
+    expect(scan.violations.map(({ id, nodes }) => ({ id, nodes: nodes.map(node => node.target) })), route).toEqual([]);
+    chapters.push({ route, headings, manualChecks: scan.incomplete.map(finding => finding.id) });
   }
   await info.attach('observed-guide-fragments', {
     body: JSON.stringify(chapters, null, 2),

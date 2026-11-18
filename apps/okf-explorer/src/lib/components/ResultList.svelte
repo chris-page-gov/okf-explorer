@@ -43,14 +43,14 @@
 
 <style>
   .results-surface { padding:14px; min-height:0; } .results-layout { display:flex; gap:5px; align-items:center; margin-bottom:10px; }
-  .results-layout button { padding:5px 10px; } .results-layout [aria-pressed=true] { background:#005ea5; color:white; } .results-layout span { margin-left:auto; font-size:.8rem; }
+  .results-layout button { padding:5px 10px; } .results-layout [aria-pressed=true] { background:light-dark(#005ea5, #a8d0ff); color:var(--on-accent); } .results-layout span { margin-left:auto; font-size:.8rem; }
   .result-list { display:grid; gap:10px; scroll-margin-top:60px; } .result-list.cards { grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr)); }
-  .result-row { display:flex; flex-direction:column; border:1px solid #a9b9cc; border-radius:7px; background:white; min-width:0; overflow:hidden; }
-  .result-row.active { outline:3px solid #0068bc; outline-offset:-3px; } .result-row.highlighted { background:#fff9d8; border-left:6px solid #8c7000; }
+  .result-row { display:flex; flex-direction:column; border:1px solid light-dark(#a9b9cc, #8da2bc); border-radius:7px; background:var(--surface); min-width:0; overflow:hidden; }
+  .result-row.active { outline:3px solid light-dark(#0068bc, #a8d0ff); outline-offset:-3px; } .result-row.highlighted { background:light-dark(#fff9d8, #442f19); border-left:6px solid light-dark(#8c7000, #dd9d4d); }
   .result-open { display:block; width:100%; flex:1; border:0; border-radius:0; text-align:left; padding:14px; background:transparent; color:inherit; }
   .summary { padding:0 14px 14px; overflow-wrap:anywhere; }
   .result-actions { display:flex; flex-wrap:wrap; gap:8px; align-items:center; padding:0 14px 14px; }
   .result-actions a, .result-actions button { display:inline-flex; align-items:center; min-height:36px; }
-  h2 { font-size:1.15rem; margin:10px 0; } p { margin:10px 0; line-height:1.5; } small { color:#52677e; } .badge { font-size:.75rem; }
+  h2 { font-size:1.15rem; margin:10px 0; } p { margin:10px 0; line-height:1.5; } small { color:light-dark(#52677e, #bbc9d9); } .badge { font-size:.75rem; }
   .preview-record { margin:0 10px 10px; } .empty-state { grid-column:1/-1; }
 </style>

@@ -499,7 +499,7 @@ input:focus {
   padding: 4px;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: rgba(247, 249, 251, .96);
+  background: light-dark(rgba(247, 249, 251, .96), rgba(34, 47, 64, .96));
 }
 
 .detail-tabs button {

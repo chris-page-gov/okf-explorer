@@ -8,8 +8,17 @@
   identifiers and a checked SKOS vocabulary digest.
 - Export the identity-bound static Site assembly as a deterministic PROV-O
   graph for further review.
-- Exercise every generated chapter-heading fragment in a browser and retain
-  the observed route and fragment list as test evidence.
+- Exercise every generated chapter-heading fragment and run automated
+  accessibility checks on each guide page. Retain the observed routes,
+  fragments and checks that need manual review as test evidence.
+- Normalise bounded SHACL Core reports into stable, digest-bound finding IDs
+  for the planned validation view.
+- Add an opt-in subclass inference candidate with fixed processing limits and
+  explicit support for each inferred assertion.
+- Index declared ontology hierarchies and SKOS mappings with the source
+  digest and the original mapping strength.
+- Verify local boundary-pack bytes, polygon structure and matching feature
+  codes across the two levels of detail.
 
 ## Unreleased — Explorer presentation
 

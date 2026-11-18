@@ -411,9 +411,10 @@ choice on that device. You can return to System at any time. The printed
 Explorer uses the light palette.
 
 The initial theme candidate covers the Explorer shell, its shared controls,
-graph labels and the locator map. Per-view contrast, user-defined graph
-colours, forced-colours behaviour and full browser acceptance remain part
-of [the theme issue](https://github.com/chris-page-gov/okf-explorer/issues/53).
+graph labels and the locator map. Automated contrast checks cover both
+themes across the eight views of the sample bundle. Manual contrast checks,
+user-defined graph colours, forced-colours behaviour and full browser
+acceptance remain part of [the theme issue](https://github.com/chris-page-gov/okf-explorer/issues/53).
 
 | Behaviour | Expected result |
 |-----------|-----------------|

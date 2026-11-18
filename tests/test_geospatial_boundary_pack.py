@@ -1,9 +1,13 @@
 from copy import deepcopy
+from hashlib import sha256
 import json
 from pathlib import Path
+import tempfile
 import unittest
 
 from jsonschema import Draft202012Validator
+
+from scripts.check_boundary_pack import check_pack
 
 
 SCHEMA_PATH = (
@@ -83,3 +87,40 @@ class GeospatialBoundaryPackTest(unittest.TestCase):
         self.assertEqual(
             {("coverage", "nations"), ("representations", "detail", "source")}, paths
         )
+
+    def test_checks_exact_bytes_and_matches_logical_features_across_scales(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            (root / "data").mkdir()
+            manifest = root / "manifest.json"
+            for role in ("overview", "detail"):
+                self.write_geometry(root, role, "A")
+            manifest.write_text(json.dumps(self.pack), encoding="utf-8")
+            self.assertEqual(1, check_pack(manifest)["features"])
+
+            self.write_geometry(root, "detail", "B")
+            with self.assertRaisesRegex(ValueError, "bytes do not match"):
+                check_pack(manifest)
+            manifest.write_text(json.dumps(self.pack), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "identifiers differ"):
+                check_pack(manifest)
+
+            self.write_geometry(root, "detail", "A", close_ring=False)
+            manifest.write_text(json.dumps(self.pack), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "open ring"):
+                check_pack(manifest)
+
+    def write_geometry(self, root: Path, role: str, code: str, *, close_ring=True):
+        ring = [[-1, 51], [0, 51], [0, 52], [-1, 52]]
+        if close_ring:
+            ring.append(ring[0])
+        content = json.dumps({
+            "type": "FeatureCollection",
+            "features": [{
+                "type": "Feature", "properties": {"code": code},
+                "geometry": {"type": "Polygon", "coordinates": [ring]},
+            }],
+        }).encode("utf-8")
+        representation = self.pack["representations"][role]
+        (root / representation["path"]).write_bytes(content)
+        representation.update(bytes=len(content), sha256=sha256(content).hexdigest())

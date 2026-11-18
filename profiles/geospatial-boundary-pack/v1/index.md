@@ -15,6 +15,13 @@ count and digest. Both display files use longitude then latitude in
 
 ## Build and read the pack
 
+Check a local candidate with
+`uv run --locked python scripts/check_boundary_pack.py path/to/manifest.json`.
+The checker verifies bounds, exact bytes, unique logical IDs, basic ring and
+coordinate structure and matching feature codes across the two levels. The
+source licence, topology, boundary vintage and coverage still need source
+review.
+
 1. Pin the published source release and metadata. Verify each layer's licence,
    required attribution and declared coverage against the delivered archive.
 2. Reproject and derive both files with pinned tools. Reconcile their logical

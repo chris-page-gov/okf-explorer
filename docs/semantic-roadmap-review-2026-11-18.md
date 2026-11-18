@@ -63,6 +63,39 @@ uv run --locked python scripts/export_site_provenance.py \
   --output /tmp/okf-site-provenance.nt
 ```
 
+## Candidate SHACL finding identities
+
+`scripts/normalise_shacl_report.py` takes a bound bundle identifier and an
+existing SHACL Core validation report in N-Triples. For results with named
+focus nodes, shapes and simple paths, it produces deterministic finding IDs
+from the bundle, severity, focus, shape, path and constraint. Multiple results
+with those same fields share an ID and retain their occurrence count. The
+output also records the report's exact SHA-256 and its conformance outcome.
+It excludes free-text messages and values from the result. This increment
+still needs pinned shape execution, remediation metadata, cross-bundle source
+bindings and the browser finding route. [SHACL Recommendation](https://www.w3.org/TR/shacl/)
+
+## Candidate subclass inference
+
+`scripts/materialise_subclass_candidate.py` supplies the first bounded
+inference rule. Set `--enable-subclass-transitivity` explicitly to apply
+`urn:okf:rule:subclass-transitive:v1`. The rule uses asserted subclass links
+from one reviewed scope. It retains the source assertions, emits only new
+non-reflexive edges, and records the rule, activity and supporting assertion
+IDs with `inferred` status. Processing stops at 2,048 input assertions or
+20,000 edge visits. No Reader or producer uses this candidate automatically.
+The next work includes rule approval, validation integration, export
+provenance and the Explorer comparison view. [OWL 2 Profiles Recommendation](https://www.w3.org/TR/owl2-profiles/)
+
+## Candidate ontology navigation index
+
+`scripts/build_ontology_navigation_index.py` projects explicitly declared
+class and property hierarchies, SKOS schemes, terms and mappings from a
+bounded N-Triples graph. It binds the publication identifier and graph digest.
+Each mapping retains its exact, close, broader, narrower or related predicate.
+The index supplies declared edges only. Browser navigation, hierarchy-aware
+facets, links to findings and provenance, and the evaluation remain open.
+
 ## Independent work
 
 - **#76** is a source-inspection correctness issue. Route official CLML and
