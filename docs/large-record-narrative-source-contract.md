@@ -68,9 +68,13 @@ failed browser fetch leaves the official source link available. Source
 responses are held only in page memory: Explorer does not snapshot, persist or
 redistribute them.
 
-The record-level `source_api_url` field remains supported as legacy JSON-only
-behaviour. It cannot opt an XML, text or HTML response into the inline viewer;
-producers must publish a typed resource instead.
+For older bundles, the record-level `source_api_url` field still accepts JSON
+APIs. Recognised file extensions use a conservative fallback. XML and CLML
+open as inert XML, CSV and TSV open as inert text, and PDF, RDF and HTML give a
+source link. A legislation work with the same official CLML URL in both the
+structure field and the legacy field uses **Explore official text** and
+**Open official XML**. The selected version's URL is preserved. New producers
+should declare a typed resource.
 
 ## Bounded references for a selected record
 
@@ -123,7 +127,7 @@ whose kind is not `dataset`, subject to any declared endpoint-label registry.
 Reader hash navigation and browser history use the same bounded record and
 reference loading as the first page load.
 When this contract is declared, an empty or failed
-reference load does not activate the legacy `source_api_url` JSON fallback.
+reference load does not activate the legacy `source_api_url` fallback.
 Link-only references may state `media_type: not-established` when no response
 media type has been evidenced. This is not a downloadable-data or access-rights
 claim, and Explorer does not fetch those source URLs.
@@ -134,15 +138,16 @@ freshness and limitations.
 
 ## Further format-specific work
 
-The current contract gives one resource one bounded display mode. Future work
-tracked under [issue #76](https://github.com/chris-page-gov/okf-explorer/issues/76)
-should retain, rather than replace, that safe baseline:
+The current contract gives one resource one bounded display mode. The inline
+viewer checks the response's media type before parsing. It accepts a missing
+type or plain text for older servers and reports an incompatible type with
+the name of the expected renderer. Remaining work under
+[issue #76](https://github.com/chris-page-gov/okf-explorer/issues/76) covers:
 
 - allow a record to describe several representations of the same source with
   stable resource IDs, roles, media types and optional format profiles;
-- select a renderer from the declared media type and profile, then validate the
-  returned `Content-Type`, using a file extension only as a conservative
-  compatibility fallback;
+- select a specialist renderer from an explicit content profile, including
+  structured tabular and legal-document views;
 - distinguish an unavailable representation (`406`), missing resource (`404`),
   browser cross-origin restriction, invalid declared-format response and size
   limit in user-facing errors; and

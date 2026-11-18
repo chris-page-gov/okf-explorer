@@ -2270,7 +2270,7 @@ function keptFacetValue(params, key, value) {
     Array.isArray(step.selection[key]) && new Set(step.selection[key]).size === 1 && step.selection[key][0] === value));
 }
 
-async function evaluateJourneyAssertion(page, assertion, evidence) {
+export async function evaluateJourneyAssertion(page, assertion, evidence) {
   let passed = false;
   let actual = null;
   if (assertion.assertion === 'url_param_equals' || assertion.assertion === 'url_param_includes' || assertion.assertion === 'url_param_absent') {
@@ -2285,11 +2285,15 @@ async function evaluateJourneyAssertion(page, assertion, evidence) {
     actual = { legacy: params.getAll(`filter.${assertion.facet}`), exploration: params.get('explore') };
     passed = keptFacetValue(params, assertion.facet, assertion.value);
   } else if (assertion.assertion === 'sort_value') {
-    const urlValue = new URL(page.url()).searchParams.get('sort');
+    const params = new URL(page.url()).searchParams;
+    const urlValue = params.get('sort');
+    // The canonical address omits the default for the current query.
+    const effectiveSort = urlValue ?? (params.get('q')?.trim() ? 'relevance' : 'title');
     const control = page.locator('.sort-control select').first();
     const controlValue = await control.count() ? await control.inputValue() : null;
-    actual = { url: urlValue, control: controlValue, action: evidence.sortState?.value || null };
-    passed = urlValue === assertion.value && actual.action === assertion.value && (controlValue === null || controlValue === assertion.value);
+    actual = { url: urlValue, effective: effectiveSort, control: controlValue, action: evidence.sortState?.value || null };
+    passed = effectiveSort === assertion.value && actual.action === assertion.value
+      && (controlValue === null || controlValue === assertion.value);
   } else if (assertion.assertion === 'search_value') {
     actual = await page.locator('.search-input').first().inputValue();
     passed = actual === assertion.value;
