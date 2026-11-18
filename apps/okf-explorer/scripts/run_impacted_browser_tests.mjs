@@ -110,6 +110,10 @@ const SUITES = {
     family: 'foundry',
     file: 'tests/foundry/beginner-guide-fragments.spec.ts'
   },
+  governed_examples: {
+    family: 'foundry',
+    file: 'tests/foundry/governed-vocabulary.spec.ts'
+  },
   foundry_pages: {
     family: 'foundry',
     file: 'tests/foundry/foundry-docs.spec.ts'
@@ -168,7 +172,7 @@ export const TEST_TAG_SUITES = Object.freeze({
   contract: ['ask_okf', 'okf_plus_context', 'small_bundle', 'foundry_pages'],
   data: ['small_bundle', 'large_corpus', 'map', 'offline_map', 'dfe_data'],
   denominator: ['conceptual_navigation', 'large_corpus', 'facets'],
-  descriptor: ['small_bundle', 'validation', 'ontology', 'foundry_pages'],
+  descriptor: ['small_bundle', 'validation', 'ontology', 'governed_examples', 'foundry_pages'],
   determinism: ['small_bundle'],
   digest: ['ask_okf', 'small_bundle'],
   evidence: ['evidence_workbench', 'passage_boundaries', 'ask_okf', 'okf_plus_context', 'small_bundle', 'foundry_pages'],

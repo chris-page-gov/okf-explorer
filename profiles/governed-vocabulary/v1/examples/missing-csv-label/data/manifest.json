@@ -1,0 +1,1 @@
+{"chunks":{"datasets":["data/records.json"],"publishers":[],"relationships":["data/relationships.json"],"resources":[]},"counts":{"datasets":6,"records":6,"relationships":3,"resources":0},"indexes":{"overview":"data/overview.json"},"title":"CSV label validation exercise"}

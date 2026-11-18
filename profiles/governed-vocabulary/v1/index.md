@@ -56,7 +56,22 @@ check concept labels, scheme links and notation. Add new concepts through a revi
 vocabulary revision. If a concept's meaning changes, mint a new identifier
 and preserve the earlier identity and its deprecation record.
 
-This initial vocabulary supports review of [issue #49](https://github.com/chris-page-gov/okf-explorer/issues/49).
-Adoption still needs a producer exemplar and exact published resolver and
-Reader evidence. The review of that exemplar covers any accepted use of these
-candidate mappings.
+The [Reader example](examples/vocabulary/okf-explorer.json) projects this
+graph into term records and binds the Ontology index and the conforming SHACL
+report. Its records declare the exact `ontology_term` IRI. The bound index
+supplies the corresponding Explorer record route for the return link.
+The [validation exercise](examples/missing-csv-label/okf-explorer.json)
+uses a teaching copy of the graph with the CSV preferred label removed. It
+binds the resulting finding to the exact graph and named shape. Both examples
+provide a canonical SHACL report and a Data Quality Vocabulary projection.
+
+Run the example builder from the repository root to verify every staged byte.
+
+```sh
+uv run --locked python -m scripts.build_governed_vocabulary_examples --check
+```
+
+The examples support [issues #49](https://github.com/chris-page-gov/okf-explorer/issues/49)
+and [#50](https://github.com/chris-page-gov/okf-explorer/issues/50).
+Release acceptance includes the published term resolver, the Reader journeys
+and review of how a producer adopts the candidate mappings.

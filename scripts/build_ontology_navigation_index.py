@@ -8,7 +8,10 @@ from pathlib import Path
 
 from rdflib import Graph, Literal, OWL, RDF, RDFS, SKOS, URIRef
 
-from normalise_shacl_report import canonical_json, reference
+if __package__:
+    from .normalise_shacl_report import canonical_json, reference
+else:
+    from normalise_shacl_report import canonical_json, reference
 
 
 MAX_GRAPH_BYTES = 2 * 1024 * 1024

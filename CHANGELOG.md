@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased — governed vocabulary examples
+
+- Stage a vocabulary Reader example and a separate missing-label exercise
+  with reproducible Ontology, SHACL and Data Quality Vocabulary exports.
+
 ## Unreleased — semantic foundations
 
 - Reconcile the semantic roadmap with the frozen OKF 0.2 profile and record

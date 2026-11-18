@@ -1,0 +1,45 @@
+<https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/vocabulary.ttl> <http://www.w3.org/ns/dqv#hasQualityMeasurement> <urn:okf:dqv-shacl-measurement:sha256:1612e4d648200faa4d7f848ebbc62a487aa3d42edf107cff1b3773ffeb4100d9> .
+<https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/vocabulary.ttl> <http://www.w3.org/ns/dqv#hasQualityMeasurement> <urn:okf:dqv-shacl-measurement:sha256:af9e7f9b6d9821c3de03fc9ef4ab0e20f91dbe33957ad85418765feb158acbe2> .
+<https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/vocabulary.ttl> <http://www.w3.org/ns/dqv#hasQualityMeasurement> <urn:okf:dqv-shacl-measurement:sha256:d36b93fd7ce60a2cb273ffacea4de4a980d47641ba8ec9265755ebb04ba8a3bf> .
+<https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/vocabulary.ttl> <http://www.w3.org/ns/dqv#hasQualityMeasurement> <urn:okf:dqv-shacl-measurement:sha256:f1499df8bbef0a75fd5c55ecb06ba7c2e2c384f02ef52685c20ef83432519221> .
+<urn:okf:dqv-shacl-measurement:sha256:1612e4d648200faa4d7f848ebbc62a487aa3d42edf107cff1b3773ffeb4100d9> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/dqv#QualityMeasurement> .
+<urn:okf:dqv-shacl-measurement:sha256:1612e4d648200faa4d7f848ebbc62a487aa3d42edf107cff1b3773ffeb4100d9> <http://www.w3.org/ns/dqv#computedOn> <https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/vocabulary.ttl> .
+<urn:okf:dqv-shacl-measurement:sha256:1612e4d648200faa4d7f848ebbc62a487aa3d42edf107cff1b3773ffeb4100d9> <http://www.w3.org/ns/dqv#isMeasurementOf> <urn:okf:profile:dqv-shacl:v1:conforms> .
+<urn:okf:dqv-shacl-measurement:sha256:1612e4d648200faa4d7f848ebbc62a487aa3d42edf107cff1b3773ffeb4100d9> <http://www.w3.org/ns/dqv#value> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:okf:dqv-shacl-measurement:sha256:1612e4d648200faa4d7f848ebbc62a487aa3d42edf107cff1b3773ffeb4100d9> <http://www.w3.org/ns/prov#wasDerivedFrom> <urn:okf:sha256:1db51742367691ee7c9855c099c3e7380e292e1dc5bb14fcd1b00678a0a2df7f> .
+<urn:okf:dqv-shacl-measurement:sha256:1612e4d648200faa4d7f848ebbc62a487aa3d42edf107cff1b3773ffeb4100d9> <http://www.w3.org/ns/prov#wasGeneratedBy> <urn:okf:dqv-shacl-projection:sha256:bb32bcad88fb1ba386acca1971810e53aeafe38719693ef359392bc4fee8fc0e> .
+<urn:okf:dqv-shacl-measurement:sha256:af9e7f9b6d9821c3de03fc9ef4ab0e20f91dbe33957ad85418765feb158acbe2> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/dqv#QualityMeasurement> .
+<urn:okf:dqv-shacl-measurement:sha256:af9e7f9b6d9821c3de03fc9ef4ab0e20f91dbe33957ad85418765feb158acbe2> <http://www.w3.org/ns/dqv#computedOn> <https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/vocabulary.ttl> .
+<urn:okf:dqv-shacl-measurement:sha256:af9e7f9b6d9821c3de03fc9ef4ab0e20f91dbe33957ad85418765feb158acbe2> <http://www.w3.org/ns/dqv#isMeasurementOf> <urn:okf:profile:dqv-shacl:v1:violation-count> .
+<urn:okf:dqv-shacl-measurement:sha256:af9e7f9b6d9821c3de03fc9ef4ab0e20f91dbe33957ad85418765feb158acbe2> <http://www.w3.org/ns/dqv#value> "0"^^<http://www.w3.org/2001/XMLSchema#nonNegativeInteger> .
+<urn:okf:dqv-shacl-measurement:sha256:af9e7f9b6d9821c3de03fc9ef4ab0e20f91dbe33957ad85418765feb158acbe2> <http://www.w3.org/ns/prov#wasDerivedFrom> <urn:okf:sha256:1db51742367691ee7c9855c099c3e7380e292e1dc5bb14fcd1b00678a0a2df7f> .
+<urn:okf:dqv-shacl-measurement:sha256:af9e7f9b6d9821c3de03fc9ef4ab0e20f91dbe33957ad85418765feb158acbe2> <http://www.w3.org/ns/prov#wasGeneratedBy> <urn:okf:dqv-shacl-projection:sha256:bb32bcad88fb1ba386acca1971810e53aeafe38719693ef359392bc4fee8fc0e> .
+<urn:okf:dqv-shacl-measurement:sha256:d36b93fd7ce60a2cb273ffacea4de4a980d47641ba8ec9265755ebb04ba8a3bf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/dqv#QualityMeasurement> .
+<urn:okf:dqv-shacl-measurement:sha256:d36b93fd7ce60a2cb273ffacea4de4a980d47641ba8ec9265755ebb04ba8a3bf> <http://www.w3.org/ns/dqv#computedOn> <https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/vocabulary.ttl> .
+<urn:okf:dqv-shacl-measurement:sha256:d36b93fd7ce60a2cb273ffacea4de4a980d47641ba8ec9265755ebb04ba8a3bf> <http://www.w3.org/ns/dqv#isMeasurementOf> <urn:okf:profile:dqv-shacl:v1:warning-count> .
+<urn:okf:dqv-shacl-measurement:sha256:d36b93fd7ce60a2cb273ffacea4de4a980d47641ba8ec9265755ebb04ba8a3bf> <http://www.w3.org/ns/dqv#value> "0"^^<http://www.w3.org/2001/XMLSchema#nonNegativeInteger> .
+<urn:okf:dqv-shacl-measurement:sha256:d36b93fd7ce60a2cb273ffacea4de4a980d47641ba8ec9265755ebb04ba8a3bf> <http://www.w3.org/ns/prov#wasDerivedFrom> <urn:okf:sha256:1db51742367691ee7c9855c099c3e7380e292e1dc5bb14fcd1b00678a0a2df7f> .
+<urn:okf:dqv-shacl-measurement:sha256:d36b93fd7ce60a2cb273ffacea4de4a980d47641ba8ec9265755ebb04ba8a3bf> <http://www.w3.org/ns/prov#wasGeneratedBy> <urn:okf:dqv-shacl-projection:sha256:bb32bcad88fb1ba386acca1971810e53aeafe38719693ef359392bc4fee8fc0e> .
+<urn:okf:dqv-shacl-measurement:sha256:f1499df8bbef0a75fd5c55ecb06ba7c2e2c384f02ef52685c20ef83432519221> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/dqv#QualityMeasurement> .
+<urn:okf:dqv-shacl-measurement:sha256:f1499df8bbef0a75fd5c55ecb06ba7c2e2c384f02ef52685c20ef83432519221> <http://www.w3.org/ns/dqv#computedOn> <https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/vocabulary.ttl> .
+<urn:okf:dqv-shacl-measurement:sha256:f1499df8bbef0a75fd5c55ecb06ba7c2e2c384f02ef52685c20ef83432519221> <http://www.w3.org/ns/dqv#isMeasurementOf> <urn:okf:profile:dqv-shacl:v1:info-count> .
+<urn:okf:dqv-shacl-measurement:sha256:f1499df8bbef0a75fd5c55ecb06ba7c2e2c384f02ef52685c20ef83432519221> <http://www.w3.org/ns/dqv#value> "0"^^<http://www.w3.org/2001/XMLSchema#nonNegativeInteger> .
+<urn:okf:dqv-shacl-measurement:sha256:f1499df8bbef0a75fd5c55ecb06ba7c2e2c384f02ef52685c20ef83432519221> <http://www.w3.org/ns/prov#wasDerivedFrom> <urn:okf:sha256:1db51742367691ee7c9855c099c3e7380e292e1dc5bb14fcd1b00678a0a2df7f> .
+<urn:okf:dqv-shacl-measurement:sha256:f1499df8bbef0a75fd5c55ecb06ba7c2e2c384f02ef52685c20ef83432519221> <http://www.w3.org/ns/prov#wasGeneratedBy> <urn:okf:dqv-shacl-projection:sha256:bb32bcad88fb1ba386acca1971810e53aeafe38719693ef359392bc4fee8fc0e> .
+<urn:okf:dqv-shacl-projection:sha256:bb32bcad88fb1ba386acca1971810e53aeafe38719693ef359392bc4fee8fc0e> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/prov#Activity> .
+<urn:okf:dqv-shacl-projection:sha256:bb32bcad88fb1ba386acca1971810e53aeafe38719693ef359392bc4fee8fc0e> <http://www.w3.org/ns/prov#used> <urn:okf:profile:dqv-shacl:v1> .
+<urn:okf:dqv-shacl-projection:sha256:bb32bcad88fb1ba386acca1971810e53aeafe38719693ef359392bc4fee8fc0e> <http://www.w3.org/ns/prov#used> <urn:okf:sha256:1db51742367691ee7c9855c099c3e7380e292e1dc5bb14fcd1b00678a0a2df7f> .
+<urn:okf:profile:dqv-shacl:v1:conforms> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/dqv#Metric> .
+<urn:okf:profile:dqv-shacl:v1:conforms> <http://www.w3.org/2000/01/rdf-schema#label> "SHACL Core validation conformance"@en-GB .
+<urn:okf:profile:dqv-shacl:v1:conforms> <http://www.w3.org/ns/dqv#expectedDataType> <http://www.w3.org/2001/XMLSchema#boolean> .
+<urn:okf:profile:dqv-shacl:v1:info-count> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/dqv#Metric> .
+<urn:okf:profile:dqv-shacl:v1:info-count> <http://www.w3.org/2000/01/rdf-schema#label> "SHACL info occurrences"@en-GB .
+<urn:okf:profile:dqv-shacl:v1:info-count> <http://www.w3.org/ns/dqv#expectedDataType> <http://www.w3.org/2001/XMLSchema#nonNegativeInteger> .
+<urn:okf:profile:dqv-shacl:v1:violation-count> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/dqv#Metric> .
+<urn:okf:profile:dqv-shacl:v1:violation-count> <http://www.w3.org/2000/01/rdf-schema#label> "SHACL violation occurrences"@en-GB .
+<urn:okf:profile:dqv-shacl:v1:violation-count> <http://www.w3.org/ns/dqv#expectedDataType> <http://www.w3.org/2001/XMLSchema#nonNegativeInteger> .
+<urn:okf:profile:dqv-shacl:v1:warning-count> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/dqv#Metric> .
+<urn:okf:profile:dqv-shacl:v1:warning-count> <http://www.w3.org/2000/01/rdf-schema#label> "SHACL warning occurrences"@en-GB .
+<urn:okf:profile:dqv-shacl:v1:warning-count> <http://www.w3.org/ns/dqv#expectedDataType> <http://www.w3.org/2001/XMLSchema#nonNegativeInteger> .
+<urn:okf:profile:dqv-shacl:v1> <http://purl.org/dc/terms/conformsTo> <https://www.w3.org/TR/2016/NOTE-vocab-dqv-20161215/> .
+<urn:okf:sha256:1db51742367691ee7c9855c099c3e7380e292e1dc5bb14fcd1b00678a0a2df7f> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/prov#Entity> .

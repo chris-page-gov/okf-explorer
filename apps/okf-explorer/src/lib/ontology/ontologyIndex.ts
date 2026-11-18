@@ -20,7 +20,7 @@ const hierarchy = new Map<string, { source: TermKind; target: TermKind; up: stri
 export const mappingStrengths = ['exact', 'close', 'broad', 'narrow', 'related'] as const;
 export type MappingStrength = typeof mappingStrengths[number];
 
-export type Term = { id: string; kinds: TermKind[]; labels: Array<{ value: string; language: string }> };
+export type Term = { id: string; kinds: TermKind[]; labels: Array<{ value: string; language: string }>; route?: string };
 export type HierarchyEdge = {
   from: string; to: string; predicate: string;
   names: { source: TermKind; target: TermKind; up: string; down: string };
@@ -66,7 +66,11 @@ export function parseOntologyIndex(value: unknown, expectedBundle: string) {
       }
       return { value: boundedText(label.value, 1000), language: label.language };
     });
-    const term = { id, kinds, labels };
+    const route = row.route === undefined ? undefined : boundedText(row.route, 512);
+    if (route !== undefined && !/^dataset(?:\/(?:[A-Za-z0-9._~-]|%[0-9a-fA-F]{2})+)+$/.test(route)) {
+      throw new Error('Invalid ontology term record route');
+    }
+    const term = { id, kinds, labels, route };
     byId.set(id, term);
     return term;
   });
@@ -121,6 +125,8 @@ export async function loadOntology(value: string, pageOrigin: string) {
   return { ...parseOntologyIndex(document, descriptor.bundle), descriptor, resource };
 }
 
-export function ontologyLink(descriptor: string): string {
-  return '../ontology/?' + new URLSearchParams({ bundle: descriptor });
+export function ontologyLink(descriptor: string, term = ''): string {
+  const params = new URLSearchParams({ bundle: descriptor });
+  if (term && term.length <= 2048) params.set('term', term);
+  return '../ontology/?' + params;
 }

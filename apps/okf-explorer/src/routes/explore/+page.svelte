@@ -8469,6 +8469,12 @@
       {/if}
     {/snippet}
     {#snippet details()}
+        {#snippet ontologyRecord(term: unknown)}
+          {#if source?.kind === 'large' && source.descriptor.entrypoints.ontology_navigation
+              && typeof term === 'string' && term.length > 0 && term.length <= 2048}
+            <p><a href={ontologyLink(source.url, term)}>Inspect ontology term</a></p>
+          {/if}
+        {/snippet}
         {#if source?.kind === 'large'}
           {#if largeInspectedEdge}
             {@const relationshipEdges = inspectedRelationshipEdges()}
@@ -8690,6 +8696,7 @@
                 .filter((access) => source?.kind !== 'large' || !source.loadResourcesForRecord || !access.legacy)}
               <span class="badge">{recordTypeLabel(largeDetail.dataset, capitalise(recordSingular()))}</span>
               <h2>{largeLabelForRoute(largeDetail.route)}</h2>
+              {@render ontologyRecord(largeDetail.dataset.ontology_term)}
               {#if datasetMatchReason(largeDetail.dataset)}
                 <p class="match-explanation"><strong>Why this matched</strong> {datasetMatchReason(largeDetail.dataset)}</p>
               {/if}
@@ -9177,6 +9184,7 @@
             {:else if largeDetail.kind === 'search'}
               <span class="badge">{recordTypeLabel(largeDetail.result, capitalise(recordSingular()))}</span>
               <h2>{largeDatasetLabel(largeDetail.result)}</h2>
+              {@render ontologyRecord(largeDetail.result.ontology_term)}
               <div class="detail-actions primary-detail-actions">
                 {#if largeHasRecordLocator()}
                   <button class="primary-action" type="button" onclick={() => void ensureLargeDataset(largeDetail.route, largeDetail.result)}>

@@ -10,7 +10,10 @@ from pathlib import Path
 from pyshacl import validate
 from rdflib import BNode, Graph, Literal, OWL, RDF, SH, URIRef
 
-from normalise_shacl_report import MAX_REPORT_BYTES, SEVERITIES, canonical_json, normalise_report
+if __package__:
+    from .normalise_shacl_report import MAX_REPORT_BYTES, SEVERITIES, canonical_json, normalise_report
+else:
+    from normalise_shacl_report import MAX_REPORT_BYTES, SEVERITIES, canonical_json, normalise_report
 
 
 MAX_GRAPH_BYTES = 2 * 1024 * 1024

@@ -146,6 +146,9 @@
           <article aria-labelledby="term-heading">
             <h3 id="term-heading">{termLabel(selected)}</h3>
             <p>{@render iri(selected.id)}</p>
+            {#if selected.route}
+              <p><a href={sourceRecordLink(loaded.descriptor.url, selected.route)}>Open term record in Explorer</a></p>
+            {/if}
             <p>{selected.kinds.map(type => kindLabels[type]).join(' · ')}</p>
             {#if parents.length || children.length}
               <h4>Declared hierarchy</h4>
