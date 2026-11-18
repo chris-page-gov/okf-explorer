@@ -1,6 +1,6 @@
 # Markdown, OKF And Small Bundles
 
-The repository's original research corpus starts as Markdown. This keeps the
+The repository's original research corpus starts as [Markdown](16-beginner-glossary.md#markdown). This keeps the
 material reviewable by people while allowing a builder to create a graph and a
 machine-readable bundle.
 
@@ -43,7 +43,7 @@ sources:
 ---
 ```
 
-This is called **frontmatter**. It gives the builder structured values without
+This is called **[frontmatter](16-beginner-glossary.md#frontmatter)**. It gives the builder structured values without
 hiding the human explanation in a database.
 
 Typical fields include:
@@ -167,7 +167,7 @@ Older bundles may use different names:
 - body citations instead of structured `sources`.
 
 The small-bundle loader normalises compatible variants into one internal
-corpus shape. Compatibility is useful, but it has limits: normalisation
+corpus shape. Compatibility is useful, but it has limits: [normalisation](16-beginner-glossary.md#normalisation)
 should not guess semantic identity that the pack did not state.
 
 Chapter 17 explains the v0.2 trust, lifecycle and passive attestation fields
@@ -196,10 +196,10 @@ These related formats serve different jobs:
 - Markdown is the main human-authored narrative;
 - frontmatter uses a YAML-compatible notation for metadata;
 - JSON is the browser-friendly generated runtime form;
-- YAML-LD is used for selected semantic source documents that are converted to
+- [YAML-LD](16-beginner-glossary.md#yaml-ld) is used for selected semantic source documents that are converted to
   JSON-LD.
 
-YAML permits features and implicit conversions that can surprise readers.
+[YAML](16-beginner-glossary.md#yaml) permits features and implicit conversions that can surprise readers.
 The semantic tooling therefore uses a defined parser and rejects unsupported
 representations. A file extension does not remove the need for a precise data
 contract.
@@ -230,3 +230,15 @@ For any Markdown page, ask:
 5. Which generated files must change if the source changes?
 
 Those questions separate authoring convenience from the durable data model.
+
+## Learning path connections
+
+- [Learning path overview](index.md#learning-path)
+- Previous chapter is [Web And Browser Foundations](02-web-and-browser-foundations.md#learning-path-connections).
+- Next chapter is [Large Corpora And Progressive Loading](04-large-corpora-and-progressive-loading.md#learning-path-connections).
+- Glossary terms in this chapter include [Frontmatter](16-beginner-glossary.md#frontmatter),
+  [Markdown](16-beginner-glossary.md#markdown),
+  [Normalisation](16-beginner-glossary.md#normalisation),
+  [YAML](16-beginner-glossary.md#yaml),
+  [YAML-LD](16-beginner-glossary.md#yaml-ld).
+- Apply this chapter in [exercise 1](25-life-course-worked-example.md#exercise-1-recognise-entities-and-concepts).

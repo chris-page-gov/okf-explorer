@@ -6,7 +6,7 @@ and which exact application bytes were tested.
 
 ## Governed Terms
 
-A governed term registry explains the metadata and predicates used by a pack:
+A governed term [registry](16-beginner-glossary.md#registry) explains the metadata and predicates used by a pack:
 
 - stable identifier;
 - preferred label and definition;
@@ -75,7 +75,7 @@ Before reporting governed enrichment as ready, the Explorer cross-checks:
 - a reviewer receipt;
 - byte counts and SHA-256 hashes;
 - audit identity and decision;
-- snapshot and material bindings;
+- [snapshot](16-beginner-glossary.md#snapshot) and material bindings;
 - predicate and evidence vocabularies;
 - chunk inventory and counts.
 
@@ -95,7 +95,7 @@ The loader checks:
 - digest;
 - record and row counts;
 - route identity;
-- predicate vocabulary;
+- predicate [vocabulary](16-beginner-glossary.md#vocabulary);
 - evidence structure.
 
 If an accepted shard fails, the route remains explicitly incomplete and
@@ -254,3 +254,14 @@ decisions from first principles.
 
 Return to [A contributor's repository tour](15-contributor-repository-tour.md)
 before changing these contracts.
+
+## Learning path connections
+
+- [Learning path overview](index.md#learning-path)
+- Previous chapter is [Foundry Authoring And Domain Profiles](19-foundry-authoring-and-domain-profiles.md#learning-path-connections).
+- Next chapter is [Release Gates, Evidence And Owner Review](21-release-gates-evidence-and-owner-review.md#learning-path-connections).
+- Glossary terms in this chapter include [Registry](16-beginner-glossary.md#registry),
+  [Release candidate, RC](16-beginner-glossary.md#release-candidate-rc),
+  [Snapshot](16-beginner-glossary.md#snapshot),
+  [Vocabulary](16-beginner-glossary.md#vocabulary).
+- Apply this chapter in [exercise 3](25-life-course-worked-example.md#exercise-3-review-the-status-of-a-claim).

@@ -103,6 +103,8 @@ vocabulary can be flat; a [taxonomy](#taxonomy) adds classification structure,
 and an [ontology](#ontology) can add richer semantics. See
 [Governed terms](20-governed-enrichment-and-release-assurance.md#governed-terms).
 
+In the life-course example, [classify the school application](25-life-course-worked-example.md#exercise-1-recognise-entities-and-concepts).
+
 ## Identifier
 
 **Definition.** A value assigned to distinguish and refer to a thing within a
@@ -114,6 +116,8 @@ is not a reliable identifier. Local IDs need a declared namespace; global
 semantic identities use absolute IRIs in this profile. See [URL](#url),
 [URI](#uri), [IRI](#iri) and
 [Labels are not identifiers](06-knowledge-graphs-and-identifiers.md#labels-are-not-identifiers).
+
+In the life-course example, [give a service episode its own identifier](25-life-course-worked-example.md#follow-alex-through-ten-life-events).
 
 ## URL
 
@@ -146,22 +150,26 @@ identifier model to a wider repertoire of characters while retaining defined
 mapping and syntax rules.
 
 **Boundary and example.** RDF uses IRIs to identify resources and properties.
-This project's material semantic nodes and predicates use absolute IRIs plus
+This project's material semantic nodes and [predicates](16-beginner-glossary.md#predicate) use absolute IRIs plus
 validated local Explorer routes. An IRI can identify without being a page the
 Reader may fetch. See [URI](#uri), [identifier](#identifier),
 [RFC 3987](24-authoritative-source-register.md#s06-rfc-3987) and
 [RDF 1.1 Concepts](24-authoritative-source-register.md#s08-rdf-11-concepts).
 
+In the life-course example, [read a predicate IRI](25-life-course-worked-example.md#trace-one-relationship-to-its-evidence).
+
 ## Class
 
 **Definition.** A category whose members are things of a described kind.
 
-**Boundary and example.** Public Service can be a class; one council's
+**Boundary and example.** Public Service can be a [class](16-beginner-glossary.md#class); one council's
 missed-collection route can be an [instance](#instance). A class is not simply
 a display group or a tag, and membership should have declared semantics. In
 RDFS and OWL, class statements can participate in inference; validation is a
 separate layer. See [Classes, instances and properties](06-knowledge-graphs-and-identifiers.md#classes-instances-and-properties)
 and [RDFS](24-authoritative-source-register.md#s09-rdf-schema-11).
+
+In the life-course example, [group public-service entities into classes](25-life-course-worked-example.md#follow-alex-through-ten-life-events).
 
 ## Instance
 
@@ -173,6 +181,8 @@ of a Report class. Two records with similar labels are not necessarily the
 same instance, and one real-world thing can have multiple records that require
 evidence-backed reconciliation. See [class](#class), [identifier](#identifier)
 and [Identity and similarity](06-knowledge-graphs-and-identifiers.md#identity-and-similarity).
+
+In the life-course example, [distinguish a class from one application](25-life-course-worked-example.md#follow-alex-through-ten-life-events).
 
 ## Property
 
@@ -186,6 +196,8 @@ occupies the middle position of an RDF triple it is the [predicate](#predicate).
 See [RDF](24-authoritative-source-register.md#s08-rdf-11-concepts) and
 [Classes, instances and properties](06-knowledge-graphs-and-identifiers.md#classes-instances-and-properties).
 
+In the life-course example, [describe a service episode](25-life-course-worked-example.md#follow-alex-through-ten-life-events).
+
 ## Predicate
 
 **Definition.** The IRI in the middle position of an RDF triple, identifying
@@ -198,6 +210,8 @@ domain predicate. See [triple](#triple), [property](#property),
 [Directed and typed relationships](06-knowledge-graphs-and-identifiers.md#directed-and-typed-relationships)
 and [the link boundary](00-data-information-knowledge-and-ontology.md#ordinary-links-are-not-domain-predicates).
 
+In the life-course example, [choose a relationship predicate](25-life-course-worked-example.md#exercise-2-author-a-directed-relationship).
+
 ## Triple
 
 **Definition.** The basic RDF statement form: subject, predicate and object.
@@ -209,6 +223,8 @@ profile therefore keeps a direct triple synchronised with an evidence-bearing
 [assertion](#assertion). See
 [RDF: the graph model](07-semantic-web-and-ontologies.md#rdf-the-graph-model)
 and [RDF 1.1 Concepts](24-authoritative-source-register.md#s08-rdf-11-concepts).
+
+In the life-course example, [read the school application triple](25-life-course-worked-example.md#trace-one-relationship-to-its-evidence).
 
 ## Assertion
 
@@ -223,6 +239,8 @@ not true merely because it is present. See [triple](#triple), [evidence](#eviden
 [status](#status), [scope](#scope) and
 [Assertion-level evidence](08-validation-provenance-and-catalogue-standards.md#assertion-level-evidence).
 
+In the life-course example, [read the evidence-bearing assertion](25-life-course-worked-example.md#trace-one-relationship-to-its-evidence).
+
 ## Evidence
 
 **Definition.** Material that supports, challenges or helps assess a claim or
@@ -235,6 +253,8 @@ be incomplete, conflicting or unavailable. It remains separate from
 [authority](#authority), [confidence](#confidence) and [rights](#rights). See
 [CCCEV](24-authoritative-source-register.md#s20-cccev-220) and
 [Evidence before fluency](08-validation-provenance-and-catalogue-standards.md#evidence-before-fluency).
+
+In the life-course example, [identify evidence for each part of a claim](25-life-course-worked-example.md#exercise-2-author-a-directed-relationship).
 
 ## Authority
 
@@ -249,17 +269,21 @@ not create authority. See
 [Authority, derivation and freshness](18-federated-bundles.md#authority-derivation-and-freshness)
 and [Assertion status](06-knowledge-graphs-and-identifiers.md#assertion-status).
 
+In the life-course example, [identify whose authority applies](25-life-course-worked-example.md#exercise-2-author-a-directed-relationship).
+
 ## Provenance
 
 **Definition.** Information about the origin, custody and transformation of a
 claim, record or artefact.
 
-**Boundary and example.** Provenance can record which source supplied a rule,
+**Boundary and example.** [Provenance](16-beginner-glossary.md#provenance) can record which source supplied a rule,
 when it was observed, which activity normalised it and which output was
 generated. Provenance supports assessment but does not itself decide trust or
 truth. See [evidence](#evidence), [observation time](#observation-time),
 [Provenance](08-validation-provenance-and-catalogue-standards.md#provenance)
 and [PROV-O](24-authoritative-source-register.md#s15-prov-o).
+
+In the life-course example, [trace a claim to its source](25-life-course-worked-example.md#trace-one-relationship-to-its-evidence).
 
 ## Rights
 
@@ -273,6 +297,8 @@ licence does not make a claim accurate or authoritative. See
 [Licensing](13-security-privacy-accessibility-and-responsible-use.md#licensing),
 [DCMI Terms](24-authoritative-source-register.md#s17-dcmi-metadata-terms)
 and [OGL 3.0](24-authoritative-source-register.md#s32-open-government-licence-30).
+
+In the life-course example, [record the rights of the exercise source](25-life-course-worked-example.md#trace-one-relationship-to-its-evidence).
 
 ## Licence
 
@@ -311,6 +337,8 @@ named. Status does not describe geographic or population coverage; that is
 [Assertion status](06-knowledge-graphs-and-identifiers.md#assertion-status) and
 [Two independent labels](22-evaluation-foundry-and-yaml-ld.md#two-independent-labels-status-and-scope).
 
+In the life-course example, [review four different claim statuses](25-life-course-worked-example.md#exercise-3-review-the-status-of-a-claim).
+
 ## Scope
 
 **Definition.** The declared boundary within which a claim, record, rule or
@@ -334,6 +362,8 @@ universal sequence, and the same event can create different branches by
 jurisdiction and circumstance. A life event is not a department or a single
 transaction. See [user need](#user-need), [service episode](#service-episode)
 and [CPSV-AP](24-authoritative-source-register.md#s19-cpsv-ap-320).
+
+In the life-course example, [follow ten possible life events](25-life-course-worked-example.md#follow-alex-through-ten-life-events).
 
 ## User Need
 
@@ -359,6 +389,8 @@ web page, form, channel, organisation or one person's episode. See
 [service episode](#service-episode), [channel](#channel), [CPSV-AP](24-authoritative-source-register.md#s19-cpsv-ap-320)
 and [Open Referral UK](24-authoritative-source-register.md#s21-open-referral-uk).
 
+In the life-course example, [identify a public service in the life course](25-life-course-worked-example.md#follow-alex-through-ten-life-events).
+
 ## Service Episode
 
 **Definition.** One bounded interaction or attempt involving a person and a
@@ -370,6 +402,8 @@ outcome, including failure or unresolved state. It is not the public-service
 definition itself and need not be a successful transaction. See
 [public service](#public-service), [channel](#channel), [outcome](#outcome) and
 [the branching example](00-data-information-knowledge-and-ontology.md#model-a-service-episode-including-failure).
+
+In the life-course example, [distinguish an episode from the service it uses](25-life-course-worked-example.md#exercise-1-recognise-entities-and-concepts).
 
 ## Requirement
 
@@ -443,6 +477,8 @@ routing page does not prove a uniform process. See [scope](#scope), [rule](#rule
 [UK legislation data](11-uk-legislation-data.md) and the
 [four local variants](00-data-information-knowledge-and-ontology.md#information-data-put-into-a-useful-context).
 
+In the life-course example, [bound an example to England](25-life-course-worked-example.md#follow-alex-through-ten-life-events).
+
 ## Observation Time
 
 **Definition.** The date or time when a source, fact or condition was observed
@@ -454,6 +490,8 @@ the service-event time or the assertion-generation time. Recording precision
 matters: a year is not a day. See [provenance](#provenance), [scope](#scope),
 [Timeline](09-explorer-views-and-presentation.md#timeline) and
 [Assertion-level evidence](08-validation-provenance-and-catalogue-standards.md#assertion-level-evidence).
+
+In the life-course example, [record when a source was consulted](25-life-course-worked-example.md#trace-one-relationship-to-its-evidence).
 
 ## Relationships Among The Terms
 
@@ -476,3 +514,16 @@ The definitions are meant to be used together:
 
 That chain is a modelling aid, not a claim that every person experiences one
 linear journey.
+
+## Learning path connections
+
+- [Learning path overview](index.md#learning-path)
+- Previous chapter is [Evaluation Foundry And YAML-LD](22-evaluation-foundry-and-yaml-ld.md#learning-path-connections).
+- Next chapter is [Annotated Authoritative-Source Register](24-authoritative-source-register.md#learning-path-connections).
+- Glossary terms in this chapter include [Assertion](16-beginner-glossary.md#assertion),
+  [Class](16-beginner-glossary.md#class),
+  [Instance](16-beginner-glossary.md#instance),
+  [IRI](16-beginner-glossary.md#iri),
+  [Predicate](16-beginner-glossary.md#predicate),
+  [Provenance](16-beginner-glossary.md#provenance).
+- Apply this chapter in [exercise 1](25-life-course-worked-example.md#exercise-1-recognise-entities-and-concepts).

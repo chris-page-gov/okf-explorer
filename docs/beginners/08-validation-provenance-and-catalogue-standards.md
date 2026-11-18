@@ -55,7 +55,7 @@ not prove that a source is authoritative or a URL is safe to contact.
 
 ## SHACL
 
-Shapes Constraint Language, or **SHACL**, validates RDF graphs. A SHACL shape
+Shapes Constraint Language, or **[SHACL](16-beginner-glossary.md#shacl)**, validates RDF graphs. A SHACL shape
 can say that nodes targeted as datasets must have:
 
 - exactly one title;
@@ -64,9 +64,9 @@ can say that nodes targeted as datasets must have:
 - evidence for an inferred statement;
 - a value drawn from a controlled scheme.
 
-A validation result can identify:
+A [validation](16-beginner-glossary.md#validation) result can identify:
 
-- the focus node;
+- the [focus node](16-beginner-glossary.md#focus-node);
 - the shape and constraint;
 - the property path;
 - severity;
@@ -102,7 +102,7 @@ The Explorer architecture reports validation and inference separately.
 **Conformance** is meeting a named specification or profile, including its
 required rules and versions.
 
-A project can borrow fields from DCAT without claiming DCAT conformance. The
+A project can borrow fields from [DCAT](16-beginner-glossary.md#dcat) without claiming DCAT conformance. The
 repository currently describes parts of its alignment as
 “standards-alignable, not standards-conformant.” This is more honest than
 making a broad claim from a few matching field names.
@@ -116,7 +116,7 @@ Conformance statements should name:
 
 ## Provenance
 
-**Provenance** is information about origin and transformation:
+**[Provenance](16-beginner-glossary.md#provenance)** is information about origin and transformation:
 
 - which source supplied a value;
 - when it was observed;
@@ -133,7 +133,7 @@ another.
 
 The W3C PROV data model organises provenance around:
 
-- **Entity** — a source document, dataset, assertion or generated artefact;
+- **Entity** — a source document, dataset, [assertion](16-beginner-glossary.md#assertion) or generated artefact;
 - **Activity** — harvesting, parsing, normalisation, mapping, inference or
   validation;
 - **Agent** — a person, organisation or software system responsible for an
@@ -178,7 +178,7 @@ Data Catalog Vocabulary, or **DCAT**, supplies RDF terms for:
 - catalogue records;
 - datasets;
 - data services;
-- distributions;
+- [distributions](16-beginner-glossary.md#distribution);
 - publishers, themes, licences and access URLs.
 
 A dataset is the conceptual data collection. A distribution is a particular
@@ -190,7 +190,7 @@ material.
 
 ## DCAT-AP
 
-DCAT Application Profile, or **DCAT-AP**, narrows and extends DCAT for European
+DCAT Application Profile, or **[DCAT-AP](16-beginner-glossary.md#dcat-ap)**, narrows and extends DCAT for European
 data portals. An application profile states which terms, cardinalities and
 controlled vocabularies a community expects.
 
@@ -199,10 +199,10 @@ visible. A mapping is not the same as complete conformance.
 
 ## DQV
 
-Data Quality Vocabulary, or **DQV**, describes quality measurements,
+Data Quality Vocabulary, or **[DQV](16-beginner-glossary.md#dqv)**, describes quality measurements,
 annotations, policies and metrics alongside datasets.
 
-A metadata completeness score needs:
+A [metadata](16-beginner-glossary.md#metadata) completeness score needs:
 
 - the metric definition;
 - calculation method;
@@ -215,7 +215,7 @@ evidence.
 
 ## OpenAPI
 
-OpenAPI describes HTTP APIs:
+[OpenAPI](16-beginner-glossary.md#openapi) describes HTTP APIs:
 
 - paths and operations;
 - request parameters and bodies;
@@ -273,6 +273,28 @@ limits remain inspectable.
 
 ## Next
 
+Apply the provenance fields to
+[a worked service assertion](25-life-course-worked-example.md#trace-one-relationship-to-its-evidence).
+
 [Explorer views and presentation](09-explorer-views-and-presentation.md)
 explains how one evidence model becomes several usable interfaces without
 changing its meaning.
+
+## Learning path connections
+
+- [Learning path overview](index.md#learning-path)
+- Previous chapter is [The Semantic Web And Ontologies](07-semantic-web-and-ontologies.md#learning-path-connections).
+- Next chapter is [Explorer Views And Presentation](09-explorer-views-and-presentation.md#learning-path-connections).
+- Glossary terms in this chapter include [Assertion](16-beginner-glossary.md#assertion),
+  [Closed-world validation](16-beginner-glossary.md#closed-world-validation),
+  [DCAT](16-beginner-glossary.md#dcat),
+  [DCAT-AP](16-beginner-glossary.md#dcat-ap),
+  [Distribution](16-beginner-glossary.md#distribution),
+  [DQV](16-beginner-glossary.md#dqv),
+  [Focus node](16-beginner-glossary.md#focus-node),
+  [Metadata](16-beginner-glossary.md#metadata),
+  [OpenAPI](16-beginner-glossary.md#openapi),
+  [Provenance](16-beginner-glossary.md#provenance),
+  [SHACL](16-beginner-glossary.md#shacl),
+  [Validation](16-beginner-glossary.md#validation).
+- Apply this chapter in [exercise 3](25-life-course-worked-example.md#exercise-3-review-the-status-of-a-claim).

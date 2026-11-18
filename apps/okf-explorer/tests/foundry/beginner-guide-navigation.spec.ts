@@ -10,6 +10,32 @@ const deepSectionRoute =
 const pinnedKey = 'okf-beginner-guide-sidebar-pinned-v1';
 const collapsedKey = 'okf-beginner-guide-sidebar-collapsed-v1';
 
+test('the worked life course and exercise answers are readable without JavaScript', async ({
+  browser, baseURL, browserDiagnostics
+}) => {
+  const context = await browser.newContext({ baseURL, javaScriptEnabled: false });
+  try {
+    const page = await context.newPage();
+    browserDiagnostics.watch(page);
+    await page.goto(indexRoute);
+    await page.locator('#main-content').getByRole('link', {
+      name: 'A fictional life in public services', exact: true
+    }).click();
+    const main = page.locator('#main-content');
+    await expect(main.getByRole('heading', { name: 'A fictional life in public services' })).toBeVisible();
+    await expect(main.getByRole('table').first().locator('tbody tr')).toHaveCount(10);
+    await expect(main.getByText('Worked answer.', { exact: true })).toHaveCount(2);
+    await expect(main.getByRole('columnheader', { name: 'Worked answer' })).toBeVisible();
+    const target = main.getByRole('link', { name: 'exercise 1', exact: true });
+    await target.click();
+    await expect(page).toHaveURL(/#exercise-1-recognise-entities-and-concepts$/);
+    await page.reload();
+    await expect(main.locator(':target')).toHaveText(/Exercise 1\. Recognise entities and concepts/);
+  } finally {
+    await context.close();
+  }
+});
+
 async function resetGuideState(page: import('@playwright/test').Page) {
   await page.goto(indexRoute);
   await page.evaluate(
@@ -97,7 +123,7 @@ test('chapter navigation forms a keyboard-accessible persistent rail', async ({ 
 
   await Promise.all([
     page.waitForURL((url) => url.pathname.endsWith(firstChapterRoute)),
-    page.getByRole('link', { name: 'The Product In Plain Language', exact: true }).click()
+    sidebar.getByRole('link', { name: 'The Product In Plain Language', exact: true }).click()
   ]);
   await page.mouse.move(700, 300);
   await expect(page.locator('html')).toHaveAttribute('data-guide-sidebar-collapsed', 'true');
@@ -130,7 +156,7 @@ test('chapter navigation forms a keyboard-accessible persistent rail', async ({ 
 
   await Promise.all([
     page.waitForURL(/02-web-and-browser-foundations\.html$/),
-    page.getByRole('link', { name: 'Web And Browser Foundations', exact: true }).click()
+    sidebar.getByRole('link', { name: 'Web And Browser Foundations', exact: true }).click()
   ]);
   await page.mouse.move(700, 300);
   await expect(page.locator('html')).toHaveAttribute('data-guide-sidebar-pinned', 'true');
@@ -156,9 +182,12 @@ test('chapter navigation forms a keyboard-accessible persistent rail', async ({ 
 
 test('narrow and touch layouts keep every chapter available without the rail', async ({
   browser,
+  browserName,
+  baseURL,
   browserDiagnostics
 }) => {
   const context = await browser.newContext({
+    baseURL,
     hasTouch: true,
     viewport: { width: 390, height: 800 }
   });
@@ -193,6 +222,17 @@ test('narrow and touch layouts keep every chapter available without the rail', a
   await page.touchscreen.tap(box!.x + box!.width / 2, box!.y + box!.height / 2);
   await expect(page).toHaveURL(new RegExp(`${firstChapterRoute}$`));
   await expect(page.locator('html')).toHaveAttribute('data-guide-sidebar-collapsed', 'false');
+
+  await page.goto(deepSectionRoute.split('#')[0]);
+  await page.evaluate(() => new Promise<void>((resolve) =>
+    window.requestAnimationFrame(() => window.requestAnimationFrame(() => resolve()))
+  ));
+  expect(await page.evaluate(() => window.scrollY)).toBe(0);
+  await page.keyboard.press(browserName === 'webkit' && process.platform === 'darwin' ? 'Alt+Tab' : 'Tab');
+  const skip = page.getByRole('link', { name: 'Skip to the guide' });
+  await expect(skip).toBeFocused();
+  await skip.press('Enter');
+  await expect(page.locator('#main-content')).toBeFocused();
 
   await context.close();
 });

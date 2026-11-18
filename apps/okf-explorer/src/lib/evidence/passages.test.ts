@@ -56,6 +56,10 @@ describe('passage boundary review', () => {
     const result = await previewCorrection(item, data, correction(item));
     expect(result.accepted).toBe(true);
     expect(result.migration).toEqual([{ from: 'old', to: ['new-a', 'new-b'], status: 'mapped' }]);
+    expect(result.verifiedText?.map(({ text }) => text)).toEqual(['Alpha', 'Beta']);
+    expect(result.impact.passage).toMatchObject({
+      identity_changes: { retained: [], retired: ['old'], introduced: ['new-a', 'new-b'] }
+    });
   });
   test('rejects stale source or baseline and undeclared added bytes', async () => {
     const item = fixture(), data = await loaded(item);

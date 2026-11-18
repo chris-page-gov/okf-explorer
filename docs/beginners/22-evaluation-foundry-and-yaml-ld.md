@@ -216,7 +216,7 @@ Validation has several layers:
 4. The assembled Site audit checks the rewritten HTML routes and internal
    references in the reading closure.
 5. Representative protected source pages are opened in a genuine interactive
-   browser on an independent freshness schedule. A small receipt outside the
+   browser on an independent freshness schedule. A small [receipt](16-beginner-glossary.md#receipt) outside the
    candidate records when each page was seen, its requested and final URL,
    status, title and expected identity text. The evaluator rejects a challenge
    page, failed status, unexpected redirect or mismatched identity; the receipt
@@ -325,7 +325,7 @@ generated JSON-LD file is never a competing hand-edited source of truth.
 
 The full heritage graph is generated from thousands of frozen source rows, so
 no person sensibly types that root file by hand. Here “authoring form” means a
-named deterministic build stage: the builder emits real YAML, reparses those
+named [deterministic](16-beginner-glossary.md#deterministic) build stage: the builder emits real YAML, reparses those
 exact YAML-LD bytes through the same safe loader used for hand-authored front
 matter, and derives the semantic shards and JSON-LD only from that parsed data
 model. This prevents a Python object from being serialised twice and merely
@@ -364,6 +364,12 @@ understand. A semantic reader additionally understands a globally stable
 subject, a class and governed relationship predicates. In this example the
 last property directly represents the asset-to-Coventry link; its separate
 reified assertion carries the evidence and provenance for that link.
+
+The `statistics.data.gov.uk` address is the identifier used in this snapshot.
+The ONS retired the former data service. Use the current [ONS area profile for
+Coventry (E08000026)](https://www.ons.gov.uk/explore-local-statistics/areas/E08000026-coventry)
+to look up that code, and keep the original identifier when reproducing this
+example.
 
 The example uses the official NHLE page as the asset identity because it is a
 stable, identifier-bound source page. Some records, such as an annual workbook
@@ -517,3 +523,15 @@ Return to [Foundry authoring and domain profiles](19-foundry-authoring-and-domai
 for the general publication process, or continue to
 [governed enrichment and release assurance](20-governed-enrichment-and-release-assurance.md)
 when a functionality evaluation is being promoted into a governed product.
+
+## Learning path connections
+
+- [Learning path overview](index.md#learning-path)
+- Previous chapter is [Release Gates, Evidence And Owner Review](21-release-gates-evidence-and-owner-review.md#learning-path-connections).
+- Next chapter is [Foundational Definitions](23-foundational-definitions.md#learning-path-connections).
+- Glossary terms in this chapter include [Candidate](16-beginner-glossary.md#candidate),
+  [Deterministic](16-beginner-glossary.md#deterministic),
+  [Fixture](16-beginner-glossary.md#fixture),
+  [Projection](16-beginner-glossary.md#projection),
+  [Receipt](16-beginner-glossary.md#receipt).
+- Apply this chapter in [exercise 3](25-life-course-worked-example.md#exercise-3-review-the-status-of-a-claim).

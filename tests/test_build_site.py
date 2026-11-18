@@ -626,6 +626,18 @@ class BuildSiteTests(unittest.TestCase):
             self.assertEqual(len(sources), len(rendered))
             self.assertTrue((target / "guide.css").is_file())
             self.assertTrue((target / "guide.js").is_file())
+            references = json.loads((target / "cross-references.json").read_text(encoding="utf-8"))
+            self.assertEqual(set(references["pages"]), {path.name for path in rendered})
+            self.assertIn("bfc-bfe-bgc-and-buc", references["glossary_terms"])
+            self.assertEqual(3, len(references["exercises"]))
+            self.assertIn(
+                {
+                    "source": "10-geospatial-data.html#learning-path-connections",
+                    "target": "16-beginner-glossary.html#bfc-bfe-bgc-and-buc",
+                    "kind": "reciprocal",
+                },
+                references["guide_links"],
+            )
 
             index = (target / "index.html").read_text(encoding="utf-8")
             self.assertIn('<html lang="en-GB">', index)

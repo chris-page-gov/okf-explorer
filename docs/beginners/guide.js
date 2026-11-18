@@ -105,9 +105,11 @@
 
   const restoreGuidePosition = () => {
     window.requestAnimationFrame(() => {
-      sidebar
-        .querySelector('a[aria-current="page"]')
-        ?.scrollIntoView({ block: 'nearest' });
+      if (desktop.matches) {
+        sidebar
+          .querySelector('a[aria-current="page"]')
+          ?.scrollIntoView({ block: 'nearest' });
+      }
       restoreFragmentInArticle();
     });
   };

@@ -32,7 +32,7 @@ record passed.
 “Among the current results, which publishers, formats or topics occur, and how
 often?”
 
-Facets reveal structure and provide filter controls.
+[Facets](16-beginner-glossary.md#facet) reveal structure and provide filter controls.
 
 A conceptual facet, such as a circumstance or topic, can be more useful than a
 volume or file-type facet. Its meaning depends on the classification method.
@@ -54,7 +54,7 @@ difficult to diagnose.
 
 ## From Text To Tokens
 
-A search index first turns text into normalised **tokens**. A simple example:
+A search [index](16-beginner-glossary.md#index) first turns text into normalised **tokens**. A simple example:
 
 ```text
 "Housing prices in London" → ["housing", "prices", "london"]
@@ -78,7 +78,7 @@ housing → record 2, record 18, record 940
 prices  → record 2, record 7, record 940
 ```
 
-Each list is a **postings list**. A posting can also record:
+Each list is a **[postings](16-beginner-glossary.md#posting) list**. A posting can also record:
 
 - which field matched;
 - how often the term occurred;
@@ -120,7 +120,7 @@ It is still a product choice, not an objective measure of truth.
 
 ## IDF And Exact Matching
 
-Inverse document frequency, or **IDF**, gives more weight to uncommon terms.
+Inverse document frequency, or **[IDF](16-beginner-glossary.md#idf)**, gives more weight to uncommon terms.
 A word appearing in nearly every record is less useful for distinguishing
 results than a rare specialist term.
 
@@ -229,7 +229,7 @@ about the corpus.
 
 ## Durable Retrieval State
 
-A useful retrieval URL records:
+A useful [retrieval](16-beginner-glossary.md#retrieval) URL records:
 
 - query text;
 - selected filters;
@@ -272,7 +272,7 @@ contains:
 - relevant passages or fields;
 - authority and provenance signals;
 - uncertainty and missing metadata;
-- the retrieval explanation and any truncation.
+- the retrieval explanation and any [truncation](16-beginner-glossary.md#truncation).
 
 The AI can then cite evidence and request another retrieval step rather than
 pretending the first search was exhaustive.
@@ -296,3 +296,18 @@ One score cannot diagnose all of these.
 
 [Knowledge graphs and stable identifiers](06-knowledge-graphs-and-identifiers.md)
 explains the structure used after a record has been found.
+
+## Learning path connections
+
+- [Learning path overview](index.md#learning-path)
+- Previous chapter is [Large Corpora And Progressive Loading](04-large-corpora-and-progressive-loading.md#learning-path-connections).
+- Next chapter is [Knowledge Graphs And Stable Identifiers](06-knowledge-graphs-and-identifiers.md#learning-path-connections).
+- Glossary terms in this chapter include [Cardinality](16-beginner-glossary.md#cardinality),
+  [Facet](16-beginner-glossary.md#facet),
+  [IDF](16-beginner-glossary.md#idf),
+  [Index](16-beginner-glossary.md#index),
+  [Posting](16-beginner-glossary.md#posting),
+  [Retrieval](16-beginner-glossary.md#retrieval),
+  [Token, search](16-beginner-glossary.md#token-search),
+  [Truncation](16-beginner-glossary.md#truncation).
+- Apply this chapter in [exercise 1](25-life-course-worked-example.md#exercise-1-recognise-entities-and-concepts).

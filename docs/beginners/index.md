@@ -142,6 +142,14 @@ to build one idea at a time and show where it appears in the implementation.
 
 ## Learning Path
 
+Use the connections at the end of each chapter to find related glossary
+definitions, prerequisites, next steps and relevant worked exercises.
+The [cross-reference report](cross-references.json) lists the authored
+links and stable heading addresses. The build checks the reciprocal chapter,
+glossary and exercise links. The report also lists contextual references for
+editorial review. External availability and authority are part of the source
+audit.
+
 Read the chapters in order if the subject is new to you:
 
 0. [From a missed collection to an ontology](00-data-information-knowledge-and-ontology.md)
@@ -215,6 +223,9 @@ Read the chapters in order if the subject is new to you:
 24. [Annotated authoritative-source register](24-authoritative-source-register.md)
     records direct primary links, document status, observation dates, uses and
     boundaries.
+25. [A fictional life in public services](25-life-course-worked-example.md)
+    follows ten life events in England and gives three exercises on modelling
+    entities, recording relationships and assessing evidence.
 
 ## Shorter Routes
 
@@ -234,6 +245,9 @@ path, use the
 [AI Infrastructure knowledge-graph walkthrough](../ai-infrastructure-knowledge-graph-walkthrough.md).
 It starts in a web browser, requires no GitHub account or coding tools, and
 then gives an optional Obsidian route.
+
+If you want to practise modelling from a source, go to the
+[life-course exercises](25-life-course-worked-example.md#exercise-1-recognise-entities-and-concepts).
 
 If you want to contribute code, read chapters 1 through 9, then 13 through 21.
 The domain chapters are still important before changing Map or legislation

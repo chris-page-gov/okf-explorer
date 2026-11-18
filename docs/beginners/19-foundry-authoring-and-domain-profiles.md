@@ -59,7 +59,7 @@ including a small workshop pack. Choose dimensions that answer readers'
 questions, such as support topic and next action. Type, Trust tier, Lifecycle
 and Section alone do not meet this requirement.
 
-Record the facet design in the domain profile. The builder must classify every
+Record the facet design in the [domain profile](16-beginner-glossary.md#domain-profile). The builder must classify every
 record, declare the facets in the intended Reader and run the
 [facet validation gate](../foundry-facets.md). Missing or constant values,
 incorrect counts and wrong filter results block build completion. Test the
@@ -95,7 +95,7 @@ It is a control artefact. It is not:
 
 ## Consumers Are Part Of The Contract
 
-A bundle is not complete merely because its files match a schema. The actual
+A bundle is not complete merely because its files match a [schema](16-beginner-glossary.md#schema). The actual
 reader, validator, search worker, generator, finaliser or archive reader may
 still reject those files or interpret them differently.
 
@@ -415,3 +415,13 @@ workflow and schema.
 [Governed enrichment and release assurance](20-governed-enrichment-and-release-assurance.md)
 explains how derived assertions and the final browser build earn publishable
 evidence.
+
+## Learning path connections
+
+- [Learning path overview](index.md#learning-path)
+- Previous chapter is [Federated Bundles](18-federated-bundles.md#learning-path-connections).
+- Next chapter is [Governed Enrichment And Release Assurance](20-governed-enrichment-and-release-assurance.md#learning-path-connections).
+- Glossary terms in this chapter include [Domain profile](16-beginner-glossary.md#domain-profile),
+  [JSON Schema](16-beginner-glossary.md#json-schema),
+  [Schema](16-beginner-glossary.md#schema).
+- Apply this chapter in [exercise 2](25-life-course-worked-example.md#exercise-2-author-a-directed-relationship).

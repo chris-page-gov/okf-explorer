@@ -332,7 +332,19 @@ test('captures one coherent rank snapshot while a real page repeatedly rerenders
             .join('');
         };
         render();
-        setInterval(render, 0);
+        const readAttribute = Element.prototype.getAttribute;
+        let scheduled = false;
+        Element.prototype.getAttribute = function (name) {
+          const value = readAttribute.call(this, name);
+          if (name === 'data-result-canonical-url' && !scheduled) {
+            scheduled = true;
+            queueMicrotask(() => {
+              render();
+              scheduled = false;
+            });
+          }
+          return value;
+        };
       </script>
     `);
     const action = {
@@ -342,10 +354,10 @@ test('captures one coherent rank snapshot while a real page repeatedly rerenders
       min_items: 3,
       max_items: 3
     };
-    for (let iteration = 0; iteration < 50; iteration += 1) {
+    for (let epoch = 1; epoch <= 3; epoch += 1) {
       const observation = await captureAttributeObservation(page.locator(action.selector), action);
       assert.equal(observation.values.length, 3);
-      assert.equal(new Set(observation.values.map((value) => new URL(value).searchParams.get('epoch'))).size, 1);
+      assert.deepEqual(observation.values.map((value) => new URL(value).searchParams.get('epoch')), Array(3).fill(String(epoch)));
       assert.deepEqual(observation.values.map((value) => new URL(value).searchParams.get('rank')), ['1', '2', '3']);
     }
   } finally {

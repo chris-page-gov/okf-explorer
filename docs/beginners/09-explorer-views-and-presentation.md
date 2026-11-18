@@ -11,7 +11,7 @@ The **active context** is the current evidence set:
 - the whole-pack overview;
 - search results;
 - a facet reduction;
-- a selected graph neighbourhood;
+- a selected [graph](16-beginner-glossary.md#graph) neighbourhood;
 - a chosen place;
 - a selected record.
 
@@ -35,14 +35,14 @@ roles should remain understandable to keyboard and screen-reader users.
 
 ## Reader
 
-Reader provides a readable overview or record presentation. At the corpus
+Reader provides a readable overview or record [presentation](16-beginner-glossary.md#presentation). At the corpus
 level it should explain:
 
 - purpose and scope;
 - counts and coverage;
 - representative clusters;
 - notable gaps or skew;
-- suggested routes into the collection;
+- suggested [routes](16-beginner-glossary.md#route) into the collection;
 - provenance and source notices.
 
 At record level it presents normalised fields and body content without making
@@ -245,3 +245,15 @@ Documentation should label these as candidate or planned until implemented.
 
 [Geospatial data](10-geospatial-data.md) explains the special terms and limits
 behind the Map view.
+
+## Learning path connections
+
+- [Learning path overview](index.md#learning-path)
+- Previous chapter is [Validation, Provenance And Catalogue Standards](08-validation-provenance-and-catalogue-standards.md#learning-path-connections).
+- Next chapter is [Geospatial Data](10-geospatial-data.md#learning-path-connections).
+- Glossary terms in this chapter include [Focus node](16-beginner-glossary.md#focus-node),
+  [Graph](16-beginner-glossary.md#graph),
+  [Presentation](16-beginner-glossary.md#presentation),
+  [Resource](16-beginner-glossary.md#resource),
+  [Route](16-beginner-glossary.md#route).
+- Apply this chapter in [exercise 2](25-life-course-worked-example.md#exercise-2-author-a-directed-relationship).

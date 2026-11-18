@@ -7,8 +7,8 @@ connected.
 
 A graph has:
 
-- **nodes** — things;
-- **edges** — relationships between things.
+- **[nodes](16-beginner-glossary.md#node)** — things;
+- **[edges](16-beginner-glossary.md#edge)** — relationships between things.
 
 For example:
 
@@ -40,7 +40,7 @@ The underlying relationship may support an inverse label such as “publishes,�
 but that should be declared rather than guessed from screen position.
 
 A typed relationship identifies its meaning. The display label “published by”
-is useful to a person; a stable predicate identifier is useful across packs
+is useful to a person; a stable [predicate](16-beginner-glossary.md#predicate) identifier is useful across packs
 and languages.
 
 ## Focus And Context
@@ -67,7 +67,7 @@ identifier separates identity from display:
 publisher/office-for-national-statistics
 ```
 
-Within linked data, an absolute IRI can provide global scope:
+Within linked data, an absolute [IRI](16-beginner-glossary.md#iri) can provide global scope:
 
 ```text
 https://example.org/publisher/office-for-national-statistics
@@ -266,5 +266,23 @@ semantic graph as claims about the world.
 
 ## Next
 
+Practise identifying entities and writing a directed relationship in the
+[life-course exercises](25-life-course-worked-example.md#exercise-1-recognise-entities-and-concepts).
+
 [The semantic web and ontologies](07-semantic-web-and-ontologies.md) introduces
 the standards used to give graph statements shared, machine-readable meaning.
+
+## Learning path connections
+
+- [Learning path overview](index.md#learning-path)
+- Previous chapter is [Search, Filters, Facets And Context](05-search-filters-facets-and-context.md#learning-path-connections).
+- Next chapter is [The Semantic Web And Ontologies](07-semantic-web-and-ontologies.md#learning-path-connections).
+- Glossary terms in this chapter include [Class](16-beginner-glossary.md#class),
+  [Edge](16-beginner-glossary.md#edge),
+  [IRI](16-beginner-glossary.md#iri),
+  [Instance](16-beginner-glossary.md#instance),
+  [Literal](16-beginner-glossary.md#literal),
+  [Node](16-beginner-glossary.md#node),
+  [Predicate](16-beginner-glossary.md#predicate),
+  [Relationship](16-beginner-glossary.md#relationship).
+- Apply this chapter in [exercise 2](25-life-course-worked-example.md#exercise-2-author-a-directed-relationship).
