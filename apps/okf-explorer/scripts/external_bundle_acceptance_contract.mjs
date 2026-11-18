@@ -420,7 +420,7 @@ export async function waitForLocator(locator, state = 'visible') {
   await locator.waitFor({ state });
 }
 
-export async function waitForRankedResult(page, canonicalUrl) {
+export async function waitForRankedResult(page, canonicalUrl, { includeOrderedUrls = false } = {}) {
   invariant(
     isCredentialFreeAbsoluteHttpUrl(canonicalUrl),
     'ranked-result canonical_url must be a credential-free absolute HTTP(S) URL'
@@ -480,7 +480,8 @@ export async function waitForRankedResult(page, canonicalUrl) {
     query,
     canonical_url: canonicalUrl,
     ranked_result_count: observation.canonical_urls.length,
-    matching_result_count: observation.matching_result_count
+    matching_result_count: observation.matching_result_count,
+    ...(includeOrderedUrls ? { ordered_canonical_urls: observation.canonical_urls } : {})
   };
 }
 

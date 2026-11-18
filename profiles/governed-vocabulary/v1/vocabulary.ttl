@@ -1,0 +1,38 @@
+@prefix catalog: <https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+catalog:topics a skos:ConceptScheme ;
+    skos:prefLabel "Explorer topics"@en-GB ;
+    skos:hasTopConcept catalog:education .
+
+catalog:education a skos:Concept ;
+    skos:inScheme catalog:topics ;
+    skos:prefLabel "Education"@en-GB ;
+    skos:notation "education" ;
+    skos:definition "Learning and services that support access to education."@en-GB ;
+    dcterms:source <https://www.gov.uk/browse/education> .
+
+catalog:formats a skos:ConceptScheme ;
+    skos:prefLabel "Explorer data formats"@en-GB ;
+    skos:hasTopConcept catalog:csv .
+
+catalog:csv a skos:Concept ;
+    skos:inScheme catalog:formats ;
+    skos:prefLabel "Comma-separated values"@en-GB ;
+    skos:altLabel "CSV"@en-GB ;
+    skos:notation "text/csv" ;
+    skos:definition "The registered text/csv media type."@en-GB ;
+    dcterms:source <https://www.iana.org/assignments/media-types/text/csv> .
+
+catalog:licences a skos:ConceptScheme ;
+    skos:prefLabel "Explorer licences"@en-GB ;
+    skos:hasTopConcept catalog:cc-by-40 .
+
+catalog:cc-by-40 a skos:Concept ;
+    skos:inScheme catalog:licences ;
+    skos:prefLabel "Creative Commons Attribution 4.0 International"@en-GB ;
+    skos:altLabel "CC BY 4.0"@en-GB ;
+    skos:notation "CC-BY-4.0" ;
+    skos:definition "The Creative Commons Attribution licence, international version 4.0."@en-GB ;
+    dcterms:source <https://creativecommons.org/licenses/by/4.0/> .

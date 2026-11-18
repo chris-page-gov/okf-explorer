@@ -273,6 +273,9 @@ limits remain inspectable.
 
 ## Next
 
+Apply the provenance fields to
+[a worked service assertion](25-life-course-worked-example.md#trace-one-relationship-to-its-evidence).
+
 [Explorer views and presentation](09-explorer-views-and-presentation.md)
 explains how one evidence model becomes several usable interfaces without
 changing its meaning.

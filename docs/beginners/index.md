@@ -215,6 +215,9 @@ Read the chapters in order if the subject is new to you:
 24. [Annotated authoritative-source register](24-authoritative-source-register.md)
     records direct primary links, document status, observation dates, uses and
     boundaries.
+25. [A fictional life in public services](25-life-course-worked-example.md)
+    follows ten life events in England and gives three exercises on modelling
+    entities, recording relationships and assessing evidence.
 
 ## Shorter Routes
 
@@ -234,6 +237,13 @@ path, use the
 [AI Infrastructure knowledge-graph walkthrough](../ai-infrastructure-knowledge-graph-walkthrough.md).
 It starts in a web browser, requires no GitHub account or coding tools, and
 then gives an optional Obsidian route.
+
+If you want to practise modelling from a source, go to the
+[life-course exercises](25-life-course-worked-example.md#exercise-1-recognise-entities-and-concepts).
+
+The guide's browser checks cover navigation, generated heading fragments and
+automated accessibility rules for each published chapter. The test evidence
+retains the remaining manual checks.
 
 If you want to contribute code, read chapters 1 through 9, then 13 through 21.
 The domain chapters are still important before changing Map or legislation

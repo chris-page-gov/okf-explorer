@@ -247,6 +247,11 @@ Expected behaviour:
 - In Reader, the current record and the scope of the browse count are shown
   separately. Use **Copy link to this view** to share the view and selection
   of a hosted bundle.
+- Hansard cards show an editorial summary when the producer supplies one for
+  the exact contribution. **Read in Hansard** opens the official contribution
+  from either side of the card. In Timeline, contribution times, section
+  markers, sitting dates and capture dates have distinct labels. Within a
+  section, untimed contributions keep their source position.
 - **Back to start** returns to the loaded bundle's opening view. Use
   **Clear search and selections** to keep your view while clearing your
   exploration.
@@ -399,6 +404,19 @@ Expected behaviour:
   for initial Map browsing.
 
 ## Other UI Behaviours
+
+### Explorer theme
+
+In the Explorer header, choose **System**, **Light** or **Dark**. System
+uses your device's current appearance. The browser remembers an explicit
+choice on that device. You can return to System at any time. The printed
+Explorer uses the light palette.
+
+The initial theme candidate covers the Explorer shell, its shared controls,
+graph labels and the locator map. Automated contrast checks cover both
+themes across the eight views of the sample bundle. Manual contrast checks,
+user-defined graph colours, forced-colours behaviour and full browser
+acceptance remain part of [the theme issue](https://github.com/chris-page-gov/okf-explorer/issues/53).
 
 | Behaviour | Expected result |
 |-----------|-----------------|

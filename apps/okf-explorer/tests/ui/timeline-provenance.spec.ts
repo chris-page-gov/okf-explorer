@@ -32,8 +32,36 @@ test('Timeline separates a source publication month from capture and generation 
   await expect(timeline.getByRole('button').filter({ hasText: 'Generated-only record' }).locator('.timeline-date'))
     .toHaveText('Record generated20 August 2026');
   await expect(timeline.getByRole('button').filter({ hasText: 'Legacy timestamp record' }).locator('.timeline-date'))
-    .toHaveText('Recorded timestamp2 January 2020');
+    .toHaveText('Recorded timestamp2 January 2020 at 09:00:00 UTC');
   await expect(timeline.getByRole('button').locator('strong')).toHaveText([
     'Generated-only record', 'Later publication', 'Handbook reference', 'Legacy timestamp record'
   ]);
+});
+
+test('Hansard timecodes, section markers and untimed contributions remain distinct', async ({ context, page }) => {
+  const url = 'https://timeline.fixture.test/hansard.json';
+  const section = {
+    schema: 'okf-hansard-proceedings.v1', section_id: 'debate/palantir', section_title: 'NHS Federated Data Platform',
+    sitting_date: '2026-11-17', house: 'Commons'
+  };
+  await context.route(url, route => route.fulfill({
+    contentType: 'application/json', headers: { 'access-control-allow-origin': '*' },
+    body: JSON.stringify({ okf_version: '0.2', title: 'Hansard date fixture', nodes: {
+      debate: { id: 'debate', title: 'Debate', type: 'Proceedings section', hansard_proceedings: { ...section,
+        markers: [{ value: '2026-11-17T19:14:00', source_item: 3, source_field: '/Items/2/Value' }] } },
+      speech: { id: 'speech', title: 'Martin Wrigley', type: 'Contribution', hansard_proceedings: { ...section,
+        source_item: 4, contribution_time: '2026-11-17T19:15:00' } },
+      untimed: { id: 'untimed', title: 'Contribution without a time', type: 'Contribution',
+        hansard_proceedings: { ...section, source_item: 6 }, timestamp: '2026-11-17' }
+    }, relationships: [] })
+  }));
+  await page.goto(`?${new URLSearchParams({ bundle: url, view: 'timeline' })}#speech`);
+  const timeline = page.getByRole('region', { name: 'Record timeline' });
+  const speech = timeline.getByRole('button').filter({ hasText: 'Martin Wrigley' });
+  await expect(speech.locator('.timeline-date')).toContainText('Contribution time');
+  await expect(speech.locator('.timeline-date time')).toHaveAttribute('datetime', '2026-11-17T19:15:00');
+  await expect(speech).toContainText('Source item 4 in this Hansard section');
+  await expect(timeline.getByRole('button').filter({ hasText: 'Debate' })).toContainText('Proceedings time marker');
+  await expect(timeline.getByRole('button').filter({ hasText: 'Contribution without a time' }).locator('.timeline-date time'))
+    .toHaveAttribute('datetime', '2026-11-17');
 });

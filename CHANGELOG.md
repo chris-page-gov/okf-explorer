@@ -1,5 +1,61 @@
 # Changelog
 
+## Unreleased — semantic foundations
+
+- Reconcile the semantic roadmap against the frozen OKF 0.2 profile and name
+  the implementation and acceptance work for each planned view.
+- Publish candidate topic, format and licence schemes with stable concept
+  identifiers and a checked SKOS vocabulary digest.
+- Export the identity-bound static Site assembly as a deterministic PROV-O
+  graph for further review.
+- Exercise every generated chapter-heading fragment and run automated
+  accessibility checks on each guide page. Retain the observed routes,
+  fragments and checks that need manual review as test evidence.
+- Register the theme and guide audit suites in browser assurance.
+- Normalise bounded SHACL Core reports into stable, digest-bound finding IDs
+  for the planned validation view.
+- Add an opt-in subclass inference candidate with fixed processing limits and
+  explicit support for each inferred assertion.
+- Index declared ontology hierarchies and SKOS mappings with the source
+  digest and the original mapping strength.
+- Verify local boundary-pack bytes, polygon structure and matching feature
+  codes across the two levels of detail.
+
+## Unreleased — Explorer presentation
+
+- Add a system, light and dark appearance setting to the Explorer. Remember
+  an explicit choice and use the light palette for print.
+- Label the schematic outlines in the locator map as orientation aids.
+- Define a candidate manifest for governed boundary packs with two levels of
+  detail, exact file identities and source attribution.
+
+## Unreleased — beginner life-course example
+
+- Follow a fictional person through ten public-service events in England.
+  Trace one relationship to its source and practise modelling, recording and
+  reviewing claims with three worked exercises available without JavaScript.
+- Compare the verified passages before and after an edited correction in
+  the Evidence workbench. Record retained, retired and introduced unit IDs
+  within the reviewed case.
+
+## Unreleased — search and source inspection
+
+- Evaluate the effective sort when the canonical route omits its default.
+  Keep lexical results when an older publisher facet supplies a label without
+  record membership.
+- Record the ordered canonical search results from repeated fresh contexts
+  after checking that each context fetched the same bytes.
+- Route exact official CLML to the legislation viewer. Give older XML, tabular
+  and document links an appropriate destination and report incompatible media
+  types before attempting to parse them.
+
+## Unreleased — sourced Hansard dates and summaries
+
+- Show contribution timecodes, section markers and source item positions
+  separately. Preserve day precision when only the sitting date is known.
+- Show producer-supplied summaries beside the exact Hansard source link and
+  retain keyboard focus when switching card sides.
+
 ## Unreleased — Explorer navigation
 
 - Restore local result browsing after unfolding a group and keep the facet

@@ -117,6 +117,7 @@
   } from '$lib/viewer/smallNodePresentation';
   import { conversationPresentation } from '$lib/viewer/conversationPresentation';
   import { smallTimelineRows } from '$lib/viewer/smallTimeline';
+  import { hansardResultEvidence } from '$lib/viewer/hansardPresentation';
   import { largeDatasetTimelinePeriod, timelinePeriodBucket, timelinePeriodInScope, type LargeTimelinePeriod, type TimelineDateScope } from '$lib/viewer/largeTimeline';
   import {
     boxesOverlap,
@@ -214,6 +215,7 @@
     timelineBucketFacetFilter
   } from '$lib/viewer/helpers';
   import '../styles.css';
+  import { applyExplorerTheme, readExplorerTheme, type ExplorerTheme } from '$lib/viewer/theme';
 
   const DEFAULT_BUNDLE = 'https://chris-page-gov.github.io/okf-ai-infrastructure/okf-bundle.json';
   const DEFAULT_REGISTRY = '../okf-registry.json';
@@ -715,7 +717,18 @@
   let highlightedCount = $derived(source?.kind === 'large' ? largeExplorationScope.highlighted : visibleNodes.filter(node => smallIsHighlighted(node, largeFacetHighlights, learningKeys, semanticKeys)).length);
   let scopeCount = $derived(source?.kind === 'large' ? largeExplorationScope.total : visibleNodes.length);
   let smallFacets = $derived<FacetModel[]>(smallFacetDefinitions.map(facet => ({ ...facet, open: smallOpenFacet === facet.key || smallOpenedPinnedFacets.includes(facet.key), pinned: smallPinnedFacets.includes(facet.key), rows: smallFacetRows(nodeList, visibleNodes, largeFacetHighlights, facet.key, learningKeys, semanticKeys) })));
-  let smallResults = $derived<ResultItem[]>(visibleNodes.filter(node => !foldedIds.has(node.id)).map(node => ({ id: node.id, route: node.id, title: node.title, type: node.type || 'Node', description: node.description || node.summary || '', metadata: learning ? [node.section, typeof node.duration_minutes === 'number' ? `${node.duration_minutes} minutes` : ''].filter(Boolean).join(' · ') : node.source || node.id, highlighted: smallIsHighlighted(node, largeFacetHighlights, learningKeys, semanticKeys) })));
+  let smallResults = $derived<ResultItem[]>(visibleNodes.filter(node => !foldedIds.has(node.id)).map(node => {
+    const hansard = hansardResultEvidence(node);
+    const metadata = learning
+      ? [node.section, typeof node.duration_minutes === 'number' ? `${node.duration_minutes} minutes` : ''].filter(Boolean).join(' · ')
+      : node.source || node.id;
+    return {
+      id: node.id, route: node.id, title: node.title, type: node.type || 'Node',
+      description: node.description || node.summary || '',
+      metadata: hansard?.metadata || metadata, hansard,
+      highlighted: smallIsHighlighted(node, largeFacetHighlights, learningKeys, semanticKeys)
+    };
+  }));
   let largeReaderResults = $derived<ResultItem[]>(readerResultItems());
 
   function currentLargeExplorationScope() {
@@ -932,7 +945,11 @@
     return 10;
   }
 
+  let explorerTheme = $state<ExplorerTheme>('system');
+
   onMount(() => {
+    explorerTheme = readExplorerTheme();
+    document.documentElement.dataset.explorerTheme = explorerTheme;
     void initialize();
     window.addEventListener('popstate', applyBrowserRoute);
     window.addEventListener('pointerdown', closeBundleSuggestionsOnPointerDown);
@@ -941,6 +958,7 @@
       if (activeView === 'graph' && !graphLabelsPaused) graphLabelPhase = (graphLabelPhase + 1) % 100000;
     }, 2000);
     return () => {
+      delete document.documentElement.dataset.explorerTheme;
       loadRequest += 1;
       largeSearchRequest += 1;
       window.removeEventListener('popstate', applyBrowserRoute);
@@ -5022,8 +5040,8 @@
       const key = `${sourceId}\u0000${targetId}\u0000${label}`;
       if (edgeKeys.has(key)) return;
       edgeKeys.add(key);
-      addNode(sourceId);
-      addNode(targetId);
+      addNode(sourceId, undefined, typeof record?.source_label === 'string' ? record.source_label : undefined);
+      addNode(targetId, undefined, typeof record?.target_label === 'string' ? record.target_label : undefined);
       edges.push({ source: sourceId, target: targetId, label, ...graphEdgeSemanticMetadata(record) });
     };
     const addCountedEdge = (
@@ -6631,6 +6649,17 @@
       <p>{source?.kind === 'large' ? source.descriptor.title : source?.kind === 'small' ? source.corpus.title : 'No bundle loaded'}</p>
       <a class="changes-link" href="https://github.com/chris-page-gov/okf-explorer/blob/main/CHANGELOG.md" target="_blank" rel="noopener noreferrer">Explorer changes</a>
       <a class="changes-link" href="../evidence/">Evidence workbench</a>
+      <label class="theme-choice">
+        Theme
+        <select value={explorerTheme} onchange={(event) => {
+          explorerTheme = event.currentTarget.value as ExplorerTheme;
+          applyExplorerTheme(explorerTheme);
+        }}>
+          <option value="system">System</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </label>
       {#if relatedDescriptorLinks.length}
         <nav class="descriptor-related-links" aria-label="Related material">
           {#each relatedDescriptorLinks as link}
@@ -8269,12 +8298,21 @@
               {/each}
             </section>
           {:else}
-            <p class="timeline-note">Source publication dates are shown where supplied. Each date is labelled; capture and record-generation dates remain separate.</p>
+            <p class="timeline-note">Source dates and times are labelled by meaning. Capture and record-generation dates are shown separately.</p>
             <section class="timeline-view small-record-timeline" aria-label="Record timeline">
               {#each smallTimelineRows(visibleNodes).slice(0, 120) as row}
                 <button type="button" onclick={() => inspectNode(row.node.id)}>
                   <div class="timeline-date"><small>{row.primary.label}</small><time datetime={row.primary.value}>{row.primary.display}</time></div>
                   <div><strong>{row.node.title}</strong><span>{row.node.type || 'Node'}</span>
+                    {#if row.proceedings}
+                      <small class="timeline-audit">Hansard section · {row.proceedings.section_title}</small>
+                      {#if row.proceedings.source_item}
+                        <small class="timeline-audit">Source item {row.proceedings.source_item} in this Hansard section</small>
+                      {/if}
+                    {/if}
+                    {#each row.markers || [] as marker}
+                      <small class="timeline-audit">{marker.label} · <time datetime={marker.value}>{marker.display}</time></small>
+                    {/each}
                     {#each row.audit as date}
                       <small class="timeline-audit">{date.label}: <time datetime={date.value}>{date.display}</time></small>
                     {/each}

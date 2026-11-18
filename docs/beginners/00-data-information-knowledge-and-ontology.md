@@ -390,3 +390,6 @@ navigation and semantics.
   [journey](https://github.com/chris-page-gov/okf-uk-living/blob/main/journeys/missed-rubbish-collection.md),
   [evidence set](https://github.com/chris-page-gov/okf-uk-living/blob/main/evidence/missed-rubbish-collection-sources.md)
   and [ontology module](https://github.com/chris-page-gov/okf-uk-living/blob/main/ontology/missed-rubbish-collection.md).
+
+Apply the same modelling steps to
+[ten fictional life events](25-life-course-worked-example.md#follow-alex-through-ten-life-events).

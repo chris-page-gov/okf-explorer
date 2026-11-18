@@ -1331,7 +1331,7 @@ test.describe('targeted large-corpus relationship hydration', () => {
     await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}#overview`);
     await page.getByPlaceholder('Search targeted legislation').fill('Target Act');
     await page.locator('.result-list button').filter({ hasText: 'Target Act 1998' }).first().click();
-    await page.getByRole('button', { name: 'Load every Part, Chapter, section, article and nested provision' }).click();
+    await page.getByRole('button', { name: 'Explore official text' }).click();
     await page.getByText('Downloaded CLML source identity').click();
     await expect(page.locator('.law-panel code').filter({ hasText: /^[a-f0-9]{64}$/ })).toBeVisible();
     const captured = page.waitForEvent('download');
@@ -1355,7 +1355,7 @@ test.describe('targeted large-corpus relationship hydration', () => {
     await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}#overview`);
     await page.getByPlaceholder('Search targeted legislation').fill('Target Act');
     await page.locator('.result-list button').filter({ hasText: 'Target Act 1998' }).first().click();
-    await page.getByRole('button', { name: 'Load every Part, Chapter, section, article and nested provision' }).click();
+    await page.getByRole('button', { name: 'Explore official text' }).click();
     await expect(page.locator('.law-panel [role="alert"]')).toBeVisible();
     await expect(page.locator('.law-panel .provision-tree li')).toHaveCount(0);
   });

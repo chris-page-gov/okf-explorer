@@ -942,6 +942,22 @@ describe('large static search worker', () => {
     expect(response.results[0].match.score_components.entity).toBeGreaterThan(0);
   });
 
+  it('keeps ordinary lexical results for a legacy publisher label without postings', async () => {
+    const manifest = baseManifest();
+    manifest.schema = 'gov-ckan-static-search.v1';
+    delete manifest.entrypoints.filter_postings;
+    const worker = await harness(manifest, [
+      ['https://example.test/facets.json', { publisher: [{ value: 'flood', count: 4 }] }]
+    ]);
+    await worker.onmessage?.({ data: {
+      type: 'query', id: 2, request: { query: 'flood', filters: {}, sort: 'relevance', ranking: 'weighted' }
+    } } as MessageEvent);
+    const response = worker.postMessage.mock.calls[0][0].response;
+    expect(response.total).toBe(4);
+    expect(response.results[0].name).toBe('flood-api');
+    expect(response.interpreted_entity).toBeUndefined();
+  });
+
   it('recognises one unambiguous organisation embedded in a natural-language question', async () => {
     const manifest = baseManifest();
     manifest.schema = 'gov-ckan-static-search.v1';

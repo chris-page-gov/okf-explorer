@@ -114,10 +114,22 @@ describe('typed source access contract', () => {
     expect(accesses.every(canDisplaySourceInline)).toBe(true);
   });
 
-  it('retains source_api_url only as JSON compatibility behaviour', () => {
+  it('retains JSON compatibility for an untyped API route', () => {
     const [access] = sourceAccesses({ ...dataset, source_api_url: 'https://example.test/legacy' }, []);
     expect(access).toMatchObject({ display_mode: 'json', media_type: 'application/json', legacy: true });
   });
+
+  it('lets the official legislation panel handle an exact legacy CLML duplicate', () => {
+    const structure_url = 'https://www.legislation.gov.uk/eur/2017/669/2024-12-31/data.xml';
+    expect(sourceAccesses({ ...dataset, record_type: 'Legislation Work', structure_url, source_api_url: structure_url }, [])).toEqual([]);
+  });
+
+  it.each([['.clml', 'xml'], ['.csv', 'text'], ['.rdf', 'link'], ['.pdf', 'link']])(
+    'routes an older source with the terminal extension %s to %s', (extension, mode) => {
+      const [access] = sourceAccesses({ ...dataset, source_api_url: `https://example.test/source${extension}?download=1` }, []);
+      expect(access?.display_mode).toBe(mode);
+    }
+  );
 
   it('ignores incomplete or non-HTTP source declarations', () => {
     const invalid = [{

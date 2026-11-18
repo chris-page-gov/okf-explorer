@@ -29,7 +29,7 @@
 </section>
 
 <style>
-  .exploration-toolbar { padding:10px 14px; background:#f7faff; border-bottom:1px solid #b8c7d8; flex:none; }
+  .exploration-toolbar { padding:10px 14px; background:light-dark(#f7faff, #222f40); border-bottom:1px solid light-dark(#b8c7d8, #526981); flex:none; }
   p { margin:0 0 8px; font-size:.85rem; } p span { display:block; margin-top:3px; }
   .exploration-actions { display:flex; flex-wrap:wrap; gap:5px; } button { font-size:.78rem; min-height:32px; padding:4px 8px; }
   .exploration-toolbar .exploration-actions[hidden] { display:none; }
@@ -38,7 +38,7 @@
   .compact .actions-toggle { min-height:30px; padding:3px 6px; flex:none; font-size:12px; }
   .compact .exploration-actions { margin-top:5px; display:grid; grid-template-columns:1fr 1fr; gap:3px; }
   .compact .exploration-actions button { padding:3px 5px; font-size:12px; min-height:30px; }
-  .folded-set { display:flex; align-items:center; gap:8px; font-size:.75rem; margin-top:6px; border:1px solid #b8c7d8; padding:3px 6px; }
+  .folded-set { display:flex; align-items:center; gap:8px; font-size:.75rem; margin-top:6px; border:1px solid light-dark(#b8c7d8, #526981); padding:3px 6px; }
   .folded-bar { width:48px; height:9px; border:1px solid #0b0c0c; background:linear-gradient(90deg,var(--highlight-colour) var(--highlight-share),var(--track-colour) var(--highlight-share)); flex:none; }
   .folded-set button { margin-left:auto; } @media(max-width:620px) { .exploration-toolbar { padding:6px; } .exploration-actions button { min-height:36px; } }
 </style>

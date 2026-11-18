@@ -554,6 +554,16 @@ function sourceAcceptHeader(displayMode: InlineSourceDisplayMode, mediaType: str
     : defaults[displayMode];
 }
 
+function sourceContentTypeMatches(mode: InlineSourceDisplayMode, type: string): boolean {
+  // Older text and API servers may omit a media type or return plain text.
+  if (!type || type === 'text/plain') return true;
+  const json = type === 'application/json' || type.endsWith('+json');
+  const xml = type === 'application/xml' || type === 'text/xml' || type.endsWith('+xml');
+  if (mode === 'json') return json;
+  if (mode === 'xml') return xml;
+  return type.startsWith('text/') && !xml && type !== 'text/html';
+}
+
 async function fetchSourceResponseCandidate(
   url: string,
   displayMode: InlineSourceDisplayMode,
@@ -580,6 +590,11 @@ async function fetchSourceResponseCandidate(
         }
         throw error;
       }
+      const contentType = response.headers.get('content-type') || '';
+      const returnedType = contentType.split(';')[0].trim().toLowerCase();
+      if (!sourceContentTypeMatches(displayMode, returnedType)) {
+        throw new Error(`Expected ${displayMode.toUpperCase()} from the source. It returned ${returnedType}.`);
+      }
       const contentLength = response.headers.get('content-length');
       if (contentLength && Number(contentLength) > MAX_SOURCE_JSON_BYTES) {
         throw new Error(`${url}: response too large (${Number(contentLength)} bytes, limit ${MAX_SOURCE_JSON_BYTES})`);
@@ -590,7 +605,7 @@ async function fetchSourceResponseCandidate(
         text,
         displayMode,
         bytes: new TextEncoder().encode(text).byteLength,
-        contentType: response.headers.get('content-type') || mediaType || (displayMode === 'xml' ? 'application/xml' : displayMode === 'text' ? 'text/plain' : 'application/json'),
+        contentType: contentType || mediaType || (displayMode === 'xml' ? 'application/xml' : displayMode === 'text' ? 'text/plain' : 'application/json'),
         retrievedAt: new Date().toISOString(),
         responseUrl: response.url || url
       };
