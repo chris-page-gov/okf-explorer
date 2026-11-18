@@ -25,6 +25,9 @@
   Preserve the deterministic result for users who reproduce the derivation.
 - Keep the rank snapshot replay bounded and isolate fixture mutations to
   the rendered result rows.
+- Explain typed point-in-time legislation representations in the beginner
+  guide. Label a dated record link as the official version and keep the
+  official identifier and XML link available.
 
 ## Unreleased — semantic foundations
 

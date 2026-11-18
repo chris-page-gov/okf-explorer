@@ -67,6 +67,14 @@ expression.
 
 This distinction is important for stable identity and citation.
 
+When publishing a bundle, give each supplied representation its own resource
+identifier, title and purpose. Record its URL, media type and display mode in
+`source_access`. For an official CLML version, also record the CLML profile
+and exact version. A declaration for 31 December 2024 keeps that date on the
+XML and provision links. Readers can use **Explore official text** or **Open
+official XML** from the selected work. See the
+[typed source authoring contract](../large-record-narrative-source-contract.md#typed-source-access).
+
 ## Provisions And Structure
 
 Legal documents contain nested structural units:

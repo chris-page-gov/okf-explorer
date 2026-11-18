@@ -87,6 +87,8 @@ and optional `representation_version` and `retrieval_mode` inside
 `source_access`. Preserve the provenance and exact official expression.
 The legislation viewer checks the work, the requested version and language,
 and the returned media type before opening the provision tree.
+If the record URL is itself a dated expression, the viewer labels its link
+**Open this official version** and retains the separate official identifier.
 
 ## Bounded references for a selected record
 
@@ -148,7 +150,7 @@ This contract describes presentation, not authority. Producers remain
 responsible for source identity, assertion provenance, jurisdiction, rights,
 freshness and limitations.
 
-## Further format-specific work
+## Format selection and failure messages
 
 The current contract gives one resource one bounded display mode. Inline
 inspection and the official legislation viewer check the response's media type
@@ -160,16 +162,12 @@ The preview explains unavailable formats (HTTP 406), missing versions (HTTP
 several causes, including the connection or the publisher's cross-origin
 policy. The original source link remains available.
 
-Remaining work under
-[issue #76](https://github.com/chris-page-gov/okf-explorer/issues/76) covers:
-
-- allow a record to describe several representations of the same source with
-  stable resource IDs, roles, media types and optional format profiles;
-- select a specialist renderer from an explicit content profile, including
-  structured tabular and legal-document views;
-- publish the migrated legislation catalogue and verify the worked
-  point-in-time journey from the published descriptor.
-
-A specialist legislation view may reuse a typed XML representation, but its
-provision tree, legal status and point-in-time interpretation remain a separate
-domain contract rather than a generic consequence of `display_mode: xml`.
+Legislation records can declare several representations with stable resource
+identifiers. The specialist legislation view checks the authoritative role,
+CLML profile and exact official version before offering its provision tree.
+General XML previews show inert source text. CSV and TSV previews show
+bounded text, and the local table inspector checks a user-selected package.
+PDF and other link-only representations retain their labelled publisher
+links. The legislation producer tracks its typed Reader release and
+point-in-time verification in
+[issue #76](https://github.com/chris-page-gov/okf-explorer/issues/76).
