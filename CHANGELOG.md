@@ -14,6 +14,7 @@
   the exact source report.
 - Export explicitly mapped catalogue metadata as source-linked DCAT-AP
   3.0.1 datasets and distributions.
+- Extract selected, source-located operations from bounded OpenAPI 3.1 JSON.
 - Inspect integrity-bound SHACL findings in a dedicated Explorer view.
   Open publisher-declared source records and return to the same finding.
 - Add an opt-in subclass inference candidate with explicit supporting

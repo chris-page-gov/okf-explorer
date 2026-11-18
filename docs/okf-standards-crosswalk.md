@@ -128,6 +128,27 @@ A producer can link an exported artefact through its descriptor's
 Record official profile validation and the producer's mapping decisions
 in the release evidence before making a conformance claim.
 
+### Candidate OpenAPI selection
+
+`scripts/export_openapi_selection.py` reads a local
+[OpenAPI 3.1](https://spec.openapis.org/oas/v3.1.0.html) JSON document. Select
+one to 32 declared method and path pairs. The output retains their supplied
+operation objects, path parameters, server and security declarations, and
+component definitions. The `x-okf-source` extension records the original
+document IRI, SHA-256 and a JSON Pointer for every selected operation.
+
+The bounded export accepts static local references that resolve within
+the selected document and uses a 2 MiB input and output limit. An unresolved
+reference or missing operation stops the export. Select an operation from
+an authoritative source document and run the consumer's schema checks on
+the result before publishing it.
+
+```sh
+uv run --locked python -m scripts.export_openapi_selection \
+  --input source-openapi.json --source https://example.test/openapi.json \
+  --operation GET '/services/{identifier}' --output /tmp/selected-openapi.json
+```
+
 A DCAT export for an API-like record needs, at minimum:
 
 - stable IRI or route;
