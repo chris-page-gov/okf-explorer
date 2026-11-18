@@ -306,6 +306,7 @@ returns to the safeguards that apply across the Explorer itself.
 - [Learning path overview](index.md#learning-path)
 - Previous chapter is [UK Legislation Data](11-uk-legislation-data.md#learning-path-connections).
 - Next chapter is [Security, Privacy, Accessibility And Responsible Use](13-security-privacy-accessibility-and-responsible-use.md#learning-path-connections).
+- [Review the status of a claim](25-life-course-worked-example.md#exercise-3-review-the-status-of-a-claim) to practise checking the evidence an AI answer would need for each statement.
 - Glossary terms in this chapter include [Agent](16-beginner-glossary.md#agent),
   [API](16-beginner-glossary.md#api),
   [Control plane](16-beginner-glossary.md#control-plane),

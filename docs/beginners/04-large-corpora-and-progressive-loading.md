@@ -247,6 +247,7 @@ interpreted.
 - [Learning path overview](index.md#learning-path)
 - Previous chapter is [Markdown, OKF And Small Bundles](03-markdown-okf-and-small-bundles.md#learning-path-connections).
 - Next chapter is [Search, Filters, Facets And Context](05-search-filters-facets-and-context.md#learning-path-connections).
+- [Trace a relationship to its evidence](25-life-course-worked-example.md#trace-one-relationship-to-its-evidence) to identify the source references that a Reader needs when it loads a selected relationship.
 - Glossary terms in this chapter include [Adjacency index](16-beginner-glossary.md#adjacency-index),
   [Chunk](16-beginner-glossary.md#chunk),
   [Compression](16-beginner-glossary.md#compression),

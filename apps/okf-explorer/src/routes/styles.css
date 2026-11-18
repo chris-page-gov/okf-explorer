@@ -15,6 +15,7 @@
   --selected-bg: light-dark(#eaf4ff, #263c55);
   --selected-line: light-dark(#8eb8df, #79a8d5);
   --selected-edge: light-dark(#1d70b8, #a8d0ff);
+  --graph-edge: light-dark(#607891, #a4b5c9);
   --selected-hover: light-dark(#deefff, #304d6b);
   --warn: light-dark(#b36b00, #ffce80);
   --focus: light-dark(#ffdd00, #ffde72);
@@ -2836,10 +2837,13 @@ input:focus {
 
 .graph line,
 .graph .graph-edge {
-  stroke: light-dark(#9aaaba, #a4b5c9);
+  stroke: var(--graph-edge);
   stroke-width: 1.2;
   pointer-events: none;
 }
+
+.graph .edge-arrow { fill: var(--graph-edge); stroke: none; }
+.graph .edge-arrow-selected { fill: var(--selected-edge); stroke: none; }
 
 .graph line.highlight {
   stroke: var(--accent);
@@ -2868,12 +2872,14 @@ input:focus {
 
 .graph .edge-hit:focus {
   outline: none;
+  stroke: var(--ink);
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-dasharray: 2 8;
 }
 
-.graph .edge-hit:focus-visible {
-  stroke: var(--focus);
-  stroke-width: 11;
-  opacity: .32;
+@media (forced-colors: active) {
+  .graph .edge-hit:focus { stroke: Highlight; }
 }
 
 .graph g {

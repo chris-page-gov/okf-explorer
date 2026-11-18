@@ -5,6 +5,8 @@ opens each chapter, checks its declared headings and fragment navigation,
 tests the keyboard skip link and reflow at 320 pixels, and runs Axe. Record
 manual checks of full keyboard order, focus visibility,
 reflow, touch, reduced motion and sidebar behaviour alongside those results.
+The suite opens each chapter in a fresh tab so the browser applies its normal
+navigation limits separately to each chapter's fragment history.
 
 Build the source inventory from the same Site’s `cross-references.json` and
 chapter HTML. The inventory covers external links and HTTP identifiers in
@@ -38,6 +40,13 @@ Run the guide browser test with `OKF_BEGINNER_RELEASE_AUDIT=1` and
 `PLAYWRIGHT_BASE_URL` set to the published Explorer root. Use all three
 projects with the JSON reporter. The test records the exact Site identity,
 application manifest, browser version and observed routes for each run.
+
+The **Audit the deployed beginner guide** GitHub workflow runs this check
+against the live Site when given its full deployed commit. Download the
+`beginner-guide-live-browser-report` artifact after the workflow passes.
+The receipt records the repeatable commands for this run, the source
+observations and receipt generation. Replace the placeholders with the exact
+release inputs.
 
 ```sh
 cd apps/okf-explorer

@@ -860,3 +860,4 @@ specialised [AI infrastructure glossary](../../glossary/index.md).
 - [Learning path overview](index.md#learning-path)
 - Previous chapter is [A Contributor's Repository Tour](15-contributor-repository-tour.md#learning-path-connections).
 - Next chapter is [OKF v0.2 Trust, Lifecycle And Attestation](17-okf-v02-trust-lifecycle-and-attestation.md#learning-path-connections).
+- [Recognise entities and concepts](25-life-course-worked-example.md#exercise-1-recognise-entities-and-concepts) to apply the glossary terms to the same source note.

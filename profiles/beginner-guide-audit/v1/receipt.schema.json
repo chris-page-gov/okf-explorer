@@ -3,7 +3,7 @@
   "title": "Beginner guide release audit",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema", "status", "commit", "site_sha256", "explorer_manifest_sha256", "guide_base", "cross_references_sha256", "source_inventory_sha256", "browser_report_sha256", "manual_sha256", "tool", "browsers", "manual", "source_summary", "limitations"],
+  "required": ["schema", "status", "commit", "site_sha256", "explorer_manifest_sha256", "guide_base", "cross_references_sha256", "source_inventory_sha256", "browser_report_sha256", "manual_sha256", "tool", "commands", "browsers", "manual", "source_summary", "limitations"],
   "properties": {
     "schema": {"const": "okf-beginner-guide-release-audit.v1"},
     "status": {"enum": ["complete", "findings-open"]},
@@ -16,6 +16,12 @@
     "browser_report_sha256": {"$ref": "#/$defs/digest"},
     "manual_sha256": {"$ref": "#/$defs/digest"},
     "tool": {"type": "string", "minLength": 1, "maxLength": 100},
+    "commands": {
+      "type": "object",
+      "required": ["browser", "sources", "receipt"],
+      "additionalProperties": {"type": "string", "minLength": 1, "maxLength": 500},
+      "maxProperties": 3
+    },
     "browsers": {
       "type": "array", "minItems": 3, "maxItems": 3,
       "items": {

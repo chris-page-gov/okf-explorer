@@ -182,9 +182,12 @@ test('chapter navigation forms a keyboard-accessible persistent rail', async ({ 
 
 test('narrow and touch layouts keep every chapter available without the rail', async ({
   browser,
+  browserName,
+  baseURL,
   browserDiagnostics
 }) => {
   const context = await browser.newContext({
+    baseURL,
     hasTouch: true,
     viewport: { width: 390, height: 800 }
   });
@@ -219,6 +222,17 @@ test('narrow and touch layouts keep every chapter available without the rail', a
   await page.touchscreen.tap(box!.x + box!.width / 2, box!.y + box!.height / 2);
   await expect(page).toHaveURL(new RegExp(`${firstChapterRoute}$`));
   await expect(page.locator('html')).toHaveAttribute('data-guide-sidebar-collapsed', 'false');
+
+  await page.goto(deepSectionRoute.split('#')[0]);
+  await page.evaluate(() => new Promise<void>((resolve) =>
+    window.requestAnimationFrame(() => window.requestAnimationFrame(() => resolve()))
+  ));
+  expect(await page.evaluate(() => window.scrollY)).toBe(0);
+  await page.keyboard.press(browserName === 'webkit' && process.platform === 'darwin' ? 'Alt+Tab' : 'Tab');
+  const skip = page.getByRole('link', { name: 'Skip to the guide' });
+  await expect(skip).toBeFocused();
+  await skip.press('Enter');
+  await expect(page.locator('#main-content')).toBeFocused();
 
   await context.close();
 });
