@@ -42,6 +42,9 @@ application manifest, browser version and observed routes for each run.
 The **Audit the deployed beginner guide** GitHub workflow runs this check
 against the live Site when given its full deployed commit. Download the
 `beginner-guide-live-browser-report` artifact after the workflow passes.
+The receipt records the repeatable commands for this run, the source
+observations and receipt generation. Replace the placeholders with the exact
+release inputs.
 
 ```sh
 cd apps/okf-explorer

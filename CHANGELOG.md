@@ -14,6 +14,8 @@
   source inventory and a manual assessment of every chapter.
 - Run the exact deployed guide in Chrome, Firefox and WebKit on demand
   and retain the browser report for the release audit.
+- Keep the top of directly opened chapters visible on narrow screens and
+  preserve the skip link and section links.
 - Exercise atomic rank observations against a rerender triggered by the first
   attribute read in the browser fixture.
 - Compare the verified passages before and after an edited correction in
