@@ -10,6 +10,8 @@
 - Route exact official CLML to the legislation viewer. Give older XML, tabular
   and document links an appropriate destination and report incompatible media
   types before attempting to parse them.
+- Explain missing source versions, unavailable formats, malformed responses
+  and failed browser requests while keeping the original source link available.
 
 ## Unreleased — sourced Hansard dates and summaries
 

@@ -90,6 +90,7 @@ async function installTargetedFixture(
     recordRoute?: string;
     reusedResourceId?: boolean;
     sourceReleaseDate?: string;
+    clmlVersion?: string;
   } = {}
 ) {
   const RECORD_ROUTE = options.recordRoute || DEFAULT_RECORD_ROUTE;
@@ -117,6 +118,9 @@ async function installTargetedFixture(
     legislation_id_uri: 'https://www.legislation.gov.uk/id/ukpga/1998/42',
     document_uri: 'https://www.legislation.gov.uk/ukpga/1998/42',
     url: 'https://www.legislation.gov.uk/ukpga/1998/42',
+    ...(options.clmlVersion ? {
+      manifestations: { clml: `https://www.legislation.gov.uk/ukpga/1998/42/${options.clmlVersion}/data.xml` }
+    } : {}),
     ...(options.targetedRecordResources ? { source_api_url: `${ORIGIN}/legacy/should-not-fetch.json` } : {}),
     narrative: {
       title: 'Target Act within its enclosing process',
@@ -1358,6 +1362,40 @@ test.describe('targeted large-corpus relationship hydration', () => {
     await page.getByRole('button', { name: 'Explore official text' }).click();
     await expect(page.locator('.law-panel [role="alert"]')).toBeVisible();
     await expect(page.locator('.law-panel .provision-tree li')).toHaveCount(0);
+  });
+
+  test('legislation detail explains an unavailable XML format and keeps the exact version on retry', async ({ page }) => {
+    const requests: string[] = [];
+    const clmlVersion = '2024-12-31';
+    await installTargetedFixture(page.context(), requests, { clmlVersion });
+    const work = 'https://www.legislation.gov.uk/ukpga/1998/42';
+    const version = `${work}/${clmlVersion}`;
+    const xml = `${version}/data.xml`;
+    const requestedTypes: Array<string | undefined> = [];
+    const headers = { 'access-control-allow-origin': '*' };
+    await page.context().route(xml, (route) => {
+      requestedTypes.push(route.request().headers().accept);
+      return requestedTypes.length === 1
+        ? route.fulfill({ status: 406, headers })
+        : route.fulfill({
+          status: 200, headers, contentType: 'application/xml',
+          body: '<Legislation><EUPrelims /><EUBody><P1 id="article-1"><Number>1</Number><Text>Point-in-time official text</Text></P1></EUBody></Legislation>'
+        });
+    });
+    await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}#overview`);
+    await page.getByPlaceholder('Search targeted legislation').fill('Target Act');
+    await page.locator('.result-list button').filter({ hasText: 'Target Act 1998' }).first().click();
+    await page.getByRole('button', { name: 'Explore official text' }).click();
+    const panel = page.locator('.law-panel');
+    await expect(panel.getByRole('alert')).toHaveText('The source does not offer the requested format (HTTP 406).');
+    await expect(panel.getByRole('link', { name: 'Open official XML' })).toHaveAttribute('href', xml);
+    await expect(panel.getByRole('link', { name: 'Open this official version' })).toHaveAttribute('href', version);
+    await panel.getByRole('button', { name: 'Explore official text' }).click();
+    await expect(panel.getByRole('alert')).toHaveCount(0);
+    await expect(panel.getByText('EU preliminaries', { exact: true })).toBeVisible();
+    await expect(panel.getByRole('link', { name: 'Selected passage' })
+      .and(panel.locator(`a[href="${work}/article/1/${clmlVersion}"]`))).toBeVisible();
+    expect(requestedTypes).toEqual(Array(2).fill('application/xml, text/xml;q=0.9'));
   });
 
   test('announces an incomplete v3 route and retries it without retaining model rows', async ({

@@ -464,7 +464,40 @@ describe('fetch helpers', () => {
   it('reports a source media-type mismatch before parsing the response', async () => {
     vi.stubGlobal('fetch', vi.fn(async () => new Response('<html>Error</html>', { headers: { 'content-type': 'text/html; charset=UTF-8' } })));
     await expect(fetchSourceResponse('https://example.test/route.xml', 'xml', 'application/xml', 15000, 1, 0))
-      .rejects.toThrow('Expected XML from the source. It returned text/html.');
+      .rejects.toThrow('Expected application/xml from the source. It returned text/html.');
+  });
+
+  it.each([
+    [404, 'The requested source version or format could not be found (HTTP 404).'],
+    [406, 'The source does not offer the requested format (HTTP 406).']
+  ])('explains HTTP %i from the publisher', async (status, message) => {
+    vi.stubGlobal('fetch', vi.fn(async () => new Response(null, { status })));
+    await expect(fetchSourceResponse('https://example.test/route.xml', 'xml', 'application/xml', 15000, 1, 0))
+      .rejects.toThrow(message);
+  });
+
+  it('distinguishes malformed JSON from a failed browser request', async () => {
+    const fetchMock = vi.fn()
+      .mockResolvedValueOnce(new Response('{invalid', { headers: { 'content-type': 'application/json' } }))
+      .mockRejectedValueOnce(new TypeError('Failed to fetch'));
+    vi.stubGlobal('fetch', fetchMock);
+    const url = 'https://example.test/api/record';
+
+    await expect(fetchSourceJson(url, 15000, 1, 0)).rejects.toThrow('The source returned malformed JSON.');
+    await expect(fetchSourceJson(url, 15000, 1, 0)).rejects.toThrow('Some publishers block previews from other sites.');
+  });
+
+  it('checks a declared tabular type while accepting older plain-text responses', async () => {
+    const fetchMock = vi.fn()
+      .mockResolvedValueOnce(new Response('a\tb', { headers: { 'content-type': 'text/tab-separated-values' } }))
+      .mockResolvedValueOnce(new Response('a,b', { headers: { 'content-type': 'text/plain' } }));
+    vi.stubGlobal('fetch', fetchMock);
+    const url = 'https://example.test/package.csv';
+
+    await expect(fetchSourceResponse(url, 'text', 'text/csv', 15000, 1, 0))
+      .rejects.toThrow('Expected text/csv from the source. It returned text/tab-separated-values.');
+    await expect(fetchSourceResponse(url, 'text', 'text/csv', 15000, 1, 0))
+      .resolves.toMatchObject({ text: 'a,b' });
   });
 
   it('requests plain text without applying the JSON endpoint fallback', async () => {

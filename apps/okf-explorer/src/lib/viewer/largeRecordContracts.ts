@@ -6,7 +6,7 @@ import type {
   LargeSourceAccess,
   LargeSourceDisplayMode
 } from '$lib/types';
-import { officialDocumentUrl } from '$lib/legislation/structure';
+import { officialClmlUrl, officialDocumentUrl } from '$lib/legislation/structure';
 
 export type ResolvedLargeSourceAccess = LargeSourceAccess & {
   resourceId?: string;
@@ -103,7 +103,7 @@ export function sourceAccesses(dataset: LargeDataset, resources: LargeResource[]
   if (!deduplicated.size && nonEmpty(dataset.source_api_url) && httpUrl(dataset.source_api_url)) {
     const url = new URL(dataset.source_api_url);
     const legislative = dataset.record_type === 'Legislation Work' || Boolean(dataset.legislation_id_uri);
-    const structure = legislative ? officialDocumentUrl(dataset.structure_url || '') : '';
+    const structure = legislative ? officialClmlUrl(dataset) : '';
     // The official legislation panel already renders this exact XML manifestation.
     if (structure && officialDocumentUrl(url.href) === structure) return [];
 

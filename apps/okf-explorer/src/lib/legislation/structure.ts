@@ -138,6 +138,18 @@ export function officialDocumentUrl(value: string): string {
   } catch { return ''; }
 }
 
+export function officialClmlUrl(record: {
+  structure_url?: string;
+  manifestations?: Record<string, string>;
+  document_uri?: string;
+  url?: string;
+}): string {
+  const declared = record.structure_url || record.manifestations?.clml;
+  if (declared) return officialDocumentUrl(declared);
+  const document = officialDocumentUrl(record.document_uri || record.url || '');
+  return document ? `${document}/data.xml` : '';
+}
+
 export function provisionType(sourceElement: string, id = ''): string {
   if (/^P[2-7]$/.test(sourceElement)) return `Nested provision (${sourceElement})`;
   let semanticMatch: { index: number; label: string } | undefined;

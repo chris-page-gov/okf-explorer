@@ -554,14 +554,43 @@ function sourceAcceptHeader(displayMode: InlineSourceDisplayMode, mediaType: str
     : defaults[displayMode];
 }
 
-function sourceContentTypeMatches(mode: InlineSourceDisplayMode, type: string): boolean {
+export function sourcePreviewHttpError(status: number): Error {
+  if (status === 406) return new Error('The source does not offer the requested format (HTTP 406).');
+  if (status === 404) return new Error('The requested source version or format could not be found (HTTP 404).');
+  if (status === 401 || status === 403) return new Error(`The publisher refused access to this source (HTTP ${status}).`);
+  return new Error(`The source request failed (HTTP ${status}).`);
+}
+
+export function sourcePreviewRequestError(error: unknown): Error {
+  if (error instanceof Error && error.name === 'TimeoutError') {
+    return new Error('The source took too long to respond. Try again or open the original source.');
+  }
+  if (error instanceof TypeError) {
+    return new Error('The browser could not read the source. Check your connection or open the original source. Some publishers block previews from other sites.');
+  }
+  return error instanceof Error ? error : new Error(String(error));
+}
+
+function sourceContentTypeMatches(mode: InlineSourceDisplayMode, type: string, declared: string): boolean {
   // Older text and API servers may omit a media type or return plain text.
   if (!type || type === 'text/plain') return true;
+  if (declared === 'text/csv' || declared === 'text/tab-separated-values') return type === declared;
   const json = type === 'application/json' || type.endsWith('+json');
   const xml = type === 'application/xml' || type === 'text/xml' || type.endsWith('+xml');
   if (mode === 'json') return json;
   if (mode === 'xml') return xml;
   return type.startsWith('text/') && !xml && type !== 'text/html';
+}
+
+export function checkedSourceContentType(response: Response, mode: InlineSourceDisplayMode, declared = ''): string {
+  const contentType = response.headers.get('content-type') || '';
+  const returnedType = contentType.split(';')[0].trim().toLowerCase();
+  const declaredType = declared.split(';')[0].trim().toLowerCase();
+  if (!sourceContentTypeMatches(mode, returnedType, declaredType)) {
+    const expected = declaredType || mode.toUpperCase();
+    throw new Error(`Expected ${expected} from the source. It returned ${returnedType}.`);
+  }
+  return contentType;
 }
 
 async function fetchSourceResponseCandidate(
@@ -582,7 +611,7 @@ async function fetchSourceResponseCandidate(
         signal
       });
       if (!response.ok) {
-        const error = new Error(`${url}: ${response.status} ${response.statusText}`);
+        const error = sourcePreviewHttpError(response.status);
         if (attempt < attempts - 1 && RETRYABLE_STATUS_CODES.has(response.status)) {
           lastError = error;
           await retryDelay(retryDelayMs, attempt);
@@ -590,11 +619,7 @@ async function fetchSourceResponseCandidate(
         }
         throw error;
       }
-      const contentType = response.headers.get('content-type') || '';
-      const returnedType = contentType.split(';')[0].trim().toLowerCase();
-      if (!sourceContentTypeMatches(displayMode, returnedType)) {
-        throw new Error(`Expected ${displayMode.toUpperCase()} from the source. It returned ${returnedType}.`);
-      }
+      const contentType = checkedSourceContentType(response, displayMode, mediaType);
       const contentLength = response.headers.get('content-length');
       if (contentLength && Number(contentLength) > MAX_SOURCE_JSON_BYTES) {
         throw new Error(`${url}: response too large (${Number(contentLength)} bytes, limit ${MAX_SOURCE_JSON_BYTES})`);
@@ -615,7 +640,8 @@ async function fetchSourceResponseCandidate(
         await retryDelay(retryDelayMs, attempt);
         continue;
       }
-      throw error;
+      if (error instanceof SyntaxError && displayMode === 'json') throw new Error('The source returned malformed JSON.');
+      throw sourcePreviewRequestError(error);
     }
   }
   throw lastError instanceof Error ? lastError : new Error(`${url}: fetch failed`);

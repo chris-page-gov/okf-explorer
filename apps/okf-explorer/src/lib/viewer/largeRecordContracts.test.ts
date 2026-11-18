@@ -122,6 +122,13 @@ describe('typed source access contract', () => {
   it('lets the official legislation panel handle an exact legacy CLML duplicate', () => {
     const structure_url = 'https://www.legislation.gov.uk/eur/2017/669/2024-12-31/data.xml';
     expect(sourceAccesses({ ...dataset, record_type: 'Legislation Work', structure_url, source_api_url: structure_url }, [])).toEqual([]);
+    expect(sourceAccesses({
+      ...dataset,
+      record_type: 'Legislation Work',
+      document_uri: 'https://www.legislation.gov.uk/eur/2017/669',
+      manifestations: { clml: structure_url },
+      source_api_url: structure_url
+    }, [])).toEqual([]);
   });
 
   it.each([['.clml', 'xml'], ['.csv', 'text'], ['.rdf', 'link'], ['.pdf', 'link']])(
