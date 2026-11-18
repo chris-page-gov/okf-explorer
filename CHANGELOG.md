@@ -7,6 +7,8 @@
   reviewing claims with three worked exercises available without JavaScript.
 - Link the learning path, all glossary definitions and the exercises in both
   directions. Publish a deterministic report of authored guide references.
+- Require a worked example or exercise and its return link for every
+  chapter in the learning path.
 - Inventory and classify the guide's public source links and example
   identifiers. Record redirects, page titles and response evidence in a
   separate source audit. Link to the current ONS profile for the Coventry code.

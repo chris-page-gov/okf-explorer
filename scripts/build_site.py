@@ -1849,6 +1849,19 @@ def write_beginner_reference_report(directory: Path, routes: list[str]) -> None:
     exercises = [identifier for identifier in pages[worked_example].sections if identifier.startswith("exercise-")]
     if len(exercises) < 3:
         raise ValueError("The learning path requires three worked exercises.")
+    worked_sections = {*exercises, "trace-one-relationship-to-its-evidence"}
+    for chapter in chapters:
+        if chapter == worked_example:
+            continue
+        connections_to_example = {
+            fragment for source, section, target, fragment in local_links
+            if source == chapter and section == connections and target == worked_example
+            and fragment in worked_sections
+        }
+        if not connections_to_example:
+            raise ValueError(f"Chapter lacks a worked example or exercise in its learning path: {chapter}")
+        for fragment in connections_to_example:
+            require_link(worked_example, fragment, chapter, connections)
     for exercise in exercises:
         exercise_links = {
             (source, section) for source, section, target, fragment in local_links

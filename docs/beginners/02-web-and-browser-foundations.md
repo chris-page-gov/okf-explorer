@@ -225,6 +225,7 @@ explains the simplest source and publication path.
 - [Learning path overview](index.md#learning-path)
 - Previous chapter is [The Product In Plain Language](01-product-in-plain-language.md#learning-path-connections).
 - Next chapter is [Markdown, OKF And Small Bundles](03-markdown-okf-and-small-bundles.md#learning-path-connections).
+- [Trace a relationship to its evidence](25-life-course-worked-example.md#trace-one-relationship-to-its-evidence) to see when an identifier is used as a link and when it names a concept or record.
 - Glossary terms in this chapter include [Cache](16-beginner-glossary.md#cache),
   [CORS](16-beginner-glossary.md#cors),
   [JSON](16-beginner-glossary.md#json),

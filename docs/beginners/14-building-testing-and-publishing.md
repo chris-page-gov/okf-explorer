@@ -322,6 +322,7 @@ kind of change to files and checks.
 - [Learning path overview](index.md#learning-path)
 - Previous chapter is [Security, Privacy, Accessibility And Responsible Use](13-security-privacy-accessibility-and-responsible-use.md#learning-path-connections).
 - Next chapter is [A Contributor's Repository Tour](15-contributor-repository-tour.md#learning-path-connections).
+- [Review the status of a claim](25-life-course-worked-example.md#exercise-3-review-the-status-of-a-claim) to practise keeping a claim's evidence and status visible through publication.
 - Glossary terms in this chapter include [Content-addressed](16-beginner-glossary.md#content-addressed),
   [Deterministic](16-beginner-glossary.md#deterministic),
   [Digest](16-beginner-glossary.md#digest),
