@@ -16,6 +16,10 @@ No producer or pinned Reader is migrated automatically.
 
 ## Remaining work and closure conditions
 
+The [semantic roadmap review](semantic-roadmap-review-2026-11-18.md) records
+the release baseline, dependencies and acceptance evidence for issues
+#49–#54, #76, #77 and #84.
+
 This is the current work inventory. Closure conditions are proposed evidence
 requirements, not a claim that a fix, approval or additional scope exists.
 Producer assurance belongs to the producer as well as its pinned Reader;

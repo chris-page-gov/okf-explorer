@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased — semantic foundations
+
+- Reconcile the semantic roadmap against the frozen OKF 0.2 profile and name
+  the implementation and acceptance work for each planned view.
+- Publish candidate topic, format and licence schemes with stable concept
+  identifiers and a checked SKOS vocabulary digest.
+- Export the identity-bound static Site assembly as a deterministic PROV-O
+  graph for further review.
+- Exercise every generated chapter-heading fragment in a browser and retain
+  the observed route and fragment list as test evidence.
+
 ## Unreleased — Explorer presentation
 
 - Add a system, light and dark appearance setting to the Explorer. Remember
