@@ -278,9 +278,10 @@ geography or change assertions about the original one.
 Where ONS publishes a GSS code, the semantic entity can retain the canonical
 `http://statistics.data.gov.uk/id/statistical-geography/{GSS_CODE}`
 [Internationalized Resource Identifier (IRI)](23-foundational-definitions.md#iri).
-It must not be changed to HTTPS merely for stylistic consistency. Where no GSS
-identity exists, the pack can declare an OS identifier (OSID) or source-local
-scheme, but must not invent one. An
+Keep the identifier as recorded in the source. Use the current [ONS area
+profile](https://www.ons.gov.uk/explore-local-statistics/areas/E08000026-coventry)
+to look up a code such as Coventry's `E08000026`. Where no GSS identity exists,
+the pack can declare an OS identifier (OSID) or a source-local identifier. An
 [explicit join table](16-beginner-glossary.md#join-table) connects each
 semantic identity to one logical source feature. Its uniqueness rule applies
 before tiling: the same feature may legitimately occur in several vector

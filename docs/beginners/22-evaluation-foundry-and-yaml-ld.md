@@ -365,6 +365,12 @@ subject, a class and governed relationship predicates. In this example the
 last property directly represents the asset-to-Coventry link; its separate
 reified assertion carries the evidence and provenance for that link.
 
+The `statistics.data.gov.uk` address is the identifier used in this snapshot.
+The ONS retired the former data service. Use the current [ONS area profile for
+Coventry (E08000026)](https://www.ons.gov.uk/explore-local-statistics/areas/E08000026-coventry)
+to look up that code, and keep the original identifier when reproducing this
+example.
+
 The example uses the official NHLE page as the asset identity because it is a
 stable, identifier-bound source page. Some records, such as an annual workbook
 row, have no equivalent public item page. For those records the exemplar uses
