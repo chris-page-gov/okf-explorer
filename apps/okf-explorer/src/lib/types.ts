@@ -368,6 +368,8 @@ export type LargeCorpusDescriptor = {
     data_manifest: string;
     markdown_index?: string;
     conformance?: LargeResourceReference;
+    shacl_findings?: LargeResourceReference;
+    shacl_review?: LargeResourceReference;
     semantic_jsonld?: string;
     semantic_yamlld?: string;
     terms?: LargeResourceReference;

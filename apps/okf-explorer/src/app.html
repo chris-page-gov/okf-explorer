@@ -17,7 +17,7 @@
           } catch { /* Use the system preference if storage is unavailable. */ }
           document.documentElement.dataset.explorerTheme = theme;
         }
-        if (route !== 'explore' && route !== 'evidence' && route !== 'passages' && route !== 'reading-help' && route !== 'corpus' && location.pathname.endsWith('/') && (location.search || !landingFragments.has(location.hash))) {
+        if (route !== 'explore' && route !== 'evidence' && route !== 'passages' && route !== 'reading-help' && route !== 'corpus' && route !== 'validation' && location.pathname.endsWith('/') && (location.search || !landingFragments.has(location.hash))) {
           location.replace(`${location.pathname}explore/${location.search}${location.hash}`);
         }
       })();

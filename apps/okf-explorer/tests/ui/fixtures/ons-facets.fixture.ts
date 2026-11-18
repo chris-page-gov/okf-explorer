@@ -549,6 +549,11 @@ export type OnsFacetFixtureOptions = {
   filterPaddingBytes?: number;
   skewedCounts?: boolean;
   populationFacetLabel?: string;
+  validation?: {
+    bundle: string;
+    entrypoints: Record<string, { path: string; bytes: number; sha256: string }>;
+    resources: Record<string, string>;
+  };
 };
 
 async function json(route: Route, body: unknown, status = 200, responseBytes?: number[]) {
@@ -583,8 +588,17 @@ export async function installOnsFacetFixture(
     if (url.pathname === '/okf-explorer.json') {
       const { search_manifest, ...entrypoints } = descriptor.entrypoints;
       const declared = { ...descriptor, ...(options.learningPresentation ? { learning_presentation: options.learningPresentation } : {}) };
+      if (options.validation) return respond({
+        ...declared,
+        '@id': options.validation.bundle,
+        entrypoints: { ...(options.withoutSearch ? entrypoints : descriptor.entrypoints), ...options.validation.entrypoints }
+      });
       return respond(options.withoutSearch ? { ...declared, entrypoints } : declared);
     }
+    const validationResource = options.validation?.resources[url.pathname];
+    if (validationResource) return route.fulfill({
+      contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: validationResource
+    });
     if (url.pathname === '/data/manifest.json') {
       const { search, ...indexes } = manifest.indexes;
       return respond(options.withoutSearch ? { ...manifest, indexes } : manifest);

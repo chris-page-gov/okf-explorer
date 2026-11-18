@@ -71,9 +71,31 @@ focus nodes, shapes and simple paths, it produces deterministic finding IDs
 from the bundle, severity, focus, shape, path and constraint. Multiple results
 with those same fields share an ID and retain their occurrence count. The
 output also records the report's exact SHA-256 and its conformance outcome.
-It excludes free-text messages and values from the result. This increment
-still needs pinned shape execution, remediation metadata, cross-bundle source
-bindings and the browser finding route. [SHACL Recommendation](https://www.w3.org/TR/shacl/)
+The projection excludes free-text messages and values from the result.
+Producers still need to publish reports from pinned shape execution.
+[SHACL Recommendation](https://www.w3.org/TR/shacl/)
+
+### Inspect findings in the Explorer
+
+Set the large-corpus descriptor's `@id` to the bundle IRI used in the report.
+Declare `entrypoints.shacl_findings` with the projection's descriptor-relative
+`path`, exact `bytes` and lowercase SHA-256 in `sha256`. The view checks these
+bindings, the bundle identity and each stable finding ID before displaying
+the producer's SHACL outcome. It supports up to 2,000 distinct findings in a
+2 MiB JSON file. Use the descriptor URL to open the report and share its
+`severity`, `finding` and `page` parameters.
+
+Optional `entrypoints.shacl_review` uses the same resource binding. The
+review document has schema `okf-shacl-review.v1`, the projection's
+`findings_sha256` and a `findings` array. Each row has a known finding
+`id`, plain-text `remediation` and one to 16 distinct `sources`. Each
+source gives its `bundle` IRI, public `descriptor` URL, `record_route`
+and `evidence` URL. Publish every participant in a cross-bundle finding
+and use frozen descriptor URLs where available. The view labels the review
+as publisher-declared and checks its binding to the findings projection.
+The browser Back action restores the selected finding after opening a source
+record. A browser retrieval error has its own message. The view displays
+recorded outcomes, linking to source assertions for inspection.
 
 ## Candidate quality export
 

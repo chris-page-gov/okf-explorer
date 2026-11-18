@@ -164,6 +164,7 @@
     parseStructuredDocumentText
   } from '$lib/sources/fetch';
   import { isLargeCorpusDescriptor, parseRelatedDescriptorLinks } from '$lib/sources/descriptor';
+  import { validationLink } from '$lib/validation/findings';
   import ExploratoryBanner from '$lib/publication/ExploratoryBanner.svelte';
   import {
     buildExploratoryFeedbackUrl,
@@ -7091,6 +7092,9 @@
               {:else if largeQuery.trim()}Counts describe the current search and filters.
               {:else if activeLargeFilterCount || reductions.length || foldedSets.length}Counts describe the current filters and groups.
               {:else}Counts describe the whole bundle.{/if}
+              {#if source.descriptor.entrypoints.shacl_findings && !largeSelectedRoute && !largeInspectedRoute}
+                <a href={validationLink(source.url)}>Inspect validation findings</a>
+              {/if}
             </p>
             <div class="metrics">
               {#each largeContextMetrics() as metric}

@@ -287,6 +287,7 @@ export type FetchJsonResourceOptions = {
   attempts?: number;
   retryDelayMs?: number;
   rejectRedirects?: boolean;
+  credentials?: RequestCredentials;
   acceptedMediaTypes?: string[];
 };
 
@@ -384,7 +385,7 @@ export async function fetchJsonResource<T>(
     throw new Error('Release data-plane resources must stay on the bundle origin');
   }
   const expectedHash = distributed ? distributed.expectedPackedHash : resourceHash(reference);
-  if (!distributed && !expectedHash && !options.rejectRedirects && !options.acceptedMediaTypes) {
+  if (!distributed && !expectedHash && !options.rejectRedirects && !options.acceptedMediaTypes && !options.credentials) {
     return fetchJson<T>(
       url,
       options.timeoutMs ?? 30000,
@@ -403,6 +404,7 @@ export async function fetchJsonResource<T>(
       const response = await fetch(url, {
         cache: 'default',
         headers: distributed?.headers,
+        credentials: options.credentials,
         ...(options.rejectRedirects ? { redirect: 'error' } : {}),
         signal
       });
