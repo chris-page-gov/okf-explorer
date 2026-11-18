@@ -4,6 +4,8 @@
 
 - Add a system, light and dark appearance setting to the Explorer. Remember
   an explicit choice and use the light palette for print.
+- Keep view selection and focus visible in forced colours. Apply the shared
+  light and dark palette to the official legislation viewer.
 - Label the schematic outlines in the locator map as orientation aids.
 - Define a candidate manifest for governed boundary packs with two levels of
   detail, exact file identities and source attribution.

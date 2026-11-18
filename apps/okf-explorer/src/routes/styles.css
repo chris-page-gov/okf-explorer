@@ -174,6 +174,23 @@ input:focus {
   background: var(--accent);
   border-color: var(--accent);
   color: var(--on-accent);
+  text-decoration: underline;
+  text-underline-offset: .22em;
+}
+
+.app :is(button, a, input, select, [role="button"]):focus-visible {
+  outline: 2px solid var(--selected-edge);
+  outline-offset: 2px;
+}
+
+@media (forced-colors: active) {
+  .app :is(button, a, input, select, [role="button"]):focus-visible {
+    outline-color: Highlight;
+  }
+
+  .tabs button[aria-pressed="true"] {
+    border: 3px double ButtonText;
+  }
 }
 
 .type-filters button.active,
@@ -499,7 +516,7 @@ input:focus {
   padding: 4px;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: rgba(247, 249, 251, .96);
+  background: light-dark(rgba(247, 249, 251, .96), rgba(34, 47, 64, .96));
 }
 
 .detail-tabs button {

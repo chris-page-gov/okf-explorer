@@ -6675,7 +6675,7 @@
     </div>
     <nav class="tabs" aria-label="Views">
       {#each VIEW_MODES as view}
-        <button class:active={activeView === view.id} type="button" onclick={() => void selectView(view.id)}>{view.label}</button>
+        <button class:active={activeView === view.id} aria-pressed={activeView === view.id} type="button" onclick={() => void selectView(view.id)}>{view.label}</button>
       {/each}
     </nav>
     <form class="bundle-form" onsubmit={(event) => { event.preventDefault(); void openBundle(bundleInputUrl); }}>

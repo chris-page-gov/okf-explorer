@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
 
 test('the Explorer follows system colours and preserves an explicit theme', async ({ page }) => {
   await page.emulateMedia({ colorScheme: 'dark', reducedMotion: 'reduce' });
@@ -32,4 +33,42 @@ test('the Explorer follows system colours and preserves an explicit theme', asyn
   await expect(body).toHaveCSS('background-color', 'rgb(238, 242, 245)');
   await page.emulateMedia({ colorScheme: 'dark' });
   await expect(body).toHaveCSS('background-color', 'rgb(19, 27, 37)');
+});
+
+test('the sample Explorer views pass automated colour-contrast checks in both themes', async ({ page }) => {
+  await page.route('https://tile.openstreetmap.org/**', route => route.abort());
+  await page.goto('./explore/');
+  const theme = page.getByRole('combobox', { name: 'Theme', exact: true });
+  const views = page.getByRole('navigation', { name: 'Views', exact: true });
+  await expect(views.getByRole('button')).toHaveCount(8);
+  const viewNames = await views.getByRole('button').allTextContents();
+  for (const mode of ['light', 'dark']) {
+    await theme.selectOption(mode);
+    for (const view of viewNames) {
+      await views.getByRole('button', { name: view, exact: true }).click();
+      const evidence = await new AxeBuilder({ page }).withRules(['color-contrast']).analyze();
+      expect(evidence.violations, `${view} in ${mode} theme`).toEqual([]);
+    }
+  }
+});
+
+test('the selected view and keyboard focus remain visible in forced colours', async ({ page, browserName }) => {
+  await page.emulateMedia({ forcedColors: 'active', reducedMotion: 'reduce' });
+  await page.goto('./explore/');
+  const views = page.getByRole('navigation', { name: 'Views', exact: true });
+  const graph = views.getByRole('button', { name: 'Graph', exact: true });
+  const reader = views.getByRole('button', { name: 'Reader', exact: true });
+
+  await graph.focus();
+  await graph.press('Enter');
+  await expect(graph).toHaveAttribute('aria-pressed', 'true');
+  await expect(reader).toHaveAttribute('aria-pressed', 'false');
+  await expect(graph).toBeFocused();
+  await expect(graph).toHaveCSS('text-decoration-line', 'underline');
+  await expect(graph).toHaveCSS('outline-style', 'solid');
+  const forcedColours = await page.evaluate(() => matchMedia('(forced-colors: active)').matches);
+  if (browserName === 'chromium') expect(forcedColours).toBe(true);
+  if (forcedColours) {
+    await expect(graph).toHaveCSS('border-top-style', 'double');
+  }
 });

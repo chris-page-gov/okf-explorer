@@ -11,6 +11,7 @@ const SUITES = {
     family: 'ui',
     file: 'tests/ui/accessibility.spec.ts'
   },
+  theme: { family: 'ui', file: 'tests/ui/theme.spec.ts' },
   ask_okf: {
     family: 'ui',
     file: 'tests/ui/ask-okf.spec.ts'
@@ -141,6 +142,7 @@ export const JOURNEY_GROUP_SUITES = Object.freeze({
 export const TEST_TAG_SUITES = Object.freeze({
   accessibility: [
     'accessibility',
+    'theme',
     'ask_okf',
     'okf_plus_context',
     'relationship_pagination',
@@ -173,6 +175,7 @@ export const TEST_TAG_SUITES = Object.freeze({
   misspelling: ['large_corpus', 'facets'],
   presentation: [
     'accessibility',
+    'theme',
     'conceptual_navigation',
     'ask_okf',
     'okf_plus_context',
