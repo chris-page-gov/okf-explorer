@@ -41,7 +41,7 @@ inference. See the [consumer and authoring contract](okf-0.2-yaml-ld-semantic-au
 | #50 | Pinned SHACL Core, stable findings, filters, remediation and source links | Check both published examples and the finding-to-source round trip | SHACL 1.2 experiments and ontology consistency assessment have separate scope |
 | #51 | Bounded subclass materialisation, supporting assertions, derivation activities and status counts. The PROV-O example retains two source assertions and one separate inference. | Verify the published comparison and a reviewed producer rule application | Additional rules need their own bounded evaluation |
 | #52 | Class, property and SKOS navigation, scoped hierarchy search, mapping filters, shared URLs and explicit record links | Record representative discovery and ontology-engineering tasks against the published build | Hierarchy expansion of bundle record search needs separate policy and evidence |
-| #54 | DCAT-AP, OpenAPI, DQV and Site activity exporters with deterministic checks | Link production export artefacts to source records and bind build, review and deployment activity | Further standards profiles need versioned input contracts |
+| #54 | DCAT-AP, OpenAPI, DQV and Site activity exporters with deterministic checks. Site provenance covers assembly, deployment and live verification. | Link production export artefacts to source records and bind validation and independent review activity | Further standards profiles need versioned input contracts |
 
 Keep #54 as one integration issue while the four exporters share source
 identity, validation and provenance evidence in the same release. Production
@@ -69,8 +69,13 @@ configuration, the build script and Explorer manifest, and the generated Site
 tree and identity. The graph leaves assembly times unspecified. An optional
 `--live-verification` receipt adds the exact browser verification activity,
 its verifier, the candidate inputs and the recorded observation time.
-Deployment, validation and enrichment activities need their respective
-source evidence. [PROV-O Recommendation](https://www.w3.org/TR/prov-o/)
+An optional `--deployment-job` also consumes the exact GitHub Actions job
+JSON from the same verified Pages release. The export records the deployed
+Site at its published location, the workflow and software agent, the input
+identities, and the start and end of the successful deployment step. The
+browser observation must follow that step and match the same Site identity.
+Validation and review activities require their respective source evidence.
+[PROV-O Recommendation](https://www.w3.org/TR/prov-o/)
 
 ```sh
 uv run --locked python scripts/export_site_provenance.py \

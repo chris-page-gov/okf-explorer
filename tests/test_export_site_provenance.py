@@ -4,7 +4,7 @@ import unittest
 
 from rdflib import Graph, PROV, RDF, URIRef
 
-from scripts.export_site_provenance import REPOSITORY, export_site_provenance
+from scripts.export_site_provenance import GITHUB_API, PUBLICATION, REPOSITORY, export_site_provenance
 
 
 def candidate_evidence() -> tuple[bytes, bytes]:
@@ -70,6 +70,26 @@ class ExportSiteProvenanceTest(unittest.TestCase):
         result, = graph.subjects(PROV.wasGeneratedBy, activity)
         self.assertEqual(len(list(graph.objects(result, PROV.generatedAtTime))), 1)
         self.assertIn((activity, PROV.used, URIRef(f"urn:okf:sha256:{binding['sha256']}")), graph)
+        job_url = f"{REPOSITORY}/actions/runs/123/job/456"
+        deployment = {
+            "run_id": 123, "id": 456, "name": "deploy", "workflow_name": "Publish GitHub Pages",
+            "status": "completed", "conclusion": "success", "head_sha": binding["commit"],
+            "head_branch": "main", "html_url": job_url, "run_url": f"{GITHUB_API}/actions/runs/123",
+            "steps": [{
+                "name": "Deploy to GitHub Pages", "conclusion": "success",
+                "started_at": "2026-11-18T18:03:00Z", "completed_at": "2026-11-18T18:04:00Z",
+            }],
+            "runner_name": "unused runner metadata",
+        }
+        delivery = export_site_provenance(receipt, identity, raw, deployment_bytes=json.dumps(deployment).encode())
+        material = Graph().parse(data=delivery, format="nt")
+        site, = material.subjects(PROV.atLocation, URIRef(PUBLICATION))
+        self.assertIn((site, PROV.wasGeneratedBy, URIRef(job_url)), material)
+        self.assertIn((activity, PROV.used, site), material)
+        self.assertNotIn(b"unused runner metadata", delivery)
+        deployment["steps"][0]["completed_at"] = "2026-11-18T18:05:00Z"
+        with self.assertRaisesRegex(ValueError, "before the live observation"):
+            export_site_provenance(receipt, identity, raw, deployment_bytes=json.dumps(deployment).encode())
         verified["deployed_identity"] = {"commit": "f" * 40, "sha256": binding["sha256"]}
         with self.assertRaisesRegex(ValueError, "does not match"):
             export_site_provenance(receipt, identity, json.dumps(verified).encode())

@@ -5,7 +5,8 @@
 - Stage a vocabulary Reader example and a separate missing-label exercise
   with reproducible Ontology, SHACL and Data Quality Vocabulary exports.
 - Record the staged semantic work and its remaining release acceptance.
-- Add exact live browser verification receipts to the Site provenance export.
+- Add exact successful Pages jobs and live browser verification receipts to
+  the Site provenance export.
 - Demonstrate bounded subclass inference with two W3C PROV-O source
   assertions, one inferred relationship and an export of its derivation.
 - Scope ontology searches to the direct children of a selected term, with
