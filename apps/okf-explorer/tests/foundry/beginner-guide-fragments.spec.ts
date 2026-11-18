@@ -3,18 +3,17 @@ import { createHash } from 'node:crypto';
 
 import { expect, test } from '../browserDiagnostics';
 
-test('all beginner guide pages pass fragment and automated accessibility checks', async ({ page, browser, browserName }, info) => {
+test('all beginner guide pages pass fragment and automated accessibility checks', async ({ page: index, context, browser, browserName }, info) => {
   const started = new Date().toISOString();
   test.setTimeout(120_000);
-  await page.emulateMedia({ reducedMotion: 'reduce' });
-  await page.goto('docs/beginners/index.html');
-  const guideBase = new URL('.', page.url()).href;
+  await index.goto('docs/beginners/index.html');
+  const guideBase = new URL('.', index.url()).href;
   let publication: { commit: string; identity_sha256: string; manifest_sha256: string } | undefined;
   if (process.env.OKF_BEGINNER_RELEASE_AUDIT) {
     const root = new URL('../../', guideBase);
     const [identity, manifest] = await Promise.all([
-      page.request.get(new URL('okf-publication-identity.json', root).href),
-      page.request.get(new URL('okf-explorer-build-manifest.json', root).href)
+      index.request.get(new URL('okf-publication-identity.json', root).href),
+      index.request.get(new URL('okf-explorer-build-manifest.json', root).href)
     ]);
     expect(identity.ok()).toBe(true);
     expect(manifest.ok()).toBe(true);
@@ -24,12 +23,12 @@ test('all beginner guide pages pass fragment and automated accessibility checks'
       manifest_sha256: createHash('sha256').update(await manifest.body()).digest('hex')
     };
   }
-  const referenceResponse = await page.request.get(new URL('cross-references.json', guideBase).href);
+  const referenceResponse = await index.request.get(new URL('cross-references.json', guideBase).href);
   expect(referenceResponse.ok()).toBe(true);
   const referenceSha = createHash('sha256').update(await referenceResponse.body()).digest('hex');
   const references: { schema: string; pages: Record<string, string[]> } = await referenceResponse.json();
   expect(references.schema).toBe('okf-beginner-guide-cross-references.v1');
-  const routes = await page.getByRole('navigation', { name: 'Beginner guide chapters' })
+  const routes = await index.getByRole('navigation', { name: 'Beginner guide chapters' })
     .getByRole('link').evaluateAll(links => links.map(link => (link as HTMLAnchorElement).href));
   expect(routes.every(route => route.startsWith(guideBase) && route.endsWith('.html'))).toBe(true);
   expect(routes.length).toBeGreaterThanOrEqual(27);
@@ -42,6 +41,9 @@ test('all beginner guide pages pass fragment and automated accessibility checks'
     skipLinkChecked: boolean; manualChecks: string[];
   }> = [];
   for (const route of routes) {
+    // Each chapter has a fresh browsing context for its fragment history.
+    const page = await context.newPage();
+    await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.setViewportSize({ width: 320, height: 720 });
     const response = await page.goto(route);
     expect([200, 304], route).toContain(response?.status());
@@ -98,6 +100,7 @@ test('all beginner guide pages pass fragment and automated accessibility checks'
       route, headings: allHeadings, narrowWidth: width, skipLinkChecked: true,
       manualChecks: scan.incomplete.map(finding => finding.id)
     });
+    await page.close();
   }
   await info.attach('observed-guide-fragments', {
     body: JSON.stringify({

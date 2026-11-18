@@ -228,7 +228,7 @@ test('narrow and touch layouts keep every chapter available without the rail', a
     window.requestAnimationFrame(() => window.requestAnimationFrame(() => resolve()))
   ));
   expect(await page.evaluate(() => window.scrollY)).toBe(0);
-  await page.keyboard.press(browserName === 'webkit' ? 'Alt+Tab' : 'Tab');
+  await page.keyboard.press(browserName === 'webkit' && process.platform === 'darwin' ? 'Alt+Tab' : 'Tab');
   const skip = page.getByRole('link', { name: 'Skip to the guide' });
   await expect(skip).toBeFocused();
   await skip.press('Enter');

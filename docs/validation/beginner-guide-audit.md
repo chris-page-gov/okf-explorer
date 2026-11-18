@@ -5,6 +5,8 @@ opens each chapter, checks its declared headings and fragment navigation,
 tests the keyboard skip link and reflow at 320 pixels, and runs Axe. Record
 manual checks of full keyboard order, focus visibility,
 reflow, touch, reduced motion and sidebar behaviour alongside those results.
+The suite opens each chapter in a fresh tab so the browser applies its normal
+navigation limits separately to each chapter's fragment history.
 
 Build the source inventory from the same Site’s `cross-references.json` and
 chapter HTML. The inventory covers external links and HTTP identifiers in
