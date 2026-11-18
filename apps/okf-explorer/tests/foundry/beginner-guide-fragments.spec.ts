@@ -1,14 +1,32 @@
 import AxeBuilder from '@axe-core/playwright';
+import { createHash } from 'node:crypto';
 
 import { expect, test } from '../browserDiagnostics';
 
-test('all beginner guide pages pass fragment and automated accessibility checks', async ({ page, browserName }, info) => {
+test('all beginner guide pages pass fragment and automated accessibility checks', async ({ page, browser, browserName }, info) => {
+  const started = new Date().toISOString();
   test.setTimeout(120_000);
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('docs/beginners/index.html');
   const guideBase = new URL('.', page.url()).href;
+  let publication: { commit: string; identity_sha256: string; manifest_sha256: string } | undefined;
+  if (process.env.OKF_BEGINNER_RELEASE_AUDIT) {
+    const root = new URL('../../', guideBase);
+    const [identity, manifest] = await Promise.all([
+      page.request.get(new URL('okf-publication-identity.json', root).href),
+      page.request.get(new URL('okf-explorer-build-manifest.json', root).href)
+    ]);
+    expect(identity.ok()).toBe(true);
+    expect(manifest.ok()).toBe(true);
+    publication = {
+      commit: (await identity.json()).commit,
+      identity_sha256: createHash('sha256').update(await identity.body()).digest('hex'),
+      manifest_sha256: createHash('sha256').update(await manifest.body()).digest('hex')
+    };
+  }
   const referenceResponse = await page.request.get(new URL('cross-references.json', guideBase).href);
   expect(referenceResponse.ok()).toBe(true);
+  const referenceSha = createHash('sha256').update(await referenceResponse.body()).digest('hex');
   const references: { schema: string; pages: Record<string, string[]> } = await referenceResponse.json();
   expect(references.schema).toBe('okf-beginner-guide-cross-references.v1');
   const routes = await page.getByRole('navigation', { name: 'Beginner guide chapters' })
@@ -82,7 +100,11 @@ test('all beginner guide pages pass fragment and automated accessibility checks'
     });
   }
   await info.attach('observed-guide-fragments', {
-    body: JSON.stringify(chapters, null, 2),
+    body: JSON.stringify({
+      project: info.project.name, engine: browserName, version: browser.version(),
+      started_at: started, observed_at: new Date().toISOString(), guide_base: guideBase,
+      cross_references_sha256: referenceSha, publication, chapters
+    }, null, 2),
     contentType: 'application/json'
   });
 });
