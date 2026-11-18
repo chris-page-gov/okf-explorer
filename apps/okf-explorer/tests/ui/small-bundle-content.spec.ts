@@ -623,3 +623,51 @@ for (const focus of ['browser-blur', 'outside-control']) {
     await expect(focus === 'browser-blur' ? page.locator('[data-panel="details"]') : reader).toBeFocused();
   });
 }
+
+test('Links compares source assertions and inference with evidence and shareable status', async ({ context, page }) => {
+  const url = 'https://inference.fixture.test/okf-bundle.json';
+  const rule = 'urn:okf:rule:subclass-transitive:v1';
+  const activity = 'urn:okf:inference-activity:fixture';
+  const support = 'urn:fixture:assertion:a-to-b';
+  const published = 'https://inference.fixture.test/source/a-to-b';
+  await context.route(url, route => route.fulfill({
+    contentType: 'application/json', headers: { 'access-control-allow-origin': '*' },
+    body: JSON.stringify({
+      okf_version: '0.2',
+      title: 'Comparison fixture',
+      nodes: {
+        a: { id: 'a', title: 'Class A', type: 'Class' },
+        b: { id: 'b', title: 'Class B', type: 'Class' },
+        c: { id: 'c', title: 'Class C', type: 'Class' }
+      },
+      relationships: [
+        { id: support, source: 'a', target: 'b', kind: 'subclass of', assertion_status: 'official', evidence: [published] },
+        { id: 'urn:fixture:assertion:b-to-c', source: 'b', target: 'c', kind: 'subclass of', assertion_status: 'official' },
+        { id: 'urn:fixture:inferred:a-to-c', source: 'a', target: 'c', kind: 'subclass of', assertion_status: 'inferred',
+          rule, derivation_activity: activity, supporting_assertions: [support, 'urn:fixture:assertion:b-to-c'] },
+        { id: 'urn:fixture:normalised', source: 'c', target: 'b', kind: 'catalogue cross-reference', assertion_status: 'normalized' }
+      ]
+    })
+  }));
+  await page.goto('?' + new URLSearchParams({ bundle: url, view: 'links' }));
+  const comparison = page.getByRole('region', { name: 'Assertion status comparison' });
+  await expect(comparison).toContainText('Source-asserted2');
+  await expect(comparison).toContainText('Inferred1');
+  const filter = comparison.getByRole('combobox', { name: 'Show links by assertion status' });
+  await filter.selectOption('inferred');
+  await expect(page).toHaveURL(/links\.assertion=inferred/);
+  await expect(comparison.getByRole('status')).toHaveText('1 shown');
+  await expect(comparison).toContainText('Source-asserted2');
+  await page.reload();
+  await expect(filter).toHaveValue('inferred');
+  const links = page.locator('.links-view');
+  await expect(links.getByRole('button')).toHaveCount(1);
+  await links.getByRole('button').click();
+  const details = page.getByRole('complementary', { name: 'Record details' });
+  await expect(details.getByText(rule, { exact: true })).toBeVisible();
+  await expect(details.getByText(activity, { exact: true })).toBeVisible();
+  await details.getByRole('button', { name: 'Inspect ' + support }).click();
+  await expect(details.locator(`a[href="${published}"]`)).toBeVisible();
+  await page.goBack();
+  await expect(details.getByText(rule, { exact: true })).toBeVisible();
+});

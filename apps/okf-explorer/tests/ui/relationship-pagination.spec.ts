@@ -92,3 +92,16 @@ test('overview Links includes arbitrary routes and pages every loaded assertion'
   await page.getByRole('button', { name: 'Previous links', exact: true }).click();
   await expect(page.locator('.links-view > button')).toHaveCount(180);
 });
+
+test('Links counts assertion status within each page and preserves the filter when paging', async ({ context, page }) => {
+  await installFixture(context);
+  await page.goto(`?bundle=${encodeURIComponent(BUNDLE)}&view=links#${FOCUS}`);
+  const comparison = page.getByRole('region', { name: 'Assertion status comparison' });
+  await expect(comparison).toContainText('Counts cover links on this page.');
+  await expect(comparison).toContainText('Normalised180');
+  await comparison.getByRole('combobox').selectOption('inferred');
+  await expect(comparison.getByRole('status')).toHaveText('0 shown');
+  await page.getByRole('button', { name: 'Next links' }).click();
+  await expect(comparison).toContainText('Normalised31');
+  await expect(comparison.getByRole('combobox')).toHaveValue('inferred');
+});

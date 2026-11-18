@@ -117,12 +117,16 @@ uv run --locked python -m scripts.export_shacl_dqv \
 `scripts/materialise_subclass_candidate.py` supplies the first bounded
 inference rule. Set `--enable-subclass-transitivity` explicitly to apply
 `urn:okf:rule:subclass-transitive:v1`. The rule uses asserted subclass links
-from one reviewed scope. It retains the source assertions, emits only new
-non-reflexive edges, and records the rule, activity and supporting assertion
-IDs with `inferred` status. Processing stops at 2,048 input assertions or
-20,000 edge visits. No Reader or producer uses this candidate automatically.
-The next work includes rule approval, validation integration, export
-provenance and the Explorer comparison view. [OWL 2 Profiles Recommendation](https://www.w3.org/TR/owl2-profiles/)
+from one reviewed scope with the governed `official` assertion status. It
+retains the source assertions, emits new non-reflexive edges and records the
+rule, activity and each supporting assertion with `inferred` status. Its
+machine-readable rule manifest records the limits of 2,048 input assertions,
+20,000 edge visits and 50,000 support references. The PROV-O graph binds the
+activity to the admitted input digest and the exact support for each output.
+In Links, users can compare and filter assertion statuses within the visible
+selection or current relationship page. Source records retain their existing
+assertion status. Rule approval and integration with producer validation and
+publication remain open. [OWL 2 Profiles Recommendation](https://www.w3.org/TR/owl2-profiles/)
 
 ## Candidate ontology navigation index
 

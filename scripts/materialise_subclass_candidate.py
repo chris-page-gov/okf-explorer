@@ -13,9 +13,43 @@ from normalise_shacl_report import canonical_json, reference
 
 RULE = "urn:okf:rule:subclass-transitive:v1"
 SUBCLASS = "http://www.w3.org/2000/01/rdf-schema#subClassOf"
+PROV = "http://www.w3.org/ns/prov#"
 MAX_ASSERTIONS = 2048
 MAX_VISITS = 20_000
+MAX_SUPPORT_REFERENCES = 50_000
 MAX_INPUT_BYTES = 2 * 1024 * 1024
+
+
+def assertion_iri(identifier: str) -> str:
+    try:
+        return reference(identifier)
+    except ValueError:
+        return f"urn:okf:assertion-reference:{sha256(identifier.encode('utf-8')).hexdigest()}"
+
+
+def provenance(activity: str, input_digest: str, inferred: list[dict]) -> list[dict]:
+    input_iri = f"urn:okf:sha256:{input_digest}"
+    return [
+        {"@id": input_iri, "@type": f"{PROV}Entity"},
+        {"@id": RULE, "@type": f"{PROV}Plan"},
+        {
+            "@id": activity,
+            "@type": f"{PROV}Activity",
+            f"{PROV}used": {"@id": input_iri},
+            f"{PROV}qualifiedAssociation": {"@type": f"{PROV}Association", f"{PROV}hadPlan": {"@id": RULE}},
+        },
+        *[
+            {
+                "@id": edge["id"],
+                "@type": f"{PROV}Entity",
+                f"{PROV}wasGeneratedBy": {"@id": activity},
+                f"{PROV}wasDerivedFrom": [
+                    {"@id": assertion_iri(identifier)} for identifier in edge["supporting_assertions"]
+                ],
+            }
+            for edge in inferred
+        ],
+    ]
 
 
 def materialise(assertions: list[dict[str, str]], *, enabled: bool) -> dict[str, object]:
@@ -27,7 +61,7 @@ def materialise(assertions: list[dict[str, str]], *, enabled: bool) -> dict[str,
         raise ValueError("Expected up to 2,048 assertions from one reviewed scope")
     selected = [
         item for item in assertions
-        if item.get("predicate") == SUBCLASS and item.get("assertion_status") == "asserted"
+        if item.get("predicate") == SUBCLASS and item.get("assertion_status") == "official"
     ]
     scopes = {item["assertion_scope"] for item in selected}
     if len(scopes) > 1 or scopes - {"real-world", "synthetic-fixture"}:
@@ -53,15 +87,26 @@ def materialise(assertions: list[dict[str, str]], *, enabled: bool) -> dict[str,
     output = {
         "schema": "okf-bounded-subclass-candidate.v1",
         "rule": RULE,
+        "rule_manifest": {
+            "schema": "okf-inference-rule.v1",
+            "id": RULE,
+            "predicate": SUBCLASS,
+            "input_assertion_status": "official",
+            "max_input_assertions": MAX_ASSERTIONS,
+            "max_edge_visits": MAX_VISITS,
+            "max_support_references": MAX_SUPPORT_REFERENCES,
+        },
         "admitted_assertions_sha256": input_digest,
         "activity": activity if enabled else None,
         "assertions": [],
+        "provenance": {"@graph": []},
     }
     if not enabled:
         return output
 
     inferred = []
     visits = 0
+    supporting_references = 0
     for source in sorted(edges):
         direct = {target for target, _ in edges[source]}
         seen = {source}
@@ -79,14 +124,20 @@ def materialise(assertions: list[dict[str, str]], *, enabled: bool) -> dict[str,
                 frontier.append((target, path))
                 if target in direct:
                     continue
+                supporting_references += len(path)
+                if supporting_references > MAX_SUPPORT_REFERENCES:
+                    raise ValueError("Bounded subclass inference exceeded its support budget")
                 statement = {"source_iri": source, "predicate": SUBCLASS, "target_iri": target}
                 digest = sha256(canonical_json({"statement": statement, "activity": activity})).hexdigest()
                 inferred.append({
                     "id": f"urn:okf:inferred:{digest}", **statement,
                     "assertion_status": "inferred", "assertion_scope": next(iter(scopes)),
-                    "derivation": {"rule": RULE, "activity": activity, "supporting_assertions": list(path)},
+                    "derivation_activity": activity,
+                    "rule": RULE,
+                    "supporting_assertions": list(path),
                 })
     output["assertions"] = inferred
+    output["provenance"] = {"@graph": provenance(activity, input_digest, inferred)}
     return output
 
 

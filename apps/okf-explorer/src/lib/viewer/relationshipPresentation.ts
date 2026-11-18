@@ -5,6 +5,7 @@ import type {
   RelationshipAuthorityClass
 } from '$lib/types';
 import { isHttpUrl } from './helpers';
+import { assertionStatus } from './assertionStatus';
 
 export type RelationshipPresentation = {
   id: string;
@@ -191,14 +192,7 @@ export function relationshipPresentation(
     inverseLabel: stringValue(relationship?.inverse_label || relationship?.inverseLabel),
     sourceIri: stringValue(relationship?.source_iri || relationship?.sourceIri),
     targetIri: stringValue(relationship?.target_iri || relationship?.targetIri),
-    assertionStatus: (() => {
-      const value = stringValue(
-        relationship?.assertion_status || relationship?.assertionStatus
-      );
-      return value === 'official' || value === 'normalized' || value === 'inferred' || value === 'model-derived'
-        ? value
-        : 'unclassified';
-    })(),
+    assertionStatus: assertionStatus(relationship?.assertion_status || relationship?.assertionStatus),
     assertionScope: (() => {
       const value = stringValue(
         relationship?.assertion_scope || relationship?.assertionScope

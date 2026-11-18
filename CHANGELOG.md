@@ -14,6 +14,8 @@
   Open publisher-declared source records and return to the same finding.
 - Add an opt-in subclass inference candidate with explicit supporting
   assertions and fixed processing limits.
+- Compare assertion statuses in Links, filter by status and inspect supporting
+  assertions. Export exact rule and activity provenance for bounded inference.
 - Index declared ontology hierarchies and SKOS mappings with the source
   digest and the original mapping strength.
 
