@@ -75,6 +75,21 @@ It excludes free-text messages and values from the result. This increment
 still needs pinned shape execution, remediation metadata, cross-bundle source
 bindings and the browser finding route. [SHACL Recommendation](https://www.w3.org/TR/shacl/)
 
+## Candidate quality export
+
+The DQV export reads the same SHACL Core N-Triples. It writes four
+measurements for conformance and the occurrence counts for violations,
+warnings and information. Each grouped finding produces an annotation with
+its named focus, shape, predicate and severity. It binds every measurement
+and annotation to the exact report digest and the projection activity. The
+projection records the supplied SHACL outcome and leaves assessment of source
+accuracy and fitness for use to the reader. [W3C DQV Note](https://www.w3.org/TR/2016/NOTE-vocab-dqv-20161215/)
+
+```sh
+uv run --locked python -m scripts.export_shacl_dqv \
+  --report report.nt --bundle urn:example:bundle --output /tmp/quality.nt
+```
+
 ## Candidate subclass inference
 
 `scripts/materialise_subclass_candidate.py` supplies the first bounded

@@ -8,6 +8,8 @@
   identifiers, explicit external mappings and a checked SKOS vocabulary digest.
 - Export exact Site assembly provenance as deterministic PROV-O triples.
 - Derive stable finding IDs from bounded SHACL Core reports.
+- Export those report outcomes as DQV measurements and annotations tied to
+  the exact source report.
 - Add an opt-in subclass inference candidate with explicit supporting
   assertions and fixed processing limits.
 - Index declared ontology hierarchies and SKOS mappings with the source

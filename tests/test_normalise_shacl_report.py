@@ -1,7 +1,10 @@
 import unittest
 
-from rdflib import BNode, Graph, Literal, RDF, SH, URIRef
+from hashlib import sha256
 
+from rdflib import BNode, Graph, Literal, PROV, RDF, SH, URIRef, XSD
+
+from scripts.export_shacl_dqv import DQV, OA, PROFILE, export_dqv
 from scripts.normalise_shacl_report import normalise_report
 
 
@@ -47,3 +50,27 @@ class NormaliseShaclReportTest(unittest.TestCase):
         graph.set((result, SH.sourceShape, BNode("unnamed")))
         with self.assertRaisesRegex(ValueError, "named IRI"):
             normalise_report(graph.serialize(format="nt").encode("utf-8"), BUNDLE)
+
+    def test_dqv_preserves_the_exact_report_and_finding_identity(self):
+        raw = validation_report().serialize(format="nt").encode("utf-8")
+        result = export_dqv(raw, BUNDLE)
+        self.assertEqual(result, export_dqv(raw, BUNDLE))
+        self.assertNotIn(b"Source-specific sample value", result)
+        graph = Graph().parse(data=result, format="nt")
+        bundle = URIRef(BUNDLE)
+        source = URIRef(f"urn:okf:sha256:{sha256(raw).hexdigest()}")
+        measurements = list(graph.objects(bundle, DQV.hasQualityMeasurement))
+        self.assertEqual(len(measurements), 4)
+        for measurement in measurements:
+            self.assertIn((measurement, RDF.type, DQV.QualityMeasurement), graph)
+            self.assertIn((measurement, DQV.computedOn, bundle), graph)
+            self.assertIn((measurement, PROV.wasDerivedFrom, source), graph)
+        count, = graph.subjects(DQV.isMeasurementOf, URIRef(f"{PROFILE}:violation-count"))
+        self.assertIn((count, DQV.value, Literal(2, datatype=XSD.nonNegativeInteger)), graph)
+        annotation, = graph.objects(bundle, DQV.hasQualityAnnotation)
+        self.assertIn((annotation, OA.motivatedBy, DQV.qualityAssessment), graph)
+        self.assertIn((annotation, OA.hasTarget, bundle), graph)
+        self.assertIn((annotation, PROV.wasDerivedFrom, source), graph)
+        body, = graph.objects(annotation, OA.hasBody)
+        self.assertIn((body, SH.focusNode, FOCUS), graph)
+        self.assertIn((body, SH.resultPath, URIRef("urn:example:property")), graph)
