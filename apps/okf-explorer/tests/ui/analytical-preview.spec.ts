@@ -10,15 +10,28 @@ const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
 const body = readFileSync(csvPath);
 
 async function load(page: import('@playwright/test').Page, declaration = manifest) {
-  await page.goto('/inspect-data/');
+  await page.goto('./inspect-data/');
   await expect(page.getByLabel('Package manifest (okf-analytical-data.json)', { exact: true })).toBeEnabled();
   await page.getByLabel('Package manifest (okf-analytical-data.json)', { exact: true }).setInputFiles({ name: 'okf-analytical-data.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(declaration)) });
   await expect(page.getByLabel('CSV for the selected table')).toBeVisible();
 }
 
-test('local table preview preserves literals and explicit gaps without transmitting content', async ({ page }) => {
+test('home-page link opens the local table inspector and survives reload', async ({ page }) => {
+  await page.goto('./');
+  const inspector = new URL('inspect-data/', page.url());
+  await page.getByRole('link', { name: 'Inspect a local CSV package', exact: true }).click();
+  await expect(page).toHaveURL(inspector.href);
+  expect((await page.reload())?.status()).toBe(200);
+  await expect(page.getByRole('heading', { name: 'Inspect a local data table', exact: true })).toBeVisible();
+  await expect(page.getByLabel('Package manifest (okf-analytical-data.json)', { exact: true })).toBeEnabled();
+});
+
+test('local table preview preserves literals and explicit gaps without transmitting content', async ({ page, baseURL }) => {
+  const origin = new URL('.', baseURL).origin;
   const outgoing: string[] = [];
-  page.on('request', request => { if (request.method() !== 'GET' || new URL(request.url()).hostname !== '127.0.0.1') outgoing.push(request.url()); });
+  page.on('request', request => {
+    if (request.method() !== 'GET' || new URL(request.url()).origin !== origin) outgoing.push(request.url());
+  });
   await load(page);
   await page.getByLabel('CSV for the selected table').setInputFiles(csvPath);
   await page.getByRole('button', { name: 'Inspect selected table', exact: true }).click();
@@ -90,7 +103,7 @@ test('clearing during an unfinished manifest read prevents stale data returning'
       return body;
     };
   });
-  await page.goto('/inspect-data/');
+  await page.goto('./inspect-data/');
   const input = page.getByLabel('Package manifest (okf-analytical-data.json)', { exact: true });
   await expect(input).toBeEnabled();
   await input.setInputFiles(manifestPath);
