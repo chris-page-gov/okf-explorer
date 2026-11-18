@@ -11,6 +11,7 @@ catalog:education a skos:Concept ;
     skos:prefLabel "Education"@en-GB ;
     skos:notation "education" ;
     skos:definition "Learning and services that support access to education."@en-GB ;
+    skos:broadMatch <https://www.gov.uk/education> ;
     dcterms:source <https://www.gov.uk/browse/education> .
 
 catalog:formats a skos:ConceptScheme ;
@@ -23,6 +24,7 @@ catalog:csv a skos:Concept ;
     skos:altLabel "CSV"@en-GB ;
     skos:notation "text/csv" ;
     skos:definition "The registered text/csv media type."@en-GB ;
+    skos:closeMatch <http://publications.europa.eu/resource/authority/file-type/CSV> ;
     dcterms:source <https://www.iana.org/assignments/media-types/text/csv> .
 
 catalog:licences a skos:ConceptScheme ;
@@ -35,4 +37,5 @@ catalog:cc-by-40 a skos:Concept ;
     skos:altLabel "CC BY 4.0"@en-GB ;
     skos:notation "CC-BY-4.0" ;
     skos:definition "The Creative Commons Attribution licence, international version 4.0."@en-GB ;
+    skos:exactMatch <https://spdx.org/licenses/CC-BY-4.0> ;
     dcterms:source <https://creativecommons.org/licenses/by/4.0/> .

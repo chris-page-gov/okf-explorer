@@ -170,6 +170,16 @@ Never manufacture an absolute semantic IRI by pretending an Explorer route is
 already global. Never guess a local route from an external IRI in the browser.
 The generator owns the integrity-bound IRI-to-route registry.
 
+### Use a governed vocabulary
+
+Choose a stable concept IRI when the publisher can justify its meaning.
+Pin the registry version and the exact vocabulary digest in the producer's
+release evidence. Keep the published label alongside the IRI for Readers
+that display labels. Record the mapping predicate and its evidence when a
+producer adopts an external term. Use the predicate registry to identify
+the relationship itself, such as the link from a record to its topic.
+[Governed vocabulary candidate](../profiles/governed-vocabulary/v1/index.md)
+
 ## Status, scope and authority
 
 These axes are independent:

@@ -5,7 +5,7 @@
 - Reconcile the semantic roadmap with the frozen OKF 0.2 profile and record
   the acceptance work for each planned view.
 - Publish candidate topic, format and licence schemes with stable concept
-  identifiers and a checked SKOS vocabulary digest.
+  identifiers, explicit external mappings and a checked SKOS vocabulary digest.
 - Export exact Site assembly provenance as deterministic PROV-O triples.
 - Derive stable finding IDs from bounded SHACL Core reports.
 - Add an opt-in subclass inference candidate with explicit supporting

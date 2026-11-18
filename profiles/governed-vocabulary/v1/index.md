@@ -41,9 +41,14 @@ are the external rights reference.
 ## Version and mapping policy
 
 The graph records an exact notation within each scheme. Each `dcterms:source`
-links to the source used to define the notation or scope. A documentary
-source supplies provenance. A SKOS equivalence claim requires a separate
-mapping decision between two identified concepts.
+links to the source used to define the notation or scope. Each SKOS mapping
+records the relationship between the project term and a named external term.
+
+| Project term | Mapping | Reason |
+| --- | --- | --- |
+| Education | `skos:broadMatch` | The GOV.UK topic also covers training and skills. [GOV.UK taxonomy](https://www.gov.uk/education) |
+| CSV | `skos:closeMatch` | The EU file type uses the same IANA media-type notation and describes the broader file representation. [EU Publications Office CSV entry](https://publications.europa.eu/resource/authority/file-type/CSV) |
+| CC BY 4.0 | `skos:exactMatch` | The SPDX identifier names the same licence version and points to its legal code. [SPDX licence entry](https://spdx.org/licenses/CC-BY-4.0.html) |
 
 The project checks the byte count, digest, scheme membership, notation
 uniqueness and preferred labels. Add new concepts through a reviewed
@@ -51,5 +56,6 @@ vocabulary revision. If a concept's meaning changes, mint a new identifier
 and preserve the earlier identity and its deprecation record.
 
 This initial vocabulary supports review of [issue #49](https://github.com/chris-page-gov/okf-explorer/issues/49).
-Adoption still needs a producer exemplar, accepted external mappings where
-the producer uses them, and exact published resolver and Reader evidence.
+Adoption still needs a producer exemplar and exact published resolver and
+Reader evidence. The review of that exemplar covers any accepted use of these
+candidate mappings.

@@ -61,3 +61,17 @@ class GovernedVocabularyTest(unittest.TestCase):
                 self.assertEqual(len(labels), 1)
                 self.assertEqual(labels[0].language, "en-GB")
         self.assertEqual(len(set(graph.objects(None, SKOS.notation))), len(mapping))
+        expected_mappings = {
+            (URIRef(BASE + "education"), SKOS.broadMatch, URIRef("https://www.gov.uk/education")),
+            (
+                URIRef(BASE + "csv"),
+                SKOS.closeMatch,
+                URIRef("http://publications.europa.eu/resource/authority/file-type/CSV"),
+            ),
+            (URIRef(BASE + "cc-by-40"), SKOS.exactMatch, URIRef("https://spdx.org/licenses/CC-BY-4.0")),
+        }
+        predicates = [SKOS.broadMatch, SKOS.narrowMatch, SKOS.relatedMatch, SKOS.closeMatch, SKOS.exactMatch]
+        actual_mappings = {
+            triple for predicate in predicates for triple in graph.triples((None, predicate, None))
+        }
+        self.assertEqual(expected_mappings, actual_mappings)
