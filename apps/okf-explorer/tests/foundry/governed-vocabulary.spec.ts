@@ -12,6 +12,16 @@ test('a published vocabulary record and ontology term link directly to each othe
   await page.goto(explorer.href);
   const termLink = page.getByRole('link', { name: 'Inspect ontology term', exact: true });
   await expect(termLink).toBeVisible();
+  const exports = page.getByRole('navigation', { name: 'Related material' });
+  const quality = exports.getByRole('link', { name: 'Quality measurements and annotations' });
+  const report = exports.getByRole('link', { name: 'Source SHACL report' });
+  await expect(quality).toHaveAttribute('href', new RegExp(examples + 'vocabulary/quality\\.nt$'));
+  await expect(report).toHaveAttribute('href', new RegExp(examples + 'vocabulary/validation-report\\.nt$'));
+  const qualityResponse = await page.request.get(new URL(examples + 'vocabulary/quality.nt', root).href);
+  expect(qualityResponse.ok()).toBeTruthy();
+  expect(await qualityResponse.text()).toContain(
+    '<http://www.w3.org/ns/prov#atLocation> <' + await report.getAttribute('href') + '>'
+  );
   await termLink.press('Enter');
   await expect(page).toHaveURL(url => url.searchParams.get('term') === csv);
   const term = page.getByRole('article', { name: 'Comma-separated values' });

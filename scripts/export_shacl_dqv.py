@@ -9,6 +9,7 @@ from pathlib import Path
 
 from rdflib import DCTERMS, Graph, Literal, Namespace, PROV, RDF, RDFS, SH, URIRef, XSD
 
+from scripts.export_dcat_ap import named
 from scripts.normalise_shacl_report import MAX_REPORT_BYTES, SEVERITIES, canonical_json, normalise_report
 
 
@@ -21,7 +22,7 @@ def stable_id(kind: str, *identity: str) -> URIRef:
     return URIRef(f"urn:okf:{kind}:sha256:{sha256(canonical_json(identity)).hexdigest()}")
 
 
-def export_dqv(raw: bytes, bundle: str) -> bytes:
+def export_dqv(raw: bytes, bundle: str, *, report_url: str | None = None) -> bytes:
     report = normalise_report(raw, bundle)
     dataset = URIRef(report["bundle"])
     digest = report["report_sha256"]
@@ -32,6 +33,8 @@ def export_dqv(raw: bytes, bundle: str) -> bytes:
     graph.add((activity, PROV.used, source_report))
     graph.add((activity, PROV.used, PROFILE))
     graph.add((source_report, RDF.type, PROV.Entity))
+    if report_url is not None:
+        graph.add((source_report, PROV.atLocation, named(report_url, web=True)))
     graph.add((PROFILE, DCTERMS.conformsTo, URIRef("https://www.w3.org/TR/2016/NOTE-vocab-dqv-20161215/")))
 
     counts = Counter()
@@ -82,10 +85,11 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--report", type=Path, required=True)
     parser.add_argument("--bundle", required=True)
+    parser.add_argument("--report-url", help="Published location of the exact input report")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     with args.report.open("rb") as stream:
-        content = export_dqv(stream.read(MAX_REPORT_BYTES + 1), args.bundle)
+        content = export_dqv(stream.read(MAX_REPORT_BYTES + 1), args.bundle, report_url=args.report_url)
     with args.output.open("xb") as stream:
         stream.write(content)
     return 0

@@ -69,7 +69,10 @@ def example(graph: Graph, shapes: bytes, *, missing_label: bool) -> dict[str, by
         "source.nt": raw,
         "validation-report.nt": canonical_report(report),
     }
-    files["quality.nt"] = export_dqv(files["validation-report.nt"], bundle)
+    example = "missing-csv-label" if missing_label else "vocabulary"
+    example_url = PUBLIC + f"examples/{example}/"
+    report_url = example_url + "validation-report.nt"
+    files["quality.nt"] = export_dqv(files["validation-report.nt"], bundle, report_url=report_url)
     entrypoints = {
         "data_manifest": "data/manifest.json", "overview_index": "data/overview.json",
         "ontology_navigation": binding("data/ontology.json", files["data/ontology.json"]),
@@ -96,6 +99,10 @@ def example(graph: Graph, shapes: bytes, *, missing_label: bool) -> dict[str, by
         "@id": bundle, "title": title, "counts": counts, "kind": "okf-large-corpus",
         "schema": "okf-explorer-large-corpus.v1",
         "entrypoints": entrypoints,
+        "related_links": [
+            {"label": "Quality measurements and annotations", "kind": "dqv", "url": example_url + "quality.nt"},
+            {"label": "Source SHACL report", "kind": "shacl", "url": report_url},
+        ],
     })
     return files
 

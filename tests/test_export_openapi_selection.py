@@ -1,7 +1,9 @@
 from hashlib import sha256
 import json
 from pathlib import Path
+import subprocess
 import sys
+from tempfile import TemporaryDirectory
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -44,6 +46,20 @@ def raw(value):
 
 
 class ExportOpenApiSelectionTest(unittest.TestCase):
+    def test_documented_module_cli_exports_the_selected_operation(self):
+        with TemporaryDirectory() as temporary:
+            source = Path(temporary) / "publisher.json"
+            output = Path(temporary) / "selection.json"
+            content = raw(document())
+            source.write_bytes(content)
+            subprocess.run(
+                [sys.executable, "-m", "scripts.export_openapi_selection",
+                 "--input", str(source), "--source", SOURCE,
+                 "--operation", "GET", RECORD_PATH, "--output", str(output)],
+                cwd=ROOT, check=True, capture_output=True,
+            )
+            self.assertEqual(output.read_bytes(), export_selection(content, SOURCE, [("GET", RECORD_PATH)]))
+
     def test_extracts_exact_operations_and_preserves_inherited_context(self):
         original = document()
         source = raw(original)

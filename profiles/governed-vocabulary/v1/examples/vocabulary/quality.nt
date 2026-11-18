@@ -43,3 +43,4 @@
 <urn:okf:profile:dqv-shacl:v1:warning-count> <http://www.w3.org/ns/dqv#expectedDataType> <http://www.w3.org/2001/XMLSchema#nonNegativeInteger> .
 <urn:okf:profile:dqv-shacl:v1> <http://purl.org/dc/terms/conformsTo> <https://www.w3.org/TR/2016/NOTE-vocab-dqv-20161215/> .
 <urn:okf:sha256:1db51742367691ee7c9855c099c3e7380e292e1dc5bb14fcd1b00678a0a2df7f> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/prov#Entity> .
+<urn:okf:sha256:1db51742367691ee7c9855c099c3e7380e292e1dc5bb14fcd1b00678a0a2df7f> <http://www.w3.org/ns/prov#atLocation> <https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/examples/vocabulary/validation-report.nt> .

@@ -28,19 +28,14 @@ Use this page when designing a new bundle's frontmatter or generator, when
 deciding what a new field should be called, or when someone outside this
 repository asks "what does `licence basis` mean in DCAT/OpenAPI terms?"
 
-## Status: standards-alignable, not standards-conformant
+## Catalogue and export status
 
-Nothing here changes today's output format. `uk-government-apis/api-records/*.md`
-and the `okf-explorer.json` shards stay Markdown/JSON. Full DCAT-AP conformance
-requires an RDF serialisation (Turtle/JSON-LD) with DCAT-AP's cardinality rules
-(for example `dcat:endpointURL` is mandatory, 1..n); full OpenAPI conformance
-requires a complete `openapi` document per API version. This repository does
-neither yet. What this crosswalk guarantees instead is that every OKF field
-already has a named, correct target in both standards, so a future exporter
-(or a hand-written report, like the OS inventory produced from this pack) can
-translate without guessing. Treat "DCAT-alignable" and "OpenAPI-alignable" as
-the honest claim; do not describe a bundle as DCAT-AP or OpenAPI conformant
-unless an RDF or `openapi.yaml` artefact actually ships alongside it.
+The UK Government APIs catalogue publishes Markdown records and JSON shards
+with explicit standards mappings. The standalone exporters below can produce
+RDF for reviewed dataset selections and OpenAPI for operations preserved
+from a publisher's document. A conformance claim applies to the exact
+validated export and its declared profile. A full DCAT-AP service export
+needs the applicable required fields, including `dcat:endpointURL`.
 
 ## Repository implementation status
 
@@ -82,12 +77,12 @@ for an observed multi-source pack, but it leaves clear gaps:
 
 | Export target | Current coverage | Remaining gap |
 |---|---|---|
-| DCAT `dcat:DataService` | API products, provider-native APIs and data-access endpoints are mapped to `dcat:DataService`; endpoint/documentation/publisher/licence fields are preserved when observed. | A DCAT-AP-conformant RDF exporter is not yet implemented; some records still lack explicit `dcat:endpointURL`, `dcat:endpointDescription`, licence or publisher evidence. |
-| DCAT `dcat:Dataset` | data.gov.uk and ONS data products map to `dcat:Dataset`. The candidate exporter preserves explicit distributions, themes, licences and record sources. | Producer-specific mappings and official profile validation remain open. |
+| DCAT `dcat:DataService` | API products, provider-native APIs and data-access endpoints map to `dcat:DataService`. The catalogue preserves observed endpoint, documentation, publisher and licence fields. | A service exporter needs producer mappings and explicit endpoint, licence and publisher evidence. |
+| DCAT `dcat:Dataset` | data.gov.uk and ONS data products map to `dcat:Dataset`. The exporter preserves explicit distributions, themes, licences and record sources. | A producer export needs a reviewed mapping and profile validation for the selected records. |
 | OpenAPI service stub | API products and data endpoints can produce an `info`, `servers` and `externalDocs` skeleton where endpoint metadata exists. | Most harvested sources do not expose complete methods, paths, parameters, responses, schemas, examples or security flows, so generated OpenAPI is a stub unless a contract parser enriches it. |
 | OpenAPI operation fragment | OS and ONS operation-like records can be represented as operation fragments. | HTTP method, operationId, parameters, request/response schemas and error models are often missing and must not be invented. |
 | OpenAPI security schemes | `access_model` now maps to `apiKey`, `oauth2`, `none`, `metadata-only` or `unknown`. | The location/name of API keys, OAuth flow, scopes, token URLs and sender-constrained-token requirements need provider-specific contract parsing. |
-| DQV quality annotations | OKF metadata-quality dimensions are named and explained in the UI. | No DQV RDF is emitted yet, and quality percentages remain catalogue-completeness signals rather than assurance metrics. |
+| DQV quality annotations | The SHACL exporter emits measurements and annotations bound to a report and bundle. The Explorer describes catalogue-completeness signals in their own context. | Publishing catalogue quality as RDF needs a separate measurement contract and evidence. |
 | PROV provenance | Records and relationships carry source adapter, source URL, confidence and observed timestamp. | A full PROV activity graph for each adapter run is not emitted yet. |
 
 For all API-related bundles, treat these gaps as build requirements rather than
@@ -130,7 +125,7 @@ A producer can link an exported artefact through its descriptor's
 Record official profile validation and the producer's mapping decisions
 in the release evidence before making a conformance claim.
 
-### Candidate OpenAPI selection
+### OpenAPI operation selection
 
 `scripts/export_openapi_selection.py` reads a local
 [OpenAPI 3.1](https://spec.openapis.org/oas/v3.1.0.html) JSON document. Select

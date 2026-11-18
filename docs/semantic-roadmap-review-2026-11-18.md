@@ -41,7 +41,7 @@ inference. See the [consumer and authoring contract](okf-0.2-yaml-ld-semantic-au
 | #50 | Pinned SHACL Core, stable findings, filters, remediation and source links | Check both published examples and the finding-to-source round trip | SHACL 1.2 experiments and ontology consistency assessment have separate scope |
 | #51 | Bounded subclass materialisation, supporting assertions, derivation activities and status counts. The PROV-O example retains two source assertions and one separate inference. | Verify the published comparison and a reviewed producer rule application | Additional rules need their own bounded evaluation |
 | #52 | Class, property and SKOS navigation, scoped hierarchy search, mapping filters, shared URLs and explicit record links | Record representative discovery and ontology-engineering tasks against the published build | Hierarchy expansion of bundle record search needs separate policy and evidence |
-| #54 | DCAT-AP, OpenAPI, DQV and Site activity exporters with deterministic checks. Site provenance covers assembly, deployment and live verification. | Link production export artefacts to source records and bind validation and independent review activity | Further standards profiles need versioned input contracts |
+| #54 | DCAT-AP, OpenAPI, DQV and Site activity exporters with deterministic checks. Site provenance covers validation, assembly, deployment and live verification. | Link production export artefacts to source records and retain independent review evidence | Further standards profiles need versioned input contracts |
 
 Keep #54 as one integration issue while the four exporters share source
 identity, validation and provenance evidence in the same release. Production
@@ -74,7 +74,10 @@ JSON from the same verified Pages release. The export records the deployed
 Site at its published location, the workflow and software agent, the input
 identities, and the start and end of the successful deployment step. The
 browser observation must follow that step and match the same Site identity.
-Validation and review activities require their respective source evidence.
+Supply the exact successful Pages build job as `--build-job` to record the
+conformance check before assembly and attach the observed assembly times.
+The jobs must come from the same run and attempt. Independent review
+requires its own evidence.
 [PROV-O Recommendation](https://www.w3.org/TR/prov-o/)
 
 ```sh
@@ -144,6 +147,12 @@ accuracy and fitness for use to the reader. [W3C DQV Note](https://www.w3.org/TR
 uv run --locked python -m scripts.export_shacl_dqv \
   --report report.nt --bundle urn:example:bundle --output /tmp/quality.nt
 ```
+
+Supply `--report-url` when publishing the same report beside its export.
+The two vocabulary examples use Explorer’s **Related material** links to
+open both artefacts. The quality graph binds the source by digest and
+records the report’s published location. Its annotations identify the
+affected concepts by their original IRIs.
 
 ## Candidate subclass inference
 

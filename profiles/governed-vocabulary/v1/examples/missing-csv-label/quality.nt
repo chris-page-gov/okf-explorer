@@ -50,6 +50,7 @@
 <urn:okf:profile:dqv-shacl:v1:warning-count> <http://www.w3.org/ns/dqv#expectedDataType> <http://www.w3.org/2001/XMLSchema#nonNegativeInteger> .
 <urn:okf:profile:dqv-shacl:v1> <http://purl.org/dc/terms/conformsTo> <https://www.w3.org/TR/2016/NOTE-vocab-dqv-20161215/> .
 <urn:okf:sha256:449105120251f80fd86132209723b1b9106b4c44afc503ce3906709016e9f336> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/prov#Entity> .
+<urn:okf:sha256:449105120251f80fd86132209723b1b9106b4c44afc503ce3906709016e9f336> <http://www.w3.org/ns/prov#atLocation> <https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/examples/missing-csv-label/validation-report.nt> .
 <urn:okf:shacl-finding:sha256:a18e68d84e9c2e75f36d5f448f0450b1d0e1349c0eed24fda3d691b7b3198b8b> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/shacl#ValidationResult> .
 <urn:okf:shacl-finding:sha256:a18e68d84e9c2e75f36d5f448f0450b1d0e1349c0eed24fda3d691b7b3198b8b> <http://www.w3.org/ns/shacl#focusNode> <https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#csv> .
 <urn:okf:shacl-finding:sha256:a18e68d84e9c2e75f36d5f448f0450b1d0e1349c0eed24fda3d691b7b3198b8b> <http://www.w3.org/ns/shacl#resultPath> <http://www.w3.org/2004/02/skos/core#prefLabel> .

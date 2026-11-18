@@ -11,7 +11,10 @@ from urllib.parse import parse_qsl, urlsplit
 
 from rdflib import DCAT, DCTERMS, FOAF, Graph, Literal, PROV, RDF, SKOS, URIRef, XSD
 
-from normalise_shacl_report import reference
+if __package__:
+    from .normalise_shacl_report import reference
+else:
+    from normalise_shacl_report import reference
 
 
 PROFILE = URIRef("https://semiceu.github.io/DCAT-AP/releases/3.0.1/")

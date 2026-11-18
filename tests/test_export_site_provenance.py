@@ -72,7 +72,7 @@ class ExportSiteProvenanceTest(unittest.TestCase):
         self.assertIn((activity, PROV.used, URIRef(f"urn:okf:sha256:{binding['sha256']}")), graph)
         job_url = f"{REPOSITORY}/actions/runs/123/job/456"
         deployment = {
-            "run_id": 123, "id": 456, "name": "deploy", "workflow_name": "Publish GitHub Pages",
+            "run_id": 123, "run_attempt": 1, "id": 456, "name": "deploy", "workflow_name": "Publish GitHub Pages",
             "status": "completed", "conclusion": "success", "head_sha": binding["commit"],
             "head_branch": "main", "html_url": job_url, "run_url": f"{GITHUB_API}/actions/runs/123",
             "steps": [{
@@ -87,6 +87,29 @@ class ExportSiteProvenanceTest(unittest.TestCase):
         self.assertIn((site, PROV.wasGeneratedBy, URIRef(job_url)), material)
         self.assertIn((activity, PROV.used, site), material)
         self.assertNotIn(b"unused runner metadata", delivery)
+        build = {
+            **deployment, "id": 455, "name": "build", "html_url": f"{REPOSITORY}/actions/runs/123/job/455",
+            "steps": [
+                {"name": "Validate OKF bundle and conformance", "conclusion": "success", "number": 11,
+                 "started_at": "2026-11-18T18:01:00Z", "completed_at": "2026-11-18T18:02:00Z"},
+                {"name": "Build componentised static Site", "conclusion": "success", "number": 12,
+                 "started_at": "2026-11-18T18:02:00Z", "completed_at": "2026-11-18T18:02:30Z"},
+            ],
+        }
+        validated = export_site_provenance(
+            receipt, identity, raw, deployment_bytes=json.dumps(deployment).encode(),
+            build_bytes=json.dumps(build).encode(),
+        )
+        material = Graph().parse(data=validated, format="nt")
+        conformance = URIRef(f"{build['html_url']}#step:11:1")
+        self.assertIn((conformance, PROV.wasAssociatedWith,
+                       URIRef(f"{REPOSITORY}/blob/{binding['commit']}/scripts/check_okf.py")), material)
+        assembly, = material.subjects(PROV.wasInformedBy, conformance)
+        self.assertEqual(len(list(material.objects(assembly, PROV.startedAtTime))), 1)
+        build["run_attempt"] = 2
+        with self.assertRaisesRegex(ValueError, "deployed Pages run attempt"):
+            export_site_provenance(receipt, identity, raw, deployment_bytes=json.dumps(deployment).encode(),
+                                   build_bytes=json.dumps(build).encode())
         deployment["steps"][0]["completed_at"] = "2026-11-18T18:05:00Z"
         with self.assertRaisesRegex(ValueError, "before the live observation"):
             export_site_provenance(receipt, identity, raw, deployment_bytes=json.dumps(deployment).encode())

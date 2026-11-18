@@ -14,6 +14,11 @@
 - Regenerate the analytical trial receipts against the locked SHACL toolchain.
 - Declare explicit DCAT-AP landing pages as documents so the export passes
   the official range check.
+- Run the DCAT-AP and OpenAPI exporters through their documented module
+  commands. Record the exact Pages conformance step and assembly timing
+  when the matching build and deployment jobs are supplied.
+- Link the vocabulary examples to their exported quality measurements
+  and exact source SHACL reports from the Explorer.
 
 ## Unreleased — semantic foundations
 

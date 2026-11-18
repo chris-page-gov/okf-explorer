@@ -9,8 +9,12 @@ from pathlib import Path
 import re
 from urllib.parse import unquote
 
-from export_dcat_ap import named as source_iri
-from normalise_shacl_report import canonical_json
+if __package__:
+    from .export_dcat_ap import named as source_iri
+    from .normalise_shacl_report import canonical_json
+else:
+    from export_dcat_ap import named as source_iri
+    from normalise_shacl_report import canonical_json
 
 
 MAX_INPUT_BYTES = 2 * 1024 * 1024
