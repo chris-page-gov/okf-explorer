@@ -549,7 +549,7 @@ export type OnsFacetFixtureOptions = {
   filterPaddingBytes?: number;
   skewedCounts?: boolean;
   populationFacetLabel?: string;
-  validation?: {
+  governedPublication?: {
     bundle: string;
     entrypoints: Record<string, { path: string; bytes: number; sha256: string }>;
     resources: Record<string, string>;
@@ -588,16 +588,16 @@ export async function installOnsFacetFixture(
     if (url.pathname === '/okf-explorer.json') {
       const { search_manifest, ...entrypoints } = descriptor.entrypoints;
       const declared = { ...descriptor, ...(options.learningPresentation ? { learning_presentation: options.learningPresentation } : {}) };
-      if (options.validation) return respond({
+      if (options.governedPublication) return respond({
         ...declared,
-        '@id': options.validation.bundle,
-        entrypoints: { ...(options.withoutSearch ? entrypoints : descriptor.entrypoints), ...options.validation.entrypoints }
+        '@id': options.governedPublication.bundle,
+        entrypoints: { ...(options.withoutSearch ? entrypoints : descriptor.entrypoints), ...options.governedPublication.entrypoints }
       });
       return respond(options.withoutSearch ? { ...declared, entrypoints } : declared);
     }
-    const validationResource = options.validation?.resources[url.pathname];
-    if (validationResource) return route.fulfill({
-      contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: validationResource
+    const governedResource = options.governedPublication?.resources[url.pathname];
+    if (governedResource) return route.fulfill({
+      contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: governedResource
     });
     if (url.pathname === '/data/manifest.json') {
       const { search, ...indexes } = manifest.indexes;

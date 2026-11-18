@@ -9,7 +9,7 @@
       (() => {
         const landingFragments = new Set(['', '#start', '#journey', '#subjects', '#bundles', '#people', '#concepts', '#responsible', '#help']);
         const route = location.pathname.split('/').filter(Boolean).at(-1) || '';
-        if (route === 'explore') {
+        if (route === 'explore' || route === 'validation' || route === 'ontology') {
           let theme = 'system';
           try {
             const saved = localStorage.getItem('okf-explorer-theme-v1');
@@ -17,7 +17,7 @@
           } catch { /* Use the system preference if storage is unavailable. */ }
           document.documentElement.dataset.explorerTheme = theme;
         }
-        if (route !== 'explore' && route !== 'evidence' && route !== 'passages' && route !== 'reading-help' && route !== 'corpus' && route !== 'validation' && location.pathname.endsWith('/') && (location.search || !landingFragments.has(location.hash))) {
+        if (route !== 'explore' && route !== 'evidence' && route !== 'passages' && route !== 'reading-help' && route !== 'corpus' && route !== 'validation' && route !== 'ontology' && location.pathname.endsWith('/') && (location.search || !landingFragments.has(location.hash))) {
           location.replace(`${location.pathname}explore/${location.search}${location.hash}`);
         }
       })();

@@ -170,19 +170,22 @@
 </main>
 
 <style>
-  :global(body) { margin: 0; background: #f0f4f8; color: #17202a; font-family: system-ui, sans-serif; }
+  :global(html[data-explorer-theme='light']) { color-scheme: light; }
+  :global(html[data-explorer-theme='dark']) { color-scheme: dark; }
+  :global(html[data-explorer-theme='system']) { color-scheme: light dark; }
+  :global(body) { margin: 0; background: light-dark(#f0f4f8, #131b25); color: light-dark(#17202a, #f1f5fb); font-family: system-ui, sans-serif; }
   .shell { box-sizing: border-box; max-width: 72rem; margin: auto; padding: 1.25rem clamp(1rem, 4vw, 3rem) 3rem; overflow-wrap: anywhere; line-height: 1.5; }
   h1, h2, h3, h4 { line-height: 1.2; }
-  a { color: #005a9c; text-underline-offset: .13em; }
+  a { color: light-dark(#005a9c, #a8d0ff); text-underline-offset: .13em; }
   a[aria-current] { color: inherit; font-weight: 700; }
-  :is(a, button, input, summary):focus-visible { outline: 3px solid #17202a; outline-offset: 2px; box-shadow: 0 0 0 4px #ffdd00; }
+  :is(a, button, input, summary):focus-visible { outline: 3px solid light-dark(#17202a, #f1f5fb); outline-offset: 2px; box-shadow: 0 0 0 4px #ffdd00; }
   form { margin: 1.25rem 0; }
   label, dt { font-weight: 700; }
   .form-controls { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .25rem; }
   input, button { box-sizing: border-box; min-height: 44px; border: 1px solid #60798f; border-radius: .25rem; padding: .4rem .65rem; font: inherit; }
   input { flex: 1 1 21rem; min-width: 0; max-width: 37rem; }
-  button { background: #005a9c; color: white; }
-  section, .finding, .error { background: white; border: 1px solid #b9c9d6; padding: 1rem; margin-top: 1rem; }
+  button { background: light-dark(#005a9c, #a8d0ff); color: light-dark(#ffffff, #132237); }
+  section, .finding, .error { background: light-dark(#ffffff, #1b2634); border: 1px solid light-dark(#b9c9d6, #506781); padding: 1rem; margin-top: 1rem; }
   section > h2, .finding > h3 { margin-top: 0; }
   .summary, .links { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; }
   .links { padding: 0; list-style: none; }

@@ -18,6 +18,8 @@
   assertions. Export exact rule and activity provenance for bounded inference.
 - Index declared ontology hierarchies and SKOS mappings with the source
   digest and the original mapping strength.
+- Browse declared ontology terms, direct hierarchy edges and mapping
+  strengths through a shareable, integrity-bound Explorer view.
 
 ## Unreleased — Explorer presentation
 

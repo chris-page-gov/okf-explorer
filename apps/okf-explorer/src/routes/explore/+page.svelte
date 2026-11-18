@@ -167,6 +167,7 @@
   } from '$lib/sources/fetch';
   import { isLargeCorpusDescriptor, parseRelatedDescriptorLinks } from '$lib/sources/descriptor';
   import { validationLink } from '$lib/validation/findings';
+  import { ontologyLink } from '$lib/ontology/ontologyIndex';
   import ExploratoryBanner from '$lib/publication/ExploratoryBanner.svelte';
   import {
     buildExploratoryFeedbackUrl,
@@ -7105,6 +7106,9 @@
               {:else}Counts describe the whole bundle.{/if}
               {#if source.descriptor.entrypoints.shacl_findings && !largeSelectedRoute && !largeInspectedRoute}
                 <a href={validationLink(source.url)}>Inspect validation findings</a>
+              {/if}
+              {#if source.descriptor.entrypoints.ontology_navigation && !largeSelectedRoute && !largeInspectedRoute}
+                <a href={ontologyLink(source.url)}>Browse ontology</a>
               {/if}
             </p>
             <div class="metrics">

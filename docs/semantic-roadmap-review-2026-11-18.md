@@ -134,8 +134,15 @@ publication remain open. [OWL 2 Profiles Recommendation](https://www.w3.org/TR/o
 class and property hierarchies, SKOS schemes, terms and mappings from a
 bounded N-Triples graph. It binds the publication identifier and graph digest.
 Each mapping retains its exact, close, broader, narrower or related predicate.
-The index supplies declared edges only. Browser navigation, hierarchy-aware
-facets, links to findings and provenance, and the evaluation remain open.
+Declare the index under `entrypoints.ontology_navigation` with a relative
+JSON path, exact byte length and SHA-256. The Explorer checks that binding
+and the index's source IRI against the descriptor's `@id`. Use the Ontology
+view to search labels, choose a term kind, follow declared parents and
+children, and filter the results to direct children. Mapping filters
+preserve the recorded predicate and strength. The view records its search,
+filters and selection in the URL and links to the bundle's validation and
+assertion-status views. Producer adoption, navigation from source instances,
+and task-based evaluation remain open.
 
 ## Independent work
 

@@ -50,7 +50,7 @@ const validation = {
 };
 
 test('Validation retains the selected finding across reload and return from the source record', async ({ page }) => {
-  await openOnsFacetFixture(page, [], { validation });
+  await openOnsFacetFixture(page, [], { governedPublication: validation });
   await page.getByRole('link', { name: 'Inspect validation findings' }).click();
   await expect(page.getByRole('heading', { name: 'Validation', exact: true })).toBeVisible();
   await page.getByRole('navigation', { name: 'Filter by severity' }).getByRole('link', { name: 'Violation' }).click();
@@ -73,7 +73,7 @@ test('Validation retains the selected finding across reload and return from the 
 
 test('Validation at 320px distinguishes unsupported report bytes from SHACL outcomes', async ({ context, page, baseURL }) => {
   const requestLog: string[] = [];
-  await installOnsFacetFixture(context, requestLog, { validation });
+  await installOnsFacetFixture(context, requestLog, { governedPublication: validation });
   await page.setViewportSize({ width: 320, height: 800 });
   const start = new URL('../validation/', baseURL);
   await page.goto(start.href);

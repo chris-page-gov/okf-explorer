@@ -370,6 +370,7 @@ export type LargeCorpusDescriptor = {
     conformance?: LargeResourceReference;
     shacl_findings?: LargeResourceReference;
     shacl_review?: LargeResourceReference;
+    ontology_navigation?: LargeResourceReference;
     semantic_jsonld?: string;
     semantic_yamlld?: string;
     terms?: LargeResourceReference;
