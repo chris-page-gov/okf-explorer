@@ -99,6 +99,12 @@ its delta-encoded postings, so this recognition does not require full-corpus
 hydration. Explicit aliases supplied by a bundle take precedence over inferred
 initialisms.
 
+When a v1 publisher facet supplies counts without record membership, Explorer
+searches the original words. For a text query with a record-type selection,
+Explorer can use the indexed result documents to check the selected type.
+The same per-query chunk limit applies. The result list reports that it is
+busy while the static index or necessary local records are loading.
+
 ### How a v2 producer can govern multi-word queries
 
 A producer may opt an `okf-static-search.v2` manifest into the exact

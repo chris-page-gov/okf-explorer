@@ -118,6 +118,7 @@
   import { conversationPresentation } from '$lib/viewer/conversationPresentation';
   import { smallTimelineRows } from '$lib/viewer/smallTimeline';
   import { hansardResultEvidence } from '$lib/viewer/hansardPresentation';
+  import { supportsLegacyRecordTypeFacet } from '$lib/search/largeSearchContract';
   import { largeDatasetTimelinePeriod, timelinePeriodBucket, timelinePeriodInScope, type LargeTimelinePeriod, type TimelineDateScope } from '$lib/viewer/largeTimeline';
   import {
     boxesOverlap,
@@ -2184,7 +2185,11 @@
   }
 
   function supportsWorkerFilter(key: string): boolean {
-    return Boolean(largeSearchClient?.manifest?.entrypoints.filter_postings?.[key]);
+    const manifest = largeSearchClient?.manifest;
+    return Boolean(
+      manifest?.entrypoints.filter_postings?.[key]
+      || (key === 'record_type' && supportsLegacyRecordTypeFacet(manifest, largeQuery))
+    );
   }
 
   function supportsCurrentWorkerFilters(): boolean {
@@ -7089,7 +7094,7 @@
           {#if activeView === 'reader'}
             {#if largeQuery || activeLargeFilterCount || hasSelection(largeFacetHighlights) || reductions.length || foldedSets.length || largeSearchResponse || (!largeSearchClient && largeIndex)}
               <div class="view-heading"><h2>Results</h2><span>{largeSearching ? 'Updating results…' : searchResultSummary()}</span></div>
-              <ResultList items={largeReaderResults} busy={largeSearching || Boolean(geospatialFilter && largeFullLoading)} selected={largeInspectedRoute || largeSelectedRoute} bind:layout={resultLayout} query={largeAppliedQuery} onselect={(route) => { const result = largeResults.find(row => datasetRoute(row) === route); if (result) chooseLargeResult(result); else selectLargeRoute(route); }} />
+              <ResultList items={largeReaderResults} busy={largeSearchIndexLoading || largeSearching || largeFullLoading} selected={largeInspectedRoute || largeSelectedRoute} bind:layout={resultLayout} query={largeAppliedQuery} onselect={(route) => { const result = largeResults.find(row => datasetRoute(row) === route); if (result) chooseLargeResult(result); else selectLargeRoute(route); }} />
             {:else if largeHasAnalysisOverview('reader')}
               {@const analysis = largeAnalysis()}
               <div class="view-heading">

@@ -23,7 +23,7 @@ import {
   rankingScore,
   type OrdinalScores
 } from '$lib/search/staticSearch';
-import { SEARCH_MANIFEST_LIMITS, validateLargeSearchManifest } from '$lib/search/largeSearchContract';
+import { SEARCH_MANIFEST_LIMITS, supportsLegacyRecordTypeFacet, validateLargeSearchManifest } from '$lib/search/largeSearchContract';
 import {
   QUERY_POLICY_RESULT_SCHEMA,
   requiredQueryTokenGroups,
@@ -588,6 +588,34 @@ async function docsFor(path: string) {
   return docCache.get(path)!;
 }
 
+function resultChunkFor(ordinal: number): string | undefined {
+  return manifest?.entrypoints.result_docs[Math.floor(ordinal / (manifest.result_doc_chunk_size || 1000))];
+}
+
+async function legacyRecordTypePostings(ordinals: Set<number>): Promise<LargeFilterPostings | null> {
+  const paths = new Set<string>();
+  for (const ordinal of ordinals) {
+    const path = resultChunkFor(ordinal);
+    if (!path) return null;
+    paths.add(path);
+    if (paths.size > SEARCH_MANIFEST_LIMITS.maxResultChunksPerQuery) return null;
+  }
+
+  const values: Record<string, number[]> = Object.create(null);
+  const seen = new Set<number>();
+  for (const docs of await Promise.all([...paths].map(docsFor))) {
+    for (const doc of docs) {
+      if (!ordinals.has(doc.ordinal)) continue;
+      if (seen.has(doc.ordinal)) return null;
+      seen.add(doc.ordinal);
+      const type = doc.record_type;
+      if (typeof type === 'string' && type) (values[type] ??= []).push(doc.ordinal);
+    }
+  }
+  if (seen.size !== ordinals.size) return null;
+  return { schema: 'okf-static-filter-postings.v1', key: 'record_type', values };
+}
+
 async function filterPostingsFor(key: string): Promise<LargeFilterPostings | null> {
   const path = manifest?.entrypoints.filter_postings?.[key];
   if (!path) return null;
@@ -842,10 +870,17 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
   const explorationKeys = exploration ? [...new Set([
     ...Object.keys(exploration.preview), ...exploration.reductions.flatMap(step => Object.keys(step.selection))
   ])] : [];
-  const requestedPostingKeys = [...new Set([...Object.keys(request.filters ?? {}), ...(request.facet_keys || []), ...explorationKeys])];
+  const activeFilterKeys = new Set([...Object.keys(request.filters ?? {}), ...explorationKeys]);
+  const requestedPostingKeys = [...new Set([...activeFilterKeys, ...(request.facet_keys || [])])];
   const filterIndexes = new Map<string, LargeFilterPostings>();
   await Promise.all(requestedPostingKeys.map(async (key) => {
-    const postings = await filterPostingsFor(key);
+    let postings = await filterPostingsFor(key);
+    if (
+      !postings && key === 'record_type' && activeFilterKeys.has(key)
+      && supportsLegacyRecordTypeFacet(manifest, query)
+    ) {
+      postings = await legacyRecordTypePostings(matches);
+    }
     if (postings) filterIndexes.set(key, postings);
   }));
   const filtered = filterOrdinals(matches, request.filters, filterIndexes);
@@ -951,7 +986,7 @@ async function queryIndex(request: LargeSearchRequest): Promise<LargeSearchRespo
   const boundedOrdinals: number[] = [];
   let resultChunkBudgetReached = false;
   for (const ordinal of ordinals) {
-    const path = manifest.entrypoints.result_docs[Math.floor(ordinal / (manifest.result_doc_chunk_size || 1000))];
+    const path = resultChunkFor(ordinal);
     if (path && !chunkPaths.has(path) && chunkPaths.size >= SEARCH_MANIFEST_LIMITS.maxResultChunksPerQuery) {
       resultChunkBudgetReached = true;
       // Keep scanning the ranked candidates: a later candidate can belong to

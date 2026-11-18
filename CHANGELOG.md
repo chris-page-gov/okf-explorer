@@ -5,6 +5,10 @@
 - Evaluate the effective sort when the canonical route omits its default.
   Keep lexical results when an older publisher facet supplies a label without
   record membership.
+- Apply record-type reductions for legacy search indexes using the candidate
+  result documents within the existing search limits.
+- Mark search results as busy while preparing the index or loading records
+  for a fallback search.
 - Record the ordered canonical search results from repeated fresh contexts
   after checking that each context fetched the same bytes.
 - Route exact official CLML to the legislation viewer. Give older XML, tabular

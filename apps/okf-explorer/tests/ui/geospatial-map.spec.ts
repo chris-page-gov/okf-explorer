@@ -397,7 +397,7 @@ test.describe('geospatial Map selection and progressive recovery', () => {
 
     const region = page.getByRole('region', { name: 'On-demand spatial preview' });
     await expect(region.getByRole('alert')).toContainText('Preview unavailable');
-    await expect(region.getByRole('alert')).toContainText('503 Service Unavailable');
+    await expect(region.getByRole('alert')).toContainText('HTTP 503');
     await expect(region.getByRole('alert')).toContainText('The source link remains available');
     await expect(selectedEvidence(page).getByRole('link', { name: 'Open source ↗' })).toBeVisible();
     await expect(region.getByRole('link', { name: 'Open source ↗' })).toBeVisible();

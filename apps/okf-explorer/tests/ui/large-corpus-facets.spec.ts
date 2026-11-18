@@ -100,7 +100,7 @@ const hugeFacetRows = {
   ]
 };
 
-async function installHugeNoPostingsFixture(page: Page, requestLog: string[]) {
+async function installHugeNoPostingsFixture(page: Page, requestLog: string[], searchManifestReady: Promise<void>) {
   await page.context().route(`${HUGE_FACET_ORIGIN}/**`, async (route) => {
     const path = new URL(route.request().url()).pathname;
     requestLog.push(path);
@@ -168,7 +168,7 @@ async function installHugeNoPostingsFixture(page: Page, requestLog: string[]) {
     });
     if (path === '/data/facets.json') return respond(hugeFacetRows);
     if (path === '/search/manifest.json') {
-      await new Promise((resolve) => setTimeout(resolve, 1_200));
+      await searchManifestReady;
       return respond({
         schema: 'okf-static-search.v1',
         token_min_length: 2,
@@ -368,8 +368,19 @@ test.describe('large-corpus facet interaction contract', () => {
 
   test('FACET-E2E-12 opens complete facet indexes without hydrating a huge record plane', async ({ page }) => {
     const requests: string[] = [];
-    await installHugeNoPostingsFixture(page, requests);
-    await page.goto(`?bundle=${encodeURIComponent(HUGE_FACET_URL)}#overview`);
+    const searchManifest = Promise.withResolvers<void>();
+    await installHugeNoPostingsFixture(page, requests, searchManifest.promise);
+    await page.goto(`?bundle=${encodeURIComponent(HUGE_FACET_URL)}&q=regulation&view=reader#overview`);
+    try {
+      await expect(page.getByText('Preparing static search index...')).toBeVisible();
+      const results = page.locator('[data-okf-ranked-results="primary"]');
+      await expect(results).toHaveAttribute('data-okf-search-state', 'searching');
+      await expect(results).toHaveAttribute('aria-busy', 'true');
+    } finally {
+      searchManifest.resolve();
+    }
+    await expect(page.getByText('Preparing static search index...')).toBeHidden();
+    await page.getByRole('button', { name: 'Clear search' }).click();
 
     const category = facetSection(page, 'category');
     await expect(category).toBeVisible();

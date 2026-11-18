@@ -26,6 +26,7 @@ const pageUrl = new URL(app);
 pageUrl.searchParams.set('bundle', bundle.href);
 pageUrl.searchParams.set('q', values.query);
 const digest = bytes => createHash('sha256').update(bytes).digest('hex');
+const observationMs = 500;
 
 const browser = await chromium.launch({ channel: 'chrome' });
 const runs = [];
@@ -50,10 +51,17 @@ try {
       // Observe two rendered frames after settlement to detect an intervening
       // rerender without extending the app's search timeout.
       await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+      const afterFrames = await waitForRankedResult(page, values.expected, { includeOrderedUrls: true });
+      await page.waitForTimeout(observationMs);
       const final = await waitForRankedResult(page, values.expected, { includeOrderedUrls: true });
       const inputs = (await Promise.all(responses))
         .sort((left, right) => left.url.localeCompare(right.url) || String(left.sha256).localeCompare(String(right.sha256)));
-      runs.push({ first: first.ordered_canonical_urls, final: final.ordered_canonical_urls, inputs });
+      runs.push({
+        first: first.ordered_canonical_urls,
+        after_frames: afterFrames.ordered_canonical_urls,
+        final: final.ordered_canonical_urls,
+        inputs
+      });
     } finally {
       await context.close();
     }
@@ -61,9 +69,12 @@ try {
   const identical = (left, right) => JSON.stringify(left) === JSON.stringify(right);
   const sameInputs = runs.every(run =>
     run.inputs.length > 0 && run.inputs.every(input => input.sha256) && identical(run.inputs, runs[0].inputs));
-  const stable = runs.every(run => identical(run.first, run.final) && identical(run.final, runs[0].final));
+  const stable = runs.every(run =>
+    identical(run.first, run.after_frames) && identical(run.after_frames, run.final)
+    && identical(run.final, runs[0].final));
   const result = {
     browser: browser.version(), query: values.query, expected: values.expected,
+    observation_ms_after_frames: observationMs,
     same_inputs: sameInputs, stable_order_in_observed_runs: sameInputs ? stable : null,
     observed_ranks: runs.map(run => run.final.indexOf(values.expected) + 1), runs
   };
