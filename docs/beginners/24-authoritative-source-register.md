@@ -22,6 +22,10 @@ For applied UK public-service evidence, use the linked registers in
 [okf-uk-living](https://github.com/chris-page-gov/okf-uk-living#start-here).
 This page does not reproduce that corpus.
 
+The [life-course example](25-life-course-worked-example.md#follow-alex-through-ten-life-events)
+links to official service guidance and shows the separate role of a fictional
+source used for practice.
+
 ## Web And Data Syntax
 
 ### S01 Open Knowledge Format 02

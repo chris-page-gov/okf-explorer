@@ -10,6 +10,32 @@ const deepSectionRoute =
 const pinnedKey = 'okf-beginner-guide-sidebar-pinned-v1';
 const collapsedKey = 'okf-beginner-guide-sidebar-collapsed-v1';
 
+test('the worked life course and exercise answers are readable without JavaScript', async ({
+  browser, baseURL, browserDiagnostics
+}) => {
+  const context = await browser.newContext({ baseURL, javaScriptEnabled: false });
+  try {
+    const page = await context.newPage();
+    browserDiagnostics.watch(page);
+    await page.goto(indexRoute);
+    await page.locator('#main-content').getByRole('link', {
+      name: 'A fictional life in public services', exact: true
+    }).click();
+    const main = page.locator('#main-content');
+    await expect(main.getByRole('heading', { name: 'A fictional life in public services' })).toBeVisible();
+    await expect(main.getByRole('table').first().locator('tbody tr')).toHaveCount(10);
+    await expect(main.getByText('Worked answer.', { exact: true })).toHaveCount(2);
+    await expect(main.getByRole('columnheader', { name: 'Worked answer' })).toBeVisible();
+    const target = main.getByRole('link', { name: 'exercise 1', exact: true });
+    await target.click();
+    await expect(page).toHaveURL(/#exercise-1-recognise-entities-and-concepts$/);
+    await page.reload();
+    await expect(main.locator(':target')).toHaveText(/Exercise 1\. Recognise entities and concepts/);
+  } finally {
+    await context.close();
+  }
+});
+
 async function resetGuideState(page: import('@playwright/test').Page) {
   await page.goto(indexRoute);
   await page.evaluate(

@@ -109,11 +109,12 @@
     if (sourceText.length > MAX_CORRECTION_BYTES || new TextEncoder().encode(sourceText).byteLength > MAX_CORRECTION_BYTES) return;
     const correctionTextSha = await sha256Hex(new TextEncoder().encode(sourceText));
     if (selected?.id !== caseId || correctionText !== sourceText || preview !== result || previewInput !== correction || decision !== decided || reviewer.trim() !== reviewerName || reviewDate !== date || rationale.trim() !== reason) return;
+    const { verifiedText: _verifiedText, ...previewRecord } = result;
     download(`passage-review-${selected.id}.json`, { schema: 'okf-passage-review-decision.v1', case_id: selected.id,
       reviewer: reviewerName, date, decision: decided, rationale: reason, authority: 'local-unreviewed-proposal',
       manifest_sha256: manifestSha, source_sha256: selected.document.extraction.sha256, pdf_sha256: selected.document.pdf.sha256,
       baseline_sha256: selected.document.baseline_sha256, parser: selected.document.parser, correction_text_sha256: correctionTextSha, correction_text: sourceText, correction,
-      preview: result });
+      preview: previewRecord });
   }
   onMount(() => {
     const params = new URLSearchParams(window.location.search);
@@ -158,6 +159,22 @@
           <details><summary>How this passage was built</summary><dl><dt>Observation method</dt><dd>{selected.observation.method}</dd><dt>Parser version</dt><dd>{selected.document.parser.version}</dd><dt>Ruleset version</dt><dd>{selected.document.parser.ruleset_version}</dd><dt>Applied rules</dt><dd>{selected.document.parser.applied_rules.join(', ') || 'None declared'}</dd><dt>Implementation bindings</dt><dd><pre>{JSON.stringify(selected.document.parser.implementation_bindings ?? 'Not supplied', null, 2)}</pre></dd><dt>Parser settings</dt><dd><pre>{selected.document.parser.settings_text ?? 'Settings text not supplied'}</pre></dd><dt>Settings SHA-256</dt><dd>{selected.document.parser.settings_sha256}</dd><dt>Baseline SHA-256</dt><dd>{selected.document.baseline_sha256}</dd><dt>Source version</dt><dd>{selected.document.id} · {selected.document.version}</dd><dt>Old passage byte coverage</dt><dd>{selected.coverage ? `${selected.coverage.covered_once_bytes} of ${selected.coverage.old_passage_bytes} bytes; ${selected.coverage.candidate_bytes_outside_old_passage} candidate bytes outside old passage. ${selected.coverage.scope}` : 'Unknown'}</dd><dt>Uncertainty</dt><dd>{selected.observation.uncertainty || 'None recorded'}</dd></dl>{#if selected.observation.source_links.length}<ul>{#each selected.observation.source_links as link}<li><a href={link.pdf_url} target="_blank" rel="noopener noreferrer">Source observation, page {link.page}: {link.literal}</a></li>{/each}</ul>{/if}</details>
           <section class="preview"><h3>Isolated correction preview</h3><p>Edit this closed JSON proposal to split, join or change a role. Preview validates exact source and baseline identities, text hashes and byte coverage.</p><label for="correction">Correction JSON</label><textarea id="correction" rows="14" maxlength={MAX_CORRECTION_BYTES} bind:value={correctionText} oninput={() => { previewRevision++; }}></textarea><button type="button" onclick={() => void runPreview()}>Preview correction</button>
             {#if preview}<div class:failure={!preview.accepted} role="status"><h4>{preview.accepted ? 'Preview passed' : 'Preview rejected'}</h4>{#if previewSource !== correctionText}<p>The correction JSON has changed since this preview. Its result is retained for comparison; run preview again before exporting.</p>{/if}{#if preview.error}<p>{preview.error}</p>{/if}<ul>{#each preview.checks as check}<li>{check}</li>{/each}</ul><h4>Four-scale impact</h4><dl>{#each Object.entries(preview.impact) as [scale, value]}<dt>{scale}</dt><dd><pre>{JSON.stringify(value, null, 2)}</pre></dd>{/each}</dl>{#if preview.migration.length}<h4>ID migration proposal</h4><ul>{#each preview.migration as row}<li>{row.from} → {row.to.join(', ') || 'unresolved'}</li>{/each}</ul>{/if}</div>{/if}
+            {#if preview?.verifiedText}
+              <div class="source-grid passages" aria-label="Verified correction comparison" role="region">
+                <section>
+                  <h4>Before this correction</h4>
+                  {#each loaded.before as row (row.unit.id)}
+                    <article><h5>{unitHeading(row.unit)}</h5><pre>{row.text}</pre></article>
+                  {/each}
+                </section>
+                <section>
+                  <h4>After this correction</h4>
+                  {#each preview.verifiedText as row (row.unit.id)}
+                    <article><h5>{unitHeading(row.unit)}</h5><pre>{row.text}</pre></article>
+                  {/each}
+                </section>
+              </div>
+            {/if}
           </section>
           <section class="decision"><h3>Local review record</h3><p>This export records a suggestion or decision for separate producer review. It does not change the corpus or grant legal acceptance.</p><label for="reviewer">Reviewer</label><input id="reviewer" bind:value={reviewer} /><label for="date">Review date</label><input id="date" type="date" bind:value={reviewDate} /><label for="decision">Decision</label><select id="decision" bind:value={decision}><option value="needs-independent-review">Needs independent review</option><option value="suggest-change">Suggest change</option><option value="reject-change">Reject change</option><option value="accept-for-producer-review">Accept for producer review</option></select><label for="rationale">Reason</label><textarea id="rationale" rows="4" bind:value={rationale}></textarea><button type="button" disabled={!preview || previewSource !== correctionText || !reviewer.trim() || !reviewDate || !rationale.trim() || (!preview.accepted && ['suggest-change', 'accept-for-producer-review'].includes(decision))} onclick={() => void exportDecision()}>Download review JSON</button></section>
         {/if}

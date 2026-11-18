@@ -33,7 +33,16 @@ export type CaseReference = { id: string; label: string; url: string; sha256: st
 export type PassageManifest = { schema: 'okf-passage-boundary-review-manifest.v1'; title: string; cases: CaseReference[]; baseline_commit: string; status: string; source: Record<string, string>; impact: Record<string, unknown>; limits: string[]; candidate_comparison?: Record<string, unknown>; successor_case_differences?: string[] };
 export type LoadedCase = { source: Uint8Array; text: string; before: Array<{ unit: PassageUnit; text: string }>; after: Array<{ unit: PassageUnit; text: string }>; successorAfter?: Array<{ unit: PassageUnit; text: string }> };
 export type Correction = { schema: 'okf-passage-correction.v1'; id: string; version: string; case_id: string; source_sha256: string; baseline_sha256: string; operation: 'split' | 'join' | 'role-change'; rationale: string; uncertainty: string; added_spans: Span[]; units: PassageUnit[] };
-export type Preview = { accepted: boolean; checks: string[]; error?: string; before: PassageUnit[]; after: PassageUnit[]; migration: Array<{ from: string; to: string[]; status: 'mapped' | 'unresolved' }>; impact: Record<string, unknown> };
+export type Preview = {
+  accepted: boolean;
+  checks: string[];
+  error?: string;
+  before: PassageUnit[];
+  after: PassageUnit[];
+  verifiedText?: LoadedCase['after'];
+  migration: Array<{ from: string; to: string[]; status: 'mapped' | 'unresolved' }>;
+  impact: Record<string, unknown>;
+};
 
 function obj(value: unknown): value is Record<string, unknown> { return !!value && typeof value === 'object' && !Array.isArray(value); }
 function str(value: unknown, max = 2000): value is string { return typeof value === 'string' && !!value.trim() && value.length <= max; }
@@ -271,7 +280,8 @@ export async function previewCorrection(caseItem: PassageCase, loaded: LoadedCas
     !['split', 'join', 'role-change'].includes(String(input.operation)) || !str(input.rationale) || typeof input.uncertainty !== 'string' || input.uncertainty.length > 2000 || !Array.isArray(input.added_spans) || input.added_spans.length > 100 || input.added_spans.some(span => !obj(span) || !keys(span, ['page', 'start_utf8', 'end_utf8']) || !Number.isSafeInteger(span.page) || !offset(span.start_utf8) || !offset(span.end_utf8) || Number(span.end_utf8) <= Number(span.start_utf8)) || !validUnits(input.units)) return failure('Invalid or out-of-scope correction.');
   const correction = input as Correction;
   if (correction.source_sha256 !== caseItem.document.extraction.sha256 || correction.baseline_sha256 !== caseItem.document.baseline_sha256) return failure('Stale source or baseline SHA-256.');
-  try { await checkedUnits(loaded.source, correction.units, caseItem.pages); }
+  let verifiedText: LoadedCase['after'];
+  try { verifiedText = await checkedUnits(loaded.source, correction.units, caseItem.pages); }
   catch (error) { return failure(error instanceof Error ? error.message : String(error)); }
   const old = caseItem.before;
   if (old.some(previous => correction.units.some(next => next.id === previous.id && (next.role !== previous.role || next.joiner !== previous.joiner || next.text_sha256 !== previous.text_sha256 || JSON.stringify(next.spans) !== JSON.stringify(previous.spans))))) return failure('An existing unit ID cannot be reused for changed content or role.');
@@ -290,14 +300,21 @@ export async function previewCorrection(caseItem: PassageCase, loaded: LoadedCas
     return { from: unit.id, to: related, status: related.length ? 'mapped' as const : 'unresolved' as const };
   });
   const affected = caseItem.impact;
+  const oldIds = new Set(old.map(unit => unit.id));
+  const newIds = new Set(correction.units.map(unit => unit.id));
+  const identityChanges = {
+    retained: [...oldIds].filter(id => newIds.has(id)),
+    retired: [...oldIds].filter(id => !newIds.has(id)),
+    introduced: [...newIds].filter(id => !oldIds.has(id))
+  };
   const localUnitDelta = correction.units.length - old.length;
   const mayOverlapUnreviewedUnits = actualAdded.length > 0;
   const countReason = (baseline: number | undefined) => mayOverlapUnreviewedUnits
     ? 'Added source spans may overlap units outside this reviewed passage; a full-document projection is required.'
     : baseline === undefined ? 'A baseline count was not supplied.'
     : 'Units and IDs outside this case were not validated; only the local unit delta is established.';
-  return { accepted: true, checks: ['Source SHA-256 matched', 'Baseline SHA-256 matched', 'All proposed text hashes matched', 'Old source-byte coverage preserved', 'Added source bytes declared', 'No overlapping spans'], before: old, after: correction.units, migration,
-    impact: { passage: { old_ids: old.map(unit => unit.id), new_ids: correction.units.map(unit => unit.id), old_roles: old.map(unit => unit.role), new_roles: correction.units.map(unit => unit.role), old_text_sha256: old.map(unit => unit.text_sha256), new_text_sha256: correction.units.map(unit => unit.text_sha256), old_spans: old.map(unit => unit.spans), new_spans: correction.units.map(unit => unit.spans), qualifiers_citations_and_completeness: 'requires source review' },
+  return { accepted: true, checks: ['Source SHA-256 matched', 'Baseline SHA-256 matched', 'All proposed text hashes matched', 'Old source-byte coverage preserved', 'Added source bytes declared', 'No overlapping spans'], before: old, after: correction.units, verifiedText, migration,
+    impact: { passage: { old_ids: [...oldIds], new_ids: [...newIds], identity_changes: identityChanges, old_roles: old.map(unit => unit.role), new_roles: correction.units.map(unit => unit.role), old_text_sha256: old.map(unit => unit.text_sha256), new_text_sha256: correction.units.map(unit => unit.text_sha256), old_spans: old.map(unit => unit.spans), new_spans: correction.units.map(unit => unit.spans), qualifiers_citations_and_completeness: 'requires source review' },
       document: { affected_units_before: old.length, affected_units_after: correction.units.length, affected_unit_delta: localUnitDelta, original_passage_source_bytes: ranges(old).reduce((sum, [a, b]) => sum + b - a, 0), explicitly_added_source_bytes: actualAdded.reduce((sum, span) => sum + span.end_utf8 - span.start_utf8, 0), full_units_before: affected?.document_unit_count_before ?? 'unknown', full_units_after: 'unknown', full_units_after_reason: countReason(affected?.document_unit_count_before) },
       corpus: { affected_unit_delta: localUnitDelta, isolated_projection_units_before: affected?.corpus_unit_count_before ?? 'unknown', isolated_projection_units_after: 'unknown', isolated_projection_units_after_reason: countReason(affected?.corpus_unit_count_before), supplied_producer_candidate_census: corpusEvidence ? { baseline_units: corpusEvidence.baseline_units ?? 'unknown', candidate_units: corpusEvidence.candidate_units ?? 'unknown', added_ids: corpusEvidence.added_ids ?? 'unknown', removed_ids: corpusEvidence.removed_ids ?? 'unknown', changed_documents: corpusEvidence.changed_documents ?? 'unknown', authored_units_exact: corpusEvidence.authored_units_exact ?? 'unknown', identity_migration_status: corpusEvidence.identity_migration_status ?? 'unknown' } : 'unknown' },
       downstream: { correction_effects: { dependencies: 'unknown', discovery_records: 'unknown', question_packages: 'unknown', budget_omissions: 'unknown' }, supplied_producer_case_evidence: { dependencies: affected?.dependencies ?? 'unknown', discovery_records: affected?.discovery_records ?? 'unknown', question_packages: affected?.question_packages ?? 'unknown', budget_omissions: affected?.budget_omissions ?? 'unknown' } } } };
