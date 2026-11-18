@@ -96,6 +96,12 @@
           <dt>Reported bundle</dt><dd>{@render identifier(loaded.bundle)}</dd>
           <dt>Source SHACL report SHA-256</dt><dd><code>{loaded.reportSha256}</code></dd>
           <dt>Verified findings SHA-256</dt><dd><code>{loaded.projectionSha256}</code></dd>
+          {#if loaded.execution}
+            <dt>Validation profile</dt><dd>{loaded.execution.profile}</dd>
+            <dt>Validator</dt><dd>{loaded.execution.validator} {loaded.execution.validatorVersion}</dd>
+            <dt>Declared graph SHA-256</dt><dd><code>{loaded.execution.graphSha256}</code></dd>
+            <dt>Declared shapes SHA-256</dt><dd><code>{loaded.execution.shapesSha256}</code></dd>
+          {/if}
         </dl>
         <p><a href={loaded.projectionUrl} rel="noreferrer">Open machine-readable findings</a></p>
       </details>

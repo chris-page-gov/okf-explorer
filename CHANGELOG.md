@@ -8,6 +8,8 @@
   identifiers, explicit external mappings and a checked SKOS vocabulary digest.
 - Export exact Site assembly provenance as deterministic PROV-O triples.
 - Derive stable finding IDs from bounded SHACL Core reports.
+- Run pinned local RDF and shapes through SHACL Core and record their
+  exact digests and validator version with the findings.
 - Export those report outcomes as DQV measurements and annotations tied to
   the exact source report.
 - Export explicitly mapped catalogue metadata as source-linked DCAT-AP

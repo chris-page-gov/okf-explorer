@@ -58,7 +58,15 @@ export async function parseFindings(value: unknown, expectedBundle: string) {
   await Promise.all(findings.map(async ({ id, occurrences: _, ...fields }) => {
     if (await sha256Hex(JSON.stringify(fields) + '\n') !== id) throw new Error('Finding ID does not match its evidence');
   }));
-  return { conforms: report.conforms, reportSha256, findings };
+  const reportedExecution = report.execution === undefined ? undefined : object(report.execution);
+  const execution = reportedExecution ? {
+    profile: text(reportedExecution.profile, 120),
+    validator: text(reportedExecution.validator, 120),
+    validatorVersion: text(reportedExecution.validator_version, 64),
+    graphSha256: digest(reportedExecution.graph_sha256),
+    shapesSha256: digest(reportedExecution.shapes_sha256)
+  } : undefined;
+  return { conforms: report.conforms, reportSha256, findings, execution };
 }
 
 function parseReview(value: unknown, findings: Finding[], expectedDigest: string, pageOrigin: string): Map<string, Review> {

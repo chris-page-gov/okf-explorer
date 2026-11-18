@@ -108,13 +108,13 @@ and a `datasets` array. The catalogue requires `id`, `title`, `description`,
 `publisher` and `source_record`. Supply a publisher's `id` and `name`.
 Each dataset requires `id`, `title`, `description`, `source_record`, `themes`
 and `distributions`. Optional fields are `publisher` and `landing_page`.
-Use stable, named concept IRIs in `themes`.
+Supply each theme's stable concept `id` and its declared preferred `label`.
 
 Each distribution requires `id`, `title`, `access_url` and `source_record`.
 Add `download_url`, `licence`, `media_type` and `bytes` when the source
 records them. Use a media type IRI from the IANA register and include the
-original OKF record URL in `source_record`. The export carries those
-record links and binds the exact input bytes. It rejects duplicate resource
+original OKF record URL in `source_record`. The export carries those record
+links through PROV and binds the exact input bytes. It rejects duplicate resource
 identities, credential query fields and inputs over 2 MiB, 2,000 datasets
 or 4,000 distributions. The exporter reads local input files.
 

@@ -90,7 +90,7 @@ def export_catalogue(raw: bytes) -> bytes:
         (catalog, DCTERMS.title, label(cat["title"], language)),
         (catalog, DCTERMS.description, label(cat["description"], language)),
         (catalog, DCTERMS.publisher, publisher(graph, cat["publisher"], language)),
-        (catalog, DCTERMS.source, named(cat["source_record"])),
+        (catalog, PROV.wasDerivedFrom, named(cat["source_record"])),
         (catalog, PROV.wasDerivedFrom, input_iri),
         (input_iri, RDF.type, PROV.Entity),
     ):
@@ -104,15 +104,21 @@ def export_catalogue(raw: bytes) -> bytes:
         graph.add((dataset, RDF.type, DCAT.Dataset))
         graph.add((dataset, DCTERMS.title, label(row["title"], language)))
         graph.add((dataset, DCTERMS.description, label(row["description"], language)))
-        graph.add((dataset, DCTERMS.source, named(row["source_record"])))
+        graph.add((dataset, PROV.wasDerivedFrom, named(row["source_record"])))
         if "publisher" in row:
             graph.add((dataset, DCTERMS.publisher, publisher(graph, row["publisher"], language)))
         if "landing_page" in row:
             graph.add((dataset, DCAT.landingPage, named(row["landing_page"], web=True)))
         for theme in entries(row["themes"], 64):
-            concept = named(theme)
+            tag = object_record(theme, {"id", "label"})
+            concept = named(tag["id"])
+            preferred = label(tag["label"], language)
+            given_labels = set(graph.objects(concept, SKOS.prefLabel))
+            if given_labels and given_labels != {preferred}:
+                raise ValueError("Conflicting preferred labels for the same theme")
             graph.add((dataset, DCAT.theme, concept))
             graph.add((concept, RDF.type, SKOS.Concept))
+            graph.add((concept, SKOS.prefLabel, preferred))
         distributions = entries(row["distributions"], MAX_DISTRIBUTIONS - distribution_count)
         distribution_count += len(distributions)
         for node in distributions:
@@ -121,7 +127,7 @@ def export_catalogue(raw: bytes) -> bytes:
             graph.add((dataset, DCAT.distribution, distribution))
             graph.add((distribution, RDF.type, DCAT.Distribution))
             graph.add((distribution, DCTERMS.title, label(item["title"], language)))
-            graph.add((distribution, DCTERMS.source, named(item["source_record"])))
+            graph.add((distribution, PROV.wasDerivedFrom, named(item["source_record"])))
             graph.add((distribution, DCAT.accessURL, named(item["access_url"], web=True)))
             if "licence" in item:
                 licence = named(item["licence"])

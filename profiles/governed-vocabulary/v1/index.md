@@ -51,7 +51,8 @@ records the relationship between the project term and a named external term.
 | CC BY 4.0 | `skos:exactMatch` | The SPDX identifier names the same licence version and points to its legal code. [SPDX licence entry](https://spdx.org/licenses/CC-BY-4.0.html) |
 
 The project checks the byte count, digest, scheme membership, notation
-uniqueness and preferred labels. Add new concepts through a reviewed
+uniqueness and preferred labels. The [named SHACL Core shapes](shapes.ttl)
+check concept labels, scheme links and notation. Add new concepts through a reviewed
 vocabulary revision. If a concept's meaning changes, mint a new identifier
 and preserve the earlier identity and its deprecation record.
 

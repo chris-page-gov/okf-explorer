@@ -1,0 +1,25 @@
+@prefix scope: <https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/shapes.ttl#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+scope:Concept a sh:NodeShape ;
+  sh:targetClass skos:Concept ;
+  sh:nodeKind sh:IRI ;
+  sh:property scope:PreferredLabel, scope:Scheme, scope:Notation .
+
+scope:PreferredLabel a sh:PropertyShape ;
+  sh:path skos:prefLabel ;
+  sh:nodeKind sh:Literal ;
+  sh:minCount 1 ;
+  sh:uniqueLang true .
+
+scope:Scheme a sh:PropertyShape ;
+  sh:path skos:inScheme ;
+  sh:nodeKind sh:IRI ;
+  sh:class skos:ConceptScheme ;
+  sh:minCount 1 .
+
+scope:Notation a sh:PropertyShape ;
+  sh:path skos:notation ;
+  sh:nodeKind sh:Literal ;
+  sh:minCount 1 .

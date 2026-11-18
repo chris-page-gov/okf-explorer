@@ -36,7 +36,7 @@ def example():
             "title": "Pupil counts",
             "description": "Counts by reporting area.",
             "source_record": SOURCE,
-            "themes": [THEME],
+            "themes": [{"id": THEME, "label": "Education, culture and sport"}],
             "distributions": [{
                 "id": DISTRIBUTION,
                 "title": "Counts by reporting area (CSV)",
@@ -62,7 +62,7 @@ class ExportDcatApTest(unittest.TestCase):
         self.assertIn((catalogue, PROV.wasDerivedFrom, URIRef(f"urn:okf:sha256:{sha256(raw).hexdigest()}")), graph)
         self.assertIn((catalogue, DCAT.dataset, dataset), graph)
         self.assertIn((dataset, RDF.type, DCAT.Dataset), graph)
-        self.assertIn((dataset, DCTERMS.source, URIRef(SOURCE)), graph)
+        self.assertIn((dataset, PROV.wasDerivedFrom, URIRef(SOURCE)), graph)
         self.assertIn((dataset, DCAT.distribution, distribution), graph)
         self.assertIn((dataset, DCAT.theme, URIRef(THEME)), graph)
         self.assertIn((distribution, DCAT.accessURL, dataset), graph)
@@ -109,4 +109,4 @@ class ExportDcatApTest(unittest.TestCase):
             record = f"{DATASET}/{index}"
             output = URIRef(record + "/csv")
             self.assertEqual(list(graph.objects(URIRef(record), DCAT.distribution)), [output])
-            self.assertIn((output, DCTERMS.source, URIRef(f"https://bundle.example.test/catalogue/item-{index}#data")), graph)
+            self.assertIn((output, PROV.wasDerivedFrom, URIRef(f"https://bundle.example.test/catalogue/item-{index}#data")), graph)

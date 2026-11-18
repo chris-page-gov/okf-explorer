@@ -25,6 +25,13 @@ const findings = JSON.stringify({
   bundle,
   conforms: false,
   report_sha256: 'a'.repeat(64),
+  execution: {
+    profile: 'okf-bounded-shacl-core.v1',
+    validator: 'pySHACL',
+    validator_version: '0.40.2',
+    graph_sha256: 'd'.repeat(64),
+    shapes_sha256: 'b'.repeat(64)
+  },
   findings: [violation, warning].sort((left, right) => left.id.localeCompare(right.id))
 });
 const bound = (path: string, value: string) => ({ path, bytes: Buffer.byteLength(value), sha256: digest(value) });
@@ -62,6 +69,9 @@ test('Validation retains the selected finding across reload and return from the 
   await expect(selected.getByRole('link', { name: predicate })).toBeVisible();
   await expect(selected.getByText('Check the names recorded by both publishers', { exact: false })).toBeVisible();
   await expect(selected.getByText('urn:fixture:other-source')).toBeVisible();
+  await page.getByText('Report identity', { exact: true }).click();
+  await expect(page.getByText('pySHACL 0.40.2', { exact: true })).toBeVisible();
+  await expect(page.getByText('b'.repeat(64), { exact: true })).toBeVisible();
   await expect(selected.getByRole('link', { name: 'Inspect dataset/another-indicator in Explorer' }))
     .toHaveAttribute('href', /another-source\.fixture\.test.*#dataset\/another-indicator/);
   await selected.getByRole('link', { name: 'Inspect dataset/' + ELS_ALIGNED_RECORD_NAME + ' in Explorer' }).click();

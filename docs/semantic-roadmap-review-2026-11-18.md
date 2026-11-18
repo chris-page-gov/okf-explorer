@@ -72,7 +72,19 @@ from the bundle, severity, focus, shape, path and constraint. Multiple results
 with those same fields share an ID and retain their occurrence count. The
 output also records the report's exact SHA-256 and its conformance outcome.
 The projection excludes free-text messages and values from the result.
-Producers still need to publish reports from pinned shape execution.
+
+`scripts/run_shacl_core.py` runs the pinned pySHACL version on up to 3,000
+N-Triples statements and 256 Turtle shape statements. Supply the data and
+shape files and their SHA-256 digests using `--graph`, `--shapes`,
+`--graph-sha256` and `--shapes-sha256`. Set the examined bundle IRI with
+`--bundle` and write the JSON findings to a fresh `--output` path. The
+governed vocabulary provides [named Core shapes](../profiles/governed-vocabulary/v1/shapes.ttl).
+The runner uses explicit Core targets and processes the supplied local
+graphs. It records the graph and shapes digests, validator and version.
+The report SHA-256 binds a deterministic N-Triples projection of named
+findings and their occurrences.
+
+Producers still need to bind the exact report to their deployed descriptor.
 [SHACL Recommendation](https://www.w3.org/TR/shacl/)
 
 ### Inspect findings in the Explorer
