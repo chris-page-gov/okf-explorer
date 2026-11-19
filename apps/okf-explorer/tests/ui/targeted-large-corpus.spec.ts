@@ -815,6 +815,32 @@ test.describe('targeted large-corpus relationship hydration', () => {
     await expect(assertionCount.locator('span')).toHaveText('accepted assertions');
   });
 
+  test('expanded Graph opens the same filtered neighbourhood in a new tab', async ({ page, context }) => {
+    const requests: string[] = [];
+    await installTargetedFixture(context, requests);
+    await page.setViewportSize({ width: 760, height: 700 });
+    await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}&view=graph#${RECORD_ROUTE}`);
+    await expect(page.locator('.graph-summary')).toContainText('10 nodes · 9 relationships');
+    await page.getByRole('button', { name: 'Expand graph', exact: true }).click();
+    await expect(page.getByRole('navigation', { name: 'Workspace panels' })).toBeHidden();
+    const derived = page.getByRole('button', { name: /^Derived \d+ relationships$/i });
+    await derived.click();
+    const summary = page.locator('.graph-summary');
+    await expect(summary).not.toContainText('10 nodes · 9 relationships');
+    const filteredSummary = await summary.textContent();
+    const link = page.getByRole('link', { name: 'Open graph in a new tab or window' });
+    const [opened] = await Promise.all([page.waitForEvent('popup'), link.click()]);
+    await expect(opened.getByRole('button', { name: 'Exit expanded graph' })).toBeVisible();
+    await expect(opened.locator('.graph-summary')).toHaveText(filteredSummary!);
+    await expect(opened.getByRole('button', { name: /^Derived \d+ relationships$/i })).toHaveAttribute('aria-pressed', 'false');
+    expect(new URL(opened.url()).hash).toBe(`#${RECORD_ROUTE}`);
+    expectNoFullHydration(requests);
+    await opened.getByRole('button', { name: 'Exit expanded graph' }).click();
+    await expect(opened.getByRole('button', { name: 'Expand graph', exact: true })).toBeFocused();
+    expect(new URL(opened.url()).searchParams.has('graph.workspace')).toBe(false);
+    await expect(page.getByRole('button', { name: 'Exit expanded graph' })).toBeVisible();
+  });
+
   test('copied graph edge restores after delayed targeted adjacency hydration and browser history', async ({
     context,
     page

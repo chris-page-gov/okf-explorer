@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased — Graph workspace
+
+- Expand Graph to fill the browser viewport, fit the current drawing and
+  keep its controls available. Exit to restore the previous layout and
+  keyboard focus, or open the focused graph of a hosted bundle in a new tab.
+
 ## Unreleased — semantic guidance
 
 - Explain the published Ontology, Validation and Links capabilities in the
