@@ -64,7 +64,7 @@
       "path": "registry/public-bundle-access.json",
       "url": "https://raw.githubusercontent.com/chris-page-gov/okf-explorer/main/registry/public-bundle-access.json",
       "human_guide": "https://github.com/chris-page-gov/okf-explorer/blob/main/docs/public-bundle-access.md",
-      "scope": "Twelve reviewed public owner-authored bundle entries at the directory's observation date; this is a discovery catalogue, not a complete owner inventory or conformance decision."
+      "scope": "Thirteen reviewed public owner-authored bundle entries at the directory's observation date; this is a discovery catalogue, not a complete owner inventory or conformance decision."
     },
     "public_owner_candidates": {
       "title": "Public owner repository candidate scan",
