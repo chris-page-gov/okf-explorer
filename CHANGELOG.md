@@ -1,5 +1,19 @@
 # Changelog
 
+## Unreleased — guarded OKF skills
+
+- Version the two manually invoked OKF+ skills and their pinned upstream files.
+- Add a locked-runtime launcher that checks package digests and inspects a
+  bounded Markdown snapshot in a read-only, network-isolated process.
+- Refuse symlinks, special files, excessive inputs and arbitrary executors.
+  Keep independently declared nested bundles separate and inspect asset
+  existence without reading asset contents.
+- Add a required CI job with live sandbox and deliberate bypass tests. Block
+  the existing required check if this job fails, is absent or is skipped.
+- Preserve replaced personal skill installations and detect installed drift.
+- Document the enforcement boundary and the separate OKF+ semantic and release
+  gates in the [guarded skills guide](docs/okf-skill-enforcement.md).
+
 ## Unreleased — repository conventions and complete discovery
 
 - Record reviewed producer sources such as Hansard when generated releases are stored outside Git, with a pinned source reference and a public-visibility check.

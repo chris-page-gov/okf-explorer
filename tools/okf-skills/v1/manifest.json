@@ -1,0 +1,30 @@
+{
+  "schema": "okf-guarded-skills.v1",
+  "version": "1.0.0",
+  "upstream_commit": "527e81aff55992be21507e97004286789126f88c",
+  "launchers": {
+    "okf_skill.py": "3c7fea37e3b4ff9c383c4cf4f6c9e367b337b5175eb329911989303347a04e57",
+    "install_okf_skills.py": "5e2dee203c3d65052ec13f13a68cde18c2b501635ea3e50736dc44deb4b2b1e0"
+  },
+  "files": {
+    "skills/okf-plus-consume/SKILL.md": "036a521c01f44180534fe658be1809bf26a9f6e54d50270e91564ff102604b11",
+    "skills/okf-plus-consume/UPSTREAM.json": "88f0e33b52ab6a7bdacddd0b555ba610dc246227fe9d7789787db96661aa56ec",
+    "skills/okf-plus-consume/agents/openai.yaml": "e3a6f67a96825b8a620884b42ebe4e34f1f01e4ae2e7d54515515ff4173ba2da",
+    "skills/okf-plus-consume/references/environment.md": "8cbf32ec9ecdcdef3ce77739d7ec326279cef4bbb8ee32c243744c2b0c58220c",
+    "skills/okf-plus-consume/upstream/LICENSE.md": "8c6db340475136df3c1201d458fa5755698eace76e510471ecc9d857d6083dac",
+    "skills/okf-plus-consume/upstream/UPSTREAM.md": "52c247fb545ce0a5441afd6cd45d72410c7a71a0bd12372c9d2c2c23351eba7e",
+    "skills/okf-plus-consume/upstream/references/trust.md": "a98fdcd29f6255c497fa17f353e743fda8baea08b7b4a6538da27b32c815c12f",
+    "skills/okf-plus-consume/upstream/scripts/scan.py": "18b3d9914faa0248ad6d3dff255cd9c27959c819228ed099b5ffb41be7057e6d",
+    "skills/okf-plus-generate/SKILL.md": "a318fe1d6ccb818442b1923367a21b10e82acff9411ca1db7950dac64b1ceec6",
+    "skills/okf-plus-generate/UPSTREAM.json": "837d3b0efcab1b45e1d46c1fdeed42c45fa0e6b7655156f171bece5a07dc32ba",
+    "skills/okf-plus-generate/agents/openai.yaml": "6671136d7ce3e0d9f43a919ad80a73402c3353abe3f576f4e2213281f1344aaf",
+    "skills/okf-plus-generate/references/environment.md": "8cbf32ec9ecdcdef3ce77739d7ec326279cef4bbb8ee32c243744c2b0c58220c",
+    "skills/okf-plus-generate/upstream/LICENSE.md": "8c6db340475136df3c1201d458fa5755698eace76e510471ecc9d857d6083dac",
+    "skills/okf-plus-generate/upstream/UPSTREAM.md": "ac0b0105b71b300c2c2a75d36846b0aeeb14630d5c4a2db98cec3563ee98d0af",
+    "skills/okf-plus-generate/upstream/references/attested-computations.md": "f5b850051dd162605f07efed162adcbd1e203a65105e16a65e94011d10d3a238",
+    "skills/okf-plus-generate/upstream/references/frontmatter.md": "09cf7e1c93faa98d4acb99101758b0f5c75a629706810be15e682e68dab187b1",
+    "skills/okf-plus-generate/upstream/references/migration.md": "3892182f93cfbf0457b3234ee09ed07c06fb2defc6360a1a4b1c84a913b09179",
+    "skills/okf-plus-generate/upstream/references/templates.md": "55ef992ec10fad7760131c7c6cdd5f9aa4d8c7d1eaea25b6f639f98807ca8f04",
+    "skills/okf-plus-generate/upstream/scripts/validate.py": "7f92df7d6a2118a5b7e5c388aa97de48f6ad31b942abc9e2fc7d344830661f49"
+  }
+}

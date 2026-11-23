@@ -61,6 +61,24 @@ jobs:
           name: impact-plan
           path: impact-plan.json
 
+  skill-enforcement:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      OKF_SKILL_SANDBOX_ACCEPTANCE: "1"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Set up locked Python toolchain
+        uses: ./.github/actions/setup-locked-python
+      - name: Install the Linux inspection sandbox
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends --yes bubblewrap
+      - name: Check the reviewed package and launcher
+        run: uv run --locked python -I scripts/okf_skill.py check
+      - name: Test inspection boundaries and deliberate bypasses
+        run: uv run --locked python -m unittest tests.test_okf_skill_enforcement -v
+
   adversarial-gate:
     runs-on: ubuntu-latest
     steps:
@@ -630,6 +648,7 @@ jobs:
     if: always()
     needs:
       - impact-plan
+      - skill-enforcement
       - adversarial-gate
       - context-assembly
       - remote-mcp
@@ -651,4 +670,4 @@ jobs:
         env:
           RESULTS: ${{ toJSON(needs) }}
         run: |
-          uv run --locked python -c 'import json,os,sys; n=json.loads(os.environ["RESULTS"]); bad={k:v["result"] for k,v in n.items() if v["result"] not in {"success","skipped"}}; print(json.dumps({k:v["result"] for k,v in n.items()},sort_keys=True)); sys.exit(bool(bad))'
+          uv run --locked python -c 'import json,os,sys; n=json.loads(os.environ["RESULTS"]); bad={k:v["result"] for k,v in n.items() if v["result"] not in {"success","skipped"}}; required=n.get("skill-enforcement",{}).get("result"); bad.update({"skill-enforcement":required} if required != "success" else {}); print(json.dumps({k:v["result"] for k,v in n.items()},sort_keys=True)); sys.exit(bool(bad))'
