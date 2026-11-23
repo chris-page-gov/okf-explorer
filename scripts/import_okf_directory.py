@@ -128,14 +128,19 @@ def project(root: Path) -> dict[str, Any]:
         targets.extend(path_fields(node["frontmatter"]))
         for field, href in targets:
             target = concept_target(route, href, files, legacy_field=legacy and field != "markdown")
-            if target in concepts:
+            if target != route and target in concepts:
                 edges.setdefault((route, target), set()).add(field)
 
     return {
         "schema": "okf-explorer-bundle.v0",
         "kind": "okf-bundle",
         "okf_version": version,
-        "meta": {"title": root_metadata.get("title") or root.name, "frontmatter": root_metadata},
+        "meta": {
+            "title": root_metadata.get("title") or root.name,
+            "description": root_metadata.get("description"),
+            "license": root_metadata.get("license"),
+            "frontmatter": root_metadata,
+        },
         "nodes": dict(sorted(concepts.items())),
         "edges": [
             {"source": source, "target": target, "kind": "references", "source_fields": sorted(fields)}

@@ -730,6 +730,11 @@ test('OKF 0.3 shows verification history and opens the replacement concept', asy
   await expect(detail.getByRole('region', { name: 'OKF trust, lifecycle and provenance' })).toContainText('human:earlier');
   await detail.getByRole('button', { name: 'Open replacement: Replacement metric' }).click();
   await expect(detail.getByRole('heading', { name: 'Replacement metric' })).toBeVisible();
+  await detail.getByRole('tab', { name: 'Overview', exact: true }).click();
+  const backlinks = detail.getByRole('region', { name: 'Linked from' });
+  await expect(backlinks).toContainText('Replacement');
+  await backlinks.getByRole('button', { name: 'Former metric' }).click();
+  await expect(detail.getByRole('heading', { name: 'Former metric' })).toBeVisible();
 });
 
 test('opens the complete reference semantic graph including its declared root routes', async ({ context, page }) => {

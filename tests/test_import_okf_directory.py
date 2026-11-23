@@ -21,7 +21,7 @@ class DirectoryReaderTests(unittest.TestCase):
         file.write_bytes(text.encode())
 
     def test_core_edges_and_preservation(self):
-        self.put("index.md", "---\r\nokf_version: '0.3'\r\ntitle: Estate\r\n---\r\n")
+        self.put("index.md", "---\r\nokf_version: '0.3'\r\ntitle: Estate\r\ndescription: Estate records\r\nlicense: CC-BY-4.0\r\n---\r\n")
         self.put("a/a.md", """---
 type: Unregistered
 resource: ../b%20file.md
@@ -38,7 +38,7 @@ extension: {nested: on}
 [Read the evidence][ref]. [External](https://example.org/other.md).
 
 [ref]: ../b%20file.md#section
-[Broken](missing.md). [Escape](../../outside.md). [Not a concept](/index.md).
+[Same concept](#section). [Broken](missing.md). [Escape](../../outside.md). [Not a concept](/index.md).
 """)
         concept = "---\ntype: Reference\n---\n"
         for path in ["b file.md", "log.md", "a/index.md", "a/log.md",
@@ -51,6 +51,8 @@ extension: {nested: on}
         result = project(self.root)
         self.assertEqual(result["okf_version"], "0.3")
         self.assertEqual(result["meta"]["title"], "Estate")
+        self.assertEqual(result["meta"]["description"], "Estate records")
+        self.assertEqual(result["meta"]["license"], "CC-BY-4.0")
         self.assertEqual(set(result["nodes"]), {"a/a.md", "b file.md"})
         self.assertEqual(result["nodes"]["a/a.md"]["frontmatter"]["extension"], {"nested": "on"})
         self.assertEqual(result["nodes"]["a/a.md"]["@id"], "urn:example:a")

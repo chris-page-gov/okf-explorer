@@ -11,6 +11,21 @@
   let replacement = $derived(okf.status === 'deprecated' ? detailRelationships.find(relation =>
     relation.source === detailNode.id && smallCorpus?.nodes[relation.target] &&
     Array.isArray(relation.source_fields) && relation.source_fields.includes('superseded_by')) : undefined);
+  let backlinks = $derived(detailRelationships.filter(relationship =>
+    relationship.target === detailNode.id && relationship.source !== detailNode.id &&
+    Array.isArray(relationship.source_fields) && relationship.source_fields.length > 0
+  ));
+  let backlinkLimit = $state(20);
+  $effect.pre(() => {
+    detailNode.id;
+    backlinkLimit = 20;
+  });
+  const linkFieldLabel = (field: unknown) => {
+    if (field === 'markdown') return 'Markdown link';
+    if (field === 'superseded_by') return 'Replacement';
+    if (field === 'sources[].resource') return 'Provenance source';
+    return String(field);
+  };
   const jsonText = (value: unknown) => JSON.stringify(value, null, 2);
   const metadataDisplayValue = (value: unknown) => value === undefined || value === null || value === '' ? 'Not specified (metadata gap)' : typeof value === 'object' ? JSON.stringify(value) : String(value);
 </script>
@@ -38,6 +53,24 @@
           {#if detailNode.body}
             <section class="markdown-body" aria-label="Markdown body">
               {@html renderSafeMarkdown(detailNode.body, sourceUrl)}
+            </section>
+          {/if}
+          {#if backlinks.length}
+            <section aria-label="Linked from">
+              <h3>Linked from ({backlinks.length})</h3>
+              <ul>
+                {#each backlinks.slice(0, backlinkLimit) as backlink}
+                  <li>
+                    <button type="button" onclick={() => inspectNode(backlink.source)}>
+                      {smallCorpus?.nodes[backlink.source]?.title || backlink.source}
+                    </button>
+                    <span> · {Array.isArray(backlink.source_fields) ? backlink.source_fields.map(linkFieldLabel).join(', ') : ''}</span>
+                  </li>
+                {/each}
+              </ul>
+              {#if backlinkLimit < backlinks.length}
+                <button type="button" onclick={() => backlinkLimit += 20}>Show more backlinks</button>
+              {/if}
             </section>
           {/if}
           <h3>Relationships</h3>

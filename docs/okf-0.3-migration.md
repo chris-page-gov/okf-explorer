@@ -38,6 +38,13 @@ Use the **Evidence** tab to see the verification history and the tier applicable
 
 The pinned upstream Acme Retail example produces **9 concepts and 24 distinct directed edges**. The old gross-margin metric links to its successor through both a Markdown link and `superseded_by`. [Upstream example](https://github.com/open-knowledge-format/open-knowledge-format/tree/527e81aff55992be21507e97004286789126f88c/bundles/acme_retail)
 
+Use **Linked from** on a record to follow incoming Markdown links and path
+fields from other imported concepts. The list identifies provenance and
+replacement links and can be expanded beyond its first 20 entries. Trust and
+lifecycle filters use the same version-aware interpretation as the record.
+The bundle overview shows its declared description and licence. Links to
+sections of the same concept stay in its Markdown body.
+
 ## Give an AI one link
 
 For a small OKF+ bundle, give a URL-capable client the **commit-pinned JSON-LD graph** in the catalogue entry's `agent_graph.url`. The catalogue supplies the media type, bundle identifier, commit, byte length and SHA-256. The graph is a projection of the authored YAML-LD. A client can traverse it using an ordinary JSON parser. The released Explorer example has 165 entities and 588 qualified assertions. Chrome retrieved it, resolved an assertion's source and target identifiers, then opened the corresponding Markdown at the same commit and verified its evidence digest. [Open the checked graph](https://raw.githubusercontent.com/chris-page-gov/okf-explorer/954d44a345b31a3142bc69a822295e6420108d93/okf-bundle.jsonld) · [Direct browser receipt](evidence/okf-0.3-pinned-graph.json) · [Reader relationship inspection](evidence/okf-0.3-graph-reader.json)

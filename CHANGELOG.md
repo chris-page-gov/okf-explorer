@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased — OKF 0.3 Reader navigation
+
+- Show incoming core references in the Reader and apply version-aware trust
+  and lifecycle rules to Explorer facets.
+- Surface imported bundle scope and licence, and omit same-concept anchors
+  from the relationship graph.
+
 ## Unreleased — migration completion record
 
 - Distinguish implemented OKF 0.3 Reader support from producer migration and
