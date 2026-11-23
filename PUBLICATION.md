@@ -90,7 +90,9 @@ below.
    The run's `headSha` must equal the recorded merge commit. The upload step
    must preserve hidden files so the artefact includes `.nojekyll`; require the
    extracted artefact's complete Site tree to match the candidate receipt
-   before using it as release evidence.
+   before using it as release evidence. The Site builder excludes repository
+   metadata paths `.git` and `.github` because the Pages upload action omits
+   them at any depth.
 3. Compare the deployed
    `okf-explorer-build-manifest.json` bytes and `tree_sha256` with the manifest
    in that Pages artefact. Also compare the public beginner chapter, `guide.css`

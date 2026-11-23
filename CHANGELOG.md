@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased — Pages archive integrity
+
+- Exclude Git repository and GitHub workflow metadata from the Site before
+  computing the candidate receipt. GitHub Pages omits these paths when it
+  archives the Site. Keep public hidden paths such as `.well-known` available.
+
 ## Unreleased — semantic guidance
 
 - Explain the published Ontology, Validation and Links capabilities in the
