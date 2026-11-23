@@ -219,6 +219,36 @@ test('SMALL-E2E-03 projects generated edges into Graph and Links views', async (
   await expect(page.locator('.links-view')).toContainText('Beta related record');
 });
 
+test('transparent label padding cannot intercept another graph node', async ({ page }) => {
+  await page.getByRole('button', { name: 'Graph', exact: true }).click();
+  const graph = page.locator('svg.graph');
+  const alpha = graph.locator('[data-route="alpha"]');
+  const beta = graph.locator('[data-route="beta"]');
+  await beta.focus();
+  await beta.press('Enter');
+  await expect(page.locator('.right-panel h2')).toHaveText('Beta related record');
+  // Reproduce the observed Hansard collision: another label's invisible
+  // padding covers the card, while its visible text remains elsewhere.
+  await graph.evaluate(svg => {
+    const circle = svg.querySelector('[data-route="alpha"] circle')!;
+    const padding = svg.querySelector('[data-route="beta"] .label-hit')!;
+    const x = Number(circle.getAttribute('cx'));
+    const y = Number(circle.getAttribute('cy'));
+    for (const [key, value] of Object.entries({x:x-20,y:y-20,width:40,height:40})) {
+      padding.setAttribute(key, String(value));
+    }
+  });
+  await alpha.locator('circle').click({ timeout: 2500 });
+  await expect(page.locator('.right-panel h2')).toHaveText('Alpha compatibility record');
+  await expect(page).toHaveURL(/#alpha$/);
+  // The visible label and keyboard remain available as separate targets.
+  await beta.locator('text').click({ timeout: 2500 });
+  await expect(page.locator('.right-panel h2')).toHaveText('Beta related record');
+  await alpha.focus();
+  await alpha.press('Enter');
+  await expect(page.locator('.right-panel h2')).toHaveText('Alpha compatibility record');
+});
+
 test('expanded Graph fits the drawing and restores the layout and keyboard focus', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.getByRole('button', { name: 'Graph', exact: true }).click();
