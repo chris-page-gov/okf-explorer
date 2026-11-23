@@ -1,5 +1,18 @@
 # Changelog
 
+## Unreleased — full estate acceptance
+
+- Add a distinct Bundle Wiki v2 repository contract for core OKF 0.3. Keep the
+  frozen v1 profile and its core 0.2 requirements intact, validate each claimed
+  version and report the actual profile used by each producer.
+- Reproduce the retained analytical trials with the updated validator digest.
+  Preserve the captured source observations and frozen release bytes.
+- Add a bounded OKF 0.3 source check that binds inspected Markdown bytes to
+  reserved-file checks and independent Reader concept coverage. Keep source
+  syntax, version adoption, browser use, AI access and release acceptance as
+  separate results. Require a source-linked complex-question visual walkthrough
+  for each bundle before declaring the programme complete.
+
 ## Unreleased — migration completion record
 
 - Distinguish implemented OKF 0.3 Reader support from producer migration and

@@ -20,6 +20,7 @@ from jsonschema import Draft202012Validator, FormatChecker
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts" / "reconcile_okf_repositories.py"
+sys.path.insert(0, str(ROOT / "scripts"))
 SPEC = importlib.util.spec_from_file_location("reconcile_okf_repositories", SCRIPT)
 assert SPEC and SPEC.loader
 reconcile = importlib.util.module_from_spec(SPEC)

@@ -212,7 +212,7 @@
         "deployment"
       ],
       "limitations": [
-        "Local experimental profile, not official UK policy or universal OKF core. Frozen RC.1 and historical trials are unchanged.",
+        "Local experimental profile, not official UK policy or universal OKF core. Frozen RC.1, historical source captures and frozen release artefacts are unchanged. Current analytical-trial reproduction receipts track the current validator digest.",
         "Browser selected-table checks do not replace full Python package/schema validation."
       ]
     },

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Install and audit one OKF 0.2 + YAML-LD contract across OKF repositories.
+"""Install legacy contracts and audit versioned YAML-LD repository contracts.
 
 The tool never edits generated bundle data. ``--install`` writes only the
 repository-local ``okf.semantic.json`` control file and a bounded AGENTS.md
@@ -32,6 +32,7 @@ from okf_standards import specification_for
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT_NAME = "okf.semantic.json"
 PROFILE_URL = "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/"
+PROFILE_V2_URL = "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v2/"
 CONTRACT_SCHEMA_URL = PROFILE_URL + "repository-contract.schema.json"
 ASSERTION_SCHEMA_URL = PROFILE_URL + "semantic-assertion.schema.json"
 PROFILE_MIRROR = Path("profiles/bundle-wiki/v1")
@@ -1394,8 +1395,11 @@ def contract_errors(contract: Any) -> list[str]:
         "reader",
     }
     errors.extend(unexpected_keys(contract, root_fields, "contract"))
-    if contract.get("schema") != "okf-repository-semantic-contract.v1":
-        errors.append("schema must be okf-repository-semantic-contract.v1")
+    contract_versions = {"okf-repository-semantic-contract.v1": "0.2",
+                         "okf-repository-semantic-contract.v2": "0.3"}
+    expected_core = contract_versions.get(contract.get("schema"))
+    if expected_core is None:
+        errors.append("schema must be okf-repository-semantic-contract.v1 or .v2")
 
     objects: dict[str, dict[str, Any]] = {}
     for field in root_fields - {"schema"}:
@@ -1419,8 +1423,10 @@ def contract_errors(contract: Any) -> list[str]:
 
     core = objects["okf_core"]
     errors.extend(unexpected_keys(core, {"version", "specification", "status"}, "okf_core"))
-    if core.get("version") != "0.2":
-        errors.append("okf_core.version must be 0.2")
+    if expected_core is not None and core.get("version") != expected_core:
+        errors.append(f"okf_core.version must be {expected_core} for {contract.get('schema')}")
+    if expected_core == "0.3" and objects["semantic_layer"].get("profile") == PROFILE_URL:
+        errors.append("the frozen Bundle Wiki v1 profile targets core 0.2; use the core 0.3 profile v2")
     if not contract_uri(core.get("specification")):
         errors.append("okf_core.specification must be an absolute URI")
     if core.get("status") not in {"conformant", "migration", "fixture"}:
@@ -3467,6 +3473,7 @@ def audit_repo(
             "warnings": [],
         }
     errors.extend(contract_errors(contract))
+    expected_core = str(contract.get("okf_core", {}).get("version", "")) if isinstance(contract.get("okf_core"), dict) else ""
     semantic_layer = contract.get("semantic_layer")
     if not isinstance(semantic_layer, dict):
         semantic_layer = {}
@@ -3517,9 +3524,20 @@ def audit_repo(
 
     claimed_profile = semantic_layer.get("profile")
     profile_errors: list[str] = []
-    if claimed_profile == PROFILE_URL:
+    if claimed_profile in {PROFILE_URL, PROFILE_V2_URL}:
         profile_errors = profile_mirror_errors(repo)
         errors.extend(profile_errors)
+        if claimed_profile == PROFILE_V2_URL:
+            for name in ("index.md", "repository-contract.schema.json"):
+                relative = Path("profiles/bundle-wiki/v2") / name
+                try:
+                    if _symlink_component(repo, relative):
+                        raise ValueError("canonical v2 profiles must be regular files")
+                    target = contained_repository_path(repo, relative.as_posix())
+                    if read_bounded_bytes(target) != read_bounded_bytes(ROOT / relative):
+                        errors.append(f"canonical v2 profile differs: {relative}")
+                except (ArtifactReadError, OSError, ValueError):
+                    errors.append(f"missing or unsafe canonical v2 profile: {relative}")
     authoritative_inputs = semantic_layer.get("authoritative_inputs", [])
     if isinstance(authoritative_inputs, list):
         for declaration in authoritative_inputs:
@@ -3551,11 +3569,11 @@ def audit_repo(
                     errors.append(f"invalid OKF root index {root_index_value}: {exc}")
                 else:
                     if not re.search(
-                        r"(?m)^okf_version:\s*[\"']?0\.2[\"']?\s*$",
+                        rf"(?m)^okf_version:\s*[\"']?{re.escape(expected_core)}[\"']?\s*$",
                         prefix,
                     ):
                         errors.append(
-                            f"{root_index_value} does not declare okf_version: 0.2"
+                            f"{root_index_value} does not declare okf_version: {expected_core}"
                         )
 
     sampled_relationships = 0
@@ -3636,8 +3654,8 @@ def audit_repo(
                     )
                     continue
                 version = descriptor.get("okf_version")
-                if version is not None and str(version) != "0.2":
-                    errors.append(f"{path.relative_to(repo)} declares OKF {version}, expected 0.2")
+                if (version is not None or expected_core == "0.3") and str(version) != expected_core:
+                    errors.append(f"{path.relative_to(repo)} declares OKF {version}, expected {expected_core}")
         if role == "relationship-schema":
             for path in paths:
                 relationship_schemas += 1
@@ -3695,7 +3713,7 @@ def audit_repo(
     contract_schema = relationship_contract.get("schema")
     schema_is_available = contract_schema in declared_relationship_schemas or (
         contract_schema == ASSERTION_SCHEMA_URL
-        and claimed_profile == PROFILE_URL
+        and claimed_profile in {PROFILE_URL, PROFILE_V2_URL}
         and not profile_errors
     )
     if contract_uri(contract_schema) and not schema_is_available:
@@ -3717,6 +3735,15 @@ def audit_repo(
     return {
         "repository": repo.name,
         "path": str(repo),
+        "core_version": expected_core,
+        "profile": claimed_profile,
+        "contract_schema": (
+            PROFILE_V2_URL + "repository-contract.schema.json"
+            if contract.get("schema") == "okf-repository-semantic-contract.v2"
+            else CONTRACT_SCHEMA_URL
+            if contract.get("schema") == "okf-repository-semantic-contract.v1"
+            else None
+        ),
         "status": status,
         "semantic_state": semantic_state,
         "semantic_documents_checked": semantic_files,
@@ -3729,6 +3756,12 @@ def audit_repo(
         "errors": errors,
         "warnings": warnings,
     }
+
+
+def common_report_value(results: list[dict[str, Any]], field: str) -> str | None:
+    """Do not label a mixed or unknown estate as using the legacy profile."""
+    values = {item.get(field) for item in results}
+    return next(iter(values)) if len(values) == 1 else None
 
 
 def selected_repositories(args: argparse.Namespace) -> Iterable[Path]:
@@ -3871,8 +3904,8 @@ def main(argv: list[str] | None = None) -> int:
         ]
         report = {
             "schema": "okf-repository-reconciliation-report.v1",
-            "profile": PROFILE_URL,
-            "contract_schema": CONTRACT_SCHEMA_URL,
+            "profile": common_report_value(results, "profile"),
+            "contract_schema": common_report_value(results, "contract_schema"),
             "repositories": results,
             "summary": {
                 "repositories": len(results),
