@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased — Hansard public discovery
+
+- Listed the public Hansard OKF 0.3 demonstration in the access directory, with its verified Pages descriptor, digest-matched GitHub fallback and producer discovery routes.
+
 ## Unreleased — Pages archive integrity
 
 - Exclude Git repository and GitHub workflow metadata from the Site before

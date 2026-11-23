@@ -12,7 +12,8 @@ licence or answer. Browser and Voice checks remain separate.
 
 All producer links below are browser-unverified for this audit. Chrome blocked
 the ELS Markdown entrypoint with `ERR_BLOCKED_BY_CLIENT`; its HTTP route
-returned 200. No live Voice conversation has been tested.
+returned 200. Later entries give their own verification evidence. No live Voice
+conversation has been tested for this directory.
 
 [Machine-readable directory](../okf-public-access.json) · [AI access guide](ai-okf-usage.md)
 
@@ -30,6 +31,7 @@ returned 200. No live Voice conversation has been tested.
 | OKF Explorer reference corpus | [Website](https://chris-page-gov.github.io/okf-explorer/) | [Read descriptor](https://chris-page-gov.github.io/okf-explorer/okf-bundle.json) | [Pinned raw descriptor](https://raw.githubusercontent.com/chris-page-gov/okf-explorer/5755359efd54b14a356dbff67d6082db1b195a91/okf-bundle.json) |
 | GOV.UK content | [Website](https://chris-page-gov.github.io/okf-govuk-content/) | [Read descriptor](https://chris-page-gov.github.io/okf-govuk-content/okf-explorer.json) | [Pinned raw descriptor](https://raw.githubusercontent.com/chris-page-gov/okf-govuk-content/ef5575d2dccdab7999fc8fdc3cbdd2e47b4f6247/bundle/okf-explorer.json) |
 | Coventry and Warwickshire heritage | [Website](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/) | [Read descriptor](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/okf-explorer.json) | [Pinned raw descriptor](https://raw.githubusercontent.com/chris-page-gov/okf-heritage-coventry-warwickshire/2c5c73ac5c54e71a73b4fd3556470bbd9ab9359e/site/okf-explorer.json) |
+| Hansard parliamentary proceedings | [Website](https://chris-page-gov.github.io/okf-hansard/) | [Read descriptor](https://chris-page-gov.github.io/okf-hansard/graph/okf-explorer.json) | [Pinned raw descriptor](https://raw.githubusercontent.com/chris-page-gov/okf-hansard/89ff017bab2a37df222e58ef6da94a32688144f3/graph/okf-explorer.json) |
 | HM Land Registry public metadata | [Website](https://chris-page-gov.github.io/okf-LandRegistry/) | [Read descriptor](https://chris-page-gov.github.io/okf-LandRegistry/okf-explorer.json) | [Pinned raw descriptor](https://raw.githubusercontent.com/chris-page-gov/okf-LandRegistry/4580c9e4afef10a102b852b01083ee5cb7d34018/bundle/okf-explorer.json) |
 | ONS data discovery | [Website](https://chris-page-gov.github.io/okf-ons/) | [Read descriptor](https://chris-page-gov.github.io/okf-ons/okf-explorer.json) | See access limit below |
 | UK planning and housing data | [Website](https://chris-page-gov.github.io/okf-planning/) | [Read descriptor](https://chris-page-gov.github.io/okf-planning/okf-explorer.json) | [Pinned raw descriptor](https://raw.githubusercontent.com/chris-page-gov/okf-planning/9941f9e4ec17345a26e99421a016f94c69cd2a31/bundle/okf-explorer.json) |
@@ -74,6 +76,16 @@ Metadata collection with a bounded demonstrator. A recorded page is not the comp
 Frozen faithful publication. Tiny and synthetic supplements are separate products; do not rewrite the released bytes.
 
 [Semantic descriptor](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/okf-bundle.yamlld) · [Source repository](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire)
+
+### Hansard parliamentary proceedings
+
+Open the website for the three demonstration examples and provider-neutral prompt. Use the producer directory for source links, scope, the Markdown entry point and November coverage.
+
+[Semantic descriptor](https://chris-page-gov.github.io/okf-hansard/okf-bundle.yamlld.gz) · [Source repository](https://github.com/chris-page-gov/okf-hansard)
+
+[Producer access directory](https://chris-page-gov.github.io/okf-hansard/okf-public-access.json)
+
+Checked on 23 November 2026. Matched exact public Pages bytes to the pinned GitHub descriptor. Checked the Microsoft 365 companion and its focused graph and timeline in a browser.
 
 ### HM Land Registry public metadata
 

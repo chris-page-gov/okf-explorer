@@ -28,7 +28,10 @@ def load(root: Path = ROOT) -> dict:
         seen.add(name)
         if bundle.get("visibility") != "public":
             raise ValueError(f"{name}: only explicitly public entries may be published")
-        for key in ("home", "repository", "descriptor", "semantic_descriptor"):
+        url_fields = ("home", "repository", "descriptor", "semantic_descriptor")
+        if "producer_directory" in bundle:
+            url_fields += ("producer_directory",)
+        for key in url_fields:
             value = bundle[key]
             parsed = urlsplit(value)
             if (parsed.scheme != "https" or parsed.username or parsed.password
@@ -60,7 +63,8 @@ def render(directory: dict) -> dict[Path, str]:
              "licence or answer. Browser and Voice checks remain separate.", "",
              "All producer links below are browser-unverified for this audit. Chrome blocked",
              "the ELS Markdown entrypoint with `ERR_BLOCKED_BY_CLIENT`; its HTTP route",
-             "returned 200. No live Voice conversation has been tested.", "",
+             "returned 200. Later entries give their own verification evidence. No live Voice",
+             "conversation has been tested for this directory.", "",
              "[Machine-readable directory](../okf-public-access.json) · [AI access guide](ai-okf-usage.md)", "",
              "[Project discovery JSON](../.well-known/okf.json) · [Text discovery index](../llms.txt)", "",
              "[Dated HTTP check](evidence/public-bundle-access-2026-11-14.json) records the exact checked URLs and descriptor hashes.", "",
@@ -76,6 +80,11 @@ def render(directory: dict) -> dict[Path, str]:
     for b in directory["bundles"]:
         lines.extend([f"### {b['title']}", "", b["access_note"], "",
                       f"[Semantic descriptor]({b['semantic_descriptor']}) · [Source repository]({b['repository']})", ""])
+        if b.get("producer_directory"):
+            lines.extend([f"[Producer access directory]({b['producer_directory']})", ""])
+        if b.get("verification") and b.get("observed_on"):
+            observed = date.fromisoformat(b["observed_on"]).strftime("%-d %B %Y")
+            lines.extend([f"Checked on {observed}. {b['verification']}", ""])
     lines.extend(["## Use with ChatGPT Voice", "",
                   "Voice uses the tools and permissions available to its task. Start with this",
                   "directory in a task that can browse public URLs or read GitHub, then ask:", "",
