@@ -39,3 +39,13 @@ it('counts high-cardinality facets without rescanning the scope for each value',
   expect(rows.find(row => row.value === 'Type 0')).toMatchObject({ count: 0, highlighted: 0 });
   expect(reads).toBeLessThanOrEqual(nodes.length + scope.length);
 });
+
+it('uses current verification and preserves unknown lifecycle values in 0.3 facets', () => {
+  const node = {
+    id: 'record/a', title: 'A', status: 'withdrawn',
+    generated: { by: 'process:editor', at: '2026-11-02' },
+    verified: { by: 'human:reviewer', at: '2026-11-01' }
+  };
+  expect(smallFacetValues(node, 'trust', [], [], '0.3')).toEqual(['Unverified']);
+  expect(smallFacetValues(node, 'lifecycle', [], [], '0.3')).toEqual(['withdrawn']);
+});

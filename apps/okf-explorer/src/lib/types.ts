@@ -31,6 +31,9 @@ export type OkfNode = {
   aliases?: string[];
   tags?: string[];
   body?: string;
+  markdown_links?: Record<string, string>;
+  markdown_references?: Record<string, string>;
+  asset_links?: Record<string, string>;
   [key: string]: unknown;
 };
 
@@ -1702,6 +1705,7 @@ export type LoadedSource =
       title: string;
       corpus: NormalizedCorpus;
       federation?: FederationOverview;
+      loopbackContext?: boolean;
       loadContextAssembly?: () => Promise<import('./context/types').BoundContextSource>;
     }
   | LargeCorpusSource;

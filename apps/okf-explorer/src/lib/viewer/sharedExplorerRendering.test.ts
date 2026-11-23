@@ -11,7 +11,7 @@ describe('shared Explorer presentation contracts', () => {
     const { body } = render(SmallRecordInspector, { props: {
       detailNode: { id: 'target', title: 'Target' }, smallCorpus: null, sourceUrl: 'https://example.test/bundle.json',
       detailRelationships: [{ source: 'source', target: 'target', kind: 'supports', inverse_label: 'supported by' }],
-      inspectNode() {}, inspectRelationship() {}, loadFederationChild() {}
+      inspectNode() {}, conceptUrl: () => "", inspectRelationship() {}, loadFederationChild() {}
     } });
     expect(body).toContain('Incoming · supported by');
     expect(body).toContain('source → target');

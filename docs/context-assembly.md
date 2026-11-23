@@ -38,6 +38,19 @@ The paths above are relative to `apps/okf-explorer/`. A bundle without the
 optional `entrypoints.context_assembly` index is not silently promoted into a
 governed context source. Its ordinary Search remains available.
 
+### Local small bundles
+
+The Reader can load a small bundle and its declared `context_assembly` index
+from the same HTTP origin on `127.0.0.1`. The index response must explicitly
+authorise the loopback audience through `X-OKF-Context-Audience: loopback`.
+The browser adapter retains the original access labels in the evidence package
+and calculates the package identity and byte count from those original labels.
+The Reader checks the relative path, byte count, SHA-256 digest and bundle
+snapshot before assembly. Restricted records retain that status in the
+browser's evidence package. Local context registers no optional page tools.
+File imports do not load sidecar indexes. Public and remote assembly continue
+to apply the public evidence policy.
+
 ## What a producer declares
 
 The [additive v1 schemas](../profiles/context-assembly/v1/README.md) separate

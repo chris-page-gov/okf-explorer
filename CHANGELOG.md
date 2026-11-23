@@ -13,6 +13,22 @@
   separate results. Require a source-linked complex-question visual walkthrough
   for each bundle before declaring the programme complete.
 
+## Unreleased — OKF 0.3 Reader navigation
+
+- Show incoming core references in the Reader and apply version-aware trust
+  and lifecycle rules to Explorer facets.
+- Open inline and reference-style Markdown concept links in Explorer and make reserved index and
+  history documents readable from the bundle overview.
+- Display source-linked claim footnotes using the bundle’s provenance entries.
+- List referenced assets and support opt-in embedding for local downloads,
+  including licences declared as bundle paths. Preview embedded PNG, JPEG and
+  GIF images and follow in-body heading links.
+- Allow digest-bound local Ask OKF context on an explicitly authorising
+  loopback server, preserve evidence access labels and keep page tools disabled
+  for that audience. The browser adapter uses the pinned public resolver.
+- Surface imported bundle scope and licence, and omit same-concept anchors
+  from the relationship graph.
+
 ## Unreleased — migration completion record
 
 - Distinguish implemented OKF 0.3 Reader support from producer migration and

@@ -112,6 +112,7 @@
     type ResolvedLargeSourceAccess
   } from '$lib/viewer/largeRecordContracts';
   import {
+    bundleAssetDownload,
     renderSafeMarkdown,
     smallNodeLinks,
     smallNodeMetadataRows,
@@ -182,6 +183,7 @@
   } from '$lib/sources/largeCorpus';
   import { loadHistory, loadRegistry, rememberHistory } from '$lib/sources/registry';
   import { normalizeSmallBundle } from '$lib/sources/smallBundle';
+  import { localContextLoader } from '$lib/sources/localContext';
   import {
     conceptGenerated,
     okfConceptPresentation,
@@ -643,7 +645,7 @@
       const query = smallQuery.trim().toLowerCase();
       const type = node.type || 'Node';
       if (visibleTypes.size && !visibleTypes.has(type)) return false;
-      if (!matchesReductions(reductions, key => smallFacetValues(node, key, learningKeys, semanticKeys))) return false;
+      if (!matchesReductions(reductions, key => smallFacetValues(node, key, learningKeys, semanticKeys, smallCorpus?.okfVersion))) return false;
       if (!query) return true;
       return smallNodeSearchText(node).toLowerCase().includes(query);
     }).sort(compareSmallNodes)
@@ -654,7 +656,7 @@
   let smallGeospatialRouteIds: Set<string> = $derived(
     new Set(smallGeospatialRecords.filter((record) => geospatialFilterMatches(record, geospatialFilter)).map((record) => record.route))
   );
-  let visibleNodes = $derived(highlightFirst(geospatialFilter ? baseVisibleNodes.filter((node) => smallGeospatialRouteIds.has(node.id)) : baseVisibleNodes, node => smallIsHighlighted(node, largeFacetHighlights, learningKeys, semanticKeys)));
+  let visibleNodes = $derived(highlightFirst(geospatialFilter ? baseVisibleNodes.filter((node) => smallGeospatialRouteIds.has(node.id)) : baseVisibleNodes, node => smallIsHighlighted(node, largeFacetHighlights, learningKeys, semanticKeys, smallCorpus?.okfVersion)));
   let selectedNode = $derived(smallCorpus && selectedId ? smallCorpus.nodes[selectedId] : null);
   let inspectedNode = $derived(smallCorpus && inspectedId ? smallCorpus.nodes[inspectedId] : null);
   let detailNode = $derived(inspectedNode || selectedNode);
@@ -731,9 +733,9 @@
   let activeLargeFilterCount: number = $derived(Object.values(largeFacetFilters).reduce((total, values) => total + values.length, (geospatialFilter ? 1 : 0) + reductions.length));
   let pinnedLabels = $derived(pins);
   let largeExplorationScope = $derived(currentLargeExplorationScope());
-  let highlightedCount = $derived(source?.kind === 'large' ? largeExplorationScope.highlighted : visibleNodes.filter(node => smallIsHighlighted(node, largeFacetHighlights, learningKeys, semanticKeys)).length);
+  let highlightedCount = $derived(source?.kind === 'large' ? largeExplorationScope.highlighted : visibleNodes.filter(node => smallIsHighlighted(node, largeFacetHighlights, learningKeys, semanticKeys, smallCorpus?.okfVersion)).length);
   let scopeCount = $derived(source?.kind === 'large' ? largeExplorationScope.total : visibleNodes.length);
-  let smallFacets = $derived<FacetModel[]>(smallFacetDefinitions.map(facet => ({ ...facet, open: smallOpenFacet === facet.key || smallOpenedPinnedFacets.includes(facet.key), pinned: smallPinnedFacets.includes(facet.key), rows: smallFacetRows(nodeList, visibleNodes, largeFacetHighlights, facet.key, learningKeys, semanticKeys) })));
+  let smallFacets = $derived<FacetModel[]>(smallFacetDefinitions.map(facet => ({ ...facet, open: smallOpenFacet === facet.key || smallOpenedPinnedFacets.includes(facet.key), pinned: smallPinnedFacets.includes(facet.key), rows: smallFacetRows(nodeList, visibleNodes, largeFacetHighlights, facet.key, learningKeys, semanticKeys, smallCorpus?.okfVersion) })));
   let smallResults = $derived<ResultItem[]>(visibleNodes.filter(node => !foldedIds.has(node.id)).map(node => {
     const hansard = hansardResultEvidence(node);
     const metadata = learning
@@ -743,7 +745,7 @@
       id: node.id, route: node.id, title: node.title, type: node.type || 'Node',
       description: node.description || node.summary || '',
       metadata: hansard?.metadata || metadata, hansard,
-      highlighted: smallIsHighlighted(node, largeFacetHighlights, learningKeys, semanticKeys)
+      highlighted: smallIsHighlighted(node, largeFacetHighlights, learningKeys, semanticKeys, smallCorpus?.okfVersion)
     };
   }));
   let largeReaderResults = $derived<ResultItem[]>(readerResultItems());
@@ -926,7 +928,7 @@
       if (!largeExplorationScope.scopeIds || !largeExplorationScope.highlightedIds) return;
       const selected = new Set(largeExplorationScope.highlightedIds);
       members = largeExplorationScope.scopeIds.filter(id => selected.has(id) === highlighted);
-    } else members = visibleNodes.filter(node => smallIsHighlighted(node, largeFacetHighlights, learningKeys, semanticKeys) === highlighted).map(node => node.id);
+    } else members = visibleNodes.filter(node => smallIsHighlighted(node, largeFacetHighlights, learningKeys, semanticKeys, smallCorpus?.okfVersion) === highlighted).map(node => node.id);
     members = members.filter(id => !foldedIds.has(id));
     if (!members.length || members.length > MAX_FOLDED_MEMBERS) return;
     foldedSets = [...foldedSets, { id: crypto.randomUUID(), label: `${highlighted ? '' : 'Outside '} ${selectionLabel(largeFacetHighlights)}`.trim(), members }];
@@ -935,7 +937,7 @@
   function foldedSetCounts() {
     if (source?.kind === 'large' && !largeExplorationScope.scopeIds) return {};
     const scope = new Set(source?.kind === 'large' ? largeExplorationScope.scopeIds : visibleNodes.map(node => node.id));
-    const selected = new Set(source?.kind === 'large' ? largeExplorationScope.highlightedIds : visibleNodes.filter(node => smallIsHighlighted(node, largeFacetHighlights, learningKeys, semanticKeys)).map(node => node.id));
+    const selected = new Set(source?.kind === 'large' ? largeExplorationScope.highlightedIds : visibleNodes.filter(node => smallIsHighlighted(node, largeFacetHighlights, learningKeys, semanticKeys, smallCorpus?.okfVersion)).map(node => node.id));
     return Object.fromEntries(foldedSets.map(fold => [fold.id, { inScope: fold.members.filter(id => scope.has(id)).length, highlighted: fold.members.filter(id => scope.has(id) && selected.has(id)).length }]));
   }
 
@@ -1207,6 +1209,24 @@
         .filter(([, values]) => values.length)
     );
     largeFacetFilters = filters;
+  }
+
+  let bundleNavigationPath = $state('');
+  let bundleNavigation = $derived.by(() => {
+    const metadata = smallCorpus?.meta?.navigation;
+    if (!Array.isArray(metadata)) return [];
+    return metadata.filter((item): item is { path: string; body: string; concepts: string[] } =>
+      item && typeof item.path === 'string' && typeof item.body === 'string' &&
+      Array.isArray(item.concepts) && item.concepts.every((id: unknown) => typeof id === 'string')
+    );
+  });
+  let bundleNavigationDocument = $derived(bundleNavigation.find(document => document.path === bundleNavigationPath));
+
+  function smallConceptUrl(id: string): string {
+    const url = new URL(buildExplorerUrl(selectedId));
+    url.searchParams.delete(SMALL_INSPECT_RELATIONSHIP_PARAM);
+    url.searchParams.set(SMALL_INSPECT_NODE_PARAM, id);
+    return url.toString();
   }
 
   function syncExplorerUrl(push = false) {
@@ -1624,7 +1644,11 @@
       } else {
         const corpus = normalizeSmallBundle(raw);
         restoreExploration(new URLSearchParams(location.search));
-        source = { kind: 'small', url: resolvedUrl, title: smallBundleTitle(corpus), corpus };
+        const loadContextAssembly = localContextLoader(raw, resolvedUrl, location.origin);
+        source = {
+          kind: 'small', url: resolvedUrl, title: smallBundleTitle(corpus), corpus,
+          ...(loadContextAssembly ? { loadContextAssembly, loopbackContext: true } : {})
+        };
         const availableTypes = [...new Set(Object.values(corpus.nodes).map((node) => node.type || 'Node'))];
         const retrieval = parseRetrievalState(new URLSearchParams(location.search), ['type']);
         const requestedTypes = retrieval.filters.type || [];
@@ -8550,8 +8574,40 @@
             <section class="narrative-view">
               <article>
                 <h2>{smallCorpus.title}</h2>
+                {#if typeof smallCorpus.meta?.license === 'string' && smallCorpus.meta.license.trim()}
+                  {@const path = typeof smallCorpus.meta.license_asset === 'string' ? smallCorpus.meta.license_asset : ''}
+                  {@const download = path && bundleAssetDownload(smallCorpus.meta.assets, path)}
+                  <p>Bundle licence
+                    {#if download}
+                      <a href={download} download={path.split('/').at(-1)}>{smallCorpus.meta.license}</a>
+                    {:else}
+                      {smallCorpus.meta.license}
+                    {/if}
+                  </p>
+                {/if}
                 <p>{smallCorpus.description || 'This OKF bundle is shown as a reduced set of nodes and relationships. Search and node-type filters in the left panel change the context used by every view.'}</p>
               </article>
+              {#if bundleNavigation.length}
+                <section aria-label="Bundle index and history">
+                  <label>
+                    Bundle index and history
+                    <select bind:value={bundleNavigationPath}>
+                      <option value="">Choose a document</option>
+                      {#each bundleNavigation as document}
+                        <option value={document.path}>{document.path}</option>
+                      {/each}
+                    </select>
+                  </label>
+                  {#if bundleNavigationDocument}
+                    <div class="markdown-body">{@html renderSafeMarkdown(bundleNavigationDocument.body)}</div>
+                    {#each bundleNavigationDocument.concepts as id}
+                      {#if Object.hasOwn(smallCorpus.nodes, id)}
+                        <button type="button" onclick={() => inspectNode(id)}>{smallCorpus.nodes[id].title}</button>
+                      {/if}
+                    {/each}
+                  {/if}
+                </section>
+              {/if}
               <div class="metrics">
                 <article><strong>{visibleNodes.length.toLocaleString()}</strong><span>visible nodes</span></article>
                 <article><strong>{scopedRelationships.length.toLocaleString()}</strong><span>visible relationships</span></article>
@@ -9571,7 +9627,7 @@
             <pre>{jsonText(smallInspectedRelationship)}</pre>
           </details>
         {:else if detailNode}
-          <SmallRecordInspector {detailNode} {smallCorpus} {detailRelationships} sourceUrl={source?.kind === 'small' ? source.url : ''} {selectedFederationChild} outsideScope={!visibleNodeIds.has(detailNode.id)} {inspectNode} inspectRelationship={inspectSmallRelationship} {loadFederationChild} />
+          <SmallRecordInspector {detailNode} {smallCorpus} {detailRelationships} sourceUrl={source?.kind === 'small' ? source.url : ''} {selectedFederationChild} outsideScope={!visibleNodeIds.has(detailNode.id)} {inspectNode} conceptUrl={smallConceptUrl} inspectRelationship={inspectSmallRelationship} {loadFederationChild} />
         {:else}
           <h2>No selection</h2>
           <p>Select a node or search result to inspect its data.</p>

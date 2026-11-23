@@ -291,7 +291,7 @@ export type FetchJsonResourceOptions = {
   acceptedMediaTypes?: string[];
 };
 
-async function readResponseBytes(response: Response, url: string, maxBytes: number): Promise<Uint8Array> {
+export async function readResponseBytes(response: Response, url: string, maxBytes: number): Promise<Uint8Array> {
   const contentLength = response.headers.get('content-length');
   if (contentLength && Number(contentLength) > maxBytes) {
     throw new Error(`${url}: response too large (${Number(contentLength)} bytes, limit ${maxBytes})`);

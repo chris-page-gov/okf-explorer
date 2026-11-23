@@ -390,3 +390,34 @@ test('compact page tools return the UI context with complete cross-page provenan
   expect(JSON.parse(await page.getByRole('textbox', { name: 'Evidence package JSON' }).inputValue())).toEqual(receipt.reconstructed);
   expect(errors).toEqual([]);
 });
+
+
+test('authorised loopback context builds restricted evidence without registering page tools', async ({ page, baseURL }) => {
+  test.skip(!baseURL || new URL(baseURL).hostname !== '127.0.0.1', 'Requires a loopback Reader');
+  await installFixture(page);
+  const index = await studyClubContextFixture();
+  for (const record of index.records) record.access = 'restricted';
+  const raw = JSON.stringify(index);
+  const bundle = new URL('/local/okf-explorer.json', baseURL);
+  const reference = {
+    path: 'context.json', bytes: new TextEncoder().encode(raw).length,
+    sha256: await contextSha256(raw), compression: 'identity'
+  };
+  await page.route(bundle.href, route => route.fulfill({ json: {
+    okf_version: '0.3', snapshot: index.bundle.snapshot,
+    entrypoints: { context_assembly: reference },
+    nodes: { local: { title: 'Loopback fixture', type: 'Reference' } }
+  } }));
+  await page.route(new URL(reference.path, bundle).href, route => route.fulfill({
+    body: raw, contentType: 'application/json', headers: { 'X-OKF-Context-Audience': 'loopback' }
+  }));
+  await openAsk(page, bundle.href);
+  await page.getByLabel('Question', { exact: true }).fill('Reading circle');
+  await page.getByRole('button', { name: 'Build evidence package', exact: true }).click();
+  await expect(page.locator('.evidence-item').first()).toBeVisible();
+  await expect(page.getByText('Evidence assembly runs in this browser. Page tools are disabled for local context.')).toBeVisible();
+  expect(await page.evaluate(async () => {
+    const documentWithTools = document as Document & { modelContext: { getTools: () => Promise<unknown[]> } };
+    return (await documentWithTools.modelContext.getTools()).length;
+  })).toBe(0);
+});
