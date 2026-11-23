@@ -4,7 +4,7 @@
   "expected_identity": {
     "schema": "okf-explorer-bundle.v0",
     "id": "https://chris-page-gov.github.io/okf-explorer/id/bundle/ai-infrastructure-wiki",
-    "version": "0.8.1",
+    "version": "0.9.0",
     "snapshot": "sha256:b5e7b5323527b92b78f431866fbccc3ada2b942396ce9922f7de07abff53fd92"
   },
   "journeys": [

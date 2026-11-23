@@ -1,8 +1,17 @@
 # Using OKF 0.3 in Explorer
 
-The upstream project announced OKF 0.3 on **18 November 2026**. Its specification change had merged earlier, on **26 October 2026** at 23:30 UTC. This implementation uses the specification revision of 18 November. The first OKF+ 0.3 Reader implementation on this branch is dated **23 November 2026**. The released Explorer v0.8.2 reference bundle declares OKF 0.2. Producer migration acceptance and its public release date are pending. [Official release announcement](https://cloud.google.com/blog/products/data-analytics/introducing-okf-v0-3) · [Earlier specification merge](https://github.com/open-knowledge-format/open-knowledge-format/pull/1) · [Central standards register](okf-standards.md)
+The upstream project announced OKF 0.3 on **18 November 2026**. Its specification change had merged earlier, on **26 October 2026** at 23:30 UTC. This implementation uses the specification revision of 18 November. The first OKF+ 0.3 Reader implementation on this branch is dated **23 November 2026**. The released Explorer v0.8.2 reference bundle declares OKF 0.2. Explorer 0.9.0 is the formal OKF 0.3 implementation release candidate; exact-revision gates and public acceptance must pass before publication. Each producer retains separate migration and release acceptance. [Official release announcement](https://cloud.google.com/blog/products/data-analytics/introducing-okf-v0-3) · [Earlier specification merge](https://github.com/open-knowledge-format/open-knowledge-format/pull/1) · [Central standards register](okf-standards.md)
 
 ## Implementation and acceptance status
+
+The ONS 0.3.0 and AI Infrastructure 0.7.1 producer releases were published on
+23 November 2026 after their own source, full graph, Explorer, AI-access and
+public browser checks. Their release assets were downloaded and every archive
+member reverified. [ONS release](https://github.com/chris-page-gov/okf-ons/releases/tag/v0.3.0) · [AI Infrastructure release](https://github.com/chris-page-gov/okf-ai-infrastructure/releases/tag/v0.7.1).
+
+This is progress towards estate acceptance. Each remaining actual bundle needs
+its own source-linked visual walkthrough, qualified answer, negative controls
+and full consumer evidence before the programme can be declared complete.
 
 The Explorer Reader, ordinary-directory importer, version-aware metadata,
 central standards register, owner discovery, authoring kit and AI access

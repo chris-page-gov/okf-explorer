@@ -36,6 +36,9 @@ def load(root: Path = ROOT) -> dict:
         url_fields = ("home", "repository", "descriptor", "semantic_descriptor")
         if "producer_directory" in bundle:
             url_fields += ("producer_directory",)
+        for optional_link in ("walkthrough", "release"):
+            if optional_link in bundle:
+                url_fields += (optional_link,)
         for key in url_fields:
             value = bundle[key]
             parsed = urlsplit(value)
@@ -105,6 +108,10 @@ def render(directory: dict) -> dict[Path, str]:
                       f"[Semantic descriptor]({b['semantic_descriptor']}) · [Source repository]({b['repository']})", ""])
         if b.get("producer_directory"):
             lines.extend([f"[Producer access directory]({b['producer_directory']})", ""])
+        for key, label in (("walkthrough", "Source-linked question walkthrough"),
+                           ("release", "Verified producer release")):
+            if b.get(key):
+                lines.extend([f"[{label}]({b[key]})", ""])
         if b.get("verification") and b.get("observed_on"):
             observed = date.fromisoformat(b["observed_on"]).strftime("%-d %B %Y")
             lines.extend([f"Checked on {observed}. {b['verification']}", ""])
@@ -140,14 +147,17 @@ def render(directory: dict) -> dict[Path, str]:
                   "Private repositories and local folders are outside this public directory.", ""])
     llms = ["# Public OKF bundles", "",
             "> Public research bundles with source, scope, rights and provenance.", "",
-            "Producer routes are HTTP-checked, browser-unverified and not Voice-tested.", "",
+            "Verification varies by bundle; read each entry's dated record. Voice access is not tested.", "",
             "## Start here", "",
             "- [Access directory](https://chris-page-gov.github.io/okf-explorer/okf-public-access.json): Exact descriptors, pinned GitHub fallbacks and access limits.",
             "- [Human guide](https://chris-page-gov.github.io/okf-explorer/docs/public-bundle-access.html): Read order, semantic entrypoints and a Voice prompt.",
             "- [Admitted Reader bundles](https://chris-page-gov.github.io/okf-explorer/okf-registry.json): Separate curated bundle registry.", "",
             f"- [Public owner candidate catalogue](https://chris-page-gov.github.io/okf-explorer/{directory['owner_catalogue']['path']}): Pinned repository trees and discovery coverage.", "",
             "## Descriptors", ""]
-    llms.extend(f"- [{b['title']}]({b['descriptor']}): {b['access_note']}" for b in directory["bundles"])
+    for b in directory["bundles"]:
+        llms.append(f"- [{b['title']}]({b['descriptor']}): {b['access_note']}")
+        if b.get("walkthrough"):
+            llms.append(f"- [{b['title']} source-linked walkthrough]({b['walkthrough']}): Question, qualified answer, evidence and negative controls.")
     llms.extend(["", "## Pinned graphs", ""])
     for b in directory["bundles"]:
         if graph := b.get("agent_graph"):

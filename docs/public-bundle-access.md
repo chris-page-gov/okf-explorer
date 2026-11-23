@@ -25,10 +25,10 @@ conversation has been tested for this directory.
 
 | Collection | Website | Descriptor | Exact GitHub fallback |
 | --- | --- | --- | --- |
-| AI Infrastructure | [Website](https://chris-page-gov.github.io/okf-ai-infrastructure/) | [Read descriptor](https://chris-page-gov.github.io/okf-ai-infrastructure/okf-bundle.json) | [Pinned raw descriptor](https://raw.githubusercontent.com/chris-page-gov/okf-ai-infrastructure/39c82b51cb1dd824ab8208b56b247ae3cc1d7dd5/bundle/okf-bundle.json) |
+| AI Infrastructure | [Website](https://chris-page-gov.github.io/okf-ai-infrastructure/) | [Read descriptor](https://chris-page-gov.github.io/okf-ai-infrastructure/okf-bundle.json) | [Pinned raw descriptor](https://raw.githubusercontent.com/chris-page-gov/okf-ai-infrastructure/f9fa29a8bf87874dfabb88da98cdecfb21991b97/bundle/okf-bundle.json) |
 | DWP combined guidance and learning | [Website](https://chris-page-gov.github.io/okf-dwp/) | [Read descriptor](https://raw.githubusercontent.com/chris-page-gov/okf-dwp/3d45b47763c204b1264b5d1d7897d583361f25bd/combined/okf-explorer.json) | Descriptor uses GitHub |
 | Explore Local Statistics API | [Website](https://chris-page-gov.github.io/okf-els-api/) | [Read descriptor](https://chris-page-gov.github.io/okf-els-api/okf-explorer.json) | [Pinned raw descriptor](https://raw.githubusercontent.com/chris-page-gov/okf-els-api/811a688183b0cd150a2fd9ccf3d414d48c112da6/bundle/okf-explorer.json) |
-| OKF Explorer reference corpus | [Website](https://chris-page-gov.github.io/okf-explorer/) | [Read descriptor](https://chris-page-gov.github.io/okf-explorer/okf-bundle.json) | [Pinned raw descriptor](https://raw.githubusercontent.com/chris-page-gov/okf-explorer/5755359efd54b14a356dbff67d6082db1b195a91/okf-bundle.json) |
+| OKF Explorer reference corpus | [Website](https://chris-page-gov.github.io/okf-explorer/) | [Read descriptor](https://chris-page-gov.github.io/okf-explorer/okf-bundle.json) | See access limit below |
 | GOV.UK content | [Website](https://chris-page-gov.github.io/okf-govuk-content/) | [Read descriptor](https://chris-page-gov.github.io/okf-govuk-content/okf-explorer.json) | [Pinned raw descriptor](https://raw.githubusercontent.com/chris-page-gov/okf-govuk-content/ef5575d2dccdab7999fc8fdc3cbdd2e47b4f6247/bundle/okf-explorer.json) |
 | Coventry and Warwickshire heritage | [Website](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/) | [Read descriptor](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/okf-explorer.json) | [Pinned raw descriptor](https://raw.githubusercontent.com/chris-page-gov/okf-heritage-coventry-warwickshire/2c5c73ac5c54e71a73b4fd3556470bbd9ab9359e/site/okf-explorer.json) |
 | Hansard parliamentary proceedings | [Website](https://chris-page-gov.github.io/okf-hansard/) | [Read descriptor](https://chris-page-gov.github.io/okf-hansard/graph/okf-explorer.json) | [Pinned raw descriptor](https://raw.githubusercontent.com/chris-page-gov/okf-hansard/89ff017bab2a37df222e58ef6da94a32688144f3/graph/okf-explorer.json) |
@@ -43,9 +43,15 @@ conversation has been tested for this directory.
 
 ### AI Infrastructure
 
-Small reference bundle. Preserve the distinction between authored research, derived references and external authority.
+Research bundle with 142 typed core concepts and 13 navigation records. Its own federated retrieval question has a qualified answer, seven source documents and two negative graph controls. Preserve the distinction between authored research, derived references and external authority.
 
 [Semantic descriptor](https://chris-page-gov.github.io/okf-ai-infrastructure/okf-bundle.yamlld) · [Source repository](https://github.com/chris-page-gov/okf-ai-infrastructure)
+
+[Source-linked question walkthrough](https://chris-page-gov.github.io/okf-ai-infrastructure/walkthrough.html)
+
+[Verified producer release](https://github.com/chris-page-gov/okf-ai-infrastructure/releases/tag/v0.7.1)
+
+Checked on 23 November 2026. Exact 0.7.1 main revision f9fa29a8bf87874dfabb88da98cdecfb21991b97 passed protected CI, eight native Reader journeys under patched Node 26.13.1, complete source and 579-assertion graph checks, and 169-file public retrieval. Its own desktop/mobile walkthrough, explicit producer bundle, real graph click and source link passed in Chrome. All release assets and 169 archive members were downloaded and reverified.
 
 ### DWP combined guidance and learning
 
@@ -61,7 +67,7 @@ Bounded source-reviewed draft describing an internal/private upstream API. Readi
 
 ### OKF Explorer reference corpus
 
-The Explorer reference corpus is a separate small bundle. The Reader application and curated registry also link to independently published producers.
+Explorer 0.9.0 reference bundle: 151 typed core concepts and 14 navigation records. Its own council tool-access walkthrough distinguishes graph references from permission and assurance. The separately pinned agent graph below is the frozen OKF 0.2 baseline for the historical worked example; it is not the current 0.3 descriptor.
 
 [Semantic descriptor](https://chris-page-gov.github.io/okf-explorer/okf-bundle.yamlld) · [Source repository](https://github.com/chris-page-gov/okf-explorer)
 
@@ -100,9 +106,15 @@ Metadata-only published v0.3.0; the separate local candidate and release authori
 
 ### ONS data discovery
 
-The bundle is generated in CI and served on Pages. No equivalent checked-in raw GitHub bundle was found; use Pages for the bundle and GitHub for its build sources.
+Frozen metadata-only demonstrator: 12 typed core concepts and 5,097 metadata extension records with 19,735 reconciled assertions. The source snapshot remains monday-2026-07-17-r2. Its own population-by-age walkthrough distinguishes age grain, geography, quality evidence and a non-executing live-query plan. The generated bundle is served on Pages; no equivalent checked-in raw descriptor is claimed.
 
 [Semantic descriptor](https://chris-page-gov.github.io/okf-ons/okf-bundle.yamlld) · [Source repository](https://github.com/chris-page-gov/okf-ons)
+
+[Source-linked question walkthrough](https://chris-page-gov.github.io/okf-ons/walkthrough.html)
+
+[Verified producer release](https://github.com/chris-page-gov/okf-ons/releases/tag/v0.3.0)
+
+Checked on 23 November 2026. Exact 0.3.0 main revision fbb0119e84525f18ac3e8b5b267da7b7e4773c46 passed protected CI, five native Reader journeys and full source/graph validation. Public core/metadata journeys, full record access, negative controls, mobile layout and walkthrough accessibility passed. All 2,075 served files match the build. The non-served .nojekyll deployment control is included in the 2,076-file archive; all release assets and archive members were downloaded and reverified.
 
 ### UK planning and housing data
 

@@ -1,5 +1,24 @@
 # Changelog
 
+## v0.9.0 - 2026-11-23 - OKF 0.3
+
+- Prepare the formal Explorer implementation release for OKF 0.3. Regenerate
+  the reference bundle and legacy viewer from the authoritative Markdown and
+  versioned package metadata. The upstream announcement date is 18 November
+  2026; the OKF+ implementation date is 23 November 2026.
+- Let pointer clicks reach graph nodes beneath another label's transparent
+  padding. Keep visible labels and keyboard activation usable. Add a real
+  Chrome regression reproducing the observed Hansard collision.
+- Bound the full browser CI job to 45 minutes and its three-engine assurance
+  step to 35 minutes, retaining the complete suite and fail-closed gate.
+- Update the public directory with the verified ONS 0.3.0 and AI Infrastructure
+  0.7.1 descriptors, dated acceptance records, releases and per-bundle visual
+  walkthroughs. Keep historical graph pins explicit and remove the reference
+  bundle's obsolete equivalent-descriptor claim.
+- Keep the frozen OKF 0.2 baseline and every producer's acceptance separate.
+  Each actual bundle requires its own source-linked visual walkthrough,
+  qualified answer, negative controls and complete consumer evidence.
+
 ## Unreleased — native bundle source links
 
 - Resolve Markdown body links in native JSON bundles from the concept's actual

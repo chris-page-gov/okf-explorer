@@ -47,23 +47,27 @@ class ReleaseMetadataTest(unittest.TestCase):
         ):
             self.assertIn(suite, checks)
 
-    def test_v081_release_metadata_is_synchronised(self) -> None:
+    def test_v090_release_metadata_is_synchronised(self) -> None:
         package_version = json.loads(PACKAGE.read_text(encoding="utf-8"))["version"]
         citation = CITATION.read_text(encoding="utf-8")
         changelog = CHANGELOG.read_text(encoding="utf-8")
 
-        self.assertEqual("0.8.1", package_version)
+        self.assertEqual("0.9.0", package_version)
         self.assertEqual(
             [package_version, package_version],
             re.findall(r"^\s*version:\s*\"([^\"]+)\"\s*$", citation, re.MULTILINE),
         )
         self.assertEqual(
-            ["2026-11-03", "2026-11-03"],
+            ["2026-11-23", "2026-11-23"],
             re.findall(
                 r"^\s*date-released:\s*\"([^\"]+)\"\s*$",
                 citation,
                 re.MULTILINE,
             ),
+        )
+        self.assertRegex(
+            changelog,
+            r"(?m)^## v0\.9\.0 - 2026-11-23 - \S",
         )
         self.assertRegex(
             changelog,
