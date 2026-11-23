@@ -40,11 +40,15 @@ class PublicBundleAccessTests(unittest.TestCase):
 
     def test_directory_preserves_known_access_boundaries(self):
         rows = {b["repository"].rsplit("/", 1)[-1]: b for b in access.load()["bundles"]}
-        self.assertEqual(len(rows), 12)
+        self.assertEqual(len(rows), 13)
         self.assertNotIn("equivalent_raw_descriptor", rows["okf-ons"])
         self.assertNotIn("equivalent_raw_descriptor", rows["okf-uk-living"])
         self.assertIn("/combined/okf-explorer.json", rows["okf-dwp"]["descriptor"])
         self.assertIn("generated/semantic/", rows["okf-uk-living"]["semantic_descriptor"])
+        hansard = rows["okf-hansard"]
+        self.assertEqual(hansard["declared_okf_version"], "0.3")
+        self.assertEqual(hansard["raw_descriptor_sha256"], hansard["descriptor_sha256"])
+        self.assertTrue(hansard["producer_directory"].endswith("/okf-hansard/okf-public-access.json"))
 
     def test_served_discovery_has_the_same_directory(self):
         outputs = access.render(access.load())
