@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased — application framework maintenance
+
+- Update SvelteKit to 3.4.0, Svelte to 5.58.0 and Vite to 8.3.8. Regenerate
+  the dependency inventory and validate the resulting static application,
+  retaining the reviewed plugin patch, security overrides and browser gates.
+
 ## Unreleased — repository conventions and complete discovery
 
 - Record reviewed producer sources such as Hansard when generated releases are stored outside Git, with a pinned source reference and a public-visibility check.

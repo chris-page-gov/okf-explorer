@@ -174,6 +174,10 @@ Vitest and coverage versions. Regenerate the dependency inventory after a
 reviewed lockfile change; do not disable frozen installation or the checks to
 make an update pass.
 
+The 23 November 2026 maintenance candidate uses SvelteKit 3.4.0, Svelte 5.58.0
+and Vite 8.3.8. Its regenerated inventory and application build need fresh
+acceptance evidence; earlier framework receipts retain their historical scope.
+
 When `apps/okf-explorer/build/` exists,
 `uv run --locked python scripts/build_site.py` copies it to `_site/explore/`. The
 root `index.html` is the learning hub; bundle-bearing root URLs redirect to `explore/` and preserve query-string and hash
