@@ -197,13 +197,23 @@ def normalize_verified(metadata: dict[str, Any]) -> list[dict[str, Any]]:
     return []
 
 
-def trust_tier(metadata: dict[str, Any]) -> str:
-    """Derive the normative OKF v0.2 trust tier."""
+def trust_tier(metadata: dict[str, Any], *, core_version: str = "0.2") -> str:
+    """Retain v0.2 behaviour and apply v0.3 verification currency explicitly."""
+    actor = _valid_actor_v03 if core_version == "0.3" else _valid_actor
+    valid_time = (lambda value: _v03_instant(value) is not None) if core_version == "0.3" else _valid_datetime
     events = [
         event
         for event in normalize_verified(metadata)
-        if _valid_actor(event.get("by")) and _valid_datetime(event.get("at"))
+        if actor(event.get("by")) and valid_time(event.get("at"))
     ]
+    if core_version == "0.3":
+        generated = metadata.get("generated")
+        changed = generated.get("at") if isinstance(generated, dict) else None
+        if changed is not None:
+            changed_at = _v03_instant(changed)
+            if changed_at is None:
+                return "unverified"
+            events = [event for event in events if _v03_instant(event["at"]) >= changed_at]
     if not events:
         return "unverified"
     return "human-reviewed" if any(str(event.get("by") or "").startswith("human:") for event in events) else "machine-confirmed"
@@ -266,6 +276,27 @@ def _valid_actor(value: Any) -> bool:
     )
 
 
+def _valid_actor_v03(value: Any) -> bool:
+    return isinstance(value, str) and bool(
+        re.fullmatch(r"[a-zA-Z][a-zA-Z0-9+.-]*:[^\s]+", value)
+        or re.fullmatch(r"[^/\s:]+/[^/\s]+", value)
+    )
+
+
+def _v03_instant(value: Any) -> tuple[int, str] | None:
+    """Compare offset timestamps without losing sub-microsecond precision."""
+    if not isinstance(value, str):
+        return None
+    match = re.fullmatch(r"(\d{4}-\d{2}-\d{2}[Tt]\d{2}:\d{2}:\d{2})(?:\.(\d+))?([Zz]|[+-]\d{2}:\d{2})", value)
+    if not match:
+        return None
+    try:
+        moment = datetime.fromisoformat(match[1].upper() + match[3].upper().replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    return int(moment.timestamp()), (match[2] or "").rstrip("0")
+
+
 def _validate_usage_window(value: Any, prefix: str) -> list[str]:
     if not isinstance(value, dict):
         return [f"{prefix} must be a mapping"]
@@ -279,9 +310,11 @@ def _validate_usage_window(value: Any, prefix: str) -> list[str]:
     return errors
 
 
-def validate_v02_concept(metadata: dict[str, Any], body: str) -> list[str]:
+def validate_v02_concept(metadata: dict[str, Any], body: str, *, core_version: str = "0.2") -> list[str]:
     """Validate producer-side v0.2 families without rejecting extensions."""
     errors: list[str] = []
+    valid_actor = _valid_actor_v03 if core_version == "0.3" else _valid_actor
+    valid_time = (lambda value: _v03_instant(value) is not None) if core_version == "0.3" else _valid_datetime
     if not str(metadata.get("type") or "").strip():
         errors.append("missing required frontmatter field type")
 
@@ -292,9 +325,9 @@ def validate_v02_concept(metadata: dict[str, Any], body: str) -> list[str]:
         else:
             if not str(generated.get("by") or "").strip():
                 errors.append("generated.by is required when generated is present")
-            elif not _valid_actor(generated["by"]):
+            elif not valid_actor(generated["by"]):
                 errors.append("generated.by must use the OKF actor convention")
-            if generated.get("at") and not _valid_datetime(generated["at"]):
+            if generated.get("at") and not valid_time(generated["at"]):
                 errors.append("generated.at must be an ISO 8601 datetime")
 
     verified = metadata.get("verified")
@@ -306,9 +339,9 @@ def validate_v02_concept(metadata: dict[str, Any], body: str) -> list[str]:
         for index, event in enumerate(normalize_verified(metadata)):
             if not str(event.get("by") or "").strip():
                 errors.append(f"verified[{index}].by is required")
-            elif not _valid_actor(event["by"]):
+            elif not valid_actor(event["by"]):
                 errors.append(f"verified[{index}].by must use the OKF actor convention")
-            if not _valid_datetime(event.get("at")):
+            if not valid_time(event.get("at")):
                 errors.append(f"verified[{index}].at must be an ISO 8601 datetime")
 
     sources = metadata.get("sources")
@@ -322,7 +355,7 @@ def validate_v02_concept(metadata: dict[str, Any], body: str) -> list[str]:
                     continue
                 if not str(source.get("resource") or "").strip():
                     errors.append(f"sources[{index}].resource is required")
-                if source.get("author") and not _valid_actor(source["author"]):
+                if source.get("author") and not valid_actor(source["author"]):
                     errors.append(f"sources[{index}].author must use the OKF actor convention")
                 usage_count = source.get("usage_count")
                 if usage_count is not None and (

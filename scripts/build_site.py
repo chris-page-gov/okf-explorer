@@ -150,6 +150,7 @@ PUBLIC_ROOT_FILES = [
     "CITATION.cff",
 ]
 PUBLIC_DIRS = [
+    "reference-bundle",
     "document",
     "federated",
     "frameworks",

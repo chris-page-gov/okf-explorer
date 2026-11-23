@@ -1,0 +1,326 @@
+{
+  "schema": "okf-explorer-journeys.v1",
+  "bundle_descriptor": "okf-bundle.json",
+  "expected_identity": {
+    "schema": "okf-explorer-bundle.v0",
+    "id": "https://chris-page-gov.github.io/okf-explorer/id/bundle/ai-infrastructure-wiki",
+    "version": "0.8.1",
+    "snapshot": "sha256:b5e7b5323527b92b78f431866fbccc3ada2b942396ce9922f7de07abff53fd92"
+  },
+  "journeys": [
+    {
+      "id": "source-trail-1-1",
+      "actions": [
+        {
+          "type": "goto",
+          "hash": "#standards/mcp.md",
+          "params": {
+            "view": "graph"
+          }
+        },
+        {
+          "type": "wait_for",
+          "selector": "svg.graph [data-route=\"glossary/consent.md\"] circle"
+        },
+        {
+          "type": "click",
+          "selector": "svg.graph [data-route=\"glossary/consent.md\"] circle"
+        },
+        {
+          "type": "wait_for",
+          "selector": ".right-panel h2:text-is(\"Consent\")"
+        }
+      ],
+      "assertions": [
+        {
+          "type": "text",
+          "selector": ".right-panel",
+          "includes": "Consent"
+        },
+        {
+          "type": "console_clean"
+        }
+      ]
+    },
+    {
+      "id": "source-trail-1-2",
+      "actions": [
+        {
+          "type": "goto",
+          "hash": "#glossary/consent.md",
+          "params": {
+            "view": "graph"
+          }
+        },
+        {
+          "type": "wait_for",
+          "selector": "svg.graph [data-route=\"stack/observability-and-provenance.md\"] circle"
+        },
+        {
+          "type": "click",
+          "selector": "svg.graph [data-route=\"stack/observability-and-provenance.md\"] circle"
+        },
+        {
+          "type": "wait_for",
+          "selector": ".right-panel h2:text-is(\"Observability and provenance\")"
+        }
+      ],
+      "assertions": [
+        {
+          "type": "text",
+          "selector": ".right-panel",
+          "includes": "Observability and provenance"
+        },
+        {
+          "type": "console_clean"
+        }
+      ]
+    },
+    {
+      "id": "source-trail-1-3",
+      "actions": [
+        {
+          "type": "goto",
+          "hash": "#stack/observability-and-provenance.md",
+          "params": {
+            "view": "graph"
+          }
+        },
+        {
+          "type": "wait_for",
+          "selector": "svg.graph [data-route=\"standards/w3c-prov.md\"] circle"
+        },
+        {
+          "type": "click",
+          "selector": "svg.graph [data-route=\"standards/w3c-prov.md\"] circle"
+        },
+        {
+          "type": "wait_for",
+          "selector": ".right-panel h2:text-is(\"W3C PROV\")"
+        }
+      ],
+      "assertions": [
+        {
+          "type": "text",
+          "selector": ".right-panel",
+          "includes": "W3C PROV"
+        },
+        {
+          "type": "console_clean"
+        }
+      ]
+    },
+    {
+      "id": "source-trail-2-1",
+      "actions": [
+        {
+          "type": "goto",
+          "hash": "#frameworks/context-hub.md",
+          "params": {
+            "view": "graph"
+          }
+        },
+        {
+          "type": "wait_for",
+          "selector": "svg.graph [data-route=\"standards/a2a.md\"] circle"
+        },
+        {
+          "type": "click",
+          "selector": "svg.graph [data-route=\"standards/a2a.md\"] circle"
+        },
+        {
+          "type": "wait_for",
+          "selector": ".right-panel h2:text-is(\"Agent2Agent (A2A)\")"
+        }
+      ],
+      "assertions": [
+        {
+          "type": "text",
+          "selector": ".right-panel",
+          "includes": "Agent2Agent (A2A)"
+        },
+        {
+          "type": "console_clean"
+        }
+      ]
+    },
+    {
+      "id": "source-trail-2-2",
+      "actions": [
+        {
+          "type": "goto",
+          "hash": "#standards/a2a.md",
+          "params": {
+            "view": "graph"
+          }
+        },
+        {
+          "type": "wait_for",
+          "selector": "svg.graph [data-route=\"glossary/agent-card.md\"] circle"
+        },
+        {
+          "type": "click",
+          "selector": "svg.graph [data-route=\"glossary/agent-card.md\"] circle"
+        },
+        {
+          "type": "wait_for",
+          "selector": ".right-panel h2:text-is(\"Agent Card\")"
+        }
+      ],
+      "assertions": [
+        {
+          "type": "text",
+          "selector": ".right-panel",
+          "includes": "Agent Card"
+        },
+        {
+          "type": "console_clean"
+        }
+      ]
+    },
+    {
+      "id": "source-trail-2-3",
+      "actions": [
+        {
+          "type": "goto",
+          "hash": "#glossary/agent-card.md",
+          "params": {
+            "view": "graph"
+          }
+        },
+        {
+          "type": "wait_for",
+          "selector": "svg.graph [data-route=\"glossary/tool-discovery.md\"] circle"
+        },
+        {
+          "type": "click",
+          "selector": "svg.graph [data-route=\"glossary/tool-discovery.md\"] circle"
+        },
+        {
+          "type": "wait_for",
+          "selector": ".right-panel h2:text-is(\"Tool discovery\")"
+        }
+      ],
+      "assertions": [
+        {
+          "type": "text",
+          "selector": ".right-panel",
+          "includes": "Tool discovery"
+        },
+        {
+          "type": "console_clean"
+        }
+      ]
+    },
+    {
+      "id": "search-frameworks-context-hub",
+      "actions": [
+        {
+          "type": "goto",
+          "hash": "#standards/mcp.md"
+        },
+        {
+          "type": "wait_for",
+          "selector": ".right-panel h2:text-is(\"Model Context Protocol (MCP)\")"
+        },
+        {
+          "type": "fill",
+          "selector": ".left-panel .search-input",
+          "value": "Context Hub"
+        },
+        {
+          "type": "click",
+          "selector": "[role=\"tab\"]:text-is(\"Results\")"
+        },
+        {
+          "type": "click",
+          "selector": ".result-open:has(h2:text-is(\"Context Hub\"))"
+        }
+      ],
+      "assertions": [
+        {
+          "type": "text",
+          "selector": ".right-panel",
+          "includes": "Context Hub"
+        },
+        {
+          "type": "console_clean"
+        }
+      ]
+    },
+    {
+      "id": "search-uk-government-ncsc-secure-ai",
+      "actions": [
+        {
+          "type": "goto",
+          "hash": "#standards/mcp.md"
+        },
+        {
+          "type": "wait_for",
+          "selector": ".right-panel h2:text-is(\"Model Context Protocol (MCP)\")"
+        },
+        {
+          "type": "fill",
+          "selector": ".left-panel .search-input",
+          "value": "NCSC"
+        },
+        {
+          "type": "click",
+          "selector": "[role=\"tab\"]:text-is(\"Results\")"
+        },
+        {
+          "type": "click",
+          "selector": ".result-open:has(h2:text-is(\"NCSC Guidelines for secure AI system development\"))"
+        }
+      ],
+      "assertions": [
+        {
+          "type": "text",
+          "selector": ".right-panel",
+          "includes": "NCSC Guidelines for secure AI system development"
+        },
+        {
+          "type": "console_clean"
+        }
+      ]
+    },
+    {
+      "id": "inspect-mcp-frontmatter",
+      "actions": [
+        {
+          "type": "goto",
+          "hash": "#standards/mcp.md"
+        },
+        {
+          "type": "click",
+          "selector": ".right-panel [role=\"tab\"]:text-is(\"Data\")"
+        },
+        {
+          "type": "click",
+          "selector": ".json-panel summary:text-is(\"Node JSON and provenance\")"
+        }
+      ],
+      "assertions": [
+        {
+          "type": "text",
+          "selector": ".json-panel",
+          "includes": "\"frontmatter\""
+        },
+        {
+          "type": "text",
+          "selector": ".json-panel",
+          "includes": "\"generated\""
+        },
+        {
+          "type": "attribute",
+          "selector": ".right-panel [data-trust-tier]",
+          "name": "data-trust-tier",
+          "equals": "unverified"
+        },
+        {
+          "type": "console_clean"
+        }
+      ]
+    }
+  ]
+}

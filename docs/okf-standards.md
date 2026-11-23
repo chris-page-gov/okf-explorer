@@ -32,6 +32,13 @@ merge date.
 
 ## Local semantic profile
 
+[Bundle Wiki v2](../profiles/bundle-wiki/v2/) targets core 0.3 and retains
+the frozen v1 schema/context bytes as structural dependencies. New
+[authoring v2 handoffs](../profiles/authoring/v2/) and the repository bootstrap
+target core 0.3. Historical v1 authoring handoffs continue to target core 0.2.
+Each producer must pass its declared source, graph, Explorer, AI access and
+release gates; these profile references do not certify adoption.
+
 The Explorer's [Bundle Wiki profile v1](../profiles/bundle-wiki/v1/) is a
 separately versioned local semantic profile. It remains frozen and targets
 OKF core 0.2. The profile version, repository publication lifecycle and core

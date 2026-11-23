@@ -148,15 +148,19 @@ def reserved_metadata(path_id: str, metadata: dict[str, Any], body: str) -> dict
 
 
 def validate_v02_core(path_id: str, metadata: dict[str, Any], body: str) -> list[str]:
+    return validate_core(path_id, metadata, body, version="0.2")
+
+
+def validate_core(path_id: str, metadata: dict[str, Any], body: str, *, version: str) -> list[str]:
     path = Path(path_id)
     errors: list[str] = []
     if path.name == "index.md":
         allowed = {"okf_version"} if path_id == "index.md" else set()
-        unexpected = sorted(set(metadata) - allowed)
+        unexpected = sorted(set(metadata) - allowed) if version == "0.2" or path_id != "index.md" else []
         if unexpected:
             errors.append(f"reserved index frontmatter contains unsupported keys: {', '.join(unexpected)}")
-        if path_id == "index.md" and metadata.get("okf_version") != "0.2":
-            errors.append('bundle-root index.md must declare okf_version: "0.2" for this exemplar')
+        if path_id == "index.md" and metadata.get("okf_version") != version:
+            errors.append(f'bundle-root index.md must declare okf_version: "{version}"')
         if not re.search(r"^#\s+\S", body, re.MULTILINE):
             errors.append("reserved index must contain a top-level heading")
         return errors
@@ -170,7 +174,7 @@ def validate_v02_core(path_id: str, metadata: dict[str, Any], body: str) -> list
         if headings != sorted(headings, reverse=True):
             errors.append("log date headings must be newest first")
         return errors
-    return okf_semantic.validate_v02_concept(metadata, body)
+    return okf_semantic.validate_v02_concept(metadata, body, core_version=version)
 
 
 def section_for(path_id: str) -> str:
@@ -322,17 +326,21 @@ def build_graph() -> tuple[dict[str, object], list[str]]:
     nodes: dict[str, dict[str, Any]] = {}
     errors: list[str] = []
     parsed: dict[str, tuple[dict[str, Any], str]] = {}
+    root_metadata, _ = parse_frontmatter(ROOT / "index.md")
+    version = str(root_metadata.get("okf_version") or "")
+    if version not in {"0.2", "0.3"}:
+        return {"nodes": {}, "edges": []}, ["Unsupported declared OKF core version"]
 
     for path in iter_okf_markdown():
         path_id = rel(path)
         try:
             meta, body = parse_frontmatter(path)
         except ValueError as exc:
-            errors.append(f"OKF v0.2 core: {exc}")
+            errors.append(f"OKF v{version} source: {exc}")
             continue
         parsed[path_id] = (meta, body)
-        core_errors = validate_v02_core(path_id, meta, body)
-        errors.extend(f"{path_id}: OKF v0.2 core: {error}" for error in core_errors)
+        core_errors = validate_core(path_id, meta, body, version=version)
+        errors.extend(f"{path_id}: OKF v{version} source/profile: {error}" for error in core_errors)
         display_meta = reserved_metadata(path_id, meta, body)
         if path.name not in {"index.md", "log.md"}:
             for field in PROFILE_REQUIRED_FIELDS:
@@ -343,6 +351,8 @@ def build_graph() -> tuple[dict[str, object], list[str]]:
         effective_timestamp = okf_semantic.generated_at(display_meta)
         nodes[path_id] = {
             **display_meta,
+            "frontmatter": meta,
+            "core_role": "navigation" if path.name in {"index.md", "log.md"} else "concept",
             "type": display_meta.get("type", ""),
             "title": display_meta.get("title", path_id),
             "description": display_meta.get("description", ""),
@@ -353,7 +363,7 @@ def build_graph() -> tuple[dict[str, object], list[str]]:
             "aliases": display_meta.get("aliases", []),
             "section": section_for(path_id),
             "body": body,
-            "trust_tier": okf_semantic.trust_tier(display_meta),
+            "trust_tier": okf_semantic.trust_tier(display_meta, core_version=version),
             "stale": okf_semantic.is_stale(display_meta),
         }
 

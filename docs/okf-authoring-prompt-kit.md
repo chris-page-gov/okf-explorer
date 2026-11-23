@@ -1,4 +1,12 @@
-# OKF Foundry Prompt Kit
+# OKF Foundry prompt kit
+
+New producers use the v2 handoff for core OKF 0.3. Historical
+[v1/core 0.2 handoffs](../profiles/authoring/v1/) remain valid under their own
+schema. The checker dispatches by declared handoff version. Follow the
+[per-bundle acceptance contract](okf-0.3-estate-acceptance.md) and provide a
+separate source-linked visual question, worked answer and consumer evidence
+for every actual bundle. Neither a scaffold nor a catalogue entry proves
+source, consumer or release acceptance.
 
 For a personal first experiment, use [the complete small starter](onboarding/first-bundle.md). This prompt kit is the governed production route; its profiles and release gates remain required when applicable.
 
@@ -9,14 +17,14 @@ method developed across legislation, ONS data discovery, GOV.UK content,
 government APIs, CKAN and the OKF Explorer without transferring their domain
 assumptions or their very large working transcripts.
 
-## Use Two Prompts, Not One Giant Prompt
+## Use the two-stage prompt workflow
 
 1. [Compile the domain profile](prompts/okf-domain-warm-up.md). This read-only
    warm-up researches the collection, people/tasks, terminology, authority,
    rights, identifiers, versions, relationships, applicable standards and the
    actual software consumers that must read or publish the result.
 2. Review any genuinely blocking owner decisions and approve the checksummed
-   `okf-domain-profile.v1` handoff plus its pinned consumer lock and explicit
+   `okf-domain-profile.v2` handoff plus its pinned consumer lock and explicit
    dependency/impact graph.
 3. [Build, validate and publish](prompts/okf-bundle-build.md). The builder
    consumes that exact handoff, implements the smallest justified bundle and,
@@ -41,9 +49,9 @@ conventions](repository-conventions.md), verify the initial default branch and
 commit after an authorised push, and repeat discovery with index inspection.
 
 The handoff is validated by the
-[`okf-domain-profile.v1` schema](../profiles/authoring/v1/domain-profile.schema.json).
+[`okf-domain-profile.v2` schema](../profiles/authoring/v2/domain-profile.schema.json).
 Start from the complete
-[YAML template](../profiles/authoring/v1/domain-profile.template.yaml).
+[YAML template](../profiles/authoring/v2/domain-profile.template.yaml).
 
 ```mermaid
 flowchart LR
@@ -65,7 +73,7 @@ flowchart LR
 The profile—not the chat history—is the durable interface between research and
 implementation.
 
-## Use This With Any Capable AI
+## Use this with a capable AI
 
 The workflow is product-neutral. Use an AI that can inspect the supplied
 collection and create the required files. The build stage additionally needs
@@ -109,14 +117,14 @@ must not claim that it built, tested or published a bundle.
     descriptive title and publish a crosswalk. Never report a bare `G5` or
     similar identifier when two catalogues are in scope.
 
-## Success Checklist
+## Success checklist
 
 Do not accept completion until all applicable statements are true:
 
 - every run input was filled deliberately and no secret was copied into the
   prompt, repository or logs;
 - the domain profile validates against
-  [`okf-domain-profile.v1`](../profiles/authoring/v1/domain-profile.schema.json),
+  [`okf-domain-profile.v2`](../profiles/authoring/v2/domain-profile.schema.json),
   its JSON and YAML forms are equivalent, and its evidence references resolve;
 - the approved profile, evidence and input inventory have recorded SHA-256
   identities;
@@ -158,11 +166,11 @@ Do not accept completion until all applicable statements are true:
 - the published release candidate has the same recorded bytes and digests as
   the candidate that passed assurance.
 
-## What Is Fixed And What Is Researched
+## What is fixed and what is researched
 
 The portable core is fixed:
 
-- OKF 0.2 Markdown;
+- OKF 0.3 Markdown;
 - stable source-native identity;
 - provenance and clear derivation;
 - scope/coverage and any completeness denominator;
@@ -194,12 +202,12 @@ Every standard is classified:
 | Reference-only | Inform design but create no production assertion. |
 | Not applicable | Record why it was assessed and excluded. |
 
-## Choose The Smallest Useful Product
+## Choose the smallest useful product
 
 | Level | Use when | Main output |
 |---|---|---|
 | Inventory only | Scope, rights or identity are not yet safe to decide | Evidence-bearing inventory and gaps |
-| Minimal OKF | A bounded collection needs human/machine discovery | OKF 0.2 Markdown plus small Explorer bundle |
+| Minimal OKF | A bounded collection needs human/machine discovery | OKF 0.3 Markdown plus small Explorer bundle |
 | Governed semantic | Tasks require explicit shared meaning | YAML-LD source, JSON-LD/Turtle, vocabulary and SHACL |
 | Large corpus | Full records cannot load safely at startup | Descriptor, compact facets, search and lazy shards |
 | Federation | Collections have independent owners or release/access boundaries | Overview-first federation plus real child bundles |
@@ -209,7 +217,7 @@ Scale alone does not require an ontology. A sophisticated domain does not
 automatically require model enrichment. Federation describes independent
 governance; it must not make planned sources look implemented.
 
-## Evidence Has More Than One Axis
+## Evidence has more than one axis
 
 Keep these separate:
 
@@ -228,7 +236,7 @@ without becoming an official statement. A model candidate can have strong
 evidence without becoming source-native. A high confidence number cannot fix
 any of those category errors.
 
-## The Expensive-Failure Controls
+## Controls for expensive failures
 
 The build prompt encodes the operational lessons that matter most:
 
@@ -261,7 +269,7 @@ These controls are deliberately part of the reusable prompt because they are
 what prevent a sound semantic design from becoming an unbounded and
 irreproducible implementation.
 
-## Domain Comparisons
+## Domain comparisons
 
 [Three worked mappings](prompts/domain-profile-examples.md) show how the same
 protocol produces different decisions for UK legislation, ONS discovery and
@@ -275,7 +283,7 @@ GOV.UK content. They demonstrate that:
 - a federation can describe a broader source universe without fabricating
   unimplemented children.
 
-## Version And Distribution
+## Version and distribution
 
 The canonical kit belongs with OKF Explorer's application profiles and
 validators:
@@ -284,7 +292,7 @@ validators:
 docs/okf-authoring-prompt-kit.md
 docs/prompts/okf-domain-warm-up.md
 docs/prompts/okf-bundle-build.md
-profiles/authoring/v1/
+profiles/authoring/v2/
 ```
 
 Each domain bundle should link to and pin a released profile URI plus digest.
@@ -292,7 +300,7 @@ It should not copy and silently edit the prompts. A breaking handoff/schema
 change creates `v2`; prompt clarifications that preserve the contract can ship
 with an Explorer patch release.
 
-The original OKF 0.2 specification remains independently owned upstream. This
+The original OKF 0.3 specification remains independently owned upstream. This
 Foundry profile is additive and must not be represented as a change to OKF
 core.
 
@@ -310,7 +318,7 @@ classifies every record, emits supported consumer declarations and runs
 alone are insufficient. Retain its digest-bound receipt and actual-consumer
 filtering evidence before accepting the build.
 
-## Quick Start
+## Quick start
 
 1. Copy the warm-up prompt and fill in its run inputs.
 2. Validate its `domain-profile.json`:
@@ -333,9 +341,9 @@ filtering evidence before accepting the build.
 For the concrete record, facet, hierarchy, relationship, source and Explorer
 contracts, continue with [Create OKF bundles](okf-bundle-authoring.md).
 
-## Primary Specifications
+## Primary specifications
 
-- [OKF 0.2 pinned specification][okf]
+- [OKF 0.3 pinned specification][okf]
 - [YAML 1.2.2][yaml]
 - [YAML-LD 1.0][yaml-ld]
 - [JSON-LD 1.1][json-ld]
@@ -343,7 +351,7 @@ contracts, continue with [Create OKF bundles](okf-bundle-authoring.md).
 - [RDF Dataset Canonicalization 1.0][rdf-canon]
 - [JSON Schema 2020-12][json-schema]
 
-[okf]: https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/3fcbb9f828c2f23d109c855ee403c3a4c81f3a96/okf/SPEC.md
+[okf]: https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md
 [yaml]: https://yaml.org/spec/1.2.2/
 [yaml-ld]: https://www.w3.org/TR/yaml-ld-10/
 [json-ld]: https://www.w3.org/TR/json-ld11/

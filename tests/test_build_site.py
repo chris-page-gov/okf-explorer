@@ -1329,7 +1329,7 @@ class BuildSiteTests(unittest.TestCase):
             build_site.ROOT / "docs" / "okf-authoring-prompt-kit.md"
         ).read_text(encoding="utf-8")
         required_phrases = [
-            "Use This With Any Capable AI",
+            "Use this with a capable AI",
             "Never put secrets in a prompt",
             "blocking_for_build: true",
             "positive/negative fixture",
@@ -1339,7 +1339,7 @@ class BuildSiteTests(unittest.TestCase):
             "selective reruns",
             "compatibility passes in both directions",
             "deployed consumer deep links",
-            "Success Checklist",
+            "Success checklist",
             "byte-identical",
         ]
         for phrase in required_phrases:

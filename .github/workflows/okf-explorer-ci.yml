@@ -377,7 +377,7 @@ jobs:
           version: 10.34.7
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: '24.22.1'
+          node-version: '24.22.3'
           cache: pnpm
           cache-dependency-path: apps/okf-explorer/pnpm-lock.yaml
       - name: Install OKF Explorer dependencies
@@ -414,7 +414,7 @@ jobs:
           version: 10.34.7
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: '24.22.1'
+          node-version: '24.22.3'
           cache: pnpm
           cache-dependency-path: apps/okf-explorer/pnpm-lock.yaml
       - name: Select impacted browser suites
@@ -462,7 +462,7 @@ jobs:
           version: 10.34.7
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: '24.22.1'
+          node-version: '24.22.3'
           cache: pnpm
           cache-dependency-path: apps/okf-explorer/pnpm-lock.yaml
       - name: Set up locked Python toolchain
@@ -574,7 +574,7 @@ jobs:
           version: 10.34.7
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: '24.22.1'
+          node-version: '24.22.3'
           cache: pnpm
           cache-dependency-path: apps/okf-explorer/pnpm-lock.yaml
       - name: Set up locked Python toolchain
@@ -633,6 +633,42 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
+  reference-bundle-access:
+    needs: [impact-plan, adversarial-gate, app]
+    if: needs.impact-plan.outputs.app == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+        with:
+          version: 10.34.7
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24.22.3'
+          cache: pnpm
+          cache-dependency-path: apps/okf-explorer/pnpm-lock.yaml
+      - name: Install the locked consumer dependencies
+        run: pnpm --dir apps/okf-explorer install --frozen-lockfile
+      - name: Install only the canonical runner's Chromium
+        run: timeout 5m pnpm --dir apps/okf-explorer exec playwright install chromium
+      - name: Verify every reference file and graph assertion over HTTP
+        run: node scripts/check_reference_client_access.mjs --output "$RUNNER_TEMP/reference-client.json"
+      - name: Replay this bundle's complete complex-question journey
+        run: >-
+          pnpm --dir apps/okf-explorer acceptance:bundle --
+          --bundle-root "$GITHUB_WORKSPACE/reference-bundle"
+          --journeys "$GITHUB_WORKSPACE/reference-bundle/walkthrough.explorer-journeys.json"
+          --output "$RUNNER_TEMP/reference-explorer.json" --port 4288
+      - name: Retain exact consumer evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: reference-bundle-access-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/reference-client.json
+            ${{ runner.temp }}/reference-explorer.json
+
   release-policy:
     needs: [impact-plan, adversarial-gate]
     if: needs.impact-plan.outputs.release == 'true'
@@ -661,6 +697,7 @@ jobs:
       - documentation
       - site
       - release-policy
+      - reference-bundle-access
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -670,4 +707,4 @@ jobs:
         env:
           RESULTS: ${{ toJSON(needs) }}
         run: |
-          uv run --locked python -c 'import json,os,sys; n=json.loads(os.environ["RESULTS"]); bad={k:v["result"] for k,v in n.items() if v["result"] not in {"success","skipped"}}; required=n.get("skill-enforcement",{}).get("result"); bad.update({"skill-enforcement":required} if required != "success" else {}); print(json.dumps({k:v["result"] for k,v in n.items()},sort_keys=True)); sys.exit(bool(bad))'
+          uv run --locked python -c 'import json,os,sys; n=json.loads(os.environ["RESULTS"]); bad={k:v["result"] for k,v in n.items() if v["result"] not in {"success","skipped"}}; required=n.get("skill-enforcement",{}).get("result"); bad.update({"skill-enforcement":required} if required != "success" else {}); reference=n.get("reference-bundle-access",{}).get("result"); bad.update({"reference-bundle-access":reference} if n.get("impact-plan",{}).get("outputs",{}).get("app")=="true" and reference!="success" else {}); print(json.dumps({k:v["result"] for k,v in n.items()},sort_keys=True)); sys.exit(bool(bad))'

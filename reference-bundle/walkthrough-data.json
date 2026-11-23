@@ -1,0 +1,164 @@
+{
+  "authored_walkthrough_sha256": "18e1ff3eb31f022e1f6c89c3c9da7c2daa9b999f2b5d4b001324d446dcdbb636",
+  "bundle_id": "https://chris-page-gov.github.io/okf-explorer/id/bundle/ai-infrastructure-wiki",
+  "case_sha256": "3a9cc4806524c0a4f58ad70f1331294946a11aa5b5a16463704413e3e502b413",
+  "descriptor": "okf-bundle.json",
+  "descriptor_sha256": "a52acdda5a337b05816b3ff6e57a56708f0dc716fe6fdc6a26629609c49c1685",
+  "graph": "okf-bundle.jsonld",
+  "graph_sha256": "34d0ddedb14ae795000859d878efdcd90316e8497b215654e1a4f1c19823c07a",
+  "id": "council-agent-consent-and-evidence",
+  "negative_controls": [
+    {
+      "result": "no-directed-concept-path",
+      "source": "uk-government/ncsc-secure-ai.md",
+      "target": "standards/mcp.md"
+    }
+  ],
+  "okf_version": "0.3",
+  "question": "A council wants an agent to discover and invoke tools and delegate work to other agents. What do MCP, A2A and a documentation registry each contribute, where must consent and evidence be recorded, and does this bundle establish that a deployment is authorised or secure?",
+  "schema": "okf-bundle-walkthrough-data.v1",
+  "scope": "Local source/graph trail and negative controls only; live browser, remote AI access and release acceptance are separate.",
+  "snapshot": "sha256:b5e7b5323527b92b78f431866fbccc3ada2b942396ce9922f7de07abff53fd92",
+  "source_documents": [
+    {
+      "bytes": 1038,
+      "route": "standards/mcp.md",
+      "semantic_id": "https://chris-page-gov.github.io/okf-explorer/id/standards/mcp",
+      "sha256": "c19a53e040956dc0a92fd807a091cf3426ac86e8bbce2b39a9436709b6dd599f"
+    },
+    {
+      "bytes": 697,
+      "route": "glossary/consent.md",
+      "semantic_id": "https://chris-page-gov.github.io/okf-explorer/id/glossary/consent",
+      "sha256": "c7170e9cd61f42856756818a347896a1c874f1269f8fe28da10dbe3cf7cb7f24"
+    },
+    {
+      "bytes": 1349,
+      "route": "stack/observability-and-provenance.md",
+      "semantic_id": "https://chris-page-gov.github.io/okf-explorer/id/stack/observability-and-provenance",
+      "sha256": "92441a75280ebdc587c28ab426ee5008f0c29393586e1128fe5440c44e5c709b"
+    },
+    {
+      "bytes": 645,
+      "route": "standards/w3c-prov.md",
+      "semantic_id": "https://chris-page-gov.github.io/okf-explorer/id/standards/w3c-prov",
+      "sha256": "e53d14763f4cc681ea31b34f80471e2bd3e6e0f6c88cc6ee619fadc34ddfc41c"
+    },
+    {
+      "bytes": 2511,
+      "route": "frameworks/context-hub.md",
+      "semantic_id": "https://chris-page-gov.github.io/okf-explorer/id/frameworks/context-hub",
+      "sha256": "360838e580aa99131df8fb064a652c448becc345d5980fb59a559c683e60e42a"
+    },
+    {
+      "bytes": 899,
+      "route": "standards/a2a.md",
+      "semantic_id": "https://chris-page-gov.github.io/okf-explorer/id/standards/a2a",
+      "sha256": "3b498270879883c54631753eb8ea523847cf2409a02dd4a69d556a34aacae118"
+    },
+    {
+      "bytes": 617,
+      "route": "glossary/agent-card.md",
+      "semantic_id": "https://chris-page-gov.github.io/okf-explorer/id/glossary/agent-card",
+      "sha256": "a01db5ef29695bb0692f3edeb463ad312814592a9fdf90372f023a48db01039e"
+    },
+    {
+      "bytes": 758,
+      "route": "glossary/tool-discovery.md",
+      "semantic_id": "https://chris-page-gov.github.io/okf-explorer/id/glossary/tool-discovery",
+      "sha256": "4f6d4c241de9935662ff3012b82dd8bd2d9eb1a828566fee048add7542d4468f"
+    },
+    {
+      "bytes": 641,
+      "route": "uk-government/ncsc-secure-ai.md",
+      "semantic_id": "https://chris-page-gov.github.io/okf-explorer/id/uk-government/ncsc-secure-ai",
+      "sha256": "aa3a5588998de1c39adce33e5f2e56a11ebf1d08bc5bf947586a272306d6398b"
+    }
+  ],
+  "trails": [
+    {
+      "assertions": [
+        {
+          "assertion_status": "normalized",
+          "id": "https://chris-page-gov.github.io/okf-explorer/id/assertion/markdown-reference/f226607d671fd83d7727575e9c2a2d4bd6859b12e027f646ec3c2c9d0bf70d9e",
+          "predicate": "http://purl.org/dc/terms/references",
+          "source": "standards/mcp.md",
+          "source_iri": "https://chris-page-gov.github.io/okf-explorer/id/standards/mcp",
+          "target": "glossary/consent.md",
+          "target_iri": "https://chris-page-gov.github.io/okf-explorer/id/glossary/consent"
+        },
+        {
+          "assertion_status": "normalized",
+          "id": "https://chris-page-gov.github.io/okf-explorer/id/assertion/markdown-reference/5b54c6e750a8dc7f8194c5ffb3ee5e07cc2ff111ef258dc71027f16a3ba622f0",
+          "predicate": "http://purl.org/dc/terms/references",
+          "source": "glossary/consent.md",
+          "source_iri": "https://chris-page-gov.github.io/okf-explorer/id/glossary/consent",
+          "target": "stack/observability-and-provenance.md",
+          "target_iri": "https://chris-page-gov.github.io/okf-explorer/id/stack/observability-and-provenance"
+        },
+        {
+          "assertion_status": "normalized",
+          "id": "https://chris-page-gov.github.io/okf-explorer/id/assertion/markdown-reference/ede23022c9347151650461fdf682da2338f94b2d200f5d92ac245bdce98b4353",
+          "predicate": "http://purl.org/dc/terms/references",
+          "source": "stack/observability-and-provenance.md",
+          "source_iri": "https://chris-page-gov.github.io/okf-explorer/id/stack/observability-and-provenance",
+          "target": "standards/w3c-prov.md",
+          "target_iri": "https://chris-page-gov.github.io/okf-explorer/id/standards/w3c-prov"
+        }
+      ],
+      "label": "Consent and execution evidence",
+      "routes": [
+        "standards/mcp.md",
+        "glossary/consent.md",
+        "stack/observability-and-provenance.md",
+        "standards/w3c-prov.md"
+      ]
+    },
+    {
+      "assertions": [
+        {
+          "assertion_status": "normalized",
+          "id": "https://chris-page-gov.github.io/okf-explorer/id/assertion/markdown-reference/3c953e88771b62b9ddbd67b77e8d24ad3addd9c842c0ddba4d9993173d8ce9b7",
+          "predicate": "http://purl.org/dc/terms/references",
+          "source": "frameworks/context-hub.md",
+          "source_iri": "https://chris-page-gov.github.io/okf-explorer/id/frameworks/context-hub",
+          "target": "standards/a2a.md",
+          "target_iri": "https://chris-page-gov.github.io/okf-explorer/id/standards/a2a"
+        },
+        {
+          "assertion_status": "normalized",
+          "id": "https://chris-page-gov.github.io/okf-explorer/id/assertion/markdown-reference/cf0a0d244112b8935edcd0b6417ceb502f08483fb0926540f481c0609e9f31b6",
+          "predicate": "http://purl.org/dc/terms/references",
+          "source": "standards/a2a.md",
+          "source_iri": "https://chris-page-gov.github.io/okf-explorer/id/standards/a2a",
+          "target": "glossary/agent-card.md",
+          "target_iri": "https://chris-page-gov.github.io/okf-explorer/id/glossary/agent-card"
+        },
+        {
+          "assertion_status": "normalized",
+          "id": "https://chris-page-gov.github.io/okf-explorer/id/assertion/markdown-reference/9de8ec94e9eaabaf7e36178f430420d3be32e9b885d9485a7d15dd221422bbe1",
+          "predicate": "http://purl.org/dc/terms/references",
+          "source": "glossary/agent-card.md",
+          "source_iri": "https://chris-page-gov.github.io/okf-explorer/id/glossary/agent-card",
+          "target": "glossary/tool-discovery.md",
+          "target_iri": "https://chris-page-gov.github.io/okf-explorer/id/glossary/tool-discovery"
+        }
+      ],
+      "label": "Registry, delegation and discovery",
+      "routes": [
+        "frameworks/context-hub.md",
+        "standards/a2a.md",
+        "glossary/agent-card.md",
+        "glossary/tool-discovery.md"
+      ]
+    },
+    {
+      "assertions": [],
+      "label": "Separate security search",
+      "routes": [
+        "uk-government/ncsc-secure-ai.md"
+      ]
+    }
+  ],
+  "version": "0.8.1"
+}

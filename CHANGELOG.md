@@ -8,6 +8,25 @@
   computation, executor and attester links. Retain earlier resource behaviour
   for older bundles and preserve safe URL handling.
 
+## Unreleased — reference bundle and authoring for OKF 0.3
+
+- Migrate Explorer's own reference corpus to core 0.3 and Bundle Wiki v2.
+  Preserve all 165 record identities and 588 assertion identities, retain full
+  authored frontmatter as inert JSON metadata and distinguish 151 core concepts
+  from 14 navigation records.
+- Export an independent source bundle with complete file digests, an exact
+  Reader projection and independent checks of every core concept and reference.
+  Add its own source-linked council tool-access walkthrough, worked answer,
+  diagram, source hashes and negative controls.
+- Apply current-verification trust rules, including team actors, offsets and
+  fractional timestamp order, while retaining explicit core 0.2 behaviour.
+- Make new repository scaffolds and authoring handoffs target core 0.3 through
+  versioned v2 contracts. Preserve v1 profiles, templates and frozen releases.
+  Record the upstream announcement on 18 November 2026 and this implementation
+  on 23 November 2026. Publication and estate-wide acceptance remain separate.
+- Require the reference bundle's complete HTTP and Reader evidence in the
+  protected CI gate. Pin active Node 24 workflows to the 24.22.3 security release.
+
 ## Unreleased — consumer acceptance routes
 
 - Serve declared static directory indexes in the isolated bundle acceptance

@@ -56,7 +56,10 @@ def canonical_bytes(value: Any) -> bytes:
 
 
 def schema_errors(value: dict[str, Any]) -> list[str]:
-    schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
+    version = {"okf-domain-profile.v1": "v1", "okf-domain-profile.v2": "v2"}.get(value.get("schema"))
+    if version is None:
+        return ["schema: unsupported versioned domain profile"]
+    schema = json.loads((ROOT / "profiles/authoring" / version / "domain-profile.schema.json").read_text(encoding="utf-8"))
     Draft202012Validator.check_schema(schema)
     validator = Draft202012Validator(schema, format_checker=FormatChecker())
     errors = sorted(validator.iter_errors(value), key=lambda item: list(item.absolute_path))

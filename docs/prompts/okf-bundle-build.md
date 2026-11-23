@@ -2,7 +2,7 @@
 
 Run this only after the
 [domain warm-up](okf-domain-warm-up.md) has produced a validated, checksummed
-`okf-domain-profile.v1` pack. Replace the values in **Run inputs**.
+`okf-domain-profile.v2` pack. Replace the values in **Run inputs**.
 
 This prompt is intentionally one outcome workflow. Security, enrichment,
 evaluation and release are phases of the bundle outcome; none may replace the
@@ -377,8 +377,8 @@ skips.
 
 Always:
 
-1. Generate the portable OKF 0.2 Markdown tree.
-2. Put `okf_version: "0.2"` only on the root `index.md`.
+1. Generate the portable OKF 0.3 Markdown tree.
+2. Put `okf_version: "0.3"` only on the root `index.md`.
 3. Give every non-reserved concept a non-empty `type`.
 4. Preserve unknown/domain fields.
 5. Add the Foundry production fields justified by the profile: stable identity,

@@ -1,0 +1,21 @@
+{
+  "schema": "okf-bundle-walkthrough-case.v1",
+  "id": "council-agent-consent-and-evidence",
+  "trails": [
+    {"label": "Consent and execution evidence", "routes": ["standards/mcp.md", "glossary/consent.md", "stack/observability-and-provenance.md", "standards/w3c-prov.md"]},
+    {"label": "Registry, delegation and discovery", "routes": ["frameworks/context-hub.md", "standards/a2a.md", "glossary/agent-card.md", "glossary/tool-discovery.md"]},
+    {"label": "Separate security search", "routes": ["uk-government/ncsc-secure-ai.md"]}
+  ],
+  "no_directed_concept_path": [["uk-government/ncsc-secure-ai.md", "standards/mcp.md"]],
+  "expected_absent_fields": {
+    "standards/mcp.md": ["verified"],
+    "glossary/consent.md": ["verified"],
+    "stack/observability-and-provenance.md": ["verified"],
+    "standards/w3c-prov.md": ["verified"],
+    "frameworks/context-hub.md": ["verified"],
+    "standards/a2a.md": ["verified"],
+    "glossary/agent-card.md": ["verified"],
+    "glossary/tool-discovery.md": ["verified"],
+    "uk-government/ncsc-secure-ai.md": ["verified"]
+  }
+}

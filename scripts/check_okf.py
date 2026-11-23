@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate OKF v0.2 core plus the Explorer authoring profile.
+"""Validate the declared OKF source plus the Explorer authoring profile.
 
 Scope: the Markdown corpus only. The generated uk-government-apis/
 large-corpus artefact is exercised separately in CI via the
@@ -80,10 +80,18 @@ def main() -> int:
             print(f"- {error}", file=sys.stderr)
         return 1
 
+    from check_reference_core import check as check_reference_core
+    try:
+        core = check_reference_core()
+    except (ValueError, OSError) as exc:
+        print(f"Independent reference bundle validation failed: {exc}", file=sys.stderr)
+        return 1
+
     print(
-        "OKF v0.2 core and Explorer profile validation passed: "
+        "OKF 0.3 source and Explorer profile validation passed: "
         f"{len(graph['nodes'])} nodes, {len(graph['edges'])} edges, "
         f"{len(next(iter(bundle['corpora'].values()))['relationships'])} semantic assertions"
+        f"; {core['concepts']} independently checked core concepts"
     )
     return 0
 
