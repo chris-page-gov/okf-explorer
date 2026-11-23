@@ -14,6 +14,20 @@
 - Document the enforcement boundary and the separate OKF+ semantic and release
   gates in the [guarded skills guide](docs/okf-skill-enforcement.md).
 
+## Unreleased — Python dependency security
+
+- Require Soup Sieve 4.0.0 or later in the governed Python lock to resolve four
+  open Dependabot advisories affecting the `yaml-ld` to Beautiful Soup
+  dependency chain. Soup Sieve 4 applies stricter `:has()` parsing, so complex
+  selectors may now be rejected. Keep the earlier dated analytical-trial
+  receipts bound to the lockfile digest observed when those trials ran.
+
+## Unreleased — application framework maintenance
+
+- Update SvelteKit to 3.4.0, Svelte to 5.58.0 and Vite to 8.3.8. Regenerate
+  the dependency inventory and validate the resulting static application,
+  retaining the reviewed plugin patch, security overrides and browser gates.
+
 ## Unreleased — Hansard public discovery
 
 - Listed the public Hansard OKF 0.3 demonstration in the access directory, with its verified Pages descriptor, digest-matched GitHub fallback and producer discovery routes.
