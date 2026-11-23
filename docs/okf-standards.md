@@ -42,7 +42,7 @@ not by itself establish that its producer has adopted OKF 0.3.
 ## Public bundle catalogues
 
 - [Curated public bundle access directory](public-bundle-access.md) and its
-  [machine-readable entries](../registry/public-bundle-access.json): twelve
+  [machine-readable entries](../registry/public-bundle-access.json): thirteen
   reviewed public producer entries at the directory's recorded observation
   date. It provides access and source-snapshot details, not a completeness or
   conformance decision.
