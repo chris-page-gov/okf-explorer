@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased — OKF 0.3 Reader support
+
+- Import standard Markdown directories and resolve their core graph under the 0.3 path rules.
+- Use the last meaningful change when calculating trust, preserve verification history and evaluate freshness at the declared instant.
+- Add a pinned JSON-LD graph link, a repeatable Chrome evidence check, GitHub owner discovery and a [bundle migration assessment](docs/okf-0.3-migration.md).
+
 ## Unreleased — Pages archive integrity
 
 - Exclude Git repository and GitHub workflow metadata from the Site before

@@ -59,7 +59,15 @@
       "semantic_descriptor": "https://chris-page-gov.github.io/okf-explorer/okf-bundle.yamlld",
       "access_note": "The Explorer reference corpus is a separate small bundle. The Reader application and curated registry also link to independently published producers.",
       "equivalent_raw_descriptor": "https://raw.githubusercontent.com/chris-page-gov/okf-explorer/5755359efd54b14a356dbff67d6082db1b195a91/okf-bundle.json",
-      "raw_descriptor_sha256": "320628dff8373b54e142ddcf83edf8ea1fcf0bb4c65b0ad70bda2fa633e220b2"
+      "raw_descriptor_sha256": "320628dff8373b54e142ddcf83edf8ea1fcf0bb4c65b0ad70bda2fa633e220b2",
+      "agent_graph": {
+        "url": "https://raw.githubusercontent.com/chris-page-gov/okf-explorer/954d44a345b31a3142bc69a822295e6420108d93/okf-bundle.jsonld",
+        "format": "application/ld+json",
+        "bundle_id": "https://chris-page-gov.github.io/okf-explorer/id/bundle/ai-infrastructure-wiki",
+        "commit": "954d44a345b31a3142bc69a822295e6420108d93",
+        "sha256": "29b0ccbc3a6756bd12d2f195311f1424bb91eae43ca3cf5a81319e2b058e1512",
+        "bytes": 1484270
+      }
     },
     {
       "title": "GOV.UK content",
@@ -171,5 +179,10 @@
     }
   ],
   "browser_verification": "unverified-for-producer-links; ELS Markdown was blocked by Chrome with ERR_BLOCKED_BY_CLIENT despite HTTP 200",
-  "voice_verification": "not-tested"
+  "voice_verification": "not-tested",
+  "owner_catalogue": {
+    "owner": "chris-page-gov",
+    "observed_on": "2026-11-23",
+    "path": "docs/evidence/okf-public-owner-candidates-2026-11-23.json"
+  }
 }

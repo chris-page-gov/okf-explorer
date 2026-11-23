@@ -1,7 +1,6 @@
 import type { OkfNode } from '$lib/types';
 
 export type OkfTrustTier = 'unverified' | 'machine-confirmed' | 'human-reviewed';
-export type OkfLifecycleStatus = 'draft' | 'stable' | 'deprecated';
 
 export type OkfActorEvent = {
   by: string;
@@ -48,7 +47,8 @@ export type OkfConceptPresentation = {
   generated: OkfGenerated;
   verified: OkfActorEvent[];
   trustTier: OkfTrustTier;
-  status: OkfLifecycleStatus;
+  status: string;
+  malformedStaleAfter: boolean;
   staleAfter: string;
   stale: boolean;
   sources: OkfSource[];
@@ -68,30 +68,35 @@ function stringValue(value: unknown): string {
     : '';
 }
 
-function dateOnly(value: unknown): string {
-  const candidate = stringValue(value).slice(0, 10);
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(candidate)) return '';
-  const [year, month, day] = candidate.split('-').map(Number);
-  const parsed = new Date(Date.UTC(year, month - 1, day));
-  return parsed.getUTCFullYear() === year
-    && parsed.getUTCMonth() === month - 1
-    && parsed.getUTCDate() === day
-    ? candidate
-    : '';
+// Keep the fractional second separate: RFC 3339 can carry more precision
+// than JavaScript Date. Offset-equivalent instants compare identically.
+function instant(value: unknown): { second: number; fraction: string } | undefined {
+  if (typeof value !== 'string') return undefined;
+  const match = /^(\d{4}-\d{2}-\d{2})(?:[Tt]((?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d)(?:\.(\d+))?([Zz]|[+-](?:[01]\d|2[0-3]):[0-5]\d))?$/.exec(value);
+  if (!match) return undefined;
+  const [, date, time = '00:00:00', fraction = '', offset = 'Z'] = match;
+  const midnight = new Date(date + 'T00:00:00Z');
+  if (!Number.isFinite(midnight.getTime()) || midnight.toISOString().slice(0, 10) !== date) return undefined;
+  return { second: Date.parse(date + 'T' + time + offset.toUpperCase()), fraction: fraction.replace(/0+$/, '') };
 }
 
-function validActor(value: unknown): boolean {
-  const candidate = stringValue(value);
-  return /^(?:human|process):[^\s:]+$/.test(candidate)
-    || /^[^/\s:]+\/[^/\s]+$/.test(candidate);
+function compareInstants(a: NonNullable<ReturnType<typeof instant>>, b: NonNullable<ReturnType<typeof instant>>): number {
+  if (a.second !== b.second) return a.second - b.second;
+  if (a.fraction === b.fraction) return 0;
+  return a.fraction < b.fraction ? -1 : 1;
 }
 
-function validDateTime(value: unknown): boolean {
-  const candidate = stringValue(value);
-  const match = candidate.match(
-    /^(\d{4}-\d{2}-\d{2})T(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z|[+-](?:[01]\d|2[0-3]):[0-5]\d)?$/
-  );
-  return Boolean(match && dateOnly(match[1]) && !Number.isNaN(Date.parse(candidate)));
+function absent(value: unknown): boolean {
+  return value == null || value === '' || (Array.isArray(value) && !value.length);
+}
+
+function rows(value: unknown): Record<string, unknown>[] {
+  const values = Array.isArray(value) ? value : [value];
+  return values.map(recordValue).filter((row): row is Record<string, unknown> => Boolean(row));
+}
+
+function validActor(value: string): boolean {
+  return /^[A-Za-z][A-Za-z0-9+.-]*:\S+$/.test(value) || /^[^/\s:]+\/[^/\s]+$/.test(value);
 }
 
 function stringList(value: unknown): string[] {
@@ -101,24 +106,25 @@ function stringList(value: unknown): string[] {
 }
 
 export function normalizeVerified(value: unknown): OkfActorEvent[] {
-  const candidates = Array.isArray(value) ? value : recordValue(value) ? [value] : [];
-  return candidates
-    .map(recordValue)
-    .filter((item): item is Record<string, unknown> => Boolean(item))
-    .map((item) => ({ ...item, by: stringValue(item.by), at: stringValue(item.at) }))
-    // Malformed optional metadata remains consumable, but it must never
-    // upgrade a concept's trust tier.
-    .filter((item) => validActor(item.by) && validDateTime(item.at));
+  return rows(value)
+    .filter(item => typeof item.by === 'string' && validActor(item.by) && instant(item.at))
+    .map(item => ({ ...item, by: String(item.by), at: String(item.at) }));
 }
 
-export function deriveTrustTier(verified: OkfActorEvent[]): OkfTrustTier {
-  if (!verified.length) return 'unverified';
-  return verified.some((event) => event.by.startsWith('human:'))
-    ? 'human-reviewed'
-    : 'machine-confirmed';
+export function deriveTrustTier(verified: OkfActorEvent[], generated?: unknown): OkfTrustTier {
+  const changed = instant(recordValue(generated)?.at);
+  if (!absent(generated) && !changed) return 'unverified';
+  let tier: OkfTrustTier = 'unverified';
+  for (const event of verified) {
+    const checked = instant(event.at);
+    if (!checked || !validActor(event.by) || (changed && compareInstants(checked, changed) < 0)) continue;
+    if (event.by.startsWith('human:')) return 'human-reviewed';
+    tier = 'machine-confirmed';
+  }
+  return tier;
 }
 
-export function conceptGenerated(node: OkfNode): OkfGenerated {
+export function conceptGenerated(node: OkfNode, legacy = true): OkfGenerated {
   if (Object.prototype.hasOwnProperty.call(node, 'generated')) {
     const generated = recordValue(node.generated);
     return {
@@ -128,7 +134,7 @@ export function conceptGenerated(node: OkfNode): OkfGenerated {
     };
   }
   const timestamp = stringValue(node.timestamp);
-  if (timestamp) return { by: '', at: timestamp, basis: 'legacy-v0.1-timestamp' };
+  if (legacy && timestamp) return { by: '', at: timestamp, basis: 'legacy-v0.1-timestamp' };
   return { by: '', at: '', basis: 'not-declared' };
 }
 
@@ -158,17 +164,14 @@ function legacyCitationSources(body: unknown): OkfSource[] {
 function normalizedUsageWindow(value: unknown): OkfUsageWindow | undefined {
   const row = recordValue(value);
   if (!row) return undefined;
-  const from = dateOnly(row.from);
-  const to = dateOnly(row.to);
+  const from = instant(row.from) ? String(row.from) : undefined;
+  const to = instant(row.to) ? String(row.to) : undefined;
   return from || to ? { ...(from ? { from } : {}), ...(to ? { to } : {}) } : undefined;
 }
 
-export function normalizeSources(node: OkfNode): OkfSource[] {
+export function normalizeSources(node: OkfNode, legacy = true): OkfSource[] {
   if (Object.prototype.hasOwnProperty.call(node, 'sources')) {
-    if (!Array.isArray(node.sources)) return [];
-    return node.sources
-      .map(recordValue)
-      .filter((item): item is Record<string, unknown> => Boolean(item))
+    return rows(node.sources)
       .map((item) => ({
         ...item,
         resource: stringValue(item.resource),
@@ -176,42 +179,60 @@ export function normalizeSources(node: OkfNode): OkfSource[] {
         ...(stringValue(item.title) ? { title: stringValue(item.title) } : {}),
         ...(stringValue(item.author) ? { author: stringValue(item.author) } : {}),
         ...(typeof item.usage_count === 'number' ? { usage_count: item.usage_count } : {}),
-        ...(dateOnly(item.last_modified) ? { last_modified: dateOnly(item.last_modified) } : {}),
+        ...(instant(item.last_modified) ? { last_modified: String(item.last_modified) } : {}),
         ...(normalizedUsageWindow(item.usage_window) ? { usage_window: normalizedUsageWindow(item.usage_window) } : {})
       }))
       .filter((item) => Boolean(item.resource));
   }
-  return legacyCitationSources(node.body);
+  return legacy ? legacyCitationSources(node.body) : [];
 }
 
 export function isConceptStale(staleAfter: unknown, today = new Date()): boolean {
-  const staleDate = dateOnly(staleAfter);
-  if (!staleDate) return false;
-  const localToday = [
-    today.getFullYear(),
-    String(today.getMonth() + 1).padStart(2, '0'),
-    String(today.getDate()).padStart(2, '0')
-  ].join('-');
-  return localToday >= staleDate;
+  if (absent(staleAfter)) return false;
+  const deadline = instant(staleAfter);
+  const now = instant(today.toISOString());
+  return !deadline || !now || compareInstants(now, deadline) >= 0;
+}
+
+function hasInlineComputation(body: string): boolean {
+  let section = 0;
+  let fence = '';
+  for (const line of body.split(/\r?\n/)) {
+    if (fence) {
+      const trimmed = line.replace(/^ {0,3}/, '').trimEnd();
+      if (trimmed.length >= fence.length && [...trimmed].every(char => char === fence[0])) fence = '';
+      continue;
+    }
+    const opening = /^ {0,3}(`{3,}|~{3,})(.*)$/.exec(line);
+    if (opening && !(opening[1][0] === '`' && opening[2].includes('`'))) {
+      if (section) return true;
+      fence = opening[1];
+      continue;
+    }
+    const heading = /^ {0,3}(#{1,6})(?:[ \t]+(.*)|$)/.exec(line);
+    if (heading) {
+      const level = heading[1].length;
+      const title = (heading[2] ?? '').replace(/[ \t]+#+[ \t]*$/, '').trim();
+      if (title === 'Computation') section = level;
+      else if (level <= section) section = 0;
+    }
+  }
+  return false;
 }
 
 export function normalizeAttestedComputation(node: OkfNode): OkfAttestedComputation | undefined {
   if (stringValue(node.type).toLowerCase() !== 'attested computation') return undefined;
   const executor = recordValue(node.executor);
   const attester = recordValue(node.attester);
-  const parameters = Array.isArray(node.parameters)
-    ? node.parameters
-        .map(recordValue)
-        .filter((item): item is Record<string, unknown> => Boolean(item))
-        .map((item) => ({
-          ...item,
-          name: stringValue(item.name),
-          type: stringValue(item.type),
-          required: item.required === true
-        }))
-    : [];
+  const declaredParameters = rows(node.parameters).map((item) => ({
+    ...item,
+    name: stringValue(item.name),
+    type: stringValue(item.type),
+    required: item.required === true
+  }));
+  const parameters = declaredParameters.filter(parameter => parameter.name && parameter.type);
   const computation = stringValue(node.computation);
-  const inlineComputation = /(?:^|\n)#\s+Computation\s*(?:\n|$)[\s\S]*?```[\s\S]*?```/i.test(stringValue(node.body));
+  const inlineComputation = !computation && hasInlineComputation(stringValue(node.body));
   const runtime = stringValue(node.runtime);
   const executorResource = stringValue(executor?.resource);
   const attesterResource = stringValue(attester?.resource);
@@ -222,7 +243,7 @@ export function normalizeAttestedComputation(node: OkfNode): OkfAttestedComputat
   if (!executorResource) warnings.push('Executor instructions are not declared.');
   if (!receiptFields.length) warnings.push('Executor receipt fields are not declared.');
   if (!attesterResource) warnings.push('Deterministic attester code is not declared.');
-  if (parameters.some((parameter) => !parameter.name || !parameter.type)) {
+  if (parameters.length !== declaredParameters.length) {
     warnings.push('One or more parameters lack a name or type.');
   }
   return {
@@ -238,21 +259,20 @@ export function normalizeAttestedComputation(node: OkfNode): OkfAttestedComputat
   };
 }
 
-export function okfConceptPresentation(node: OkfNode, today = new Date()): OkfConceptPresentation {
+export function okfConceptPresentation(node: OkfNode, today = new Date(), version = ''): OkfConceptPresentation {
+  const legacy = ['', '0.1', '0.2'].includes(version);
   const verified = normalizeVerified(node.verified);
-  const statusValue = stringValue(node.status);
-  const status: OkfLifecycleStatus = statusValue === 'draft' || statusValue === 'deprecated'
-    ? statusValue
-    : 'stable';
-  const staleAfter = dateOnly(node.stale_after);
+  const status = absent(node.status) ? 'stable' : stringValue(node.status) || 'Unknown';
+  const staleAfter = absent(node.stale_after) ? '' : stringValue(node.stale_after);
   return {
-    generated: conceptGenerated(node),
+    generated: conceptGenerated(node, legacy),
     verified,
-    trustTier: deriveTrustTier(verified),
+    trustTier: deriveTrustTier(verified, node.generated),
     status,
     staleAfter,
-    stale: isConceptStale(staleAfter, today),
-    sources: normalizeSources(node),
+    stale: isConceptStale(node.stale_after, today),
+    malformedStaleAfter: !absent(node.stale_after) && !instant(node.stale_after),
+    sources: normalizeSources(node, legacy),
     usageWindow: normalizedUsageWindow(node.usage_window),
     attestedComputation: normalizeAttestedComputation(node)
   };

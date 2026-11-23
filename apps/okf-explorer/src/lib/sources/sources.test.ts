@@ -701,6 +701,14 @@ describe('small bundle normalisation', () => {
     } as unknown as OkfBundle)).toThrow('must declare RelationshipAssertion type');
   });
 
+  it('keeps punctuation in a single OKF 0.3 scalar tag', () => {
+    const corpus = normalizeSmallBundle({ okf_version: '0.3', nodes: {
+      a: { id: 'a', tags: 'one; two, three' }, b: { id: 'b', tags: '' }
+    }} as unknown as OkfBundle);
+    expect(corpus.nodes.a.tags).toEqual(['one; two, three']);
+    expect(corpus.nodes.b.tags).toEqual([]);
+  });
+
   it('normalises top-level bundle nodes and relationships', () => {
     const corpus = normalizeSmallBundle({
       meta: { title: 'Bundle title', description: 'Bundle description' },

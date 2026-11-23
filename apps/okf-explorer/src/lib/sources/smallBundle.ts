@@ -24,7 +24,7 @@ function normalizeStringList(value: unknown): string[] {
   return [];
 }
 
-function normalizeNode(id: string, node: OkfNode): OkfNode {
+function normalizeNode(id: string, node: OkfNode, version: string): OkfNode {
   return {
     ...node,
     id,
@@ -32,7 +32,8 @@ function normalizeNode(id: string, node: OkfNode): OkfNode {
     type: node.type || 'Node',
     section: node.section || 'root',
     aliases: normalizeStringList(node.aliases),
-    tags: normalizeStringList(node.tags)
+    tags: version === '0.3' && !Array.isArray(node.tags)
+      ? normalizeStringList([node.tags ?? '']) : normalizeStringList(node.tags)
   };
 }
 
@@ -287,6 +288,8 @@ function normalizeSemanticGraph(bundle: OkfBundle): NormalizedCorpus | null {
     if (looksLikeRelationshipAssertion(item)) assertions.push(item);
     else entities.push(item);
   }
+  const top = bundle as unknown as Record<string, unknown>;
+  const version = String(bundle.okf_version || top.okfVersion || '');
   const routesByIri = new Map<string, string>();
   const graphIds = new Set<string>();
   const routeIds = new Set<string>();
@@ -309,16 +312,15 @@ function normalizeSemanticGraph(bundle: OkfBundle): NormalizedCorpus | null {
       title: String(item.title || item.name || item.label || route),
       description: String(item.description || item.summary || ''),
       type: String(item.type || types[0] || 'Semantic entity')
-    })]);
+    }, version)]);
   }
   const relationships = assertions.map((item) => semanticRelationship(item, routesByIri, graphIds));
   const nodes = Object.fromEntries(nodeRows);
-  const top = bundle as unknown as Record<string, unknown>;
   return {
     id: String(bundle['@id'] || 'semantic'),
     title: String(bundle.title || bundle.meta?.title || bundle['@id'] || 'OKF semantic bundle'),
     description: String(bundle.meta?.description || top.description || ''),
-    okfVersion: String(bundle.okf_version || top.okfVersion || ''),
+    okfVersion: version,
     profile: String(bundle.meta?.profile || semanticId(top.profile) || ''),
     nodes,
     relationships: normalizeRelationships(relationships),
@@ -357,7 +359,7 @@ export function normalizeSmallBundle(bundle: OkfBundle, preferredCorpus = ''): N
   const rawCorpus = (corpusId ? corpora[corpusId] : bundle) as Partial<NormalizedCorpus> & OkfBundle;
   const rawRecord = rawCorpus as unknown as Record<string, unknown>;
   const nodes = Object.fromEntries(
-    Object.entries(rawCorpus.nodes || bundle.nodes || {}).map(([id, node]) => [id, normalizeNode(id, node)])
+    Object.entries(rawCorpus.nodes || bundle.nodes || {}).map(([id, node]) => [id, normalizeNode(id, node, String(bundle.okf_version || ''))])
   );
   return {
     id: corpusId || 'default',

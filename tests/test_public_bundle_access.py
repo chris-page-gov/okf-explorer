@@ -24,6 +24,14 @@ class PublicBundleAccessTests(unittest.TestCase):
             (root / access.SOURCE).write_text(json.dumps(document))
             return access.load(root)
 
+    def test_pinned_graph_links_require_matching_owner_commit_and_path(self):
+        graph = next(row["agent_graph"] for row in access.load()["bundles"] if "agent_graph" in row)
+        for override in ({"url": graph["url"]}, {"commit": "main"}, {"bytes": 0}, {"sha256": "invalid"}):
+            with self.subTest(override=override), self.assertRaisesRegex(ValueError, "invalid pinned graph"):
+                self.mutate(lambda b: b.update(agent_graph={**graph, **override}))
+        outputs = access.render(access.load())
+        self.assertIn(graph["url"], outputs[Path("llms.txt")])
+
     def test_private_entry_is_rejected_before_publication(self):
         with self.assertRaisesRegex(ValueError, "only explicitly public"):
             self.mutate(lambda b: b.update(visibility="private"))

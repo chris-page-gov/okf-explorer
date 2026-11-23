@@ -1,0 +1,12 @@
+{
+  "checked_at": "2026-11-23T08:44:55.826Z",
+  "browser": "158.0.8127.36",
+  "graph": "https://raw.githubusercontent.com/chris-page-gov/okf-explorer/954d44a345b31a3142bc69a822295e6420108d93/okf-bundle.jsonld",
+  "sha256": "29b0ccbc3a6756bd12d2f195311f1424bb91eae43ca3cf5a81319e2b058e1512",
+  "entities": 165,
+  "assertions": 588,
+  "assertion": "https://chris-page-gov.github.io/okf-explorer/id/assertion/markdown-reference/da142ff4b370fe77fc8edbbf7c91cfce71ff310e44c1f78896364d27de22131e",
+  "predicate": "http://purl.org/dc/terms/references",
+  "source": "https://raw.githubusercontent.com/chris-page-gov/okf-explorer/954d44a345b31a3142bc69a822295e6420108d93/document/index.md",
+  "source_sha256": "fc695c8d2dfdc9971877f4c0bcdccf351f6d6ca1d5ea1ee86f5058c2056beb1d"
+}

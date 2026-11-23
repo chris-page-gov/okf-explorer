@@ -79,8 +79,8 @@ describe('OKF v0.2 compatibility', () => {
     expect(deriveTrustTier([])).toBe('unverified');
     expect(normalizeVerified({ at: '2026-07-25T01:00:00Z' })).toEqual([]);
     expect(deriveTrustTier(normalizeVerified({ at: '2026-07-25T01:00:00Z' }))).toBe('unverified');
-    expect(normalizeVerified({ by: 'team:reviewer', at: '2026-07-25T01:00:00Z' })).toEqual([]);
-    expect(normalizeVerified({ by: 'human:reviewer', at: '2026-07-25' })).toEqual([]);
+    expect(normalizeVerified({ by: 'team:reviewer', at: '2026-07-25T01:00:00Z' })).toHaveLength(1);
+    expect(normalizeVerified({ by: 'human:reviewer', at: '2026-07-25' })).toHaveLength(1);
     expect(normalizeVerified({ by: 'human:reviewer', at: '2026-02-30T01:00:00Z' })).toEqual([]);
   });
 
@@ -88,8 +88,8 @@ describe('OKF v0.2 compatibility', () => {
     const today = new Date(2026, 6, 25, 12);
     expect(isConceptStale('2026-07-25', today)).toBe(true);
     expect(isConceptStale('2026-07-26', today)).toBe(false);
-    expect(isConceptStale('invalid', today)).toBe(false);
-    expect(isConceptStale('2026-99-99', today)).toBe(false);
+    expect(isConceptStale('invalid', today)).toBe(true);
+    expect(isConceptStale('2026-99-99', today)).toBe(true);
   });
 
   it('presents an Attested Computation as a passive declared contract', () => {
@@ -131,4 +131,41 @@ describe('OKF v0.2 compatibility', () => {
     expect(okfConceptPresentation(node).generated.by).toBe('process:builder');
     expect(node['x-provider-policy']).toEqual({ retain: true });
   });
+});
+
+describe('OKF 0.3 interpretation', () => {
+  it('keeps history while comparing author and verifier instants across offsets at full precision', () => {
+    const generated = { by: 'editor/v1', at: '2026-11-01T01:00:00.0000002+01:00' };
+    const verified = normalizeVerified([
+      { by: 'human:past', at: '2026-11-01T00:00:00.0000001Z' },
+      { by: 'custom:checker', at: '2026-11-01T00:00:00.000000200Z' }
+    ]);
+    expect(verified).toHaveLength(2);
+    expect(deriveTrustTier(verified, generated)).toBe('machine-confirmed');
+    expect(deriveTrustTier(verified, { at: 'broken' })).toBe('unverified');
+    expect(deriveTrustTier(verified)).toBe('human-reviewed');
+  });
+
+  it('compares the exact stale instant, treats midnight as UTC and retains source timestamps', () => {
+    const now = new Date('2026-11-23T00:00:00.000Z');
+    expect(isConceptStale('2026-11-22T23:00:00.000001-01:00', now)).toBe(false);
+    expect(isConceptStale('2026-11-23', now)).toBe(true);
+    expect(isConceptStale('2026-11-23T00:00:00', now)).toBe(true);
+    expect(isConceptStale([], now)).toBe(false);
+    const node = { id: 'a', title: 'A', type: 'Metric', status: 'paused', timestamp: 'old',
+      sources: { resource: 'urn:source:a', last_modified: '2026-11-23T08:30:00+01:00' } };
+    const result = okfConceptPresentation(node, now, '0.3');
+    expect(result.sources[0].last_modified).toBe(node.sources.last_modified);
+    expect(result.status).toBe('paused');
+    expect(result.generated.basis).toBe('not-declared');
+  });
+});
+
+it('selects a fence only in the Computation section and gives a file precedence', () => {
+  const node = { id: 'x', title: 'X', type: 'Attested Computation', parameters: { name: 'year', type: 'integer' },
+    body: '## Computation\n### Query\n~~~sql\nSELECT 1\n~~~' };
+  expect(normalizeAttestedComputation(node)?.inlineComputation).toBe(true);
+  expect(normalizeAttestedComputation(node)?.parameters[0].required).toBe(false);
+  expect(normalizeAttestedComputation({ ...node, computation: 'file.sql' })?.inlineComputation).toBe(false);
+  expect(normalizeAttestedComputation({ ...node, body: '## Computation\nText\n## Other\n~~~sql\nx\n~~~' })?.inlineComputation).toBe(false);
 });

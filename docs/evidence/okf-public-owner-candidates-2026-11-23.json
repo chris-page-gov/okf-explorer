@@ -1,0 +1,1427 @@
+{
+  "schema": "okf-public-owner-candidates.v1",
+  "owner": "chris-page-gov",
+  "observed_at": "2026-11-23T08:50:43.931226+00:00",
+  "enumeration_errors": [],
+  "tree_coverage": "complete",
+  "public_repositories": 218,
+  "candidate_repositories": 20,
+  "index_inspection_requested": true,
+  "scope": "Default-branch candidates. Undeclared Markdown-only and release-only bundles require review.",
+  "repositories": [
+    {
+      "repository": "chris-page-gov/Awesome-Code-as-Agent-Harness-Papers",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "roots": [
+        {
+          "root": "_site/wiki",
+          "evidence": [
+            {
+              "path": "_site/wiki/index.md",
+              "blob": "214ffefabaeb366b2d08b84100079df738f9f1f5",
+              "okf_version": "0.1",
+              "kind": "declared-index"
+            }
+          ]
+        },
+        {
+          "root": "wiki",
+          "evidence": [
+            {
+              "path": "wiki/index.md",
+              "blob": "214ffefabaeb366b2d08b84100079df738f9f1f5",
+              "okf_version": "0.1",
+              "kind": "declared-index"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "commit": "b91defd7c9cf9cda3824c8e5557f818de99ff70e",
+      "tree": "1262e3834416e71c75dca77e2dbc914aec5b88de",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/ai-engineering-lab-hackathon-london-2026",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "roots": [
+        {
+          "root": "challenge-2/wiki",
+          "evidence": [
+            {
+              "path": "challenge-2/wiki/index.md",
+              "blob": "d6f13394792b33bf16989c41d2f064108291a1ab",
+              "okf_version": "0.1",
+              "kind": "declared-index"
+            }
+          ]
+        },
+        {
+          "root": "gov-ckan",
+          "evidence": [
+            {
+              "path": "gov-ckan/okf-explorer.json",
+              "blob": "1688d696651ae11e59740cd2e9aa5c263fc6a174",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "gov-ckan-sample",
+          "evidence": [
+            {
+              "path": "gov-ckan-sample/okf-explorer.json",
+              "blob": "24698bfe77d9786a9e8bae60e19f5ba55a313831",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "gov-ckan-sample/wiki",
+          "evidence": [
+            {
+              "path": "gov-ckan-sample/wiki/index.md",
+              "blob": "430dd23debcc0c574c2338e80e8f7e491f72be36",
+              "okf_version": "0.1",
+              "kind": "declared-index"
+            }
+          ]
+        },
+        {
+          "root": "gov-ckan/wiki",
+          "evidence": [
+            {
+              "path": "gov-ckan/wiki/index.md",
+              "blob": "491e5b7630af99f86c32fd19798716839ac6ffa3",
+              "okf_version": "0.1",
+              "kind": "declared-index"
+            }
+          ]
+        },
+        {
+          "root": "postmortem-public/wiki",
+          "evidence": [
+            {
+              "path": "postmortem-public/wiki/index.md",
+              "blob": "2a567a01ed1938929a6de7c94bdaf13e7b504323",
+              "okf_version": "0.1",
+              "kind": "declared-index"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "commit": "8418bce78496e36598b10d4562b1fb275ad610bb",
+      "tree": "6833c4e323e2e052a44951c7fc68148d4cfa4fec",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/ai-infrastructure-wiki",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "roots": [
+        {
+          "root": ".",
+          "evidence": [
+            {
+              "path": "okf-bundle.json",
+              "blob": "6f74fc43fca42e3f9c7d5486672eb05a6f0acb5f",
+              "kind": "runtime"
+            },
+            {
+              "path": "okf-bundle.jsonld",
+              "blob": "eb64c5d3d03590a8c67af3f3da7a06e4f4abebb2",
+              "kind": "graph"
+            },
+            {
+              "path": "okf-bundle.yamlld",
+              "blob": "9d8dc35a081874db982d0e7106b494861d5bc4ae",
+              "kind": "graph"
+            },
+            {
+              "path": "okf-explorer.json",
+              "blob": "6f74fc43fca42e3f9c7d5486672eb05a6f0acb5f",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "data-gov-uk",
+          "evidence": [
+            {
+              "path": "data-gov-uk/okf-explorer.json",
+              "blob": "8d52246f112396749b1ba47b74ae6181031bd2f1",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "data.gov.uk",
+          "evidence": [
+            {
+              "path": "data.gov.uk/okf-explorer.json",
+              "blob": "8d52246f112396749b1ba47b74ae6181031bd2f1",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "gov-ckan",
+          "evidence": [
+            {
+              "path": "gov-ckan/okf-explorer.json",
+              "blob": "3a989f06c514b050b4cb3bad1f1b0ee0d02407a2",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "legislation",
+          "evidence": [
+            {
+              "path": "legislation/okf-bundle.jsonld",
+              "blob": "9a5c3549d662d4d3e00c8eab99d7ae975a0161c0",
+              "kind": "graph"
+            },
+            {
+              "path": "legislation/okf-bundle.yamlld",
+              "blob": "662d1b1639f77fee1ebcc55ee3798034b5e095ca",
+              "kind": "graph"
+            },
+            {
+              "path": "legislation/okf-explorer.json",
+              "blob": "e8ac3751bf47b2a648aa6e17ae3844fb23aa89b9",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "uk-government-apis",
+          "evidence": [
+            {
+              "path": "uk-government-apis/okf-bundle.jsonld",
+              "blob": "e881d9102ef78364b4f577051d9f82d6c1be256f",
+              "kind": "graph"
+            },
+            {
+              "path": "uk-government-apis/okf-bundle.yamlld",
+              "blob": "d8e4f29fb998af66cfd99d51c567014dad9d4d3d",
+              "kind": "graph"
+            },
+            {
+              "path": "uk-government-apis/okf-explorer.json",
+              "blob": "8d52246f112396749b1ba47b74ae6181031bd2f1",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "whole-law",
+          "evidence": [
+            {
+              "path": "whole-law/okf-bundle.jsonld",
+              "blob": "f1b3cafa924ac6d1a927073f87413d7764e75494",
+              "kind": "graph"
+            },
+            {
+              "path": "whole-law/okf-bundle.yamlld",
+              "blob": "52f1127f5e77c8f8610eef458e377018c117b14b",
+              "kind": "graph"
+            },
+            {
+              "path": "whole-law/okf-explorer.json",
+              "blob": "858ec84de92082bf90df146bf4c9347f39562539",
+              "kind": "runtime"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "commit": "0a10d78b7b07cfa8c0ea790f96274a520b057fa1",
+      "tree": "63960c52e994efeb187f662f48c60f0e836d7811",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/for-the-kids-FTK",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "roots": [
+        {
+          "root": "public/downloads",
+          "evidence": [
+            {
+              "path": "public/downloads/okf-bundle.json",
+              "blob": "22223b84f356e427dca85f8f07b7102b68b6781d",
+              "kind": "runtime"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "commit": "f05f4c1036fff41a5b281bb262c271fd8035fba1",
+      "tree": "1a391e6136233eacb5dcbf88ecdc0fa285531587",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/gds-local-hackathon-20260909-early-years",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "roots": [
+        {
+          "root": "baseline",
+          "evidence": [
+            {
+              "path": "baseline/index.md",
+              "blob": "106aae2c660bdce75bd87fcf1a69834648c201b6",
+              "okf_version": "0.2",
+              "kind": "declared-index"
+            },
+            {
+              "path": "baseline/okf-bundle.json",
+              "blob": "3ff8091d2e8201bbac083d68b86264d6dd071c15",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "bundle",
+          "evidence": [
+            {
+              "path": "bundle/index.md",
+              "blob": "106aae2c660bdce75bd87fcf1a69834648c201b6",
+              "okf_version": "0.2",
+              "kind": "declared-index"
+            },
+            {
+              "path": "bundle/okf-bundle.json",
+              "blob": "dc78686d7cf5452b95b326b3ec0c2c95480e810b",
+              "kind": "runtime"
+            },
+            {
+              "path": "bundle/okf-bundle.jsonld",
+              "blob": "2dd76633a782c2bcafc7af15324e2c619445e826",
+              "kind": "graph"
+            },
+            {
+              "path": "bundle/okf-bundle.yamlld",
+              "blob": "6ac4a962d18ac2bdfd997172d26a0119f62abb07",
+              "kind": "graph"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "commit": "b421f1fa3b55ac0075b4c7036c4234b57e14dce7",
+      "tree": "dad066ec90512ac6a411da49aea1be615b8f5c3d",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/gis-ai-go",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "roots": [
+        {
+          "root": "okf-plus",
+          "evidence": [
+            {
+              "path": "okf-plus/index.md",
+              "blob": "578dd5885a4055f06fed936661e7b3411b7f64d2",
+              "okf_version": "0.2",
+              "kind": "declared-index"
+            },
+            {
+              "path": "okf-plus/okf.semantic.json",
+              "blob": "c771efa197a16d71ed3c18aa0faa47c46a05a79f",
+              "kind": "contract"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "commit": "789adc86e88b8171e9d24d4ace845fc700731664",
+      "tree": "121259976adaf62a427f51a2c8146bfc98b3d679",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/okf-LandRegistry",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "roots": [
+        {
+          "root": ".",
+          "evidence": [
+            {
+              "path": "okf.publication.json",
+              "blob": "d08f4ffe7156e84d36f75e1e0905a0589ce15892",
+              "kind": "contract"
+            },
+            {
+              "path": "okf.semantic.json",
+              "blob": "a6a947dd590415e2ea868377316ef14f2cfd397d",
+              "kind": "contract"
+            }
+          ]
+        },
+        {
+          "root": "bundle",
+          "evidence": [
+            {
+              "path": "bundle/index.md",
+              "blob": "609da9f9faa86d07bea98bc0312573251d5b1f13",
+              "okf_version": "0.2",
+              "kind": "declared-index"
+            },
+            {
+              "path": "bundle/okf-bundle.jsonld",
+              "blob": "28af3af1e6d26609ff3a3706323abeb850b0a260",
+              "kind": "graph"
+            },
+            {
+              "path": "bundle/okf-bundle.yamlld",
+              "blob": "68d7e1b00daf2fe293a9969a80100ca370e133d6",
+              "kind": "graph"
+            },
+            {
+              "path": "bundle/okf-explorer.json",
+              "blob": "8ccf530d035cf4c47b31fdef72c304ff4b5ccc77",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "evaluation/fixtures/degraded-descriptor",
+          "evidence": [
+            {
+              "path": "evaluation/fixtures/degraded-descriptor/okf-explorer.json",
+              "blob": "3c6f18a7e5d7ad18dab58b9c11d19f22bd6b2bee",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "evaluation/fixtures/malformed-descriptor",
+          "evidence": [
+            {
+              "path": "evaluation/fixtures/malformed-descriptor/okf-explorer.json",
+              "blob": "db84e810290c0932fc19f7d7b399f12b79462f58",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "evaluation/fixtures/tiny-producer",
+          "evidence": [
+            {
+              "path": "evaluation/fixtures/tiny-producer/okf-explorer.json",
+              "blob": "e73246d2f9322584135ea2b28a9d53dbfbe4c0ee",
+              "kind": "runtime"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "commit": "4580c9e4afef10a102b852b01083ee5cb7d34018",
+      "tree": "b9235af05ed5de1fa02152a2a947595fc5af3e68",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/okf-ai-infrastructure",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "roots": [
+        {
+          "root": ".",
+          "evidence": [
+            {
+              "path": "index.md",
+              "blob": "7cda98c840ef8be470b31ea085e6084484bb61a1",
+              "okf_version": "0.2",
+              "kind": "declared-index"
+            },
+            {
+              "path": "okf-bundle.json",
+              "blob": "912e4847b55d7cd640cde2c30485cb93bb9abf3c",
+              "kind": "runtime"
+            },
+            {
+              "path": "okf.config.json",
+              "blob": "9deca2d8885e9c7971e195ed70b785f4c77b6060",
+              "kind": "configuration"
+            },
+            {
+              "path": "okf.publication.json",
+              "blob": "3d68417e94c7f3e95c112ef17342f261b9c12a93",
+              "kind": "contract"
+            },
+            {
+              "path": "okf.semantic.json",
+              "blob": "5aa29ca6b841af917ffbd920b7bfe6eacd69cb6a",
+              "kind": "contract"
+            }
+          ]
+        },
+        {
+          "root": "bundle",
+          "evidence": [
+            {
+              "path": "bundle/index.md",
+              "blob": "7cda98c840ef8be470b31ea085e6084484bb61a1",
+              "okf_version": "0.2",
+              "kind": "declared-index"
+            },
+            {
+              "path": "bundle/okf-bundle.json",
+              "blob": "912e4847b55d7cd640cde2c30485cb93bb9abf3c",
+              "kind": "runtime"
+            },
+            {
+              "path": "bundle/okf-bundle.jsonld",
+              "blob": "a0c6961b0fa02110f3f4828cee60b6ba28ef46a9",
+              "kind": "graph"
+            },
+            {
+              "path": "bundle/okf-bundle.yamlld",
+              "blob": "99071cf96b762358390e56efa3c8dbe0d8918e56",
+              "kind": "graph"
+            },
+            {
+              "path": "bundle/okf.config.json",
+              "blob": "9deca2d8885e9c7971e195ed70b785f4c77b6060",
+              "kind": "configuration"
+            }
+          ]
+        },
+        {
+          "root": "tests/fixtures/semantic_domain",
+          "evidence": [
+            {
+              "path": "tests/fixtures/semantic_domain/index.md",
+              "blob": "8493cd8c0a498d4917bab2bf1e4806b1a603cdb5",
+              "okf_version": "0.2",
+              "kind": "declared-index"
+            },
+            {
+              "path": "tests/fixtures/semantic_domain/okf.config.json",
+              "blob": "e0db37b67649ec1a1efaf7a1d35b41294a2baecc",
+              "kind": "configuration"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "commit": "39c82b51cb1dd824ab8208b56b247ae3cc1d7dd5",
+      "tree": "6bd95dbc10e5f5963688979db25bbfa336e2998d",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/okf-dwp",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "roots": [
+        {
+          "root": ".",
+          "evidence": [
+            {
+              "path": "okf.publication.json",
+              "blob": "f207f03002caef9a7917ca78750ae482d55052a9",
+              "kind": "contract"
+            },
+            {
+              "path": "okf.semantic.json",
+              "blob": "0abe10378674fa01a1c111c649bdfb88ec61c805",
+              "kind": "contract"
+            }
+          ]
+        },
+        {
+          "root": "bundle",
+          "evidence": [
+            {
+              "path": "bundle/index.md",
+              "blob": "f26538e7d254c45725be1d2a4e0b6be9fdc444d8",
+              "okf_version": "0.2",
+              "kind": "declared-index"
+            },
+            {
+              "path": "bundle/okf-bundle.json",
+              "blob": "2723ae1b7dc41505159e0961033f9c3261039966",
+              "kind": "runtime"
+            },
+            {
+              "path": "bundle/okf-bundle.jsonld",
+              "blob": "cc85af738f11bb24d76c5bfb54e30c9840699ee1",
+              "kind": "graph"
+            },
+            {
+              "path": "bundle/okf-bundle.yamlld",
+              "blob": "147bac750c3600348fe9f530fc94c366e4e4f5d7",
+              "kind": "graph"
+            }
+          ]
+        },
+        {
+          "root": "combined",
+          "evidence": [
+            {
+              "path": "combined/okf-bundle.jsonld",
+              "blob": "a60b33dd36906caf5ef070d777f415d642856686",
+              "kind": "graph"
+            },
+            {
+              "path": "combined/okf-bundle.yamlld",
+              "blob": "4a12b688eeda0a247e22c62ba7fde1dcb26ad4fa",
+              "kind": "graph"
+            },
+            {
+              "path": "combined/okf-explorer.json",
+              "blob": "2483bf1ff7b30e17a35d01834b122dc821721f1e",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "full-dmg",
+          "evidence": [
+            {
+              "path": "full-dmg/index.md",
+              "blob": "699b75ac9394df3c030fb07fc4c9478b03fce4b3",
+              "okf_version": "0.2",
+              "kind": "declared-index"
+            },
+            {
+              "path": "full-dmg/okf-bundle.jsonld",
+              "blob": "7a84b86ba3925c0d79f41761713c41a285e8efa3",
+              "kind": "graph"
+            },
+            {
+              "path": "full-dmg/okf-bundle.yamlld",
+              "blob": "4bb6e1f8b354e9b3968467c0104d66061151ce32",
+              "kind": "graph"
+            },
+            {
+              "path": "full-dmg/okf-explorer.json",
+              "blob": "e3b34e0596851fe03d870e4e3f0740b2342b2898",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "logical-context",
+          "evidence": [
+            {
+              "path": "logical-context/okf-bundle.jsonld",
+              "blob": "133e08e7addb5b4085434d87936f62a4704a6760",
+              "kind": "graph"
+            },
+            {
+              "path": "logical-context/okf-bundle.yamlld",
+              "blob": "8916e288fe982b6d6d3eca1d29e1aa8cbf1c2b50",
+              "kind": "graph"
+            },
+            {
+              "path": "logical-context/okf-explorer.json",
+              "blob": "e66ea6c8ca603f1ef1ec92ddb65672524cdc81a5",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "structured-context",
+          "evidence": [
+            {
+              "path": "structured-context/okf-bundle.jsonld",
+              "blob": "9fded595ecf25458121fe9c7599e3f612cb00957",
+              "kind": "graph"
+            },
+            {
+              "path": "structured-context/okf-bundle.yamlld",
+              "blob": "c3963156d21d245f697318639664e6ada37cfa13",
+              "kind": "graph"
+            },
+            {
+              "path": "structured-context/okf-explorer.json",
+              "blob": "ff90892b80be6f045f438eb0b31c7f4a39edc7d8",
+              "kind": "runtime"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "commit": "3d45b47763c204b1264b5d1d7897d583361f25bd",
+      "tree": "25abde0b2879caae475277186578bf4ad501dc0a",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/okf-els-api",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "roots": [
+        {
+          "root": ".",
+          "evidence": [
+            {
+              "path": "okf.publication.json",
+              "blob": "f2b099e9c429c342e468829962e2eeef1932bce3",
+              "kind": "contract"
+            },
+            {
+              "path": "okf.semantic.json",
+              "blob": "a32274b6daae00f0b67cc99895becd0d45298653",
+              "kind": "contract"
+            }
+          ]
+        },
+        {
+          "root": "bundle",
+          "evidence": [
+            {
+              "path": "bundle/index.md",
+              "blob": "48333965b0b47fbe3c08d4cccc69faa3473873e2",
+              "okf_version": "0.2",
+              "kind": "declared-index"
+            },
+            {
+              "path": "bundle/okf-bundle.jsonld",
+              "blob": "ad80f2c699dca91cc8e36f3186e14e6e57cedad6",
+              "kind": "graph"
+            },
+            {
+              "path": "bundle/okf-bundle.yamlld",
+              "blob": "ad80f2c699dca91cc8e36f3186e14e6e57cedad6",
+              "kind": "graph"
+            },
+            {
+              "path": "bundle/okf-explorer.json",
+              "blob": "8a0250b1f617c4188760261520e71b0bc676d98c",
+              "kind": "runtime"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "commit": "811a688183b0cd150a2fd9ccf3d414d48c112da6",
+      "tree": "f23c0bc38e1fd3d1b633ae06c2330899de456385",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/okf-explorer",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "roots": [
+        {
+          "root": ".",
+          "evidence": [
+            {
+              "path": "index.md",
+              "blob": "65a3c7ec5365053357dfe6bacfbb34259a54f824",
+              "okf_version": "0.2",
+              "kind": "declared-index"
+            },
+            {
+              "path": "okf-bundle.json",
+              "blob": "61a9ad47aeb3234ab26fc47b8600cf4b0056eed1",
+              "kind": "runtime"
+            },
+            {
+              "path": "okf-bundle.jsonld",
+              "blob": "a8fd3942e1876a872fa9b36e2365a4a7e16c575d",
+              "kind": "graph"
+            },
+            {
+              "path": "okf-bundle.yamlld",
+              "blob": "97ae99d0201dd1fa0c001e0de6bf10711c81e840",
+              "kind": "graph"
+            },
+            {
+              "path": "okf.config.json",
+              "blob": "ba1b81ffb54c9bc2d09645a967d45079a60d66c0",
+              "kind": "configuration"
+            },
+            {
+              "path": "okf.publication.json",
+              "blob": "8bb033c949c7e150324774b9962cca6d34d24289",
+              "kind": "contract"
+            },
+            {
+              "path": "okf.semantic.json",
+              "blob": "3d51ab579e088c39e7e25af570c76681ede40f8f",
+              "kind": "contract"
+            }
+          ]
+        },
+        {
+          "root": "apps/okf-explorer/tests/fixtures/external-acceptance",
+          "evidence": [
+            {
+              "path": "apps/okf-explorer/tests/fixtures/external-acceptance/okf-explorer.json",
+              "blob": "e1257ed7db75bedebbcffbb494ffaf4cce504177",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "docs/examples/first-bundle",
+          "evidence": [
+            {
+              "path": "docs/examples/first-bundle/index.md",
+              "blob": "8efef2c7eec8e3903b80fade7835bbce98bb80c2",
+              "okf_version": "0.2",
+              "kind": "declared-index"
+            },
+            {
+              "path": "docs/examples/first-bundle/okf-bundle.json",
+              "blob": "5afd05101437fd9b0065b5456b0d2addbaa7a6de",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "evaluation/heritage",
+          "evidence": [
+            {
+              "path": "evaluation/heritage/okf-bundle.jsonld",
+              "blob": "01a44507306ff490a433f3bc466080f1a11b9868",
+              "kind": "graph"
+            },
+            {
+              "path": "evaluation/heritage/okf-bundle.yamlld",
+              "blob": "2cda23f2d168c9e994844625500e2076cefb12a9",
+              "kind": "graph"
+            },
+            {
+              "path": "evaluation/heritage/okf-explorer.json",
+              "blob": "0b7e5a27abc01a286f98977a81d2ae0ec407e617",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "evaluation/heritage/synthetic",
+          "evidence": [
+            {
+              "path": "evaluation/heritage/synthetic/okf-bundle.jsonld",
+              "blob": "740fbd7316d2c4fd3abb01b703f23a58a3a12a33",
+              "kind": "graph"
+            },
+            {
+              "path": "evaluation/heritage/synthetic/okf-bundle.yamlld",
+              "blob": "e1f5f61e8f855295f98096f06ac9e8f99291089b",
+              "kind": "graph"
+            },
+            {
+              "path": "evaluation/heritage/synthetic/okf-explorer.json",
+              "blob": "da89d2cb5064129659acabd93cec87481a246f97",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "evaluation/heritage/tiny",
+          "evidence": [
+            {
+              "path": "evaluation/heritage/tiny/okf-bundle.jsonld",
+              "blob": "0d783f7d7b2a8d3267b04d65729b173e6c84bee5",
+              "kind": "graph"
+            },
+            {
+              "path": "evaluation/heritage/tiny/okf-bundle.yamlld",
+              "blob": "ae820ebbb3f9e741e5e68c8299fe799c734ac183",
+              "kind": "graph"
+            },
+            {
+              "path": "evaluation/heritage/tiny/okf-explorer.json",
+              "blob": "48bf1a2a6b0c67808ca0152c486add5c673f611c",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "legislation",
+          "evidence": [
+            {
+              "path": "legislation/okf-explorer.json",
+              "blob": "5a8219e4592c8df74cb4f16f638d6fd41b8ffec0",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "profiles/bounded-inference/v1/ontology",
+          "evidence": [
+            {
+              "path": "profiles/bounded-inference/v1/ontology/okf-explorer.json",
+              "blob": "71ef9fd1674a6b2dc38b5fb99f3c2e7e2131d46c",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "profiles/geospatial-boundary-pack/v1/examples/uk-countries-december-2025",
+          "evidence": [
+            {
+              "path": "profiles/geospatial-boundary-pack/v1/examples/uk-countries-december-2025/okf-explorer.json",
+              "blob": "23cd27e57a41a0e331ca10b899767997e847a5ea",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "profiles/governed-vocabulary/v1/examples/missing-csv-label",
+          "evidence": [
+            {
+              "path": "profiles/governed-vocabulary/v1/examples/missing-csv-label/okf-explorer.json",
+              "blob": "9b7c6af6451f04c993b9787f8b8c7dca36f7949e",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "profiles/governed-vocabulary/v1/examples/vocabulary",
+          "evidence": [
+            {
+              "path": "profiles/governed-vocabulary/v1/examples/vocabulary/okf-explorer.json",
+              "blob": "5d9c063c7c829cfb8df36733b08c7cf119157828",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "uk-government-apis",
+          "evidence": [
+            {
+              "path": "uk-government-apis/okf-explorer.json",
+              "blob": "e0ab1fde23823d0685d9b0699ca5841fb24bc5b9",
+              "kind": "runtime"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "commit": "954d44a345b31a3142bc69a822295e6420108d93",
+      "tree": "8fc2cc82d157990d43e92d762b982b50c70b454e",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/okf-govuk-content",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "roots": [
+        {
+          "root": ".",
+          "evidence": [
+            {
+              "path": "okf.publication.json",
+              "blob": "6acee6149801080162a68f0c0847f7dd6bc4c197",
+              "kind": "contract"
+            }
+          ]
+        },
+        {
+          "root": "bundle",
+          "evidence": [
+            {
+              "path": "bundle/index.md",
+              "blob": "e13c608778d306018cf6b2808c4029c597b6bc8b",
+              "okf_version": "0.2",
+              "kind": "declared-index"
+            },
+            {
+              "path": "bundle/okf-bundle.jsonld",
+              "blob": "d7a4d4153b7c88fe86605a46562fadf1cf917b51",
+              "kind": "graph"
+            },
+            {
+              "path": "bundle/okf-bundle.yamlld",
+              "blob": "e045d2d847925d49ffb22e52b3b03527ad714285",
+              "kind": "graph"
+            },
+            {
+              "path": "bundle/okf-explorer.json",
+              "blob": "516086c094b141fa6ffd5873ebe7534b32001e2a",
+              "kind": "runtime"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "commit": "ef5575d2dccdab7999fc8fdc3cbdd2e47b4f6247",
+      "tree": "8d0b475494fb66c12750da0c996ee369390cca67",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/okf-heritage-coventry-warwickshire",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "roots": [
+        {
+          "root": "site",
+          "evidence": [
+            {
+              "path": "site/okf-bundle.jsonld",
+              "blob": "ce1e6fb3321de84a7e6724e806ee49dc589efd61",
+              "kind": "graph"
+            },
+            {
+              "path": "site/okf-bundle.yamlld",
+              "blob": "370b058d8be7e452773d794a12358f62ad01f0de",
+              "kind": "graph"
+            },
+            {
+              "path": "site/okf-explorer.json",
+              "blob": "0b7e5a27abc01a286f98977a81d2ae0ec407e617",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "site/synthetic",
+          "evidence": [
+            {
+              "path": "site/synthetic/okf-bundle.jsonld",
+              "blob": "6ba336d94c0a0f9e0801f5f4d1f56cd29e6e2430",
+              "kind": "graph"
+            },
+            {
+              "path": "site/synthetic/okf-bundle.yamlld",
+              "blob": "ac225a293febc4cb2fb86f5229dd25c208b6e660",
+              "kind": "graph"
+            },
+            {
+              "path": "site/synthetic/okf-explorer.json",
+              "blob": "da89d2cb5064129659acabd93cec87481a246f97",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "site/tiny",
+          "evidence": [
+            {
+              "path": "site/tiny/okf-bundle.jsonld",
+              "blob": "6dea258be47db153ee4bf7e44ec13cc587be1404",
+              "kind": "graph"
+            },
+            {
+              "path": "site/tiny/okf-bundle.yamlld",
+              "blob": "8d01a1ea23c71fb7cc1e9768309920dca6d03452",
+              "kind": "graph"
+            },
+            {
+              "path": "site/tiny/okf-explorer.json",
+              "blob": "48bf1a2a6b0c67808ca0152c486add5c673f611c",
+              "kind": "runtime"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "commit": "2c5c73ac5c54e71a73b4fd3556470bbd9ab9359e",
+      "tree": "7a43d351eb6b7c2deaf89ac1fad91a3ee992e26f",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/okf-ons",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "roots": [
+        {
+          "root": ".",
+          "evidence": [
+            {
+              "path": "okf.publication.json",
+              "blob": "74083869d249fe0cf7bbadb7bdf1c2d627f51603",
+              "kind": "contract"
+            },
+            {
+              "path": "okf.semantic.json",
+              "blob": "d846bba767c61eb2a25e3e84f417479fd07e39e5",
+              "kind": "contract"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "commit": "125981a2f29d2114da34128b3a5031ec55006709",
+      "tree": "f5fc8fb64d9f1e076bf088ad95f0070851a5768e",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/okf-planning",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "roots": [
+        {
+          "root": ".",
+          "evidence": [
+            {
+              "path": "okf.publication.json",
+              "blob": "f92d4ae9857ce7d410bc13afb84c4170b8c688bf",
+              "kind": "contract"
+            },
+            {
+              "path": "okf.semantic.json",
+              "blob": "aaf164e2292104f0be93913d25fa1c1aadff6520",
+              "kind": "contract"
+            }
+          ]
+        },
+        {
+          "root": "bundle",
+          "evidence": [
+            {
+              "path": "bundle/index.md",
+              "blob": "1f25cb4d31104c468dbb75204c145bae24ae9448",
+              "okf_version": "0.2",
+              "kind": "declared-index"
+            },
+            {
+              "path": "bundle/okf-bundle.jsonld",
+              "blob": "952bec2bbdf717bd44d58936271ff8b759ada1c7",
+              "kind": "graph"
+            },
+            {
+              "path": "bundle/okf-bundle.yamlld",
+              "blob": "952bec2bbdf717bd44d58936271ff8b759ada1c7",
+              "kind": "graph"
+            },
+            {
+              "path": "bundle/okf-explorer.json",
+              "blob": "eea53a29161e8f517c75adad8cf82fa378faa27f",
+              "kind": "runtime"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "commit": "9941f9e4ec17345a26e99421a016f94c69cd2a31",
+      "tree": "5a82b71311ea0f551db2c52916c012b7977b8cd3",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/okf-uk-government-apis",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "roots": [
+        {
+          "root": ".",
+          "evidence": [
+            {
+              "path": "okf.publication.json",
+              "blob": "fab4a6c066c484be4afc75d41e7aca6557010ae1",
+              "kind": "contract"
+            },
+            {
+              "path": "okf.semantic.json",
+              "blob": "70ed394075363a4144df860e431fedec74967910",
+              "kind": "contract"
+            }
+          ]
+        },
+        {
+          "root": "bundle",
+          "evidence": [
+            {
+              "path": "bundle/index.md",
+              "blob": "9b49b3f45bdebf3ecf6d53684162386519f7d08b",
+              "okf_version": "0.2",
+              "kind": "declared-index"
+            },
+            {
+              "path": "bundle/okf-bundle.jsonld",
+              "blob": "0d93c18b927ac6e2eaf00cd0a2907cdf2fdd5a77",
+              "kind": "graph"
+            },
+            {
+              "path": "bundle/okf-bundle.yamlld",
+              "blob": "b9158b7e4a7f92efbfabe558b4b5d3ee635712eb",
+              "kind": "graph"
+            },
+            {
+              "path": "bundle/okf-explorer.json",
+              "blob": "ddb94efbd5dd0886491db742b7627987a2b4531a",
+              "kind": "runtime"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "commit": "61047d3824c3ddc9ff5ac1c0c8c398fd6b2aa261",
+      "tree": "a25b3df647ee66153ae6a334e7a334e40f534f1a",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/okf-uk-legislation",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "roots": [
+        {
+          "root": ".",
+          "evidence": [
+            {
+              "path": "okf.publication.json",
+              "blob": "09260c8c39e15d3d1dd8d1adb906b7e2316cfdf2",
+              "kind": "contract"
+            },
+            {
+              "path": "okf.semantic.json",
+              "blob": "6d27c289fddb4c5c13bf90005c51d0d595900c67",
+              "kind": "contract"
+            }
+          ]
+        },
+        {
+          "root": "bundle",
+          "evidence": [
+            {
+              "path": "bundle/index.md",
+              "blob": "349c78c4050749b624f5e640f73795f1df2744c5",
+              "okf_version": "0.2",
+              "kind": "declared-index"
+            },
+            {
+              "path": "bundle/okf-bundle.jsonld",
+              "blob": "e88a48d2066f0d077b728b332260679731b744cf",
+              "kind": "graph"
+            },
+            {
+              "path": "bundle/okf-bundle.yamlld",
+              "blob": "a8a02264a245ba145f6cb08b57228be4249406fb",
+              "kind": "graph"
+            },
+            {
+              "path": "bundle/okf-explorer.json",
+              "blob": "ff2cd1f8b1bc203085066a3a013c24b6b80dcf47",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "bundle/whole-law",
+          "evidence": [
+            {
+              "path": "bundle/whole-law/index.md",
+              "blob": "935143bc5d85f45f2a2c3f8bfa8fe2466b71ed80",
+              "okf_version": "0.2",
+              "kind": "declared-index"
+            },
+            {
+              "path": "bundle/whole-law/okf-bundle.jsonld",
+              "blob": "531cbf889eb42fe3dbb600dda6aaaa0b4466ae18",
+              "kind": "graph"
+            },
+            {
+              "path": "bundle/whole-law/okf-bundle.yamlld",
+              "blob": "5213a1fa1388c7a0fba81aa5dd9230988c96a02c",
+              "kind": "graph"
+            },
+            {
+              "path": "bundle/whole-law/okf-explorer.json",
+              "blob": "2dfb6c990843abf74757961cda152a126e39f0e1",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "release-assurance/profile-reconcile-20260927/diagnostic-runtime-attempt-06/bundle",
+          "evidence": [
+            {
+              "path": "release-assurance/profile-reconcile-20260927/diagnostic-runtime-attempt-06/bundle/okf-explorer.json",
+              "blob": "fd76ee32b43154f3a44b3a8cd82cf12b8f6e195f",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "release-assurance/profile-reconcile-20260927/diagnostic-runtime-attempt-06/bundle/whole-law",
+          "evidence": [
+            {
+              "path": "release-assurance/profile-reconcile-20260927/diagnostic-runtime-attempt-06/bundle/whole-law/okf-explorer.json",
+              "blob": "091ff570d1332b92829e0bb81cd0aa55e7911a0c",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "whole-law",
+          "evidence": [
+            {
+              "path": "whole-law/index.md",
+              "blob": "935143bc5d85f45f2a2c3f8bfa8fe2466b71ed80",
+              "okf_version": "0.2",
+              "kind": "declared-index"
+            },
+            {
+              "path": "whole-law/okf-bundle.yamlld",
+              "blob": "5213a1fa1388c7a0fba81aa5dd9230988c96a02c",
+              "kind": "graph"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "commit": "67a51669f13fcb3ea100716fa9c5aae4949d1037",
+      "tree": "b1d9cbd88f8c5875f96c187a31a0f829561c2e85",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/okf-uk-living",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "roots": [
+        {
+          "root": ".",
+          "evidence": [
+            {
+              "path": "index.md",
+              "blob": "b168603df2f66bb85ecb7b7137fc2b2ac1aa172f",
+              "okf_version": "0.2",
+              "kind": "declared-index"
+            },
+            {
+              "path": "okf-bundle.json",
+              "blob": "48d7abaf5191c938829e13b0e41286399dc80fca",
+              "kind": "runtime"
+            },
+            {
+              "path": "okf-explorer.json",
+              "blob": "0b211bb27b78cbeccfa96cc9957f8e2f7ff9bd52",
+              "kind": "runtime"
+            },
+            {
+              "path": "okf.config.json",
+              "blob": "d29443720a9d3e6dd65e5bc26c4b926a8603bcf4",
+              "kind": "configuration"
+            },
+            {
+              "path": "okf.publication.json",
+              "blob": "3649d2e17fc57e8b7af6114a13b0e186047daa46",
+              "kind": "contract"
+            },
+            {
+              "path": "okf.semantic.json",
+              "blob": "ff6bf92f743a6b851390544863a41a74e638adcd",
+              "kind": "contract"
+            }
+          ]
+        },
+        {
+          "root": "publication",
+          "evidence": [
+            {
+              "path": "publication/okf-explorer.json",
+              "blob": "0853443bb7b5d3619557303bd9048538f7d74c78",
+              "kind": "runtime"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "commit": "241209d23cec7803da2525261908f3314ff45086",
+      "tree": "7b4067e27c0004ad6095f77d374c80bdf5669a89",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/uk-government-security-learning",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "roots": [
+        {
+          "root": "site/okf",
+          "evidence": [
+            {
+              "path": "site/okf/okf-bundle.json",
+              "blob": "f37a65a80f787d282473c84cc20e958e241e9d1e",
+              "kind": "runtime"
+            },
+            {
+              "path": "site/okf/okf-bundle.jsonld",
+              "blob": "095c9477e5e8e864b53bdaaa75dae4071ccaf661",
+              "kind": "graph"
+            },
+            {
+              "path": "site/okf/okf-bundle.yamlld",
+              "blob": "88da00ea7e8a23b025c1a6f11dec3a63f598c015",
+              "kind": "graph"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "commit": "604a82928f7c59fefe87c920969b9169aa018a2d",
+      "tree": "1448680e3266a6e01b1bbc5a0451117680a7f653",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/xgov-soft-eng-com",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "roots": [
+        {
+          "root": ".",
+          "evidence": [
+            {
+              "path": "okf.publication.json",
+              "blob": "e6dfa0c8c356c5c3d1604a69da39c5328ffd251a",
+              "kind": "contract"
+            },
+            {
+              "path": "okf.semantic.json",
+              "blob": "701a5cc4bba15434491191ae406269b6567d5d1e",
+              "kind": "contract"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "commit": "ebde9712eb2da9647ef26b265a376be03af43615",
+      "tree": "ab91367d6a2eaadadfaaedce5b053bfe86e48432",
+      "status": "tree-read"
+    }
+  ],
+  "repository_states": {
+    "tree-read": 218
+  },
+  "uninspected_indexes": 0
+}

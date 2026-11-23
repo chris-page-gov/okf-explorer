@@ -10,6 +10,8 @@ Producer routes are HTTP-checked, browser-unverified and not Voice-tested.
 - [Human guide](https://chris-page-gov.github.io/okf-explorer/docs/public-bundle-access.html): Read order, semantic entrypoints and a Voice prompt.
 - [Admitted Reader bundles](https://chris-page-gov.github.io/okf-explorer/okf-registry.json): Separate curated bundle registry.
 
+- [Public owner candidate catalogue](https://chris-page-gov.github.io/okf-explorer/docs/evidence/okf-public-owner-candidates-2026-11-23.json): Pinned repository trees and discovery coverage.
+
 ## Descriptors
 
 - [AI Infrastructure](https://chris-page-gov.github.io/okf-ai-infrastructure/okf-bundle.json): Small reference bundle. Preserve the distinction between authored research, derived references and external authority.
@@ -24,6 +26,10 @@ Producer routes are HTTP-checked, browser-unverified and not Voice-tested.
 - [UK Government APIs](https://chris-page-gov.github.io/okf-uk-government-apis/okf-explorer.json): Discovery metadata; endpoint access, execution, credentials and record-level rights remain separate.
 - [UK legislation](https://chris-page-gov.github.io/okf-uk-legislation/okf-explorer.json): Published v0.4.0. Model-assisted discovery is separate from official legal text; Whole-Law has its own child descriptors. This is not legal advice.
 - [A Life in the UK](https://chris-page-gov.github.io/okf-uk-living/okf-explorer.json): Population-complete preview; specialist review is incomplete. Semantic files use generated/semantic/life-course-corpus.*. The current GitHub descriptor differs from Pages, and the publication-data commit also differs; neither is listed as an equivalent fallback.
+
+## Pinned graphs
+
+- [OKF Explorer reference corpus graph](https://raw.githubusercontent.com/chris-page-gov/okf-explorer/954d44a345b31a3142bc69a822295e6420108d93/okf-bundle.jsonld) (JSON-LD, SHA-256 `29b0ccbc3a6756bd12d2f195311f1424bb91eae43ca3cf5a81319e2b058e1512`).
 
 This is supplemental discovery metadata, not a universal OKF core requirement
 or an OpenAI integration. Follow the loaded descriptor's relative paths.

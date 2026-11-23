@@ -14,10 +14,7 @@ export type OkfNode = {
     at?: string;
     [key: string]: unknown;
   };
-  sources?: Array<{
-    resource?: string;
-    [key: string]: unknown;
-  }>;
+  sources?: Record<string, unknown> | Array<Record<string, unknown>>;
   usage_window?: {
     from?: string;
     to?: string;
@@ -27,7 +24,7 @@ export type OkfNode = {
   status?: string;
   stale_after?: string;
   runtime?: string;
-  parameters?: Array<Record<string, unknown>>;
+  parameters?: Record<string, unknown> | Array<Record<string, unknown>>;
   computation?: string;
   executor?: Record<string, unknown>;
   attester?: Record<string, unknown>;
