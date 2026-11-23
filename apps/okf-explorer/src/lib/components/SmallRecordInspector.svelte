@@ -44,6 +44,10 @@
     element.addEventListener('click', onClick);
     return { destroy: () => element.removeEventListener('click', onClick) };
   }
+  let sourceByFootnote = $derived(new Map(okf.sources.flatMap(source => source.id
+    ? [[source.id, { title: source.title || source.id, resource: source.resource }] as const]
+    : []
+  )));
   const jsonText = (value: unknown) => JSON.stringify(value, null, 2);
   const metadataDisplayValue = (value: unknown) => value === undefined || value === null || value === '' ? 'Not specified (metadata gap)' : typeof value === 'object' ? JSON.stringify(value) : String(value);
 </script>
@@ -70,7 +74,10 @@
   {#snippet overview()}
           {#if detailNode.body}
             <section use:followMarkdownConcept class="markdown-body" aria-label="Markdown body">
-              {@html renderSafeMarkdown(detailNode.body, sourceUrl, markdownConceptHref)}
+              {@html renderSafeMarkdown(detailNode.body, sourceUrl, {
+                conceptHref: markdownConceptHref,
+                sourceForFootnote: id => sourceByFootnote.get(id)
+              })}
             </section>
           {/if}
           {#if backlinks.length}

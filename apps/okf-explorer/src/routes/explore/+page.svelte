@@ -1209,6 +1209,17 @@
     largeFacetFilters = filters;
   }
 
+  let bundleNavigationPath = $state('');
+  let bundleNavigation = $derived.by(() => {
+    const metadata = smallCorpus?.meta?.navigation;
+    if (!Array.isArray(metadata)) return [];
+    return metadata.filter((item): item is { path: string; body: string; concepts: string[] } =>
+      item && typeof item.path === 'string' && typeof item.body === 'string' &&
+      Array.isArray(item.concepts) && item.concepts.every((id: unknown) => typeof id === 'string')
+    );
+  });
+  let bundleNavigationDocument = $derived(bundleNavigation.find(document => document.path === bundleNavigationPath));
+
   function smallConceptUrl(id: string): string {
     const url = new URL(buildExplorerUrl(selectedId));
     url.searchParams.delete(SMALL_INSPECT_RELATIONSHIP_PARAM);
@@ -8562,6 +8573,27 @@
                 {/if}
                 <p>{smallCorpus.description || 'This OKF bundle is shown as a reduced set of nodes and relationships. Search and node-type filters in the left panel change the context used by every view.'}</p>
               </article>
+              {#if bundleNavigation.length}
+                <section aria-label="Bundle index and history">
+                  <label>
+                    Bundle index and history
+                    <select bind:value={bundleNavigationPath}>
+                      <option value="">Choose a document</option>
+                      {#each bundleNavigation as document}
+                        <option value={document.path}>{document.path}</option>
+                      {/each}
+                    </select>
+                  </label>
+                  {#if bundleNavigationDocument}
+                    <div class="markdown-body">{@html renderSafeMarkdown(bundleNavigationDocument.body)}</div>
+                    {#each bundleNavigationDocument.concepts as id}
+                      {#if Object.hasOwn(smallCorpus.nodes, id)}
+                        <button type="button" onclick={() => inspectNode(id)}>{smallCorpus.nodes[id].title}</button>
+                      {/if}
+                    {/each}
+                  {/if}
+                </section>
+              {/if}
               <div class="metrics">
                 <article><strong>{visibleNodes.length.toLocaleString()}</strong><span>visible nodes</span></article>
                 <article><strong>{scopedRelationships.length.toLocaleString()}</strong><span>visible relationships</span></article>

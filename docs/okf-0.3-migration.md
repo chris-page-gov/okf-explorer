@@ -44,7 +44,10 @@ replacement links and can be expanded beyond its first 20 entries. Trust and
 lifecycle filters use the same version-aware interpretation as the record.
 The bundle overview shows its declared description and licence. Links to
 sections of the same concept stay in its Markdown body. Inline Markdown links
-to other imported concepts open the target record in Explorer.
+to other imported concepts open the target record in Explorer. Use the bundle
+overview to read imported directory indexes and change logs and open their
+linked concepts. Claim footnotes with matching source IDs display the source
+title and link to its web address when one is declared.
 
 ## Give an AI one link
 

@@ -88,6 +88,7 @@ def project(root: Path) -> dict[str, Any]:
     root_metadata: dict[str, Any] = {}
     parser = MarkdownIt("commonmark").enable("table")
     concepts: dict[str, dict[str, Any]] = {}
+    navigation: dict[str, str] = {}
     files: set[str] = set()
     for directory, subdirs, names in root.walk():
         subdirs[:] = sorted(name for name in subdirs if not name.startswith("."))
@@ -98,11 +99,14 @@ def project(root: Path) -> dict[str, Any]:
                 continue
             route = path.relative_to(root).as_posix()
             files.add(route)
-            if name == "log.md" or path.suffix != ".md":
+            if path.suffix != ".md":
                 continue
-            if name == "index.md":
+            if name in {"index.md", "log.md"}:
+                document = parse_optional_frontmatter(path)
                 if route == "index.md":
-                    root_metadata = parse_optional_frontmatter(path).metadata
+                    root_metadata = document.metadata
+                if document.body:
+                    navigation[route] = document.body
                 continue
             document = parse_optional_frontmatter(path)
             kind = document.metadata.get("type")
@@ -144,6 +148,18 @@ def project(root: Path) -> dict[str, Any]:
             "description": root_metadata.get("description"),
             "license": root_metadata.get("license"),
             "frontmatter": root_metadata,
+            "navigation": [
+                {
+                    "path": route,
+                    "body": body,
+                    "concepts": sorted({
+                        target
+                        for href in markdown_targets(body, parser)
+                        if (target := concept_target(route, href, files, legacy_field=False)) in concepts
+                    }),
+                }
+                for route, body in sorted(navigation.items())
+            ],
         },
         "nodes": dict(sorted(concepts.items())),
         "edges": [

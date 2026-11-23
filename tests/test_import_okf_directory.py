@@ -21,7 +21,8 @@ class DirectoryReaderTests(unittest.TestCase):
         file.write_bytes(text.encode())
 
     def test_core_edges_and_preservation(self):
-        self.put("index.md", "---\r\nokf_version: '0.3'\r\ntitle: Estate\r\ndescription: Estate records\r\nlicense: CC-BY-4.0\r\n---\r\n")
+        self.put("index.md", "---\r\nokf_version: '0.3'\r\ntitle: Estate\r\ndescription: Estate records\r\nlicense: CC-BY-4.0\r\n---\r\n[Record](a/a.md)")
+        self.put("a/log.md", "## 2026-11-23\n- Linked to [B](/b%20file.md)")
         self.put("a/a.md", """---
 type: Unregistered
 resource: ../b%20file.md
@@ -41,7 +42,7 @@ extension: {nested: on}
 [Same concept](#section). [Broken](missing.md). [Escape](../../outside.md). [Not a concept](/index.md).
 """)
         concept = "---\ntype: Reference\n---\n"
-        for path in ["b file.md", "log.md", "a/index.md", "a/log.md",
+        for path in ["b file.md", "log.md", "a/index.md",
                      ".hidden.md", ".private/hidden.md"]:
             self.put(path, concept)
         self.put("notes.md", "---\nJust a thematic break")
@@ -53,6 +54,10 @@ extension: {nested: on}
         self.assertEqual(result["meta"]["title"], "Estate")
         self.assertEqual(result["meta"]["description"], "Estate records")
         self.assertEqual(result["meta"]["license"], "CC-BY-4.0")
+        self.assertEqual(
+            [(item["path"], item["concepts"]) for item in result["meta"]["navigation"]],
+            [("a/log.md", ["b file.md"]), ("index.md", ["a/a.md"])],
+        )
         self.assertEqual(set(result["nodes"]), {"a/a.md", "b file.md"})
         self.assertEqual(result["nodes"]["a/a.md"]["frontmatter"]["extension"], {"nested": "on"})
         self.assertEqual(result["nodes"]["a/a.md"]["@id"], "urn:example:a")

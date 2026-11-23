@@ -712,7 +712,9 @@ test('Links compares source assertions and inference with evidence and shareable
 test('OKF 0.3 shows verification history and opens the replacement concept', async ({ context, page }) => {
   const url = 'https://small.fixture.test/core-03.json';
   const original = { title: 'Former metric', type: 'Metric', status: 'deprecated',
-    body: '[Read the current definition](/new.md)', markdown_links: { '/new.md': 'new.md' },
+    body: 'Archived claim.[^policy] [Read the current definition](/new.md)\n\n[^policy]: Policy source.',
+    sources: [{id: 'policy', title: 'Policy source', resource: 'https://example.org/policy'}],
+    markdown_links: { '/new.md': 'new.md' },
     generated: { by: 'editor/v1', at: '2026-11-01' },
     verified: [{ by: 'human:earlier', at: '2026-10-31' }, { by: 'team:current', at: '2026-11-01' }],
     stale_after: 'invalid' };
@@ -736,8 +738,31 @@ test('OKF 0.3 shows verification history and opens the replacement concept', asy
   await expect(backlinks).toContainText('Replacement');
   await backlinks.getByRole('button', { name: 'Former metric' }).click();
   await expect(detail.getByRole('heading', { name: 'Former metric' })).toBeVisible();
+  await expect(detail.getByRole('link', { name: 'Policy source' })).toHaveAttribute('href', 'https://example.org/policy');
   await detail.getByRole('link', { name: 'Read the current definition' }).click();
   await expect(detail.getByRole('heading', { name: 'Replacement metric' })).toBeVisible();
+});
+
+test('reads an OKF 0.3 bundle index without adding it to the graph', async ({ context, page }) => {
+  const url = 'https://small.fixture.test/navigation-03.json';
+  await context.route(url, route => route.fulfill({
+    contentType: 'application/json', headers: { 'access-control-allow-origin': '*' },
+    body: JSON.stringify({
+      okf_version: '0.3',
+      meta: {
+        title: 'Example bundle', license: 'CC-BY-4.0', description: 'Example scope',
+        navigation: [{ path: 'index.md', body: '## Directory contents', concepts: ['record.md'] }]
+      },
+      nodes: { 'record.md': { title: 'Indexed record', type: 'Reference' } }
+    })
+  }));
+  await page.goto('?' + new URLSearchParams({ bundle: url, view: 'narrative' }));
+  await expect(page.getByText('Bundle licence CC-BY-4.0')).toBeVisible();
+  const navigation = page.getByRole('region', { name: 'Bundle index and history' });
+  await navigation.getByRole('combobox').selectOption('index.md');
+  await expect(navigation.getByRole('heading', { name: 'Directory contents' })).toBeVisible();
+  await navigation.getByRole('button', { name: 'Indexed record' }).click();
+  await expect(page.locator('.right-panel').getByRole('heading', { name: 'Indexed record' })).toBeVisible();
 });
 
 test('opens the complete reference semantic graph including its declared root routes', async ({ context, page }) => {
