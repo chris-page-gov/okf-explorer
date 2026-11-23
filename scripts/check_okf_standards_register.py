@@ -76,6 +76,15 @@ def check_register(root: Path = ROOT) -> list[str]:
         if not item.get("url") or not target.is_file():
             errors.append(f"Missing local file or URL for catalogue {key}")
 
+    for producer in register.get("reviewed_public_producer_sources", []):
+        repository = producer.get("repository", "")
+        commit = producer.get("observed_commit", "")
+        if (producer.get("visibility") != "public"
+                or not re.fullmatch(r"https://github.com/chris-page-gov/[A-Za-z0-9_.-]+", repository)
+                or not COMMIT_RE.fullmatch(commit)
+                or not producer.get("source_reference", "").startswith(repository + "/blob/" + commit + "/")):
+            errors.append("Public producer source must have public visibility and a pinned owned source reference")
+
     expected_human = register.get("stable_human_reference")
     expected_machine = register.get("stable_machine_reference")
     links = access.get("standards_register", {})

@@ -2,6 +2,7 @@
 
 ## Unreleased — repository conventions and complete discovery
 
+- Record reviewed producer sources such as Hansard when generated releases are stored outside Git, with a pinned source reference and a public-visibility check.
 - Add general repository foundations and explicit locale guidance to the safe bootstrap.
 - Recover truncated trees, inspect authenticated owner inventories and fail complete-discovery checks when indexes remain pending.
 - Accept declared directory outputs in the semantic reconciler while retaining bounded containment checks.

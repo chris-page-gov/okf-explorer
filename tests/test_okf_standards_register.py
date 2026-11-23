@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import tempfile
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 from shutil import copyfile
 
@@ -15,6 +16,16 @@ ROOT = Path(__file__).resolve().parents[1]
 class TestOkfStandardsRegister(unittest.TestCase):
     def test_repository_register_and_catalogue_links_pass(self) -> None:
         self.assertEqual(check_register(ROOT), [])
+
+    def test_public_source_producer_requires_confirmed_public_visibility(self) -> None:
+        register = json.loads((ROOT / "registry/okf-standards.json").read_text())
+        register["reviewed_public_producer_sources"][0]["visibility"] = "private"
+        access = json.loads((ROOT / "registry/public-bundle-access.json").read_text())
+        with patch("scripts.check_okf_standards_register.load_json", side_effect=[register, access]):
+            self.assertIn(
+                "Public producer source must have public visibility and a pinned owned source reference",
+                check_register(ROOT),
+            )
 
     def test_unpinned_historical_reference_fails(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

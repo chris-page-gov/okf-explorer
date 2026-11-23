@@ -78,5 +78,16 @@
     "The owner catalogue covers public repositories only. Private repositories are deliberately excluded.",
     "Repository declarations and candidate evidence do not prove current publication, core conformance, semantic-profile adoption or release approval.",
     "Keep historical bundle versions and frozen evidence pinned to their original source revision."
+  ],
+  "reviewed_public_producer_sources": [
+    {
+      "repository": "https://github.com/chris-page-gov/okf-hansard",
+      "visibility": "public",
+      "observed_commit": "148ad5b4ce7db394c2af5fa6af8fa1f1255a0a81",
+      "source_reference": "https://github.com/chris-page-gov/okf-hansard/blob/148ad5b4ce7db394c2af5fa6af8fa1f1255a0a81/README.md",
+      "role": "source-producer",
+      "discovery_basis": "Reviewed source repository; generated release artefacts are stored outside Git.",
+      "artifact_acceptance": "pending-separate-verification"
+    }
   ]
 }

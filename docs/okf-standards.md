@@ -57,6 +57,10 @@ directory for the reviewed public access routes. Use the dated scan to inspect
 the broader set of public repositories that may merit review. Neither is a
 register of private repositories.
 
+## Source producers
+
+[Hansard's source repository](https://github.com/chris-page-gov/okf-hansard) builds generated releases outside Git. It is recorded separately in the machine register with its source revision. Discovery of checked-in descriptors and version-declaring indexes therefore needs this additional source review. Published artefacts and serving endpoints require their own acceptance evidence.
+
 ## Reuse this reference
 
 For a durable human link, use this page:
