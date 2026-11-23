@@ -73,6 +73,7 @@ function semanticType(value: unknown): string[] {
 
 function localSemanticRoute(value: unknown): string {
   const route = typeof value === 'string' && value.trim() === value ? value : '';
+  if (route === 'index') return route;
   return LOCAL_SEMANTIC_ROUTE.test(route) ? route : '';
 }
 
