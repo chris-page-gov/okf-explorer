@@ -14,6 +14,8 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 
+from okf_standards import specification_for
+
 
 SEMANTIC_CONTRACT = {
     "schema": "okf-repository-semantic-contract.v1",
@@ -24,7 +26,7 @@ SEMANTIC_CONTRACT = {
     },
     "okf_core": {
         "version": "0.2",
-        "specification": "https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md",
+        "specification": specification_for("0.2"),
         "status": "migration",
     },
     "semantic_layer": {
@@ -246,6 +248,9 @@ release-assurance/tmp/
 """,
     "AGENTS.md": """# Repository Instructions
 
+- Write human-readable material in British English. Use the `en-GB` locale and
+  `Europe/London` time zone; preserve exact code, schema fields, URLs and
+  official titles where changing them would be incorrect.
 - Treat Markdown and files under `source/` as authored source of truth.
 - Do not edit `generated/` or release evidence by hand.
 - Preserve unrelated work and use feature branches and pull requests.
@@ -260,7 +265,7 @@ release-assurance/tmp/
 Status: repository bootstrap only; acquisition, generation, CI and publication
 are disabled until the domain profile and bootstrap evidence are reviewed.
 
-This initialization commit deliberately contains no corpus, generated bundle,
+This initialisation commit deliberately contains no corpus, generated bundle,
 or release evidence. Domain and build work belongs on a feature branch and is
 merged through review.
 """,
@@ -293,12 +298,12 @@ No licence is inferred by this bootstrap. Record separately:
 """,
     "REPOSITORY_STATUS.md": """# Repository status
 
-- Lifecycle: initialization only
+- Lifecycle: initialisation only
 - Acquisition: disabled
 - Generation: disabled
 - CI: scaffolded but disabled
 - Remote creation, push and publication: never performed by the scaffolder
-- Next gate: review this bootstrap, make the initialization-only default-branch
+- Next gate: review this bootstrap, make the initialisation-only default-branch
   commit, configure required checks, then open domain work on a feature branch
 """,
     "source/README.md": """# Authored and acquired source
@@ -324,6 +329,69 @@ jobs:
 """,
 }
 
+GENERAL_FILES = {
+    ".gitignore": """# Operating-system and editor files
+.DS_Store
+~$*
+*.swp
+.idea/
+.vscode/
+
+# Environment files; keep the shareable example
+.env
+.env.*
+!.env.example
+""",
+    "AGENTS.md": """# Repository instructions
+
+- Write human-readable material in British English. Use the `en-GB` locale and
+  `Europe/London` time zone; preserve exact code, schema fields, URLs and
+  official titles where changing them would be incorrect.
+- Preserve existing work and inspect repository guidance before changing files.
+- Use feature branches and review for changes; do not overwrite unrelated work.
+- Inspect declared tools and commands before running them. Run the repository's
+  relevant validation and report exactly what was and was not checked.
+- Keep documentation and `CHANGELOG.md` in lockstep with controlled changes.
+- Do not create remotes, push, publish, or spend money implicitly.
+""",
+    "README.md": """# {{REPOSITORY_NAME}}
+
+Repository foundations. Add a purpose, ownership, and usage guidance when they
+are known and reviewed.
+""",
+    "CHANGELOG.md": """# Changelog
+
+## Unreleased
+
+- Added initialisation foundations for this repository.
+""",
+    "SECURITY.md": """# Security
+
+Report suspected vulnerabilities privately to the repository owner. Do not
+include secrets, personal data, exploit payloads, or restricted material in a
+public issue.
+""",
+    "LICENSE_DECISIONS.md": """# Licensing decisions
+
+No licence is inferred by these foundations. Record the repository's licence
+decision, its scope, the reviewer, and supporting evidence before adding a
+licence grant or redistributing material.
+""",
+}
+
+
+def scaffold_files(kind: str, target: Path) -> dict[str, str]:
+    """Return the selected scaffold, rendering only the general README title."""
+    if kind == "okf":
+        return FILES
+    if kind == "general":
+        name = target.name.replace("\\", "\\\\").replace("#", "\\#")
+        return {
+            relative: content.replace("{{REPOSITORY_NAME}}", name)
+            for relative, content in GENERAL_FILES.items()
+        }
+    raise ValueError(f"unsupported scaffold kind: {kind}")
+
 
 @dataclass(frozen=True)
 class TargetState:
@@ -344,6 +412,8 @@ def git_output(target: Path, *arguments: str) -> subprocess.CompletedProcess[str
 
 
 def classify_target(target: Path) -> TargetState:
+    if target.is_symlink():
+        raise ValueError(f"target directory is a symlink: {target}")
     exists = target.exists()
     if exists and not target.is_dir():
         raise ValueError(f"target is not a directory: {target}")
@@ -362,11 +432,13 @@ def classify_target(target: Path) -> TargetState:
     return TargetState(classification, exists, non_empty, git_repository, dirty)
 
 
-def planned_changes(target: Path) -> tuple[list[str], list[str]]:
+def planned_changes(
+    target: Path, files: dict[str, str] = FILES
+) -> tuple[list[str], list[str]]:
     create: list[str] = []
     preserve: list[str] = []
-    for relative in FILES:
-        if (target / relative).exists():
+    for relative in files:
+        if (target / relative).exists() or (target / relative).is_symlink():
             preserve.append(relative)
         else:
             create.append(relative)
@@ -383,26 +455,72 @@ def refusal_reason(state: TargetState, adopt_existing: bool) -> str | None:
     return None
 
 
-def apply_scaffold(target: Path, create: list[str]) -> None:
+def apply_scaffold(
+    target: Path, create: list[str], files: dict[str, str] = FILES
+) -> None:
+    errors = destination_errors(target, files)
+    if errors:
+        raise ValueError("; ".join(errors))
     target.mkdir(parents=True, exist_ok=True)
     for relative in create:
         destination = target / relative
         destination.parent.mkdir(parents=True, exist_ok=True)
-        destination.write_text(FILES[relative], encoding="utf-8")
+        # Exclusive creation prevents replacing a file that appeared after
+        # preflight; symlink destinations are rejected by the same operation.
+        with destination.open("x", encoding="utf-8") as stream:
+            stream.write(files[relative])
 
 
-def check_scaffold(target: Path) -> list[str]:
+def destination_errors(
+    target: Path, files: dict[str, str] = FILES
+) -> list[str]:
+    """Reject symlink traversal and non-regular scaffold destinations."""
+    errors: list[str] = []
+    absolute = target.absolute()
+    for component in reversed((absolute, *absolute.parents)):
+        if component.is_symlink():
+            errors.append(f"refusing to traverse target symlink: {component}")
+    if errors:
+        return errors
+    for relative in files:
+        path = target
+        parts = Path(relative).parts
+        for index, part in enumerate(parts):
+            path = path / part
+            if path.is_symlink():
+                errors.append(f"refusing to follow scaffold symlink: {path}")
+                break
+            if not path.exists():
+                continue
+            if index < len(parts) - 1 and not path.is_dir():
+                errors.append(f"scaffold parent is not a directory: {path}")
+                break
+            if index == len(parts) - 1 and not path.is_file():
+                errors.append(f"scaffold destination is not a regular file: {path}")
+                break
+    return errors
+
+
+def check_scaffold(
+    target: Path,
+    files: dict[str, str] = FILES,
+    *,
+    reject_enabled_ci: bool = True,
+) -> list[str]:
     errors: list[str] = []
     if not target.is_dir():
         return [f"target directory does not exist: {target}"]
-    for relative, expected in FILES.items():
+    errors.extend(destination_errors(target, files))
+    if errors:
+        return errors
+    for relative, expected in files.items():
         path = target / relative
         if not path.is_file():
             errors.append(f"missing bootstrap file: {relative}")
         elif path.read_text(encoding="utf-8") != expected:
             errors.append(f"bootstrap file differs from the reviewed scaffold: {relative}")
     workflows = target / ".github" / "workflows"
-    if workflows.is_dir():
+    if reject_enabled_ci and workflows.is_dir():
         enabled = sorted(
             path.relative_to(target).as_posix()
             for pattern in ("*.yml", "*.yaml")
@@ -438,6 +556,12 @@ def render(state: TargetState, target: Path, create: list[str], preserve: list[s
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("target", type=Path)
+    parser.add_argument(
+        "--kind",
+        choices=("general", "okf"),
+        default="okf",
+        help="scaffold type (default: okf)",
+    )
     action = parser.add_mutually_exclusive_group()
     action.add_argument("--apply", action="store_true", help="write missing scaffold files")
     action.add_argument("--check", action="store_true", help="check an applied scaffold")
@@ -447,7 +571,8 @@ def main() -> int:
         help="allow a non-empty or dirty target; existing files are never overwritten",
     )
     args = parser.parse_args()
-    target = args.target.resolve()
+    target = args.target.absolute()
+    files = scaffold_files(args.kind, target)
     try:
         state = classify_target(target)
     except ValueError as error:
@@ -456,17 +581,25 @@ def main() -> int:
     if reason:
         print(reason, file=sys.stderr)
         return 2
+    errors = destination_errors(target, files)
+    if errors:
+        print("\n".join(errors), file=sys.stderr)
+        return 2 if args.apply else 1
     if args.check:
-        errors = check_scaffold(target)
+        errors = check_scaffold(
+            target,
+            files,
+            reject_enabled_ci=(args.kind == "okf"),
+        )
         if errors:
             print("\n".join(errors), file=sys.stderr)
             return 1
         print(f"bootstrap valid: {target}")
         return 0
-    create, preserve = planned_changes(target)
+    create, preserve = planned_changes(target, files)
     print(render(state, target, create, preserve))
     if args.apply:
-        apply_scaffold(target, create)
+        apply_scaffold(target, create, files)
     return 0
 
 

@@ -531,6 +531,29 @@ class BuildSiteTests(unittest.TestCase):
                 ):
                     build_site.assert_site_size_within_github_pages_limit()
 
+    def test_site_matches_pages_repository_metadata_exclusions(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            source = root / "source"
+            output = root / "site"
+            for name in ("nested/.github/workflows/check.yml", "nested/.git/config", ".well-known/okf.json"):
+                path = source / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text("fixture", encoding="utf-8")
+
+            build_site.copy_public_tree(source, output)
+            self.assertTrue((output / ".well-known/okf.json").is_file())
+            self.assertFalse((output / "nested/.github").exists())
+            self.assertFalse((output / "nested/.git").exists())
+            self.assertFalse(build_site.is_component_source_allowed(Path("nested/.github/workflows/check.yml")))
+
+            leaked = output / "nested/.github/workflows/check.yml"
+            leaked.parent.mkdir(parents=True)
+            leaked.write_text("fixture", encoding="utf-8")
+            with mock.patch.object(build_site, "OUT", output):
+                with self.assertRaisesRegex(RuntimeError, "GitHub Pages omits repository metadata"):
+                    build_site.assert_no_forbidden_files()
+
     def test_platform_metadata_is_removed_from_generated_site(self) -> None:
         with tempfile.TemporaryDirectory(
             prefix="okf-build-site-metadata-"

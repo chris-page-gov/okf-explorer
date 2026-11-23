@@ -1,5 +1,28 @@
 # Changelog
 
+## Unreleased — repository conventions and complete discovery
+
+- Record reviewed producer sources such as Hansard when generated releases are stored outside Git, with a pinned source reference and a public-visibility check.
+- Add general repository foundations and explicit locale guidance to the safe bootstrap.
+- Recover truncated trees, inspect authenticated owner inventories and fail complete-discovery checks when indexes remain pending.
+- Accept declared directory outputs in the semantic reconciler while retaining bounded containment checks.
+- Correct the Reader's handling of explicitly declared root routes in released semantic graphs.
+- Centralise current and historical specification references and the public bundle catalogues. Record the official 0.3 announcement date of 18 November 2026.
+- Document the [repository conventions](docs/repository-conventions.md) and refresh the public candidate catalogue from explicitly public rows.
+
+## Unreleased — OKF 0.3 Reader support
+
+- Allow an explicitly declared root index route when opening the released OKF+ semantic graph.
+- Import standard Markdown directories and resolve their core graph under the 0.3 path rules.
+- Use the last meaningful change when calculating trust, preserve verification history and evaluate freshness at the declared instant.
+- Add a pinned JSON-LD graph link, a repeatable Chrome evidence check, GitHub owner discovery and a [bundle migration assessment](docs/okf-0.3-migration.md).
+
+## Unreleased — Pages archive integrity
+
+- Exclude Git repository and GitHub workflow metadata from the Site before
+  computing the candidate receipt. GitHub Pages omits these paths when it
+  archives the Site. Keep public hidden paths such as `.well-known` available.
+
 ## Unreleased — semantic guidance
 
 - Explain the published Ontology, Validation and Links capabilities in the

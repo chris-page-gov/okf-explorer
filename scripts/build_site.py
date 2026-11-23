@@ -177,6 +177,7 @@ MARKDOWN_DISCOVERY_EXCLUDED_DIRS = {"uk-government-apis"}
 GITHUB_REPOSITORY = "https://github.com/chris-page-gov/okf-explorer"
 FORBIDDEN_NAMES = {".DS_Store"}
 FORBIDDEN_SUFFIXES = {".pyc"}
+PAGES_TRANSPORT_EXCLUSIONS = {".git", ".github"}
 SITE_COMPONENTS = ("data", "shell", "docs", "app")
 DEFAULT_SITE_COMPONENT_CACHE = ROOT / ".site-components"
 SITE_COMPONENT_OVERRIDE_OWNERS = {
@@ -1296,6 +1297,8 @@ def copy_public_tree(
         if source.is_dir():
             continue
         relative_to_source = source.relative_to(source_dir)
+        if PAGES_TRANSPORT_EXCLUSIONS.intersection(relative_to_source.parts):
+            continue
         if include is not None and not include(relative_to_source):
             continue
         try:
@@ -1316,7 +1319,10 @@ def assert_no_forbidden_files() -> None:
     for path in OUT.rglob("*"):
         if not path.is_file():
             continue
-        rel = path.relative_to(OUT).as_posix()
+        relative = path.relative_to(OUT)
+        rel = relative.as_posix()
+        if PAGES_TRANSPORT_EXCLUSIONS.intersection(relative.parts):
+            errors.append(f"{rel} (GitHub Pages omits repository metadata)")
         if path.name in FORBIDDEN_NAMES or path.name.startswith("~$"):
             errors.append(rel)
         if path.suffix.lower() in FORBIDDEN_SUFFIXES:
@@ -2022,6 +2028,7 @@ def is_mutable_evaluation_evidence(relative: Path) -> bool:
 def is_component_source_allowed(relative: Path) -> bool:
     return not (
         relative.name in FORBIDDEN_NAMES
+        or PAGES_TRANSPORT_EXCLUSIONS.intersection(relative.parts)
         or relative.name.startswith("~$")
         or relative.suffix.lower() in FORBIDDEN_SUFFIXES
         # Retained research PDFs and Word drafts are not Site transport assets.

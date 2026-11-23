@@ -35,6 +35,11 @@ uv run --locked python scripts/okf_repository_bootstrap.py /path/to/target --che
 The first command is a dry run. Adoption is always explicit. The scaffolder
 does not initialise Git, create a remote, commit, enable CI, push or publish.
 
+Use `--kind general` for general repository foundations when an OKF purpose
+has yet to be agreed. Follow the [repository creation and discovery
+conventions](repository-conventions.md), verify the initial default branch and
+commit after an authorised push, and repeat discovery with index inspection.
+
 The handoff is validated by the
 [`okf-domain-profile.v1` schema](../profiles/authoring/v1/domain-profile.schema.json).
 Start from the complete

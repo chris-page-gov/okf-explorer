@@ -7,7 +7,10 @@
   let { detailNode, smallCorpus, detailRelationships, sourceUrl, selectedFederationChild, outsideScope = false, inspectNode, inspectRelationship, loadFederationChild }:
     { detailNode: OkfNode; smallCorpus: NormalizedCorpus | null; detailRelationships: OkfRelationship[]; sourceUrl: string;
       selectedFederationChild?: FederationChild; outsideScope?: boolean; inspectNode: (id: string) => void; inspectRelationship: (relationship: OkfRelationship) => void; loadFederationChild: (child: FederationChild) => void } = $props();
-  let okf = $derived(okfConceptPresentation(detailNode));
+  let okf = $derived(okfConceptPresentation(detailNode, undefined, smallCorpus?.okfVersion));
+  let replacement = $derived(okf.status === 'deprecated' ? detailRelationships.find(relation =>
+    relation.source === detailNode.id && smallCorpus?.nodes[relation.target] &&
+    Array.isArray(relation.source_fields) && relation.source_fields.includes('superseded_by')) : undefined);
   const jsonText = (value: unknown) => JSON.stringify(value, null, 2);
   const metadataDisplayValue = (value: unknown) => value === undefined || value === null || value === '' ? 'Not specified (metadata gap)' : typeof value === 'object' ? JSON.stringify(value) : String(value);
 </script>
@@ -17,8 +20,13 @@
           {#if smallCorpus?.okfVersion}<span class="badge">OKF {smallCorpus.okfVersion}</span>{/if}
           <span class="badge" data-trust-tier={okf.trustTier}>{trustTierLabel(okf.trustTier)}</span>
           <span class="badge" data-lifecycle-status={okf.status}>{okf.status}</span>
-          {#if okf.stale}<span class="badge warning" data-stale="true">Stale</span>{/if}
+          {#if okf.stale}<span class="badge warning" data-stale="true">{okf.malformedStaleAfter ? 'Invalid review date' : 'Stale'}</span>{/if}
           <h2>{detailNode.title}</h2>
+          {#if replacement}
+            <button type="button" onclick={() => replacement && inspectNode(replacement.target)}>
+              Open replacement: {smallCorpus?.nodes[replacement.target]?.title}
+            </button>
+          {/if}
           <p>{detailNode.description || detailNode.summary || detailNode.source || detailNode.id}</p>
           {#if selectedFederationChild && (selectedFederationChild.descriptor || selectedFederationChild.discovery.routes.some((route) => route.purpose === 'descriptor' || (!route.purpose && ['published', 'raw'].includes(route.kind))))}
             <div class="detail-actions">
@@ -49,7 +57,7 @@
   {#snippet evidence()}
           <section class="okf-v02-summary" aria-label="OKF trust, lifecycle and provenance">
             <h3>Trust, lifecycle and provenance</h3>
-            <p class="muted">OKF v0.2 signals are advisory context for deciding whether and how to use this concept.</p>
+            <p class="muted">The trust tier uses checks made since the last recorded content change.</p>
             <dl>
               <dt>Trust tier</dt><dd>{trustTierLabel(okf.trustTier)}</dd>
               <dt>Lifecycle</dt><dd>{okf.status}{detailNode.status ? '' : ' (default)'}</dd>
@@ -60,11 +68,11 @@
                 {#if okf.generated.basis === 'legacy-v0.1-timestamp'}<small>Legacy OKF v0.1 timestamp fallback</small>{/if}
               </dd>
               {#if okf.verified.length}
-                <dt>Verified</dt>
+                <dt>Verification history</dt>
                 <dd>{okf.verified.map((event) => `${event.by || 'Unknown actor'}${event.at ? ` · ${event.at}` : ''}`).join('; ')}</dd>
               {/if}
               {#if okf.staleAfter}
-                <dt>Stale after</dt><dd>{okf.staleAfter}{okf.stale ? ' · stale now' : ' · currently fresh'}</dd>
+                <dt>Stale after</dt><dd>{okf.staleAfter}{okf.malformedStaleAfter ? ' · invalid date' : okf.stale ? ' · stale now' : ' · currently fresh'}</dd>
               {/if}
               {#if okf.usageWindow}
                 <dt>Usage window</dt><dd>{okf.usageWindow.from || '…'} → {okf.usageWindow.to || '…'}</dd>
