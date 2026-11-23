@@ -18,6 +18,7 @@ import {
   receiptFailureReference,
   receiptPageState,
   safeRelativePath,
+  staticBuildFile,
   validateJourneyManifest,
   verifySafeOutputParent,
   waitForLocator,
@@ -69,6 +70,21 @@ const valid = {
 
 test('accepts a bounded declarative journey manifest', () => {
   assert.equal(validateJourneyManifest(structuredClone(valid)).schema, valid.schema);
+});
+
+test('serves only snapshotted static files and directory indexes after the learning-home redirect', () => {
+  const materials = new Map([
+    ['index.html', {}], ['explore/index.html', {}],
+    ['reading-help/corpus/index.html', {}], ['_app/start.js', {}], ['404.html', {}]
+  ]);
+  assert.equal(staticBuildFile('', materials), 'index.html');
+  assert.equal(staticBuildFile('explore/', materials), 'explore/index.html');
+  assert.equal(staticBuildFile('explore', materials), 'explore/index.html');
+  assert.equal(staticBuildFile('reading-help/corpus/', materials), 'reading-help/corpus/index.html');
+  assert.equal(staticBuildFile('_app/start.js', materials), '_app/start.js');
+  assert.equal(staticBuildFile('missing/', materials), '404.html');
+  assert.equal(staticBuildFile('../private/', materials), '404.html');
+  assert.equal(staticBuildFile('explore/private.json', materials), '404.html');
 });
 
 test('rejects unsafe descriptor paths and unsupported actions', () => {
