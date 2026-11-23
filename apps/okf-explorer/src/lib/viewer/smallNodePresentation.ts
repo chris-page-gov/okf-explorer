@@ -69,11 +69,21 @@ export function safeSmallNodeUrl(value: unknown, baseUrl = ''): string {
   }
 }
 
+/** Resolve a concept's links from its source document, including bundle-root paths. */
+export function smallNodeMarkdownUrl(node: OkfNode, bundleUrl: string, href: string): string {
+  if (href.startsWith('//') || href.includes('\\')) return '';
+  if (href.startsWith('/')) return safeSmallNodeUrl(href.slice(1), bundleUrl);
+  const source = safeSmallNodeUrl(node.source || node.source_path, bundleUrl);
+  const documentUrl = source && /\.md$/i.test(new URL(source).pathname) ? source : bundleUrl;
+  return safeSmallNodeUrl(href, documentUrl);
+}
+
 type MarkdownLinks = {
   references?: Record<string, string>;
   imageSrc?: (href: string) => string;
   sectionAnchors?: boolean;
   conceptHref?: (href: string) => string;
+  resolveHref?: (href: string) => string;
   sourceForFootnote?: (id: string) => { title: string; resource: string } | undefined;
 };
 
@@ -96,7 +106,9 @@ function inlineMarkdown(value: string, baseUrl: string, links?: MarkdownLinks): 
     }
     const conceptUrl = links?.conceptHref?.(href);
     if (conceptUrl) return token(`<a href="${escapeHtml(conceptUrl)}" data-okf-markdown-href="${escapeHtml(href)}">${safeLabel}</a>`);
-    const safeUrl = safeSmallNodeUrl(href, baseUrl);
+    const safeUrl = links?.resolveHref
+      ? safeSmallNodeUrl(links.resolveHref(href))
+      : safeSmallNodeUrl(href, baseUrl);
     return token(safeUrl
       ? `<a href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer">${safeLabel}</a>`
       : safeLabel);
@@ -408,19 +420,21 @@ export function smallNodeSearchText(node: OkfNode): string {
   ].map((value) => valueString(value)).filter(Boolean).join(' ');
 }
 
-export function smallNodeLinks(node: OkfNode, bundleUrl = ''): SmallNodeLink[] {
+export function smallNodeLinks(node: OkfNode, bundleUrl = '', coreVersion = '0.2'): SmallNodeLink[] {
   const links: SmallNodeLink[] = [];
   const seen = new Set<string>();
-  const add = (label: string, value: unknown, kind: SmallNodeLink['kind']) => {
+  const add = (label: string, value: unknown, kind: SmallNodeLink['kind'], documentRelative = false) => {
     if (Array.isArray(value)) {
-      value.forEach((item, index) => add(`${label}${index ? ` ${index + 1}` : ''}`, item, kind));
+      value.forEach((item, index) => add(`${label}${index ? ` ${index + 1}` : ''}`, item, kind, documentRelative));
       return;
     }
     const record = objectValue(value);
     const candidate = record
       ? record.url || record.download_url || record.href || record.access_url || record.accessURL || record.content_url || record.contentUrl || record['@id']
       : value;
-    const url = safeSmallNodeUrl(candidate, bundleUrl);
+    const url = documentRelative && coreVersion === '0.3' && typeof candidate === 'string'
+      ? smallNodeMarkdownUrl(node, bundleUrl, candidate)
+      : safeSmallNodeUrl(candidate, bundleUrl);
     if (!url || seen.has(url)) return;
     seen.add(url);
     const recordLabel = record && valueString(record.title || record.name || record.label || record.format);
@@ -440,12 +454,12 @@ export function smallNodeLinks(node: OkfNode, bundleUrl = ''): SmallNodeLink[] {
   add('Schema.org sameAs', schema?.same_as || schema?.sameAs, 'source');
   add('Provenance source', provenance?.source_url || provenance?.source, 'source');
   for (const [index, source] of normalizeSources(node).entries()) {
-    add(source.title || source.id || `Provenance source ${index + 1}`, source.resource, 'source');
+    add(source.title || source.id || `Provenance source ${index + 1}`, source.resource, 'source', true);
   }
-  add('Resource', node.resource, 'resource');
-  add('Computation', node.computation, 'resource');
-  add('Executor', objectValue(node.executor)?.resource, 'resource');
-  add('Attester', objectValue(node.attester)?.resource, 'resource');
+  add('Resource', node.resource, 'resource', true);
+  add('Computation', node.computation, 'resource', true);
+  add('Executor', objectValue(node.executor)?.resource, 'resource', true);
+  add('Attester', objectValue(node.attester)?.resource, 'resource', true);
 
   const resources = Array.isArray(node.resources) ? node.resources : [];
   for (const [index, resource] of resources.entries()) {
