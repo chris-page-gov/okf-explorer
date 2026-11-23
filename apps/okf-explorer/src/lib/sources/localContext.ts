@@ -1,5 +1,5 @@
-import { MAX_CONTEXT_INDEX_BYTES, validateContextIndex } from '../context/index';
-import type { BoundContextIndex } from '../context/types';
+import { assembleContext, canonicalJson, contextSha256, MAX_CONTEXT_INDEX_BYTES, normaliseContextBudget, validateContextIndex } from '../context/index';
+import type { BoundContextIndex, ContextBudget, ContextPackage } from '../context/types';
 import { readResponseBytes } from './fetch';
 import { safeRelativeResourcePath, sha256Hex } from './releaseDataPlane';
 
@@ -35,8 +35,40 @@ export function localContextLoader(
         throw new Error('Local context index failed its byte length or SHA-256 check.');
       }
       const index = validateContextIndex(JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(raw)), bundle.snapshot);
-      return { index, binding: { index_url: url, index_sha256: sha256 }, audience: 'loopback' };
+      return { index, binding: { index_url: url, index_sha256: sha256 } };
     })().catch((error) => { pending = undefined; throw error; });
     return pending;
   };
+}
+
+
+/** Apply the browser's separately verified audience only to a transient copy.
+ * The released resolver and source records keep their public access semantics. */
+export async function assembleLoopbackContext(bound: BoundContextIndex, question: string,
+  requested?: Partial<ContextBudget>): Promise<ContextPackage> {
+  const limit = normaliseContextBudget(requested);
+  const records = new Map(bound.index.records.map(record => [record.id, record]));
+  const projected = {
+    ...bound.index,
+    records: bound.index.records.map(record => ({ ...record, access: 'public' as const }))
+  };
+  const encoder = new TextEncoder();
+  async function build(maxBytes: number) {
+    const result = await assembleContext(projected, question, { ...limit, max_bytes: maxBytes }, bound.binding);
+    for (const selection of result.selected) selection.record = records.get(selection.record.id)!;
+    result.budget.max_bytes = limit.max_bytes;
+    result.context_id = 'urn:sha256:' + await contextSha256(canonicalJson({
+      ...result, context_id: undefined, budget: { ...result.budget, used_bytes: undefined }
+    }));
+    for (let pass = 0; pass < 4; pass++) result.budget.used_bytes = encoder.encode(JSON.stringify(result)).length;
+    return result;
+  }
+  const result = await build(limit.max_bytes);
+  if (result.budget.used_bytes <= limit.max_bytes) return result;
+  // Restoring each access label adds at most four UTF-8 bytes. Leave room
+  // for the byte-counter digits as well and let the resolver omit whole rows.
+  const reserve = Math.max(8192, limit.max_bytes - limit.max_nodes * 4 - 16);
+  const bounded = await build(reserve);
+  if (bounded.budget.used_bytes > limit.max_bytes) throw new Error('Local context exceeds the requested byte budget.');
+  return bounded;
 }

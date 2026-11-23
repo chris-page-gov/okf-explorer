@@ -43,6 +43,8 @@ governed context source. Its ordinary Search remains available.
 The Reader can load a small bundle and its declared `context_assembly` index
 from the same HTTP origin on `127.0.0.1`. The index response must explicitly
 authorise the loopback audience through `X-OKF-Context-Audience: loopback`.
+The browser adapter retains the original access labels in the evidence package
+and calculates the package identity and byte count from those original labels.
 The Reader checks the relative path, byte count, SHA-256 digest and bundle
 snapshot before assembly. Restricted records retain that status in the
 browser's evidence package. Local context registers no optional page tools.

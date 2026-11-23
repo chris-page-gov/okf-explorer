@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { studyClubContextFixture } from '../../test/contextFixture';
-import { contextSha256 } from '../context/index';
-import { localContextLoader } from './localContext';
+import { assembleContext, canonicalJson, contextSha256 } from '../context/index';
+import { assembleLoopbackContext, localContextLoader } from './localContext';
 
 const ORIGIN = 'http://127.0.0.1:9010';
 const SOURCE = `${ORIGIN}/local/bundle.json`;
@@ -33,7 +33,7 @@ describe('local context admission', () => {
     const fetcher = vi.fn(async () => new Response(text, { headers: { 'X-OKF-Context-Audience': 'loopback' } }));
     vi.stubGlobal('fetch', fetcher);
     const load = localContextLoader(bundle, SOURCE, ORIGIN)!;
-    await expect(load()).resolves.toMatchObject({ index, audience: 'loopback' });
+    await expect(load()).resolves.toMatchObject({ index });
     await load();
     expect(fetcher).toHaveBeenCalledTimes(1);
     expect(fetcher).toHaveBeenCalledWith(`${ORIGIN}/local/context.json`,
@@ -49,4 +49,23 @@ describe('local context admission', () => {
       { headers: { 'X-OKF-Context-Audience': 'loopback' } })));
     await expect(load()).rejects.toThrow(/SHA-256|response too large/);
   });
+});
+
+
+it('restores original access labels and binds the final loopback package identity', async () => {
+  const { index, bundle } = await fixture();
+  for (const item of index.records) item.access = 'restricted';
+  const publicResult = await assembleContext(index, 'Reading circle');
+  expect(publicResult.selected).toEqual([]);
+  const local = await assembleLoopbackContext({
+    index, binding: { index_url: SOURCE, index_sha256: bundle.entrypoints.context_assembly.sha256 }
+  }, 'Reading circle');
+  expect(local.evidence_status).toEqual('sufficient');
+  expect(local.selected).toHaveLength(3);
+  expect(local.selected.every(({ record }) => record.access === 'restricted')).toBe(true);
+  expect(index.records.every(record => record.access === 'restricted')).toBe(true);
+  expect(local.budget.used_bytes).toBe(new TextEncoder().encode(JSON.stringify(local)).byteLength);
+  expect(local.context_id).toBe('urn:sha256:' + await contextSha256(canonicalJson({
+    ...local, context_id: undefined, budget: { ...local.budget, used_bytes: undefined }
+  })));
 });

@@ -11,7 +11,8 @@
   including licences declared as bundle paths. Preview embedded PNG, JPEG and
   GIF images and follow in-body heading links.
 - Allow digest-bound local Ask OKF context on an explicitly authorising
-  loopback server and keep page tools disabled for that audience.
+  loopback server, preserve evidence access labels and keep page tools disabled
+  for that audience. The browser adapter uses the pinned public resolver.
 - Surface imported bundle scope and licence, and omit same-concept anchors
   from the relationship graph.
 

@@ -5,6 +5,7 @@
   import { assembleCorpusContext } from '$lib/context/corpus';
   import type { ContextBudget, ContextPackage } from '$lib/context/types';
   import { documentContextRegistry, registerContextTools } from '$lib/context/webmcp';
+  import { assembleLoopbackContext } from '$lib/sources/localContext';
   import { isHttpUrl } from '$lib/viewer/helpers';
 
   let { source, onOpenRecord, suggestedQuestion }: {
@@ -58,7 +59,9 @@
           checkCurrent(expected, generation, signal);
           return fetch(input, { ...init, signal: init?.signal ? AbortSignal.any([signal, init.signal]) : signal });
         })
-      : await assembleContext(bound.index, value, limits, bound.binding, undefined, bound.audience);
+      : expected.kind === 'small' && expected.loopbackContext
+        ? await assembleLoopbackContext(bound, value, limits)
+        : await assembleContext(bound.index, value, limits, bound.binding);
     checkCurrent(expected, generation, signal);
     retained.set(assembled.context_id, assembled);
     while (retained.size > 4) retained.delete(retained.keys().next().value!);
