@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased — migration completion record
+
+- Distinguish implemented OKF 0.3 Reader support from producer migration and
+  release acceptance. Retain the earlier discovery snapshot and add the later
+  public-only observation with its coverage limits.
+
 ## Unreleased — guarded OKF skills
 
 - Version the two manually invoked OKF+ skills and their pinned upstream files.

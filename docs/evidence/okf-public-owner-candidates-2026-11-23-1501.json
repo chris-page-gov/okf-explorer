@@ -1,0 +1,4297 @@
+{
+  "schema": "okf-public-owner-candidates.v1",
+  "owner": "chris-page-gov",
+  "observed_at": "2026-11-23T15:01:14.449304+00:00",
+  "visibility": "public",
+  "enumeration_errors": [],
+  "tree_coverage": "complete",
+  "discovery_coverage": "complete",
+  "repositories_seen": 219,
+  "public_repositories": 219,
+  "candidate_repositories": 21,
+  "recovered_truncations": 4,
+  "index_inspection_requested": true,
+  "scope": "Default-branch candidates. Undeclared Markdown-only and release-only bundles require review.",
+  "repositories": [
+    {
+      "repository": "chris-page-gov/20261120-IREA-Hack-Property-public",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "22ff3cf6d6cd17b8c4582f5f9e3cd3387079a3f2",
+      "tree": "cb2cc8d9b99b92a3eeb14a3326a87fc4c7fbbb1f",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/A2A",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "71b5a485a9cf844a531e8a8c821507d9358dd4b9",
+      "tree": "37e0c3224c1e01b04a668aca00654623de0e8ffb",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/AIPlaybookMCP",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "d849548a27522956f0814958a212c77d810890d6",
+      "tree": "0127c68a28397773ff6db995788b3c95097f40a6",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/An-Illustrated-Guide-To-AI-Agents",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "7f56242c4150df4c463210d8e6d9300988057b5e",
+      "tree": "3ec5f117bebe173102d60f8123da0f10ca498280",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/AutoCrawler-BDUK",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "17b50cd895076c444a61e2f8d9afccb51056e75e",
+      "tree": "b563812f944ba8c14ac43207c31efb9f65d607dd",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/Awesome-Code-as-Agent-Harness-Papers",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [
+        {
+          "root": "_site/wiki",
+          "evidence": [
+            {
+              "path": "_site/wiki/index.md",
+              "blob": "214ffefabaeb366b2d08b84100079df738f9f1f5",
+              "okf_version": "0.1",
+              "kind": "declared-index"
+            }
+          ]
+        },
+        {
+          "root": "wiki",
+          "evidence": [
+            {
+              "path": "wiki/index.md",
+              "blob": "214ffefabaeb366b2d08b84100079df738f9f1f5",
+              "okf_version": "0.1",
+              "kind": "declared-index"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "c559d9987b5b54a1ec42abbab0b465e00a58068c",
+      "tree": "35d9f9c7acc44b8ae739f559b8046f2f292e0af4",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/BuildingApplicationsWithAIAgents",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "e5acdf6013e1cdbf3f4fbd511a6b952a214feccd",
+      "tree": "5754baf532004e24010cc72f1f9d983beb8df53f",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/ComfyUI",
+      "branch": "master",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "da2bfb5b0af26c7a1c44ec951dbd0fffe413c793",
+      "tree": "72647289b4f4d9bf866dfca93d3a2a889faf5b05",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/DA4DTE",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "416e131c86636b6e43592bc3de880f077a44eadb",
+      "tree": "61922e2452fc5fd46ce284b7655a172f41fec091",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/Data-Commons-agent-toolkit",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "b9378abdcc43868a6b6fa9e90ae86d6dcbd7f634",
+      "tree": "41fe4183ac86642b8982dc6284cbe302503f2910",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/Demo2",
+      "branch": "master",
+      "archived": false,
+      "fork": false,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "345fc7f2487285178e197a4674cbc42e0f6c558a",
+      "tree": "c0058b5e81b1bcf35ebde770cc2bbc1927ff0c5a",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/EHCP-Digital_Assistant-Autogen",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "bb64dbe0497a55739075cd20fe1fb0424d60e6b0",
+      "tree": "ad9c2d89840b9995de5ee328b4ee6fe532cd4e57",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/GeoAssist",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "e596367220d5342dc93194e59acddf3e1cf7e2b4",
+      "tree": "ce1af3c5cc6ac7d6e96bb281bc3c6df6e9fcced0",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/GovUK-MCP",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "8caa852e938c03f89766dac73ae6e5b9ae81b5e6",
+      "tree": "7ca89ad7a645078b2bd23dd77f9fd1a317a54531",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/Hands-On-LLM-BDUK",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "3b1aeebdfd04c75982e7708bdd37ff688edcccdf",
+      "tree": "35f77037f4b95efa4d110b901670b84c7a5803fd",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/Imogen-games",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "741f38a270fa6f8b77973a4146fbf6a897afae23",
+      "tree": "63ddd05ef19c49e3dbfd8ac9165862e9359b3ada",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/Jev",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "cf1fd0671433dd147574ecb6477726a6903ff074",
+      "tree": "d774c2960ea8a4eaf708f8c2fd0f86618c082c3e",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/LLM-Engineers-Handbook-BDUK",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "754ff376f849023a84a32b5a9c5f159546b6372d",
+      "tree": "8bf7d22af42abde27672ea90d4bfe8b2484c2703",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/LLM101n-BDUK",
+      "branch": "master",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "13acb58d682fd5981aba54f15a6e055dca53c754",
+      "tree": "40d79ce2ed7abccecd3311dd0dfd4309ce3cfddf",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/LLMs-from-scratch-BDUK",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "ec0bac5e1d854306a8ea6c308da49aae22479bd1",
+      "tree": "8bf4c65666c0be9dd87e33cef29fb1145efd5ed9",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/Lev_Selector_seminars",
+      "branch": "master",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "7b0d61d4122bb7f0b2f946a60966134dde81ee2e",
+      "tree": "e0adce9428c8b31675aae8b401fdf58b19e23e32",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/Local-Model-AI-Powered-Image-Description-Template",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "e10c65f210f8d30676ffd5e5f8c2a6b1824d86ee",
+      "tree": "408730ab3ec1a70fb913107ab29bc9cf8310d7b5",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/Local_Knowledge_Graph",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "431a038f49549ba37b9639b79c30d4ebbdd25727",
+      "tree": "387250ad5d416b1d576da00883ad8e6d64f757aa",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/MCP-Universe",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "024734ec514e1b840442961c56a992130839cdef",
+      "tree": "76e4b1af2967437ceecec7c2c7cbf378ecbf2dba",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/MUDDI-papers-and-research",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "a254e76807f362b2dfcebb5fb51cb0ae2bb8e3be",
+      "tree": "b167802b45ce87c36a597ebd6a7e76ea3be14abb",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/NIBS",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "84ea399266ccfe9fc468803dd9ce863fdb175274",
+      "tree": "99c2f2d8849fafb8038079f283bc37ae30262f8c",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/OKF-knowledge-catalog",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "d44368c15e38e7c92481c5992e4f9b5b421a801d",
+      "tree": "3d54f8eb937d9133200ade37e541194f4ed90316",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/PageIndex",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "2ac8694bf8fe89a3840dda9bdb88db5119b77fc4",
+      "tree": "b69ca26b68d7a26e57dcc6e7247ebb5fec81a068",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/PyRIT-BDUK",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "1d7c1275e5f4c836b45d32bd767caca86d48bce3",
+      "tree": "eb158b65a49e59b0b2c3e21953eefed4d6bb4b15",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/Road-Network-Classification",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "940d09894bfbeb7d42800b9ae64753694f288985",
+      "tree": "c068fc19edb4aeeca56bf4640d2c25f605ee36c7",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/SkillOpt",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "8ebede0efdb69f6b74472fc8ad009f716bb4ca1b",
+      "tree": "eb58ec65efa001ecdfcb618c375fb868a2f45121",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/Tableau-GQL-Samples",
+      "branch": "master",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "2830f1abba7d56dbbc6b8d66a2492af9a550baae",
+      "tree": "5a1e821181ccea96d3641dcec9c8fb5853161e32",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/TaskWeaver-BDUK",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "fbd76b6165c23bdf52bd02d115f8a8e036142ceb",
+      "tree": "57497c66c205bd7c5dd1f57d3d06fde2630d85ea",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/Tutorial-Codebase-Knowledge",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "8239cefe7a3573f3ab01aa3b064ea0f865bc8d6a",
+      "tree": "31f05f2fec24551b0d2d363bc35102a5931c34f9",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/TylerReedAI-BDUK",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "3b55ee561a52264ee223178e458dde8564f9edcb",
+      "tree": "ce573610912c56974687241afa3f535e56398d24",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/TypeAgent",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "fef315f292f9f9cf5ac3b80924b30fe321bafaee",
+      "tree": "2d3493b5e87c26c44cec85b5b21956efcee8505a",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/UI-TARS-desktop",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "db45a129617abbfed8cd57dc13f98391797f1470",
+      "tree": "6e5c974a82516b20aacc66d2bc57a14549977399",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/VoxCity",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "8a4abee368c8fe3b9624d68843f5af91a1a56fca",
+      "tree": "d871723def4608c205bbab7df9c3dbbec65f7e4f",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/abseil-py",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "7e6d9c15692ab300ac88a2c88e59f59816dc0900",
+      "tree": "29c040521c906d344636fc062438ab17ca153b3e",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/ag2-BDUK",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "4823e4305151346787c246b9efbf2d6f71f95ff1",
+      "tree": "b0ffc84cb331f439588efc582070f97f16edcdc4",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/agent-framework",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "390cc541eab1e2ae4759ae986f5af5dcdecfc203",
+      "tree": "36538a627d0c4b73fa152008ec73fa890d4623db",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/agents.md",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "efab70c4420be0472c6795a02be0bcf4d5ea0b2b",
+      "tree": "8d3713a3342fa072c5e8dc2c01c20377efc381d9",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/agentskills",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "7f094a2f794fbf6ccf805f601cdc497110b8a8cd",
+      "tree": "7958a78963398f9557f229dc4e9b74ea09e5e603",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/ai-agents-for-beginners",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "45d127c2e43c4f794597773e4e3e943be3a81b2e",
+      "tree": "fbc4c7e159d44f25274d65f9c360060b0f722d16",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/ai-engineering-lab-hackathon-london-2026",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [
+        {
+          "root": "challenge-2/wiki",
+          "evidence": [
+            {
+              "path": "challenge-2/wiki/index.md",
+              "blob": "d6f13394792b33bf16989c41d2f064108291a1ab",
+              "okf_version": "0.1",
+              "kind": "declared-index"
+            }
+          ]
+        },
+        {
+          "root": "gov-ckan",
+          "evidence": [
+            {
+              "path": "gov-ckan/okf-explorer.json",
+              "blob": "1688d696651ae11e59740cd2e9aa5c263fc6a174",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "gov-ckan-sample",
+          "evidence": [
+            {
+              "path": "gov-ckan-sample/okf-explorer.json",
+              "blob": "24698bfe77d9786a9e8bae60e19f5ba55a313831",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "gov-ckan-sample/wiki",
+          "evidence": [
+            {
+              "path": "gov-ckan-sample/wiki/index.md",
+              "blob": "430dd23debcc0c574c2338e80e8f7e491f72be36",
+              "okf_version": "0.1",
+              "kind": "declared-index"
+            }
+          ]
+        },
+        {
+          "root": "gov-ckan/wiki",
+          "evidence": [
+            {
+              "path": "gov-ckan/wiki/index.md",
+              "blob": "491e5b7630af99f86c32fd19798716839ac6ffa3",
+              "okf_version": "0.1",
+              "kind": "declared-index"
+            }
+          ]
+        },
+        {
+          "root": "postmortem-public/wiki",
+          "evidence": [
+            {
+              "path": "postmortem-public/wiki/index.md",
+              "blob": "2a567a01ed1938929a6de7c94bdaf13e7b504323",
+              "okf_version": "0.1",
+              "kind": "declared-index"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "8418bce78496e36598b10d4562b1fb275ad610bb",
+      "tree": "6833c4e323e2e052a44951c7fc68148d4cfa4fec",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/ai-infrastructure-wiki",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "visibility": "public",
+      "roots": [
+        {
+          "root": ".",
+          "evidence": [
+            {
+              "path": "okf-bundle.json",
+              "blob": "6f74fc43fca42e3f9c7d5486672eb05a6f0acb5f",
+              "kind": "runtime"
+            },
+            {
+              "path": "okf-bundle.jsonld",
+              "blob": "eb64c5d3d03590a8c67af3f3da7a06e4f4abebb2",
+              "kind": "graph"
+            },
+            {
+              "path": "okf-bundle.yamlld",
+              "blob": "9d8dc35a081874db982d0e7106b494861d5bc4ae",
+              "kind": "graph"
+            },
+            {
+              "path": "okf-explorer.json",
+              "blob": "6f74fc43fca42e3f9c7d5486672eb05a6f0acb5f",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "data-gov-uk",
+          "evidence": [
+            {
+              "path": "data-gov-uk/okf-explorer.json",
+              "blob": "8d52246f112396749b1ba47b74ae6181031bd2f1",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "data.gov.uk",
+          "evidence": [
+            {
+              "path": "data.gov.uk/okf-explorer.json",
+              "blob": "8d52246f112396749b1ba47b74ae6181031bd2f1",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "gov-ckan",
+          "evidence": [
+            {
+              "path": "gov-ckan/okf-explorer.json",
+              "blob": "3a989f06c514b050b4cb3bad1f1b0ee0d02407a2",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "legislation",
+          "evidence": [
+            {
+              "path": "legislation/okf-bundle.jsonld",
+              "blob": "9a5c3549d662d4d3e00c8eab99d7ae975a0161c0",
+              "kind": "graph"
+            },
+            {
+              "path": "legislation/okf-bundle.yamlld",
+              "blob": "662d1b1639f77fee1ebcc55ee3798034b5e095ca",
+              "kind": "graph"
+            },
+            {
+              "path": "legislation/okf-explorer.json",
+              "blob": "e8ac3751bf47b2a648aa6e17ae3844fb23aa89b9",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "uk-government-apis",
+          "evidence": [
+            {
+              "path": "uk-government-apis/okf-bundle.jsonld",
+              "blob": "e881d9102ef78364b4f577051d9f82d6c1be256f",
+              "kind": "graph"
+            },
+            {
+              "path": "uk-government-apis/okf-bundle.yamlld",
+              "blob": "d8e4f29fb998af66cfd99d51c567014dad9d4d3d",
+              "kind": "graph"
+            },
+            {
+              "path": "uk-government-apis/okf-explorer.json",
+              "blob": "8d52246f112396749b1ba47b74ae6181031bd2f1",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "whole-law",
+          "evidence": [
+            {
+              "path": "whole-law/okf-bundle.jsonld",
+              "blob": "f1b3cafa924ac6d1a927073f87413d7764e75494",
+              "kind": "graph"
+            },
+            {
+              "path": "whole-law/okf-bundle.yamlld",
+              "blob": "52f1127f5e77c8f8610eef458e377018c117b14b",
+              "kind": "graph"
+            },
+            {
+              "path": "whole-law/okf-explorer.json",
+              "blob": "858ec84de92082bf90df146bf4c9347f39562539",
+              "kind": "runtime"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "e6c9bbff72b8d42ed94eb6e0ffe319d97be59e62",
+      "tree": "fd2d6175a58a906082d181e7c7ca0723174c520e",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/aiengineeringlab",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "8e265a952b6470c886673284824a27287900b4e0",
+      "tree": "9093bd1fd9a7c48f1bca3b4b31d360e5eb35dcef",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/aitour26-WRK540-unlock-your-agents-potential-with-model-context-protocol",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "35232f7faf73115ad77d7939668cd299ed3ab204",
+      "tree": "9ef9f8b00e1091294cf62771bd3c842723335908",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/anythingllm-BDUK",
+      "branch": "master",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "6d80fe9602cfe5533079fecfc2b4f1784b80b7d6",
+      "tree": "ac259ad3db4d0b0635566c7488931155a7c9e385",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/api-mcp-wiki",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "5410bb20dd28ade5df23fdaa616127bc241d23ae",
+      "tree": "9565c54159e96539a700bb55aa62932facf342f3",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/apm",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "26d8cee8a4079bb3d31956f1b57d343654835fc8",
+      "tree": "b29728302a1a66ae35d9c38a8a3b541b3bdec72d",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/arduinohw",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "42614f4e049e28d7beefe7bcd0644fedaab2d7eb",
+      "tree": "6115a3c095fba5b783421512ba5ca457f26fad70",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/argilla",
+      "branch": "develop",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "5338519accb13ae422f8bf9c0642651c249c49af",
+      "tree": "9f6687d51c7651f2f250ee4aed7f9673e7e70393",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/ask-ai-archive-BDUK",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "ec25e1290a936613f4158c0856c8cc3d621edc75",
+      "tree": "b2c93d61c61607d7ccba29380630708f0f1fa991",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/autogen-BDUK",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "8f80a31e3fc3044d6fb4166d816fa25b37434297",
+      "tree": "eb8f5a1b9f252ccea47e10bd3f512d9d46545a38",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/awesome-generative-ai-guide",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "45144d32a287c659c918cec335dd92d8ebccd047",
+      "tree": "ccc22735b37724569b719bbda15eabb6694b5e3e",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/awesome-o1-BDUK",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "6e1c8b43d81e60b1d0872bcc846ba026026d939b",
+      "tree": "56ef9ad9931de20540f3418600cef17cf75e46b6",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/azure-multi-agent-mcp-example",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "b21a69a9b04daf8887c2e38ae870977c70dbc472",
+      "tree": "28711d6194a8fabd06af69b4faf2fce167a00844",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/azure-search-openai-demo",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "38f77720e823f0f88ff98be7c3e7e2763fbe4d24",
+      "tree": "406ba083d20867e9ef2ae9684c03188b9ee5dc00",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/bazel-differous",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "37ee0da98a56141f545172bf1481e898215bdd74",
+      "tree": "0a9c2f8498fefb13a2f8d647613b8718ad5d9164",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/bee_letters",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "933d18721fc5a7f94d25cb31c700e58735fc964e",
+      "tree": "54c4466134bc22a155efcc11557d41c175cb9e39",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/bigquery-overture-skill",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "d9867320ec0e502df9ba845f27b20e27388752bf",
+      "tree": "66b4c164793f74cf927019dcb171ed2826405083",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/boreholedensitymap",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "d8cfd4a3bb13e046de2444d9db01048d43d9e7c4",
+      "tree": "d76cc46d84784298cdc02bbc5f7859cdda823616",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/business-case-lab",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "bb54087b216a6274154afb9de9df462d9efafcb7",
+      "tree": "aee917a2cb578f86e44084fcf300be0b64415adb",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/cfte-discourse-corpus",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "b8191acbe52809cf802d42478a27e6b89d41069d",
+      "tree": "55230ab5cc818a1663632379e77dbddb100909b9",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/chatgpt-retrieval-plugin-BDUK",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "b28ddce58474441da332d4e15c6dd60ddaa953ab",
+      "tree": "89f9c96969f1f6a3fb15927b1aa4c7b72ff04edc",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/chrome-devtools-mcp",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "420251383eed41e54bcc4e9eeb8c5320b126036f",
+      "tree": "ab59ccfb1100d7191ff5249f97d59b72951e3e41",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/claude-code-infrastructure-showcase",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "a5818cb99f54f360303feacdeebe2ded291fdf71",
+      "tree": "21fb1e9e81b7e23b28de4768ca5d31efa3700eee",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/claude-code-transcripts",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "b7669bee3f4ce7a8560baf1f551bfe3f396a172c",
+      "tree": "2c33ae0da77f49fdb99fa4bafe6cfe360663f25f",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/claude-flow",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "2dfc214aac42b058d540efc23b17d73e5d181a18",
+      "tree": "baa40b468e359de2e50f01f6e169749031a2d0be",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/codex-security",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "f22d4a36f26d16287bcdfd707b369116e02a08c3",
+      "tree": "592992cca7a711d2a313e40c750453c1a3ff9b4e",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/codex-universal",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "67790c4a9f5ab71718c5f4cb14e90a208759b660",
+      "tree": "e64388967ccfc05b3f61cd337b59c6d2601276d8",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/consultation-analyser-BDUK",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "a91e657101a1391091ed98c6d78a380f374ae09a",
+      "tree": "0ab3aa1bde7ba1f05fadb25412282e2713a69f2b",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/context-language-models",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "18dc11115f50f261233c5bba7937834491e307e8",
+      "tree": "4fb99e728a68fa625b2dd9e89470b0505ba44e8a",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/copilot-sdk",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "87ff5510e0dacb030912501e4eb8deaac38f913f",
+      "tree": "d475264fe71a5ef3683c6b0216e66f44ba4af633",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/cs224u-Natural-Language-Understanding",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "1a2592e6106709e3c712f5c9538b3fef66316a00",
+      "tree": "e37d531f4d487b9a524157c374d255996931aad3",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/cursor-plugins",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "60c641e4fad674784b30abcf9f8915dea39df38d",
+      "tree": "175e434cf2d7729894d9ccbf1508e699eb850023",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/damn-vulnerable-MCP-server",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "0a5b26beba93568f8d8b75c186b67038a02c4146",
+      "tree": "2a7adaaa8d9de292a0103f0c074f7712111249ba",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/data-formulator",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "bb47180c795a9e6034eb265d9891a39c7855b9df",
+      "tree": "19f4dc8a374164e5ff796be3e327fe9a754d9fa9",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/detect_hallucination_entropy",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "4255f23635a4f77537310397e0d78fbfb3d6db55",
+      "tree": "68f4a45518a77558cc128e20cd6c03de0dfe470f",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/disk-catalogue",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "f94a9d16c4b5a297a6b6ffd12b87d7177aab1ef0",
+      "tree": "f185d8fc6419f51ab394904fb1405522db495f73",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/dlt",
+      "branch": "devel",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "4a5ffd82b3b54b5246a25dacc7e9c8f2847015df",
+      "tree": "0ffce2385a4aadc39f8376a3d8d9b4c0b9ff14c2",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/docformatter-BDUK",
+      "branch": "master",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "504107bdc4618f83a3378faac610e02cd62ef5f9",
+      "tree": "cf079b9f7f00884a7743c9bc8e95096fff81aa41",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/dp-census-atlas-BDUK",
+      "branch": "develop",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "863e2e5249629f0c96f81163e1ccd230d3354da0",
+      "tree": "c0f430720c65349877349f4c3e57ece876cdca38",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/drasi-platform",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "71420bd77f5b829109b807a6cee0fd50a37667ae",
+      "tree": "852d4fa6f8a0be06c09970425dac3afc3e9bc2e3",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/dspy-research-BDUK",
+      "branch": "master",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "43ea62c709efdef6fae95cbeedb652decd1c08cb",
+      "tree": "898ec543eb2fa419a0d06ad381b442d4f1309688",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/edgequake-graphRAG",
+      "branch": "edgequake-main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "0f744df0480b4873e9c11460bf53bd1a13037b84",
+      "tree": "d71e035f8779d22412ada7670a70ed94825a22b3",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/elephant-goldfish-model",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "403d8881d62022490637d740657b33f01e321ea8",
+      "tree": "1b923b12bb559dc7809ff4374b1eec50d9f5cc8e",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/explore-local-statistics-app",
+      "branch": "develop",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "795eaf204f47986f6be248a63f857a42afe4fdf2",
+      "tree": "29ed97c7eb5708996e315c822ab1b217a783b176",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/fabric-prompts-BDUK",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "de2ab4c7c521b73b5e7f6ae3913ea34e8012fee5",
+      "tree": "2984f2e1254595cc9e6ded72d5d87123f8777dd7",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/fingertips-consol",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "2f66a07f66c3938140b158901d715b3ba3fee7e3",
+      "tree": "3278735ec51d3e321590e56f0c660939e14154a2",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/firecrawl",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "f24ca766182e1d12a4c3f71bdf8a70fe242c324a",
+      "tree": "fb0ee68834b76cb207b40efa7e48f8153050febe",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/for-the-kids-FTK",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [
+        {
+          "root": "public/downloads",
+          "evidence": [
+            {
+              "path": "public/downloads/okf-bundle.json",
+              "blob": "22223b84f356e427dca85f8f07b7102b68b6781d",
+              "kind": "runtime"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "011df09d2d93df85790b059c65ab64e87af5350c",
+      "tree": "fe754acc221ee1242dd3553a78dc8b9db721a953",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/gastown",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "a07fa8bf7feb184ac168e9ce8cd300cf7a0ce090",
+      "tree": "d980e3eb329ee9d14e45b83d9eee57328092d19f",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/gds-local-hackathon-20260909-early-years",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "visibility": "public",
+      "roots": [
+        {
+          "root": "baseline",
+          "evidence": [
+            {
+              "path": "baseline/index.md",
+              "blob": "106aae2c660bdce75bd87fcf1a69834648c201b6",
+              "okf_version": "0.2",
+              "kind": "declared-index"
+            },
+            {
+              "path": "baseline/okf-bundle.json",
+              "blob": "3ff8091d2e8201bbac083d68b86264d6dd071c15",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "bundle",
+          "evidence": [
+            {
+              "path": "bundle/index.md",
+              "blob": "106aae2c660bdce75bd87fcf1a69834648c201b6",
+              "okf_version": "0.2",
+              "kind": "declared-index"
+            },
+            {
+              "path": "bundle/okf-bundle.json",
+              "blob": "dc78686d7cf5452b95b326b3ec0c2c95480e810b",
+              "kind": "runtime"
+            },
+            {
+              "path": "bundle/okf-bundle.jsonld",
+              "blob": "2dd76633a782c2bcafc7af15324e2c619445e826",
+              "kind": "graph"
+            },
+            {
+              "path": "bundle/okf-bundle.yamlld",
+              "blob": "6ac4a962d18ac2bdfd997172d26a0119f62abb07",
+              "kind": "graph"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "1120351ac435e1aa489fa259199ec1782d3a2425",
+      "tree": "115fe8d6f2e303de36c0cbb70cd449c155e69ca3",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/genai-toolbox",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "1f8019c50a06d65553abd93da833b6dba09c612b",
+      "tree": "b2267adb5ad34ed286f50f74254e17697565b6f9",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/generative_agents_BDUK",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [
+        {
+          "path": ".",
+          "tree": "549d23994ee499986f5f3b2f33622ff84a01c970"
+        },
+        {
+          "path": "environment/",
+          "tree": "307337b8c92ccdfbba74d6966bc9cd39ad816c29"
+        },
+        {
+          "path": "environment/frontend_server/",
+          "tree": "f12239f3746bc471b479a41d8c6c94f9e43df54e"
+        },
+        {
+          "path": "environment/frontend_server/storage/",
+          "tree": "c7c82b4348f6632b16f7ea6ba19eb87f293902ab"
+        }
+      ],
+      "commit": "fe05a71d3e4ed7d10bf68aa4eda6dd995ec070f4",
+      "tree": "549d23994ee499986f5f3b2f33622ff84a01c970",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/geo-mcp",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "ab843994818812ca24f0e94ae53164516cf44643",
+      "tree": "35d99930578db22937e641940f729b93d53975e9",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/gis-ai-go",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "visibility": "public",
+      "roots": [
+        {
+          "root": "okf-plus",
+          "evidence": [
+            {
+              "path": "okf-plus/index.md",
+              "blob": "578dd5885a4055f06fed936661e7b3411b7f64d2",
+              "okf_version": "0.2",
+              "kind": "declared-index"
+            },
+            {
+              "path": "okf-plus/okf.semantic.json",
+              "blob": "c771efa197a16d71ed3c18aa0faa47c46a05a79f",
+              "kind": "contract"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "b064a93f0675f157a93a0a8845c3c0aa8396c307",
+      "tree": "8d670ab74b4bb610d2488306a3ce2b47c13225f9",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/github-mcp-server",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "2621dbefd9c16da9e3f3e7e97922f941acabcc6c",
+      "tree": "fe361686f985ab846d3ce0931b3535087aece3f0",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/goose",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "31eaa472099c920a4a1d4cb89e0eb8737535bc5b",
+      "tree": "cf672083cbd1e2f040b70a85d3950443ad8013f8",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/gorilla-BDUK",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "ea13468e4423454d0c213704fb87cf7cb3990433",
+      "tree": "b34aa53a73491f42dc69b8b18c92448d7c311f50",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/govuk-casa",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "7372f770d58af156e9738900043e4c149eeea0e5",
+      "tree": "556ebd1a0e90107df9306530ade9ec082d7cee55",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/govuk-chat",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "6049e92deec67a90d89c3745dd709b73100b553d",
+      "tree": "1cbc85117daba30f7323e1da6237ccbe06fe9e7e",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/govuk-docker",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "7ac3dd8b3af47c78f9a942dc7c1b37dd1429fced",
+      "tree": "4c83bf94162b2b3a1c547423541b3dd7c46fd802",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/govuk-webmcp",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "32f3d55bf34c4056a4b51b8fa00ad3c94a799d03",
+      "tree": "bb5c94248fc7c1ed68e39ac26dfb23d6817c48d2",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/graphologue-BDUK",
+      "branch": "public",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "50e3285a27b3dd6c66f693a49a61567b989e52cd",
+      "tree": "e15893b9f8b7fa41a2261a7745f4c9e1f9957309",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/graphrag-BDUK",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "6080feb87f82fce976ce0f1b554b6f73a2345b97",
+      "tree": "c48c6e4f7ced85cf8c006dfc20346db48deadffa",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/graphrag-accelerator-BDUK",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "e71e132524b5c042be6acd0cf57b7870dd51088f",
+      "tree": "a2d9a47727e1b6a8ee36c60589f3598102fb703b",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/graspologic-BDUK",
+      "branch": "dev",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "43bb0b77fc96ca00fdb5b4658f9baa8c1d984079",
+      "tree": "8c4a66d9f17750b50f5f332203d6484b82d26c99",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/gtoolkit",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "ecc425013c19dbfb5ce0ca0c766bd72adee02428",
+      "tree": "7efc5c8d39c27157189824c479cca97c361cd228",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/guidance-for-agentic-data-analyst-using-amazon-bedrock-agentcore-on-aws",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "a94d976ad54475008675dbb7b6f10288a02ebefb",
+      "tree": "acf021302a145e15c85ecb973a465c19a47aba18",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/hackathon-dlt-homelessness",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "13f53882f767df8c2ce7b12dd733beb09714d8f2",
+      "tree": "932720712df6deac4f525caf64bc93153dee91a0",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/harmony",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "52176bfbec8f1d5e876b9793626a4153c71b3d4a",
+      "tree": "9ea8fc3338779b08489db92745699d9cc03b1b98",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/image-repair",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "775e5dd99c4672bb0671d9213e9613f10e018e9d",
+      "tree": "6cfb7a6c5901bc4e08c980e68051c41ec0b99c71",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/imagegencam",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "3618bf5bbf3b4b4bd2af1b11cf0dea9985b631a4",
+      "tree": "da8d7bec9a51e854db3c5fb84d7e9c25b9d5d6dd",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/impeccable",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "c8f476b330395031bc8f7a7aee8d848bc85c81e4",
+      "tree": "4379c1abeecd7eb0046eb86e20c466a7b4115371",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/instructor-BDUK",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "8954095ccc4b16115af985357f8ee5345217f9c8",
+      "tree": "917b6d1ebb5cf6e2688a030504a3dd07da70035f",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/iwe",
+      "branch": "master",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "39f0ed982d39c816cfa9fab9b04352aaed685c8f",
+      "tree": "8345a6c364a04bf22cb627a8c0a65fc073cd1a0a",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/langextract",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "25ebc177ba687b4c6a4afe5340622814dbc0f40f",
+      "tree": "4d43c5f7e320d2ef4be8ccc8bad85f9aeca21498",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/langflow",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "fa21c4e5f11a697431ef471d63ff70d20c05c6dd",
+      "tree": "82c1bc01d5f03653721efa5756ea48ea75fbc337",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/learn.openapis.org",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "43756549c27cbf84107b190b82c65e0336f2f09f",
+      "tree": "239e69db1b59a789d35bfbcf29ce7fcf2f409265",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/lex",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "a31684d5fc71d070514c1d2e0f043dcad99f7a74",
+      "tree": "b92585b748d686ffcf758243cadbde755ccdbac6",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/library",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "b23293403b38db60ac195c1281bc031257da8402",
+      "tree": "84ee087efc1d3174bfeb085a632ba0bd9d84cd42",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/lida_bduk",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "aa7780ce1083f195dce5703e84f6d01336e7c421",
+      "tree": "7e789915f929f910f86c1189e1fce1d1e5e00818",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/litellm-BDUK",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "db2e5f9ece2910df2d42f0383ead88787de8a1a6",
+      "tree": "9169e9cf3b5a3e219095e3a69b23efd5eda0a409",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/llamaindex_gradio_example_BDUK",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "c3e3380a3b9639f16324c8c768694bd35e724d35",
+      "tree": "83160f66a8619b57186e6b9d4136da786c443008",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/llm-council",
+      "branch": "master",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "92e1fccb1bdcf1bab7221aa9ed90f9dc72529131",
+      "tree": "221d8afb6eca87537282d509971c505119390e0b",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/llm-course",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "4ebb1e64d5bbfbbdc672752750f7d51d52df5715",
+      "tree": "4c4b96391e442b5d15e0e0e56f35e7d124c90b4b",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/llm-openai-via-codex",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "ba5b0234b9850440b8a4a4eb97faa9667dbe0761",
+      "tree": "a1a7f4c8b848cf1a02545ed6a1997c017a0f7137",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/llm-tutorials-Witteveen",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "efc93116fe9519ed06383cd9311012b2b2fb7c7f",
+      "tree": "579dde19b65aa3554273b0ac84657e8a6931c39b",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/llm-twin-course",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "8590e4e59fe5a9adda42b4f5ba992b79e8e58357",
+      "tree": "a2b1bd9c6e7dc429b7d235c1b3e3f96a10775fa3",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/llm.c-BDUK",
+      "branch": "master",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "077451927fa47de2a769c9b4333f4d3af8ad2ac9",
+      "tree": "fefcd9844c1ac844823e800812e80a32f8ab63ae",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/local-gov-hack-20250430",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "83df83d6f15c0a59f2489a3a5706e09e896a7833",
+      "tree": "93f1dcd22c45a60fea2974f570f4da4d480e4a98",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/local-gov-innovation-hackathon",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "90c3ea3ea3aa5d8720af95f08224bf2ca1102895",
+      "tree": "e6495e7b49cf0e47b691134fde7c28dddf588029",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/magentic-ui",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "265708ed7d19d0c1904afef34ae1f428d00aa1a1",
+      "tree": "85a858ae294db56dabce795b4bda7a259dea8a6f",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/manuka-dsit-mcp-demo",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "0ee324ca86fca3cd135a5dc7f785dc9407368aea",
+      "tree": "47bb7581378561f4d6b7701e258da299cf026e46",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/map-of-github",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "bce1813619d496817eaa73f591aaf339042f6c85",
+      "tree": "4cdda9ac4748b126898fced9b55ccb27e947bb27",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/marimo",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "a701d678f7d7c9d537af7093acd2a76c25c45309",
+      "tree": "34a06676fff0026504d1c5b821eeb976290e6bf4",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/mattpocock-skills",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "9c9f36ccd3995266cd675468af71639c8dde1ec5",
+      "tree": "bc764b848934ed1ea7183aa78e059783fedff92b",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/mcp-analysis",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "0786ba2d9e947c2ee6cf0db44348fa9a05c22263",
+      "tree": "4d7cc5dfce63f1a3bf828170aad9740ae30fa96b",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/mcp-apps-sdk",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "111d63d4993235be9cb02e256d049ac2bb6f4ff6",
+      "tree": "920685a3538e956d71e261a0185e4d3025832573",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/mcp-bench",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "25864779f8d0764636283c5f69d482254acc57b7",
+      "tree": "948af955006428ac908665d49469f1107227b7d9",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/mcp-cli",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "74296377ad5c8db04befffe8eddb862bd3c1069c",
+      "tree": "4bb886cdb06c97e4f39e746164a72f1f8616ecc9",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/mcp-geo",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "56683b33c0cd02842b7f3ee465414c68a1f3f2a6",
+      "tree": "6d15a9b6896d49d533ea6464a82ee16c80b8e77a",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/mcp-research",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "c9a50f610b88c40ae0d8cb38f02a89a329c3ab7c",
+      "tree": "61ec807fceb2dd500bccc407803229efbf93857e",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/memary-BDUK",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "d9906d88cae03360c2334e85a8f9a0e7b8662a22",
+      "tree": "95d090fc0cebae0226e712cc053242be27a41fc6",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/metrics-workflow",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "9b7b9d15dab134c1299db6922bcd83a7bbc8bb8b",
+      "tree": "ef0fbb411da589c4d4e33ec440d20463d02f1ac6",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/mini-hackathon-20251120",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "c9cfb5836866aa0db20c9a86b10b58a2183541f1",
+      "tree": "926dd06c234904487d8a7310dc96c7d73880df01",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/minute",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "9d3c337140b2d8dfeda8d3b6b87424e655a3651f",
+      "tree": "7fad95598b44d1b14764a3d54d17741d1a0bb912",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/modelcontextprotocol-BDUK",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "ec1418927730e3ffeede8ea6475d6f4c36f6d10c",
+      "tree": "c9ccab756cc9e167c07b2df21ecbb0c260e9162d",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/multiple-dev-container-vscode-BDUK",
+      "branch": "master",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "b581333db1f7ba0f0c527c11a9676b780ced606d",
+      "tree": "f06f945bb51e4667cd7a83c5fdb71a9041aee13e",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/n3gb-rs",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "5431372c1b176e68ac5378f2923daaf71a1e951a",
+      "tree": "5cbf5a8b52522ba981106079c24cb4452ef430a9",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/n8n-mcp",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "4c217088f576cf516bb6789df5f6b340281ce47e",
+      "tree": "877c8ffe7804fd8c1e1d70586bbbb81281265ca4",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/nanochat",
+      "branch": "master",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "67aaca98f53a6db9f1f5a2a62893f98d443a090a",
+      "tree": "6e13062ba92ae766724e60ad7760f02923f143c3",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/neo4j-google-cloud-dataflow-BDUK",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "ff76af0c151c915145e4215c0e3ddbd13bee3018",
+      "tree": "afe79bb8a86c03b3f85874c50b33176e3587f748",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/neo4j-knowledge-index",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "808987c5daa4da150e38ecc87f5e4ed6cdfdc0c9",
+      "tree": "ae34b2203c6b65410dd12b012dd3974880700be5",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/nicar-2025-scraping",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "cae10418a000b7f3805f32f231ad52dd0c95ccf6",
+      "tree": "20778e3599547161f66945b76a076cdfcc084e3d",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/notebookllama",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "08da1b195fda93acdc90cb2b17aeea2999577f43",
+      "tree": "11a719cf7ca99e14db764eee363d03e94b129671",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/nuar-datamodel-BDUK",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "5a1070b66b5b72e8018b08f7ec9ad06fdbe7511c",
+      "tree": "07f292b08491baca6d7ad4192f254f06e9d876fe",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/oai-symphony",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "58cf97da06d556c019ccea20c67f4f77da124bf3",
+      "tree": "1447702c47765381d77d0a155581c3ea94ce8ef5",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/odis-wfsexplorer",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "8b2e873cb7697b2a758c0b968c9024a6a82a1936",
+      "tree": "fa97125451406013a0f617102b3bccbb1ea392d0",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/okf-LandRegistry",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "visibility": "public",
+      "roots": [
+        {
+          "root": ".",
+          "evidence": [
+            {
+              "path": "okf.publication.json",
+              "blob": "d08f4ffe7156e84d36f75e1e0905a0589ce15892",
+              "kind": "contract"
+            },
+            {
+              "path": "okf.semantic.json",
+              "blob": "a6a947dd590415e2ea868377316ef14f2cfd397d",
+              "kind": "contract"
+            }
+          ]
+        },
+        {
+          "root": "bundle",
+          "evidence": [
+            {
+              "path": "bundle/index.md",
+              "blob": "609da9f9faa86d07bea98bc0312573251d5b1f13",
+              "okf_version": "0.2",
+              "kind": "declared-index"
+            },
+            {
+              "path": "bundle/okf-bundle.jsonld",
+              "blob": "28af3af1e6d26609ff3a3706323abeb850b0a260",
+              "kind": "graph"
+            },
+            {
+              "path": "bundle/okf-bundle.yamlld",
+              "blob": "68d7e1b00daf2fe293a9969a80100ca370e133d6",
+              "kind": "graph"
+            },
+            {
+              "path": "bundle/okf-explorer.json",
+              "blob": "8ccf530d035cf4c47b31fdef72c304ff4b5ccc77",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "evaluation/fixtures/degraded-descriptor",
+          "evidence": [
+            {
+              "path": "evaluation/fixtures/degraded-descriptor/okf-explorer.json",
+              "blob": "3c6f18a7e5d7ad18dab58b9c11d19f22bd6b2bee",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "evaluation/fixtures/malformed-descriptor",
+          "evidence": [
+            {
+              "path": "evaluation/fixtures/malformed-descriptor/okf-explorer.json",
+              "blob": "db84e810290c0932fc19f7d7b399f12b79462f58",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "evaluation/fixtures/tiny-producer",
+          "evidence": [
+            {
+              "path": "evaluation/fixtures/tiny-producer/okf-explorer.json",
+              "blob": "e73246d2f9322584135ea2b28a9d53dbfbe4c0ee",
+              "kind": "runtime"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "1d0ad3c0545d2880ce87af966a826eb1e7da06a0",
+      "tree": "42cc8d295c5b04fe0cc7664350c9261830a28dda",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/okf-ai-capability-governance",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "visibility": "public",
+      "roots": [
+        {
+          "root": ".",
+          "evidence": [
+            {
+              "path": "okf.publication.json",
+              "blob": "70d73402fc47a4c157184ddf9f2c9ecd6b793087",
+              "kind": "contract"
+            },
+            {
+              "path": "okf.semantic.json",
+              "blob": "11c3a5f992e857a7019212828632fad19815f510",
+              "kind": "contract"
+            }
+          ]
+        },
+        {
+          "root": "downloads/correspondence",
+          "evidence": [
+            {
+              "path": "downloads/correspondence/index.md",
+              "blob": "0853ae3024859fed249b70fa9917668e14326cc0",
+              "okf_version": "0.3",
+              "kind": "declared-index"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "a4eb8eb9fa465cc54b8509fbd39fa9c23874660a",
+      "tree": "949aef31e4e74f9efdc393b3afee73b492bb2ea8",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/okf-ai-infrastructure",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "visibility": "public",
+      "roots": [
+        {
+          "root": ".",
+          "evidence": [
+            {
+              "path": "index.md",
+              "blob": "7cda98c840ef8be470b31ea085e6084484bb61a1",
+              "okf_version": "0.2",
+              "kind": "declared-index"
+            },
+            {
+              "path": "okf-bundle.json",
+              "blob": "912e4847b55d7cd640cde2c30485cb93bb9abf3c",
+              "kind": "runtime"
+            },
+            {
+              "path": "okf.config.json",
+              "blob": "9deca2d8885e9c7971e195ed70b785f4c77b6060",
+              "kind": "configuration"
+            },
+            {
+              "path": "okf.publication.json",
+              "blob": "3d68417e94c7f3e95c112ef17342f261b9c12a93",
+              "kind": "contract"
+            },
+            {
+              "path": "okf.semantic.json",
+              "blob": "5aa29ca6b841af917ffbd920b7bfe6eacd69cb6a",
+              "kind": "contract"
+            }
+          ]
+        },
+        {
+          "root": "bundle",
+          "evidence": [
+            {
+              "path": "bundle/index.md",
+              "blob": "7cda98c840ef8be470b31ea085e6084484bb61a1",
+              "okf_version": "0.2",
+              "kind": "declared-index"
+            },
+            {
+              "path": "bundle/okf-bundle.json",
+              "blob": "912e4847b55d7cd640cde2c30485cb93bb9abf3c",
+              "kind": "runtime"
+            },
+            {
+              "path": "bundle/okf-bundle.jsonld",
+              "blob": "a0c6961b0fa02110f3f4828cee60b6ba28ef46a9",
+              "kind": "graph"
+            },
+            {
+              "path": "bundle/okf-bundle.yamlld",
+              "blob": "99071cf96b762358390e56efa3c8dbe0d8918e56",
+              "kind": "graph"
+            },
+            {
+              "path": "bundle/okf.config.json",
+              "blob": "9deca2d8885e9c7971e195ed70b785f4c77b6060",
+              "kind": "configuration"
+            }
+          ]
+        },
+        {
+          "root": "tests/fixtures/semantic_domain",
+          "evidence": [
+            {
+              "path": "tests/fixtures/semantic_domain/index.md",
+              "blob": "8493cd8c0a498d4917bab2bf1e4806b1a603cdb5",
+              "okf_version": "0.2",
+              "kind": "declared-index"
+            },
+            {
+              "path": "tests/fixtures/semantic_domain/okf.config.json",
+              "blob": "e0db37b67649ec1a1efaf7a1d35b41294a2baecc",
+              "kind": "configuration"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "bebb9a5d8a8c92be101a36b94b1dae56335b9a2a",
+      "tree": "257664d0d64a007c1bd1307379846c8eae43cd0d",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/okf-dwp",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "visibility": "public",
+      "roots": [
+        {
+          "root": ".",
+          "evidence": [
+            {
+              "path": "okf.publication.json",
+              "blob": "f207f03002caef9a7917ca78750ae482d55052a9",
+              "kind": "contract"
+            },
+            {
+              "path": "okf.semantic.json",
+              "blob": "0abe10378674fa01a1c111c649bdfb88ec61c805",
+              "kind": "contract"
+            }
+          ]
+        },
+        {
+          "root": "bundle",
+          "evidence": [
+            {
+              "path": "bundle/index.md",
+              "blob": "f26538e7d254c45725be1d2a4e0b6be9fdc444d8",
+              "okf_version": "0.2",
+              "kind": "declared-index"
+            },
+            {
+              "path": "bundle/okf-bundle.json",
+              "blob": "2723ae1b7dc41505159e0961033f9c3261039966",
+              "kind": "runtime"
+            },
+            {
+              "path": "bundle/okf-bundle.jsonld",
+              "blob": "cc85af738f11bb24d76c5bfb54e30c9840699ee1",
+              "kind": "graph"
+            },
+            {
+              "path": "bundle/okf-bundle.yamlld",
+              "blob": "147bac750c3600348fe9f530fc94c366e4e4f5d7",
+              "kind": "graph"
+            }
+          ]
+        },
+        {
+          "root": "combined",
+          "evidence": [
+            {
+              "path": "combined/okf-bundle.jsonld",
+              "blob": "a60b33dd36906caf5ef070d777f415d642856686",
+              "kind": "graph"
+            },
+            {
+              "path": "combined/okf-bundle.yamlld",
+              "blob": "4a12b688eeda0a247e22c62ba7fde1dcb26ad4fa",
+              "kind": "graph"
+            },
+            {
+              "path": "combined/okf-explorer.json",
+              "blob": "2483bf1ff7b30e17a35d01834b122dc821721f1e",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "full-dmg",
+          "evidence": [
+            {
+              "path": "full-dmg/index.md",
+              "blob": "699b75ac9394df3c030fb07fc4c9478b03fce4b3",
+              "okf_version": "0.2",
+              "kind": "declared-index"
+            },
+            {
+              "path": "full-dmg/okf-bundle.jsonld",
+              "blob": "7a84b86ba3925c0d79f41761713c41a285e8efa3",
+              "kind": "graph"
+            },
+            {
+              "path": "full-dmg/okf-bundle.yamlld",
+              "blob": "4bb6e1f8b354e9b3968467c0104d66061151ce32",
+              "kind": "graph"
+            },
+            {
+              "path": "full-dmg/okf-explorer.json",
+              "blob": "e3b34e0596851fe03d870e4e3f0740b2342b2898",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "logical-context",
+          "evidence": [
+            {
+              "path": "logical-context/okf-bundle.jsonld",
+              "blob": "133e08e7addb5b4085434d87936f62a4704a6760",
+              "kind": "graph"
+            },
+            {
+              "path": "logical-context/okf-bundle.yamlld",
+              "blob": "8916e288fe982b6d6d3eca1d29e1aa8cbf1c2b50",
+              "kind": "graph"
+            },
+            {
+              "path": "logical-context/okf-explorer.json",
+              "blob": "e66ea6c8ca603f1ef1ec92ddb65672524cdc81a5",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "structured-context",
+          "evidence": [
+            {
+              "path": "structured-context/okf-bundle.jsonld",
+              "blob": "9fded595ecf25458121fe9c7599e3f612cb00957",
+              "kind": "graph"
+            },
+            {
+              "path": "structured-context/okf-bundle.yamlld",
+              "blob": "c3963156d21d245f697318639664e6ada37cfa13",
+              "kind": "graph"
+            },
+            {
+              "path": "structured-context/okf-explorer.json",
+              "blob": "ff90892b80be6f045f438eb0b31c7f4a39edc7d8",
+              "kind": "runtime"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "3fee61fb4980f0684443c78cd3806b886eb6b772",
+      "tree": "855b36a04888e1e79aeb326ae1205e8d53601f30",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/okf-els-api",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "visibility": "public",
+      "roots": [
+        {
+          "root": ".",
+          "evidence": [
+            {
+              "path": "okf.publication.json",
+              "blob": "f2b099e9c429c342e468829962e2eeef1932bce3",
+              "kind": "contract"
+            },
+            {
+              "path": "okf.semantic.json",
+              "blob": "a32274b6daae00f0b67cc99895becd0d45298653",
+              "kind": "contract"
+            }
+          ]
+        },
+        {
+          "root": "bundle",
+          "evidence": [
+            {
+              "path": "bundle/index.md",
+              "blob": "48333965b0b47fbe3c08d4cccc69faa3473873e2",
+              "okf_version": "0.2",
+              "kind": "declared-index"
+            },
+            {
+              "path": "bundle/okf-bundle.jsonld",
+              "blob": "ad80f2c699dca91cc8e36f3186e14e6e57cedad6",
+              "kind": "graph"
+            },
+            {
+              "path": "bundle/okf-bundle.yamlld",
+              "blob": "ad80f2c699dca91cc8e36f3186e14e6e57cedad6",
+              "kind": "graph"
+            },
+            {
+              "path": "bundle/okf-explorer.json",
+              "blob": "8a0250b1f617c4188760261520e71b0bc676d98c",
+              "kind": "runtime"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "e3873eaa0dc8ce560973401b4c01e2aba182161a",
+      "tree": "c2cb1bc4a79491768fe1cc3981c6e758a3f696cb",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/okf-explorer",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "visibility": "public",
+      "roots": [
+        {
+          "root": ".",
+          "evidence": [
+            {
+              "path": "index.md",
+              "blob": "65a3c7ec5365053357dfe6bacfbb34259a54f824",
+              "okf_version": "0.2",
+              "kind": "declared-index"
+            },
+            {
+              "path": "okf-bundle.json",
+              "blob": "61a9ad47aeb3234ab26fc47b8600cf4b0056eed1",
+              "kind": "runtime"
+            },
+            {
+              "path": "okf-bundle.jsonld",
+              "blob": "a8fd3942e1876a872fa9b36e2365a4a7e16c575d",
+              "kind": "graph"
+            },
+            {
+              "path": "okf-bundle.yamlld",
+              "blob": "97ae99d0201dd1fa0c001e0de6bf10711c81e840",
+              "kind": "graph"
+            },
+            {
+              "path": "okf.config.json",
+              "blob": "ba1b81ffb54c9bc2d09645a967d45079a60d66c0",
+              "kind": "configuration"
+            },
+            {
+              "path": "okf.publication.json",
+              "blob": "8bb033c949c7e150324774b9962cca6d34d24289",
+              "kind": "contract"
+            },
+            {
+              "path": "okf.semantic.json",
+              "blob": "d8481a9c3df7099f7303d8d9105922bc7e55d5d8",
+              "kind": "contract"
+            }
+          ]
+        },
+        {
+          "root": "apps/okf-explorer/tests/fixtures/external-acceptance",
+          "evidence": [
+            {
+              "path": "apps/okf-explorer/tests/fixtures/external-acceptance/okf-explorer.json",
+              "blob": "e1257ed7db75bedebbcffbb494ffaf4cce504177",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "docs/examples/first-bundle",
+          "evidence": [
+            {
+              "path": "docs/examples/first-bundle/index.md",
+              "blob": "8efef2c7eec8e3903b80fade7835bbce98bb80c2",
+              "okf_version": "0.2",
+              "kind": "declared-index"
+            },
+            {
+              "path": "docs/examples/first-bundle/okf-bundle.json",
+              "blob": "5afd05101437fd9b0065b5456b0d2addbaa7a6de",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "evaluation/heritage",
+          "evidence": [
+            {
+              "path": "evaluation/heritage/okf-bundle.jsonld",
+              "blob": "01a44507306ff490a433f3bc466080f1a11b9868",
+              "kind": "graph"
+            },
+            {
+              "path": "evaluation/heritage/okf-bundle.yamlld",
+              "blob": "2cda23f2d168c9e994844625500e2076cefb12a9",
+              "kind": "graph"
+            },
+            {
+              "path": "evaluation/heritage/okf-explorer.json",
+              "blob": "0b7e5a27abc01a286f98977a81d2ae0ec407e617",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "evaluation/heritage/synthetic",
+          "evidence": [
+            {
+              "path": "evaluation/heritage/synthetic/okf-bundle.jsonld",
+              "blob": "740fbd7316d2c4fd3abb01b703f23a58a3a12a33",
+              "kind": "graph"
+            },
+            {
+              "path": "evaluation/heritage/synthetic/okf-bundle.yamlld",
+              "blob": "e1f5f61e8f855295f98096f06ac9e8f99291089b",
+              "kind": "graph"
+            },
+            {
+              "path": "evaluation/heritage/synthetic/okf-explorer.json",
+              "blob": "da89d2cb5064129659acabd93cec87481a246f97",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "evaluation/heritage/tiny",
+          "evidence": [
+            {
+              "path": "evaluation/heritage/tiny/okf-bundle.jsonld",
+              "blob": "0d783f7d7b2a8d3267b04d65729b173e6c84bee5",
+              "kind": "graph"
+            },
+            {
+              "path": "evaluation/heritage/tiny/okf-bundle.yamlld",
+              "blob": "ae820ebbb3f9e741e5e68c8299fe799c734ac183",
+              "kind": "graph"
+            },
+            {
+              "path": "evaluation/heritage/tiny/okf-explorer.json",
+              "blob": "48bf1a2a6b0c67808ca0152c486add5c673f611c",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "legislation",
+          "evidence": [
+            {
+              "path": "legislation/okf-explorer.json",
+              "blob": "5a8219e4592c8df74cb4f16f638d6fd41b8ffec0",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "profiles/bounded-inference/v1/ontology",
+          "evidence": [
+            {
+              "path": "profiles/bounded-inference/v1/ontology/okf-explorer.json",
+              "blob": "71ef9fd1674a6b2dc38b5fb99f3c2e7e2131d46c",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "profiles/geospatial-boundary-pack/v1/examples/uk-countries-december-2025",
+          "evidence": [
+            {
+              "path": "profiles/geospatial-boundary-pack/v1/examples/uk-countries-december-2025/okf-explorer.json",
+              "blob": "23cd27e57a41a0e331ca10b899767997e847a5ea",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "profiles/governed-vocabulary/v1/examples/missing-csv-label",
+          "evidence": [
+            {
+              "path": "profiles/governed-vocabulary/v1/examples/missing-csv-label/okf-explorer.json",
+              "blob": "9b7c6af6451f04c993b9787f8b8c7dca36f7949e",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "profiles/governed-vocabulary/v1/examples/vocabulary",
+          "evidence": [
+            {
+              "path": "profiles/governed-vocabulary/v1/examples/vocabulary/okf-explorer.json",
+              "blob": "5d9c063c7c829cfb8df36733b08c7cf119157828",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "uk-government-apis",
+          "evidence": [
+            {
+              "path": "uk-government-apis/okf-explorer.json",
+              "blob": "e0ab1fde23823d0685d9b0699ca5841fb24bc5b9",
+              "kind": "runtime"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "0d7f6d8e0097401945d39780609c0ac2efe51771",
+      "tree": "fcb476e61710e0f5f3d5228fa7f489c7660171e0",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/okf-govuk-content",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "visibility": "public",
+      "roots": [
+        {
+          "root": ".",
+          "evidence": [
+            {
+              "path": "okf.publication.json",
+              "blob": "6acee6149801080162a68f0c0847f7dd6bc4c197",
+              "kind": "contract"
+            }
+          ]
+        },
+        {
+          "root": "bundle",
+          "evidence": [
+            {
+              "path": "bundle/index.md",
+              "blob": "e13c608778d306018cf6b2808c4029c597b6bc8b",
+              "okf_version": "0.2",
+              "kind": "declared-index"
+            },
+            {
+              "path": "bundle/okf-bundle.jsonld",
+              "blob": "d7a4d4153b7c88fe86605a46562fadf1cf917b51",
+              "kind": "graph"
+            },
+            {
+              "path": "bundle/okf-bundle.yamlld",
+              "blob": "e045d2d847925d49ffb22e52b3b03527ad714285",
+              "kind": "graph"
+            },
+            {
+              "path": "bundle/okf-explorer.json",
+              "blob": "516086c094b141fa6ffd5873ebe7534b32001e2a",
+              "kind": "runtime"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "cbc06f20c3a64c7cce233c5fd666d03ca3478c2c",
+      "tree": "60c4ce6d581d8ff90147a5de36c3d9c46e6db956",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/okf-hansard",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "61b887c4aeda1320814b2d0b289f811867bd74bc",
+      "tree": "b9f8dfc7cad23b311381bdd318c66078a3257c5a",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/okf-heritage-coventry-warwickshire",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "visibility": "public",
+      "roots": [
+        {
+          "root": "site",
+          "evidence": [
+            {
+              "path": "site/okf-bundle.jsonld",
+              "blob": "ce1e6fb3321de84a7e6724e806ee49dc589efd61",
+              "kind": "graph"
+            },
+            {
+              "path": "site/okf-bundle.yamlld",
+              "blob": "370b058d8be7e452773d794a12358f62ad01f0de",
+              "kind": "graph"
+            },
+            {
+              "path": "site/okf-explorer.json",
+              "blob": "0b7e5a27abc01a286f98977a81d2ae0ec407e617",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "site/synthetic",
+          "evidence": [
+            {
+              "path": "site/synthetic/okf-bundle.jsonld",
+              "blob": "6ba336d94c0a0f9e0801f5f4d1f56cd29e6e2430",
+              "kind": "graph"
+            },
+            {
+              "path": "site/synthetic/okf-bundle.yamlld",
+              "blob": "ac225a293febc4cb2fb86f5229dd25c208b6e660",
+              "kind": "graph"
+            },
+            {
+              "path": "site/synthetic/okf-explorer.json",
+              "blob": "da89d2cb5064129659acabd93cec87481a246f97",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "site/tiny",
+          "evidence": [
+            {
+              "path": "site/tiny/okf-bundle.jsonld",
+              "blob": "6dea258be47db153ee4bf7e44ec13cc587be1404",
+              "kind": "graph"
+            },
+            {
+              "path": "site/tiny/okf-bundle.yamlld",
+              "blob": "8d01a1ea23c71fb7cc1e9768309920dca6d03452",
+              "kind": "graph"
+            },
+            {
+              "path": "site/tiny/okf-explorer.json",
+              "blob": "48bf1a2a6b0c67808ca0152c486add5c673f611c",
+              "kind": "runtime"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "8fd73f08f4379a64f478cc0db31691f25ada3feb",
+      "tree": "f403f15eccf01b62b044ed697d0243f5a20f18d5",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/okf-ons",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "visibility": "public",
+      "roots": [
+        {
+          "root": ".",
+          "evidence": [
+            {
+              "path": "okf.publication.json",
+              "blob": "74083869d249fe0cf7bbadb7bdf1c2d627f51603",
+              "kind": "contract"
+            },
+            {
+              "path": "okf.semantic.json",
+              "blob": "d846bba767c61eb2a25e3e84f417479fd07e39e5",
+              "kind": "contract"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "00367b418aa7d3d2065b9ea14a82d8e43c34f38c",
+      "tree": "a33cc6b5c27109886f1705a9ad6c7ff9d0549839",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/okf-planning",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "visibility": "public",
+      "roots": [
+        {
+          "root": ".",
+          "evidence": [
+            {
+              "path": "okf.publication.json",
+              "blob": "f92d4ae9857ce7d410bc13afb84c4170b8c688bf",
+              "kind": "contract"
+            },
+            {
+              "path": "okf.semantic.json",
+              "blob": "aaf164e2292104f0be93913d25fa1c1aadff6520",
+              "kind": "contract"
+            }
+          ]
+        },
+        {
+          "root": "bundle",
+          "evidence": [
+            {
+              "path": "bundle/index.md",
+              "blob": "1f25cb4d31104c468dbb75204c145bae24ae9448",
+              "okf_version": "0.2",
+              "kind": "declared-index"
+            },
+            {
+              "path": "bundle/okf-bundle.jsonld",
+              "blob": "952bec2bbdf717bd44d58936271ff8b759ada1c7",
+              "kind": "graph"
+            },
+            {
+              "path": "bundle/okf-bundle.yamlld",
+              "blob": "952bec2bbdf717bd44d58936271ff8b759ada1c7",
+              "kind": "graph"
+            },
+            {
+              "path": "bundle/okf-explorer.json",
+              "blob": "eea53a29161e8f517c75adad8cf82fa378faa27f",
+              "kind": "runtime"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "0b7e89ba1e19eb67dd54def55aaa222dc708a207",
+      "tree": "4e1606af781aed7f919fa96286fc6091c2d8dc8c",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/okf-uk-government-apis",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "visibility": "public",
+      "roots": [
+        {
+          "root": ".",
+          "evidence": [
+            {
+              "path": "okf.publication.json",
+              "blob": "fab4a6c066c484be4afc75d41e7aca6557010ae1",
+              "kind": "contract"
+            },
+            {
+              "path": "okf.semantic.json",
+              "blob": "70ed394075363a4144df860e431fedec74967910",
+              "kind": "contract"
+            }
+          ]
+        },
+        {
+          "root": "bundle",
+          "evidence": [
+            {
+              "path": "bundle/index.md",
+              "blob": "9b49b3f45bdebf3ecf6d53684162386519f7d08b",
+              "okf_version": "0.2",
+              "kind": "declared-index"
+            },
+            {
+              "path": "bundle/okf-bundle.jsonld",
+              "blob": "0d93c18b927ac6e2eaf00cd0a2907cdf2fdd5a77",
+              "kind": "graph"
+            },
+            {
+              "path": "bundle/okf-bundle.yamlld",
+              "blob": "b9158b7e4a7f92efbfabe558b4b5d3ee635712eb",
+              "kind": "graph"
+            },
+            {
+              "path": "bundle/okf-explorer.json",
+              "blob": "ddb94efbd5dd0886491db742b7627987a2b4531a",
+              "kind": "runtime"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "de7317cbdada318f1719064ef0afcdb1c6df4905",
+      "tree": "f7a8a5a4538aaedfc66d14d6b4f8b6dd2535b9c5",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/okf-uk-legislation",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "visibility": "public",
+      "roots": [
+        {
+          "root": ".",
+          "evidence": [
+            {
+              "path": "okf.publication.json",
+              "blob": "09260c8c39e15d3d1dd8d1adb906b7e2316cfdf2",
+              "kind": "contract"
+            },
+            {
+              "path": "okf.semantic.json",
+              "blob": "6d27c289fddb4c5c13bf90005c51d0d595900c67",
+              "kind": "contract"
+            }
+          ]
+        },
+        {
+          "root": "bundle",
+          "evidence": [
+            {
+              "path": "bundle/index.md",
+              "blob": "349c78c4050749b624f5e640f73795f1df2744c5",
+              "okf_version": "0.2",
+              "kind": "declared-index"
+            },
+            {
+              "path": "bundle/okf-bundle.jsonld",
+              "blob": "e88a48d2066f0d077b728b332260679731b744cf",
+              "kind": "graph"
+            },
+            {
+              "path": "bundle/okf-bundle.yamlld",
+              "blob": "a8a02264a245ba145f6cb08b57228be4249406fb",
+              "kind": "graph"
+            },
+            {
+              "path": "bundle/okf-explorer.json",
+              "blob": "ff2cd1f8b1bc203085066a3a013c24b6b80dcf47",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "bundle/whole-law",
+          "evidence": [
+            {
+              "path": "bundle/whole-law/index.md",
+              "blob": "935143bc5d85f45f2a2c3f8bfa8fe2466b71ed80",
+              "okf_version": "0.2",
+              "kind": "declared-index"
+            },
+            {
+              "path": "bundle/whole-law/okf-bundle.jsonld",
+              "blob": "531cbf889eb42fe3dbb600dda6aaaa0b4466ae18",
+              "kind": "graph"
+            },
+            {
+              "path": "bundle/whole-law/okf-bundle.yamlld",
+              "blob": "5213a1fa1388c7a0fba81aa5dd9230988c96a02c",
+              "kind": "graph"
+            },
+            {
+              "path": "bundle/whole-law/okf-explorer.json",
+              "blob": "2dfb6c990843abf74757961cda152a126e39f0e1",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "release-assurance/profile-reconcile-20260927/diagnostic-runtime-attempt-06/bundle",
+          "evidence": [
+            {
+              "path": "release-assurance/profile-reconcile-20260927/diagnostic-runtime-attempt-06/bundle/okf-explorer.json",
+              "blob": "fd76ee32b43154f3a44b3a8cd82cf12b8f6e195f",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "release-assurance/profile-reconcile-20260927/diagnostic-runtime-attempt-06/bundle/whole-law",
+          "evidence": [
+            {
+              "path": "release-assurance/profile-reconcile-20260927/diagnostic-runtime-attempt-06/bundle/whole-law/okf-explorer.json",
+              "blob": "091ff570d1332b92829e0bb81cd0aa55e7911a0c",
+              "kind": "runtime"
+            }
+          ]
+        },
+        {
+          "root": "whole-law",
+          "evidence": [
+            {
+              "path": "whole-law/index.md",
+              "blob": "935143bc5d85f45f2a2c3f8bfa8fe2466b71ed80",
+              "okf_version": "0.2",
+              "kind": "declared-index"
+            },
+            {
+              "path": "whole-law/okf-bundle.yamlld",
+              "blob": "5213a1fa1388c7a0fba81aa5dd9230988c96a02c",
+              "kind": "graph"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "4d1fcb4645c72b7adbd0cd57d0883bf5d024f514",
+      "tree": "fdadeb36ed781aef97879b7b6b5a3d0fea2352e9",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/okf-uk-living",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "visibility": "public",
+      "roots": [
+        {
+          "root": ".",
+          "evidence": [
+            {
+              "path": "index.md",
+              "blob": "b168603df2f66bb85ecb7b7137fc2b2ac1aa172f",
+              "okf_version": "0.2",
+              "kind": "declared-index"
+            },
+            {
+              "path": "okf-bundle.json",
+              "blob": "48d7abaf5191c938829e13b0e41286399dc80fca",
+              "kind": "runtime"
+            },
+            {
+              "path": "okf-explorer.json",
+              "blob": "0b211bb27b78cbeccfa96cc9957f8e2f7ff9bd52",
+              "kind": "runtime"
+            },
+            {
+              "path": "okf.config.json",
+              "blob": "d29443720a9d3e6dd65e5bc26c4b926a8603bcf4",
+              "kind": "configuration"
+            },
+            {
+              "path": "okf.publication.json",
+              "blob": "3649d2e17fc57e8b7af6114a13b0e186047daa46",
+              "kind": "contract"
+            },
+            {
+              "path": "okf.semantic.json",
+              "blob": "ff6bf92f743a6b851390544863a41a74e638adcd",
+              "kind": "contract"
+            }
+          ]
+        },
+        {
+          "root": "publication",
+          "evidence": [
+            {
+              "path": "publication/okf-explorer.json",
+              "blob": "0853443bb7b5d3619557303bd9048538f7d74c78",
+              "kind": "runtime"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "4857e7e7829a23081c2d660f5b1bfe52b8ae8942",
+      "tree": "277b189f253ebf194f9274fb83c0187b784dd7a6",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/openai-cookbook",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "564a630c0bdfa56b18a87f0f63e17cd18af9f202",
+      "tree": "1e4ddb8e3e5e546f3119b23c0c620f56851436a8",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/openlibrary-mesh-mcp",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "d098337001b20be3cc1a826784bb95abba6b4433",
+      "tree": "2bb04205668a443cc4ca0cd670459cd842545146",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/os-mcp",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "4554c19b937392f409beab26bafaf9d9e2848a37",
+      "tree": "bff49fd9e7dcb1566fd7c46d6a6101362f208aa4",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/paper-qa-BDUK",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "dcb4fd471f110a58120e1e8ebbbe8006fbe40904",
+      "tree": "9dd29ab5a8d32d6204e0088d9be00f5addf4c79a",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/parliament-mcp",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "7e17f325de955c53779a20d7bc960a960412b269",
+      "tree": "157dbfd055d37bb5ea0d52b4409dc18464cda964",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/powerbi-modeling-mcp",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "55f9d8d50211f94f7dd4ee8c47e3db6d3e695c00",
+      "tree": "fd2654b5ca14fd08fa271db7c93b51a5b1be16d8",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/promptflow-resources-BDUK",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "e24b8e9cbe88669f3043a2122d454f0f91c865ff",
+      "tree": "938f774efe73f63bdb4823a256cf882016a6d6d1",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/psia-irea-hackathon",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "1852aa29ca93372e8c7071313ff129d986cbb274",
+      "tree": "b9f4041972f9261ccd5ff85d16c25e773c959c8b",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/pstoon",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "c622d03131041c257c9d6e2c1f9ad041d84d3c5c",
+      "tree": "c5bfd7e4c04a5885b8cc8c87bfa372236e1a3e53",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/rapid-street-assessments",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "aa8718d795fa0053fd597d1859832ef3e7831f6f",
+      "tree": "ea24404c8835c952bc77f6fa6735b2f302ac9ec9",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/recipes-BDUK",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "dc2ad4ada2be0cd49c3d459c034f7671916bc9fe",
+      "tree": "71159894ab103b60aff4b847b89ad8335893bafa",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/recursive_llm",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "de6dab1e4fd7951cda1a5cce50ee57bb1c52e67b",
+      "tree": "8a039343bf1167ac511c4d7278f45c358f6fa765",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/redbox-copilot",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "727eb5b1c944e74bfd632f12a7a294c6dec21687",
+      "tree": "0a7c85301596669a8a6ce0bf7b8aa15670f3057e",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/rendergit",
+      "branch": "master",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "32b51ae2694e4ce712b7863b5a965555bc6cf169",
+      "tree": "e4c226049c6cd7a58b17d6c07cdc6a26e04f8e11",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/road-stat-docs",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "51ad33cd344285068370d54561b007cf70eac1ce",
+      "tree": "3aeda840178bcaa7a717e151fd5c61dbda5a69ee",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/schemaorg-BDUK",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "255a5b7c94b21014eb8c536ab33e332b8d6b6119",
+      "tree": "56f710ad37c5603c2ec87ea1e9b1bf0a43b340e5",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/semantic-kernel-cp",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "96bad5ceacf7db9862a7a0976f045613007088db",
+      "tree": "881bffd6af6da38d3e154441d2601316f9dba2f0",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/semantica",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "bc63e962c9818111d4a951b0d08f5e1e53a3ba39",
+      "tree": "9f4653bb9dfd6ae3cfbf1a0972631c3806d44191",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/semanticworkbench",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "5c4a36bd389c923b50d4465ccf5861239d6ff944",
+      "tree": "408f6d53d6dd8cd53c2efefb78b97463eb1c0825",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/skills",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "69c0b1a0674149f27b61b2635f935524b6add202",
+      "tree": "b04f35cf415f4dc6bb5f4637310ce08412056a1c",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/solutions-geospatial-analytics",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "06e623fd562e9d99b9a4bcc9f326299db3363d2f",
+      "tree": "b2a9318ee0013e7234dedaa29b41714e36b05cce",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/spec-kit",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "f205fa3b58ab3a409bf0432dbafc9d2713b4b9bb",
+      "tree": "cbf9467ed65a37750e9ce6e22f4ad00bb000e024",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/splink",
+      "branch": "master",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "bd1d9c2ab170971155974dd55b14af194881501e",
+      "tree": "893789695eca96d9e92adf9925dc0727c2409472",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/system-prompts-and-models-of-ai-tools",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "26d52d3793f8e86b039fcf49a921b69fb7b5d56c",
+      "tree": "278bada1a0d6bf7ec542079edd46c899c0305de7",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/system_prompts_leaks",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "ea26730d213b24e42a2e76678a0814f9e6d6b7a8",
+      "tree": "86a2687d2663d24fb90b51a4379081737fdf26c1",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/t3code",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "a38cac81d82b82a6967eaf8cb90ed2770c514f3c",
+      "tree": "ff88fecf0cb1c1fce8fadc4f5384894ec889d35a",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/terraform-mcp-server",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "0f88afd04373e5f2e465be1727cc354dd1757739",
+      "tree": "d74218c14c965804fc4e9bf25bc5486ef77bfbfe",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/themefinder",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "5ace5f4c70d3e6f79c5eb46f5eab37940dcc3d5c",
+      "tree": "6d35478028be6aa1ffb6dc78f195bb43a1e3b317",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/thought-anchors",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "971d7e844da56a2765f46fc7b6146b734c096b47",
+      "tree": "97441640ea711cce870d89176d0c907f23fc04e6",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/tolaria-markdown-kb",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "1301653b810d4e0ffaee8b30a542a76c84402fcb",
+      "tree": "8e665a01a5982f1a15946b2219bdd25ffe19fe02",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/torque",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "417f2e4a38f8ea82fbbbb7da6b975c8c957ec908",
+      "tree": "9426c6302ce6b43e94f0785ba5e68e0376502e12",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/uk-government-security-learning",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "visibility": "public",
+      "roots": [
+        {
+          "root": "site/okf",
+          "evidence": [
+            {
+              "path": "site/okf/okf-bundle.json",
+              "blob": "f37a65a80f787d282473c84cc20e958e241e9d1e",
+              "kind": "runtime"
+            },
+            {
+              "path": "site/okf/okf-bundle.jsonld",
+              "blob": "095c9477e5e8e864b53bdaaa75dae4071ccaf661",
+              "kind": "graph"
+            },
+            {
+              "path": "site/okf/okf-bundle.yamlld",
+              "blob": "88da00ea7e8a23b025c1a6f11dec3a63f598c015",
+              "kind": "graph"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "45ed99e8494379d0d871549d82f7341085a11d2b",
+      "tree": "d9f473f93f82f72cee59885c16d94ad1f1095ddc",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/uk-ons-mcp-server",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "294eb703cd998a8e1ead16a94d1b9392def42c39",
+      "tree": "0ea4bfedd837f83a2a9cb9034a64e77805441e34",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/venn-vdm",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "ad97513f1cc1fc5abc886f195d17e6145776e091",
+      "tree": "983d970d4a0f95268f4ff49162b7e05e579a4722",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/vibe-planning",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "0523db2d3ff9934091b6c82d581f647c74e01cf7",
+      "tree": "b0d6ff61f69129d19d519cc22443bc550f99cc71",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/videoprojects",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "e0eee85d67b3cf8d885d472980b03b3e819ef8c3",
+      "tree": "ebc5788da173d436f2ca197a174f4398c1efdf0e",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/vision-agent-BDUK",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "3f98d565391ca1a0e1d27fa64d7376dfcdb62e76",
+      "tree": "06f43aba44126c6c9f6c4e4e05a55de6e87921e6",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/vscode-remote-try-python",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "e351212b72f76fb557c6f31956eb44756300b8b4",
+      "tree": "4a91975ff48d0e8c78be48d24726174d617e8947",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/web-terminal",
+      "branch": "master",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "0647d92fed6ab659fb7ad7a153117dcb1b8e8318",
+      "tree": "b06109fc1b51595b7d8dc9c5a963c0a7654edacd",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/windows",
+      "branch": "master",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "2beaf3072580d8011441c7506f10b2792fde1ea3",
+      "tree": "b7f7f8364d981b345d311dfe7bb559394cc77d90",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/workbank",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "6845ff511612c930419d25f300d9580290659003",
+      "tree": "cdf8496ff0abe909829d5eeb7ed79210959b8826",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/xgov-soft-eng-com",
+      "branch": "main",
+      "archived": false,
+      "fork": false,
+      "visibility": "public",
+      "roots": [
+        {
+          "root": ".",
+          "evidence": [
+            {
+              "path": "okf.publication.json",
+              "blob": "e6dfa0c8c356c5c3d1604a69da39c5328ffd251a",
+              "kind": "contract"
+            },
+            {
+              "path": "okf.semantic.json",
+              "blob": "701a5cc4bba15434491191ae406269b6567d5d1e",
+              "kind": "contract"
+            }
+          ]
+        }
+      ],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "890a808125cf9327b491a5763a44a6bab1601f72",
+      "tree": "5f22e84fe2a5e2e580d1a9064a4c29c3245e1df8",
+      "status": "tree-read"
+    },
+    {
+      "repository": "chris-page-gov/yaml-ld",
+      "branch": "main",
+      "archived": false,
+      "fork": true,
+      "visibility": "public",
+      "roots": [],
+      "pending_indexes": [],
+      "errors": [],
+      "recovered_truncations": [],
+      "commit": "c3849526aa62324d1bc24ee0e03afb09ed6c5282",
+      "tree": "5e20f1951afa2651fd0d4458b320dc438eb136a7",
+      "status": "tree-read"
+    }
+  ]
+}
