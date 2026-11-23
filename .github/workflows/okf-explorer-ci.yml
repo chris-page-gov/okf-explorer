@@ -455,6 +455,7 @@ jobs:
     needs: [impact-plan, adversarial-gate, app]
     if: needs.impact-plan.outputs.browser_full == 'true'
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
@@ -492,6 +493,7 @@ jobs:
         run: pnpm exec playwright install --with-deps firefox webkit
       - name: Run terminal-equivalent Chrome, Firefox and WebKit assurance
         working-directory: apps/okf-explorer
+        timeout-minutes: 35
         run: pnpm test:e2e:terminal
 
   foundry:

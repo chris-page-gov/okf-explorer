@@ -3082,11 +3082,24 @@ input:focus {
   stroke-width: 4;
 }
 
-.graph .node-hit,
+.graph .node-hit {
+  fill: transparent;
+  stroke: transparent;
+  stroke-width: 0;
+  pointer-events: all;
+}
+
+/* Label padding may overlap a different node. Only the visible label text
+   should activate its record; transparent padding must leave that node usable. */
 .graph .label-hit {
   fill: transparent;
   stroke: transparent;
   stroke-width: 0;
+  pointer-events: none;
+}
+
+.graph .graph-node-label text,
+.graph g[data-route] > text:not(.stack-count) {
   pointer-events: all;
 }
 

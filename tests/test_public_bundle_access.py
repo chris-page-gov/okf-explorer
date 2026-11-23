@@ -61,6 +61,14 @@ class PublicBundleAccessTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "unsafe descriptor"):
             self.mutate(lambda b: b.update(descriptor="https://secret@chris-page-gov.github.io/okf-example/okf-explorer.json"))
 
+    def test_walkthrough_and_release_links_keep_public_url_boundaries(self):
+        for key in ("walkthrough", "release"):
+            for url in ("http://chris-page-gov.github.io/example/",
+                        "https://secret@github.com/chris-page-gov/example",
+                        "https://unrelated.example.test/walkthrough.html"):
+                with self.subTest(key=key, url=url), self.assertRaisesRegex(ValueError, "unsafe " + key):
+                    self.mutate(lambda b: b.update({key: url}))
+
     def test_directory_preserves_known_access_boundaries(self):
         rows = {b["repository"].rsplit("/", 1)[-1]: b for b in access.load()["bundles"]}
         self.assertEqual(len(rows), 13)

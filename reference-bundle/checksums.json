@@ -306,15 +306,15 @@
     },
     "okf-bundle.json": {
       "bytes": 2051556,
-      "sha256": "a52acdda5a337b05816b3ff6e57a56708f0dc716fe6fdc6a26629609c49c1685"
+      "sha256": "69214c569cd51e5a63a5f4059315bc51805d26842ee8bcd7564c0d30b4f288ed"
     },
     "okf-bundle.jsonld": {
       "bytes": 1597067,
-      "sha256": "34d0ddedb14ae795000859d878efdcd90316e8497b215654e1a4f1c19823c07a"
+      "sha256": "aef1bc7c367e3c5d241d2ccd81ca2501368c15f64ac741d56bfbcbc48ef8894f"
     },
     "okf-bundle.yamlld": {
       "bytes": 1280212,
-      "sha256": "79477961f077f8a199d0fbafbacb7452543eb8105e615bb38507baca8b98b7e7"
+      "sha256": "656a277609fdb9e71b846a13839bbff4f3ce0c804f3bfc21619959ed63f041d8"
     },
     "organisations/aisi.md": {
       "bytes": 482,
@@ -686,7 +686,7 @@
     },
     "walkthrough-data.json": {
       "bytes": 7801,
-      "sha256": "5281806f9b7e26dfcba5a480af5f8397a03fde38767b4c9137ef26059b2ce5f8"
+      "sha256": "f9d875a4ef1e2337a81e39145f437d67a984992c27370c761c3022cc7f8ef008"
     },
     "walkthrough.case.json": {
       "bytes": 1077,
@@ -694,7 +694,7 @@
     },
     "walkthrough.explorer-journeys.json": {
       "bytes": 8009,
-      "sha256": "e2c67c1156a42ec40f3c62aec70ce0867b52cb6fc2f41575af2d67ab8f0507fb"
+      "sha256": "03190badb3a4b3ceec2a0e33e600702474a73e1b37906eb81623e4adbfef953b"
     },
     "walkthrough.html": {
       "bytes": 6022,
