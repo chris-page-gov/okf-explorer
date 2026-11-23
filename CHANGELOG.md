@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased — native bundle source links
+
+- Resolve Markdown body links in native JSON bundles from the concept's actual
+  Markdown document. Keep bundle-root paths within the bundle directory.
+- Apply the same document-relative rule to core 0.3 resource, provenance,
+  computation, executor and attester links. Retain earlier resource behaviour
+  for older bundles and preserve safe URL handling.
+
 ## Unreleased — consumer acceptance routes
 
 - Serve declared static directory indexes in the isolated bundle acceptance

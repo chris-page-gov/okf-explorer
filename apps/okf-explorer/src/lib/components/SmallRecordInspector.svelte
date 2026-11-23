@@ -2,7 +2,7 @@
   import { tick } from 'svelte';
   import type { FederationChild, NormalizedCorpus, OkfNode, OkfRelationship } from '$lib/types';
   import { okfConceptPresentation, trustTierLabel } from '$lib/okfV02';
-  import { bundleAssetDownload, bundleAssetImage, renderSafeMarkdown, smallNodeLinks, smallNodeMetadataRows } from '$lib/viewer/smallNodePresentation';
+  import { bundleAssetDownload, bundleAssetImage, renderSafeMarkdown, smallNodeLinks, smallNodeMarkdownUrl, smallNodeMetadataRows } from '$lib/viewer/smallNodePresentation';
   import { relationshipPresentation } from '$lib/viewer/relationshipPresentation';
   import InspectorSections from './InspectorSections.svelte';
   let { detailNode, smallCorpus, detailRelationships, sourceUrl, selectedFederationChild, outsideScope = false, inspectNode, inspectRelationship, loadFederationChild, conceptUrl }:
@@ -88,6 +88,7 @@
           {#if detailNode.body}
             <section use:followMarkdownConcept class="markdown-body" aria-label="Markdown body">
               {@html renderSafeMarkdown(detailNode.body, sourceUrl, {
+                resolveHref: (href) => smallNodeMarkdownUrl(detailNode, sourceUrl, href),
                 references: detailNode.markdown_references,
                 sectionAnchors: Boolean(detailNode.markdown_links),
                 imageSrc: href => {
@@ -205,7 +206,7 @@
               {/if}
             </section>
           {/if}
-          {@const nodeLinks = smallNodeLinks(detailNode, sourceUrl)}
+          {@const nodeLinks = smallNodeLinks(detailNode, sourceUrl, smallCorpus?.okfVersion)}
           {#if nodeLinks.length}
             <section class="small-node-links" aria-label="Source and resource links">
               <h3>Source and resources</h3>

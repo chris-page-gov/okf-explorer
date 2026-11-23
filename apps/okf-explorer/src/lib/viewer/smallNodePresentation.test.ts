@@ -4,6 +4,7 @@ import {
   renderSafeMarkdown,
   safeSmallNodeUrl,
   smallNodeLinks,
+  smallNodeMarkdownUrl,
   smallNodeMetadataRows,
   smallNodeSearchText
 } from './smallNodePresentation';
@@ -31,6 +32,32 @@ const node: OkfNode = {
 };
 
 describe('small node presentation', () => {
+  it('resolves native JSON concept body links from the nested Markdown source', () => {
+    const record = { ...node, source: 'federated/federated-rag.md' };
+    const bundle = 'https://bundle.example/okf-ai-infrastructure/okf-bundle.json';
+    expect(smallNodeMarkdownUrl(record, bundle, 'federated-learning.md')).toBe('https://bundle.example/okf-ai-infrastructure/federated/federated-learning.md');
+    expect(smallNodeMarkdownUrl(record, bundle, '../frameworks/flower.md')).toBe('https://bundle.example/okf-ai-infrastructure/frameworks/flower.md');
+    expect(smallNodeMarkdownUrl(record, bundle, '/frameworks/flower.md')).toBe('https://bundle.example/okf-ai-infrastructure/frameworks/flower.md');
+    expect(smallNodeMarkdownUrl(record, bundle, '//other.example/secret')).toBe('');
+    expect(smallNodeMarkdownUrl(record, bundle, 'javascript:alert(1)')).toBe('');
+    const html = renderSafeMarkdown('[Flower](../frameworks/flower.md)', bundle, {
+      resolveHref: href => smallNodeMarkdownUrl(record, bundle, href)
+    });
+    expect(html).toContain('href="https://bundle.example/okf-ai-infrastructure/frameworks/flower.md"');
+  });
+
+  it('uses document-relative 0.3 path fields while retaining legacy resource bases', () => {
+    const record = { id: 'nested/metric.md', title: 'Metric', source: 'nested/metric.md', resource: 'data.csv',
+      sources: [{ resource: '../evidence.md' }], executor: { resource: '/run.py' } };
+    const bundle = 'https://bundle.example/publication/okf-bundle.json';
+    expect(smallNodeLinks(record, bundle, '0.3').map(link => link.url)).toEqual([
+      'https://bundle.example/publication/nested/metric.md',
+      'https://bundle.example/publication/evidence.md',
+      'https://bundle.example/publication/nested/data.csv',
+      'https://bundle.example/publication/run.py'
+    ]);
+    expect(smallNodeLinks(record, bundle).find(link => link.label === 'Resource')?.url).toBe('https://bundle.example/publication/data.csv');
+  });
   it('includes Markdown body text in deterministic small-bundle search', () => {
     expect(smallNodeSearchText(node)).toContain('body-only searchable phrase');
   });

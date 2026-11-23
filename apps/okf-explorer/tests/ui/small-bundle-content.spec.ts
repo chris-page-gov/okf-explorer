@@ -28,6 +28,8 @@ flowchart LR
 
 [Usage guide](guides/use.html?token=secret&view=full)
 
+[Sibling](sibling.md) · [Parent](../parent.md) · [Bundle root](/root.md)
+
 <script>window.fixtureAttack = true</script> [Unsafe](javascript:alert(1))`,
       resources: [{ title: 'Boundary CSV', url: 'https://data.fixture.test/alpha.csv?api_key=secret&download=1' }],
       schema_org_type: 'Dataset',
@@ -177,8 +179,11 @@ test('SMALL-E2E-01 searches Markdown body and renders it without active content'
   await expect(markdown.locator('a[href^="javascript:"]')).toHaveCount(0);
   await expect(markdown.getByRole('link', { name: 'Usage guide' })).toHaveAttribute(
     'href',
-    'https://small.fixture.test/guides/use.html?view=full'
+    'https://small.fixture.test/records/guides/use.html?view=full'
   );
+  await expect(markdown.getByRole('link', { name: 'Sibling', exact: true })).toHaveAttribute('href', 'https://small.fixture.test/records/sibling.md');
+  await expect(markdown.getByRole('link', { name: 'Parent', exact: true })).toHaveAttribute('href', 'https://small.fixture.test/parent.md');
+  await expect(markdown.getByRole('link', { name: 'Bundle root', exact: true })).toHaveAttribute('href', 'https://small.fixture.test/root.md');
 });
 
 test('SMALL-E2E-02 exposes redacted links, selected metadata and complete node JSON', async ({ page }) => {
