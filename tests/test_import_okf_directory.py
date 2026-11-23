@@ -61,6 +61,7 @@ extension: {nested: on}
         self.assertEqual(set(result["nodes"]), {"a/a.md", "b file.md"})
         self.assertEqual(result["nodes"]["a/a.md"]["frontmatter"]["extension"], {"nested": "on"})
         self.assertEqual(result["nodes"]["a/a.md"]["@id"], "urn:example:a")
+        self.assertEqual(result["nodes"]["a/a.md"]["markdown_references"], {"REF": "../b%20file.md#section"})
         self.assertEqual(result["nodes"]["a/a.md"]["markdown_links"], {"../b%20file.md#section": "b file.md"})
         self.assertEqual(result["edges"], [{"source": "a/a.md", "target": "b file.md",
                          "kind": "references", "source_fields": sorted(["markdown", "sources[].resource",

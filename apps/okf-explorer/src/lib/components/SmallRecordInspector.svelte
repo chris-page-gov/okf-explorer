@@ -75,6 +75,7 @@
           {#if detailNode.body}
             <section use:followMarkdownConcept class="markdown-body" aria-label="Markdown body">
               {@html renderSafeMarkdown(detailNode.body, sourceUrl, {
+                references: detailNode.markdown_references,
                 conceptHref: markdownConceptHref,
                 sourceForFootnote: id => sourceByFootnote.get(id)
               })}

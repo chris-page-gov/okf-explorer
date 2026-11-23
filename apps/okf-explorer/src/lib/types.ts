@@ -32,6 +32,7 @@ export type OkfNode = {
   tags?: string[];
   body?: string;
   markdown_links?: Record<string, string>;
+  markdown_references?: Record<string, string>;
   [key: string]: unknown;
 };
 

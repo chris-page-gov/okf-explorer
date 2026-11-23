@@ -712,9 +712,9 @@ test('Links compares source assertions and inference with evidence and shareable
 test('OKF 0.3 shows verification history and opens the replacement concept', async ({ context, page }) => {
   const url = 'https://small.fixture.test/core-03.json';
   const original = { title: 'Former metric', type: 'Metric', status: 'deprecated',
-    body: 'Archived claim.[^policy] [Read the current definition](/new.md)\n\n[^policy]: Policy source.',
+    body: 'Archived claim.[^policy] [Read the current definition][current]\n\n[current]: /new.md\n[^policy]: Policy source.',
     sources: [{id: 'policy', title: 'Policy source', resource: 'https://example.org/policy'}],
-    markdown_links: { '/new.md': 'new.md' },
+    markdown_links: { '/new.md': 'new.md' }, markdown_references: { CURRENT: '/new.md' },
     generated: { by: 'editor/v1', at: '2026-11-01' },
     verified: [{ by: 'human:earlier', at: '2026-10-31' }, { by: 'team:current', at: '2026-11-01' }],
     stale_after: 'invalid' };

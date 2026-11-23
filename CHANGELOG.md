@@ -4,7 +4,7 @@
 
 - Show incoming core references in the Reader and apply version-aware trust
   and lifecycle rules to Explorer facets.
-- Open inline Markdown concept links in Explorer and make reserved index and
+- Open inline and reference-style Markdown concept links in Explorer and make reserved index and
   history documents readable from the bundle overview.
 - Display source-linked claim footnotes using the bundle’s provenance entries.
 - Surface imported bundle scope and licence, and omit same-concept anchors

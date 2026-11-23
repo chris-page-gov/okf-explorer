@@ -33,8 +33,8 @@ def parse_optional_frontmatter(path: Path) -> MarkdownDocument:
     return MarkdownDocument(metadata=metadata, body=text[close.end():].strip("\n"))
 
 
-def markdown_targets(body: str, parser: MarkdownIt) -> Iterator[str]:
-    for block in parser.parse(body):
+def markdown_targets(body: str, parser: MarkdownIt, environment: dict[str, Any] | None = None) -> Iterator[str]:
+    for block in parser.parse(body, environment):
         for token in block.children or ():
             if token.type == "link_open":
                 yield token.attrs["href"]
@@ -128,7 +128,12 @@ def project(root: Path) -> dict[str, Any]:
     legacy = version is None or str(version) in ("", "0.1", "0.2")
     edges: dict[tuple[str, str], set[str]] = {}
     for route, node in sorted(concepts.items()):
-        targets = [("markdown", href) for href in markdown_targets(node["body"], parser)]
+        environment: dict[str, Any] = {}
+        targets = [("markdown", href) for href in markdown_targets(node["body"], parser, environment)]
+        node["markdown_references"] = {
+            label: reference["href"]
+            for label, reference in environment.get("references", {}).items()
+        }
         targets.extend(path_fields(node["frontmatter"]))
         markdown_links = {}
         for field, href in targets:

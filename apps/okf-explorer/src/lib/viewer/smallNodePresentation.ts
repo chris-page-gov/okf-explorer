@@ -51,9 +51,16 @@ export function safeSmallNodeUrl(value: unknown, baseUrl = ''): string {
 }
 
 type MarkdownLinks = {
+  references?: Record<string, string>;
   conceptHref?: (href: string) => string;
   sourceForFootnote?: (id: string) => { title: string; resource: string } | undefined;
 };
+
+function referenceHref(label: string, links?: MarkdownLinks): string {
+  const key = label.trim().replace(/\s+/g, ' ').toLowerCase().toUpperCase();
+  const href = links?.references?.[key];
+  return typeof href === 'string' ? href : '';
+}
 
 function inlineMarkdown(value: string, baseUrl: string, links?: MarkdownLinks): string {
   const tokens: string[] = [];
@@ -61,16 +68,21 @@ function inlineMarkdown(value: string, baseUrl: string, links?: MarkdownLinks): 
     const index = tokens.push(html) - 1;
     return `\u0000OKF${index}\u0000`;
   };
+  function renderLink(label: string, href: string): string {
+    const safeLabel = escapeHtml(label);
+    const conceptUrl = links?.conceptHref?.(href);
+    if (conceptUrl) return token(`<a href="${escapeHtml(conceptUrl)}" data-okf-markdown-href="${escapeHtml(href)}">${safeLabel}</a>`);
+    const safeUrl = safeSmallNodeUrl(href, baseUrl);
+    return token(safeUrl
+      ? `<a href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer">${safeLabel}</a>`
+      : safeLabel);
+  }
   const linked = value
     .replace(/`([^`]+)`/g, (_match, code: string) => token(`<code>${escapeHtml(code)}</code>`))
-    .replace(/\[([^\]]+)\]\(([^)\s]+)(?:\s+"[^"]*")?\)/g, (_match, label: string, href: string) => {
-      const safeLabel = escapeHtml(label);
-      const conceptUrl = links?.conceptHref?.(href);
-      if (conceptUrl) return token(`<a href="${escapeHtml(conceptUrl)}" data-okf-markdown-href="${escapeHtml(href)}">${safeLabel}</a>`);
-      const safeUrl = safeSmallNodeUrl(href, baseUrl);
-      return token(safeUrl
-        ? `<a href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer">${safeLabel}</a>`
-        : safeLabel);
+    .replace(/\[([^\]]+)\]\(([^)\s]+)(?:\s+"[^"]*")?\)/g, (_match, label: string, href: string) => renderLink(label, href))
+    .replace(/\[([^\]^]+)\](?:\[([^\]]*)\])?(?!:)/g, (match, label: string, reference?: string) => {
+      const href = referenceHref(reference || label, links);
+      return href ? renderLink(label, href) : match;
     })
     .replace(/\[\^([^\]\s]+)\](?!:)/g, (match, id: string) => {
       const source = links?.sourceForFootnote?.(id);
@@ -272,6 +284,12 @@ export function renderSafeMarkdown(value: unknown, baseUrl = '', links?: Markdow
     }
     if (fenced) {
       codeLines.push(line);
+      continue;
+    }
+    const referenceDefinition = /^\s{0,3}\[([^\]^]+)\]:/.exec(line);
+    if (referenceDefinition && referenceHref(referenceDefinition[1], links)) {
+      flushParagraph();
+      flushList();
       continue;
     }
     if (!line.trim()) {
