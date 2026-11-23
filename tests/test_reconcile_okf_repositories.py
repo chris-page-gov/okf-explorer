@@ -1453,6 +1453,39 @@ class ReconcileOkfRepositoriesTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, "2-match audit limit"):
                     reconcile.matching_paths(repo, "*.json")
 
+    def test_directory_outputs_recurse_and_reject_outward_symlinks(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            parent = Path(directory)
+            repo = parent / "repo"
+            outside = parent / "outside"
+            (repo / "artifacts" / "nested").mkdir(parents=True)
+            outside.mkdir()
+            artifact = repo / "artifacts" / "nested" / "bundle.json"
+            artifact.write_text("{}\n", encoding="utf-8")
+            self.assertEqual(
+                [artifact.resolve()],
+                reconcile.matching_paths(repo, "artifacts/"),
+            )
+
+            (repo / "artifacts" / "escape").symlink_to(
+                outside,
+                target_is_directory=True,
+            )
+            with self.assertRaisesRegex(ValueError, "escapes its root"):
+                reconcile.matching_paths(repo, "artifacts/")
+
+    def test_directory_expansion_limit_counts_directories_and_files(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            repo = Path(directory)
+            (repo / "tree" / "nested").mkdir(parents=True)
+            (repo / "tree" / "nested" / "artifact.json").write_text(
+                "{}\n",
+                encoding="utf-8",
+            )
+            with patch.object(reconcile, "MAX_AUDIT_GLOB_MATCHES", 1):
+                with self.assertRaisesRegex(ValueError, "1-entry audit limit"):
+                    reconcile.matching_paths(repo, "tree/")
+
     def test_shared_semantic_assertion_gate_rejects_legacy_camel_case(self) -> None:
         legacy = {
             "@id": "https://example.test/assertion/one",

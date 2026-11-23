@@ -37,6 +37,11 @@ Bundle status, source review and AI host compatibility are different things.
 
 ## Documentation
 
+Use the [central standards register and bundle catalogues](docs/okf-standards.md)
+for current and historical OKF specifications and version-specific source pins.
+
+Read the [OKF 0.3 migration guide](docs/okf-0.3-migration.md) to import a directory, share a graph with an AI or assess bundle sources.
+
 The [documentation map](docs/index.md) separates getting started, task guides,
 the optional [project studio](docs/project-studio/index.md),
 [beginner reference](docs/beginners/index.md), technical contracts and historical

@@ -1,0 +1,93 @@
+{
+  "schema": "okf-standards-register.v1",
+  "title": "Open Knowledge Format standards register",
+  "owner": "chris-page-gov",
+  "stable_human_reference": "https://github.com/chris-page-gov/okf-explorer/blob/main/docs/okf-standards.md",
+  "stable_machine_reference": "https://raw.githubusercontent.com/chris-page-gov/okf-explorer/main/registry/okf-standards.json",
+  "observed_on": "2026-11-23",
+  "locale": "en-GB",
+  "time_zone": "Europe/London",
+  "purpose": "Central reference for OKF core specifications, separately versioned local profiles and public bundle discovery. This register does not itself assert conformance or adoption.",
+  "current_core": {
+    "version": "0.3",
+    "status": "current",
+    "repository": "https://github.com/open-knowledge-format/open-knowledge-format",
+    "specification": "https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md",
+    "pinned_commit": "527e81aff55992be21507e97004286789126f88c",
+    "revision_date": "2026-11-18",
+    "announced_release_date": "2026-11-18",
+    "announcement": "https://cloud.google.com/blog/products/data-analytics/introducing-okf-v0-3",
+    "verified_default_branch_head_on": "2026-11-23",
+    "verified_default_branch_head": "527e81aff55992be21507e97004286789126f88c"
+  },
+  "historical_core": [
+    {
+      "version": "0.2",
+      "status": "historical",
+      "repository": "https://github.com/GoogleCloudPlatform/knowledge-catalog",
+      "specification": "https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/3fcbb9f828c2f23d109c855ee403c3a4c81f3a96/okf/SPEC.md",
+      "pinned_commit": "3fcbb9f828c2f23d109c855ee403c3a4c81f3a96",
+      "revision_date": null,
+      "provenance_note": "Immutable revision already used by this repository's conformance and authoring references. No separate release date is asserted here."
+    },
+    {
+      "version": "0.1",
+      "status": "historical",
+      "repository": "https://github.com/GoogleCloudPlatform/knowledge-catalog",
+      "specification": "https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/ee67a5ca27044ebe7c38385f5b6cffc2305a9c1a/okf/SPEC.md",
+      "pinned_commit": "ee67a5ca27044ebe7c38385f5b6cffc2305a9c1a",
+      "revision_date": "2026-06-12",
+      "verified": true,
+      "verification": {
+        "method": "GitHub path history and immutable raw content",
+        "raw_url": "https://raw.githubusercontent.com/GoogleCloudPlatform/knowledge-catalog/ee67a5ca27044ebe7c38385f5b6cffc2305a9c1a/okf/SPEC.md",
+        "content_marker": "Version 0.1 — Draft",
+        "commit_date_source": "https://api.github.com/repos/GoogleCloudPlatform/knowledge-catalog/commits/ee67a5ca27044ebe7c38385f5b6cffc2305a9c1a"
+      },
+      "provenance_note": "The pinned document identifies itself as OKF version 0.1. The revision date is the Git commit date; no separate release announcement date is asserted."
+    }
+  ],
+  "profiles": [
+    {
+      "id": "bundle-wiki",
+      "version": "1",
+      "status": "frozen",
+      "iri": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/",
+      "source_path": "profiles/bundle-wiki/v1/",
+      "semantic_core_target": "0.2",
+      "note": "This local semantic profile has its own version and lifecycle. Its presence does not change the core version declared by any bundle or constitute OKF 0.3 adoption."
+    }
+  ],
+  "bundle_catalogues": {
+    "public_bundle_access": {
+      "title": "Curated public bundle access directory",
+      "path": "registry/public-bundle-access.json",
+      "url": "https://raw.githubusercontent.com/chris-page-gov/okf-explorer/main/registry/public-bundle-access.json",
+      "human_guide": "https://github.com/chris-page-gov/okf-explorer/blob/main/docs/public-bundle-access.md",
+      "scope": "Thirteen reviewed public owner-authored bundle entries at the directory's observation date; this is a discovery catalogue, not a complete owner inventory or conformance decision."
+    },
+    "public_owner_candidates": {
+      "title": "Public owner repository candidate scan",
+      "path": "docs/evidence/okf-public-owner-candidates-2026-11-23.json",
+      "url": "https://raw.githubusercontent.com/chris-page-gov/okf-explorer/main/docs/evidence/okf-public-owner-candidates-2026-11-23.json",
+      "observed_on": "2026-11-23",
+      "scope": "Public repository discovery evidence for chris-page-gov. Candidates include declared indexes and runtime markers and require review; discovery does not establish a bundle, conformance, completeness or adoption."
+    }
+  },
+  "limitations": [
+    "The owner catalogue covers public repositories only. Private repositories are deliberately excluded.",
+    "Repository declarations and candidate evidence do not prove current publication, core conformance, semantic-profile adoption or release approval.",
+    "Keep historical bundle versions and frozen evidence pinned to their original source revision."
+  ],
+  "reviewed_public_producer_sources": [
+    {
+      "repository": "https://github.com/chris-page-gov/okf-hansard",
+      "visibility": "public",
+      "observed_commit": "148ad5b4ce7db394c2af5fa6af8fa1f1255a0a81",
+      "source_reference": "https://github.com/chris-page-gov/okf-hansard/blob/148ad5b4ce7db394c2af5fa6af8fa1f1255a0a81/README.md",
+      "role": "source-producer",
+      "discovery_basis": "Reviewed source repository; generated release artefacts are stored outside Git.",
+      "artifact_acceptance": "pending-separate-verification"
+    }
+  ]
+}

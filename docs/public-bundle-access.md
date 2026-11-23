@@ -10,7 +10,7 @@ HTTP routes checked on 14 November 2026. The checks retrieved descriptors
 and declared overview/data entrypoints; they did not validate every record,
 licence or answer. Browser and Voice checks remain separate.
 
-All producer links below are browser-unverified for this audit. Chrome blocked
+The 14 November audit checked producer descriptors over HTTP. Chrome blocked
 the ELS Markdown entrypoint with `ERR_BLOCKED_BY_CLIENT`; its HTTP route
 returned 200. Later entries give their own verification evidence. No live Voice
 conversation has been tested for this directory.
@@ -64,6 +64,11 @@ Bounded source-reviewed draft describing an internal/private upstream API. Readi
 The Explorer reference corpus is a separate small bundle. The Reader application and curated registry also link to independently published producers.
 
 [Semantic descriptor](https://chris-page-gov.github.io/okf-explorer/okf-bundle.yamlld) · [Source repository](https://github.com/chris-page-gov/okf-explorer)
+
+[Open the release graph (JSON-LD)](https://raw.githubusercontent.com/chris-page-gov/okf-explorer/954d44a345b31a3142bc69a822295e6420108d93/okf-bundle.jsonld)
+(1,484,270 bytes). SHA-256 `29b0ccbc3a6756bd12d2f195311f1424bb91eae43ca3cf5a81319e2b058e1512`.
+
+Follow an assertion from its source to its target and evidence. Resolve source artefacts against the same repository commit.
 
 ### GOV.UK content
 

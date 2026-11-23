@@ -1,5 +1,8 @@
 # OKF v0.2 conformance and Explorer profile
 
+The [central standards register](okf-standards.md) records the current upstream
+location, the pinned historical specifications and the owner's bundle catalogues.
+
 This repository targets [Open Knowledge Format v0.2](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/3fcbb9f828c2f23d109c855ee403c3a4c81f3a96/okf/SPEC.md). It deliberately separates the small interoperable core from the richer OKF Explorer bundle-wiki profile.
 
 ## Core conformance

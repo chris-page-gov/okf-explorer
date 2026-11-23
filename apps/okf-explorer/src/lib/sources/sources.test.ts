@@ -622,6 +622,17 @@ describe('small bundle normalisation', () => {
     expect(corpus.meta?.semantic_source).toBe(true);
   });
 
+  it('accepts all explicitly declared root routes in a released semantic graph', () => {
+    const corpus = normalizeSmallBundle({ '@graph': [
+      { '@id': 'urn:example:root', '@type': 'Document', route: 'index', title: 'Contents' },
+      { '@id': 'urn:example:history', '@type': 'Document', route: 'log', title: 'History' },
+      { '@id': 'urn:example:sources', '@type': 'Document', route: 'sources-index', title: 'Sources' }
+    ], '@context': {}, '@id': 'urn:example:bundle' } as unknown as OkfBundle);
+    expect(corpus.nodes.index.title).toBe('Contents');
+    expect(corpus.nodes.log.title).toBe('History');
+    expect(corpus.nodes['sources-index'].title).toBe('Sources');
+  });
+
   it('does not invent local routes from semantic IRIs or accept unsafe declared routes', () => {
     expect(() => normalizeSmallBundle({
       '@context': 'https://example.test/pinned-context.jsonld',
@@ -699,6 +710,14 @@ describe('small bundle normalisation', () => {
         }
       ]
     } as unknown as OkfBundle)).toThrow('must declare RelationshipAssertion type');
+  });
+
+  it('keeps punctuation in a single OKF 0.3 scalar tag', () => {
+    const corpus = normalizeSmallBundle({ okf_version: '0.3', nodes: {
+      a: { id: 'a', tags: 'one; two, three' }, b: { id: 'b', tags: '' }
+    }} as unknown as OkfBundle);
+    expect(corpus.nodes.a.tags).toEqual(['one; two, three']);
+    expect(corpus.nodes.b.tags).toEqual([]);
   });
 
   it('normalises top-level bundle nodes and relationships', () => {
