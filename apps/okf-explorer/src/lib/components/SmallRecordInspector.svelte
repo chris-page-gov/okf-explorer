@@ -1,16 +1,66 @@
 <script lang="ts">
+  import { tick } from 'svelte';
   import type { FederationChild, NormalizedCorpus, OkfNode, OkfRelationship } from '$lib/types';
   import { okfConceptPresentation, trustTierLabel } from '$lib/okfV02';
-  import { renderSafeMarkdown, smallNodeLinks, smallNodeMetadataRows } from '$lib/viewer/smallNodePresentation';
+  import { bundleAssetDownload, bundleAssetImage, renderSafeMarkdown, smallNodeLinks, smallNodeMetadataRows } from '$lib/viewer/smallNodePresentation';
   import { relationshipPresentation } from '$lib/viewer/relationshipPresentation';
   import InspectorSections from './InspectorSections.svelte';
-  let { detailNode, smallCorpus, detailRelationships, sourceUrl, selectedFederationChild, outsideScope = false, inspectNode, inspectRelationship, loadFederationChild }:
+  let { detailNode, smallCorpus, detailRelationships, sourceUrl, selectedFederationChild, outsideScope = false, inspectNode, inspectRelationship, loadFederationChild, conceptUrl }:
     { detailNode: OkfNode; smallCorpus: NormalizedCorpus | null; detailRelationships: OkfRelationship[]; sourceUrl: string;
-      selectedFederationChild?: FederationChild; outsideScope?: boolean; inspectNode: (id: string) => void; inspectRelationship: (relationship: OkfRelationship) => void; loadFederationChild: (child: FederationChild) => void } = $props();
+      selectedFederationChild?: FederationChild; outsideScope?: boolean; inspectNode: (id: string) => void; conceptUrl: (id: string) => string; inspectRelationship: (relationship: OkfRelationship) => void; loadFederationChild: (child: FederationChild) => void } = $props();
   let okf = $derived(okfConceptPresentation(detailNode, undefined, smallCorpus?.okfVersion));
   let replacement = $derived(okf.status === 'deprecated' ? detailRelationships.find(relation =>
     relation.source === detailNode.id && smallCorpus?.nodes[relation.target] &&
     Array.isArray(relation.source_fields) && relation.source_fields.includes('superseded_by')) : undefined);
+  let backlinks = $derived(detailRelationships.filter(relationship =>
+    relationship.target === detailNode.id && relationship.source !== detailNode.id &&
+    Array.isArray(relationship.source_fields) && relationship.source_fields.length > 0
+  ));
+  let backlinkLimit = $state(20);
+  $effect.pre(() => {
+    detailNode.id;
+    backlinkLimit = 20;
+  });
+  const linkFieldLabel = (field: unknown) => {
+    if (field === 'markdown') return 'Markdown link';
+    if (field === 'superseded_by') return 'Replacement';
+    if (field === 'sources[].resource') return 'Provenance source';
+    return String(field);
+  };
+  function markdownConceptHref(href: string): string {
+    const target = detailNode.markdown_links?.[href];
+    return typeof target === 'string' && smallCorpus?.nodes[target] ? conceptUrl(target) : '';
+  }
+  function followMarkdownConcept(element: HTMLElement) {
+    async function onClick(event: MouseEvent) {
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const link = event.target instanceof Element ? event.target.closest('a') : null;
+      const href = link?.dataset.okfMarkdownHref;
+      if (!href) return;
+      const target = detailNode.markdown_links?.[href];
+      const fragment = href.split('#', 2)[1];
+      if (href.startsWith('#') || (typeof target === 'string' && Object.hasOwn(smallCorpus?.nodes || {}, target))) {
+        event.preventDefault();
+        if (target) inspectNode(target);
+        if (fragment) {
+          await tick();
+          let slug: string;
+          try { slug = decodeURIComponent(fragment); } catch { return; }
+          const heading = [...element.querySelectorAll<HTMLElement>('[data-okf-section]')]
+            .find(candidate => candidate.dataset.okfSection === slug);
+          heading?.focus();
+          heading?.scrollIntoView({ block: 'nearest' });
+        }
+      }
+    }
+    element.addEventListener('click', onClick);
+    return { destroy: () => element.removeEventListener('click', onClick) };
+  }
+  let sourceByFootnote = $derived(new Map(okf.sources.flatMap(source => source.id
+    ? [[source.id, { title: source.title || source.id, resource: source.resource }] as const]
+    : []
+  )));
+  let assetPaths = $derived([...new Set(Object.values(detailNode.asset_links || {}).filter(path => typeof path === 'string'))]);
   const jsonText = (value: unknown) => JSON.stringify(value, null, 2);
   const metadataDisplayValue = (value: unknown) => value === undefined || value === null || value === '' ? 'Not specified (metadata gap)' : typeof value === 'object' ? JSON.stringify(value) : String(value);
 </script>
@@ -36,8 +86,52 @@
 <InspectorSections>
   {#snippet overview()}
           {#if detailNode.body}
-            <section class="markdown-body" aria-label="Markdown body">
-              {@html renderSafeMarkdown(detailNode.body, sourceUrl)}
+            <section use:followMarkdownConcept class="markdown-body" aria-label="Markdown body">
+              {@html renderSafeMarkdown(detailNode.body, sourceUrl, {
+                references: detailNode.markdown_references,
+                sectionAnchors: Boolean(detailNode.markdown_links),
+                imageSrc: href => {
+                  const path = detailNode.asset_links?.[href];
+                  return typeof path === 'string' ? bundleAssetImage(smallCorpus?.meta?.assets, path) : '';
+                },
+                conceptHref: markdownConceptHref,
+                sourceForFootnote: id => sourceByFootnote.get(id)
+              })}
+            </section>
+          {/if}
+          {#if backlinks.length}
+            <section aria-label="Linked from">
+              <h3>Linked from ({backlinks.length})</h3>
+              <ul>
+                {#each backlinks.slice(0, backlinkLimit) as backlink}
+                  <li>
+                    <button type="button" onclick={() => inspectNode(backlink.source)}>
+                      {smallCorpus?.nodes[backlink.source]?.title || backlink.source}
+                    </button>
+                    <span> · {Array.isArray(backlink.source_fields) ? backlink.source_fields.map(linkFieldLabel).join(', ') : ''}</span>
+                  </li>
+                {/each}
+              </ul>
+              {#if backlinkLimit < backlinks.length}
+                <button type="button" onclick={() => backlinkLimit += 20}>Show more backlinks</button>
+              {/if}
+            </section>
+          {/if}
+          {#if assetPaths.length}
+            <section aria-label="Bundle assets">
+              <h3>Bundle assets</h3>
+              <ul>
+                {#each assetPaths as path}
+                  {@const download = bundleAssetDownload(smallCorpus?.meta?.assets, path)}
+                  <li>
+                    {#if download}
+                      <a href={download} download={path.split('/').at(-1)}>{path}</a>
+                    {:else}
+                      {path}
+                    {/if}
+                  </li>
+                {/each}
+              </ul>
             </section>
           {/if}
           <h3>Relationships</h3>
@@ -144,6 +238,8 @@
   {/snippet}
 </InspectorSections>
 <style>
+  .markdown-body :global(img) { max-width: 100%; height: auto; }
+
   .scope-context { background:#fff4cf; border-left:4px solid #8c7000; padding:10px; font-size:.85rem; }
   .record-relationship { border-top:1px solid #b8c7d8; padding:10px 0; display:grid; gap:6px; font-size:.85rem; }
   .record-relationship div { display:flex; flex-wrap:wrap; gap:5px; }

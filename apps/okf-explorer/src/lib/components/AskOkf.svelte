@@ -5,6 +5,7 @@
   import { assembleCorpusContext } from '$lib/context/corpus';
   import type { ContextBudget, ContextPackage } from '$lib/context/types';
   import { documentContextRegistry, registerContextTools } from '$lib/context/webmcp';
+  import { assembleLoopbackContext } from '$lib/sources/localContext';
   import { isHttpUrl } from '$lib/viewer/helpers';
 
   let { source, onOpenRecord, suggestedQuestion }: {
@@ -58,7 +59,9 @@
           checkCurrent(expected, generation, signal);
           return fetch(input, { ...init, signal: init?.signal ? AbortSignal.any([signal, init.signal]) : signal });
         })
-      : await assembleContext(bound.index, value, limits, bound.binding);
+      : expected.kind === 'small' && expected.loopbackContext
+        ? await assembleLoopbackContext(bound, value, limits)
+        : await assembleContext(bound.index, value, limits, bound.binding);
     checkCurrent(expected, generation, signal);
     retained.set(assembled.context_id, assembled);
     while (retained.size > 4) retained.delete(retained.keys().next().value!);
@@ -81,7 +84,8 @@
     jsonOpen = false;
     busy = false;
     uiController?.abort();
-    const tools = registerContextTools(documentContextRegistry(document), {
+    const local = expected.kind === 'small' && expected.loopbackContext;
+    const tools = registerContextTools(local ? undefined : documentContextRegistry(document), {
       build: (value, limits, signal) => build(expected, generation, value, limits, signal),
       explain: async (id, signal) => {
         checkCurrent(expected, generation, signal);
@@ -91,7 +95,9 @@
       }
     });
     void tools.ready.then((status) => {
-      if (expected === source && generation === sourceGeneration) toolMessage = status.message;
+      if (expected === source && generation === sourceGeneration) {
+        toolMessage = local ? 'Evidence assembly runs in this browser. Page tools are disabled for local context.' : status.message;
+      }
     });
     return () => {
       tools.dispose();

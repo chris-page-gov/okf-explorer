@@ -25,7 +25,10 @@ declared OKF core version.
 
 ## Open a Markdown directory
 
-From the Explorer checkout, run the following command with the path to the directory you want to read. Open the resulting JSON file using Explorer's local bundle control.
+From the Explorer checkout, run the following command with the path to the directory you want to read. Open the resulting JSON file using Explorer's local bundle control. Pass `--embed-assets` to include
+referenced non-Markdown files, up to 8 MiB in total. The Reader lists asset
+paths. Embedded PNG, JPEG and GIF images can also be previewed. Embedded
+files, including a licence file, can be downloaded.
 
 ```sh
 uv sync --locked
@@ -37,6 +40,17 @@ The importer discovers typed Markdown concepts, preserves their front matter and
 Use the **Evidence** tab to see the verification history and the tier applicable after the last content change. A team verification counts as machine confirmation. An unrecognised status remains visible. A malformed freshness deadline gets an invalid-date badge. The Reader treats date-only deadlines as midnight UTC and compares offset date-times as instants. A deprecated concept can link to its successor through a `superseded_by` edge. Imported core references retain their source fields. Only a producer's OKF+ graph can supply its qualified assertions, evidence, rights and authority. An existing OKF+ projection may explicitly identify its navigation root with root routes such as `index`, `log` and `sources-index`.
 
 The pinned upstream Acme Retail example produces **9 concepts and 24 distinct directed edges**. The old gross-margin metric links to its successor through both a Markdown link and `superseded_by`. [Upstream example](https://github.com/open-knowledge-format/open-knowledge-format/tree/527e81aff55992be21507e97004286789126f88c/bundles/acme_retail)
+
+Use **Linked from** on a record to follow incoming Markdown links and path
+fields from other imported concepts. The list identifies provenance and
+replacement links and can be expanded beyond its first 20 entries. Trust and
+lifecycle filters use the same version-aware interpretation as the record.
+The bundle overview shows its declared description and licence. Links to
+sections of the same concept stay in its Markdown body. Inline and reference-style Markdown links
+to other imported concepts open the target record in Explorer. Use the bundle
+overview to read imported directory indexes and change logs and open their
+linked concepts. Claim footnotes with matching source IDs display the source
+title and link to its web address when one is declared.
 
 ## Give an AI one link
 

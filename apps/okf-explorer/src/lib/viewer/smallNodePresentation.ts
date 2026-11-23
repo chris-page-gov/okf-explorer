@@ -34,6 +34,25 @@ function objectValue(value: unknown): Record<string, unknown> | undefined {
     : undefined;
 }
 
+export function bundleAssetDownload(assets: unknown, path: string): string {
+  const files = objectValue(assets);
+  const value = files && Object.hasOwn(files, path) ? files[path] : undefined;
+  if (typeof value !== 'string' || value.length > 11_184_812 ||
+    value.length % 4 !== 0 || !/^[A-Za-z0-9+/]*={0,2}$/.test(value)) return '';
+  return `data:application/octet-stream;base64,${value}`;
+}
+
+export function bundleAssetImage(assets: unknown, path: string): string {
+  const download = bundleAssetDownload(assets, path);
+  if (!download) return '';
+  const data = download.slice(download.indexOf(',') + 1);
+  const format = data.startsWith('iVBORw0KGgo') ? 'png'
+    : data.startsWith('/9j/') ? 'jpeg'
+    : data.startsWith('R0lGOD') ? 'gif'
+    : '';
+  return format ? `data:image/${format};base64,${data}` : '';
+}
+
 export function safeSmallNodeUrl(value: unknown, baseUrl = ''): string {
   const candidate = valueString(value);
   if (!candidate) return '';
@@ -50,20 +69,63 @@ export function safeSmallNodeUrl(value: unknown, baseUrl = ''): string {
   }
 }
 
-function inlineMarkdown(value: string, baseUrl: string): string {
+type MarkdownLinks = {
+  references?: Record<string, string>;
+  imageSrc?: (href: string) => string;
+  sectionAnchors?: boolean;
+  conceptHref?: (href: string) => string;
+  sourceForFootnote?: (id: string) => { title: string; resource: string } | undefined;
+};
+
+function referenceHref(label: string, links?: MarkdownLinks): string {
+  const key = label.trim().replace(/\s+/g, ' ').toLowerCase().toUpperCase();
+  const href = links?.references?.[key];
+  return typeof href === 'string' ? href : '';
+}
+
+function inlineMarkdown(value: string, baseUrl: string, links?: MarkdownLinks): string {
   const tokens: string[] = [];
   const token = (html: string) => {
     const index = tokens.push(html) - 1;
     return `\u0000OKF${index}\u0000`;
   };
+  function renderLink(label: string, href: string): string {
+    const safeLabel = escapeHtml(label);
+    if (links?.sectionAnchors && href.startsWith('#') && href.length > 1) {
+      return token(`<a href="${escapeHtml(href)}" data-okf-markdown-href="${escapeHtml(href)}">${safeLabel}</a>`);
+    }
+    const conceptUrl = links?.conceptHref?.(href);
+    if (conceptUrl) return token(`<a href="${escapeHtml(conceptUrl)}" data-okf-markdown-href="${escapeHtml(href)}">${safeLabel}</a>`);
+    const safeUrl = safeSmallNodeUrl(href, baseUrl);
+    return token(safeUrl
+      ? `<a href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer">${safeLabel}</a>`
+      : safeLabel);
+  }
+  function renderImage(match: string, alt: string, href: string): string {
+    if (!links?.imageSrc) return match;
+    const src = links.imageSrc(href);
+    return token(src ? `<img alt="${escapeHtml(alt)}" src="${escapeHtml(src)}" loading="lazy">` : escapeHtml(alt));
+  }
   const linked = value
     .replace(/`([^`]+)`/g, (_match, code: string) => token(`<code>${escapeHtml(code)}</code>`))
-    .replace(/\[([^\]]+)\]\(([^)\s]+)(?:\s+"[^"]*")?\)/g, (_match, label: string, href: string) => {
-      const safeUrl = safeSmallNodeUrl(href, baseUrl);
-      const safeLabel = escapeHtml(label);
-      return token(safeUrl
-        ? `<a href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer">${safeLabel}</a>`
-        : safeLabel);
+    .replace(/!\[([^\]]*)\]\(([^)\s]+)(?:\s+"[^"]*")?\)/g, renderImage)
+    .replace(/!\[([^\]]*)\](?:\[([^\]]*)\])?(?!:)/g, (match, alt: string, reference?: string) => {
+      const href = referenceHref(reference || alt, links);
+      return href ? renderImage(match, alt, href) : match;
+    })
+    .replace(/\[([^\]]+)\]\(([^)\s]+)(?:\s+"[^"]*")?\)/g, (_match, label: string, href: string) => renderLink(label, href))
+    .replace(/\[([^\]^]+)\](?:\[([^\]]*)\])?(?!:)/g, (match, label: string, reference?: string) => {
+      const href = referenceHref(reference || label, links);
+      return href ? renderLink(label, href) : match;
+    })
+    .replace(/\[\^([^\]\s]+)\](?!:)/g, (match, id: string) => {
+      const source = links?.sourceForFootnote?.(id);
+      if (!source) return match;
+      const title = escapeHtml(source.title || id);
+      const url = safeSmallNodeUrl(source.resource);
+      return token(url
+        ? `<sup><a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${title}</a></sup>`
+        : `<sup title="${escapeHtml(source.resource)}">${title}</sup>`);
     });
   return escapeHtml(linked)
     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
@@ -85,10 +147,10 @@ function splitTableRow(line: string): string[] {
   return line.trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map((cell) => cell.trim());
 }
 
-function renderTable(rows: string[], baseUrl: string): string {
+function renderTable(rows: string[], baseUrl: string, links?: MarkdownLinks): string {
   const headings = splitTableRow(rows[0]);
   const body = rows.slice(1).map(splitTableRow);
-  return `<div class="markdown-table-wrap"><table><thead><tr>${headings.map((heading) => `<th>${inlineMarkdown(heading, baseUrl)}</th>`).join('')}</tr></thead><tbody>${body.map((row) => `<tr>${headings.map((_heading, index) => `<td>${inlineMarkdown(row[index] || '', baseUrl)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+  return `<div class="markdown-table-wrap"><table><thead><tr>${headings.map((heading) => `<th>${inlineMarkdown(heading, baseUrl, links)}</th>`).join('')}</tr></thead><tbody>${body.map((row) => `<tr>${headings.map((_heading, index) => `<td>${inlineMarkdown(row[index] || '', baseUrl, links)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
 }
 
 function mermaidNodeToken(value: string, nodes: Map<string, string>): string {
@@ -213,7 +275,7 @@ function renderMermaidLite(source: string): string {
   return `${svg}</svg>`;
 }
 
-export function renderSafeMarkdown(value: unknown, baseUrl = ''): string {
+export function renderSafeMarkdown(value: unknown, baseUrl = '', links?: MarkdownLinks): string {
   const markdown = valueString(value).replace(/\r\n?/g, '\n');
   if (!markdown) return '';
 
@@ -227,16 +289,17 @@ export function renderSafeMarkdown(value: unknown, baseUrl = ''): string {
 
   const flushParagraph = () => {
     if (!paragraph.length) return;
-    html.push(`<p>${inlineMarkdown(paragraph.join(' '), baseUrl)}</p>`);
+    html.push(`<p>${inlineMarkdown(paragraph.join(' '), baseUrl, links)}</p>`);
     paragraph = [];
   };
   const flushList = () => {
     if (!listType || !listItems.length) return;
-    html.push(`<${listType}>${listItems.map((item) => `<li>${inlineMarkdown(item, baseUrl)}</li>`).join('')}</${listType}>`);
+    html.push(`<${listType}>${listItems.map((item) => `<li>${inlineMarkdown(item, baseUrl, links)}</li>`).join('')}</${listType}>`);
     listType = '';
     listItems = [];
   };
 
+  const headingSlugs = new Set<string>();
   const lines = markdown.split('\n');
   for (let index = 0; index < lines.length; index += 1) {
     const line = lines[index];
@@ -258,6 +321,12 @@ export function renderSafeMarkdown(value: unknown, baseUrl = ''): string {
       codeLines.push(line);
       continue;
     }
+    const referenceDefinition = /^\s{0,3}\[([^\]^]+)\]:/.exec(line);
+    if (referenceDefinition && referenceHref(referenceDefinition[1], links)) {
+      flushParagraph();
+      flushList();
+      continue;
+    }
     if (!line.trim()) {
       flushParagraph();
       flushList();
@@ -273,7 +342,7 @@ export function renderSafeMarkdown(value: unknown, baseUrl = ''): string {
         index += 1;
       }
       index -= 1;
-      html.push(renderTable(rows, baseUrl));
+      html.push(renderTable(rows, baseUrl, links));
       continue;
     }
     const heading = /^(#{1,6})\s+(.+)$/.exec(line);
@@ -281,7 +350,15 @@ export function renderSafeMarkdown(value: unknown, baseUrl = ''): string {
       flushParagraph();
       flushList();
       const level = heading[1].length;
-      html.push(`<h${level}>${inlineMarkdown(heading[2], baseUrl)}</h${level}>`);
+      let anchor = '';
+      if (links?.sectionAnchors) {
+        const base = heading[2].trim().toLowerCase().replace(/[^\p{L}\p{N}_\s-]/gu, '').replace(/\s/g, '-');
+        let slug = base;
+        for (let suffix = 1; headingSlugs.has(slug); suffix++) slug = `${base}-${suffix}`;
+        headingSlugs.add(slug);
+        anchor = ` data-okf-section="${escapeHtml(slug)}" tabindex="-1"`;
+      }
+      html.push(`<h${level}${anchor}>${inlineMarkdown(heading[2], baseUrl, links)}</h${level}>`);
       continue;
     }
     if (/^\s*(?:-{3,}|\*{3,}|_{3,})\s*$/.test(line)) {
@@ -304,7 +381,7 @@ export function renderSafeMarkdown(value: unknown, baseUrl = ''): string {
     if (quote) {
       flushParagraph();
       flushList();
-      html.push(`<blockquote>${inlineMarkdown(quote[1], baseUrl)}</blockquote>`);
+      html.push(`<blockquote>${inlineMarkdown(quote[1], baseUrl, links)}</blockquote>`);
       continue;
     }
     flushList();
