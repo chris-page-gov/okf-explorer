@@ -77,6 +77,20 @@ extension: {nested: on}
         self.put("index.md", "---\nokf_version: '0.3'\n---\n")
         self.assertEqual(project(self.root)["edges"], [])
 
+    def test_embeds_only_referenced_local_assets_and_licence_on_request(self):
+        self.put("index.md", "---\nokf_version: '0.3'\nlicense: /LICENSE.md\n---\n")
+        self.put("records/a.md", "---\ntype: A\n---\n![Map](../map.png)")
+        self.put("LICENSE.md", "Terms")
+        self.put("map.png", "Map")
+        self.put("other.txt", "Unreferenced")
+        plain = project(self.root)
+        self.assertEqual(plain["meta"]["assets"], {})
+        self.assertEqual(plain["edges"], [])
+        embedded = project(self.root, embed_assets=True)
+        self.assertEqual(embedded["meta"]["license_asset"], "LICENSE.md")
+        self.assertEqual(embedded["meta"]["assets"], {"LICENSE.md": "VGVybXM=", "map.png": "TWFw"})
+        self.assertEqual(embedded["nodes"]["records/a.md"]["asset_links"], {"../map.png": "map.png"})
+
     def test_duplicate_keys_have_a_file_diagnostic(self):
         self.put("bad.md", "---\ntype: A\ntype: B\n---\n")
         with self.assertRaisesRegex(SemanticError, "bad.md"):

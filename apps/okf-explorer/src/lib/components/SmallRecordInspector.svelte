@@ -1,7 +1,8 @@
 <script lang="ts">
+  import { tick } from 'svelte';
   import type { FederationChild, NormalizedCorpus, OkfNode, OkfRelationship } from '$lib/types';
   import { okfConceptPresentation, trustTierLabel } from '$lib/okfV02';
-  import { renderSafeMarkdown, smallNodeLinks, smallNodeMetadataRows } from '$lib/viewer/smallNodePresentation';
+  import { bundleAssetDownload, bundleAssetImage, renderSafeMarkdown, smallNodeLinks, smallNodeMetadataRows } from '$lib/viewer/smallNodePresentation';
   import { relationshipPresentation } from '$lib/viewer/relationshipPresentation';
   import InspectorSections from './InspectorSections.svelte';
   let { detailNode, smallCorpus, detailRelationships, sourceUrl, selectedFederationChild, outsideScope = false, inspectNode, inspectRelationship, loadFederationChild, conceptUrl }:
@@ -31,14 +32,25 @@
     return typeof target === 'string' && smallCorpus?.nodes[target] ? conceptUrl(target) : '';
   }
   function followMarkdownConcept(element: HTMLElement) {
-    function onClick(event: MouseEvent) {
+    async function onClick(event: MouseEvent) {
       if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
       const link = event.target instanceof Element ? event.target.closest('a') : null;
       const href = link?.dataset.okfMarkdownHref;
-      const target = href ? detailNode.markdown_links?.[href] : undefined;
-      if (typeof target === 'string' && smallCorpus?.nodes[target]) {
+      if (!href) return;
+      const target = detailNode.markdown_links?.[href];
+      const fragment = href.split('#', 2)[1];
+      if (href.startsWith('#') || (typeof target === 'string' && Object.hasOwn(smallCorpus?.nodes || {}, target))) {
         event.preventDefault();
-        inspectNode(target);
+        if (target) inspectNode(target);
+        if (fragment) {
+          await tick();
+          let slug: string;
+          try { slug = decodeURIComponent(fragment); } catch { return; }
+          const heading = [...element.querySelectorAll<HTMLElement>('[data-okf-section]')]
+            .find(candidate => candidate.dataset.okfSection === slug);
+          heading?.focus();
+          heading?.scrollIntoView({ block: 'nearest' });
+        }
       }
     }
     element.addEventListener('click', onClick);
@@ -48,6 +60,7 @@
     ? [[source.id, { title: source.title || source.id, resource: source.resource }] as const]
     : []
   )));
+  let assetPaths = $derived([...new Set(Object.values(detailNode.asset_links || {}).filter(path => typeof path === 'string'))]);
   const jsonText = (value: unknown) => JSON.stringify(value, null, 2);
   const metadataDisplayValue = (value: unknown) => value === undefined || value === null || value === '' ? 'Not specified (metadata gap)' : typeof value === 'object' ? JSON.stringify(value) : String(value);
 </script>
@@ -76,6 +89,11 @@
             <section use:followMarkdownConcept class="markdown-body" aria-label="Markdown body">
               {@html renderSafeMarkdown(detailNode.body, sourceUrl, {
                 references: detailNode.markdown_references,
+                sectionAnchors: Boolean(detailNode.markdown_links),
+                imageSrc: href => {
+                  const path = detailNode.asset_links?.[href];
+                  return typeof path === 'string' ? bundleAssetImage(smallCorpus?.meta?.assets, path) : '';
+                },
                 conceptHref: markdownConceptHref,
                 sourceForFootnote: id => sourceByFootnote.get(id)
               })}
@@ -97,6 +115,23 @@
               {#if backlinkLimit < backlinks.length}
                 <button type="button" onclick={() => backlinkLimit += 20}>Show more backlinks</button>
               {/if}
+            </section>
+          {/if}
+          {#if assetPaths.length}
+            <section aria-label="Bundle assets">
+              <h3>Bundle assets</h3>
+              <ul>
+                {#each assetPaths as path}
+                  {@const download = bundleAssetDownload(smallCorpus?.meta?.assets, path)}
+                  <li>
+                    {#if download}
+                      <a href={download} download={path.split('/').at(-1)}>{path}</a>
+                    {:else}
+                      {path}
+                    {/if}
+                  </li>
+                {/each}
+              </ul>
             </section>
           {/if}
           <h3>Relationships</h3>
@@ -203,6 +238,8 @@
   {/snippet}
 </InspectorSections>
 <style>
+  .markdown-body :global(img) { max-width: 100%; height: auto; }
+
   .scope-context { background:#fff4cf; border-left:4px solid #8c7000; padding:10px; font-size:.85rem; }
   .record-relationship { border-top:1px solid #b8c7d8; padding:10px 0; display:grid; gap:6px; font-size:.85rem; }
   .record-relationship div { display:flex; flex-wrap:wrap; gap:5px; }

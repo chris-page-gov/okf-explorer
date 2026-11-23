@@ -7,6 +7,11 @@
 - Open inline and reference-style Markdown concept links in Explorer and make reserved index and
   history documents readable from the bundle overview.
 - Display source-linked claim footnotes using the bundle’s provenance entries.
+- List referenced assets and support opt-in embedding for local downloads,
+  including licences declared as bundle paths. Preview embedded PNG, JPEG and
+  GIF images and follow in-body heading links.
+- Allow digest-bound local Ask OKF context on an explicitly authorising
+  loopback server and keep page tools disabled for that audience.
 - Surface imported bundle scope and licence, and omit same-concept anchors
   from the relationship graph.
 

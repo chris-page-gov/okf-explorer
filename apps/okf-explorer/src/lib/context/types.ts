@@ -104,7 +104,8 @@ export type ContextIndex = {
 };
 
 export type ContextBinding = { index_url: string; index_sha256: string };
-export type BoundContextIndex = { index: ContextIndex; binding: ContextBinding };
+export type ContextAudience = 'public' | 'loopback';
+export type BoundContextIndex = { index: ContextIndex; binding: ContextBinding; audience?: ContextAudience };
 export type BoundContextCorpus = { corpus: import('./corpus.ts').ContextCorpusManifest; binding: ContextBinding };
 export type BoundContextSource = BoundContextIndex | BoundContextCorpus;
 

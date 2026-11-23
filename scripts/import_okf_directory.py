@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import base64
 import json
 from pathlib import Path
 import posixpath
@@ -33,11 +34,13 @@ def parse_optional_frontmatter(path: Path) -> MarkdownDocument:
     return MarkdownDocument(metadata=metadata, body=text[close.end():].strip("\n"))
 
 
-def markdown_targets(body: str, parser: MarkdownIt, environment: dict[str, Any] | None = None) -> Iterator[str]:
+def markdown_targets(body: str, parser: MarkdownIt, environment: dict[str, Any] | None = None, *, images: bool = False) -> Iterator[str]:
     for block in parser.parse(body, environment):
         for token in block.children or ():
-            if token.type == "link_open":
+            if not images and token.type == "link_open":
                 yield token.attrs["href"]
+            if images and token.type == "image":
+                yield token.attrs["src"]
 
 
 def path_fields(metadata: dict[str, Any]) -> Iterator[tuple[str, Any]]:
@@ -81,7 +84,10 @@ def concept_target(source: str, reference: Any, files: set[str], *, legacy_field
     return candidate if candidate in files else None
 
 
-def project(root: Path) -> dict[str, Any]:
+MAX_EMBEDDED_ASSET_BYTES = 8 * 1024 * 1024
+
+
+def project(root: Path, *, embed_assets: bool = False) -> dict[str, Any]:
     root = root.resolve(strict=True)
     if not root.is_dir():
         raise ValueError(f"Expected a bundle directory: {root}")
@@ -90,6 +96,7 @@ def project(root: Path) -> dict[str, Any]:
     concepts: dict[str, dict[str, Any]] = {}
     navigation: dict[str, str] = {}
     files: set[str] = set()
+    asset_paths: dict[str, Path] = {}
     for directory, subdirs, names in root.walk():
         subdirs[:] = sorted(name for name in subdirs if not name.startswith("."))
         files.update((directory / name).relative_to(root).as_posix() for name in subdirs)
@@ -100,6 +107,7 @@ def project(root: Path) -> dict[str, Any]:
             route = path.relative_to(root).as_posix()
             files.add(route)
             if path.suffix != ".md":
+                asset_paths[route] = path
                 continue
             if name in {"index.md", "log.md"}:
                 document = parse_optional_frontmatter(path)
@@ -127,6 +135,11 @@ def project(root: Path) -> dict[str, Any]:
     version = root_metadata.get("okf_version")
     legacy = version is None or str(version) in ("", "0.1", "0.2")
     edges: dict[tuple[str, str], set[str]] = {}
+    referenced_assets: set[str] = set()
+    licence = concept_target("index.md", root_metadata.get("license"), files, legacy_field=False)
+    if licence is not None and (root / licence).is_file():
+        asset_paths[licence] = root / licence
+        referenced_assets.add(licence)
     for route, node in sorted(concepts.items()):
         environment: dict[str, Any] = {}
         targets = [("markdown", href) for href in markdown_targets(node["body"], parser, environment)]
@@ -134,15 +147,32 @@ def project(root: Path) -> dict[str, Any]:
             label: reference["href"]
             for label, reference in environment.get("references", {}).items()
         }
+        targets.extend(("image", href) for href in markdown_targets(node["body"], parser, images=True))
         targets.extend(path_fields(node["frontmatter"]))
         markdown_links = {}
+        asset_links = {}
         for field, href in targets:
             target = concept_target(route, href, files, legacy_field=legacy and field != "markdown")
-            if target != route and target in concepts:
+            if target in asset_paths:
+                referenced_assets.add(target)
+                asset_links[href] = target
+            if field != "image" and target != route and target in concepts:
                 edges.setdefault((route, target), set()).add(field)
                 if field == "markdown":
                     markdown_links[href] = target
         node["markdown_links"] = markdown_links
+        node["asset_links"] = asset_links
+
+    assets = {}
+    remaining = MAX_EMBEDDED_ASSET_BYTES
+    if embed_assets:
+        for route in sorted(referenced_assets):
+            with asset_paths[route].open("rb") as file:
+                data = file.read(remaining + 1)
+            if len(data) > remaining:
+                raise ValueError("Referenced assets exceed the 8 MiB embedding limit")
+            remaining -= len(data)
+            assets[route] = base64.b64encode(data).decode("ascii")
 
     return {
         "schema": "okf-explorer-bundle.v0",
@@ -152,6 +182,8 @@ def project(root: Path) -> dict[str, Any]:
             "title": root_metadata.get("title") or root.name,
             "description": root_metadata.get("description"),
             "license": root_metadata.get("license"),
+            "license_asset": licence if licence in asset_paths else None,
+            "assets": assets,
             "frontmatter": root_metadata,
             "navigation": [
                 {
@@ -177,9 +209,10 @@ def project(root: Path) -> dict[str, Any]:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("directory", type=Path, help="Root directory of the OKF bundle")
+    parser.add_argument("--embed-assets", action="store_true", help="Include referenced assets up to 8 MiB in total")
     args = parser.parse_args()
     try:
-        bundle = project(args.directory)
+        bundle = project(args.directory, embed_assets=args.embed_assets)
         print(json.dumps(bundle, ensure_ascii=False, allow_nan=False, indent=2, sort_keys=True))
     except (SemanticError, OSError, TypeError, ValueError) as exc:
         parser.exit(1, f"{exc}\n")

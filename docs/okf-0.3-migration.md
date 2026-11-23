@@ -25,7 +25,10 @@ declared OKF core version.
 
 ## Open a Markdown directory
 
-From the Explorer checkout, run the following command with the path to the directory you want to read. Open the resulting JSON file using Explorer's local bundle control.
+From the Explorer checkout, run the following command with the path to the directory you want to read. Open the resulting JSON file using Explorer's local bundle control. Pass `--embed-assets` to include
+referenced non-Markdown files, up to 8 MiB in total. The Reader lists asset
+paths. Embedded PNG, JPEG and GIF images can also be previewed. Embedded
+files, including a licence file, can be downloaded.
 
 ```sh
 uv sync --locked

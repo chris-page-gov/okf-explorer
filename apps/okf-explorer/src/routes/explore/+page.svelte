@@ -112,6 +112,7 @@
     type ResolvedLargeSourceAccess
   } from '$lib/viewer/largeRecordContracts';
   import {
+    bundleAssetDownload,
     renderSafeMarkdown,
     smallNodeLinks,
     smallNodeMetadataRows,
@@ -182,6 +183,7 @@
   } from '$lib/sources/largeCorpus';
   import { loadHistory, loadRegistry, rememberHistory } from '$lib/sources/registry';
   import { normalizeSmallBundle } from '$lib/sources/smallBundle';
+  import { localContextLoader } from '$lib/sources/localContext';
   import {
     conceptGenerated,
     okfConceptPresentation,
@@ -1642,7 +1644,11 @@
       } else {
         const corpus = normalizeSmallBundle(raw);
         restoreExploration(new URLSearchParams(location.search));
-        source = { kind: 'small', url: resolvedUrl, title: smallBundleTitle(corpus), corpus };
+        const loadContextAssembly = localContextLoader(raw, resolvedUrl, location.origin);
+        source = {
+          kind: 'small', url: resolvedUrl, title: smallBundleTitle(corpus), corpus,
+          ...(loadContextAssembly ? { loadContextAssembly, loopbackContext: true } : {})
+        };
         const availableTypes = [...new Set(Object.values(corpus.nodes).map((node) => node.type || 'Node'))];
         const retrieval = parseRetrievalState(new URLSearchParams(location.search), ['type']);
         const requestedTypes = retrieval.filters.type || [];
@@ -8569,7 +8575,15 @@
               <article>
                 <h2>{smallCorpus.title}</h2>
                 {#if typeof smallCorpus.meta?.license === 'string' && smallCorpus.meta.license.trim()}
-                  <p>Bundle licence {smallCorpus.meta.license}</p>
+                  {@const path = typeof smallCorpus.meta.license_asset === 'string' ? smallCorpus.meta.license_asset : ''}
+                  {@const download = path && bundleAssetDownload(smallCorpus.meta.assets, path)}
+                  <p>Bundle licence
+                    {#if download}
+                      <a href={download} download={path.split('/').at(-1)}>{smallCorpus.meta.license}</a>
+                    {:else}
+                      {smallCorpus.meta.license}
+                    {/if}
+                  </p>
                 {/if}
                 <p>{smallCorpus.description || 'This OKF bundle is shown as a reduced set of nodes and relationships. Search and node-type filters in the left panel change the context used by every view.'}</p>
               </article>

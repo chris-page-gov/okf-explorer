@@ -4,6 +4,17 @@ import { sizedStudyClubContextFixture, studyClubContextFixture } from '../../tes
 
 const BASE = 'https://example.test/study-club/';
 describe('governed context assembly, independent of any domain', () => {
+  it('admits restricted concepts and evidence only for the explicit loopback audience', async () => {
+    const index = await studyClubContextFixture();
+    for (const record of index.records) record.access = 'restricted';
+    const ordinary = await assembleContext(index, 'Reading circle');
+    expect(ordinary.evidence_status).toBe('insufficient');
+    expect(ordinary.selected).toEqual([]);
+    const local = await assembleContext(index, 'Reading circle', {}, undefined, undefined, 'loopback');
+    expect(local.evidence_status).toBe('sufficient');
+    expect(local.selected).toHaveLength(3);
+    expect(local.selected.every(({ record }) => record.access === 'restricted')).toBe(true);
+  });
   it('accepts an 8 MiB semantic index and rejects a single byte beyond it', async () => {
     expect(MAX_CONTEXT_INDEX_BYTES).toBe(8 * 1024 * 1024);
     const index = await sizedStudyClubContextFixture(MAX_CONTEXT_INDEX_BYTES);

@@ -1,6 +1,7 @@
 import type {
   ContextAssertion, ContextBinding, ContextBudget, ContextIndex, ContextIssue,
-  ContextPackage, ContextPath, ContextRecord, ContextResolution, ContextSelection, ContextAssemblyOptions, ContextGuardDecision
+  ContextPackage, ContextPath, ContextRecord, ContextResolution, ContextSelection, ContextAssemblyOptions, ContextGuardDecision,
+  ContextAudience
 } from './types.ts';
 // @ts-ignore -- Explicit extension supports the pinned Node consumer.
 import { evidenceUnitIntegrity, validateEvidenceUnit } from './unit.ts';
@@ -204,7 +205,11 @@ export function normaliseContextBudget(input: Partial<ContextBudget> = {}): Cont
   return result;
 }
 
-export function resolveConcepts(index: ContextIndex, question: string): {
+function contextRecordAvailable(record: ContextRecord, audience: ContextAudience): boolean {
+  return record.access === 'public' || audience === 'loopback';
+}
+
+export function resolveConcepts(index: ContextIndex, question: string, audience: ContextAudience = 'public'): {
   resolved: ContextResolution[];
   ambiguities: ContextPackage['ambiguities'];
   unresolved: string[];
@@ -214,7 +219,7 @@ export function resolveConcepts(index: ContextIndex, question: string): {
   const exact = tokens(question, true);
   type Alias = { key: string; ids: Set<string>; phrase: string[]; sensitive: boolean; label: string };
   const aliases = new Map<string, Alias>();
-  for (const row of index.records.filter((r) => r.kind === 'concept' && r.access === 'public')) {
+  for (const row of index.records.filter((r) => r.kind === 'concept' && contextRecordAvailable(r, audience))) {
     for (const alias of [row.label, ...(row.aliases || [])]) {
       const sensitive = typeof alias !== 'string' && alias.case_sensitive;
       const label = typeof alias === 'string' ? alias : alias.label;
@@ -284,15 +289,18 @@ export function resolveConcepts(index: ContextIndex, question: string): {
   };
 }
 
-/** Only directly resolved public concepts can satisfy a declared routing guard.
+/** Only directly resolved, audience-admitted concepts can satisfy a routing guard.
  * Missing/non-concept IDs stay unmatched; graph reachability and requirements
  * never activate the route. Absent guards preserve the preceding byte contract.
  */
 export function contextGuardDecision(assertion: ContextAssertion, records: ReadonlyMap<string, ContextRecord>,
-  resolved: ReadonlySet<string>): ContextGuardDecision | undefined {
+  resolved: ReadonlySet<string>, audience: ContextAudience = 'public'): ContextGuardDecision | undefined {
   if (!assertion.context_guard) return undefined;
   const when_all = [...assertion.context_guard.when_all].sort();
-  const unavailable_concepts = when_all.filter(id => records.get(id)?.kind !== 'concept' || records.get(id)?.access !== 'public');
+  const unavailable_concepts = when_all.filter(id => {
+    const record = records.get(id);
+    return record?.kind !== 'concept' || !contextRecordAvailable(record, audience);
+  });
   const missing_concepts = when_all.filter(id => !resolved.has(id) || unavailable_concepts.includes(id));
   return { assertion_id: assertion.id, source: assertion.source, target: assertion.target,
     when_all, missing_concepts, unavailable_concepts, status: missing_concepts.length ? 'unmatched' : 'matched' };
@@ -335,7 +343,8 @@ const pathKey = (path: ContextPath) => `${path.seed}\n${path.assertions.join('\n
  * V3 may retain an explicitly unresolved boundary for inspection; the ordinary
  * evidence diagnostics still prevent it from satisfying the requirement.
  */
-async function eligibleAllocation(index: ContextIndex, resolved: ContextResolution[], maxDepth: number, retainBoundaryUnknowns = false): Promise<AllocationPlan> {
+async function eligibleAllocation(index: ContextIndex, resolved: ContextResolution[], maxDepth: number,
+  retainBoundaryUnknowns: boolean, audience: ContextAudience): Promise<AllocationPlan> {
   const seeds = new Set(resolved.map(row => row.id));
   const records = new Map(index.records.map(row => [row.id, row]));
   const assertions = new Map(index.assertions.map(row => [row.id, row]));
@@ -351,7 +360,7 @@ async function eligibleAllocation(index: ContextIndex, resolved: ContextResoluti
       for (const id of path.records) {
         if (!validRecord.has(id)) {
           const row = records.get(id);
-          let accepted = !!row && row.access === 'public' && !governanceIssues(row)
+          let accepted = !!row && contextRecordAvailable(row, audience) && !governanceIssues(row)
             .some(issue => !retainBoundaryUnknowns || issue.code !== 'unresolved_unit_boundary');
           if (accepted && row!.kind === 'evidence') {
             const digest = await contextSha256(row!.text);
@@ -366,7 +375,7 @@ async function eligibleAllocation(index: ContextIndex, resolved: ContextResoluti
         const edge = assertions.get(id);
         return !edge || edge.source !== path.records[i] || edge.target !== path.records[i + 1]
           || !CONTEXT_PREDICATES.has(edge.predicate) || governanceIssues(edge).length > 0
-          || contextGuardDecision(edge, records, seeds)?.status === 'unmatched';
+          || contextGuardDecision(edge, records, seeds, audience)?.status === 'unmatched';
       })) continue;
       const key = pathKey(path);
       if (seen.has(key)) continue;
@@ -393,22 +402,22 @@ function retainedPath(context: ContextPackage, path: ContextPath): boolean {
 /** No fetch, model call, browser state or DWP-specific behaviour is allowed here. */
 export async function assembleContext(
   raw: ContextIndex, question: string, requested: Partial<ContextBudget> = {}, binding?: ContextBinding,
-  discovery?: ContextAssemblyOptions
+  discovery?: ContextAssemblyOptions, audience: ContextAudience = 'public'
 ): Promise<ContextPackage> {
-  const baseline = await assembleContextPass(raw, question, requested, binding, discovery);
+  const baseline = await assembleContextPass(raw, question, requested, binding, discovery, audience);
   const pressure = baseline.budget.omissions.filter(issue =>
     ['node_budget', 'relationship_budget', 'relationship_byte_budget', 'byte_budget'].includes(issue.code));
   if (!pressure.length || !baseline.resolved_concepts.length) return baseline;
   const plan = await eligibleAllocation(raw, baseline.resolved_concepts, baseline.budget.max_depth,
-    discovery?.retrieval.units?.corpus_schema === 'okf-context-corpus.v3');
+    discovery?.retrieval.units?.corpus_schema === 'okf-context-corpus.v3', audience);
   const lost = plan.paths.some(({ path }) => !retainedPath(baseline, path)
     && pressure.some(issue => issue.ids.some(id => path.records.includes(id) || path.assertions.includes(id))));
-  return lost ? assembleContextPass(raw, question, requested, baseline.binding, discovery, plan) : baseline;
+  return lost ? assembleContextPass(raw, question, requested, baseline.binding, discovery, audience, plan) : baseline;
 }
 
 async function assembleContextPass(
-  raw: ContextIndex, question: string, requested: Partial<ContextBudget> = {}, binding?: ContextBinding,
-  discovery?: ContextAssemblyOptions, allocation?: AllocationPlan
+  raw: ContextIndex, question: string, requested: Partial<ContextBudget>, binding: ContextBinding | undefined,
+  discovery: ContextAssemblyOptions | undefined, audience: ContextAudience, allocation?: AllocationPlan
 ): Promise<ContextPackage> {
   if (typeof question !== 'string' || !question.trim() || question.length > 4000) {
     throw new Error('Provide a question of 1–4000 characters.');
@@ -417,7 +426,7 @@ async function assembleContextPass(
   const limit = normaliseContextBudget(requested);
   const bound = binding || { index_url: index.bundle.source_url, index_sha256: await contextSha256(canonicalJson(index)) };
   if (!http(bound.index_url) || !HASH.test(bound.index_sha256)) throw new Error('Invalid context index binding');
-  const resolution = resolveConcepts(index, question);
+  const resolution = resolveConcepts(index, question, audience);
   const recordById = new Map(index.records.map((record) => [record.id, record]));
   const seedIds = new Set(resolution.resolved.map((row) => row.id));
   const guardDecisions = new Map<string, ContextGuardDecision>();
@@ -429,7 +438,7 @@ async function assembleContextPass(
       assert(object(supplied) && typeof supplied.assertion_id === 'string'
         && !guardDecisions.has(supplied.assertion_id), 'invalid or duplicate lazy guard decision');
       const edge = assertions.get(supplied.assertion_id);
-      const expected = edge && contextGuardDecision(edge, recordById, seedIds);
+      const expected = edge && contextGuardDecision(edge, recordById, seedIds, audience);
       assert(expected && canonicalJson(supplied) === canonicalJson(expected), 'lazy guard decision differs from the bound assertion and question');
       guardDecisions.set(expected.assertion_id, expected);
     }
@@ -537,7 +546,7 @@ async function assembleContextPass(
     }
     const record = existing?.record || recordById.get(item.id);
     if (!record) { addIssue(missing, { code: 'missing_record', message: 'A traversed destination is absent from this index.', ids: [item.id] }); continue; }
-    if (record.access !== 'public') { addIssue(missing, { code: 'restricted_evidence', message: 'A required or reached item is not available for public context assembly.', ids: [item.id] }); continue; }
+    if (!contextRecordAvailable(record, audience)) { addIssue(missing, { code: 'restricted_evidence', message: 'A required or reached item is not available for public context assembly.', ids: [item.id] }); continue; }
     if (!existing && selected.size >= limit.max_nodes) { addIssue(omissions, { code: 'node_budget', message: 'The node budget prevented inclusion.', ids: [item.id] }); continue; }
     if (!existing) selected.set(item.id, { record, reasons: [item.reason], paths: [item.path] });
     depth = Math.max(depth, item.path.assertions.length);
@@ -556,7 +565,7 @@ async function assembleContextPass(
         if (assertion.predicate) addIssue(missing, { code: 'unsupported_predicate', message: 'A context relationship has an unsupported traversal predicate.', ids: [assertion.id] });
         continue;
       }
-      const guard = contextGuardDecision(assertion, recordById, seedIds);
+      const guard = contextGuardDecision(assertion, recordById, seedIds, audience);
       if (guard) {
         guardDecisions.set(assertion.id, guard);
         if (guard.status === 'unmatched') continue;
@@ -627,7 +636,7 @@ async function assembleContextPass(
     const dependencyEdges = [...relationships.values(), ...index.assertions.filter(edge => !relationships.has(edge.id))];
     for (const assertion of dependencyEdges) {
       if (assertion.predicate === REQUIRES && selected.has(assertion.source) && !selected.has(assertion.target)
-        && contextGuardDecision(assertion, recordById, seedIds)?.status !== 'unmatched') {
+        && contextGuardDecision(assertion, recordById, seedIds, audience)?.status !== 'unmatched') {
         addIssue(missing, { code: 'missing_dependency', message: 'An explicitly required context dependency was not included.', ids: [assertion.source, assertion.target] });
       }
     }
