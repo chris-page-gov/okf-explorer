@@ -157,7 +157,7 @@ class UvToolchainTests(unittest.TestCase):
         guidance = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
         start = guidance.index(reconcile.AGENT_START)
         end = guidance.index(reconcile.AGENT_END, start) + len(reconcile.AGENT_END)
-        self.assertEqual(reconcile.agent_block().strip(), guidance[start:end])
+        self.assertEqual(reconcile.agent_block(core_version=expected_contract["okf_core"]["version"]).strip(), guidance[start:end])
 
 
 if __name__ == "__main__":

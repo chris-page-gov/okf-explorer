@@ -1,0 +1,927 @@
+$schema: https://chris-page-gov.github.io/okf-explorer/profile/authoring/v2/domain-profile.schema.json
+schema: okf-domain-profile.v2
+profile_id: urn:okf-domain-profile:replace-me:v2
+version: "1"
+status: draft
+prepared_at: "2026-11-23T20:10:00Z"
+research_cutoff: "2026-11-23"
+title: Replace-me collection domain profile
+description: Replace every example value with evidence from the collection warm-up.
+
+repository_lifecycle:
+  classification: empty-new
+  bootstrap_status: planned
+  bootstrap_evidence:
+    - validation/repository-bootstrap.json
+  initial_commit_policy: The default branch starts with one reviewed initialisation-only commit containing governance and source/generated boundaries, never the corpus, generated bundle or release evidence.
+  default_branch: main
+  feature_branch_policy: Perform acquisition, domain and build work on a feature branch and merge it through a reviewed pull request.
+  required_checks:
+    - Domain profile and repository bootstrap validation
+    - Deterministic build and actual-consumer acceptance
+    - Release evidence closure
+  ci_state: disabled-pending-validation
+  source_paths:
+    - source/
+    - domain-profile/
+  generated_paths:
+    - generated/
+    - bundle/
+    - release-assurance/
+  remote_policy: Bootstrap tooling never creates remotes, pushes or publishes; those actions require separate explicit authority.
+  handoff: Record a clean commit SHA and owner before adopting concurrent or imported work.
+
+intent:
+  problem: Make this collection reliably discoverable and explainable.
+  desired_outcomes:
+    - People can find relevant documents and inspect their source evidence.
+  non_goals:
+    - The bundle will not replace the authoritative source.
+  target_okf_version: "0.3"
+  risk_level: unknown
+
+input_snapshot:
+  locations:
+    - ./collection
+  snapshot_id: replace-me-snapshot
+  inventory_sha256: unknown
+  item_count: null
+  byte_count: null
+  sampling_method: Metadata census and a stratified content sample.
+  exclusions: []
+
+collection_profile:
+  document_families:
+    - Source-native document
+  formats:
+    - Unknown until inventoried
+  languages:
+    - Unknown until inventoried
+  date_ranges: []
+  representation_relationships: []
+  duplicate_policy: Preserve originals; identify exact and near duplicates without silently deleting them.
+  extraction_constraints: []
+  sensitivity_findings: []
+
+scope:
+  record_definition: One source-native document or record.
+  included:
+    - Documents present in the declared input snapshot.
+  excluded: []
+  boundary_status: unknown
+  denominators: []
+  unexplained_omissions: []
+  snapshot_policy: snapshot-bounded
+
+authority_model:
+  source_authorities:
+    - The named source publisher is authoritative for its supplied content and metadata.
+  semantic_authorities:
+    - Source-native definitions take precedence over local normalisation.
+  operational_authorities:
+    - The repository maintainer controls the generated publication.
+  decision_authorities:
+    - The project owner approves scope and release decisions.
+
+claims:
+  - id: CLAIM-001
+    statement: The declared collection location is the starting boundary for the inventory.
+    claim_status: hypothesis
+    workflow_status: proposed
+    derivation: expert-asserted
+    authority: Profile author pending inventory evidence
+    confidence:
+      level: unknown
+      score: null
+      calibrated: false
+      method: Not yet assessed
+      basis:
+        - EV-001
+      limitations:
+        - The collection inventory is a placeholder.
+    evidence_refs:
+      - EV-001
+    decision_refs: []
+    gap_refs:
+      - GAP-001
+
+sources:
+  - id: SRC-001
+    title: Replace-me source
+    owner: Replace-me publisher
+    authority_role: unknown
+    url: https://example.org/
+    access_status: documented-not-tested
+    access_tested_at: "2026-07-27T00:00:00Z"
+    source_families:
+      - Source-native document
+    access_methods:
+      - Read-only local or public retrieval
+    formats:
+      - Unknown until inventoried
+    schemas: []
+    identifier_model: Preserve any source-assigned identifier.
+    version_model: Unknown until researched.
+    update_cadence: Unknown until researched.
+    coverage: Coverage is unknown until a denominator is established.
+    known_omissions: []
+    acquisition_method: Immutable, hash-verified source envelopes.
+    rights_ref: RIGHT-001
+    freshness_policy: Record source observation time; do not infer currency.
+    evidence_refs:
+      - EV-001
+
+users:
+  - id: USER-001
+    role: Collection researcher
+    context: Researching a bounded collection without replacing its source authority.
+    authority_requirement: Results must distinguish source statements from generated metadata.
+    accessibility_language_needs: []
+    needs:
+      - Find records and inspect their provenance.
+    risks:
+      - Mistaking generated metadata for an authoritative source statement.
+    evidence_refs:
+      - EV-001
+
+tasks:
+  - id: TASK-001
+    user_ids:
+      - USER-001
+    goal: Find a relevant record and verify its source.
+    context: Search and provenance inspection.
+    authority_requirement: Source evidence must remain inspectable.
+    required_evidence:
+      - Source URL and observation time.
+    freshness_tolerance: Unknown until the owner decides.
+    likely_confusions:
+      - Generated metadata versus a source-native statement.
+    consequences_of_error:
+      - A user may rely on an unsupported classification.
+    hard_failures:
+      - A generated assertion is presented as source-native.
+    success: The result is findable and its evidence is inspectable.
+
+terminology:
+  - id: TERM-001
+    preferred_label: Document
+    definition: Replace with the source or domain definition.
+    source_scope: Replace-me source
+    language: und
+    owner: Replace-me publisher
+    variants: []
+    confusable_terms: []
+    mapping_status: unresolved
+    evidence_refs:
+      - EV-001
+
+semantic_model:
+  entity_types:
+    - id: TYPE-001
+      label: Document
+      source_native_type: document
+      proposed_class: Keep source-native until a domain standard is selected.
+      identity_key: Preserve the source-native identifier when present.
+      version_key: Treat versions as distinct only when the source does.
+      required_properties:
+        - Stable local route
+        - Source provenance
+      optional_properties: []
+      examples: []
+      excluded_conflations:
+        - A file representation is not automatically the persistent document identity.
+      task_refs:
+        - TASK-001
+      evidence_refs:
+        - EV-001
+  identifier_schemes:
+    - id: IDSCHEME-001
+      issuer: Replace-me source publisher
+      syntax: Preserve the source-native syntax; local routes use a deterministic safe projection.
+      scope: Source-native documents
+      persistence: Unknown until researched.
+      normalization: Preserve the native value and add, never replace it with, a local route.
+      collision_policy: Fail closed and report every collision.
+      uri_policy: Use a repository-controlled namespace until a permanent domain is approved.
+      equivalence_policy: Identifier similarity does not establish entity identity.
+      evidence_refs:
+        - EV-001
+  identifier_policy:
+    native_identifier_rule: Preserve source identifiers verbatim alongside normalised routes.
+    route_rule: Create deterministic route-safe local identifiers and record collisions.
+    iri_rule: Use a repository-controlled namespace until a permanent domain is approved.
+    collision_rule: Fail closed on two source identities mapping to one local identifier.
+    redirect_rule: Publish explicit moved descriptors or redirects; never rely on guessed paths.
+  relationship_types: []
+  temporal_model:
+    distinctions:
+      - Source publication time
+      - Source modification time
+      - Acquisition time
+      - Bundle generation time
+    version_semantics: Preserve source-native version semantics; otherwise record them as unknown.
+    freshness_semantics: Freshness is measured against a declared source observation and policy.
+  equivalence_policy: Do not assert identity from label, URL, hierarchy or embedding similarity.
+  prohibited_inferences:
+    - Do not infer absence from missing metadata.
+    - Do not infer authority from model confidence.
+    - Do not use owl:sameAs without authoritative identity evidence.
+
+semantic_linking:
+  objective: Maximise evidenced links that answer declared user tasks, not the raw number of triples.
+  local_iri_policy: Give every graph-reachable entity a stable repository-controlled IRI and preserve every source-native identifier separately.
+  external_link_policy: Reuse persistent official identifiers and IRIs where eligibility, authority and mapping strength are evidenced.
+  mapping_policy: Use qualified SKOS or domain relationships; reserve owl:sameAs for independently evidenced identity.
+  eligible_entity_denominators:
+    - id: DENOM-001
+      entity_type: TYPE-001
+      eligibility_rule: Every in-scope document with a source-native public identifier is eligible.
+      eligible_count: 1
+      candidate_ids:
+        - record-001
+      candidate_list_sha256: 6158269c623d331999260e3ae14691fd1920f7c6af313a4107e717049f372d0f
+      source_snapshot_id: replace-me-snapshot
+      evidence_refs:
+        - EV-001
+      minimum_coverage_percent: 100
+      exclusions: []
+  link_sets:
+    - id: LINKSET-001
+      label: Record to official source
+      predicate_iri: http://purl.org/dc/terms/source
+      target_namespace: https://example.org/source/
+      mapping_relation: domain-relationship
+      authority: The acquired source record explicitly identifies its canonical source.
+      evidence_rule: Retain the acquired source URL, observation time and content digest.
+      task_refs:
+        - TASK-001
+      denominator_ref: DENOM-001
+      coverage_result_sha256: 39bfae699d84c8d23f4f7a636ebb00d9e03ac9c8494c098402d18bb99c744bdd
+      coverage_result:
+        eligible_count: 1
+        linked_count: 0
+        linked_candidate_ids: []
+        linked_assertion_count: 0
+        link_assertions: []
+        unresolved_count: 1
+        unresolved_candidate_ids:
+          - record-001
+        excluded_count: 0
+        exclusion_results: []
+        conflicting_count: 0
+        conflicting_candidate_ids: []
+        achieved_coverage_percent: 0
+        dereference:
+          attempted_count: 0
+          succeeded_count: 0
+          failed_count: 0
+          method: Send a bounded HTTP request for every asserted external link and record the terminal status against the immutable evidence snapshot.
+          results: []
+        observed_at: "2026-07-27T00:00:00Z"
+        freshness_policy:
+          maximum_age_days: 30
+          clock: profile-prepared-at
+          stale_result_action: fail-closed
+        freshness_status: current
+        evidence_refs:
+          - EV-LINK-COVERAGE-001
+  prohibited_shortcuts:
+    - Do not infer identity or a semantic link from matching labels, URLs, hierarchy, co-occurrence or embedding similarity alone.
+    - Do not count duplicated delivery projections as additional semantic coverage.
+
+presentation_contract:
+  default_language: en-GB
+  label_priority:
+    - Reviewed source-native preferred label
+    - Reviewed domain-profile preferred label
+    - Deterministic editorial display label with explicit derivation
+    - Visible missing-label defect; expose the identifier only through inspection
+  graph_reachable_label_rule: Every graph-reachable entity must have a concise human label, language and label authority available without full-record hydration.
+  identifier_fallback: debug-only
+  compact_label_index:
+    schema: okf-explorer-endpoint-label-index.v1
+    descriptor_entrypoint: endpoint_labels
+    manifest_index: endpoint_labels
+    path: data/labels/index.json
+    snapshot_bound: true
+    integrity_bound: true
+    missing_label_display: Missing label
+  relationship_display_rule: Predicates must read naturally in context and semantic/compatibility projections must not create unexplained duplicate edges.
+  citizen_checks:
+    - No default label in Reader, Graph, Links, Facets, Type, Timeline, Resources, Map or Narrative may expose a configured opaque identifier pattern.
+    - A novice must be able to answer each selected competency question without interpreting internal repository vocabulary.
+
+  domain_facets:
+    definitions:
+    - key: topic
+      label: Topic
+      description: Which records discuss the subject I need?
+      user_question: Which records discuss the subject I need?
+      task_refs:
+      - TASK-001
+      value_path:
+      - learning_facets
+      - topic
+      cardinality: multiple
+      vocabulary: closed
+      allowed_values:
+      - Access
+      - Provenance
+      - Not recorded
+      examples:
+      - Access
+      - Provenance
+      missing_value: Not recorded
+    - key: audience
+      label: For whom
+      description: Which records help my role?
+      user_question: Which records help my role?
+      task_refs:
+      - TASK-001
+      value_path:
+      - learning_facets
+      - audience
+      cardinality: multiple
+      vocabulary: closed
+      allowed_values:
+      - Reader
+      - Steward
+      - Not recorded
+      examples:
+      - Reader
+      - Steward
+      missing_value: Not recorded
+    record_path:
+    - corpora
+    - example
+    - nodes
+    declaration_path:
+    - meta
+    - learning_presentation
+    - facets
+    emitted_counts_required: false
+    counts_path:
+    - facets
+    validation_refs:
+    - VAL-FACETS-001
+    browser_checks:
+    - labelled-values-and-counts
+    - keep-and-reset
+    - empty-state
+    - reload-restores-selection
+    acceptance_cases:
+    - key: topic-access
+      kind: single-value
+      selection:
+        topic:
+        - Access
+      expected_record_ids:
+      - records/access.md
+    - key: topic-alternatives
+      kind: or-within-facet
+      selection:
+        topic:
+        - Access
+        - Provenance
+      expected_record_ids:
+      - records/access.md
+      - records/provenance.md
+    - key: topic-and-role
+      kind: and-across-facets
+      selection:
+        topic:
+        - Access
+        audience:
+        - Reader
+      expected_record_ids:
+      - records/access.md
+    - key: no-access-for-steward
+      kind: no-match
+      selection:
+        topic:
+        - Access
+        audience:
+        - Steward
+      expected_record_ids: []
+    consumer_adapter: explorer-small-learning-v1
+    consumer_ref: CONSUMER-001
+
+exploratory_publication:
+  enabled: true
+  descriptor_schema: okf-exploratory-publication.v1
+  publication_state: exploratory
+  publisher:
+    name: Independent OKF research
+    url: https://example.org/research/
+    authority_status: independent-research
+  banner:
+    label: Exploratory
+    message: This is an incomplete research view, not an authoritative service or released data product. Content and links may change. Check the cited official source before making a decision.
+    feedback_url: https://example.org/issues/new
+    preserve_route: true
+  indexing_policy: noindex
+  snapshot_bound: true
+  plane_root_bound: true
+  invalid_contract_policy: explicit-warning-and-noindex
+  snapshot_policy: Every shared iteration receives an immutable snapshot identifier and retains the applicable plane roots.
+  limitations:
+    - Source coverage, labels and semantic mappings remain subject to review.
+  permitted_claims:
+    - The named snapshot is available for bounded research and feedback.
+  prohibited_claims:
+    - Do not claim production approval, completeness, official endorsement or release conformance.
+  promotion_rule: Owner review creates a fresh candidate; exploratory bytes are never silently relabelled as a release candidate.
+
+standards:
+  - id: STD-OKF-03
+    title: Open Knowledge Format
+    version: "0.3 at commit 527e81aff55992be21507e97004286789126f88c"
+    publication_status: Repository specification
+    canonical_url: https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md
+    applicability: normative
+    scope: Portable Markdown bundle core.
+    terms_adopted:
+      - type
+      - generated
+      - sources
+      - verified
+      - status
+      - stale_after
+    supported_source_fields:
+      - Source-native identifiers and metadata are preserved in additive fields.
+    mappings: []
+    unmet_requirements: []
+    semantic_conflicts: []
+    conformance_artifact: An OKF 0.3 Markdown tree.
+    validation: Validate reserved files and every non-reserved concept against OKF 0.3.
+    licence: See the upstream repository.
+    retrieved_at: "2026-11-23T20:05:39.424136Z"
+    evidence_refs:
+      - EV-OKF-001
+
+rights_access_privacy:
+  - id: RIGHT-001
+    layer: Source metadata and document content
+    operation: Read, transform, model-process and redistribute
+    status: unknown
+    basis: No rights conclusion has yet been evidenced.
+    licence: Unknown
+    attribution: ""
+    third_party_terms: Unknown
+    access_constraint: Do not infer permission from accessibility.
+    mitigation: Publish only evidence-backed permitted layers; record unresolved operations as constraints.
+    owner: Project owner
+    evidence_refs:
+      - EV-001
+
+architecture:
+  profile_level: minimal-okf
+  bundle_shape: small-markdown
+  canonical_authoring: markdown
+  generated_representations:
+    - okf-small-bundle
+    - okf-explorer-descriptor
+    - release-archive
+  refresh_strategy: Immutable source snapshots with explicit later refresh attempts.
+  namespace_strategy: Repository-controlled namespace pending a permanent domain.
+  scale_assumptions: Reassess after the inventory establishes record and relationship counts.
+
+consumer_contract:
+  inventory:
+    - id: CONSUMER-001
+      title: Replace-me actual OKF reader
+      kind: viewer
+      version_or_digest: replace-me-exact-release-commit-or-image-digest
+      source: https://example.org/consumer
+      interfaces:
+        - okf-small-bundle
+        - public deep links
+      execution: Run the pinned consumer itself against the generated tiny fixture; a schema-only substitute does not satisfy this consumer check.
+      required_for_release: true
+      deep_link_required: true
+      evidence_refs:
+        - EV-001
+      executable_identity:
+        package: "@okf/explorer"
+        version: replace-me-exact-version
+        commit: replace-me-full-commit-sha
+        lock_sha256: unknown
+        command: pnpm --dir path/to/okf-explorer acceptance:bundle -- --bundle-root bundle --journeys evaluation/journeys.json
+  lock:
+    path: domain-profile/consumer-lock.json
+    sha256: unknown
+    consumer_ids:
+      - CONSUMER-001
+    update_policy: Change a consumer version only through a reviewed lock update that reruns its dependency-graph closure and both compatibility directions.
+  dependency_graph:
+    nodes:
+      - id: NODE-PRODUCER
+        kind: producer
+        label: Deterministic OKF bundle builder
+        location: scripts/build.py
+      - id: NODE-CONTROL
+        kind: plane
+        label: Descriptor and control plane
+        location: okf-explorer.json
+        plane_ref: PLANE-CONTROL
+      - id: NODE-DATA
+        kind: plane
+        label: Record and evidence data plane
+        location: data/
+        plane_ref: PLANE-DATA
+      - id: NODE-PRESENTATION
+        kind: plane
+        label: Human pages and consumer route plane
+        location: bundle/
+        plane_ref: PLANE-PRESENTATION
+      - id: NODE-CONSUMER
+        kind: consumer
+        label: Pinned actual reader
+        location: consumer-lock.json#CONSUMER-001
+        consumer_ref: CONSUMER-001
+      - id: NODE-PUBLIC-ROUTE
+        kind: public-route
+        label: Published overview and record deep links
+        location: https://example.org/bundle/
+        consumer_ref: CONSUMER-001
+    edges:
+      - id: EDGE-PRODUCER-CONTROL
+        from_node: NODE-PRODUCER
+        to_node: NODE-CONTROL
+        contract: The producer emits the pinned descriptor schema and binds the data-plane root.
+        change_impacts:
+          - Descriptor schema, entrypoint or snapshot-binding changes invalidate the control plane and all downstream consumer checks.
+        affected_plane_refs:
+          - PLANE-CONTROL
+          - PLANE-PRESENTATION
+        validation_refs:
+          - VAL-CONSUMER-001
+      - id: EDGE-PRODUCER-DATA
+        from_node: NODE-PRODUCER
+        to_node: NODE-DATA
+        contract: The producer emits normalised records, relationships and evidence under the frozen data-plane manifest.
+        change_impacts:
+          - Source, normalisation, identity, rights or relationship changes invalidate the data plane and its downstream consumer checks.
+        affected_plane_refs:
+          - PLANE-DATA
+          - PLANE-PRESENTATION
+        validation_refs:
+          - VAL-001
+          - VAL-CONSUMER-001
+      - id: EDGE-PRODUCER-PRESENTATION
+        from_node: NODE-PRODUCER
+        to_node: NODE-PRESENTATION
+        contract: The producer emits the human pages, descriptor links and durable route templates under the presentation-plane manifest.
+        change_impacts:
+          - Documentation, route-template or hosting-base changes invalidate the presentation plane and post-deploy checks.
+        affected_plane_refs:
+          - PLANE-PRESENTATION
+        validation_refs:
+          - VAL-DEPLOY-001
+      - id: EDGE-CONTROL-CONSUMER
+        from_node: NODE-CONTROL
+        to_node: NODE-CONSUMER
+        contract: The locked consumer loads the descriptor and resolves every required entrypoint without guessing.
+        change_impacts:
+          - Consumer or descriptor changes rerun the actual-consumer fixture and both compatibility directions.
+        affected_plane_refs:
+          - PLANE-CONTROL
+          - PLANE-DATA
+          - PLANE-PRESENTATION
+        validation_refs:
+          - VAL-CONSUMER-001
+          - VAL-COMPAT-001
+      - id: EDGE-DATA-CONSUMER
+        from_node: NODE-DATA
+        to_node: NODE-CONSUMER
+        contract: The locked consumer resolves and interprets the records, relationships and evidence bound by the data-plane root.
+        change_impacts:
+          - Data-plane changes rerun the actual-consumer fixture, relevant task journeys and public deep-link checks.
+        affected_plane_refs:
+          - PLANE-DATA
+          - PLANE-PRESENTATION
+        validation_refs:
+          - VAL-CONSUMER-001
+          - VAL-DEPLOY-001
+      - id: EDGE-PRESENTATION-PUBLIC
+        from_node: NODE-PRESENTATION
+        to_node: NODE-PUBLIC-ROUTE
+        contract: The published routes expose the frozen presentation-plane bytes and links without path guessing.
+        change_impacts:
+          - Presentation-plane changes rerun route parsing, accessibility and post-deploy deep-link checks.
+        affected_plane_refs:
+          - PLANE-PRESENTATION
+        validation_refs:
+          - VAL-DEPLOY-001
+      - id: EDGE-CONSUMER-PUBLIC
+        from_node: NODE-CONSUMER
+        to_node: NODE-PUBLIC-ROUTE
+        contract: Published deep links restore the declared bundle, view and record or query state.
+        change_impacts:
+          - Consumer, route, hosting-base or descriptor changes rerun post-deploy deep-link checks.
+        affected_plane_refs:
+          - PLANE-PRESENTATION
+        validation_refs:
+          - VAL-DEPLOY-001
+  fixture_protocol:
+    max_seconds: 60
+    producer_stage:
+      id: FIXTURE-STAGE-PRODUCER
+      purpose: Build the tiny source fixture twice and prove schemas, negative cases, deterministic bytes and plane roots before invoking external consumers.
+      commands:
+        - python3 scripts/build.py --fixture --clean
+        - python3 scripts/check.py --fixture
+      cases:
+        - Valid record with source evidence
+        - Missing optional metadata
+        - Conflicting identity
+        - Unsafe link
+        - Digest mismatch
+      expected_outcomes:
+        - Both clean builds are byte-identical.
+        - Invalid, unsafe and mismatched cases fail closed.
+        - Every selected plane has a reproducible root receipt.
+      consumer_refs: []
+      validation_refs:
+        - VAL-001
+    consumer_stage:
+      id: FIXTURE-STAGE-CONSUMER
+      purpose: Execute every required locked consumer against the producer-stage bytes and inspect real routes, state restoration and degraded behaviour.
+      commands:
+        - replace-me-command-that-runs-the-pinned-consumer-against-the-fixture
+      cases:
+        - Overview load
+        - Search and facet state
+        - Selected record deep link
+        - Missing optional entrypoint
+        - Corrupt digest
+      expected_outcomes:
+        - The actual consumer loads valid fixture bytes without a guessed path.
+        - Deep links restore the expected bundle identity and view state.
+        - Unsupported or corrupt input degrades explicitly or fails closed.
+      consumer_refs:
+        - CONSUMER-001
+      validation_refs:
+        - VAL-CONSUMER-001
+        - VAL-COMPAT-001
+  planes:
+    - id: PLANE-CONTROL
+      title: Descriptor and control plane
+      role: control
+      digest_algorithm: sha256
+      digest_manifest: validation/digests/control-plane.json
+      root_receipt: validation/digests/control-plane-root.json
+      invalidated_by:
+        - Descriptor, schema, entrypoint, snapshot or consumer-interface changes
+      consumer_refs:
+        - CONSUMER-001
+      validation_refs:
+        - VAL-CONSUMER-001
+    - id: PLANE-DATA
+      title: Record, evidence and relationship data plane
+      role: data
+      digest_algorithm: sha256
+      digest_manifest: validation/digests/data-plane.json
+      root_receipt: validation/digests/data-plane-root.json
+      invalidated_by:
+        - Source snapshot, normalisation, identity, rights, record or relationship changes
+      consumer_refs:
+        - CONSUMER-001
+      validation_refs:
+        - VAL-001
+        - VAL-CONSUMER-001
+    - id: PLANE-PRESENTATION
+      title: Human pages and consumer route plane
+      role: presentation
+      digest_algorithm: sha256
+      digest_manifest: validation/digests/presentation-plane.json
+      root_receipt: validation/digests/presentation-plane-root.json
+      invalidated_by:
+        - Documentation, route, hosting-base, consumer or public-state changes
+      consumer_refs:
+        - CONSUMER-001
+      validation_refs:
+        - VAL-CONSUMER-001
+        - VAL-DEPLOY-001
+  compatibility:
+    support_policy: Test the new producer with every supported locked consumer and test the current consumer with retained fixtures from every supported producer contract.
+    window_decision:
+      supported_producer_contracts:
+        - okf-explorer-bundle.v0
+      supported_consumer_versions:
+        - replace-me-exact-version
+      unsupported_behavior: fail-closed
+      decision_refs:
+        - DEC-001
+    cases:
+      - id: COMPAT-BACKWARD-001
+        direction: backward-new-producer-old-consumer
+        producer_fixture: fixtures/current-producer/
+        consumer_ref: CONSUMER-001
+        expected_result: accept
+        validation_refs:
+          - VAL-COMPAT-001
+      - id: COMPAT-FORWARD-001
+        direction: forward-old-producer-new-consumer
+        producer_fixture: fixtures/supported-producer-v0/
+        consumer_ref: CONSUMER-001
+        expected_result: explicit-degraded
+        validation_refs:
+          - VAL-COMPAT-001
+  post_deploy_deep_links:
+    - id: DEEP-LINK-001
+      consumer_ref: CONSUMER-001
+      url_template: https://example.org/consumer/?bundle={{PERCENT_ENCODED_PUBLIC_DESCRIPTOR_URL}}&view=reader#overview
+      state: Reader overview for the exact published descriptor; add record, search and filter cases selected by the profile.
+      expected_identity: The consumer reports the published bundle ID, snapshot and version rather than its empty state or another cached bundle.
+      expected_content:
+        - No loader error
+        - Expected title and record count
+        - Restored Reader overview state
+      digest_plane_refs:
+        - PLANE-CONTROL
+        - PLANE-PRESENTATION
+      validation_refs:
+        - VAL-DEPLOY-001
+      tool_first_budget_seconds: 60
+      share_policy: withhold-until-exact-url-browser-verified
+
+enrichment:
+  enabled: false
+  purpose: No model enrichment is justified by the current evidence.
+  permitted_derivations:
+    - source-native
+    - normalized
+  evidence_requirement: Every non-source-native assertion identifies its inputs and derivation.
+  independent_review: Deterministic validation plus a separate domain review for material semantic claims.
+  authority_boundary: Generated assertions never become official source statements.
+  budget: No paid model calls are authorised by this profile.
+
+validation:
+  - id: VAL-001
+    target: OKF 0.3 Markdown tree
+    method: Parse every reserved and concept file and apply core conformance rules.
+    validator: Pinned local OKF validator
+    severity: error
+    release_gate: true
+    receipt: validation/okf-core.json
+  - id: VAL-CONSUMER-001
+    target: Two-stage tiny fixture and every required locked consumer
+    method: Build the fixture twice, then execute the pinned consumer itself against the exact fixture bytes and verify valid, degraded and fail-closed outcomes.
+    validator: Pinned producer checks plus the exact consumer execution from consumer-lock.json
+    severity: error
+    release_gate: true
+    receipt: validation/consumer-fixture.json
+  - id: VAL-COMPAT-001
+    target: Bidirectional producer/consumer compatibility matrix
+    method: Run current producer bytes through supported consumers and retained supported producer fixtures through the current consumer.
+    validator: Pinned compatibility harness and consumer lock
+    severity: error
+    release_gate: true
+    receipt: validation/consumer-compatibility.json
+  - id: VAL-DEPLOY-001
+    target: Published consumer deep links
+    method: Open each exact public deep link unauthenticated and verify bundle identity, snapshot, view/query/record state, expected content and applicable plane roots.
+    validator: Pinned browser and HTTP content checks
+    severity: error
+    release_gate: true
+    receipt: validation/post-deploy-deep-links.json
+
+  - id: VAL-FACETS-001
+    target: Every domain facet, record classification and consumer declaration
+    method: Run check_foundry_facets.py on emitted bytes; reject missing
+      declarations or values, unknown labels, stale counts and incorrect selection
+      membership. Execute labelled counts, keep/reset, empty-state and reload
+      journeys in the pinned actual consumer.
+    validator: Pinned check_foundry_facets.py and actual-consumer browser harness
+    severity: error
+    release_gate: true
+    receipt: validation/facets.json
+
+evaluation:
+  competency_questions:
+    - id: CQ-001
+      question: Can a user find a relevant record and inspect the authoritative source?
+      task_refs:
+        - TASK-001
+      expected_evidence: Source URL, source identity and observation time.
+      near_miss_rule: A result without an inspectable source is not correct.
+      verification_status: candidate
+  hard_failures:
+    - A result cannot resolve its source evidence.
+  strata:
+    - Normal record discovery
+    - Missing metadata
+    - Conflicting source evidence
+  citation_policy: Every answer proposition names an immutable or precisely observed source.
+  independent_verification: Candidate questions and expected answers require separate evidence review.
+  baselines:
+    - Direct inspection of the declared source snapshot.
+  metrics:
+    - Retrieval success
+    - Resolvable citation rate
+  thresholds:
+    - Zero hard failures
+  challenge_policy: Run two disjoint held-out passes and require no new critical category in the second.
+
+constraints: []
+gaps:
+  - id: GAP-001
+    description: The collection denominator is not yet established.
+    impact: No completeness claim is permitted.
+    blocking: false
+    owner: Project owner
+    next_action: Complete the read-only inventory.
+decisions:
+  - id: DEC-001
+    question: What is the acceptable freshness target?
+    recommended_default: Snapshot-bounded publication with visible observation time.
+    alternatives:
+      - Live resolution
+      - Hybrid snapshot and bounded live reconciliation
+    consequences:
+      - The choice determines refresh and stale-state behaviour.
+    status: open
+    owner: Project owner
+    blocking_for_build: false
+    due_point: Before production freshness claims.
+    evidence_refs:
+      - EV-001
+traceability:
+  - id: TRACE-001
+    intent_or_requirement: People can find relevant documents and inspect their source evidence.
+    task_refs:
+      - TASK-001
+    planned_artifacts:
+      - index.md
+      - okf-bundle.json
+      - checksums.json
+    validation_refs:
+      - VAL-001
+    evidence_refs:
+      - EV-001
+    status: proposed
+evidence:
+  - id: EV-001
+    title: Collection inventory placeholder
+    evidence_type: Local inventory
+    authority: Local collection observation
+    location: ./inventory.json
+    locator: Entire file
+    retrieved_at: "2026-07-27T00:00:00Z"
+    observed_at: "2026-07-27T00:00:00Z"
+    access_state: documented-not-tested
+    verification: unverified
+    sha256: unknown
+    supports:
+      - Initial collection scope and research plan
+    contradicts: []
+    rights_ref: RIGHT-001
+  - id: EV-OKF-001
+    title: Open Knowledge Format 0.2 specification
+    evidence_type: Normative specification
+    authority: Open Knowledge Format specification repository
+    location: https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md
+    locator: Version 0.3 specification
+    retrieved_at: "2026-11-23T20:05:39.424136Z"
+    observed_at: "2026-11-23T20:05:39.424136Z"
+    access_state: verified-working
+    verification: locator-checked
+    sha256: a1fcc51be23fce5c1e4e198f0a71af6046a5286503959caa4009311f74fac3f1
+    supports:
+      - STD-OKF-03
+      - OKF 0.3 core requirements
+    contradicts: []
+  - id: EV-LINK-COVERAGE-001
+    title: Semantic link coverage result receipt
+    evidence_type: Local validation receipt
+    authority: Profile author pending independent review
+    location: ./evidence/LINKSET-001-coverage-result.json
+    locator: Entire canonical coverage_result object
+    retrieved_at: "2026-07-27T00:00:00Z"
+    observed_at: "2026-07-27T00:00:00Z"
+    access_state: documented-not-tested
+    verification: unverified
+    sha256: 39bfae699d84c8d23f4f7a636ebb00d9e03ac9c8494c098402d18bb99c744bdd
+    supports:
+      - LINKSET-001 coverage result and observation time
+    contradicts: []
+
+build_recommendation:
+  required_features:
+    - Stable source-native identity and deterministic routes
+    - Source provenance and observation time
+    - Search, useful facets and record detail
+  deferred_features:
+    - Domain ontology until competency questions justify it
+    - Model-assisted enrichment until a semantic gap and review method are approved
+  blocking_decision_ids: []
+  canonical_fixture: Use two stages—first build and validate one normal record, one missing-metadata record, one conflict, one unsafe-link case and one digest mismatch; then execute every required locked consumer against those exact bytes.
+  acceptance_gates:
+    - Domain profile validates and its digest is recorded.
+    - Consumer inventory and lock are pinned, and every dependency edge resolves to an impact and validation closure.
+    - The two-stage tiny fixture passes twice with byte-identical producer output and successful actual-consumer execution.
+    - Both producer-to-consumer compatibility directions pass or degrade exactly as declared.
+    - Per-plane digest roots permit only evidence-backed selective reruns.
+    - The complete bundle reconciles to the declared input population.
+    - The frozen release reproduces and post-deploy overview, record, query and filter deep links restore exact state.

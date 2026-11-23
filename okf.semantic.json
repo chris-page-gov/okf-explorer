@@ -1,8 +1,8 @@
 {
   "okf_core": {
-    "specification": "https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/3fcbb9f828c2f23d109c855ee403c3a4c81f3a96/okf/SPEC.md",
+    "specification": "https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md",
     "status": "conformant",
-    "version": "0.2"
+    "version": "0.3"
   },
   "reader": {
     "consumer": "https://chris-page-gov.github.io/okf-explorer/",
@@ -55,7 +55,7 @@
     "role": "profile-and-consumer",
     "root_index": "index.md"
   },
-  "schema": "okf-repository-semantic-contract.v1",
+  "schema": "okf-repository-semantic-contract.v2",
   "semantic_layer": {
     "authoritative_inputs": [
       "index.md",
@@ -75,7 +75,12 @@
       "docs/okf-authoring-methodology-review-2026-08-12.md",
       "profiles/analytical-data/v1/",
       "sources/analytical-data-trial-2026-11-11/",
-      "docs/analytical-data-trial-2026-11-11.md"
+      "docs/analytical-data-trial-2026-11-11.md",
+      "profiles/bundle-wiki/v2/",
+      "walkthrough.md",
+      "walkthrough.case.json",
+      "profiles/authoring/v2/",
+      "OKF-SEMANTIC-GUIDANCE.v2.md"
     ],
     "context_policy": "pinned-local-contexts-no-browser-remote-expansion",
     "identity_policy": "absolute-semantic-iri-plus-validated-local-route",
@@ -101,14 +106,33 @@
         "path": "okf-bundle.jsonld",
         "required": true,
         "role": "semantic-json-ld"
+      },
+      {
+        "path": "reference-bundle/okf-bundle.json",
+        "role": "explorer-runtime",
+        "generated": true,
+        "required": true
+      },
+      {
+        "path": "reference-bundle/okf-bundle.yamlld",
+        "role": "semantic-yaml-ld",
+        "generated": true,
+        "required": true
+      },
+      {
+        "path": "reference-bundle/okf-bundle.jsonld",
+        "role": "semantic-json-ld",
+        "generated": true,
+        "required": true
       }
     ],
-    "profile": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/",
+    "profile": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v2/",
     "state": "generated-yaml-ld-graph"
   },
   "tooling": {
     "build": [
       "uv run --locked python scripts/build_okf_bundle.py",
+      "uv run --locked python scripts/build_reference_bundle.py",
       "uv run --locked python scripts/update_viewer.py",
       "pnpm --dir apps/okf-explorer sbom",
       "pnpm --dir apps/okf-explorer build:determinism",
@@ -116,6 +140,7 @@
     ],
     "check": [
       "uv run --locked python scripts/build_okf_bundle.py --check",
+      "uv run --locked python scripts/check_reference_core.py",
       "uv run --locked python scripts/update_viewer.py --check",
       "uv run --locked python scripts/check_okf.py",
       "uv run --locked python -m unittest tests.test_okf_semantic tests.test_okf_authoring_profile tests.test_explore_okf_profile tests.test_explore_okf_tooling tests.test_okf_v02 tests.test_reconcile_okf_repositories tests.test_build_site -v",

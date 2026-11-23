@@ -60,6 +60,15 @@ A leading slash selects the bundle directory. Core 0.3 resource, provenance,
 computation, executor and attester links use the same document-relative rule;
 earlier bundle resource links retain their compatibility behaviour.
 
+The current Explorer reference source has a separate generated publication in
+`reference-bundle/`. Its manifest enumerates the exact authored corpus;
+`checksums.json` binds all files, and `walkthrough-data.json` binds the council
+tool-access question to the descriptor, graph and nine cited source documents.
+The independent source check covers all 151 core concepts, their complete
+frontmatter and bodies, and 418 directed core reference pairs. The 14 retained
+navigation records are reported separately. Public browser acceptance and a
+formal release remain separate from those local results.
+
 For a small OKF+ bundle, give a URL-capable client the **commit-pinned JSON-LD graph** in the catalogue entry's `agent_graph.url`. The catalogue supplies the media type, bundle identifier, commit, byte length and SHA-256. The graph is a projection of the authored YAML-LD. A client can traverse it using an ordinary JSON parser. The released Explorer example has 165 entities and 588 qualified assertions. Chrome retrieved it, resolved an assertion's source and target identifiers, then opened the corresponding Markdown at the same commit and verified its evidence digest. [Open the checked graph](https://raw.githubusercontent.com/chris-page-gov/okf-explorer/954d44a345b31a3142bc69a822295e6420108d93/okf-bundle.jsonld) · [Direct browser receipt](evidence/okf-0.3-pinned-graph.json) · [Reader relationship inspection](evidence/okf-0.3-graph-reader.json)
 
 A client can use this instruction with the link.

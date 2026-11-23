@@ -1,5 +1,5 @@
 {
-  "profile": "OKF v0.2 + Bundle Wiki YAML-LD semantic profile v1",
+  "profile": "OKF 0.3 + Bundle Wiki YAML-LD semantic profile v2",
   "siteTitle": "OKF Explorer",
   "defaultBundle": "okf-bundle.json",
   "semanticMarkdownExclusions": [

@@ -1344,7 +1344,7 @@ class ReconcileOkfRepositoriesTests(unittest.TestCase):
             )
 
     def test_agent_guidance_never_blindly_executes_contract_commands(self) -> None:
-        guidance = reconcile.agent_block()
+        guidance = reconcile.agent_block(core_version=reconcile.PRESETS["okf-explorer"].core_version)
         skill = (
             ROOT
             / "plugins/okf-repositories/skills/work-with-okf-repositories/SKILL.md"
@@ -1689,6 +1689,10 @@ class ReconcileOkfRepositoriesTests(unittest.TestCase):
         validator = Draft202012Validator(schema, format_checker=FormatChecker())
         for name, preset in reconcile.PRESETS.items():
             contract = reconcile.contract_for(name, preset)
+            versioned_schema = json.loads((ROOT / "profiles/bundle-wiki" /
+                ("v2" if preset.core_version == "0.3" else "v1") /
+                "repository-contract.schema.json").read_text())
+            validator = Draft202012Validator(versioned_schema, format_checker=FormatChecker())
             self.assertEqual([], reconcile.contract_errors(contract), name)
             for source in reconcile.PROFILE_SOURCE_INPUTS:
                 self.assertIn(

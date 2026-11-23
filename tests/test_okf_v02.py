@@ -128,10 +128,10 @@ class OkfV02ExemplarTests(unittest.TestCase):
         self.assertEqual([], errors)
         self.assertGreater(len(graph["nodes"]), 140)
 
-    def test_reserved_files_and_concepts_use_canonical_v02_shape(self) -> None:
+    def test_reserved_files_and_concepts_use_canonical_v03_shape(self) -> None:
         root = okf_semantic.parse_optional_frontmatter(ROOT / "index.md")
-        self.assertEqual({"okf_version": "0.2"}, root.metadata)
-        self.assertEqual([], update_viewer.validate_v02_core("index.md", root.metadata, root.body))
+        self.assertEqual({"okf_version": "0.3"}, root.metadata)
+        self.assertEqual([], update_viewer.validate_core("index.md", root.metadata, root.body, version="0.3"))
 
         log = okf_semantic.parse_optional_frontmatter(ROOT / "log.md")
         self.assertEqual({}, log.metadata)

@@ -12,7 +12,7 @@
   },
   "semantic_contract": {
     "path": "okf.semantic.json",
-    "profile": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/"
+    "profile": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v2/"
   },
   "source_families": [
     {
@@ -30,7 +30,9 @@
         "research/*.md",
         "stack/**",
         "standards/**",
-        "uk-government/**"
+        "uk-government/**",
+        "walkthrough.md",
+        "walkthrough.case.json"
       ],
       "formats": [
         "text/markdown"
@@ -416,6 +418,16 @@
         "path": ".gitattributes",
         "role": "policy",
         "source_family_id": "estate-governance"
+      },
+      {
+        "path": "walkthrough.md",
+        "role": "content",
+        "source_family_id": "ai-infrastructure-markdown"
+      },
+      {
+        "path": "walkthrough.case.json",
+        "role": "policy",
+        "source_family_id": "ai-infrastructure-markdown"
       }
     ],
     "generated": [
@@ -671,6 +683,18 @@
         "check_command_ids": [
           "check-public-access"
         ]
+      },
+      {
+        "path": "reference-bundle/**",
+        "role": "release-pack",
+        "plane": "runtime",
+        "required": true,
+        "build_command_ids": [
+          "build-reference-bundle"
+        ],
+        "check_command_ids": [
+          "check-reference-core"
+        ]
       }
     ]
   },
@@ -724,14 +748,21 @@
         "scripts/build_okf_bundle.py",
         "scripts/build_okf_registry.py",
         "scripts/okf_semantic.py",
-        "tests/test_okf_semantic.py"
+        "tests/test_okf_semantic.py",
+        "scripts/build_reference_bundle.py",
+        "scripts/build_reference_walkthrough.py",
+        "scripts/check_reference_core.py",
+        "walkthrough.md",
+        "walkthrough.case.json"
       ],
       "command_ids": [
         "build-bundle",
         "check-bundle",
         "build-bundle-registry",
         "check-bundle-registry",
-        "check-okf"
+        "check-okf",
+        "build-reference-bundle",
+        "check-reference-core"
       ]
     },
     {
@@ -749,7 +780,8 @@
         "scripts/build_okf_estate_registry.py",
         "okf-public-access.json",
         ".well-known/okf.json",
-        "scripts/build_public_bundle_access.py"
+        "scripts/build_public_bundle_access.py",
+        "reference-bundle/**"
       ],
       "command_ids": [
         "build-estate-registry",
@@ -757,7 +789,9 @@
         "update-viewer",
         "check-viewer",
         "build-public-access",
-        "check-public-access"
+        "check-public-access",
+        "build-reference-bundle",
+        "check-reference-core"
       ]
     },
     {
@@ -790,7 +824,8 @@
         "apps/okf-explorer/**",
         "services/ask-okf-mcp/**",
         "scripts/stage_remote_mcp_site.mjs",
-        "tools/context-archive/**"
+        "tools/context-archive/**",
+        "scripts/check_reference_client_access.mjs"
       ],
       "command_ids": [
         "check-app",
@@ -800,7 +835,8 @@
         "test-remote-mcp",
         "build-remote-mcp",
         "test-context-archive",
-        "check-graph-sdk-source"
+        "check-graph-sdk-source",
+        "check-reference-client"
       ]
     },
     {
@@ -1370,6 +1406,47 @@
         "network": "none",
         "mutates": "none",
         "timeout_minutes": 1
+      },
+      {
+        "id": "build-reference-bundle",
+        "kind": "build",
+        "planes": [
+          "semantic",
+          "runtime"
+        ],
+        "command": "uv run --locked python scripts/build_reference_bundle.py",
+        "source": "AGENTS.md",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "generated-only",
+        "timeout_minutes": 10
+      },
+      {
+        "id": "check-reference-core",
+        "kind": "check",
+        "planes": [
+          "semantic",
+          "runtime"
+        ],
+        "command": "uv run --locked python scripts/check_reference_core.py",
+        "source": "AGENTS.md",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "none",
+        "timeout_minutes": 10
+      },
+      {
+        "id": "check-reference-client",
+        "kind": "check",
+        "planes": [
+          "application"
+        ],
+        "command": "node scripts/check_reference_client_access.mjs --output /tmp/okf-reference-client-access.json",
+        "source": "AGENTS.md",
+        "review_status": "reviewed-local-guidance",
+        "network": "bounded-read",
+        "mutates": "generated-only",
+        "timeout_minutes": 5
       }
     ]
   },

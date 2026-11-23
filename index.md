@@ -1,10 +1,12 @@
 ---
-okf_version: "0.2"
+okf_version: "0.3"
 ---
 
 # ai-infrastructure-wiki
 
-An **Open Knowledge Format (OKF v0.2)** bundle covering **AI infrastructure** in two complementary threads: the **agent-ready vertical stack** (contracts → discovery → identity → execution → policy → observability/provenance) and the **federated collaborative-learning layer**. It uses standard Markdown concepts and the v0.2 provenance, trust and lifecycle families, with optional Explorer YAML-LD, federation and presentation extensions.
+An **Open Knowledge Format (OKF 0.3)** bundle covering **AI infrastructure** in two complementary threads: the **agent-ready vertical stack** (contracts → discovery → identity → execution → policy → observability/provenance) and the **federated collaborative-learning layer**. It uses standard Markdown concepts and the provenance, trust and lifecycle families, with optional Explorer YAML-LD, federation and presentation extensions.
+
+The upstream 0.3 standard was announced on 18 November 2026. This bundle's OKF+ 0.3 implementation date is 23 November 2026. See the [current and historical standards register](https://github.com/chris-page-gov/okf-explorer/blob/main/docs/okf-standards.md) for the pinned specification and publication evidence.
 
 ## Contents
 - **[The reviewed sources](document/index.md)** — overview, [themes](document/themes/index.md), [source documents](document/sources/index.md), [evaluation](document/peer-review.md).

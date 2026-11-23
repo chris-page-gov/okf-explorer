@@ -1,0 +1,67 @@
+<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Council tool-access evidence walkthrough</title><link rel="icon" href="data:,"><style>body{font:18px/1.6 system-ui;color:#0b0c0c;background:#fff;max-width:1100px;margin:2rem auto;padding:0 1.5rem}a{color:#1d70b8}.diagram{overflow:auto}.diagram img{width:100%;min-width:850px}code{overflow-wrap:anywhere}h2{margin-top:2rem}</style></head><body><header><nav aria-label="Bundle"><a href="index.html">Explorer reference bundle</a></nav></header><main><h1>Trace a council agent's tool-access requirements</h1>
+<h2>Question</h2>
+<p>A council wants an agent to discover and invoke tools and delegate work to other agents. What do MCP, A2A and a documentation registry each contribute, where must consent and evidence be recorded, and does this bundle establish that a deployment is authorised or secure?</p><p>On a small screen, scroll the diagram sideways. The full steps and source links follow below.</p><div class="diagram" role="region" aria-label="Directed source trails; scroll horizontally on a small screen" tabindex="0"><img src="walkthrough.svg" alt="Separate source trails for consent and evidence, registry and delegation, and security. The full steps follow below."></div>
+<p>This walkthrough uses Explorer's own reference bundle. It is separate from the
+AI Infrastructure producer's federated RAG walkthrough. The records are retained
+technical summaries, chiefly authored in July 2026; this exercise does not
+recheck the latest external protocol versions or approve a council deployment.</p>
+<h2>1. Establish the bundle and scope</h2>
+<p>Open the descriptor linked from this bundle's homepage in Explorer. Check its
+core 0.3 declaration, bundle identifier and snapshot. Search for <strong>Model Context
+Protocol</strong>, select that record and inspect its Markdown, provenance and complete
+frontmatter. A lifecycle value of <code>stable</code> does not mean that a person reviewed it.</p>
+<h2>2. Follow the consent and evidence references</h2>
+<p>In Graph, follow <a href="standards/mcp.md">MCP</a> to <a href="glossary/consent.md">Consent</a>, then
+<a href="stack/observability-and-provenance.md">Observability and provenance</a>, then
+<a href="standards/w3c-prov.md">W3C PROV</a>. These are existing directed references. Their
+assertions record derived authority and navigation-only rights; they do not
+establish that a policy has been enforced.</p>
+<p>The MCP summary says the protocol exposes tools, resources and prompts with
+consent expectations. It also says the protocol cannot enforce those principles
+alone. The consent record places the evidence at the system boundary. The
+observability record identifies delegated authority, policy, contract version,
+consent, execution trace and provenance as matters to record.</p>
+<h2>3. Search separately for registry and delegation roles</h2>
+<p>Search for <a href="frameworks/context-hub.md">Context Hub</a>. Follow its reference to
+<a href="standards/a2a.md">A2A</a>, then <a href="glossary/agent-card.md">Agent Card</a>, then
+<a href="glossary/tool-discovery.md">Tool discovery</a>. Context Hub is described as curated
+documentation for coding agents. A2A addresses communication between agents;
+Agent Cards describe capabilities. Finding a capability does not grant authority
+to use it. No arrow in this diagram is a permission grant.</p>
+<p>Search separately for the <a href="uk-government/ncsc-secure-ai.md">NCSC secure AI guidance record</a>.
+It points to security across design, development, deployment and operation.
+It has no outgoing concept reference to MCP in this snapshot. The separate
+diagram lane makes that graph gap visible instead of inventing a connection.</p>
+<h2>Worked answer</h2>
+<p>MCP contributes the recorded agent-to-tool interface and consent expectations;
+A2A contributes the recorded agent-to-agent discovery and delegation interface.
+A documentation registry supplies curated context, with its own version and
+trust boundary. Those roles complement one another, but the graph records
+references between summaries rather than a tested integrated system.</p>
+<p>The retained consent and observability records put authority, policy, consent
+and an execution evidence trail at the system boundary. The NCSC record places
+security throughout the lifecycle. These sources do <strong>not</strong> show that the
+council's deployment implements those controls, holds the required permissions
+or has passed security assurance. The selected records have no named
+verification events. Their recorded source links and generated dates remain
+inspectable; no human approval is inferred from their authorship.</p>
+<h2>Negative checks and limits</h2>
+<ul>
+<li><strong>Does MCP guarantee consent enforcement?</strong> The retained MCP summary explicitly
+says it cannot enforce the principles alone. Do not turn a protocol reference
+into an authorisation or assurance claim.</li>
+<li><strong>Does this graph contain an NCSC-to-MCP path?</strong> There is no directed concept
+path from the selected NCSC record to MCP in this snapshot. This is a property
+of this bundle, not evidence that the subjects are unrelated in the world.</li>
+<li><strong>Can an AI invoke a tool by reading these files?</strong> This publication supplies
+read-only knowledge. It contains no authorised execution session or runtime
+verdict for the proposed deployment.</li>
+</ul>
+<h2>Reproduce the evidence trail</h2>
+<p>Read <a href="okf-bundle.jsonld">the graph</a>, <a href="okf-bundle.json">the Reader descriptor</a> and
+<a href="walkthrough-data.json">the source-bound walkthrough data</a>. Compare the
+descriptor, graph and cited Markdown digests with <a href="checksums.json">the checksum manifest</a>.
+An AI client can inspect the compact JSON graph without fetching remote
+contexts, executing instructions or making model API calls. Real browser,
+public retrieval and release checks have their own acceptance receipts.</p>
+</main></body></html>

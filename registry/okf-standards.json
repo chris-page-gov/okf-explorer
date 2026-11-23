@@ -41,7 +41,7 @@
       "verification": {
         "method": "GitHub path history and immutable raw content",
         "raw_url": "https://raw.githubusercontent.com/GoogleCloudPlatform/knowledge-catalog/ee67a5ca27044ebe7c38385f5b6cffc2305a9c1a/okf/SPEC.md",
-        "content_marker": "Version 0.1 — Draft",
+        "content_marker": "Version 0.1 \u2014 Draft",
         "commit_date_source": "https://api.github.com/repos/GoogleCloudPlatform/knowledge-catalog/commits/ee67a5ca27044ebe7c38385f5b6cffc2305a9c1a"
       },
       "provenance_note": "The pinned document identifies itself as OKF version 0.1. The revision date is the Git commit date; no separate release announcement date is asserted."
@@ -56,6 +56,24 @@
       "source_path": "profiles/bundle-wiki/v1/",
       "semantic_core_target": "0.2",
       "note": "This local semantic profile has its own version and lifecycle. Its presence does not change the core version declared by any bundle or constitute OKF 0.3 adoption."
+    },
+    {
+      "id": "bundle-wiki",
+      "version": "2",
+      "status": "experimental",
+      "iri": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v2/",
+      "source_path": "profiles/bundle-wiki/v2/",
+      "semantic_core_target": "0.3",
+      "note": "Versioned implementation profile retaining frozen v1 structural dependencies; each producer requires separate acceptance."
+    },
+    {
+      "id": "authoring",
+      "version": "2",
+      "status": "experimental",
+      "iri": "https://chris-page-gov.github.io/okf-explorer/profile/authoring/v2/",
+      "source_path": "profiles/authoring/v2/",
+      "semantic_core_target": "0.3",
+      "note": "New domain handoffs target core0.3; historical v1/core0.2 handoffs remain available."
     }
   ],
   "bundle_catalogues": {

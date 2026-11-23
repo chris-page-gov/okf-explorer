@@ -1,18 +1,19 @@
-# OKF v0.2 conformance and Explorer profile
+# OKF 0.3 conformance and Explorer profile
 
 The [central standards register](okf-standards.md) records the current upstream
 location, the pinned historical specifications and the owner's bundle catalogues.
 
-This repository targets [Open Knowledge Format v0.2](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/3fcbb9f828c2f23d109c855ee403c3a4c81f3a96/okf/SPEC.md). It deliberately separates the small interoperable core from the richer OKF Explorer bundle-wiki profile.
+The current reference corpus targets [Open Knowledge Format 0.3](https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md), announced on 18 November 2026. Its local implementation date is 23 November 2026. It separates the interoperable core from Bundle Wiki v2. The frozen v0.8.2 release remains the core 0.2 baseline; a new implementation is not a claim that every estate producer or release has been accepted.
 
 ## Core conformance
 
 The canonical hand-authored bundle is the Markdown tree enumerated by
-`scripts/update_viewer.py`. It follows the v0.2 core rules:
+`scripts/update_viewer.py`. Its independent `reference-bundle/` export excludes
+other producers, frozen experiments and fixtures. It follows the 0.3 core rules:
 
 - every non-reserved concept is UTF-8 Markdown with parseable YAML frontmatter
   and a non-empty `type`;
-- the root `index.md` declares only `okf_version: "0.2"`;
+- the current root `index.md` declares `okf_version: "0.3"`;
 - nested `index.md` files have no frontmatter and provide progressive
   disclosure through ordinary Markdown headings and links;
 - `log.md` has no frontmatter and uses newest-first `## YYYY-MM-DD` headings;
@@ -23,9 +24,19 @@ The canonical hand-authored bundle is the Markdown tree enumerated by
 - broken links and missing optional families remain consumable, as required by
   the permissive core.
 
-`scripts/check_okf.py` reports core errors separately from the stricter profile
-checks. `scripts/build_okf_bundle.py` and `scripts/update_viewer.py` project the
-same Markdown source into the Svelte and classic viewers.
+`scripts/check_okf.py` checks the controlled producer profile and the independent
+export. `scripts/check_reference_core.py` separately inspects every exported
+Markdown file under the pinned core 0.3 rules, compares all 151 concepts'
+complete frontmatter and bodies with an independent Reader import, and compares
+all 418 directed core reference pairs. The rich projection preserves 165 record
+identities and 588 assertion identities; 14 navigation records remain extensions.
+Optional family/profile diagnostics are not reclassified as core syntax failures.
+
+Build the export with `uv run --locked python scripts/build_reference_bundle.py`.
+It includes its own [council tool-access walkthrough](../reference-bundle/walkthrough.html),
+diagram, worked answer, source digests and negative controls. Real-browser,
+public retrieval and release acceptance have separate receipts. Neither
+the export checker nor a graph reference grants permission to invoke a tool.
 
 For the migrated canonical corpus, `generated.at` uses the actual Git authoring
 commit time (9 July 2026), rather than reusing publication dates that the v0.1
@@ -37,13 +48,13 @@ metadata.
 
 ## v0.1 compatibility
 
-Explorer is a v0.2 consumer that can still open v0.1 bundles:
+Explorer reads core 0.3 and retains explicit v0.2 and v0.1 compatibility:
 
 - `generated.at` wins when `generated` is present; otherwise the UI and
   Timeline may use legacy `timestamp`;
 - frontmatter `sources` wins when the key is present; otherwise a bounded
   legacy `# Citations` list may be projected as provenance;
-- a bare `verified: { by, at }` mapping and a list of mappings normalize to the
+- a bare `verified: { by, at }` mapping and a list of mappings normalise to the
   same representation;
 - missing trust and lifecycle fields never reject a concept.
 
@@ -53,7 +64,10 @@ source credibility.
 
 ## Trust, lifecycle and attestation
 
-The Svelte Explorer derives the v0.2 trust tier from `verified`:
+The Svelte Explorer derives the trust tier from valid `verified` events.
+For core 0.3, only events at or after the latest `generated.at` can raise it;
+earlier events remain history. Actor schemes such as `team:` count as machine
+confirmation; a current named `human:` event is needed for human review:
 
 - no verification events: **unverified**;
 - non-`human:` actors only: **machine confirmed**;

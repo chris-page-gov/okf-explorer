@@ -15,6 +15,9 @@ from urllib.parse import quote, urlsplit
 import okf_semantic
 import update_viewer
 
+CORE_VERSION = "0.3"
+PROFILE_URL = "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v2/"
+
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG = ROOT / "okf.config.json"
 DEFAULT_OUTPUT = ROOT / "okf-bundle.json"
@@ -309,6 +312,10 @@ def normalized_relationships(
 
     errors: list[str] = []
     for relationship in relationships:
+        relationship["relationship_role"] = (
+            "concept" if all(nodes.get(str(relationship.get(endpoint)), {}).get("core_role") == "concept"
+                             for endpoint in ("source", "target")) else "navigation"
+        )
         errors.extend(
             f"relationship {relationship.get('id') or '<missing id>'} {error}"
             for error in okf_semantic.schema_errors(
@@ -357,6 +364,9 @@ def build_bundle() -> tuple[dict[str, Any], list[str]]:
     graph, errors = update_viewer.build_graph()
     if errors:
         return {}, errors
+    source_metadata, _ = update_viewer.parse_frontmatter(update_viewer.ROOT / "index.md")
+    core_version = str(source_metadata.get("okf_version") or "0.2")
+    profile_url = PROFILE_URL if core_version == "0.3" else okf_semantic.PROFILE_URL
 
     corpus_config = config["corpora"][0]
     graph_nodes = graph["nodes"]
@@ -394,7 +404,14 @@ def build_bundle() -> tuple[dict[str, Any], list[str]]:
     bundle = {
         "schema": "okf-explorer-bundle.v0",
         "kind": "okf-bundle",
-        "okf_version": "0.2",
+        "bundle_id": SEMANTIC_ID_BASE + "bundle/ai-infrastructure-wiki",
+        "version": json.loads((ROOT / "apps/okf-explorer/package.json").read_text())["version"],
+        "snapshot": "sha256:" + okf_semantic.sha256_hex(okf_semantic.canonical_json_bytes({
+            "markdown": {update_viewer.rel(path): okf_semantic.sha256_hex(path.read_bytes())
+                         for path in update_viewer.iter_okf_markdown()},
+            "configuration_sha256": okf_semantic.sha256_hex(CONFIG.read_bytes()),
+        })),
+        "okf_version": core_version,
         "generated_by": "scripts/build_okf_bundle.py",
         "generated_at": generated_at_value,
         "meta": {
@@ -402,8 +419,8 @@ def build_bundle() -> tuple[dict[str, Any], list[str]]:
             "description": corpus_config["subtitle"],
             "default_corpus": corpus_id,
             "corpus_order": [corpus_id],
-            "core_conformance": "OKF v0.2",
-            "profile": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/",
+            "core_conformance": f"OKF v{core_version}",
+            "profile": profile_url,
             "semantic_descriptor": "okf-bundle.yamlld",
             "semantic_alternates": ["okf-bundle.yamlld", "okf-bundle.jsonld"],
             "extensions": [
@@ -497,6 +514,7 @@ def semantic_assertion(relationship: dict[str, Any]) -> dict[str, Any]:
         "count",
         "stale_after",
         "review_status",
+        "relationship_role",
     ):
         if relationship.get(field) not in (None, "", []):
             assertion[field] = relationship[field]
@@ -568,6 +586,8 @@ def build_semantic_document(bundle: dict[str, Any]) -> tuple[dict[str, Any], lis
             "description": str(node.get("description") or ""),
             "section": str(node.get("section") or "root"),
             "source_path": str(node.get("source") or node_id),
+            "core_role": str(node.get("core_role") or "extension"),
+            "frontmatter": node.get("frontmatter", {}),
         }
         aliases = node.get("aliases")
         if isinstance(aliases, list) and aliases:
@@ -601,13 +621,16 @@ def build_semantic_document(bundle: dict[str, Any]) -> tuple[dict[str, Any], lis
                 "RelationshipAssertion": RELATIONSHIP_TYPE_CONTEXT,
                 "section": "okf:section",
                 "source_path": "okf:sourceArtifact",
+                "core_role": "okf:coreRole",
+                "relationship_role": "okf:relationshipRole",
+                "frontmatter": {"@id": "okf:authoredFrontmatter", "@type": "@json"},
                 "aliases": {"@id": "skos:altLabel", "@container": "@set"},
                 "assertion_scope": "okf:assertionScope",
             },
         ],
         "@id": SEMANTIC_ID_BASE + "bundle/ai-infrastructure-wiki",
         "@type": "okf:Bundle",
-        "okf_version": "0.2",
+        "okf_version": bundle["okf_version"],
         "title": str(corpus.get("title") or bundle.get("meta", {}).get("title") or "OKF bundle"),
         "description": str(corpus.get("subtitle") or bundle.get("meta", {}).get("description") or ""),
         "version": str(package["version"]),
@@ -615,7 +638,7 @@ def build_semantic_document(bundle: dict[str, Any]) -> tuple[dict[str, Any], lis
         "descriptor": {"@id": PUBLIC_BASE + "okf-bundle.json"},
         "semanticDescriptor": {"@id": PUBLIC_BASE + "okf-bundle.yamlld"},
         "home": {"@id": PUBLIC_BASE},
-        "profile": {"@id": okf_semantic.PROFILE_URL},
+        "profile": {"@id": bundle.get("meta", {}).get("profile", okf_semantic.PROFILE_URL)},
         "publisher": {"@id": "https://github.com/chris-page-gov"},
         "license": {"@id": LICENSE_URL},
         "route": "index",

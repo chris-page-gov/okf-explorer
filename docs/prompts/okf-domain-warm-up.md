@@ -52,10 +52,10 @@ Time, source-access and model budget:
 {{BOUNDED_RESEARCH_BUDGET}}
 
 Domain-profile schema:
-https://chris-page-gov.github.io/okf-explorer/profile/authoring/v1/domain-profile.schema.json
+https://chris-page-gov.github.io/okf-explorer/profile/authoring/v2/domain-profile.schema.json
 
 Target OKF core:
-OKF 0.2, pinned to the owner-approved specification revision
+OKF 0.3, pinned to the owner-approved specification revision
 
 ## Objective
 
@@ -152,10 +152,10 @@ budget, or silently decide a material owner question.
 
 ## Fixed interoperability floor to assess
 
-Keep the permissive OKF 0.2 Markdown core distinct from richer production
+Keep the permissive OKF 0.3 Markdown core distinct from richer production
 rules. Assess and version-pin:
 
-- OKF 0.2;
+- OKF 0.3;
 - YAML 1.2.2;
 - YAML-LD 1.0, explicitly recording its current W3C publication status;
 - JSON-LD 1.1 and the JSON-LD API/framing specifications when applicable;
@@ -167,7 +167,7 @@ rules. Assess and version-pin:
 - accessibility, rights, privacy, security and supply-chain requirements
   applicable to the intended publication.
 
-Do not automatically select every item. OKF 0.2 is the portable core. YAML-LD,
+Do not automatically select every item. OKF 0.3 is the portable core. YAML-LD,
 JSON-LD, RDF, SHACL and Explorer features belong to an explicit production
 profile justified by the collection and user tasks.
 
@@ -337,7 +337,7 @@ keep/reset, empty-state and reload checks. Apply this at every build size.
 Choose and justify the smallest level that works:
 
 - `inventory-only`: the boundary or rights are too unclear to build;
-- `minimal-okf`: OKF 0.2 Markdown, stable identity, source provenance, human
+- `minimal-okf`: OKF 0.3 Markdown, stable identity, source provenance, human
   pages, search and validated task-based domain facets;
 - `governed-semantic`: additionally justified YAML-LD, JSON-LD/RDF,
   vocabulary, semantic equivalence tests and SHACL;
@@ -469,7 +469,7 @@ domain-profile/
 Requirements:
 
 1. `domain-profile.json` and `domain-profile.yaml` must represent the same data
-   and validate against `okf-domain-profile.v1`.
+   and validate against `okf-domain-profile.v2`.
 2. The Markdown report explains the decisions and material limitations without
    duplicating the entire evidence register.
 3. `evidence-register.jsonl` may carry evidence too large for the control
@@ -487,7 +487,7 @@ Requirements:
    actually approved it.
 
 Use the public template as the structural starting point:
-https://chris-page-gov.github.io/okf-explorer/profile/authoring/v1/domain-profile.template.yaml
+https://chris-page-gov.github.io/okf-explorer/profile/authoring/v2/domain-profile.template.yaml
 
 ## Status vocabularies
 

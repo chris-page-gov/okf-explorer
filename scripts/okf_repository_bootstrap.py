@@ -18,19 +18,19 @@ from okf_standards import specification_for
 
 
 SEMANTIC_CONTRACT = {
-    "schema": "okf-repository-semantic-contract.v1",
+    "schema": "okf-repository-semantic-contract.v2",
     "repository": {
         "name": "okf-bundle",
         "role": "governed-producer",
         "root_index": "README.md",
     },
     "okf_core": {
-        "version": "0.2",
-        "specification": specification_for("0.2"),
+        "version": "0.3",
+        "specification": specification_for("0.3"),
         "status": "migration",
     },
     "semantic_layer": {
-        "profile": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/",
+        "profile": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v2/",
         "state": "migration",
         "authoritative_inputs": ["source/"],
         "outputs": [],
@@ -91,7 +91,7 @@ SEMANTIC_CONTRACT = {
 
 PUBLICATION_CONTRACT = {
     "schema": "okf-repository-publication-contract.v1",
-    "modified": "2026-08-18",
+    "modified": "2026-11-23",
     "locale": "en-GB",
     "time_zone": "Europe/London",
     "repository": {
@@ -103,7 +103,7 @@ PUBLICATION_CONTRACT = {
     },
     "semantic_contract": {
         "path": "okf.semantic.json",
-        "profile": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/",
+        "profile": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v2/",
     },
     "source_families": [
         {
@@ -258,6 +258,12 @@ release-assurance/tmp/
 - Read `okf.semantic.json` and `okf.publication.json` before admitting source
   material or enabling any build, CI or publication command.
 - Keep documentation and `CHANGELOG.md` in lockstep with controlled changes.
+- Use OKF core 0.3 and the version-specific pins in the central standards
+  register: https://github.com/chris-page-gov/okf-explorer/blob/main/docs/okf-standards.md
+  and https://raw.githubusercontent.com/chris-page-gov/okf-explorer/main/registry/okf-standards.json.
+- Check the public bundle catalogue linked by that register. Require a separate
+  source-linked complex-question walkthrough and Explorer/AI access evidence
+  for each actual bundle before its release.
 - Never create remotes, push, publish, or spend money implicitly.
 """,
     "README.md": """# OKF bundle
@@ -268,6 +274,12 @@ are disabled until the domain profile and bootstrap evidence are reviewed.
 This initialisation commit deliberately contains no corpus, generated bundle,
 or release evidence. Domain and build work belongs on a feature branch and is
 merged through review.
+
+New OKF producers target core 0.3 and the Bundle Wiki v2 implementation profile.
+The semantic contract retains migration status until source and consumer checks
+pass. Use the [central standards register](https://github.com/chris-page-gov/okf-explorer/blob/main/docs/okf-standards.md),
+its [machine register](https://raw.githubusercontent.com/chris-page-gov/okf-explorer/main/registry/okf-standards.json)
+and the bundle catalogues it links. A catalogue entry does not certify conformance.
 """,
     "CHANGELOG.md": """# Changelog
 

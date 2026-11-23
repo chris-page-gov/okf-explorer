@@ -76,7 +76,7 @@ jobs:
           version: 10.34.7
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: '24.22.1'
+          node-version: '24.22.3'
           cache: pnpm
           cache-dependency-path: apps/okf-explorer/pnpm-lock.yaml
       - working-directory: apps/okf-explorer
@@ -195,7 +195,7 @@ jobs:
           version: 10.34.7
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: '24.22.1'
+          node-version: '24.22.3'
           cache: pnpm
           cache-dependency-path: apps/okf-explorer/pnpm-lock.yaml
       - name: Install the pinned verifier without downloading browsers
