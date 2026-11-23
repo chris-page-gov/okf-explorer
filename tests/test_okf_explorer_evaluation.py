@@ -21,11 +21,11 @@ HERITAGE_EVALUATION = ROOT / "evaluation-foundry" / "fixtures" / "heritage-warwi
 SEARCH_FILTERING_MANUAL = ROOT / "docs" / "static-search-filtering-manual.md"
 SEARCH_FILTERING_ASSETS = ROOT / "docs" / "assets" / "okf-search-filtering-manual"
 HERITAGE_LOCAL_RECEIPT = HERITAGE_EVALUATION / "evidence" / "local-candidate-receipt.json"
-# The executed heritage results were retained in ff89db3e357d6a29c17f2d4660e7ce80f503a6c1.
+# The fresh framework results were retained in fcebe238ecd53a18bc0144b5dac2429f31e17073.
 # A later evaluator change cannot change the identity of that execution.
 HERITAGE_RECORDED_EVALUATOR = {
     "path": "scripts/evaluate_okf_explorer.mjs",
-    "sha256": "2dda10096ab2d0db7db037e8069186494a275d8c5cd5f9ce4dea5c446d8aee33",
+    "sha256": "97b33d963b8ce6a1269adf2e378a0576cd982a6ddd0f0a97c39c9c27dd422d16",
 }
 
 
@@ -60,7 +60,7 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
             "manifest_sha256": candidate["explorer_manifest_sha256"],
             "schema": "okf-explorer-app-build-manifest.v1",
             "algorithm": "sha256-canonical-json-materials-v1",
-            "file_count": 43,
+            "file_count": 67,
             "tree_sha256": candidate["explorer_tree_sha256"],
         }
 
