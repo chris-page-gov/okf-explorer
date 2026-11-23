@@ -1,5 +1,25 @@
 # Changelog
 
+## Unreleased — migration completion record
+
+- Distinguish implemented OKF 0.3 Reader support from producer migration and
+  release acceptance. Retain the earlier discovery snapshot and add the later
+  public-only observation with its coverage limits.
+
+## Unreleased — guarded OKF skills
+
+- Version the two manually invoked OKF+ skills and their pinned upstream files.
+- Add a locked-runtime launcher that checks package digests and inspects a
+  bounded Markdown snapshot in a read-only, network-isolated process.
+- Refuse symlinks, special files, excessive inputs and arbitrary executors.
+  Keep independently declared nested bundles separate and inspect asset
+  existence without reading asset contents.
+- Add a required CI job with live sandbox and deliberate bypass tests. Block
+  the existing required check if this job fails, is absent or is skipped.
+- Preserve replaced personal skill installations and detect installed drift.
+- Document the enforcement boundary and the separate OKF+ semantic and release
+  gates in the [guarded skills guide](docs/okf-skill-enforcement.md).
+
 ## Unreleased — Python dependency security
 
 - Require Soup Sieve 4.0.0 or later in the governed Python lock to resolve four
@@ -40,6 +60,12 @@
 - Exclude Git repository and GitHub workflow metadata from the Site before
   computing the candidate receipt. GitHub Pages omits these paths when it
   archives the Site. Keep public hidden paths such as `.well-known` available.
+
+## Unreleased — Graph workspace
+
+- Expand Graph to fill the browser viewport, fit the current drawing and
+  keep its controls available. Exit to restore the previous layout and
+  keyboard focus, or open the focused graph of a hosted bundle in a new tab.
 
 ## Unreleased — semantic guidance
 

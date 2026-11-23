@@ -1,0 +1,47 @@
+{
+  "schema": "okf-guarded-skill-upstream.v1",
+  "repository": "https://github.com/open-knowledge-format/open-knowledge-format",
+  "commit": "527e81aff55992be21507e97004286789126f88c",
+  "upstream_skill_version": "0.1.0",
+  "adapter_version": "1.0.0",
+  "skill": "okf-plus-generate",
+  "installation_date": "2026-11-23",
+  "allow_implicit_invocation": false,
+  "files": [
+    {
+      "upstream_path": "skills/okf-generate/SKILL.md",
+      "local_path": "upstream/UPSTREAM.md",
+      "sha256": "ac0b0105b71b300c2c2a75d36846b0aeeb14630d5c4a2db98cec3563ee98d0af"
+    },
+    {
+      "upstream_path": "skills/okf-generate/references/attested-computations.md",
+      "local_path": "upstream/references/attested-computations.md",
+      "sha256": "f5b850051dd162605f07efed162adcbd1e203a65105e16a65e94011d10d3a238"
+    },
+    {
+      "upstream_path": "skills/okf-generate/references/frontmatter.md",
+      "local_path": "upstream/references/frontmatter.md",
+      "sha256": "09cf7e1c93faa98d4acb99101758b0f5c75a629706810be15e682e68dab187b1"
+    },
+    {
+      "upstream_path": "skills/okf-generate/references/migration.md",
+      "local_path": "upstream/references/migration.md",
+      "sha256": "3892182f93cfbf0457b3234ee09ed07c06fb2defc6360a1a4b1c84a913b09179"
+    },
+    {
+      "upstream_path": "skills/okf-generate/references/templates.md",
+      "local_path": "upstream/references/templates.md",
+      "sha256": "55ef992ec10fad7760131c7c6cdd5f9aa4d8c7d1eaea25b6f639f98807ca8f04"
+    },
+    {
+      "upstream_path": "skills/okf-generate/scripts/validate.py",
+      "local_path": "upstream/scripts/validate.py",
+      "sha256": "7f92df7d6a2118a5b7e5c388aa97de48f6ad31b942abc9e2fc7d344830661f49"
+    },
+    {
+      "upstream_path": "LICENSE.md",
+      "local_path": "upstream/LICENSE.md",
+      "sha256": "8c6db340475136df3c1201d458fa5755698eace76e510471ecc9d857d6083dac"
+    }
+  ]
+}

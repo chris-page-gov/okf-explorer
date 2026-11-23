@@ -1,0 +1,32 @@
+{
+  "schema": "okf-guarded-skill-upstream.v1",
+  "repository": "https://github.com/open-knowledge-format/open-knowledge-format",
+  "commit": "527e81aff55992be21507e97004286789126f88c",
+  "upstream_skill_version": "0.1.0",
+  "adapter_version": "1.0.0",
+  "skill": "okf-plus-consume",
+  "installation_date": "2026-11-23",
+  "allow_implicit_invocation": false,
+  "files": [
+    {
+      "upstream_path": "skills/okf-consume/SKILL.md",
+      "local_path": "upstream/UPSTREAM.md",
+      "sha256": "52c247fb545ce0a5441afd6cd45d72410c7a71a0bd12372c9d2c2c23351eba7e"
+    },
+    {
+      "upstream_path": "skills/okf-consume/references/trust.md",
+      "local_path": "upstream/references/trust.md",
+      "sha256": "a98fdcd29f6255c497fa17f353e743fda8baea08b7b4a6538da27b32c815c12f"
+    },
+    {
+      "upstream_path": "skills/okf-consume/scripts/scan.py",
+      "local_path": "upstream/scripts/scan.py",
+      "sha256": "18b3d9914faa0248ad6d3dff255cd9c27959c819228ed099b5ffb41be7057e6d"
+    },
+    {
+      "upstream_path": "LICENSE.md",
+      "local_path": "upstream/LICENSE.md",
+      "sha256": "8c6db340475136df3c1201d458fa5755698eace76e510471ecc9d857d6083dac"
+    }
+  ]
+}

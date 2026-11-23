@@ -1,0 +1,5 @@
+interface:
+  display_name: "OKF+ consume (guarded)"
+  short_description: "Read bundles with evidence and OKF+ graph safeguards"
+policy:
+  allow_implicit_invocation: false

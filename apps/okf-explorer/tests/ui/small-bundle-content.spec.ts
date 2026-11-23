@@ -214,6 +214,42 @@ test('SMALL-E2E-03 projects generated edges into Graph and Links views', async (
   await expect(page.locator('.links-view')).toContainText('Beta related record');
 });
 
+test('expanded Graph fits the drawing and restores the layout and keyboard focus', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.getByRole('button', { name: 'Graph', exact: true }).click();
+  const graph = page.getByRole('group', { name: 'OKF graph' });
+  await expect(graph.locator('.edge-hit')).toHaveCount(2);
+  const originalWidth = (await graph.boundingBox())!.width;
+  await page.getByRole('button', { name: 'Toggle navigation' }).click();
+  await page.getByRole('button', { name: 'Zoom in' }).click();
+  const route = page.url();
+  const expand = page.getByRole('button', { name: 'Expand graph', exact: true });
+  await expand.focus();
+  await expand.press('Enter');
+  const exit = page.getByRole('button', { name: 'Exit expanded graph' });
+  await expect(exit).toBeFocused();
+  await expect(page.getByRole('complementary', { name: 'Search and facets' })).toBeHidden();
+  await expect(page.getByRole('complementary', { name: 'Record details' })).toBeHidden();
+  await expect.poll(async () => (await graph.boundingBox())!.width).toBeGreaterThan(originalWidth + 400);
+  await expect.poll(async () => (await graph.boundingBox())!.height).toBeGreaterThan(650);
+  await expect.poll(() => graph.evaluate((svg: SVGSVGElement) => {
+    const drawing = svg.getBBox();
+    const canvas = svg.viewBox.baseVal;
+    return drawing.x > canvas.x && drawing.y > canvas.y
+      && drawing.x + drawing.width < canvas.x + canvas.width
+      && drawing.y + drawing.height < canvas.y + canvas.height;
+  })).toBe(true);
+  await page.getByRole('button', { name: 'Zoom in' }).click();
+  await page.getByRole('button', { name: 'Fit graph', exact: true }).click();
+  await expect(page.getByRole('button', { name: '100% — reset graph zoom' })).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(expand).toBeFocused();
+  await expect(page.getByRole('button', { name: 'Toggle navigation' })).toHaveAttribute('aria-expanded', 'false');
+  await expect(page.getByRole('button', { name: '120% — reset graph zoom' })).toBeVisible();
+  await expect(page.locator('.right-panel').getByRole('heading', { name: 'Alpha compatibility record' })).toBeVisible();
+  await expect(page).toHaveURL(route);
+});
+
 test('Reader explains the browse scope and can return to the loaded bundle start', async ({ page }) => {
   let reloads = 0;
   page.on('request', request => { if (request.url() === BUNDLE_URL) reloads += 1; });

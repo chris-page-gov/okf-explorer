@@ -5,15 +5,15 @@
   let { navigation, content, details, actions, activePanel = $bindable('content'),
     leftCollapsed = $bindable(false), rightCollapsed = $bindable(false),
     leftWidth = $bindable(DEFAULT_NAVIGATION_WIDTH), rightWidth = $bindable(DEFAULT_DETAILS_WIDTH),
-    navigationSummary = 'Search and facets', detailSummary = 'Details', detailKey = '', resultSummary = '', scrollReset = 0
+    navigationSummary = 'Search and facets', detailSummary = 'Details', detailKey = '', resultSummary = '', scrollReset = 0, contentOnly = false
   }: { navigation: Snippet; content: Snippet<[Snippet<[boolean]> | undefined]>; details: Snippet; actions?: Snippet<[boolean]>; activePanel?: WorkspacePanel;
     leftCollapsed?: boolean; rightCollapsed?: boolean; leftWidth?: number; rightWidth?: number;
     navigationSummary?: string; detailSummary?: string; detailKey?: string; resultSummary?: string;
-    scrollReset?: number } = $props();
+    scrollReset?: number; contentOnly?: boolean } = $props();
 
   let viewportWidth = $state(1280);
   let paired = $derived(viewportWidth >= 600 && viewportWidth <= 1099);
-  let showingPair = $derived(paired && activePanel !== 'content');
+  let showingPair = $derived(!contentOnly && paired && activePanel !== 'content');
   let touch: { x: number; y: number; at: number } | null = null;
   let shell = $state<HTMLElement>();
   let detailScroll = $state<HTMLElement>();
@@ -36,7 +36,7 @@
     }
   });
   $effect(() => {
-    const panel = activePanel;
+    const panel = contentOnly ? 'content' : activePanel;
     const width = viewportWidth;
     const panelChanged = previousPanel !== undefined && previousPanel !== panel;
     previousPanel = panel;
@@ -54,7 +54,7 @@
   });
 
   function startSwipe(event: TouchEvent) {
-    if (viewportWidth > 1099) return;
+    if (contentOnly || viewportWidth > 1099) return;
     // Charts, controls and text selection keep their own gestures.
     if ((event.target as Element).closest('input, select, textarea, svg, canvas, [data-no-panel-swipe]')) return;
     const point = event.touches[0];
@@ -90,7 +90,7 @@
 
 <svelte:window bind:innerWidth={viewportWidth} onfocusin={rememberFocus} />
 
-<main bind:this={shell} class="workspace workspace-shell" class:showing-pair={showingPair} style={`--navigation-width:${leftCollapsed ? 44 : leftWidth}px;--details-width:${rightCollapsed ? 44 : rightWidth}px`} ontouchstart={startSwipe} ontouchend={endSwipe} ontouchcancel={() => touch = null}>
+<main bind:this={shell} class="workspace workspace-shell" class:showing-pair={showingPair} class:content-only={contentOnly} style={`--navigation-width:${leftCollapsed ? 44 : leftWidth}px;--details-width:${rightCollapsed ? 44 : rightWidth}px`} ontouchstart={startSwipe} ontouchend={endSwipe} ontouchcancel={() => touch = null}>
   <aside tabindex="-1" data-panel="navigation" class="left-panel workspace-pane" class:mobile-active={activePanel === 'navigation'} class:rail={leftCollapsed} aria-label="Search and facets">
     <div class="panel-bar"><button aria-label="Toggle navigation" aria-expanded={!leftCollapsed} onclick={() => leftCollapsed = !leftCollapsed}>{leftCollapsed ? '›' : '‹'}</button><span class="panel-rail-label" title={navigationSummary}>{navigationSummary}</span></div>
     <div class="left-content panel-scroll">{#if showingPair}{@render actions?.(true)}{/if}{@render navigation()}</div>
@@ -149,4 +149,7 @@
     .workspace-shell.showing-pair .right-panel { display:flex; grid-column:2; border-left:1px solid #a9b7c7; }
     .workspace-shell .panel-footer { grid-column:1/-1; }
   }
+  .workspace-shell.content-only { grid-template-columns:minmax(0,1fr); grid-template-rows:minmax(0,1fr); }
+  .workspace-shell.content-only > :not(.stage) { display:none; }
+  .workspace-shell.content-only .stage { display:block; grid-column:1; }
 </style>

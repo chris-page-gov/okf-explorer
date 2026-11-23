@@ -1,6 +1,6 @@
 {
   "schema": "okf-repository-publication-contract.v1",
-  "modified": "2026-11-14",
+  "modified": "2026-11-23",
   "locale": "en-GB",
   "time_zone": "Europe/London",
   "repository": {
@@ -92,7 +92,10 @@
       "paths": [
         "registry/**",
         "profiles/publication-method/v1/**",
-        "okf.publication.json"
+        "okf.publication.json",
+        "tools/okf-skills/**",
+        "scripts/okf_skill.py",
+        "scripts/install_okf_skills.py"
       ],
       "formats": [
         "application/json",
@@ -1354,6 +1357,19 @@
         "network": "none",
         "mutates": "none",
         "timeout_minutes": 5
+      },
+      {
+        "id": "check-okf-skills",
+        "kind": "check",
+        "planes": [
+          "source"
+        ],
+        "command": "uv run --locked python -I scripts/okf_skill.py check",
+        "source": "docs/okf-skill-enforcement.md",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "none",
+        "timeout_minutes": 1
       }
     ]
   },
@@ -1381,7 +1397,8 @@
       "legislation/**",
       "services/ask-okf-mcp/**",
       "tools/context-archive/**",
-      "apps/okf-explorer/static/examples/dfe-ees/**"
+      "apps/okf-explorer/static/examples/dfe-ees/**",
+      "tools/okf-skills/**"
     ],
     "documentation_paths": [
       "README.md",

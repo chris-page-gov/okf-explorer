@@ -251,6 +251,7 @@
   const GRAPH_SUBGROUP_MAX_COUNT = 12;
   const GRAPH_LAYOUT_PARAM = 'graph.layout';
   const GRAPH_CENTER_PARAM = 'graph.center';
+  const GRAPH_WORKSPACE_PARAM = 'graph.workspace';
   const GRAPH_EXPANDED_STACK_PARAM = 'graph.stack';
   const GRAPH_GROUP_PARAM = 'graph.group';
   const GRAPH_HIDDEN_GROUP_PARAM = 'graph.hide';
@@ -573,6 +574,16 @@
   let graphCanvasWidth = $state(DEFAULT_GRAPH_WIDTH);
   let graphZoom = $state(1);
   let graphViewport = $state<GraphViewport>({ x: 0, y: 0, w: DEFAULT_GRAPH_WIDTH, h: GRAPH_HEIGHT, baseW: DEFAULT_GRAPH_WIDTH, baseH: GRAPH_HEIGHT });
+  let graphExpanded = $state(false);
+  let graphWorkspaceFromLink = $state(false);
+  let graphWorkspaceActive = $derived(graphExpanded && activeView === 'graph' && Boolean(source) && !largeSourceInspectorOpen);
+  let graphWorkspaceToggle = $state<HTMLButtonElement>();
+  let graphWorkspaceAutoFit = true;
+  let graphSvg: SVGSVGElement | undefined;
+  let graphWorkspaceReturn: {
+    viewport: GraphViewport; width: number; zoom: number; scroll: number;
+    panel: WorkspacePanel; left: boolean; right: boolean;
+  } | undefined;
   let graphDrag = $state<{ x: number; y: number; box: GraphViewport; moved: boolean } | null>(null);
   let graphSuppressClick = $state(false);
   let graphLabelPhase = $state(0);
@@ -987,6 +998,8 @@
     pins = loadPins();
     const initialView = initialViewMode();
     if (initialView) activeView = initialView;
+    graphWorkspaceFromLink = initialView === 'graph' && new URLSearchParams(location.search).get(GRAPH_WORKSPACE_PARAM) === '1';
+    graphExpanded = graphWorkspaceFromLink;
     // A person can submit a URL while the optional registry is still loading.
     // Never let delayed start-up supersede that explicit request.
     if (loadRequest === loadRequestAtStart) await loadSource(initialUrl);
@@ -1097,6 +1110,7 @@
     else next.searchParams.set('bundle', bundleUrl);
     if (activeView === 'reader') next.searchParams.delete('view');
     else next.searchParams.set('view', activeView);
+    if (activeView !== 'graph' || !graphWorkspaceFromLink) next.searchParams.delete(GRAPH_WORKSPACE_PARAM);
     if (activeView === 'links' && linkAssertionStatus !== 'all') next.searchParams.set('links.assertion', linkAssertionStatus);
     else next.searchParams.delete('links.assertion');
     writeRetrievalState(next.searchParams, currentRetrievalState());
@@ -1832,6 +1846,7 @@
   }
 
   async function selectView(view: ViewMode, push = true) {
+    if (view !== 'graph' && graphExpanded) void leaveGraphWorkspace(false);
     interactionMode = 'search';
     activeView = view;
     if (push) activePanel = 'content';
@@ -6480,12 +6495,84 @@
     return `${graphViewport.x} ${graphViewport.y} ${graphViewport.w} ${graphViewport.h}`;
   }
 
+  function graphWorkspaceHref(): string {
+    if (!/^https?:\/\//i.test(bundleUrl)) return '';
+    const route = source?.kind === 'large' ? largeInspectedRoute || largeSelectedRoute : selectedId;
+    const target = new URL(buildExplorerUrl(route));
+    target.searchParams.set(GRAPH_WORKSPACE_PARAM, '1');
+    return target.toString();
+  }
+
+  async function toggleGraphWorkspace() {
+    if (graphWorkspaceActive) return leaveGraphWorkspace();
+    graphWorkspaceReturn = {
+      viewport: { ...graphViewport }, width: graphCanvasWidth, zoom: graphZoom,
+      scroll: graphWorkspaceToggle?.closest('.stage')?.scrollTop ?? 0,
+      panel: activePanel, left: leftCollapsed, right: rightCollapsed
+    };
+    graphWorkspaceAutoFit = true;
+    graphExpanded = true;
+    await tick();
+    graphWorkspaceToggle?.closest('.stage')?.scrollTo(0, 0);
+    graphWorkspaceToggle?.focus({ preventScroll: true });
+  }
+
+  async function leaveGraphWorkspace(restoreFocus = true) {
+    const previous = graphWorkspaceReturn;
+    graphWorkspaceReturn = undefined;
+    graphExpanded = false;
+    if (graphWorkspaceFromLink) {
+      graphWorkspaceFromLink = false;
+      if (restoreFocus) syncExplorerUrl();
+    }
+    if (previous) {
+      activePanel = previous.panel;
+      leftCollapsed = previous.left;
+      rightCollapsed = previous.right;
+      graphCanvasWidth = previous.width;
+      graphZoom = previous.zoom;
+      graphViewport = previous.viewport;
+    } else {
+      activePanel = 'content';
+      resetGraphView();
+    }
+    if (!restoreFocus) return;
+    await tick();
+    if (previous) graphWorkspaceToggle?.closest('.stage')?.scrollTo(0, previous.scroll);
+    graphWorkspaceToggle?.focus({ preventScroll: true });
+  }
+
+  function graphWorkspaceKeydown(event: KeyboardEvent) {
+    if (event.defaultPrevented || event.key !== 'Escape' || !graphWorkspaceActive) return;
+    event.preventDefault();
+    void leaveGraphWorkspace();
+  }
+
+  function fitGraphWorkspace(node: SVGSVGElement) {
+    const bounds = node.getBBox();
+    if (!bounds.width || !bounds.height) {
+      graphViewport = { x: 0, y: 0, w: graphCanvasWidth, h: GRAPH_HEIGHT, baseW: graphCanvasWidth, baseH: GRAPH_HEIGHT };
+    } else {
+      const padding = 24;
+      const w = bounds.width + padding * 2;
+      const h = bounds.height + padding * 2;
+      graphViewport = { x: bounds.x - padding, y: bounds.y - padding, w, h, baseW: w, baseH: h };
+    }
+    graphZoom = 1;
+  }
+
   function resetGraphView() {
+    if (graphWorkspaceActive && graphSvg) {
+      graphWorkspaceAutoFit = true;
+      fitGraphWorkspace(graphSvg);
+      return;
+    }
     graphZoom = 1;
     graphViewport = { x: 0, y: 0, w: graphCanvasWidth, h: GRAPH_HEIGHT, baseW: graphCanvasWidth, baseH: GRAPH_HEIGHT };
   }
 
   function setGraphZoom(value: number) {
+    graphWorkspaceAutoFit = false;
     const cx = graphViewport.x + graphViewport.w / 2;
     const cy = graphViewport.y + graphViewport.h / 2;
     const nextZoom = Math.max(0.45, Math.min(4, value));
@@ -6503,12 +6590,24 @@
     setGraphZoom(graphZoom * factor);
   }
 
-  function measureGraphViewport(node: SVGSVGElement) {
+  function measureGraphViewport(node: SVGSVGElement, fitKey: string | null) {
+    graphSvg = node;
     const update = () => {
       const width = node.clientWidth;
       const height = node.clientHeight;
       if (!width || !height) return;
       const nextBaseWidth = Math.round(Math.max(720, Math.min(1680, GRAPH_HEIGHT * (width / height))));
+      if (graphWorkspaceActive) {
+        const shift = (nextBaseWidth - graphCanvasWidth) / 2;
+        if (shift) {
+          graphCanvasWidth = nextBaseWidth;
+          if (!graphWorkspaceAutoFit) graphViewport = { ...graphViewport, x: graphViewport.x + shift };
+        }
+        void tick().then(() => {
+          if (graphSvg === node && graphWorkspaceActive && graphWorkspaceAutoFit) fitGraphWorkspace(node);
+        });
+        return;
+      }
       if (Math.abs(nextBaseWidth - graphCanvasWidth) < 3) return;
       const normalizedCenter = (
         graphViewport.x + graphViewport.w / 2
@@ -6526,8 +6625,13 @@
     observer.observe(node);
     update();
     return {
+      update(key: string | null) {
+        if (key !== fitKey && key !== null) update();
+        fitKey = key;
+      },
       destroy() {
         observer.disconnect();
+        if (graphSvg === node) graphSvg = undefined;
       }
     };
   }
@@ -6546,12 +6650,17 @@
     if (Math.hypot(dx, dy) <= 8 && !graphDrag.moved) return;
     event.preventDefault();
     if (!graphDrag.moved) svg.setPointerCapture?.(event.pointerId);
+    graphWorkspaceAutoFit = false;
     graphSuppressClick = true;
     graphDrag = { ...graphDrag, moved: true };
+    const scale = Math.max(
+      graphDrag.box.w / (svg.clientWidth || graphDrag.box.baseW),
+      graphDrag.box.h / (svg.clientHeight || graphDrag.box.baseH)
+    );
     graphViewport = {
       ...graphViewport,
-      x: graphDrag.box.x - dx * (graphViewport.w / (svg.clientWidth || graphViewport.baseW)),
-      y: graphDrag.box.y - dy * (graphViewport.h / (svg.clientHeight || graphViewport.baseH))
+      x: graphDrag.box.x - dx * scale,
+      y: graphDrag.box.y - dy * scale
     };
   }
 
@@ -6648,6 +6757,8 @@
   }
 </script>
 
+<svelte:window onkeydown={graphWorkspaceKeydown} />
+
 <svelte:head>
   <title>OKF Explorer</title>
   {#if exploratoryPublication.noindex}
@@ -6655,9 +6766,23 @@
   {/if}
 </svelte:head>
 
+{#snippet graphWorkspaceControls()}
+  <div class="graph-workspace-controls" data-no-panel-swipe>
+    <button type="button" bind:this={graphWorkspaceToggle} onclick={toggleGraphWorkspace}>
+      {graphWorkspaceActive ? 'Exit expanded graph' : 'Expand graph'}
+    </button>
+    {#if graphWorkspaceActive}
+      {@const href = graphWorkspaceHref()}
+      <button type="button" onclick={resetGraphView}>Fit graph</button>
+      {#if href}<a href={href} target="_blank" rel="noopener noreferrer">Open graph in a new tab or window</a>{/if}
+    {/if}
+  </div>
+{/snippet}
+
 <div
   class:leftCollapsed={leftCollapsed}
   class:rightCollapsed={rightCollapsed}
+  class:graph-workspace={graphWorkspaceActive}
   class="app"
   style={`--left-width:${leftWidth}px;--right-width:${rightWidth}px`}
 >
@@ -6777,7 +6902,7 @@
       {/if}
   {/snippet}
 
-  <WorkspaceShell actions={selectionActions} bind:activePanel bind:leftCollapsed bind:rightCollapsed bind:leftWidth bind:rightWidth navigationSummary={selectionLabel(largeFacetHighlights) || 'Search and facets'} detailSummary={source?.kind === 'large' ? largeLabelForRoute(largeInspectedRoute || largeSelectedRoute) || 'Bundle details' : detailNode?.title || 'Bundle details'} detailKey={`${bundleUrl}#${source?.kind === 'large' ? displayedRoute(largeInspectedRoute, largeSelectedRoute) : detailNode?.id || ''}`} resultSummary={highlightedCount ? highlightedCount + ' highlighted' : String(scopeCount)} scrollReset={workspaceScrollReset}>
+  <WorkspaceShell actions={selectionActions} contentOnly={graphWorkspaceActive} bind:activePanel bind:leftCollapsed bind:rightCollapsed bind:leftWidth bind:rightWidth navigationSummary={selectionLabel(largeFacetHighlights) || 'Search and facets'} detailSummary={source?.kind === 'large' ? largeLabelForRoute(largeInspectedRoute || largeSelectedRoute) || 'Bundle details' : detailNode?.title || 'Bundle details'} detailKey={`${bundleUrl}#${source?.kind === 'large' ? displayedRoute(largeInspectedRoute, largeSelectedRoute) : detailNode?.id || ''}`} resultSummary={highlightedCount ? highlightedCount + ' highlighted' : String(scopeCount)} scrollReset={workspaceScrollReset}>
     {#snippet navigation()}
         {#if source}
           <div class="context-mode-controls" role="group" aria-label="Search or assemble evidence">
@@ -7066,7 +7191,7 @@
         </div>
       </div>
 
-      {@render actions?.(false)}
+      {#if !graphWorkspaceActive}{@render actions?.(false)}{/if}
       {#if source?.kind === 'large' && largeSourceInspectorOpen}
         <SourceInspector
           data={largeApiJson}
@@ -7240,6 +7365,7 @@
             {@const nodeKeyNodes = graphNodeKeyNodes(relationshipModel, model)}
             {@const focusTitleLines = model.center ? graphFocusTitleLines(largeLabelForRoute(model.center)) : []}
             <div class="graph-shell">
+              {@render graphWorkspaceControls()}
               {#if fullModel.relationshipWindow && fullModel.relationshipWindow.total > fullModel.relationshipWindow.pageSize}
                 <div class="view-heading" aria-label="Graph relationship pages">
                   <span role="status">Relationships {fullModel.relationshipWindow.offset + 1}–{fullModel.relationshipWindow.end} of {fullModel.relationshipWindow.total} before grouping and filters. Open a stack to inspect this page's members.</span>
@@ -7513,7 +7639,7 @@
               <svg
                 class="graph"
                 class:dragging={Boolean(graphDrag)}
-                use:measureGraphViewport
+                use:measureGraphViewport={graphWorkspaceActive ? JSON.stringify([model.center, model.nodes.length, model.relationships.length]) : null}
                 viewBox={graphViewBox()}
                 role="group"
                 aria-label="Large corpus graph"
@@ -8159,6 +8285,7 @@
           {@const labelPlan = graphPresentationLayers(smallGraphLabelNodes(model.nodes), positions, edgeLabelSpecs, selectedId)}
           {@const labels = labelPlan.visible}
           <div class="graph-shell">
+            {@render graphWorkspaceControls()}
             <div class="graph-controls">
               <div class="graph-buttons" aria-label="Graph controls">
                 <button type="button" aria-label="Zoom out" title="Zoom out" onclick={() => setGraphZoom(graphZoom / 1.2)}>−</button>
@@ -8189,7 +8316,7 @@
             <svg
               class="graph"
               class:dragging={Boolean(graphDrag)}
-              use:measureGraphViewport
+              use:measureGraphViewport={graphWorkspaceActive ? JSON.stringify([selectedId, model.nodes.length, model.relationships.length]) : null}
               viewBox={graphViewBox()}
               role="group"
               aria-label="OKF graph"
@@ -8465,7 +8592,9 @@
       {:else}
         <section class="empty-state">Load an OKF bundle or large-corpus descriptor.</section>
       {/if}
-      <BookmarkShelf {pins} onopen={openPin} oncopy={exportPins} ondownload={downloadPins} onremove={(pin) => { pins = pins.filter(item => item.bundle !== pin.bundle || item.route !== pin.route); savePins(); }} />
+      {#if !graphWorkspaceActive}
+        <BookmarkShelf {pins} onopen={openPin} oncopy={exportPins} ondownload={downloadPins} onremove={(pin) => { pins = pins.filter(item => item.bundle !== pin.bundle || item.route !== pin.route); savePins(); }} />
+      {/if}
       {/if}
     {/snippet}
     {#snippet details()}

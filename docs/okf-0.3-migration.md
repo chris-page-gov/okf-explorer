@@ -2,6 +2,27 @@
 
 The upstream project announced OKF 0.3 on **18 November 2026**. Its specification change had merged earlier, on **26 October 2026** at 23:30 UTC. This implementation uses the specification revision of 18 November. The first OKF+ 0.3 Reader implementation on this branch is dated **23 November 2026**. The released Explorer v0.8.2 reference bundle declares OKF 0.2. Producer migration acceptance and its public release date are pending. [Official release announcement](https://cloud.google.com/blog/products/data-analytics/introducing-okf-v0-3) · [Earlier specification merge](https://github.com/open-knowledge-format/open-knowledge-format/pull/1) · [Central standards register](okf-standards.md)
 
+## Implementation and acceptance status
+
+The Explorer Reader, ordinary-directory importer, version-aware metadata,
+central standards register, owner discovery, authoring kit and AI access
+directory are implemented. The upstream announcement date and the Reader's
+implementation date are recorded above. The OKF 0.2 baseline remains frozen
+as v0.8.2.
+
+Producer migration is a separate acceptance task. Existing producers retain
+their declared version until their identifiers, reserved files, graph
+projections, evidence digests and consumer journeys pass their own checks.
+The demonstrated pinned-graph traversal below uses the released 0.2 reference
+graph. The Hansard entry separately records its 0.3 producer demonstration.
+Neither result establishes acceptance for every producer or AI host.
+
+The estate's discovery and shared-reference work does not certify that all
+bundles conform to 0.3. Per-producer migrations, verified public graph or shard
+entry points, and a GitHub Release containing the 0.3 implementation remain
+separate work. Do not treat an application's version such as `v0.3.0` as its
+declared OKF core version.
+
 ## Open a Markdown directory
 
 From the Explorer checkout, run the following command with the path to the directory you want to read. Open the resulting JSON file using Explorer's local bundle control.
@@ -47,6 +68,19 @@ jq '.repositories[] | select(.roots | length > 0) | {repository, commit, roots}'
 Discovery can find fixtures, configurations, mirrors and multiple roots in one repository. Review their identity, access and publication role before adding a public graph to the [access directory](public-bundle-access.md). The inventory records inaccessible trees and uninspected indexes. Release-only bundles and Markdown bundles without declarations still require separate inspection.
 
 On 23 November 2026 the public scan covered **218 repositories**, including the repository whose first recursive tree response was truncated. The scanner followed its subtrees and inspected eligible Markdown indexes. It found **67 candidate roots in 20 repositories**. Thirteen repositories contained a named graph projection. Twenty-five root indexes declared a version, six at 0.1 and nineteen at 0.2. One repository appeared only through its declared indexes. No eligible indexes remained unchecked. Inspect each root's evidence to distinguish a publication from an example or a contract. [Machine-readable public candidate catalogue](evidence/okf-public-owner-candidates-2026-11-23.json)
+
+A later snapshot, observed at **15:01 UTC on 23 November 2026**, covered
+**219 public repositories** and found **69 candidate roots in 21 repositories**.
+It recovered four truncated trees and reported no enumeration errors or pending
+indexes. The additional public repository was created during the work. The
+earlier snapshot above is retained as historical evidence; the two counts
+describe different observations. [Later public candidate catalogue](evidence/okf-public-owner-candidates-2026-11-23-1501.json)
+
+Both inventories cover default branches, declared markers and eligible Markdown
+indexes. Hidden path components, symlink blobs and undeclared Markdown-only or
+release-only sources are outside that discovery scope. Candidate counts are
+not conformance or publication-acceptance counts. Authenticated inventories
+containing private repository identities remain outside public Git outputs.
 
 ## Impact on the Explorer checkout
 

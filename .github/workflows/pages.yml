@@ -25,6 +25,8 @@ jobs:
           fetch-depth: 2
       - name: Set up locked Python toolchain
         uses: ./.github/actions/setup-locked-python
+      - name: Check the reviewed OKF skill package
+        run: uv run --locked python -I scripts/okf_skill.py check
       - name: Plan push impact or fail closed for manual publication
         id: plan
         run: |
