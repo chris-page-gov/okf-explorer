@@ -4,9 +4,9 @@
   import { renderSafeMarkdown, smallNodeLinks, smallNodeMetadataRows } from '$lib/viewer/smallNodePresentation';
   import { relationshipPresentation } from '$lib/viewer/relationshipPresentation';
   import InspectorSections from './InspectorSections.svelte';
-  let { detailNode, smallCorpus, detailRelationships, sourceUrl, selectedFederationChild, outsideScope = false, inspectNode, inspectRelationship, loadFederationChild }:
+  let { detailNode, smallCorpus, detailRelationships, sourceUrl, selectedFederationChild, outsideScope = false, inspectNode, inspectRelationship, loadFederationChild, conceptUrl }:
     { detailNode: OkfNode; smallCorpus: NormalizedCorpus | null; detailRelationships: OkfRelationship[]; sourceUrl: string;
-      selectedFederationChild?: FederationChild; outsideScope?: boolean; inspectNode: (id: string) => void; inspectRelationship: (relationship: OkfRelationship) => void; loadFederationChild: (child: FederationChild) => void } = $props();
+      selectedFederationChild?: FederationChild; outsideScope?: boolean; inspectNode: (id: string) => void; conceptUrl: (id: string) => string; inspectRelationship: (relationship: OkfRelationship) => void; loadFederationChild: (child: FederationChild) => void } = $props();
   let okf = $derived(okfConceptPresentation(detailNode, undefined, smallCorpus?.okfVersion));
   let replacement = $derived(okf.status === 'deprecated' ? detailRelationships.find(relation =>
     relation.source === detailNode.id && smallCorpus?.nodes[relation.target] &&
@@ -26,6 +26,24 @@
     if (field === 'sources[].resource') return 'Provenance source';
     return String(field);
   };
+  function markdownConceptHref(href: string): string {
+    const target = detailNode.markdown_links?.[href];
+    return typeof target === 'string' && smallCorpus?.nodes[target] ? conceptUrl(target) : '';
+  }
+  function followMarkdownConcept(element: HTMLElement) {
+    function onClick(event: MouseEvent) {
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const link = event.target instanceof Element ? event.target.closest('a') : null;
+      const href = link?.dataset.okfMarkdownHref;
+      const target = href ? detailNode.markdown_links?.[href] : undefined;
+      if (typeof target === 'string' && smallCorpus?.nodes[target]) {
+        event.preventDefault();
+        inspectNode(target);
+      }
+    }
+    element.addEventListener('click', onClick);
+    return { destroy: () => element.removeEventListener('click', onClick) };
+  }
   const jsonText = (value: unknown) => JSON.stringify(value, null, 2);
   const metadataDisplayValue = (value: unknown) => value === undefined || value === null || value === '' ? 'Not specified (metadata gap)' : typeof value === 'object' ? JSON.stringify(value) : String(value);
 </script>
@@ -51,8 +69,8 @@
 <InspectorSections>
   {#snippet overview()}
           {#if detailNode.body}
-            <section class="markdown-body" aria-label="Markdown body">
-              {@html renderSafeMarkdown(detailNode.body, sourceUrl)}
+            <section use:followMarkdownConcept class="markdown-body" aria-label="Markdown body">
+              {@html renderSafeMarkdown(detailNode.body, sourceUrl, markdownConceptHref)}
             </section>
           {/if}
           {#if backlinks.length}

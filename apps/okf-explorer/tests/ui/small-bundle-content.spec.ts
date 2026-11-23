@@ -712,6 +712,7 @@ test('Links compares source assertions and inference with evidence and shareable
 test('OKF 0.3 shows verification history and opens the replacement concept', async ({ context, page }) => {
   const url = 'https://small.fixture.test/core-03.json';
   const original = { title: 'Former metric', type: 'Metric', status: 'deprecated',
+    body: '[Read the current definition](/new.md)', markdown_links: { '/new.md': 'new.md' },
     generated: { by: 'editor/v1', at: '2026-11-01' },
     verified: [{ by: 'human:earlier', at: '2026-10-31' }, { by: 'team:current', at: '2026-11-01' }],
     stale_after: 'invalid' };
@@ -735,6 +736,8 @@ test('OKF 0.3 shows verification history and opens the replacement concept', asy
   await expect(backlinks).toContainText('Replacement');
   await backlinks.getByRole('button', { name: 'Former metric' }).click();
   await expect(detail.getByRole('heading', { name: 'Former metric' })).toBeVisible();
+  await detail.getByRole('link', { name: 'Read the current definition' }).click();
+  await expect(detail.getByRole('heading', { name: 'Replacement metric' })).toBeVisible();
 });
 
 test('opens the complete reference semantic graph including its declared root routes', async ({ context, page }) => {

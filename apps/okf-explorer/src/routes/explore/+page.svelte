@@ -1209,6 +1209,13 @@
     largeFacetFilters = filters;
   }
 
+  function smallConceptUrl(id: string): string {
+    const url = new URL(buildExplorerUrl(selectedId));
+    url.searchParams.delete(SMALL_INSPECT_RELATIONSHIP_PARAM);
+    url.searchParams.set(SMALL_INSPECT_NODE_PARAM, id);
+    return url.toString();
+  }
+
   function syncExplorerUrl(push = false) {
     const route = source?.kind === 'large' ? largeInspectedRoute || largeSelectedRoute : selectedId;
     const url = buildExplorerUrl(route);
@@ -9574,7 +9581,7 @@
             <pre>{jsonText(smallInspectedRelationship)}</pre>
           </details>
         {:else if detailNode}
-          <SmallRecordInspector {detailNode} {smallCorpus} {detailRelationships} sourceUrl={source?.kind === 'small' ? source.url : ''} {selectedFederationChild} outsideScope={!visibleNodeIds.has(detailNode.id)} {inspectNode} inspectRelationship={inspectSmallRelationship} {loadFederationChild} />
+          <SmallRecordInspector {detailNode} {smallCorpus} {detailRelationships} sourceUrl={source?.kind === 'small' ? source.url : ''} {selectedFederationChild} outsideScope={!visibleNodeIds.has(detailNode.id)} {inspectNode} conceptUrl={smallConceptUrl} inspectRelationship={inspectSmallRelationship} {loadFederationChild} />
         {:else}
           <h2>No selection</h2>
           <p>Select a node or search result to inspect its data.</p>

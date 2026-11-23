@@ -126,10 +126,14 @@ def project(root: Path) -> dict[str, Any]:
     for route, node in sorted(concepts.items()):
         targets = [("markdown", href) for href in markdown_targets(node["body"], parser)]
         targets.extend(path_fields(node["frontmatter"]))
+        markdown_links = {}
         for field, href in targets:
             target = concept_target(route, href, files, legacy_field=legacy and field != "markdown")
             if target != route and target in concepts:
                 edges.setdefault((route, target), set()).add(field)
+                if field == "markdown":
+                    markdown_links[href] = target
+        node["markdown_links"] = markdown_links
 
     return {
         "schema": "okf-explorer-bundle.v0",

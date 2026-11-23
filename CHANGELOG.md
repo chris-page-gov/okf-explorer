@@ -4,6 +4,7 @@
 
 - Show incoming core references in the Reader and apply version-aware trust
   and lifecycle rules to Explorer facets.
+- Open inline Markdown concept links in Explorer.
 - Surface imported bundle scope and licence, and omit same-concept anchors
   from the relationship graph.
 

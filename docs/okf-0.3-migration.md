@@ -43,7 +43,8 @@ fields from other imported concepts. The list identifies provenance and
 replacement links and can be expanded beyond its first 20 entries. Trust and
 lifecycle filters use the same version-aware interpretation as the record.
 The bundle overview shows its declared description and licence. Links to
-sections of the same concept stay in its Markdown body.
+sections of the same concept stay in its Markdown body. Inline Markdown links
+to other imported concepts open the target record in Explorer.
 
 ## Give an AI one link
 
