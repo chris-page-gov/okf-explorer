@@ -5,8 +5,13 @@ the October baseline and corrections. Compatibility-app caches are isolated by
 worker registration scope; invalid saved pins fall back to an empty selection.
 The viewer generator escapes source text before embedding its graph in HTML.
 The Python lock also retains reviewed security floors for Pillow, certifi,
-multidict and urllib3; update the constraints and evidence together when those
-dependencies change. Pillow 13 is a development-tool dependency.
+multidict, Soup Sieve and urllib3; update the constraints and evidence together
+when those dependencies change. Soup Sieve is constrained to 4.0.0 or later to
+cover the vulnerable transitive dependency pulled in by `yaml-ld` through
+Beautiful Soup. Soup Sieve 4 also applies stricter `:has()` parsing and may
+reject complex selectors that earlier releases accepted; this repository does
+not call Beautiful Soup selectors directly. Pillow 13 is a development-tool
+dependency.
 
 For contributors maintaining this repository. For a personal learning collection,
 use [the separate teaching builder](onboarding/first-bundle.md).

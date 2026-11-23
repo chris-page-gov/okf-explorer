@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased — Python dependency security
+
+- Require Soup Sieve 4.0.0 or later in the governed Python lock to resolve four
+  open Dependabot advisories affecting the `yaml-ld` to Beautiful Soup
+  dependency chain. Soup Sieve 4 applies stricter `:has()` parsing, so complex
+  selectors may now be rejected. Keep the earlier dated analytical-trial
+  receipts bound to the lockfile digest observed when those trials ran.
+
 ## Unreleased — repository conventions and complete discovery
 
 - Record reviewed producer sources such as Hansard when generated releases are stored outside Git, with a pinned source reference and a public-visibility check.
