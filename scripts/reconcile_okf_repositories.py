@@ -26,6 +26,8 @@ from pathlib import Path
 from typing import Any, Iterable
 from urllib.parse import unquote, urlsplit
 
+from okf_standards import specification_for
+
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT_NAME = "okf.semantic.json"
@@ -46,9 +48,7 @@ PROFILE_RELEASE_TAG = "v0.6.0"
 PROFILE_RELEASE_TAG_OBJECT = "d256a74419c2593c2bf2f3f5749c606fad5daf9d"
 PROFILE_RELEASE_COMMIT = "4bb7b92a64b7ba69bde9b1e86786217338cd166d"
 PROFILE_RELEASE_TREE = "d26ae9a818041ff74c469e653ec714632ddbfc2a"
-OKF_SPEC_URL = (
-    "https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md"
-)
+OKF_SPEC_URL = specification_for("0.2")
 EXPLORER_URL = "https://chris-page-gov.github.io/okf-explorer/"
 REQUIRED_RELATIONSHIP_FIELDS = [
     "id",
@@ -1612,8 +1612,46 @@ def validate_semantic_document(path: Path) -> str:
 
 
 def matching_paths(repo: Path, pattern: str) -> list[Path]:
-    paths = contained_repository_matches(repo, pattern)
-    return [path for path in paths if path.is_file()]
+    paths = contained_repository_matches(
+        repo,
+        pattern,
+        allow_trailing_slash=pattern.endswith("/"),
+    )
+    root = repo.resolve()
+    files: set[Path] = set()
+    inspected = 0
+    for path in paths:
+        if path.is_file():
+            files.add(path)
+            continue
+        if not path.is_dir():
+            continue
+        # Directory declarations are recursive. Do not follow directory
+        # symlinks; inspect them explicitly and fail closed if they escape.
+        for current, directories, filenames in os.walk(path, followlinks=False):
+            current_path = Path(current)
+            for name in [*directories, *filenames]:
+                inspected += 1
+                if inspected > MAX_AUDIT_GLOB_MATCHES:
+                    raise ValueError(
+                        "repository directory exceeds the "
+                        f"{MAX_AUDIT_GLOB_MATCHES}-entry audit limit: {pattern}"
+                    )
+                candidate = current_path / name
+                resolved = candidate.resolve()
+                try:
+                    resolved.relative_to(root)
+                except ValueError as exc:
+                    raise ValueError(
+                        f"repository path escapes its root: {pattern}"
+                    ) from exc
+                if candidate.is_symlink() and candidate.is_dir():
+                    directories.remove(name)
+            for name in filenames:
+                candidate = current_path / name
+                if candidate.is_file():
+                    files.add(candidate.resolve())
+    return sorted(files)
 
 
 def read_relationship_rows(path: Path) -> list[dict[str, Any]]:

@@ -3,9 +3,9 @@
 The cross-repository tables below are dated observations, not automatic live deployment checks. Use each producer’s current release and [the estate tracker](okf-estate-standardisation-tracker.md) to establish current state. The semantic contract and historical receipts remain separate.
 
 
-Status: Explorer v0.8.1 and Legislation/Whole-Law v0.4.0 are the current
-publication targets; Land Registry v0.3.0 remains released immutably and
-publicly verified. Land Registry retains Explorer v0.6.2 as its governed
+Explorer v0.8.2 is the verified OKF 0.2 baseline. Legislation/Whole-Law
+v0.4.0 is the current legislation publication target. Land Registry v0.3.0
+remains released immutably and publicly verified. Land Registry retains Explorer v0.6.2 as its governed
 acceptance dependency; v0.6.3 is the separate post-G9 presentation correction,
 and v0.7.0 is the independently governed Explore OKF authoring release. The
 final Land Registry cache-isolated receipt verifies 2,203 records, 14 dataset
@@ -464,6 +464,14 @@ still proceeds independently in dependency order:
 | `okf-testing` | CPSV-AP conformance and misuse fixtures not yet implemented. | Add positive and isolated negative fixtures after the first producer mapping is independently reviewed. |
 
 ## Local implementation and release ledger
+
+On 23 November 2026, Explorer published its immutable OKF 0.2 baseline at
+commit `954d44a345b31a3142bc69a822295e6420108d93`. The 11,003-file
+Pages archive matched the candidate receipt. All 28 release journeys passed
+in Google Chrome. The separate Historic England check received HTTP 403
+when requesting the Warwick Castle listing.
+[Explorer v0.8.2 release and verification receipt](https://github.com/chris-page-gov/okf-explorer/releases/tag/v0.8.2)
+· [Pages run](https://github.com/chris-page-gov/okf-explorer/actions/runs/45136303697)
 
 **Completed locally** means the authored controls, generators, generated
 working-tree artefacts and stated deterministic checks implement the migration.
