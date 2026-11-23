@@ -9,6 +9,9 @@
 - Let pointer clicks reach graph nodes beneath another label's transparent
   padding. Keep visible labels and keyboard activation usable. Add a real
   Chrome regression reproducing the observed Hansard collision.
+- Check the visible SVG glyph's current hit target before a real mouse click
+  in the regression, avoiding WebKit's displaced automated label click while
+  retaining the node, label and keyboard destination assertions.
 - Bound the full browser CI job to 45 minutes and its three-engine assurance
   step to 35 minutes, retaining the complete suite and fail-closed gate.
 - Update the public directory with the verified ONS 0.3.0 and AI Infrastructure

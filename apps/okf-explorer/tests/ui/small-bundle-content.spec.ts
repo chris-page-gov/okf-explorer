@@ -242,7 +242,16 @@ test('transparent label padding cannot intercept another graph node', async ({ p
   await expect(page.locator('.right-panel h2')).toHaveText('Alpha compatibility record');
   await expect(page).toHaveURL(/#alpha$/);
   // The visible label and keyboard remain available as separate targets.
-  await beta.locator('text').click({ timeout: 2500 });
+  // Resolve the visible glyph after the sibling padding moves. Check the real
+  // hit target and click its current screen position in each browser engine.
+  const labelPoint = await beta.locator('text').evaluate((element: SVGTextElement) => {
+    const extent = element.getExtentOfChar(2);
+    const point = new DOMPoint(extent.x + extent.width / 2, extent.y + extent.height / 2).matrixTransform(element.getScreenCTM()!);
+    const target = document.elementFromPoint(point.x, point.y);
+    return { x:point.x, y:point.y, hitsLabel:target === element || Boolean(target && element.contains(target)) };
+  });
+  expect(labelPoint.hitsLabel).toBe(true);
+  await page.mouse.click(labelPoint.x, labelPoint.y);
   await expect(page.locator('.right-panel h2')).toHaveText('Beta related record');
   await alpha.focus();
   await alpha.press('Enter');

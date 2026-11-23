@@ -19,6 +19,10 @@ directory are implemented. The upstream announcement date and the Reader's
 implementation date are recorded above. The OKF 0.2 baseline remains frozen
 as v0.8.2.
 
+Bundle acceptance includes real mouse and keyboard journeys. Graph checks
+verify the visible node and label targets and the exact destination route in
+each declared browser engine.
+
 Producer migration is a separate acceptance task. Existing producers retain
 their declared version until their identifiers, reserved files, graph
 projections, evidence digests and consumer journeys pass their own checks.
