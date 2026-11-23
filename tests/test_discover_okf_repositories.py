@@ -5,7 +5,7 @@ import sys
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-from discover_okf_repositories import catalogue
+from discover_okf_repositories import candidate_snapshot, catalogue, inspect_repo, public_snapshot, walk_tree
 
 
 class CatalogueTests(unittest.TestCase):
@@ -62,3 +62,55 @@ class CatalogueTests(unittest.TestCase):
         self.assertEqual(result["enumeration_errors"], ["GitHub HTTP 403"])
         self.assertNotIn("restricted", str(result))
         self.assertEqual(result["candidate_repositories"], 1)
+
+    def test_truncated_tree_is_recovered_without_losing_nested_members(self):
+        responses = {
+            "repos/owner/repo/git/trees/root?recursive=1": {"sha": "root", "truncated": True, "tree": []},
+            "repos/owner/repo/git/trees/root": {"sha": "root", "truncated": False, "tree": [
+                {"path": "nested", "type": "tree", "sha": "child"},
+                {"path": "index.md", "type": "blob", "sha": "a"}]},
+            "repos/owner/repo/git/trees/child?recursive=1": {"sha": "child", "truncated": False, "tree": [
+                {"path": "concept.md", "type": "blob", "sha": "b"}]},
+        }
+        recovered = []
+        rows = list(walk_tree("repos/owner/repo", "root", responses.__getitem__, recovered))
+        self.assertEqual([r["path"] for r in rows], ["index.md", "nested/concept.md"])
+        self.assertEqual(recovered, [{"path": ".", "tree": "root"}])
+
+    def test_missing_default_branch_is_empty_only_when_no_branches_exist(self):
+        repo = {"full_name": "Owner/empty", "private": True, "archived": False, "fork": False}
+        row = inspect_repo(repo, True, lambda endpoint: [])
+        self.assertEqual(row["status"], "empty")
+        self.assertEqual(row["visibility"], "private")
+        broken = inspect_repo(repo, True, lambda endpoint: [{"name": "work"}])
+        self.assertEqual(broken["status"], "error")
+        self.assertIn("populated repository has no default branch", broken["errors"])
+
+    def test_authenticated_scan_preserves_restricted_scope_and_empty_disposition(self):
+        calls = []
+        def api(endpoint):
+            calls.append(endpoint)
+            if endpoint == "user":
+                return {"login": "Owner"}
+            if endpoint.startswith("user/repos?"):
+                return [{"full_name": "Owner/empty", "private": True, "visibility": "private",
+                         "owner": {"login": "Owner"}, "archived": False, "fork": False}]
+            return []
+        result = candidate_snapshot(catalogue("Owner", api=api, visibility="accessible"))
+        self.assertEqual(result["repositories_seen"], 1)
+        self.assertEqual(result["public_repositories"], 0)
+        self.assertEqual(result["repository_states"], {"empty": 1})
+        self.assertEqual(result["repositories"][0]["status"], "empty")
+        self.assertEqual(result["visibility"], "accessible")
+        published = candidate_snapshot(public_snapshot(result))
+        self.assertNotIn("Owner/empty", str(published))
+        self.assertEqual(published["repositories_seen"], 0)
+        self.assertEqual(published["repository_states"], {})
+        with self.assertRaisesRegex(ValueError, "authenticated repository owner"):
+            catalogue("SomeoneElse", api=api, visibility="accessible")
+
+    def test_uninspected_indexes_make_discovery_incomplete(self):
+        result = self.scan()
+        self.assertEqual(result["tree_coverage"], "complete")
+        self.assertEqual(result["discovery_coverage"], "partial")
+        self.assertEqual(self.scan(inspect=True)["discovery_coverage"], "complete")

@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased — repository conventions and complete discovery
+
+- Add general repository foundations and explicit locale guidance to the safe bootstrap.
+- Recover truncated trees, inspect authenticated owner inventories and fail complete-discovery checks when indexes remain pending.
+- Accept declared directory outputs in the semantic reconciler while retaining bounded containment checks.
+- Correct the Reader's handling of explicitly declared root routes in released semantic graphs.
+- Centralise current and historical specification references and the public bundle catalogues. Record the official 0.3 announcement date of 18 November 2026.
+- Document the [repository conventions](docs/repository-conventions.md) and refresh the public candidate catalogue from explicitly public rows.
+
 ## Unreleased — OKF 0.3 Reader support
 
 - Allow an explicitly declared root index route when opening the released OKF+ semantic graph.

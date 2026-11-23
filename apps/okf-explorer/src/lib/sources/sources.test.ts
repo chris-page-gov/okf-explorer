@@ -622,11 +622,15 @@ describe('small bundle normalisation', () => {
     expect(corpus.meta?.semantic_source).toBe(true);
   });
 
-  it('accepts the explicitly declared root index in a released semantic graph', () => {
+  it('accepts all explicitly declared root routes in a released semantic graph', () => {
     const corpus = normalizeSmallBundle({ '@graph': [
-      { '@id': 'urn:example:root', '@type': 'Document', route: 'index', title: 'Contents' }
+      { '@id': 'urn:example:root', '@type': 'Document', route: 'index', title: 'Contents' },
+      { '@id': 'urn:example:history', '@type': 'Document', route: 'log', title: 'History' },
+      { '@id': 'urn:example:sources', '@type': 'Document', route: 'sources-index', title: 'Sources' }
     ], '@context': {}, '@id': 'urn:example:bundle' } as unknown as OkfBundle);
     expect(corpus.nodes.index.title).toBe('Contents');
+    expect(corpus.nodes.log.title).toBe('History');
+    expect(corpus.nodes['sources-index'].title).toBe('Sources');
   });
 
   it('does not invent local routes from semantic IRIs or accept unsafe declared routes', () => {

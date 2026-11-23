@@ -180,9 +180,16 @@
   ],
   "browser_verification": "unverified-for-producer-links; ELS Markdown was blocked by Chrome with ERR_BLOCKED_BY_CLIENT despite HTTP 200",
   "voice_verification": "not-tested",
+  "standards_register": {
+    "human": "https://github.com/chris-page-gov/okf-explorer/blob/main/docs/okf-standards.md",
+    "machine": "https://raw.githubusercontent.com/chris-page-gov/okf-explorer/main/registry/okf-standards.json"
+  },
   "owner_catalogue": {
     "owner": "chris-page-gov",
     "observed_on": "2026-11-23",
-    "path": "docs/evidence/okf-public-owner-candidates-2026-11-23.json"
+    "path": "docs/evidence/okf-public-owner-candidates-2026-11-23.json",
+    "human": "https://github.com/chris-page-gov/okf-explorer/blob/main/docs/okf-standards.md#public-bundle-catalogues",
+    "machine": "https://raw.githubusercontent.com/chris-page-gov/okf-explorer/main/docs/evidence/okf-public-owner-candidates-2026-11-23.json",
+    "scope_note": "Public repository candidates only; discovery evidence does not establish a bundle, conformance, completeness, adoption or release."
   }
 }

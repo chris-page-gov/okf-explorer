@@ -1,0 +1,8 @@
+{
+  "checked_at": "2026-11-23T09:19:18.198Z",
+  "browser": "158.0.8127.36",
+  "url": "https://raw.githubusercontent.com/chris-page-gov/okf-explorer/954d44a345b31a3142bc69a822295e6420108d93/okf-bundle.jsonld",
+  "source_heading": "The reviewed sources",
+  "relationship_inspector": "\u203a\nRelationship Deterministic Markdown link projection normalized real-world unknown\nThe reviewed sources \u2192 AI infrastructure \u2014 overview\n\nreferences\n\nInspect source\nInspect target\nClear relationship\nDirection\nSource \u2192 target\nSource\nThe reviewed sources\nType\nreferences\nTarget\nAI infrastructure \u2014 overview\nSource route\ndocument/index\nTarget route\ndocument/overview\nAssertion ID\nhttps://chris-page-gov.github.io/okf-explorer/id/assertion/markdown-reference/da142ff4b370fe77fc8edbbf7c91cfce71ff310e44c1f78896364d27de22131e\nPredicate IRI\nhttp://purl.org/dc/terms/references\nInverse label\nreferenced by\nSource IRI\nhttps://chris-page-gov.github.io/okf-explorer/id/document/index\nTarget IRI\nhttps://chris-page-gov.github.io/okf-explorer/id/document/overview\nAssertion status\nnormalized\nAssertion scope\nreal-world\nAuthority\nDeterministic Markdown link projection\nAuthority source\nhttps://github.com/chris-page-gov/okf-explorer\nDerivation\nhttps://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/ru",
+  "candidate_scope": "Locally built Reader with released graph retrieved through HTTPS"
+}

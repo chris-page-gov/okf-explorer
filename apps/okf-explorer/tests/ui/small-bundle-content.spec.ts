@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { readFile } from 'node:fs/promises';
 
 const BUNDLE_URL = 'https://small.fixture.test/okf-bundle.json';
 
@@ -693,4 +694,17 @@ test('OKF 0.3 shows verification history and opens the replacement concept', asy
   await expect(detail.getByRole('region', { name: 'OKF trust, lifecycle and provenance' })).toContainText('human:earlier');
   await detail.getByRole('button', { name: 'Open replacement: Replacement metric' }).click();
   await expect(detail.getByRole('heading', { name: 'Replacement metric' })).toBeVisible();
+});
+
+test('opens the complete reference semantic graph including its declared root routes', async ({ context, page }) => {
+  const url = 'https://small.fixture.test/reference.jsonld';
+  const body = await readFile(new URL('../../../../okf-bundle.jsonld', import.meta.url), 'utf8');
+  await context.route(url, route => route.fulfill({
+    contentType: 'application/ld+json', headers: { 'access-control-allow-origin': '*' }, body
+  }));
+  await page.goto('?' + new URLSearchParams({ bundle: url }) + '#document/index');
+  const panel = page.locator('.right-panel');
+  await expect(panel.getByRole('heading', { name: 'The reviewed sources', exact: true })).toBeVisible();
+  await panel.getByRole('button', { name: 'Inspect relationship', exact: true }).first().click();
+  await expect(panel).toContainText('Deterministic Markdown link projection');
 });

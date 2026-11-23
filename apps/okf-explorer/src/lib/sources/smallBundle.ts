@@ -8,7 +8,7 @@ import type {
 import { isHttpUrl } from '$lib/viewer/helpers';
 
 const MAX_SMALL_SEMANTIC_GRAPH_NODES = 10_000;
-const LOCAL_SEMANTIC_ROUTE = /^[a-z][a-z0-9-]*(?:\/[A-Za-z0-9._~-]+)+$/;
+const LOCAL_SEMANTIC_ROUTE = /^[a-z][a-z0-9-]*(?:\/[A-Za-z0-9._~-]+)*$/;
 const ABSOLUTE_SEMANTIC_IRI = /^[A-Za-z][A-Za-z0-9+.-]*:[^\s]+$/;
 const SHA256 = /^[0-9a-f]{64}$/;
 
@@ -73,7 +73,6 @@ function semanticType(value: unknown): string[] {
 
 function localSemanticRoute(value: unknown): string {
   const route = typeof value === 'string' && value.trim() === value ? value : '';
-  if (route === 'index') return route;
   return LOCAL_SEMANTIC_ROUTE.test(route) ? route : '';
 }
 

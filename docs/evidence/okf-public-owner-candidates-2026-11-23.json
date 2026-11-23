@@ -1,11 +1,15 @@
 {
   "schema": "okf-public-owner-candidates.v1",
   "owner": "chris-page-gov",
-  "observed_at": "2026-11-23T08:50:43.931226+00:00",
+  "observed_at": "2026-11-23T09:24:26.038360+00:00",
+  "visibility": "public",
   "enumeration_errors": [],
   "tree_coverage": "complete",
+  "discovery_coverage": "complete",
+  "repositories_seen": 218,
   "public_repositories": 218,
   "candidate_repositories": 20,
+  "recovered_truncations": 4,
   "index_inspection_requested": true,
   "scope": "Default-branch candidates. Undeclared Markdown-only and release-only bundles require review.",
   "repositories": [
@@ -14,6 +18,7 @@
       "branch": "main",
       "archived": false,
       "fork": true,
+      "visibility": "public",
       "roots": [
         {
           "root": "_site/wiki",
@@ -40,6 +45,7 @@
       ],
       "pending_indexes": [],
       "errors": [],
+      "recovered_truncations": [],
       "commit": "b91defd7c9cf9cda3824c8e5557f818de99ff70e",
       "tree": "1262e3834416e71c75dca77e2dbc914aec5b88de",
       "status": "tree-read"
@@ -49,6 +55,7 @@
       "branch": "main",
       "archived": false,
       "fork": true,
+      "visibility": "public",
       "roots": [
         {
           "root": "challenge-2/wiki",
@@ -117,6 +124,7 @@
       ],
       "pending_indexes": [],
       "errors": [],
+      "recovered_truncations": [],
       "commit": "8418bce78496e36598b10d4562b1fb275ad610bb",
       "tree": "6833c4e323e2e052a44951c7fc68148d4cfa4fec",
       "status": "tree-read"
@@ -126,6 +134,7 @@
       "branch": "main",
       "archived": false,
       "fork": false,
+      "visibility": "public",
       "roots": [
         {
           "root": ".",
@@ -245,6 +254,7 @@
       ],
       "pending_indexes": [],
       "errors": [],
+      "recovered_truncations": [],
       "commit": "0a10d78b7b07cfa8c0ea790f96274a520b057fa1",
       "tree": "63960c52e994efeb187f662f48c60f0e836d7811",
       "status": "tree-read"
@@ -254,6 +264,7 @@
       "branch": "main",
       "archived": false,
       "fork": true,
+      "visibility": "public",
       "roots": [
         {
           "root": "public/downloads",
@@ -268,6 +279,7 @@
       ],
       "pending_indexes": [],
       "errors": [],
+      "recovered_truncations": [],
       "commit": "f05f4c1036fff41a5b281bb262c271fd8035fba1",
       "tree": "1a391e6136233eacb5dcbf88ecdc0fa285531587",
       "status": "tree-read"
@@ -277,6 +289,7 @@
       "branch": "main",
       "archived": false,
       "fork": false,
+      "visibility": "public",
       "roots": [
         {
           "root": "baseline",
@@ -323,6 +336,7 @@
       ],
       "pending_indexes": [],
       "errors": [],
+      "recovered_truncations": [],
       "commit": "b421f1fa3b55ac0075b4c7036c4234b57e14dce7",
       "tree": "dad066ec90512ac6a411da49aea1be615b8f5c3d",
       "status": "tree-read"
@@ -332,6 +346,7 @@
       "branch": "main",
       "archived": false,
       "fork": false,
+      "visibility": "public",
       "roots": [
         {
           "root": "okf-plus",
@@ -352,6 +367,7 @@
       ],
       "pending_indexes": [],
       "errors": [],
+      "recovered_truncations": [],
       "commit": "789adc86e88b8171e9d24d4ace845fc700731664",
       "tree": "121259976adaf62a427f51a2c8146bfc98b3d679",
       "status": "tree-read"
@@ -361,6 +377,7 @@
       "branch": "main",
       "archived": false,
       "fork": false,
+      "visibility": "public",
       "roots": [
         {
           "root": ".",
@@ -436,6 +453,7 @@
       ],
       "pending_indexes": [],
       "errors": [],
+      "recovered_truncations": [],
       "commit": "4580c9e4afef10a102b852b01083ee5cb7d34018",
       "tree": "b9235af05ed5de1fa02152a2a947595fc5af3e68",
       "status": "tree-read"
@@ -445,6 +463,7 @@
       "branch": "main",
       "archived": false,
       "fork": false,
+      "visibility": "public",
       "roots": [
         {
           "root": ".",
@@ -527,6 +546,7 @@
       ],
       "pending_indexes": [],
       "errors": [],
+      "recovered_truncations": [],
       "commit": "39c82b51cb1dd824ab8208b56b247ae3cc1d7dd5",
       "tree": "6bd95dbc10e5f5963688979db25bbfa336e2998d",
       "status": "tree-read"
@@ -536,6 +556,7 @@
       "branch": "main",
       "archived": false,
       "fork": false,
+      "visibility": "public",
       "roots": [
         {
           "root": ".",
@@ -667,6 +688,7 @@
       ],
       "pending_indexes": [],
       "errors": [],
+      "recovered_truncations": [],
       "commit": "3d45b47763c204b1264b5d1d7897d583361f25bd",
       "tree": "25abde0b2879caae475277186578bf4ad501dc0a",
       "status": "tree-read"
@@ -676,6 +698,7 @@
       "branch": "main",
       "archived": false,
       "fork": false,
+      "visibility": "public",
       "roots": [
         {
           "root": ".",
@@ -721,6 +744,7 @@
       ],
       "pending_indexes": [],
       "errors": [],
+      "recovered_truncations": [],
       "commit": "811a688183b0cd150a2fd9ccf3d414d48c112da6",
       "tree": "f23c0bc38e1fd3d1b633ae06c2330899de456385",
       "status": "tree-read"
@@ -730,6 +754,7 @@
       "branch": "main",
       "archived": false,
       "fork": false,
+      "visibility": "public",
       "roots": [
         {
           "root": ".",
@@ -921,6 +946,7 @@
       ],
       "pending_indexes": [],
       "errors": [],
+      "recovered_truncations": [],
       "commit": "954d44a345b31a3142bc69a822295e6420108d93",
       "tree": "8fc2cc82d157990d43e92d762b982b50c70b454e",
       "status": "tree-read"
@@ -930,6 +956,7 @@
       "branch": "main",
       "archived": false,
       "fork": false,
+      "visibility": "public",
       "roots": [
         {
           "root": ".",
@@ -970,6 +997,7 @@
       ],
       "pending_indexes": [],
       "errors": [],
+      "recovered_truncations": [],
       "commit": "ef5575d2dccdab7999fc8fdc3cbdd2e47b4f6247",
       "tree": "8d0b475494fb66c12750da0c996ee369390cca67",
       "status": "tree-read"
@@ -979,6 +1007,7 @@
       "branch": "main",
       "archived": false,
       "fork": false,
+      "visibility": "public",
       "roots": [
         {
           "root": "site",
@@ -1043,6 +1072,7 @@
       ],
       "pending_indexes": [],
       "errors": [],
+      "recovered_truncations": [],
       "commit": "2c5c73ac5c54e71a73b4fd3556470bbd9ab9359e",
       "tree": "7a43d351eb6b7c2deaf89ac1fad91a3ee992e26f",
       "status": "tree-read"
@@ -1052,6 +1082,7 @@
       "branch": "main",
       "archived": false,
       "fork": false,
+      "visibility": "public",
       "roots": [
         {
           "root": ".",
@@ -1071,6 +1102,7 @@
       ],
       "pending_indexes": [],
       "errors": [],
+      "recovered_truncations": [],
       "commit": "125981a2f29d2114da34128b3a5031ec55006709",
       "tree": "f5fc8fb64d9f1e076bf088ad95f0070851a5768e",
       "status": "tree-read"
@@ -1080,6 +1112,7 @@
       "branch": "main",
       "archived": false,
       "fork": false,
+      "visibility": "public",
       "roots": [
         {
           "root": ".",
@@ -1125,6 +1158,7 @@
       ],
       "pending_indexes": [],
       "errors": [],
+      "recovered_truncations": [],
       "commit": "9941f9e4ec17345a26e99421a016f94c69cd2a31",
       "tree": "5a82b71311ea0f551db2c52916c012b7977b8cd3",
       "status": "tree-read"
@@ -1134,6 +1168,7 @@
       "branch": "main",
       "archived": false,
       "fork": false,
+      "visibility": "public",
       "roots": [
         {
           "root": ".",
@@ -1179,6 +1214,7 @@
       ],
       "pending_indexes": [],
       "errors": [],
+      "recovered_truncations": [],
       "commit": "61047d3824c3ddc9ff5ac1c0c8c398fd6b2aa261",
       "tree": "a25b3df647ee66153ae6a334e7a334e40f534f1a",
       "status": "tree-read"
@@ -1188,6 +1224,7 @@
       "branch": "main",
       "archived": false,
       "fork": false,
+      "visibility": "public",
       "roots": [
         {
           "root": ".",
@@ -1295,6 +1332,7 @@
       ],
       "pending_indexes": [],
       "errors": [],
+      "recovered_truncations": [],
       "commit": "67a51669f13fcb3ea100716fa9c5aae4949d1037",
       "tree": "b1d9cbd88f8c5875f96c187a31a0f829561c2e85",
       "status": "tree-read"
@@ -1304,6 +1342,7 @@
       "branch": "main",
       "archived": false,
       "fork": false,
+      "visibility": "public",
       "roots": [
         {
           "root": ".",
@@ -1354,6 +1393,7 @@
       ],
       "pending_indexes": [],
       "errors": [],
+      "recovered_truncations": [],
       "commit": "241209d23cec7803da2525261908f3314ff45086",
       "tree": "7b4067e27c0004ad6095f77d374c80bdf5669a89",
       "status": "tree-read"
@@ -1363,6 +1403,7 @@
       "branch": "main",
       "archived": false,
       "fork": false,
+      "visibility": "public",
       "roots": [
         {
           "root": "site/okf",
@@ -1387,6 +1428,7 @@
       ],
       "pending_indexes": [],
       "errors": [],
+      "recovered_truncations": [],
       "commit": "604a82928f7c59fefe87c920969b9169aa018a2d",
       "tree": "1448680e3266a6e01b1bbc5a0451117680a7f653",
       "status": "tree-read"
@@ -1396,6 +1438,7 @@
       "branch": "main",
       "archived": false,
       "fork": false,
+      "visibility": "public",
       "roots": [
         {
           "root": ".",
@@ -1415,6 +1458,7 @@
       ],
       "pending_indexes": [],
       "errors": [],
+      "recovered_truncations": [],
       "commit": "ebde9712eb2da9647ef26b265a376be03af43615",
       "tree": "ab91367d6a2eaadadfaaedce5b053bfe86e48432",
       "status": "tree-read"

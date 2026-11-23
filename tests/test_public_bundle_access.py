@@ -36,6 +36,21 @@ class PublicBundleAccessTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "only explicitly public"):
             self.mutate(lambda b: b.update(visibility="private"))
 
+    def test_authenticated_inventory_cannot_be_published_as_a_public_catalogue(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            source = access.load()
+            (root / access.SOURCE).parent.mkdir(parents=True)
+            (root / access.SOURCE).write_text(json.dumps(source))
+            candidate_path = root / source["owner_catalogue"]["path"]
+            candidate_path.parent.mkdir(parents=True)
+            candidate_path.write_text(json.dumps({
+                "schema": "okf-public-owner-candidates.v1", "owner": "chris-page-gov",
+                "visibility": "accessible", "repositories": []
+            }))
+            with self.assertRaisesRegex(ValueError, "unreviewed visibility"):
+                access.load(root)
+
     def test_unpinned_or_different_raw_candidate_is_rejected(self):
         with self.assertRaisesRegex(ValueError, "pin an owned commit"):
             self.mutate(lambda b: b.update(equivalent_raw_descriptor=b["equivalent_raw_descriptor"].replace("/" + b["equivalent_raw_descriptor"].split("/")[5] + "/", "/main/")))

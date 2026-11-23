@@ -61,6 +61,12 @@ def load(root: Path = ROOT) -> dict:
                 raise ValueError(f"{name}: invalid pinned graph link or integrity data")
         if not re.fullmatch(r"[0-9a-f]{64}", bundle["descriptor_sha256"]):
             raise ValueError(f"{name}: descriptor digest is required")
+    candidates = json.loads((root / catalogue["path"]).read_text(encoding="utf-8"))
+    if (candidates.get("schema") != "okf-public-owner-candidates.v1"
+            or candidates.get("visibility") != "public"
+            or candidates.get("owner") != catalogue["owner"]
+            or any(row.get("visibility") != "public" for row in candidates["repositories"])):
+        raise ValueError("public candidate catalogue contains an unreviewed visibility or owner")
     return directory
 
 
