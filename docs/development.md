@@ -5,8 +5,13 @@ the October baseline and corrections. Compatibility-app caches are isolated by
 worker registration scope; invalid saved pins fall back to an empty selection.
 The viewer generator escapes source text before embedding its graph in HTML.
 The Python lock also retains reviewed security floors for Pillow, certifi,
-multidict and urllib3; update the constraints and evidence together when those
-dependencies change. Pillow 13 is a development-tool dependency.
+multidict, Soup Sieve and urllib3; update the constraints and evidence together
+when those dependencies change. Soup Sieve is constrained to 4.0.0 or later to
+cover the vulnerable transitive dependency pulled in by `yaml-ld` through
+Beautiful Soup. Soup Sieve 4 also applies stricter `:has()` parsing and may
+reject complex selectors that earlier releases accepted; this repository does
+not call Beautiful Soup selectors directly. Pillow 13 is a development-tool
+dependency.
 
 For contributors maintaining this repository. For a personal learning collection,
 use [the separate teaching builder](onboarding/first-bundle.md).
@@ -173,6 +178,10 @@ policy check preserves the reviewed security override and checks the resolved
 Vitest and coverage versions. Regenerate the dependency inventory after a
 reviewed lockfile change; do not disable frozen installation or the checks to
 make an update pass.
+
+The 23 November 2026 maintenance candidate uses SvelteKit 3.4.0, Svelte 5.58.0
+and Vite 8.3.8. Its regenerated inventory and application build need fresh
+acceptance evidence; earlier framework receipts retain their historical scope.
 
 When `apps/okf-explorer/build/` exists,
 `uv run --locked python scripts/build_site.py` copies it to `_site/explore/`. The

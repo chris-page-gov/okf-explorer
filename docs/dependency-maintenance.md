@@ -1,5 +1,19 @@
 # Maintaining Explorer dependencies
 
+## Framework maintenance — 23 November 2026
+
+PR #236 updates SvelteKit 3.1.1 to 3.4.0, Svelte 5.57.3 to 5.58.0 and Vite
+8.3.6 to 8.3.8. The reviewed plugin patch and security overrides remain in
+place. The upstream releases describe changes to routing, compiler output,
+hydration and asset handling. Review the [SvelteKit release](https://github.com/sveltejs/kit/releases/tag/%40sveltejs%2Fkit%403.4.0),
+[Svelte release](https://github.com/sveltejs/svelte/releases/tag/svelte%405.58.0)
+and [Vite release](https://github.com/vitejs/vite/releases/tag/v8.3.8) alongside
+the exact lockfile and regenerated SBOM.
+
+The resulting application bytes require fresh deterministic build and Heritage
+evidence, plus the full Chrome, Firefox and WebKit acceptance gate. Protected
+CI and exact-commit Pages verification remain separate from local checks.
+
 ## Hono dependency repair — 15 November 2026
 
 PR #203 updates the remote service's transitive Hono lock resolution from
