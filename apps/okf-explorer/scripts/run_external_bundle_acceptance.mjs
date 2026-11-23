@@ -20,6 +20,7 @@ import {
   receiptFailureReference,
   receiptPageState,
   safeRelativePath,
+  staticBuildFile,
   validateJourneyManifest,
   verifySafeOutputParent,
   waitForLocator,
@@ -485,12 +486,8 @@ function staticServer(requests, roots, telemetry) {
         root = roots.bundle;
         relative = url.pathname.slice('/bundle/'.length);
       }
-      if (!relative) relative = 'index.html';
-      let expected = root.materials.get(relative);
-      if (!expected && root === roots.build) {
-        relative = '404.html';
-        expected = root.materials.get(relative);
-      }
+      if (root === roots.build) relative = staticBuildFile(relative, root.materials);
+      const expected = root.materials.get(relative);
       invariant(expected, `runtime input snapshot has no declared file: ${relative}`);
       invariant(
         expected.bytes <= ACCEPTANCE_LIMITS.served_asset_bytes,

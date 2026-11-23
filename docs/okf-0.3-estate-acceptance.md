@@ -44,6 +44,11 @@ An active producer needs these results:
    candidate. Follow the producer's publication and rights gates and verify the
    deployed identity and journey before reporting a public bundle URL.
 
+The isolated Explorer acceptance server must serve the same declared directory
+indexes as the published static site. In particular, an existing bundle link
+through the learning home redirects to `/explore/`. A missing-page response at
+that route is a consumer-test failure; it cannot count as bundle acceptance.
+
 The representative journey is question, scope selection, graph traversal,
 source inspection and a qualified source-linked answer. This is an editorial
 choice for a common knowledge-discovery task, not a claim from usage analytics.

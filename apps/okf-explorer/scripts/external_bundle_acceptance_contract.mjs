@@ -85,6 +85,16 @@ export function safeRelativePath(value, label = 'path') {
   return normalized;
 }
 
+export function staticBuildFile(relative, materials) {
+  const direct = relative || 'index.html';
+  if (materials.has(direct)) return direct;
+  const directoryIndex = direct.endsWith('/')
+    ? `${direct}index.html`
+    : `${direct}/index.html`;
+  if (materials.has(directoryIndex)) return directoryIndex;
+  return '404.html';
+}
+
 export function receiptFailureReference(error) {
   const rawName = String(error?.name || 'Error');
   const name = /^[A-Za-z][A-Za-z0-9_.-]{0,127}$/.test(rawName) ? rawName : 'Error';

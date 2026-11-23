@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased — consumer acceptance routes
+
+- Serve declared static directory indexes in the isolated bundle acceptance
+  server. The learning home redirects bundle links to `/explore/`; the server
+  now loads that snapshotted page and nested help routes before using the
+  missing-page fallback. Bundle files retain their exact-path boundary.
+
 ## Unreleased — full estate acceptance
 
 - Add a distinct Bundle Wiki v2 repository contract for core OKF 0.3. Keep the
