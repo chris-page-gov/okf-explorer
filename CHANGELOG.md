@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased — Hansard public discovery
+
+- Listed the public Hansard OKF 0.3 demonstration in the access directory, with its verified Pages descriptor, digest-matched GitHub fallback and producer discovery routes.
+
 ## Unreleased — repository conventions and complete discovery
 
 - Record reviewed producer sources such as Hansard when generated releases are stored outside Git, with a pinned source reference and a public-visibility check.

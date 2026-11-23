@@ -4,7 +4,7 @@
   "observed_on": "2026-11-14",
   "locale": "en-GB",
   "time_zone": "Europe/London",
-  "scope": "Twelve public, owner-authored okf-* GitHub repositories; excludes private repositories, local non-repositories and the upstream specification fork. Supplemental discovery metadata; not an OKF core extension or a Reader admission decision.",
+  "scope": "Thirteen public, owner-authored okf-* GitHub repositories; excludes private repositories, local non-repositories and the upstream specification fork. Supplemental discovery metadata; not an OKF core extension or a Reader admission decision.",
   "verification": "Descriptors and declared overview/data entrypoints returned HTTP 200. Full record coverage and live ChatGPT Voice use are not verified. Pinned raw fallbacks are listed only for matching complete descriptor digests.",
   "bundles": [
     {
@@ -96,6 +96,23 @@
       "access_note": "Frozen faithful publication. Tiny and synthetic supplements are separate products; do not rewrite the released bytes.",
       "equivalent_raw_descriptor": "https://raw.githubusercontent.com/chris-page-gov/okf-heritage-coventry-warwickshire/2c5c73ac5c54e71a73b4fd3556470bbd9ab9359e/site/okf-explorer.json",
       "raw_descriptor_sha256": "97c8c3aa1dbaa48cad06d9a1fec3c1b125a681c7642b418bddbbccc32e27a5da"
+    },
+    {
+      "title": "Hansard parliamentary proceedings",
+      "repository": "https://github.com/chris-page-gov/okf-hansard",
+      "visibility": "public",
+      "home": "https://chris-page-gov.github.io/okf-hansard/",
+      "descriptor": "https://chris-page-gov.github.io/okf-hansard/graph/okf-explorer.json",
+      "descriptor_sha256": "8142f36983b1eaf1c7e1f6a2d19a9325b30d312167beee468e863e67fdaf1b12",
+      "descriptor_schema": "okf-explorer-large-corpus.v1",
+      "declared_okf_version": "0.3",
+      "semantic_descriptor": "https://chris-page-gov.github.io/okf-hansard/okf-bundle.yamlld.gz",
+      "access_note": "Open the website for the three demonstration examples and provider-neutral prompt. Use the producer directory for source links, scope, the Markdown entry point and November coverage.",
+      "equivalent_raw_descriptor": "https://raw.githubusercontent.com/chris-page-gov/okf-hansard/89ff017bab2a37df222e58ef6da94a32688144f3/graph/okf-explorer.json",
+      "raw_descriptor_sha256": "8142f36983b1eaf1c7e1f6a2d19a9325b30d312167beee468e863e67fdaf1b12",
+      "producer_directory": "https://chris-page-gov.github.io/okf-hansard/okf-public-access.json",
+      "observed_on": "2026-11-23",
+      "verification": "Matched exact public Pages bytes to the pinned GitHub descriptor. Checked the Microsoft 365 companion and its focused graph and timeline in a browser."
     },
     {
       "title": "HM Land Registry public metadata",
