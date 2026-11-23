@@ -2212,8 +2212,66 @@ input:focus {
   min-width: 0;
   min-height: 640px;
   display: grid;
-  grid-template-rows: auto auto minmax(520px, 1fr) auto auto;
+  align-content: start;
   gap: 5px;
+}
+
+.graph-workspace-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+}
+
+.app.graph-workspace {
+  grid-template-rows: auto minmax(0, 1fr);
+}
+
+.graph-workspace .topbar,
+.graph-workspace .stage-bar {
+  display: none;
+}
+
+.graph-workspace .large-view {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  padding: 0;
+}
+
+.graph-workspace .graph-shell {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 100%;
+  padding: 0 8px 8px;
+}
+
+.graph-workspace .large-view .graph-shell {
+  min-height: 0;
+}
+
+.graph-workspace .graph-workspace-controls {
+  position: sticky;
+  top: 0;
+  z-index: 8;
+  padding: 6px 0;
+  background: var(--surface);
+}
+
+.graph-workspace .graph-toolbar {
+  position: static;
+}
+
+.graph-workspace .graph-shell > .graph {
+  flex: 1 0 240px;
+  height: auto;
+  min-height: 240px;
+}
+
+.graph-workspace .edge-panel {
+  max-height: 18dvh;
+  overflow: auto;
 }
 
 .graph-hierarchy-slot:empty {

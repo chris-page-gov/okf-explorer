@@ -243,6 +243,14 @@ Expected behaviour:
   evidence, stacks, record-type stacks, opened-stack groups, protocols, topics,
   licences, tags and host/other nodes.
 - Plus/minus controls zoom; the graph can be panned.
+- Select **Expand graph** to fit the current graph to the browser viewport
+  without the search and details panels. Use **Fit graph** to reset the
+  drawing after zooming or panning. Select **Exit expanded graph** or press
+  Escape to restore the previous layout and return focus to **Expand graph**.
+  Any selection you made in the graph is kept.
+- If Explorer is embedded in a narrow pane, use **Open graph in a new tab or
+  window** to open the focused graph with the same filters. This option is
+  available for bundles loaded from a web address, not uploaded files.
 - Single-click inspects a real node in the right card.
 - Selecting another record takes the details pane to its heading and keeps
   the graph in place.
