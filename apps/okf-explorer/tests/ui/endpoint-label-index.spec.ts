@@ -51,13 +51,25 @@ async function installClipboard(context: BrowserContext): Promise<void> {
   });
 }
 
-async function installFixture(context: BrowserContext, requests: string[]) {
+async function installFixture(
+  context: BrowserContext,
+  requests: string[],
+  options: {
+    sourcePublisherTitle?: string;
+    governedPublisherLabel?: string | null;
+  } = {}
+) {
+  const publisherLabel = options.governedPublisherLabel === undefined
+    ? 'HM Land Registry'
+    : options.governedPublisherLabel;
   const entries = [
     [ACTIVITY_ROUTE, 'Applying for probate', 'Citizen activity'],
     [DATASET_ROUTE, 'Applying for probate guidance', 'Guidance record'],
     [RESOURCE_ROUTE, 'Applying for probate online', 'Web resource'],
-    ['publisher/publisher-5f7670365c7dc347f281bbef', 'HM Land Registry', 'Organisation'],
-    ['facet/publisher/publisher-5f7670365c7dc347f281bbef', 'HM Land Registry', 'Organisation'],
+    ...(publisherLabel === null ? [] : [
+      ['publisher/publisher-5f7670365c7dc347f281bbef', publisherLabel, 'Organisation'],
+      ['facet/publisher/publisher-5f7670365c7dc347f281bbef', publisherLabel, 'Organisation']
+    ]),
     ['source/source-3b1fbf315fecd0fdd686c62a', 'GOV.UK probate guidance', 'Official source'],
     ['rights/rights-76093b40870d2f36982d4ca5', 'Open Government Licence v3.0', 'Rights statement'],
     [LICENCE_ROUTE, 'Open Government Licence v3.0', 'Licence'],
@@ -123,7 +135,7 @@ async function installFixture(context: BrowserContext, requests: string[]) {
     title: 'dataset-opaque-internal-title',
     notes: 'Official guidance for people applying for probate in Coventry.',
     publisher: 'publisher-5f7670365c7dc347f281bbef',
-    publisher_title: 'publisher-5f7670365c7dc347f281bbef',
+    publisher_title: options.sourcePublisherTitle || 'publisher-5f7670365c7dc347f281bbef',
     resource_count: 1,
     resource_ids: ['probate-guidance-html'],
     formats: ['HTML'],
@@ -373,6 +385,31 @@ test.describe('governed endpoint labels', () => {
     await expect(graph.getByRole('button', { name: 'Web page', exact: true })).toBeVisible();
     await expect(graph).not.toContainText('publisher-5f7670365c7dc347f281bbef');
     await expect(graph.getByRole('button', { name: 'HTML', exact: true })).toHaveCount(0);
+  });
+
+  test('a loaded publisher title cannot override its governed endpoint label', async ({ page }) => {
+    await installFixture(page.context(), [], {
+      sourcePublisherTitle: 'Government Digital Service'
+    });
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}&view=graph`);
+
+    const graph = page.getByRole('group', { name: 'Large corpus graph' });
+    await expect(graph.getByRole('button', { name: 'HM Land Registry', exact: true })).toBeVisible();
+    await expect(graph.getByRole('button', { name: 'Government Digital Service', exact: true })).toHaveCount(0);
+  });
+
+  test('a loaded publisher title cannot conceal an advertised missing endpoint label', async ({ page }) => {
+    await installFixture(page.context(), [], {
+      sourcePublisherTitle: 'Government Digital Service',
+      governedPublisherLabel: null
+    });
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}&view=graph`);
+
+    const graph = page.getByRole('group', { name: 'Large corpus graph' });
+    await expect(graph.getByRole('button', { name: 'Missing label', exact: true })).toBeVisible();
+    await expect(graph.getByRole('button', { name: 'Government Digital Service', exact: true })).toHaveCount(0);
   });
 
   for (const viewport of [
