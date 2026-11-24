@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased — preserve reviewed repository layouts
+
+- Add an explicit adoption foundation check for customised repositories while
+  retaining strict starter-template and disabled-CI checks for new scaffolds.
+  Preserve existing contract layouts, authored files and reviewed workflows;
+  do not create redundant source/generated placeholders beside them.
+- Refuse unsafe control paths, duplicate or malformed contract JSON and empty
+  foundation files. Report custom schemas and unrun core, semantic, consumer
+  and release gates explicitly. Keep command declarations as data and update
+  the authoring prompt kit and repository conventions together.
+
 ## Unreleased — patched uv certificate trust
 
 - Require uv 0.13.4 in the project, CI bootstrap and isolated command launcher.

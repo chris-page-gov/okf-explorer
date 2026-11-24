@@ -16,13 +16,25 @@ The plan lists the files to create and preserve. The scaffold supplies a README,
 
 For an authorised GitHub initialisation, inspect the remote again immediately before pushing the initial commit. Use an ordinary push, then read back the default branch, commit and tree. Retain those identities as evidence. A repository that acquired work during preparation needs another review.
 
-The bootstrap validates its initial template. Once project-specific work starts, use the project's declared checks and publication contracts. A customised README can be preserved during adoption. It will differ from the initial template during the bootstrap check.
+The strict `--check` validates the initial template. Once project-specific work
+starts, use `--check-adoption --adopt-existing` to check the existing foundations
+without requiring their text to match a starter. The adoption report explicitly
+leaves source, semantic, consumer and release validation to the project's own
+reviewed checks. It does not execute command declarations or confer authority.
 
 ## Initialise an OKF producer
 
 Use the [authoring prompt kit](okf-authoring-prompt-kit.md) and the default OKF scaffold once the target's purpose is known. Record the core version, semantic profile, authored inputs, generated outputs, source rights and applicable validation commands. Keep documentation and the changelog in step with controlled changes.
 
 Run the semantic reconciler for its supported governed profile. Other declared profiles require their own validators. A source checkout whose release artefacts live elsewhere also requires the appropriate candidate before a release audit can pass.
+
+For an existing producer with semantic and publication contracts, the adoption
+plan retains the declared layout. It does not add placeholder source/generated
+trees or a disabled workflow beside existing CI. Preserve those contracts,
+customised README and agent guidance. The foundation check refuses symlinked
+control files, duplicate or malformed JSON and empty required guidance. It
+reports custom publication schemas as not validated. An enabled workflow still
+conflicts with a contract that declares an unreviewed bootstrap.
 
 ```sh
 uv run --locked python scripts/reconcile_okf_repositories.py --repo /path/to/okf-project

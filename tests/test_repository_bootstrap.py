@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import subprocess
+import json
 import sys
 import tempfile
 import unittest
@@ -25,6 +26,25 @@ def run(*arguments: str) -> subprocess.CompletedProcess[str]:
 
 
 class RepositoryBootstrapTests(unittest.TestCase):
+    def custom_producer(self, target: Path) -> None:
+        for name in okf_repository_bootstrap.FILES:
+            if "/" not in name:
+                (target / name).write_text(f"# Owned {name}\n", encoding="utf-8")
+        (target / "okf.semantic.json").write_text(json.dumps({
+            "schema": "example-domain-semantic.v1",
+            "okf_core": {"version": "0.3"},
+            "authoritative_inputs": ["bundle/"],
+        }), encoding="utf-8")
+        (target / "okf.publication.json").write_text(json.dumps({
+            "schema": "example-domain-publication.v1",
+            "repository": "example-domain",
+            "commands": ["touch SHOULD-NOT-BE-EXECUTED"],
+        }), encoding="utf-8")
+        (target / "bundle").mkdir()
+        (target / "bundle/record.md").write_text("Authored domain evidence.\n", encoding="utf-8")
+        (target / ".github/workflows").mkdir(parents=True)
+        (target / ".github/workflows/domain.yml").write_text("name: Existing checks\non: workflow_dispatch\n", encoding="utf-8")
+
     def test_default_is_a_non_mutating_dry_run(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             target = Path(directory) / "new-repository"
@@ -177,6 +197,98 @@ class RepositoryBootstrapTests(unittest.TestCase):
             checked = run(str(target), "--check", "--adopt-existing")
             self.assertEqual(1, checked.returncode)
             self.assertIn("not a regular file", checked.stderr)
+
+    def test_existing_contracts_preserve_layout_and_active_ci(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            target = Path(directory)
+            self.custom_producer(target)
+            before = {p.relative_to(target).as_posix(): p.read_bytes()
+                      for p in target.rglob("*") if p.is_file()}
+            plan = run(str(target), "--adopt-existing")
+            self.assertEqual(0, plan.returncode, plan.stderr)
+            self.assertEqual([], json.loads(plan.stdout)["create"])
+            applied = run(str(target), "--apply", "--adopt-existing")
+            self.assertEqual(0, applied.returncode, applied.stderr)
+            checked = run(str(target), "--check-adoption", "--adopt-existing")
+            self.assertEqual(0, checked.returncode, checked.stdout)
+            report = json.loads(checked.stdout)
+            self.assertEqual("repository-foundations-only", report["scope"])
+            self.assertEqual("not-run", report["semantic_validation"])
+            self.assertEqual("custom-schema-not-validated", report["publication_contract_validation"])
+            self.assertEqual([".github/workflows/domain.yml"], report["existing_workflows"])
+            after = {p.relative_to(target).as_posix(): p.read_bytes()
+                     for p in target.rglob("*") if p.is_file()}
+            self.assertEqual(before, after)
+            self.assertFalse((target / "SHOULD-NOT-BE-EXECUTED").exists())
+            self.assertFalse((target / "source").exists())
+            self.assertFalse((target / "generated").exists())
+
+    def test_adoption_does_not_disable_strict_scaffold_checks(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            target = Path(directory)
+            self.custom_producer(target)
+            result = run(str(target), "--check", "--adopt-existing")
+            self.assertEqual(1, result.returncode)
+            self.assertIn("differs from the reviewed scaffold", result.stderr)
+            self.assertIn("CI is enabled before validation", result.stderr)
+
+    def test_adoption_rejects_bootstrap_contract_with_enabled_ci(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            target = Path(directory) / "new"
+            self.assertEqual(0, run(str(target), "--apply").returncode)
+            (target / ".github/workflows/early.yml").write_text("name: Too early\n", encoding="utf-8")
+            result = run(str(target), "--check-adoption", "--adopt-existing")
+            self.assertEqual(1, result.returncode)
+            self.assertIn("unreviewed bootstrap", result.stdout)
+
+    def test_adoption_rejects_duplicate_contract_keys(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            target = Path(directory)
+            self.custom_producer(target)
+            (target / "okf.semantic.json").write_text('{"schema":"a","schema":"b"}', encoding="utf-8")
+            result = run(str(target), "--check-adoption", "--adopt-existing")
+            self.assertEqual(1, result.returncode)
+            self.assertIn("duplicate JSON key", result.stdout)
+
+    def test_adoption_refuses_symlinked_workflow_controls(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            target = Path(directory) / "repository"
+            target.mkdir()
+            self.custom_producer(target)
+            outside = Path(directory) / "outside.yml"
+            outside.write_text("secret outside material", encoding="utf-8")
+            workflow = target / ".github/workflows/domain.yml"
+            workflow.unlink()
+            workflow.symlink_to(outside)
+            result = run(str(target), "--check-adoption", "--adopt-existing")
+            self.assertEqual(1, result.returncode)
+            self.assertIn("workflow is not a regular file", result.stdout)
+            self.assertNotIn("secret outside material", result.stdout)
+
+    def test_adoption_rejects_missing_or_empty_foundations(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            target = Path(directory)
+            self.custom_producer(target)
+            (target / "SECURITY.md").write_text("\n", encoding="utf-8")
+            (target / "LICENSE_DECISIONS.md").unlink()
+            result = run(str(target), "--check-adoption", "--adopt-existing")
+            self.assertEqual(1, result.returncode)
+            self.assertIn("empty adoption foundation: SECURITY.md", result.stdout)
+            self.assertIn("missing adoption foundation: LICENSE_DECISIONS.md", result.stdout)
+
+    def test_adoption_refuses_unreadable_text_and_non_finite_json(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            target = Path(directory)
+            self.custom_producer(target)
+            (target / "README.md").write_bytes(b"\xff")
+            result = run(str(target), "--check-adoption", "--adopt-existing")
+            self.assertEqual(1, result.returncode)
+            self.assertIn("not readable UTF-8: README.md", result.stdout)
+            (target / "README.md").write_text("# Domain\n", encoding="utf-8")
+            (target / "okf.semantic.json").write_text('{"schema":"custom","extra":NaN}', encoding="utf-8")
+            result = run(str(target), "--check-adoption", "--adopt-existing")
+            self.assertEqual(1, result.returncode)
+            self.assertIn("non-finite JSON value", result.stdout)
 
 
 if __name__ == "__main__":

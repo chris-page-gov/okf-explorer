@@ -173,7 +173,7 @@ that cannot safely be inferred.
     and coverage is current. Do
     not reward raw triple count or duplicated projections.
 
-## Phase 0 — Classify And Bootstrap The Repository
+## Phase 0 — Classify and bootstrap the repository
 
 This classification is the preflight for the recovery and budget phase below.
 Before acquisition, generation or corpus work:
@@ -182,18 +182,25 @@ Before acquisition, generation or corpus work:
 2. run the fail-safe scaffolder as a dry run, then use `--apply` only after
    reviewing its plan; refuse a non-empty or dirty target unless
    `--adopt-existing` is explicit;
-3. create `.gitignore`, `AGENTS.md`, README/status, SECURITY and licensing
-   decisions plus documented source/generated boundaries and disabled CI;
-4. make one initialisation-only default-branch commit containing no corpus,
-   generated bundle or release evidence;
-5. configure the intended required checks while keeping CI disabled until its
-   commands and permissions are reviewed; and
+3. create only appropriate missing `.gitignore`, `AGENTS.md`, README/status,
+   SECURITY and licensing foundations. Retain an existing producer's declared
+   source/generated layout, contracts and reviewed workflows;
+4. for an empty target, make one initialisation-only default-branch commit
+   containing no corpus, generated bundle or release evidence. Preserve an
+   existing repository's history and authored material;
+5. run the strict `--check` for a fresh scaffold, or
+   `--check-adoption --adopt-existing` for customised foundations. Configure the
+   intended required checks. New CI stays disabled until its commands and
+   permissions are reviewed; existing reviewed CI is retained; and
 6. perform domain and build work on a feature branch through a reviewed pull
    request.
 
 The scaffolder must never create a remote, push, publish or enable CI
 implicitly. Record its classification, plan, check output, initial commit and
 handoff in repository-lifecycle evidence.
+The adoption check validates foundations only. It does not execute declared
+commands or certify core, profile, consumer or release conformance. A custom
+contract schema remains explicitly unvalidated until its own checks run.
 Test producer/consumer compatibility in both directions and retain the
     fixtures that define the supported window.
 
