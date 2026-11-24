@@ -58,7 +58,7 @@ class ReleaseMetadataTest(unittest.TestCase):
             re.findall(r"^\s*version:\s*\"([^\"]+)\"\s*$", citation, re.MULTILINE),
         )
         self.assertEqual(
-            ["2026-11-23", "2026-11-23"],
+            ["2026-11-24", "2026-11-24"],
             re.findall(
                 r"^\s*date-released:\s*\"([^\"]+)\"\s*$",
                 citation,
@@ -67,7 +67,7 @@ class ReleaseMetadataTest(unittest.TestCase):
         )
         self.assertRegex(
             changelog,
-            r"(?m)^## v0\.9\.0 - 2026-11-23 - \S",
+            r"(?m)^## v0\.9\.0 - 2026-11-24 - \S",
         )
         self.assertRegex(
             changelog,

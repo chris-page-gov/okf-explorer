@@ -1004,7 +1004,7 @@
     graphExpanded = graphWorkspaceFromLink;
     // A person can submit a URL while the optional registry is still loading.
     // Never let delayed start-up supersede that explicit request.
-    if (loadRequest === loadRequestAtStart) await loadSource(initialUrl);
+    if (loadRequest === loadRequestAtStart) await loadSource(initialUrl, [], '', { preservePanel: true });
   }
 
   function initialBundleUrl(): string {
@@ -1418,13 +1418,16 @@
   async function loadSource(
     url: string,
     declaredRoutes: FederationAccessRoute[] = [],
-    declaredRawSubpath = ''
+    declaredRawSubpath = '',
+    options: { preservePanel?: boolean } = {}
   ) {
     const requestId = ++loadRequest;
     interactionMode = 'search';
     foldedSets = [];
     smallOpenFacet = ''; smallPinnedFacets = []; smallOpenedPinnedFacets = []; openedPinnedFacets = [];
-    activePanel = 'content';
+    // Initial registry loading must not undo a panel the person already chose.
+    // Explicitly loading another bundle still starts in its content panel.
+    if (!options.preservePanel) activePanel = 'content';
     const bundleInputAtStart = bundleInputUrl;
     largeSearchRequest += 1;
     const absoluteUrl = toAbsoluteUrl(url);
@@ -1537,7 +1540,7 @@
         if (bundleInputAtStart === url && bundleInputUrl === bundleInputAtStart) {
           bundleInputUrl = movedTo;
         }
-        await loadSource(movedTo);
+        await loadSource(movedTo, [], '', options);
         return;
       }
       // The fetched descriptor becomes the current review identity before any
@@ -1662,7 +1665,7 @@
         const hash = safeDecodeHash();
         selectedId = initialSmallRoute(corpus, hash);
         smallOpenFacet = learningPresentation(corpus)?.facets[0]?.key || '';
-      if (learningPresentation(corpus)) { rightCollapsed = true; activePanel = 'content'; }
+      if (learningPresentation(corpus)) { rightCollapsed = true; if (!options.preservePanel) activePanel = 'content'; }
         if (!initialViewMode() && conversationPresentation(corpus.nodes[selectedId])) activeView = 'narrative';
       }
       if (source?.kind === 'small') {

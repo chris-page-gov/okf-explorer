@@ -1,11 +1,15 @@
 # Changelog
 
-## v0.9.0 - 2026-11-23 - OKF 0.3
+## v0.9.0 - 2026-11-24 - OKF 0.3
 
 - Prepare the formal Explorer implementation release for OKF 0.3. Regenerate
   the reference bundle and legacy viewer from the authoritative Markdown and
   versioned package metadata. The upstream announcement date is 18 November
   2026; the OKF+ implementation date is 23 November 2026.
+- Preserve the selected mobile workspace panel when the optional registry
+  finishes loading. A person who opens Details during start-up keeps that
+  choice when the requested bundle arrives. Test the delayed registry directly
+  and retain the failed public journey as release evidence.
 - Let pointer clicks reach graph nodes beneath another label's transparent
   padding. Keep visible labels and keyboard activation usable. Add a real
   Chrome regression reproducing the observed Hansard collision.
