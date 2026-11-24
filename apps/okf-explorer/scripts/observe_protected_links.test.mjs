@@ -12,6 +12,7 @@ import {
   buildReceipt,
   canonicalReprobeTarget,
   main,
+  observeAction,
   removeChromeProfile,
   protectedActions
 } from './observe_protected_links.mjs';
@@ -22,6 +23,29 @@ const browser = {
   webdriver: false,
   languages: ['en-GB', 'en']
 };
+
+test('failed page identity retains HTTP and DOM diagnostics and still rejects', async () => {
+  let stopped = false;
+  const session = {
+    on(method, listener) {
+      listener({type: 'Document', frameId: 'main', response: {url: 'https://example.org/page?token=secret', status: 403}});
+      return () => { stopped = true; };
+    },
+    async send(method) {
+      if (method === 'Page.navigate') return {frameId: 'main'};
+      return {result: {value: {href: 'https://example.org/page?token=secret', title: 'Access denied', bodyText: 'Please contact the source publisher', readyState: 'complete'}}};
+    }
+  };
+  await assert.rejects(observeAction(session, action(1, 'https://example.org/page?token=secret', 'Expected official identity'), 1), (error) => {
+    assert.match(error.message, /DOM identity text did not appear/);
+    assert.equal(error.observationDiagnostics.title, 'Access denied');
+    assert.equal(error.observationDiagnostics.document_responses[0].status, 403);
+    assert.equal(error.observationDiagnostics.visible_text_excerpt, 'Please contact the source publisher');
+    assert.doesNotMatch(JSON.stringify(error.observationDiagnostics), /secret/);
+    return true;
+  });
+  assert.equal(stopped, true);
+});
 
 function action(sequence, value, expectedText) {
   return {
@@ -203,11 +227,12 @@ test(
   },
   async () => {
     const temporary = await mkdtemp(`${tmpdir()}/okf-chrome-observer-test-`);
-    const server = createServer((_request, response) => {
-      response.writeHead(200, { 'content-type': 'text/html; charset=utf-8' });
+    const server = createServer((request, response) => {
+      const denied = request.url === '/denied';
+      response.writeHead(denied ? 403 : 200, { 'content-type': 'text/html; charset=utf-8' });
       response.end(
         '<!doctype html><title>Genuine Chrome fixture</title>' +
-          '<main>Verified genuine browser identity</main>'
+          (denied ? '<main>Source access denied</main>' : '<main>Verified genuine browser identity</main>')
       );
     });
     server.listen(0, '127.0.0.1');
@@ -248,6 +273,15 @@ test(
         receipt.records[0].identity_excerpt,
         /Verified genuine browser identity/
       );
+      await writeFile(journeyPath, JSON.stringify({journeys: [{id: 'journey-publication', actions: [action(1, requestedUrl.replace('/source', '/denied'), 'Expected official identity')]}]}));
+      const failedOutput = join(temporary, 'failed-receipt.json');
+      await assert.rejects(main([journeyPath, failedOutput, '--chrome', process.env.CHROME_PATH || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', '--timeout-ms', '1000']), /DOM identity text did not appear/);
+      const failure = JSON.parse(await readFile(`${failedOutput}.failure.json`, 'utf8'));
+      assert.equal(failure.status, 'failed');
+      assert.equal(failure.observation.document_responses.at(-1).status, 403);
+      assert.equal(failure.observation.title, 'Genuine Chrome fixture');
+      assert.equal(failure.observation.visible_text_excerpt, 'Source access denied');
+      await assert.rejects(readFile(failedOutput), {code: 'ENOENT'});
     } finally {
       server.close();
       await once(server, 'close');

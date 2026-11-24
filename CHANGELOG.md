@@ -21,6 +21,12 @@
 - Add browser coverage for selecting a valid record with no advertised count
   and for an aggregate with no reported counts, empty results and an explicit
   zero record.
+## Unreleased — protected source failure diagnostics
+
+- Retain the final page title, visible text excerpt, URL and document HTTP
+  statuses when a genuine Chrome source-page observation fails. Write a
+  separate failed diagnostic file and continue to reject the observation;
+  success receipts and promotion requirements remain unchanged.
 
 ## Unreleased — source-backed publisher labels
 
