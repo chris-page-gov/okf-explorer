@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import gzip
 import json
 import sys
 import tomllib
@@ -130,15 +131,22 @@ class UvToolchainTests(unittest.TestCase):
         self,
     ) -> None:
         expected_sha256 = {
-            "evaluation-foundry/fixtures/heritage-warwickshire/evaluation-profile.yaml":
+            "evaluation-foundry/fixtures/heritage-warwickshire/history/2.0.0/evaluation-profile.source.yaml.gz":
                 "0f0ab836716577806a33be99bda320264704899fe8f1f53a87072befe0d74bd2",
-            "evaluation/heritage/evaluation-profile.yaml":
+            "evaluation-foundry/fixtures/heritage-warwickshire/history/2.0.0/evaluation-profile.published.yaml.gz":
                 "c7f25579e6a5823ebab24bb8f87ededaf4cc27e1c0f9f54cee2daffbf277aed4",
         }
         for relative, expected in expected_sha256.items():
             with self.subTest(path=relative):
-                raw = (ROOT / relative).read_bytes()
+                raw = gzip.decompress((ROOT / relative).read_bytes())
                 self.assertEqual(expected, hashlib.sha256(raw).hexdigest())
+
+        current = YAML(typ="safe").load(
+            (ROOT / "evaluation-foundry/fixtures/heritage-warwickshire/evaluation-profile.yaml").read_text()
+        )
+        self.assertEqual("2.1.0", current["version"])
+        self.assertTrue(all(command.startswith("uv run --locked python ")
+                            for command in current["consumer_contract"]["fixture_protocol"]["producer_stage"]["commands"]))
 
         current_workflows = "\n".join(
             path.read_text(encoding="utf-8") for path in WORKFLOWS

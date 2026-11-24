@@ -47,16 +47,22 @@ jobs:
           printf '%s\n' "$assurance_commit" | grep -Eq '^[0-9a-f]{40}$'
           test "$assurance_commit" = "$ASSURANCE_REF"
           echo "ASSURANCE_COMMIT=$assurance_commit" >> "$GITHUB_ENV"
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+      - uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
         with:
-          python-version: "3.12"
-      - uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6
+          version: "0.13.4"
+      - name: Synchronise the governed Python environment
+        run: |
+          export UV_PROJECT_ENVIRONMENT="$RUNNER_TEMP/heritage-publication-venv"
+          printf 'UV_PROJECT_ENVIRONMENT=%s\n' "$UV_PROJECT_ENVIRONMENT" >> "$GITHUB_ENV"
+          uv python install 3.12.11
+          uv sync --locked --project assurance --python 3.12.11
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
         with:
-          version: 10
+          version: 10.34.7
           package_json_file: assurance/apps/okf-explorer/package.json
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: 24
+          node-version: '26.13.1'
           cache: pnpm
           cache-dependency-path: assurance/apps/okf-explorer/pnpm-lock.yaml
       - name: Install pinned assurance dependencies
@@ -87,7 +93,7 @@ jobs:
       - name: Validate the deployed candidate identity
         run: |
           mkdir -p "$RUNNER_TEMP/terminal-evidence"
-          python3 publication/site/scripts/build_publication_assurance_receipt.py validation \
+          uv run --locked --project assurance python publication/site/scripts/build_publication_assurance_receipt.py validation \
             --publication-root publication/site \
             --repository "$GITHUB_REPOSITORY" \
             --source-commit "$(git -C publication rev-parse HEAD)" \
@@ -96,7 +102,7 @@ jobs:
       - name: Observe every rendered anchor and all three intent universes
         run: >-
           timeout --signal=TERM 75m
-          python3 assurance/scripts/observe_link_intents.py
+          uv run --locked --project assurance python assurance/scripts/observe_link_intents.py
           --publication-root "$GITHUB_WORKSPACE/publication/site"
           --policy "$GITHUB_WORKSPACE/publication/site/release-assurance/link-observation-policy.json"
           --all-shards
@@ -143,7 +149,7 @@ jobs:
           done
       - name: Bind the complete three-engine journey receipt
         run: >-
-          python3 publication/site/scripts/build_publication_assurance_receipt.py journeys
+          uv run --locked --project assurance python publication/site/scripts/build_publication_assurance_receipt.py journeys
           --validation-receipt "$RUNNER_TEMP/terminal-evidence/publication-validation-receipt.json"
           --result "chromium=$RUNNER_TEMP/journey-chromium/results.json"
           --result "firefox=$RUNNER_TEMP/journey-firefox/results.json"

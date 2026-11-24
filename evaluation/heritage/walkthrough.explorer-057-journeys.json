@@ -1,0 +1,156 @@
+{
+  "bundle_descriptor": "okf-explorer.json",
+  "expected_identity": {
+    "id": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/okf-explorer.json",
+    "schema": "okf-explorer-large-corpus.v1",
+    "snapshot": "heritage-coventry-warwickshire-20260803-v2",
+    "version": "1.1.0"
+  },
+  "journeys": [
+    {
+      "actions": [
+        {
+          "hash": "#asset/1364805",
+          "params": {
+            "q": "WARWICK CASTLE",
+            "view": "reader"
+          },
+          "type": "goto"
+        },
+        {
+          "selector": "aside.right-panel h2:text-is(\"WARWICK CASTLE\")",
+          "type": "wait_for"
+        },
+        {
+          "selector": "aside.right-panel:has-text(\"1364805\")",
+          "type": "wait_for"
+        }
+      ],
+      "assertions": [
+        {
+          "includes": "WARWICK CASTLE",
+          "selector": "aside.right-panel",
+          "type": "text"
+        },
+        {
+          "includes": "1364805",
+          "selector": "aside.right-panel",
+          "type": "text"
+        },
+        {
+          "type": "console_clean"
+        }
+      ],
+      "id": "inspect-walkthrough-record-0"
+    },
+    {
+      "actions": [
+        {
+          "hash": "#asset/1000386",
+          "params": {
+            "q": "WARWICK CASTLE",
+            "view": "reader"
+          },
+          "type": "goto"
+        },
+        {
+          "selector": "aside.right-panel h2:text-is(\"WARWICK CASTLE\")",
+          "type": "wait_for"
+        },
+        {
+          "selector": "aside.right-panel:has-text(\"1000386\")",
+          "type": "wait_for"
+        }
+      ],
+      "assertions": [
+        {
+          "includes": "WARWICK CASTLE",
+          "selector": "aside.right-panel",
+          "type": "text"
+        },
+        {
+          "includes": "1000386",
+          "selector": "aside.right-panel",
+          "type": "text"
+        },
+        {
+          "type": "console_clean"
+        }
+      ],
+      "id": "inspect-walkthrough-record-1"
+    },
+    {
+      "actions": [
+        {
+          "hash": "#asset/1005757",
+          "params": {
+            "q": "Warwick Castle (uninhabited parts)",
+            "view": "reader"
+          },
+          "type": "goto"
+        },
+        {
+          "selector": "aside.right-panel h2:text-is(\"Warwick Castle (uninhabited parts)\")",
+          "type": "wait_for"
+        },
+        {
+          "selector": "aside.right-panel:has-text(\"1005757\")",
+          "type": "wait_for"
+        }
+      ],
+      "assertions": [
+        {
+          "includes": "Warwick Castle (uninhabited parts)",
+          "selector": "aside.right-panel",
+          "type": "text"
+        },
+        {
+          "includes": "1005757",
+          "selector": "aside.right-panel",
+          "type": "text"
+        },
+        {
+          "type": "console_clean"
+        }
+      ],
+      "id": "inspect-walkthrough-record-2"
+    },
+    {
+      "actions": [
+        {
+          "hash": "#risk/2025/entry/6d8741a24bcd6671d8b1",
+          "params": {
+            "q": "Warwick Castle (uninhabited parts), Warwick",
+            "view": "reader"
+          },
+          "type": "goto"
+        },
+        {
+          "selector": "aside.right-panel h2:text-is(\"Warwick Castle (uninhabited parts), Warwick\")",
+          "type": "wait_for"
+        },
+        {
+          "selector": "aside.right-panel:has-text(\"6d8741a24bcd6671d8b1\")",
+          "type": "wait_for"
+        }
+      ],
+      "assertions": [
+        {
+          "includes": "Warwick Castle (uninhabited parts), Warwick",
+          "selector": "aside.right-panel",
+          "type": "text"
+        },
+        {
+          "includes": "6d8741a24bcd6671d8b1",
+          "selector": "aside.right-panel",
+          "type": "text"
+        },
+        {
+          "type": "console_clean"
+        }
+      ],
+      "id": "inspect-walkthrough-record-3"
+    }
+  ],
+  "schema": "okf-explorer-journeys.v1"
+}

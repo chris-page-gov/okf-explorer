@@ -313,11 +313,12 @@ def render_markdown(
         ),
     )
     rendered = f"""<!doctype html>
-<html lang="en">
+<html lang="en-GB">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{html.escape(title_match)}</title>
+<link rel="icon" href="data:,">
 <link rel="canonical" href="{html.escape(canonical_url, quote=True)}">
 <style>body{{font:16px/1.55 system-ui,sans-serif;max-width:78rem;margin:auto;padding:2rem}}pre,code{{overflow:auto}}table{{border-collapse:collapse}}td,th{{border:1px solid #bbb;padding:.4rem}}</style>
 </head>

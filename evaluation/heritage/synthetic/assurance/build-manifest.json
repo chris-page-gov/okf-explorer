@@ -1,21 +1,27 @@
 {
   "counts": {
-    "bytes": 285950,
-    "files": 355,
+    "bytes": 359648,
+    "files": 362,
     "planes": {
       "control": 2,
       "data": 25,
-      "presentation": 3,
+      "presentation": 10,
       "search": 314,
       "semantic": 11
     }
   },
   "entries": [
     {
-      "bytes": 66370,
+      "bytes": 19966,
+      "path": "ai-context.md",
+      "plane": "presentation",
+      "sha256": "14f166170bc896b241387d6770aebf876c9f2ee3f524f8742ff685b5fa3157e0"
+    },
+    {
+      "bytes": 67604,
       "path": "assurance/plane-roots.json",
       "plane": "control",
-      "sha256": "0a76d6c54cfa32d183aa6d0ed4895a81b45c22335aa4b95a51811f335d3f4da9"
+      "sha256": "6e746411e508aca2f2785d93ece9960884f9f65f53337371d6dddcebe419cd66"
     },
     {
       "bytes": 1065,
@@ -2106,10 +2112,16 @@
       "sha256": "495c863f506d878dbea542b4e62cc70e70af3683b11b6952471219d034618e2f"
     },
     {
-      "bytes": 2384,
+      "bytes": 3459,
       "path": "index.md",
       "plane": "presentation",
-      "sha256": "e6eeee1732d5b8d2d1edc655950546a4912cd399eb377d6881137956f6031daf"
+      "sha256": "4c4e561b322b5a6fe2529e84609b21b7b7e26dc6d0d1016a6a1daeaabbbab677"
+    },
+    {
+      "bytes": 988,
+      "path": "llms.txt",
+      "plane": "presentation",
+      "sha256": "88098a1f13b28b76c94974aca66fa5a82e21fa00419046875b7eba67be718d89"
     },
     {
       "bytes": 344,
@@ -2121,7 +2133,7 @@
       "bytes": 2072,
       "path": "methodology.md",
       "plane": "presentation",
-      "sha256": "0310ea74f8f9fe65b684e4dd6a65362eff40d23690a835552dda7992f56c469f"
+      "sha256": "7c0d0558020899a9b2bfc226287dec138c2aff3ac460f9070e0b1836588e117e"
     },
     {
       "bytes": 7125,
@@ -2136,10 +2148,40 @@
       "sha256": "7ab19ce1154af8b1f109bf8ce908ba3f5e7fd4c391a2c6ea7b72f783bcac3d51"
     },
     {
-      "bytes": 5670,
+      "bytes": 6038,
       "path": "okf-explorer.json",
       "plane": "control",
-      "sha256": "767f66e5aecd77f7597f35e5093f0e603a500e7a7d1aa0d8dd244e2fb3aa8536"
+      "sha256": "4492bc11ca91ba00387aa7ff8a1247d63fffde56e365bfbdedb4e985b9ece557"
+    },
+    {
+      "bytes": 19788,
+      "path": "walkthrough-data.json",
+      "plane": "presentation",
+      "sha256": "a17b39aa06ce5be5415e216d9694dd99034177ad73b6dc050793cb81cefd80da"
+    },
+    {
+      "bytes": 3248,
+      "path": "walkthrough.explorer-057-journeys.json",
+      "plane": "presentation",
+      "sha256": "32b2220793d82f1a53e3e464f5a453b1e56199089e4c1e3f7d19bbfc8312808c"
+    },
+    {
+      "bytes": 3476,
+      "path": "walkthrough.explorer-journeys.json",
+      "plane": "presentation",
+      "sha256": "d0cbf8331e13eeb0a625c36089609a9554b8287efba1288ce9e4fe277b96850a"
+    },
+    {
+      "bytes": 22062,
+      "path": "walkthrough.html",
+      "plane": "presentation",
+      "sha256": "f3eea8166ef6d3f1e265fc5ee8b66b97df30454067106c0171cb69846c697353"
+    },
+    {
+      "bytes": 1493,
+      "path": "walkthrough.svg",
+      "plane": "presentation",
+      "sha256": "5cfd6d0190f7c6957c2221984b51ca69d358e775dae53109fadc65e18efd4ae9"
     }
   ],
   "ownership": "Only listed paths may be changed or removed by the heritage builder.",

@@ -22,11 +22,17 @@ jobs:
       PYTHONDONTWRITEBYTECODE: "1"
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+      - uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
         with:
-          python-version: "3.12"
+          version: "0.13.4"
+      - name: Synchronise the governed Python environment
+        run: |
+          export UV_PROJECT_ENVIRONMENT="$RUNNER_TEMP/heritage-publication-venv"
+          printf 'UV_PROJECT_ENVIRONMENT=%s\n' "$UV_PROJECT_ENVIRONMENT" >> "$GITHUB_ENV"
+          uv python install 3.12.11
+          uv sync --locked --project site/toolchain --python 3.12.11
       - name: Validate exact rooted publication candidate
-        run: python3 site/scripts/check_publication_unit_manifest.py site
+        run: uv run --locked --project site/toolchain python site/scripts/check_publication_unit_manifest.py site
       - uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6
       - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
         with:

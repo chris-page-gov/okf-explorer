@@ -1,6 +1,6 @@
 schema: okf-evaluation-profile.v2
 profile_id: heritage-coventry-warwickshire-v1
-version: 2.0.0
+version: 2.1.0
 title: Coventry and Warwickshire heritage functionality evaluation
 description: >-
   A reproducible Evaluation Foundry profile for testing every OKF Explorer
@@ -154,8 +154,8 @@ consumer_contract:
     - id: CONSUMER-OKF-EXPLORER
       title: OKF Explorer static PWA and browser-compatible generated Site
       kind: viewer
-      version_or_digest: "@okf/explorer@0.5.7 (commit 0b5d748dc13ed83134592fc0873a2ff25d83eada)"
-      source: https://github.com/chris-page-gov/okf-explorer/tree/0b5d748dc13ed83134592fc0873a2ff25d83eada/apps/okf-explorer
+      version_or_digest: "@okf/explorer@0.9.0 (commit cce6e68d95c2946bb425effbaab48fbf04281a09)"
+      source: https://github.com/chris-page-gov/okf-explorer/tree/cce6e68d95c2946bb425effbaab48fbf04281a09/apps/okf-explorer
       interfaces:
         - okf-explorer descriptor and sharded data entrypoints
         - YAML-LD and JSON-LD semantic representations
@@ -170,15 +170,39 @@ consumer_contract:
         - urn:okf-evidence:heritage-candidate-plane-roots
       executable_identity:
         package: "@okf/explorer"
+        version: 0.9.0
+        commit: cce6e68d95c2946bb425effbaab48fbf04281a09
+        lock_sha256: 3b7d5610daef8d4773c2f65e3130cf23aa9c9e067e7a3cfe425d004d0d32140d
+        command: pnpm --dir apps/okf-explorer acceptance:bundle -- --bundle-root evaluation/heritage --journeys evaluation/heritage/walkthrough.explorer-journeys.json
+    - id: CONSUMER-OKF-EXPLORER-0-5-7
+      title: OKF Explorer static PWA and browser-compatible generated Site
+      kind: viewer
+      version_or_digest: "@okf/explorer@0.5.7 (commit 0b5d748dc13ed83134592fc0873a2ff25d83eada)"
+      source: https://github.com/chris-page-gov/okf-explorer/tree/0b5d748dc13ed83134592fc0873a2ff25d83eada/apps/okf-explorer
+      interfaces:
+        - okf-explorer descriptor and sharded data entrypoints
+        - YAML-LD and JSON-LD semantic representations
+        - browser-compatible generated Site and durable URL state
+      execution: >-
+        Build the pinned app deterministically and run its external-bundle
+        acceptance contract and declared browser journeys against the selected
+        fixture bytes.
+      required_for_release: true
+      deep_link_required: false
+      evidence_refs:
+        - urn:okf-evidence:heritage-candidate-plane-roots
+      executable_identity:
+        package: "@okf/explorer"
         version: 0.5.7
         commit: 0b5d748dc13ed83134592fc0873a2ff25d83eada
         lock_sha256: 25eb2cd4f1dd2f93ce89e3884e3d9293d490371bd55d4469bba0263ee083ffc1
-        command: pnpm --dir apps/okf-explorer acceptance:bundle -- --bundle-root evaluation/heritage --journeys evaluation-foundry/fixtures/heritage-warwickshire/journeys.json
+        command: pnpm --dir apps/okf-explorer acceptance:bundle -- --bundle-root evaluation/heritage --journeys evaluation/heritage/walkthrough.explorer-057-journeys.json
   lock:
     path: consumer-lock.json
-    sha256: 3857b873709af12cba66d5adecf79caef18762d9076c2183f17c4e35802af430
+    sha256: bd0b1b73d7329e843911ea8ce7f45aa96c77e5dd4018ba938bace7b13090ddb6
     consumer_ids:
       - CONSUMER-OKF-EXPLORER
+      - CONSUMER-OKF-EXPLORER-0-5-7
     update_policy: >-
       Change the pinned Explorer only through review of consumer-lock.json,
       followed by its dependency-graph closure, both compatibility directions,
@@ -228,6 +252,11 @@ consumer_contract:
         label: Pinned OKF Explorer
         location: consumer-lock.json#CONSUMER-OKF-EXPLORER
         consumer_ref: CONSUMER-OKF-EXPLORER
+      - id: NODE-CONSUMER-LEGACY
+        kind: consumer
+        label: Pinned legacy OKF Explorer 0.5.7
+        location: consumer-lock.json#CONSUMER-OKF-EXPLORER-0-5-7
+        consumer_ref: CONSUMER-OKF-EXPLORER-0-5-7
       - id: NODE-VALIDATOR-PROFILE
         kind: validator
         label: Evaluation profile and impact-contract validator
@@ -315,6 +344,13 @@ consumer_contract:
         change_impacts: [Run the external-bundle consumer contract.]
         affected_plane_refs: [PLANE-CONTROL, PLANE-PRESENTATION]
         validation_refs: [VAL-CONSUMER]
+      - id: EDGE-CONTROL-CONSUMER-LEGACY
+        from_node: NODE-CONTROL
+        to_node: NODE-CONSUMER-LEGACY
+        contract: The pinned Explorer resolves declared entrypoints without guessing.
+        change_impacts: [Run the external-bundle consumer contract.]
+        affected_plane_refs: [PLANE-CONTROL, PLANE-PRESENTATION]
+        validation_refs: [VAL-CONSUMER]
       - id: EDGE-DATA-CORPUS-VALIDATOR
         from_node: NODE-DATA
         to_node: NODE-VALIDATOR-CORPUS
@@ -384,9 +420,9 @@ consumer_contract:
       id: FIXTURE-STAGE-PRODUCER
       purpose: Build adversarial microfixtures and the tiny fixture twice before any faithful-corpus work.
       commands:
-        - python3 scripts/build_heritage_evaluation.py --fixture tiny
-        - python3 scripts/build_heritage_evaluation.py --check
-        - python3 scripts/check_heritage_adversarial.py
+        - uv run --locked python scripts/build_heritage_evaluation.py --fixture tiny
+        - uv run --locked python scripts/build_heritage_evaluation.py --check
+        - uv run --locked python scripts/check_heritage_adversarial.py
       cases:
         - Unsafe or redirected rich link
         - Misspelled familiar name and alternative place name
@@ -403,7 +439,7 @@ consumer_contract:
       id: FIXTURE-STAGE-CONSUMER
       purpose: Execute the pinned Explorer against selected tiny, faithful and synthetic fixture projections.
       commands:
-        - pnpm --dir apps/okf-explorer acceptance:bundle -- --bundle-root evaluation/heritage --journeys evaluation-foundry/fixtures/heritage-warwickshire/journeys.json
+        - pnpm --dir apps/okf-explorer acceptance:bundle -- --bundle-root evaluation/heritage --journeys evaluation/heritage/walkthrough.explorer-journeys.json
       cases:
         - Reader, graph, links, timeline, type, resources, map and narrative views
         - Search alternatives and misspellings
@@ -414,7 +450,7 @@ consumer_contract:
         - The actual consumer loads declared entrypoints and never guesses a path.
         - Selected journey groups restore identity and state with no browser errors.
         - Unsupported or corrupt inputs degrade explicitly or fail closed.
-      consumer_refs: [CONSUMER-OKF-EXPLORER]
+      consumer_refs: [CONSUMER-OKF-EXPLORER, CONSUMER-OKF-EXPLORER-0-5-7]
       validation_refs: [VAL-CONSUMER, VAL-BROWSER]
   planes:
     - id: PLANE-CONTROL
@@ -424,7 +460,7 @@ consumer_contract:
       digest_manifest: ../../../evaluation/heritage/assurance/plane-roots.json
       root_receipt: ../../../evaluation/heritage/assurance/plane-roots.json
       invalidated_by: [Profile, schema, descriptor, entrypoint, snapshot binding or consumer-lock changes]
-      consumer_refs: [CONSUMER-OKF-EXPLORER]
+      consumer_refs: [CONSUMER-OKF-EXPLORER, CONSUMER-OKF-EXPLORER-0-5-7]
       validation_refs: [VAL-PROFILE, VAL-CORPUS, VAL-CONSUMER]
     - id: PLANE-DATA
       title: Normalized record, resource, relationship and provenance plane
@@ -433,7 +469,7 @@ consumer_contract:
       digest_manifest: ../../../evaluation/heritage/assurance/plane-roots.json
       root_receipt: ../../../evaluation/heritage/assurance/plane-roots.json
       invalidated_by: [Source snapshot, normalization, identity, geometry, provenance or relationship changes]
-      consumer_refs: [CONSUMER-OKF-EXPLORER]
+      consumer_refs: [CONSUMER-OKF-EXPLORER, CONSUMER-OKF-EXPLORER-0-5-7]
       validation_refs: [VAL-CORPUS, VAL-CONSUMER]
     - id: PLANE-SEARCH
       title: Search, alias, prefix, postings and typo-tolerance plane
@@ -442,7 +478,7 @@ consumer_contract:
       digest_manifest: ../../../evaluation/heritage/assurance/plane-roots.json
       root_receipt: ../../../evaluation/heritage/assurance/plane-roots.json
       invalidated_by: [Search normalization, labels, aliases, alternative names, tokenization or typo policy changes]
-      consumer_refs: [CONSUMER-OKF-EXPLORER]
+      consumer_refs: [CONSUMER-OKF-EXPLORER, CONSUMER-OKF-EXPLORER-0-5-7]
       validation_refs: [VAL-CORPUS, VAL-BROWSER]
     - id: PLANE-SEMANTIC
       title: Normalized graph and YAML-LD or JSON-LD interchange plane
@@ -451,7 +487,7 @@ consumer_contract:
       digest_manifest: ../../../evaluation/heritage/assurance/plane-roots.json
       root_receipt: ../../../evaluation/heritage/assurance/plane-roots.json
       invalidated_by: [Context, IRI, predicate, assertion, graph route or canonicalization changes]
-      consumer_refs: [CONSUMER-OKF-EXPLORER]
+      consumer_refs: [CONSUMER-OKF-EXPLORER, CONSUMER-OKF-EXPLORER-0-5-7]
       validation_refs: [VAL-CORPUS, VAL-CONSUMER, VAL-BROWSER]
     - id: PLANE-PRESENTATION
       title: Markdown, rich reader and durable browser state plane
@@ -460,7 +496,7 @@ consumer_contract:
       digest_manifest: ../../../evaluation/heritage/assurance/plane-roots.json
       root_receipt: ../../../evaluation/heritage/assurance/plane-roots.json
       invalidated_by: [Markdown, reader, route, graph, map, CSS, accessibility or hosting-base changes]
-      consumer_refs: [CONSUMER-OKF-EXPLORER]
+      consumer_refs: [CONSUMER-OKF-EXPLORER, CONSUMER-OKF-EXPLORER-0-5-7]
       validation_refs: [VAL-CONSUMER, VAL-BROWSER, VAL-SITE]
     - id: PLANE-RELEASE
       title: Candidate identity, publication evidence and signed promotion envelope
@@ -473,8 +509,8 @@ consumer_contract:
       validation_refs: [VAL-SITE, VAL-RELEASE]
   compatibility:
     support_policy: >-
-      Test the current producer with the pinned 0.5.7 Explorer and test the
-      current Explorer with the retained tiny producer fixture; undeclared
+      Test the current producer with both pinned 0.5.7 and 0.9.0 Explorers and
+      test Explorer 0.9.0 with the retained tiny producer fixture; undeclared
       contracts fail closed.
     window_decision:
       supported_producer_contracts:
@@ -482,13 +518,14 @@ consumer_contract:
         - okf-evaluation-plane-roots.v2
       supported_consumer_versions:
         - "@okf/explorer@0.5.7"
+        - "@okf/explorer@0.9.0"
       unsupported_behavior: fail-closed
       decision_refs: []
     cases:
       - id: COMPAT-BACKWARD-CURRENT-PRODUCER
         direction: backward-new-producer-old-consumer
         producer_fixture: ../../../evaluation/heritage/okf-explorer.json
-        consumer_ref: CONSUMER-OKF-EXPLORER
+        consumer_ref: CONSUMER-OKF-EXPLORER-0-5-7
         expected_result: accept
         validation_refs: [VAL-CONSUMER]
       - id: COMPAT-FORWARD-RETAINED-PRODUCER
@@ -596,12 +633,18 @@ impact_policy:
     - id: IMPACT-PRODUCER
       patterns:
         - scripts/build_heritage_evaluation.py
+        - scripts/build_heritage_walkthrough.py
+        - evaluation-foundry/fixtures/heritage-warwickshire/walkthroughs/*.case.json
+        - pyproject.toml
+        - uv.lock
+        - .python-version
         - scripts/build_uk_government_api_okf.py
         - scripts/heritage_evaluation/**
         - scripts/heritage_build_io.py
         - scripts/okf_semantic.py
         - requirements-okf.txt
         - tests/test_build_heritage_evaluation.py
+        - tests/test_heritage_walkthrough.py
       node_refs: [NODE-PRODUCER]
       fixtures: [adversarial, tiny, faithful, synthetic]
       test_tags: [producer, determinism]
@@ -775,6 +818,7 @@ impact_policy:
     - id: IMPACT-FOUNDRY-JOURNEYS
       patterns:
         - evaluation-foundry/fixtures/heritage-warwickshire/journeys.json
+        - evaluation/heritage/walkthrough.explorer-journeys.json
         - evaluation-foundry/fixtures/heritage-warwickshire/questions.json
         - evaluation-foundry/fixtures/heritage-warwickshire/feature-coverage.json
         - evaluation-foundry/fixtures/heritage-warwickshire/mapping-proposals.yaml

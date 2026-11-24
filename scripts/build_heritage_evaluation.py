@@ -29,6 +29,7 @@ from urllib.parse import parse_qsl, quote, unquote, urlencode, urlparse
 
 import build_uk_government_api_okf as large_corpus
 import heritage_build_io
+import build_heritage_walkthrough
 import okf_semantic
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -2287,7 +2288,7 @@ def markdown_files(corpus: dict[str, Any], snapshot: dict[str, Any]) -> dict[Pat
     boundary_note = (
         "Every item is invented and labelled synthetic. Nothing here is loaded, counted or searched by the faithful corpus."
         if publication["role"] == "synthetic"
-        else "The corpus contains only official fields and visibly labelled mechanical normalizations. Synthetic capability examples are isolated in a different bundle and namespace and do not affect these counts."
+        else "The corpus contains only official fields and visibly labelled mechanical normalisations. Synthetic capability examples are isolated in a different bundle and namespace and do not affect these counts."
     )
     descriptor_url = f"{public_base}okf-explorer.json"
     explorer_url = f"{EXPLORER_BASE}?bundle={quote(descriptor_url, safe='')}"
@@ -2301,6 +2302,12 @@ def markdown_files(corpus: dict[str, Any], snapshot: dict[str, Any]) -> dict[Pat
         f"- [Read this corpus landing page as HTML]({public_base}index.html)",
         f"- [Read this corpus methodology as HTML]({public_base}methodology.html)",
     ]
+    if build_heritage_walkthrough.has_walkthrough(snapshot):
+        entry_links.extend([
+            f"- [Follow this bundle's own worked question]({public_base}walkthrough.html)",
+            f"- [Inspect its source and assertion evidence]({public_base}walkthrough-data.json)",
+            f"- [Read the labelled AI context]({public_base}ai-context.md)",
+        ])
     if role != "faithful":
         entry_links.append(
             f"- [Return to the faithful evaluation corpus]({family_public_base}index.html)"
@@ -2311,13 +2318,14 @@ def markdown_files(corpus: dict[str, Any], snapshot: dict[str, Any]) -> dict[Pat
             f"({family_public_base}evaluation-foundry/fixtures/heritage-warwickshire/profile.html)",
             "- [Read the full evaluation report as HTML]"
             f"({family_public_base}docs/heritage-evaluation-report.html)",
-            "- [Inspect the immutable exemplar release]"
+            "- [Inspect the historical August 2026 exemplar release]"
             "(https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/"
             "releases/tag/heritage-coventry-warwickshire-20260804)",
         ]
     )
     published_entry_points = "\n".join(entry_links)
     index = f'''---
+okf_version: "0.3"
 "@context": https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/context.jsonld
 "@id": {public_base}
 type: Evaluation Corpus
@@ -2352,6 +2360,18 @@ Published entry points for this {entry_scope}:
 ## Publication boundary
 
 {boundary_note}
+
+## Core and profile boundary
+
+Core OKF 0.3 applies to the navigation and methodology Markdown. Structured
+record counts describe the separate Evaluation Foundry metadata profile;
+they are not counts of typed Markdown concepts. `index.md` and `log.md` remain
+navigation. No named human verification is claimed by generation alone.
+
+This bundle's 0.3 migration date is 24 November 2026. The upstream announcement
+date is 18 November 2026. Use the [central current and historical standards
+register](https://github.com/chris-page-gov/okf-explorer/blob/main/docs/okf-standards.md)
+for the pinned specification and bundle catalogue.
 '''
     method_content = (
         '''## Synthetic scope
@@ -2451,7 +2471,7 @@ invent a day or month.'''
 "@id": {public_base}methodology.html
 type: Methodology
 title: {publication['title']} methodology
-description: Scope, acquisition, normalization, link and completeness rules for the exemplar.
+description: Scope, acquisition, normalisation, link and completeness rules for the exemplar.
 resource: {public_base}data/source-provenance.json
 generated:
   by: process:heritage-evaluation-builder
@@ -2470,7 +2490,14 @@ assertion_scope: {snapshot.get('scope', {}).get('assertion_scope', 'real-world')
 
 **Observed:** `{snapshot.get('observed_at', '')}`
 '''
-    log = f"# Heritage evaluation generation log\n\n## {generated_at[:10]}\n\n- Built {counts['records']:,} records ({counts['heritage_assets']:,} NHLE assets, {counts['risk_records']:,} annual Heritage at Risk records and {counts['synthetic_records']:,} synthetic records).\n- Generated typo-tolerant static search, exact facets, graph adjacency, record locator, GeoJSON shards and per-plane digests.\n- Kept synthetic assertions outside the faithful namespace and counts.\n"
+    log = f'''# Heritage evaluation generation log
+
+## {generated_at[:10]}
+
+- Built {counts['records']:,} records ({counts['heritage_assets']:,} NHLE assets, {counts['risk_records']:,} annual Heritage at Risk records and {counts['synthetic_records']:,} synthetic records).
+- Generated typo-tolerant static search, exact facets, graph adjacency, record locator, GeoJSON shards and per-plane digests.
+- Kept synthetic assertions outside the faithful namespace and counts.
+'''
     return {Path("index.md"): index, Path("methodology.md"): methodology, Path("log.md"): log}
 
 
@@ -2655,6 +2682,15 @@ def build_normalized_core(
         ),
         "plane_roots": "assurance/plane-roots.json",
     }
+    if build_heritage_walkthrough.has_walkthrough(snapshot):
+        entrypoints.update({
+            "walkthrough": "walkthrough.html",
+            "walkthrough_evidence": "walkthrough-data.json",
+            "reader_journeys": "walkthrough.explorer-journeys.json",
+            "reader_legacy_journeys": "walkthrough.explorer-057-journeys.json",
+            "ai_context": "ai-context.md",
+            "ai_discovery": "llms.txt",
+        })
     if publication["role"] == "faithful":
         entrypoints.update(
             {
@@ -2672,11 +2708,12 @@ def build_normalized_core(
         "base_namespace": public_base,
         "schema": "okf-explorer-large-corpus.v1",
         "kind": "okf-large-corpus",
-        "okf_version": "0.2",
-        "core_conformance": "Markdown concept layer with additive YAML-LD semantic projection",
+        "okf_version": "0.3",
+        "core_conformance": "OKF 0.3 navigation and methodology Markdown; complete structured record coverage is governed separately by the Evaluation Foundry profile",
         "title": publication["title"],
         "description": publication["description"],
-        "version": "1.0.0",
+        "version": "1.1.0",
+        "okf_implementation_date": "2026-11-24",
         "status": publication["status"],
         "assertion_scope": snapshot.get("scope", {}).get("assertion_scope", "real-world"),
         "default_loaded": publication["role"] == "faithful",
@@ -3282,7 +3319,11 @@ def published_evaluation_profile() -> str:
 
 
 def emit_presentation_plane(corpus: dict[str, Any], snapshot: dict[str, Any]) -> dict[Path, str | bytes]:
-    return dict(markdown_files(corpus, snapshot))
+    files: dict[Path, str | bytes] = dict(markdown_files(corpus, snapshot))
+    files.update({Path(name): payload for name, payload in build_heritage_walkthrough.render_walkthrough(
+        corpus, snapshot, publication_config(snapshot)
+    ).items()})
+    return files
 
 
 PLANE_EMITTERS = {

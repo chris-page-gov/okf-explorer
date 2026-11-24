@@ -1,0 +1,11 @@
+# Synthetic Heritage Capability Supplement
+
+Frozen metadata and semantic graph; no live narrative or current-condition claim.
+
+- Source index: https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/index.md
+- Explorer descriptor: https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/okf-explorer.json
+- Worked question: https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/walkthrough.html
+- Question evidence and source fields: https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/walkthrough-data.json
+- Complete graph manifests: https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/data/semantic/manifest.json
+- YAML-LD graph entry point: https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/okf-bundle.yamlld
+- Source provenance: https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/data/source-provenance.json

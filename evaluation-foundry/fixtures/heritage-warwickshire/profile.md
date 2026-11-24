@@ -30,7 +30,20 @@ whose authoritative local-government field normalizes to one of those six
 authorities. The latter is a reversible source-field test, not a spatial
 intersection claim; locality-only matches are excluded.
 
-## Why There Are Three Bundles
+## Core 0.3 and the three worked questions
+
+Implementation date: 24 November 2026. The upstream 0.3 announcement was on
+18 November 2026. The [central standards register](https://github.com/chris-page-gov/okf-explorer/blob/main/docs/okf-standards.md)
+records current and historical specifications and the bundle catalogue.
+
+Each full, tiny and synthetic bundle has its own source-linked question,
+diagram, complete selected evidence, AI context and executable Reader
+journeys. Core Markdown concepts and the complete structured-record graph
+retain separate coverage measures. Profile 2.1.0 pins both the current
+Explorer 0.9.0 and the retained 0.5.7 compatibility runtime; historical
+runtime checks do not claim a separate live public service.
+
+## Why there are three bundles
 
 - The **tiny assurance fixture** is a small source-backed sample used for fast,
   deterministic producer and real-consumer checks.
@@ -40,7 +53,7 @@ intersection claim; locality-only matches are excluded.
   sparse capabilities. It has its own namespace and never enters faithful
   counts or search.
 
-## Assurance Without Changing The Candidate
+## Assurance without changing the candidate
 
 This file describes what a candidate must contain; it does not contain a live
 deployment status. That distinction matters because the candidate should keep
@@ -64,7 +77,7 @@ reusable browser runtime and loads the external descriptor. The publication
 journey must pass against those exact URLs before a signed envelope can call a
 candidate promoted.
 
-### Earlier Observation Is Historical, Not Promotion Metadata
+### Earlier observation is historical, not promotion metadata
 
 The earlier
 [Pages run 30813485357](https://github.com/chris-page-gov/okf-explorer/actions/runs/30813485357)
@@ -76,7 +89,7 @@ the GitHub platform level and used a lightweight tag, so it must not be called
 an immutable release. The replacement release gate uses the external
 publication unit, an annotated tag and GitHub immutable releases.
 
-## Controlling Evidence
+## Controlling evidence
 
 - [Machine-readable evaluation profile](evaluation-profile.yaml)
 - [Reversible mapping proposals](mapping-proposals.yaml)

@@ -12,6 +12,32 @@
 - Cover exact-identity fallback, governed-label priority and missing-label
   preservation with focused negative controls and real graph-node checks.
 
+## Unreleased — three Heritage 0.3 walkthroughs
+
+- Declare core 0.3 for the full, tiny and synthetic Heritage bundles while
+  preserving their distinct frozen source populations and scopes. Keep plain
+  logs and reserved indexes outside the concept graph; distinguish the typed
+  methodology from complete structured metadata coverage.
+- Add a different source-linked question, complete selected evidence, checked
+  negative controls, diagram, AI hand-off and Reader manifest for each bundle.
+  Preserve designation identity, risk-year precision and synthetic confidence;
+  reject source/relationship drift instead of updating the worked answer.
+- Pin Explorer 0.9.0 while retaining the 0.5.7 compatibility check and its
+  replayable panel selectors. Retain every source and runtime relationship;
+  publish the previously restored semantic labels with new graph digests.
+- Carry the locked Python toolchain in the publication unit and update its
+  workflow templates to use governed uv/Python and pinned Node/pnpm versions.
+  Initialise the temporary environment on the runner and persist it through
+  `GITHUB_ENV`; runner context is unavailable in a workflow's job environment.
+- Give exported reading pages an explicit icon and `en-GB` locale. This fixes
+  the observed owner-root favicon 404 without changing data or graph inputs.
+- Export the unchanged Python version pin under a visible filename so Pages
+  serves every material listed in the publication manifest. Pass the exact
+  Python version to every workflow environment synchronisation.
+- Keep observations outside immutable candidates and retain the independent
+  Heritage repository's attested candidate/promotion release gates. Publication
+  and formal release acceptance remain separate from local source compilation.
+
 ## Unreleased — study-club 0.3 walkthrough
 
 - Migrate the current six-record fictional teaching bundle to core OKF 0.3.

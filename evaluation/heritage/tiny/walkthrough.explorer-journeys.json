@@ -1,0 +1,120 @@
+{
+  "bundle_descriptor": "okf-explorer.json",
+  "expected_identity": {
+    "id": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/tiny/okf-explorer.json",
+    "schema": "okf-explorer-large-corpus.v1",
+    "snapshot": "heritage-coventry-warwickshire-20260803-v2-tiny-v1",
+    "version": "1.1.0"
+  },
+  "journeys": [
+    {
+      "actions": [
+        {
+          "hash": "#asset/1184627",
+          "params": {
+            "q": "CHURCH OF ST PETER",
+            "view": "reader"
+          },
+          "type": "goto"
+        },
+        {
+          "selector": "aside[aria-label=\"Record details\"] h2:text-is(\"CHURCH OF ST PETER\")",
+          "type": "wait_for"
+        },
+        {
+          "selector": "aside[aria-label=\"Record details\"]:has-text(\"1184627\")",
+          "type": "wait_for"
+        }
+      ],
+      "assertions": [
+        {
+          "includes": "CHURCH OF ST PETER",
+          "selector": "aside[aria-label=\"Record details\"]",
+          "type": "text"
+        },
+        {
+          "includes": "1184627",
+          "selector": "aside[aria-label=\"Record details\"]",
+          "type": "text"
+        },
+        {
+          "type": "console_clean"
+        }
+      ],
+      "id": "inspect-walkthrough-record-0"
+    },
+    {
+      "actions": [
+        {
+          "hash": "#asset/1342941",
+          "params": {
+            "q": "Cathedral of St Michael",
+            "view": "reader"
+          },
+          "type": "goto"
+        },
+        {
+          "selector": "aside[aria-label=\"Record details\"] h2:text-is(\"Cathedral of St Michael\")",
+          "type": "wait_for"
+        },
+        {
+          "selector": "aside[aria-label=\"Record details\"]:has-text(\"1342941\")",
+          "type": "wait_for"
+        }
+      ],
+      "assertions": [
+        {
+          "includes": "Cathedral of St Michael",
+          "selector": "aside[aria-label=\"Record details\"]",
+          "type": "text"
+        },
+        {
+          "includes": "1342941",
+          "selector": "aside[aria-label=\"Record details\"]",
+          "type": "text"
+        },
+        {
+          "type": "console_clean"
+        }
+      ],
+      "id": "inspect-walkthrough-record-1"
+    },
+    {
+      "actions": [
+        {
+          "hash": "#risk/2025/entry/036682fa45484e9f8975",
+          "params": {
+            "q": "Church of St Peter, Tysoe Road, Radway, Radway",
+            "view": "reader"
+          },
+          "type": "goto"
+        },
+        {
+          "selector": "aside[aria-label=\"Record details\"] h2:text-is(\"Church of St Peter, Tysoe Road, Radway, Radway\")",
+          "type": "wait_for"
+        },
+        {
+          "selector": "aside[aria-label=\"Record details\"]:has-text(\"036682fa45484e9f8975\")",
+          "type": "wait_for"
+        }
+      ],
+      "assertions": [
+        {
+          "includes": "Church of St Peter, Tysoe Road, Radway, Radway",
+          "selector": "aside[aria-label=\"Record details\"]",
+          "type": "text"
+        },
+        {
+          "includes": "036682fa45484e9f8975",
+          "selector": "aside[aria-label=\"Record details\"]",
+          "type": "text"
+        },
+        {
+          "type": "console_clean"
+        }
+      ],
+      "id": "inspect-walkthrough-record-2"
+    }
+  ],
+  "schema": "okf-explorer-journeys.v1"
+}

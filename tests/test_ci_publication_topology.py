@@ -511,7 +511,11 @@ class CiPublicationTopologyTests(unittest.TestCase):
         )
         self.assertIn("repository: chris-page-gov/okf-explorer", candidate)
         self.assertIn("ref: ${{ inputs.assurance_ref }}", candidate)
-        self.assertIn("pip install -r assurance/requirements-okf.txt", candidate)
+        self.assertIn("uv sync --locked --project assurance", candidate)
+        self.assertNotIn("UV_PROJECT_ENVIRONMENT", candidate_document["jobs"]["candidate-release"]["env"])
+        self.assertIn('export UV_PROJECT_ENVIRONMENT="$RUNNER_TEMP/heritage-publication-venv"', candidate)
+        self.assertIn('>> "$GITHUB_ENV"', candidate)
+        self.assertNotIn("pip install", candidate)
         self.assertNotIn("publication/site/requirements-okf.txt", candidate)
         self.assertNotIn("python3 publication/site/", candidate)
         self.assertIn("ATTESTATION_WORKFLOW_REF: ${{ github.workflow_ref }}", candidate)
@@ -652,7 +656,11 @@ class CiPublicationTopologyTests(unittest.TestCase):
         self.assertNotIn("secrets.", promotion)
         self.assertIn("GH_TOKEN: ${{ github.token }}", promotion)
         self.assertIn("repository: chris-page-gov/okf-explorer", promotion)
-        self.assertIn("pip install -r assurance/requirements-okf.txt", promotion)
+        self.assertIn("uv sync --locked --project assurance", promotion)
+        self.assertNotIn("UV_PROJECT_ENVIRONMENT", promotion_document["jobs"]["promotion-release"]["env"])
+        self.assertIn('export UV_PROJECT_ENVIRONMENT="$RUNNER_TEMP/heritage-publication-venv"', promotion)
+        self.assertIn('>> "$GITHUB_ENV"', promotion)
+        self.assertNotIn("pip install", promotion)
         self.assertNotIn("publication/site/requirements-okf.txt", promotion)
         self.assertNotIn("python3 publication/site/", promotion)
         self.assertIn(
@@ -661,13 +669,13 @@ class CiPublicationTopologyTests(unittest.TestCase):
             promotion,
         )
         self.assertIn(
-            "python3 assurance/scripts/check_terminal_promotion_envelope.py",
+            "uv run --locked --project assurance python assurance/scripts/check_terminal_promotion_envelope.py",
             promotion,
         )
         self.assertEqual(
             2,
             promotion.count(
-                "python3 assurance/scripts/check_terminal_release_policy.py"
+                "uv run --locked --project assurance python assurance/scripts/check_terminal_release_policy.py"
             ),
         )
         self.assertIn("ATTESTATION_WORKFLOW_REF: ${{ github.workflow_ref }}", promotion)

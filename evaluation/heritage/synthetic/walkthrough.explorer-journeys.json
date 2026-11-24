@@ -1,0 +1,120 @@
+{
+  "bundle_descriptor": "okf-explorer.json",
+  "expected_identity": {
+    "id": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/okf-explorer.json",
+    "schema": "okf-explorer-large-corpus.v1",
+    "snapshot": "heritage-warwickshire-synthetic-capability-v1",
+    "version": "1.1.0"
+  },
+  "journeys": [
+    {
+      "actions": [
+        {
+          "hash": "#synthetic/event/flood-resilience-2031",
+          "params": {
+            "q": "Meridian flood-resilience intervention, 2031 (synthetic proposal)",
+            "view": "reader"
+          },
+          "type": "goto"
+        },
+        {
+          "selector": "aside[aria-label=\"Record details\"] h2:text-is(\"Meridian flood-resilience intervention, 2031 (synthetic proposal)\")",
+          "type": "wait_for"
+        },
+        {
+          "selector": "aside[aria-label=\"Record details\"]:has-text(\"SYN-EVENT-001\")",
+          "type": "wait_for"
+        }
+      ],
+      "assertions": [
+        {
+          "includes": "Meridian flood-resilience intervention, 2031 (synthetic proposal)",
+          "selector": "aside[aria-label=\"Record details\"]",
+          "type": "text"
+        },
+        {
+          "includes": "SYN-EVENT-001",
+          "selector": "aside[aria-label=\"Record details\"]",
+          "type": "text"
+        },
+        {
+          "type": "console_clean"
+        }
+      ],
+      "id": "inspect-walkthrough-record-0"
+    },
+    {
+      "actions": [
+        {
+          "hash": "#synthetic/place/meridian-dye-works",
+          "params": {
+            "q": "Meridian Dye Works (synthetic)",
+            "view": "reader"
+          },
+          "type": "goto"
+        },
+        {
+          "selector": "aside[aria-label=\"Record details\"] h2:text-is(\"Meridian Dye Works (synthetic)\")",
+          "type": "wait_for"
+        },
+        {
+          "selector": "aside[aria-label=\"Record details\"]:has-text(\"SYN-PLACE-001\")",
+          "type": "wait_for"
+        }
+      ],
+      "assertions": [
+        {
+          "includes": "Meridian Dye Works (synthetic)",
+          "selector": "aside[aria-label=\"Record details\"]",
+          "type": "text"
+        },
+        {
+          "includes": "SYN-PLACE-001",
+          "selector": "aside[aria-label=\"Record details\"]",
+          "type": "text"
+        },
+        {
+          "type": "console_clean"
+        }
+      ],
+      "id": "inspect-walkthrough-record-1"
+    },
+    {
+      "actions": [
+        {
+          "hash": "#synthetic/person/asha-bennett",
+          "params": {
+            "q": "Asha Bennett (synthetic person)",
+            "view": "reader"
+          },
+          "type": "goto"
+        },
+        {
+          "selector": "aside[aria-label=\"Record details\"] h2:text-is(\"Asha Bennett (synthetic person)\")",
+          "type": "wait_for"
+        },
+        {
+          "selector": "aside[aria-label=\"Record details\"]:has-text(\"SYN-PERSON-001\")",
+          "type": "wait_for"
+        }
+      ],
+      "assertions": [
+        {
+          "includes": "Asha Bennett (synthetic person)",
+          "selector": "aside[aria-label=\"Record details\"]",
+          "type": "text"
+        },
+        {
+          "includes": "SYN-PERSON-001",
+          "selector": "aside[aria-label=\"Record details\"]",
+          "type": "text"
+        },
+        {
+          "type": "console_clean"
+        }
+      ],
+      "id": "inspect-walkthrough-record-2"
+    }
+  ],
+  "schema": "okf-explorer-journeys.v1"
+}

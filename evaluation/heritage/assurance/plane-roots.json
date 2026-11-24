@@ -2,13 +2,13 @@
   "algorithm": "sha256-over-canonical-ordered-entry-identities; root YAML-LD and JSON-LD use URDNA2015 graph identity while artifact_root_sha256 retains exact-byte identity",
   "planes": {
     "control": {
-      "artifact_root_sha256": "7c2f94aacd6c4e2c77d401be4b61d22d66aed8478143c46f27d9705f64377c16",
-      "bytes": 144167,
+      "artifact_root_sha256": "5f73710b40f557bc56a4466a04860d898ef58bede7666a929483cfa5c478b86a",
+      "bytes": 147016,
       "entries": [
         {
-          "bytes": 42863,
+          "bytes": 45340,
           "path": "evaluation-profile.yaml",
-          "sha256": "c7f25579e6a5823ebab24bb8f87ededaf4cc27e1c0f9f54cee2daffbf277aed4"
+          "sha256": "87fdcf18771f43fba93dd6ada18bc3dd212996c199d111951a049b9e160cdcb5"
         },
         {
           "bytes": 9100,
@@ -16,9 +16,9 @@
           "sha256": "8c5ec68d71b11afa001afd189d23d1d833b7e8a99ff870f7679c896557217cd6"
         },
         {
-          "bytes": 29179,
+          "bytes": 29183,
           "path": "journeys.json",
-          "sha256": "04ec3137ecd1e688ac7a9cc69a7b033f42444e5a82af4c9a25e747979f638ecb"
+          "sha256": "c92481f0e803ca0b06ef85c5dbb40c71f1577f6fd5aa082e946ae80a5836b930"
         },
         {
           "bytes": 10155,
@@ -26,9 +26,9 @@
           "sha256": "ec017ff87d803abc006627f60fe2d3ed6f1dfaa65d46b5d858c2816e369a7dd2"
         },
         {
-          "bytes": 26886,
+          "bytes": 27254,
           "path": "okf-explorer.json",
-          "sha256": "97c8c3aa1dbaa48cad06d9a1fec3c1b125a681c7642b418bddbbccc32e27a5da"
+          "sha256": "794ca9d354e09931bb7d91e973fd08a0715be24ee7ab412bd32bd07e06e84c74"
         },
         {
           "bytes": 25984,
@@ -37,7 +37,7 @@
         }
       ],
       "files": 6,
-      "root_sha256": "7c2f94aacd6c4e2c77d401be4b61d22d66aed8478143c46f27d9705f64377c16"
+      "root_sha256": "5f73710b40f557bc56a4466a04860d898ef58bede7666a929483cfa5c478b86a"
     },
     "data": {
       "artifact_root_sha256": "44af2b22c84a93e411cf1237b59241e3f230c97ece5e5f14f5c4568d3cf819c9",
@@ -4483,13 +4483,23 @@
       "root_sha256": "44af2b22c84a93e411cf1237b59241e3f230c97ece5e5f14f5c4568d3cf819c9"
     },
     "presentation": {
-      "artifact_root_sha256": "9e196efe62d339e2de470e87545620ef2e220f1440f03bc846a57541fb9522eb",
-      "bytes": 5389,
+      "artifact_root_sha256": "4b43bf24d1c1d30196807a0cfe27e9e20a75df1ce390afb9bad37295c3eb467a",
+      "bytes": 501676,
       "entries": [
         {
-          "bytes": 2226,
+          "bytes": 166639,
+          "path": "ai-context.md",
+          "sha256": "3394186b168de05612248945ef4c98315fbc24593f6437d9c5860f464a7d8b49"
+        },
+        {
+          "bytes": 3271,
           "path": "index.md",
-          "sha256": "ab927df126b854e61a2a7c61a8bf2666adf1668f069f8589f0f4b9447969fb09"
+          "sha256": "e43b48c4aa58d133fba250b131bf121f551d4b5b40c01dd177a552177bf66a30"
+        },
+        {
+          "bytes": 923,
+          "path": "llms.txt",
+          "sha256": "db64f6dcfbf8ca86e016475c0d783331c576521f90e8d56ebd1032e33054a4a7"
         },
         {
           "bytes": 356,
@@ -4499,11 +4509,36 @@
         {
           "bytes": 2807,
           "path": "methodology.md",
-          "sha256": "e16bdb371f8ed580b91e57061e089e0c1d5b844e9ff29193648adbb7beeb0e2f"
+          "sha256": "59ad3237924e2c757aae87868e61e1e2c739393a040f0729f069edb7bfa846b6"
+        },
+        {
+          "bytes": 166456,
+          "path": "walkthrough-data.json",
+          "sha256": "7365843ba59a4850d393c54d5d2825eb87b5e4d74c724d2c5d28d1ae7cedb936"
+        },
+        {
+          "bytes": 3919,
+          "path": "walkthrough.explorer-057-journeys.json",
+          "sha256": "3c6539e3eaf113a96498bd73fdcedfc6bd5808a69b6f23a728cb43510a5215cc"
+        },
+        {
+          "bytes": 4223,
+          "path": "walkthrough.explorer-journeys.json",
+          "sha256": "6d439b8eb035642c1107b47d0ce6dc7e24d055b4341db6dc2731699a3242be10"
+        },
+        {
+          "bytes": 152056,
+          "path": "walkthrough.html",
+          "sha256": "a8df6d9f078e3b8c2e2455656f593836016d1daf1d5292cb2af18f6088d5e275"
+        },
+        {
+          "bytes": 1026,
+          "path": "walkthrough.svg",
+          "sha256": "30cc1970e99ed3be1e51d177deeb314dcbb46bf1ea73ab7f9c64216fde335662"
         }
       ],
-      "files": 3,
-      "root_sha256": "9e196efe62d339e2de470e87545620ef2e220f1440f03bc846a57541fb9522eb"
+      "files": 10,
+      "root_sha256": "4b43bf24d1c1d30196807a0cfe27e9e20a75df1ce390afb9bad37295c3eb467a"
     },
     "search": {
       "artifact_root_sha256": "48724391a50b3bf2983efd72eeb927d0955b474b82632a0fcc86d5e1466a2114",
@@ -15702,6 +15737,6 @@
       "root_sha256": "3b969c993770830d599077de02f6f9b4fca4e17138f7101349372fc3dd00f9d6"
     }
   },
-  "release_root_sha256": "7ceed0df108ba2f524b01791b305ed73b8d5ab945606ecb330ed8b17a1e445f9",
+  "release_root_sha256": "e5e659cf08475e05d82af042bd6be52c6395e8505a2168a227f5f428f294606e",
   "schema": "okf-evaluation-plane-roots.v2"
 }

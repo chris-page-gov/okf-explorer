@@ -59,6 +59,8 @@ def classify_output_plane(path: Path) -> str:
         return "search"
     if value.startswith("data/"):
         return "data"
+    if path.name in {"walkthrough.svg", "walkthrough-data.json", "walkthrough.explorer-journeys.json", "walkthrough.explorer-057-journeys.json", "llms.txt"}:
+        return "presentation"
     if value.endswith((".md", ".html")):
         return "presentation"
     return "control"

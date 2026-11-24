@@ -3,7 +3,7 @@
 "@id": https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/tiny/methodology.html
 type: Methodology
 title: Tiny source-backed heritage assurance fixture methodology
-description: Scope, acquisition, normalization, link and completeness rules for the exemplar.
+description: Scope, acquisition, normalisation, link and completeness rules for the exemplar.
 resource: https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/tiny/data/source-provenance.json
 generated:
   by: process:heritage-evaluation-builder

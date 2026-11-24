@@ -53,10 +53,15 @@ jobs:
           repository: chris-page-gov/okf-explorer
           ref: ${{ inputs.assurance_ref }}
           path: assurance
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+      - uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
         with:
-          python-version: "3.12"
-      - run: python3 -m pip install -r assurance/requirements-okf.txt
+          version: "0.13.4"
+      - name: Synchronise the governed Python environment
+        run: |
+          export UV_PROJECT_ENVIRONMENT="$RUNNER_TEMP/heritage-publication-venv"
+          printf 'UV_PROJECT_ENVIRONMENT=%s\n' "$UV_PROJECT_ENVIRONMENT" >> "$GITHUB_ENV"
+          uv python install 3.12.11
+          uv sync --locked --project assurance --python 3.12.11
       - name: Separate candidate identity from assurance workflow provenance
         run: |
           test "$GITHUB_EVENT_NAME" = workflow_dispatch
@@ -179,7 +184,7 @@ jobs:
           candidate_source_commit="$(jq -er .archive.attestation_source_commit "$receipt")"
           gh release verify "$CANDIDATE_TAG" --repo "$GITHUB_REPOSITORY" --format json \
             > "$RUNNER_TEMP/candidate-release-attestation.json"
-          python3 assurance/scripts/check_release_policy.py \
+          uv run --locked --project assurance python assurance/scripts/check_release_policy.py \
             --phase candidate \
             --tag "$CANDIDATE_TAG" \
             --attested-archive "$RUNNER_TEMP/candidate-assets/heritage-coventry-warwickshire.tar.gz" \
@@ -198,7 +203,7 @@ jobs:
             --release-asset "candidate-release-receipt.json=$RUNNER_TEMP/candidate-assets/candidate-release-receipt.json"
       - name: Materialize the terminal envelope outside Git and Site
         run: >-
-          python3 assurance/scripts/materialize_promotion_envelope.py
+          uv run --locked --project assurance python assurance/scripts/materialize_promotion_envelope.py
           --template assurance/publication-units/heritage-coventry-warwickshire/repository-template/promotion-envelope.template.json
           --publication-root publication/site
           --repository-root "$RUNNER_TEMP/promotion-workspace"
@@ -212,7 +217,7 @@ jobs:
           --output "$RUNNER_TEMP/promotion-workspace/heritage-publication-envelope.json"
       - name: Validate R1-compatible R2 with trusted exact controls
         run: >-
-          python3 assurance/scripts/check_terminal_promotion_envelope.py
+          uv run --locked --project assurance python assurance/scripts/check_terminal_promotion_envelope.py
           "$RUNNER_TEMP/promotion-workspace/heritage-publication-envelope.json"
           --repository-root "$RUNNER_TEMP/promotion-workspace"
           --publication-root publication/site
@@ -241,7 +246,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: >-
-          python3 assurance/scripts/check_terminal_release_policy.py
+          uv run --locked --project assurance python assurance/scripts/check_terminal_release_policy.py
           --phase promotion
           --tag "$PROMOTION_TAG"
           --candidate-tag "$CANDIDATE_TAG"
@@ -284,7 +289,7 @@ jobs:
             test "$attempt" = 6 || sleep 5
           done
           test "$release_verified" = true
-          python3 assurance/scripts/check_terminal_release_policy.py \
+          uv run --locked --project assurance python assurance/scripts/check_terminal_release_policy.py \
             --phase promotion \
             --tag "$PROMOTION_TAG" \
             --candidate-tag "$CANDIDATE_TAG" \

@@ -5,6 +5,16 @@ default-off synthetic supplement, evaluation documentation, semantic exports,
 release assets and its eventual GitHub Pages site. OKF Explorer remains the
 owner of the browser runtime and shared schemas.
 
+Exported reading pages declare the `en-GB` locale and an explicit inline icon.
+Browser acceptance covers the landing pages as well as the worked guides,
+including console and resource errors. This catches the browser's otherwise
+implicit request for an owner-root favicon, outside the publication unit.
+Export the unchanged `.python-version` source as `toolchain/python-version.txt`:
+Pages does not serve dotfiles, and every manifest-listed public material must
+remain accessible. The Python project and CI still pin CPython 3.12.11.
+Every workflow passes that exact version to `uv sync`, so the visible export
+filename cannot change environment selection.
+
 The split has four operational stages, recorded outside this candidate:
 
 1. A deterministic export is built and validated without claiming deployment.

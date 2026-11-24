@@ -1,0 +1,24 @@
+{
+  "schema": "okf-heritage-walkthrough-case.v1",
+  "snapshot": "heritage-coventry-warwickshire-20260803-v2",
+  "id": "warwick-castle-identities-and-risk-scope",
+  "question": "Which Warwick Castle record answers a question about designation, and which record does the 2025 risk row assess? Can its risk finding be transferred to the Grade I listed building or the registered park and garden?",
+  "answer": "The retained snapshot has separate Grade I records for the listed building (1364805) and the registered park and garden (1000386). The 2025 risk row assesses the scheduled monument, Warwick Castle (uninhabited parts), 1005757. That encoded assessment does not establish the condition of the other two records. It is a 2025 observation retained in the August 2026 snapshot, not a live condition assessment.",
+  "records": [
+    {"route": "asset/1364805", "fields": {"heritage_category": "Listed Building", "grade": "I", "native_id": "1364805"}},
+    {"route": "asset/1000386", "fields": {"heritage_category": "Registered Park and Garden", "grade": "I", "native_id": "1000386"}},
+    {"route": "asset/1005757", "fields": {"heritage_category": "Scheduled Monument", "native_id": "1005757"}},
+    {"route": "risk/2025/entry/6d8741a24bcd6671d8b1", "fields": {"register_year": "2025", "risk_status": "at risk"}}
+  ],
+  "relationships": [{"source": "risk/2025/entry/6d8741a24bcd6671d8b1", "target": "asset/1005757", "kind": "assesses"}],
+  "absent_relationships": [
+    {"source": "risk/2025/entry/6d8741a24bcd6671d8b1", "target": "asset/1364805", "kind": "assesses"},
+    {"source": "risk/2025/entry/6d8741a24bcd6671d8b1", "target": "asset/1000386", "kind": "assesses"}
+  ],
+  "limitations": [
+    "Separate source identifiers and designations must not be merged because their names match.",
+    "An absent encoded assessment does not establish safety, current condition or absence from every register.",
+    "Official rich-page narrative is linked rather than copied. A browser challenge or HTTP 403 must be reported; the metadata does not substitute for unavailable narrative.",
+    "Completeness is relative to the pinned source populations and December 2025 boundary vintage. It is not a live register or legal advice."
+  ]
+}
