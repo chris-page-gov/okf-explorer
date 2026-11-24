@@ -1125,7 +1125,7 @@ class OkfAuthoringProfileTests(unittest.TestCase):
         self.assertIn("profile-selected deep link", build)
         self.assertIn("substantive security analysis once", build)
         self.assertIn("Promote the exact RC artefacts", build)
-        self.assertIn("Phase 0 — Classify And Bootstrap The Repository", build)
+        self.assertIn("Phase 0 — Classify and bootstrap the repository", build)
         self.assertIn("60-second, tool-first budget", build)
         self.assertIn("label the URL unverified", build)
 

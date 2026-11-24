@@ -542,6 +542,121 @@ def check_scaffold(
     return errors
 
 
+def existing_workflows(target: Path) -> list[str]:
+    """List workflow files only after refusing symlinked control paths."""
+    probe = {".github/workflows/okf-ci.yml.disabled": ""}
+    errors = destination_errors(target, probe)
+    if errors:
+        raise ValueError("; ".join(errors))
+    workflows = target / ".github" / "workflows"
+    result = []
+    for pattern in ("*.yml", "*.yaml"):
+        for path in workflows.glob(pattern):
+            if path.is_symlink() or not path.is_file():
+                raise ValueError(f"workflow is not a regular file: {path}")
+            result.append(path.relative_to(target).as_posix())
+    return sorted(result)
+
+
+def adoption_files(kind: str, target: Path) -> dict[str, str]:
+    """Keep an existing declared layout rather than adding placeholder trees."""
+    files = dict(scaffold_files(kind, target))
+    if kind != "okf":
+        return files
+    contracts = ("okf.semantic.json", "okf.publication.json")
+    if all((target / name).is_file() for name in contracts):
+        files.pop("source/README.md")
+        files.pop("generated/README.md")
+        if existing_workflows(target):
+            files.pop(".github/workflows/okf-ci.yml.disabled")
+    return files
+
+
+def read_contract(path: Path) -> dict:
+    """Read declarations as bounded data; never execute their command strings."""
+    def unique(pairs):
+        result = {}
+        for key, value in pairs:
+            if key in result:
+                raise ValueError(f"duplicate JSON key in {path.name}: {key}")
+            result[key] = value
+        return result
+
+    if path.stat().st_size > 1024 * 1024:
+        raise ValueError(f"contract exceeds the inspection limit: {path.name}")
+    def finite(value):
+        raise ValueError(f"non-finite JSON value in {path.name}")
+
+    value = json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=unique,
+                       parse_constant=finite)
+    if not isinstance(value, dict) or not isinstance(value.get("schema"), str) or not value["schema"].strip():
+        raise ValueError(f"contract needs an object and schema identity: {path.name}")
+    return value
+
+
+def check_adoption(target: Path, kind: str) -> tuple[list[str], dict]:
+    """Check safe foundations, leaving corpus and release acceptance separate."""
+    report = {
+        "schema": "okf-repository-adoption-check.v1",
+        "scope": "repository-foundations-only",
+        "core_validation": "not-run",
+        "semantic_validation": "not-run",
+        "consumer_validation": "not-run",
+        "workflow_execution": "not-run",
+        "publication_authority": "unchanged",
+    }
+    if not target.is_dir():
+        return [f"target directory does not exist: {target}"], report
+    # Check the complete control-file boundary before reading any declarations.
+    foundation = {name: body for name, body in scaffold_files(kind, target).items()
+                  if name not in {"source/README.md", "generated/README.md"}}
+    errors = destination_errors(target, foundation)
+    if errors:
+        return errors, report
+    try:
+        workflows = existing_workflows(target)
+        files = adoption_files(kind, target)
+    except ValueError as error:
+        return [str(error)], report
+    for relative in files:
+        path = target / relative
+        if not path.is_file():
+            errors.append(f"missing adoption foundation: {relative}")
+        elif path.stat().st_size > 2 * 1024 * 1024:
+            errors.append(f"adoption foundation exceeds the inspection limit: {relative}")
+        else:
+            try:
+                if not path.read_text(encoding="utf-8").strip():
+                    errors.append(f"empty adoption foundation: {relative}")
+            except (OSError, UnicodeError):
+                errors.append(f"adoption foundation is not readable UTF-8: {relative}")
+    report["existing_workflows"] = workflows
+    if errors or kind != "okf":
+        return errors, report
+    try:
+        semantic = read_contract(target / "okf.semantic.json")
+        publication = read_contract(target / "okf.publication.json")
+        core = semantic.get("okf_core")
+        if not isinstance(core, dict) or not isinstance(core.get("version"), str) or not core["version"].strip():
+            raise ValueError("semantic contract must declare its core version")
+        report["declared_core_version"] = core["version"]
+        report["semantic_contract_schema"] = semantic["schema"]
+        report["publication_contract_schema"] = publication["schema"]
+        if publication["schema"] == PUBLICATION_CONTRACT["schema"]:
+            import okf_publication
+
+            publication = okf_publication.load_publication_contract(target)
+            report["publication_contract_validation"] = "supported-schema-passed"
+        else:
+            report["publication_contract_validation"] = "custom-schema-not-validated"
+        repository = publication.get("repository")
+        if workflows and isinstance(repository, dict) and repository.get("lifecycle") == "bootstrap":
+            raise ValueError("CI is enabled while the contract still declares an unreviewed bootstrap")
+    except (ValueError, OSError) as error:
+        errors.append(str(error))
+    return errors, report
+
+
 def render(state: TargetState, target: Path, create: list[str], preserve: list[str]) -> str:
     return json.dumps(
         {
@@ -577,6 +692,10 @@ def main() -> int:
     action = parser.add_mutually_exclusive_group()
     action.add_argument("--apply", action="store_true", help="write missing scaffold files")
     action.add_argument("--check", action="store_true", help="check an applied scaffold")
+    action.add_argument(
+        "--check-adoption", action="store_true",
+        help="check existing foundations without replacing customised content or certifying a bundle",
+    )
     parser.add_argument(
         "--adopt-existing",
         action="store_true",
@@ -593,6 +712,20 @@ def main() -> int:
     if reason:
         print(reason, file=sys.stderr)
         return 2
+    if args.check_adoption:
+        errors, report = check_adoption(target, args.kind)
+        report["status"] = "failed" if errors else "passed"
+        report["errors"] = errors
+        print(json.dumps(report, indent=2))
+        return 1 if errors else 0
+    if args.adopt_existing and not args.check:
+        try:
+            # Existing contracts determine their own layout. Planning still
+            # does not validate or run the producer's declarations.
+            files = adoption_files(args.kind, target)
+        except ValueError as error:
+            print(str(error), file=sys.stderr)
+            return 2 if args.apply else 1
     errors = destination_errors(target, files)
     if errors:
         print("\n".join(errors), file=sys.stderr)

@@ -43,6 +43,25 @@ uv run --locked python scripts/okf_repository_bootstrap.py /path/to/target --che
 The first command is a dry run. Adoption is always explicit. The scaffolder
 does not initialise Git, create a remote, commit, enable CI, push or publish.
 
+For an existing producer, inspect its contracts and use the adoption route:
+
+```sh
+uv run --locked python scripts/okf_repository_bootstrap.py /path/to/target --adopt-existing
+uv run --locked python scripts/okf_repository_bootstrap.py /path/to/target --check-adoption --adopt-existing
+```
+
+With existing semantic and publication contracts, the plan preserves their
+layout and existing workflow files. It does not add placeholder `source/` and
+`generated/` directories or a redundant disabled workflow beside active CI.
+Apply only the appropriate missing foundations after reviewing that plan.
+The adoption check accepts customised foundation text and reports its limited
+scope explicitly. It checks the supported publication-contract schema when
+applicable; a custom schema remains labelled as not validated. It never runs
+declared commands, certifies core or semantic conformance, or grants publication
+authority. Run the producer's own reviewed source, profile, consumer and release
+gates separately. The original `--check` remains the strict starter-template
+check and still rejects prematurely enabled CI.
+
 Use `--kind general` for general repository foundations when an OKF purpose
 has yet to be agreed. Follow the [repository creation and discovery
 conventions](repository-conventions.md), verify the initial default branch and
