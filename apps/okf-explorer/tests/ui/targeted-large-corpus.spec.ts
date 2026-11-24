@@ -1549,4 +1549,20 @@ test.describe('targeted large-corpus relationship hydration', () => {
     ).toEqual([]);
     expectNoFullHydration(requests);
   });
+
+  test('publisher graph selection uses a matching loaded source title when the full index omits it', async ({ page }) => {
+    const requests: string[] = [];
+    await installTargetedFixture(page.context(), requests);
+    await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}&view=graph#${RECORD_ROUTE}`);
+
+    const graph = page.getByRole('group', { name: 'Large corpus graph' });
+    const publisher = graph.locator('.graph-node[data-route="publisher/legislation-gov-uk"] .node-hit');
+    await expect(publisher).toBeVisible();
+    await publisher.click();
+
+    await expect.poll(() => decodeURIComponent(new URL(page.url()).hash.slice(1)))
+      .toBe('publisher/legislation-gov-uk');
+    await expect(page.locator('.right-panel h2')).toHaveText('legislation.gov.uk');
+    expectNoFullHydration(requests);
+  });
 });

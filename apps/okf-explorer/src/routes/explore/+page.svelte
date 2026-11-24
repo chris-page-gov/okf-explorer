@@ -100,6 +100,7 @@
     largeRecordRoute,
     metadataEndpointRoute
   } from '$lib/viewer/endpointLabels';
+  import { sourcePublisherTitle } from '$lib/viewer/publisherLabels';
   import { largeDatasetFacetValues as projectLargeDatasetFacetValues } from '$lib/viewer/largeFacetValues';
   import {
     canDisplaySourceInline,
@@ -4153,8 +4154,16 @@
     const indexedPublisher = (key === 'publisher' || key === 'canonical_publisher')
       ? largeIndex?.publisherByName.get(value)?.title
       : '';
+    const loadedPublisher = key === 'publisher'
+      ? sourcePublisherTitle(
+          value,
+          indexedPublisher,
+          largeTargetedDatasets.values(),
+          largeResults
+        )
+      : undefined;
     const endpointLabels = source?.kind === 'large' ? source.endpointLabels : undefined;
-    const fallback = indexedPublisher || facetValueLabel(largeAnalysis(), key, value);
+    const fallback = loadedPublisher || indexedPublisher || facetValueLabel(largeAnalysis(), key, value);
     // The endpoint-label denominator covers graph-reachable routes, not every
     // value in the much wider search-facet catalogue. An absent ordinary facet
     // therefore keeps its existing safe label; an indexed graph route uses its
@@ -4691,6 +4700,15 @@
       const dimension = decodedGraphStackPart(parts.at(-2) || 'group');
       const facetValue = decodedGraphStackPart(parts.at(-1) || 'group');
       return `${facetValueDisplay(dimension, facetValue)} group`;
+    }
+    if (kind === 'publisher') {
+      const sourceTitle = sourcePublisherTitle(
+        value,
+        largeIndex?.publisherByName.get(value)?.title,
+        largeTargetedDatasets.values(),
+        largeResults
+      );
+      if (sourceTitle) return displayEndpointLabel(sourceTitle);
     }
     if (endpointLabels?.byRoute.has(route)) return endpointLabelForRoute(endpointLabels, route);
     const analysisLabel = analysisLabelForRoute(largeAnalysis(), route);

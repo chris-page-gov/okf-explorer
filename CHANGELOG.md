@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased — source-backed publisher labels
+
+- Show a large-corpus publisher's title from the full publisher index when it
+  is available. When that index is not loaded, use `publisher_title` only from
+  a loaded record whose `publisher` identifier exactly matches the selected
+  publisher route, and only after the governed endpoint-label index has had
+  priority. Keep advertised missing labels and opaque-identifier safeguards;
+  do not infer an organisation name from a slug or fetch more records just to
+  label the route.
+- Cover exact-identity fallback, governed-label priority and missing-label
+  preservation with focused negative controls and real graph-node checks.
+
 ## Unreleased — study-club 0.3 walkthrough
 
 - Migrate the current six-record fictional teaching bundle to core OKF 0.3.
