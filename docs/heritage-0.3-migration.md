@@ -96,3 +96,9 @@ does not claim that either has been completed for 0.3.
 Official rich-page narrative is linked rather than copied. A protected page or
 HTTP 403 must remain explicit; metadata completeness does not verify an
 unavailable narrative or establish a site's current condition.
+
+The genuine Chrome observer writes a separate `*.failure.json` diagnostic on
+failure, including the observed title, a bounded visible text excerpt and
+document response statuses. Credential query values are redacted from URLs.
+This file is failure evidence, never a substitute for a successful browser
+receipt. The observer still exits unsuccessfully and promotion remains closed.

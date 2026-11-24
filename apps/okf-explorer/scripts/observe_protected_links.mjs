@@ -470,19 +470,33 @@ export function canonicalReprobeTarget(action, observedFinalUrl) {
   return null;
 }
 
-async function observeAction(session, action, timeoutMs) {
+function diagnosticUrl(value) {
+  try {
+    const url = new URL(value);
+    url.username = '';
+    url.password = '';
+    for (const key of [...url.searchParams.keys()]) {
+      if (CREDENTIAL_QUERY_KEY.test(key)) url.searchParams.set(key, '[redacted]');
+    }
+    return url.href;
+  } catch {
+    return null;
+  }
+}
+
+export async function observeAction(session, action, timeoutMs) {
   const documentResponses = [];
   const stopCollecting = session.on('Network.responseReceived', (event) => {
     if (event.type === 'Document') documentResponses.push(event);
   });
   let navigation;
+  let pageIdentity;
   try {
     navigation = await session.send('Page.navigate', { url: action.value });
     if (navigation.errorText) {
       throw new Error(`navigation failed: ${navigation.errorText}`);
     }
     const deadline = Date.now() + timeoutMs;
-    let pageIdentity;
     let excerpt;
     while (Date.now() < deadline) {
       try {
@@ -586,6 +600,20 @@ async function observeAction(session, action, timeoutMs) {
         languages: pageIdentity.languages
       }
     };
+  } catch (error) {
+    error.observationDiagnostics ||= {
+      sequence: action.sequence,
+      requested_url: diagnosticUrl(action.value),
+      expected_text: action.expected_text,
+      final_url: diagnosticUrl(pageIdentity?.href),
+      title: pageIdentity?.title?.slice(0, 500) || null,
+      visible_text_excerpt: pageIdentity?.bodyText?.replace(/\s+/g, ' ').trim().slice(0, 1_000) || null,
+      ready_state: pageIdentity?.readyState || null,
+      document_responses: documentResponses.map(({ response }) => ({
+        url: diagnosticUrl(response.url), status: response.status
+      }))
+    };
+    throw error;
   } finally {
     stopCollecting();
   }
@@ -689,6 +717,18 @@ export async function main(argv = process.argv.slice(2)) {
     );
   } catch (error) {
     operationError = error;
+    try {
+      await writeReceipt(`${options.outputPath}.failure.json`, {
+        schema: 'okf-genuine-browser-link-failure.v1',
+        status: 'failed',
+        observed_at: new Date().toISOString(),
+        chrome_version: chromeVersion,
+        error: error.message,
+        observation: error.observationDiagnostics || null
+      });
+    } catch (diagnosticError) {
+      appendCleanupDiagnostics(operationError, [diagnosticError]);
+    }
   }
   const cleanupErrors = [];
   if (session) {
