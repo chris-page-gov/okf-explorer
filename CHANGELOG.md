@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased — preserve optional resource counts
+
+- Keep an absent source `resource_count` distinct from zero throughout large
+  bundle search, summary and detail views. Show **Not recorded** when the source
+  does not report a total, retain explicit zero, and label partial loaded rows
+  without implying that they are the complete total.
+- Add browser coverage for selecting a valid record with no advertised count
+  and for a record that explicitly reports zero.
+
 ## Unreleased — source-backed publisher labels
 
 - Show a large-corpus publisher's title from the full publisher index when it

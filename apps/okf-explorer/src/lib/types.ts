@@ -1001,7 +1001,7 @@ export type SearchResultDoc = {
   ontology_term?: string;
   publisher: string;
   publisher_title: string;
-  resource_count: number;
+  resource_count?: number;
   formats: string[];
   tags: string[];
   topics?: string[];
