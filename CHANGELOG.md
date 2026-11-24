@@ -2,6 +2,9 @@
 
 ## Unreleased — selective Heritage walkthrough builds
 
+- Refresh the producer-bound local candidate receipt from a fresh 100-question
+  evaluation and three browser journeys after correcting the source copy.
+
 - Normalise frozen records and relationships when rebuilding only the Heritage
   presentation plane, so all three walkthroughs receive their source evidence.
   Keep the existing descriptor identity and leave search and semantic outputs

@@ -74,6 +74,12 @@ included an in-memory addition. Its records and graph assertions are unchanged.
 An already published immutable candidate must retain its original bytes; the
 corrected projection requires a new candidate and the full promotion gates.
 
+The local acceptance receipt binds the exact producer files as well as the
+generated corpus and Reader. Refresh it from executed question and journey
+results when those producer bytes change; a passing older receipt does not
+validate a new implementation. The refreshed local evaluation scored all
+100 questions at least 80/100 and passed the three corpus journeys.
+
 ## Publication boundary and remaining gates
 
 Explorer owns the frozen source snapshots, generator and evaluation profile.
