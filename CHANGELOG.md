@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased — selective Heritage walkthrough builds
+
+- Normalise frozen records and relationships when rebuilding only the Heritage
+  presentation plane, so all three walkthroughs receive their source evidence.
+  Keep the existing descriptor identity and leave search and semantic outputs
+  unchanged. Reject a source population that differs from the candidate count.
+- Copy nested source fields before normalisation, so repeated builds do not
+  append geometry references to the retained synthetic snapshot in memory.
+
 ## Unreleased — preserve optional resource counts
 
 - Keep an absent source `resource_count` distinct from zero throughout large

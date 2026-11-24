@@ -63,6 +63,17 @@ Candidate, terminal and promotion workflows use the same locked environment
 from the exact Explorer assurance commit. This keeps installation separate
 from candidate contents and retains every existing release and browser gate.
 
+A presentation-only rebuild retains the candidate descriptor and normalises
+the frozen records and directed relationships needed by each walkthrough.
+It rejects a different source population and does not rebuild search or
+semantic outputs. Its presentation bytes must match a full build.
+
+Normalisation copies nested source fields before adding geometry references.
+This corrects the synthetic walkthrough's canonical source hash, which had
+included an in-memory addition. Its records and graph assertions are unchanged.
+An already published immutable candidate must retain its original bytes; the
+corrected projection requires a new candidate and the full promotion gates.
+
 ## Publication boundary and remaining gates
 
 Explorer owns the frozen source snapshots, generator and evaluation profile.

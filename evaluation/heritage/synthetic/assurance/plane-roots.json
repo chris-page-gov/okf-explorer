@@ -148,13 +148,13 @@
       "root_sha256": "589f92aca4d9d0c31b6fdff1b192ad3eae9ce9ec6b4dde262c50ac12e4948c06"
     },
     "presentation": {
-      "artifact_root_sha256": "1c84285d21b8817d87b8ec7ff4568d3c76da535df83ccad04f8ca8cfc57e77a6",
+      "artifact_root_sha256": "74de0195304bd3b3495a10b494894dd86b2b48f5b8317bcf6675ca1990a476f1",
       "bytes": 76896,
       "entries": [
         {
           "bytes": 19966,
           "path": "ai-context.md",
-          "sha256": "14f166170bc896b241387d6770aebf876c9f2ee3f524f8742ff685b5fa3157e0"
+          "sha256": "b6a0b062f59d4f20b0d6a29ad72283f1b20bca09586ac4b29bda586de9f67c29"
         },
         {
           "bytes": 3459,
@@ -179,7 +179,7 @@
         {
           "bytes": 19788,
           "path": "walkthrough-data.json",
-          "sha256": "a17b39aa06ce5be5415e216d9694dd99034177ad73b6dc050793cb81cefd80da"
+          "sha256": "f984ad1dca7293ec7969fa3be6f165adb1b07928792f85758e65127c2f932124"
         },
         {
           "bytes": 3248,
@@ -203,7 +203,7 @@
         }
       ],
       "files": 10,
-      "root_sha256": "1c84285d21b8817d87b8ec7ff4568d3c76da535df83ccad04f8ca8cfc57e77a6"
+      "root_sha256": "74de0195304bd3b3495a10b494894dd86b2b48f5b8317bcf6675ca1990a476f1"
     },
     "search": {
       "artifact_root_sha256": "0e388758ef05020770d4b083293ed99f599ebda494ab65befd67fa8c7dadb234",
@@ -1857,6 +1857,6 @@
       "root_sha256": "586fa546f79ba71be7ed68ebec3cee34206e8e23f3fc3991198971f5c14c3aa8"
     }
   },
-  "release_root_sha256": "87aeb4cc7843fccebae7155db9efb0a7072949c194465a5526a8826309a74e21",
+  "release_root_sha256": "5bb93d068a4a8a259f267e067f2fbe09ca8030158e402423e5e4edb2ffa8d057",
   "schema": "okf-evaluation-plane-roots.v2"
 }

@@ -4,7 +4,9 @@ import copy
 import json
 from pathlib import Path
 import sys
+import tempfile
 import unittest
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
@@ -79,6 +81,33 @@ class HeritageWalkthroughTest(unittest.TestCase):
     def test_all_walkthrough_assets_belong_to_the_presentation_plane(self):
         for name in self.render('tiny'):
             self.assertEqual('presentation', heritage_build_io.classify_output_plane(Path(name)), name)
+
+    def test_selective_presentation_matches_full_build_without_search_or_semantic_rebuild(self):
+        for name, (snapshot, corpus) in self.bundles.items():
+            with self.subTest(bundle=name), tempfile.TemporaryDirectory() as directory:
+                output = Path(directory)
+                (output / 'okf-explorer.json').write_text(json.dumps(corpus['descriptor']))
+                with patch.object(heritage.large_corpus, 'build_search', side_effect=AssertionError('search rebuilt')), patch.object(heritage, 'semantic_artifacts', side_effect=AssertionError('semantics rebuilt')):
+                    selective, count = heritage.existing_presentation_core(output, snapshot=snapshot)
+                    self.assertEqual(len(corpus['records']), count)
+                    self.assertEqual(heritage.emit_presentation_plane(corpus, snapshot), heritage.emit_presentation_plane(selective, snapshot))
+
+    def test_selective_presentation_rejects_a_different_source_population(self):
+        snapshot, corpus = self.bundles['tiny']
+        descriptor = copy.deepcopy(corpus['descriptor'])
+        descriptor['counts']['records'] += 1
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory)
+            (output / 'okf-explorer.json').write_text(json.dumps(descriptor))
+            with self.assertRaisesRegex(ValueError, 'record count does not match'):
+                heritage.existing_presentation_core(output, snapshot=snapshot)
+
+    def test_normalisation_does_not_mutate_nested_frozen_source_fields(self):
+        snapshot = heritage.read_snapshot(heritage.SYNTHETIC_SNAPSHOT)
+        original = copy.deepcopy(snapshot)
+        records = heritage.source_records(snapshot)
+        records[0]['resource_ids'].append('test/extra-resource')
+        self.assertEqual(original, snapshot)
 
 
 if __name__ == '__main__':

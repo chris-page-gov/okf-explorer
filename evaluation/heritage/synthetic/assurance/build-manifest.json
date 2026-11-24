@@ -15,13 +15,13 @@
       "bytes": 19966,
       "path": "ai-context.md",
       "plane": "presentation",
-      "sha256": "14f166170bc896b241387d6770aebf876c9f2ee3f524f8742ff685b5fa3157e0"
+      "sha256": "b6a0b062f59d4f20b0d6a29ad72283f1b20bca09586ac4b29bda586de9f67c29"
     },
     {
       "bytes": 67604,
       "path": "assurance/plane-roots.json",
       "plane": "control",
-      "sha256": "6e746411e508aca2f2785d93ece9960884f9f65f53337371d6dddcebe419cd66"
+      "sha256": "e6db2fcd8b05d729cdf52f3c3c8d2dbbe7fd2f88878f3d93829dd217fd6410aa"
     },
     {
       "bytes": 1065,
@@ -2157,7 +2157,7 @@
       "bytes": 19788,
       "path": "walkthrough-data.json",
       "plane": "presentation",
-      "sha256": "a17b39aa06ce5be5415e216d9694dd99034177ad73b6dc050793cb81cefd80da"
+      "sha256": "f984ad1dca7293ec7969fa3be6f165adb1b07928792f85758e65127c2f932124"
     },
     {
       "bytes": 3248,
