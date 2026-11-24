@@ -1,5 +1,22 @@
 # Changelog
 
+## Unreleased — study-club 0.3 walkthrough
+
+- Migrate the current six-record fictional teaching bundle to core OKF 0.3.
+  Retain all authored record bytes, complete frontmatter and directed reference
+  relationships. Preserve unknown nested metadata in Explorer and AI hand-offs.
+- Add this bundle's own source-linked visual question, qualified worked answer,
+  all five graph references, complete source hashes and absent-path controls.
+  Reject stale source quotations and invalid negative controls. Package
+  record and reference Reader journeys alongside the portable teaching files.
+- Preserve source-relative and root-relative Markdown link maps and reference
+  definitions so a room link opens the intended record within Reader. Add the
+  actual activity-to-room click as a browser regression after it exposed a
+  missing map in the original teaching projection.
+- Update the first-bundle exercise and current authoring guidance with the
+  new standard and the requirement to keep its worked evidence in lockstep.
+  Frozen packages and historical release tags remain unchanged.
+
 ## Unreleased — preserve reviewed repository layouts
 
 - Add an explicit adoption foundation check for customised repositories while

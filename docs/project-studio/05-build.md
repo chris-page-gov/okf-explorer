@@ -4,7 +4,7 @@
 
 ## Explain and inspect
 
-Open Knowledge Format (OKF) 0.2 uses small Markdown documents with structured
+Open Knowledge Format (OKF) 0.3 uses small Markdown documents with structured
 front matter. A deterministic build makes machine projections. A profile can
 add rules for a use case, but those rules are not universal OKF core.
 Validation checks declared structure; it cannot prove truth or usefulness.

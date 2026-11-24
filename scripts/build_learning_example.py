@@ -15,10 +15,10 @@ from urllib.parse import unquote, urlsplit
 
 from markdown_it import MarkdownIt
 import okf_semantic
+from build_study_club_walkthrough import render_walkthrough
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_SOURCE = ROOT / 'docs/examples/first-bundle'
-FIELDS = {'type', 'title', 'description', 'aliases', 'tags', 'status'}
 
 
 def json_bytes(value: object) -> bytes:
@@ -32,8 +32,8 @@ def fenced_text(text: str, language: str) -> str:
     return f'{fence}{language}\n{text.rstrip()}\n{fence}'
 
 
-def markdown_links(body: str):
-    for block in MarkdownIt('commonmark', {'html': False}).parse(body):
+def markdown_links(body: str, environment: dict | None = None):
+    for block in MarkdownIt('commonmark', {'html': False}).parse(body, environment if environment is not None else {}):
         for token in block.children or []:
             if token.type == 'link_open':
                 yield token.attrGet('href') or ''
@@ -42,7 +42,7 @@ def markdown_links(body: str):
 def build(source: Path) -> dict[str, bytes]:
     source = source.resolve()
     inputs = {}
-    for path in [source / 'index.md', source / 'questions.json', source / 'LICENSE.md', *sorted((source / 'records').glob('*.md'))]:
+    for path in [source / 'index.md', source / 'questions.json', source / 'walkthrough.case.json', source / 'LICENSE.md', *sorted((source / 'records').glob('*.md'))]:
         if not path.is_file() or path.is_symlink():
             raise ValueError(f'missing or symlinked source: {path.name}')
         inputs[path.relative_to(source).as_posix()] = path.read_bytes()
@@ -50,8 +50,9 @@ def build(source: Path) -> dict[str, bytes]:
     if not 1 <= len(record_paths) <= 60:
         raise ValueError('the teaching collection must contain 1 to 60 local records')
     index = okf_semantic.parse_markdown(source / 'index.md')
-    if index.metadata.get('okf_version') != '0.2':
-        raise ValueError('index.md must declare okf_version: "0.2"')
+    core_version = index.metadata.get('okf_version')
+    if core_version not in ('0.2', '0.3'):
+        raise ValueError('index.md must declare okf_version: "0.2" or "0.3"')
     listed_records = {posixpath.normpath(unquote(urlsplit(href).path))
                       for href in markdown_links(index.body)
                       if not urlsplit(href).scheme and not urlsplit(href).netloc}
@@ -63,8 +64,6 @@ def build(source: Path) -> dict[str, bytes]:
     for name in record_paths:
         document = okf_semantic.parse_markdown(source / name)
         meta = document.metadata
-        if set(meta) - FIELDS:
-            raise ValueError(f'{name}: unsupported teaching fields: {sorted(set(meta) - FIELDS)}')
         for key in ('type', 'title', 'description'):
             if not isinstance(meta.get(key), str) or not meta[key].strip():
                 raise ValueError(f'{name}: missing text field {key}')
@@ -73,22 +72,31 @@ def build(source: Path) -> dict[str, bytes]:
         for key in ('aliases', 'tags'):
             if key in meta and (not isinstance(meta[key], list) or not all(isinstance(v, str) for v in meta[key])):
                 raise ValueError(f'{name}: {key} must be a list of strings')
+        errors = okf_semantic.validate_v02_concept(meta, document.body, core_version=core_version)
+        if errors:
+            raise ValueError(f'{name}: invalid core metadata: {errors}')
         nodes[name] = {**meta, 'id': name, 'route': name, 'section': meta['type'].lower(),
                        'body': document.body, 'status': meta.get('status', 'draft'),
-                       'trust_tier': 'unverified', 'source': name}
+                       'trust_tier': 'unverified', 'source': name, 'source_path': name, 'core_role': 'concept',
+                       'frontmatter': meta, 'source_sha256': hashlib.sha256(inputs[name]).hexdigest()}
     relationships = []
     for name, node in nodes.items():
         targets = set()
-        for href in markdown_links(node['body']):
+        environment = {}
+        node['markdown_links'] = {}
+        for href in markdown_links(node['body'], environment):
             parts = urlsplit(href)
             if parts.scheme or parts.netloc:
                 continue  # External references remain source text; they are never fetched.
             if not parts.path:
                 continue
-            target = posixpath.normpath(posixpath.join(posixpath.dirname(name), unquote(parts.path)))
+            path = unquote(parts.path)
+            target = posixpath.normpath(path.lstrip('/') if path.startswith('/') else posixpath.join(posixpath.dirname(name), path))
             if target not in nodes:
                 raise ValueError(f'{name}: reference does not name a local record: {href}')
             targets.add(target)
+            node['markdown_links'][href] = target
+        node['markdown_references'] = {label: reference['href'] for label, reference in environment.get('references', {}).items()}
         for target in sorted(targets):
             digest = hashlib.sha256(f'{name}\n{target}'.encode()).hexdigest()
             relationships.append({'id': f'urn:okf:study-club:reference:{digest}',
@@ -113,7 +121,11 @@ def build(source: Path) -> dict[str, bytes]:
             raise ValueError('question record_ids must be a list of strings')
         if not set(record_ids) <= nodes.keys():
             raise ValueError('question refers to an unknown record')
-    bundle = {'okf_version': '0.2', 'meta': {'title': 'Fictional study club', 'default_corpus': 'study-club',
+    snapshot = 'sha256:' + hashlib.sha256(json_bytes({name: hashlib.sha256(data).hexdigest()
+                                                   for name, data in sorted(inputs.items())})).hexdigest()
+    bundle = {'schema': 'okf-explorer-bundle.v0', 'bundle_id': 'urn:okf:study-club',
+              'version': core_version + '.0', 'snapshot': snapshot,
+              'okf_version': core_version, 'meta': {'title': 'Fictional study club', 'default_corpus': 'study-club',
               'description': f'{len(nodes)} fictional teaching records; no real events or service assurances.'},
               'corpora': {'study-club': {'id': 'study-club', 'title': 'Fictional study club',
                  'assertion_scope': 'synthetic-fixture', 'nodes': nodes, 'relationships': relationships}}}
@@ -122,13 +134,14 @@ def build(source: Path) -> dict[str, bytes]:
                'All records are invented teaching material. Missing information stays unknown.',
                'Collection: study-club. This is not real event or service information.', '']
     for name, node in nodes.items():
-        metadata = {key: node[key] for key in sorted(FIELDS) if key in node}
+        metadata = node['frontmatter']
         context.extend([f'## Record `{name}`', '', f'Source: `{name}`. Trust: unverified.', '',
                         'Authored metadata:', '',
                         fenced_text(json.dumps(metadata, ensure_ascii=False, sort_keys=True, indent=2), 'json'), '',
                         'Authored record body (links are relative to its source file):', '',
                         fenced_text(node['body'], 'markdown'), ''])
     outputs = {'okf-bundle.json': json_bytes(bundle), 'ai-context.md': ('\n'.join(context)).encode()}
+    outputs.update(render_walkthrough(bundle, inputs, outputs['okf-bundle.json']))
     outputs['checksums.json'] = json_bytes({'algorithm': 'sha256', 'files': {
         name: hashlib.sha256(data).hexdigest() for name, data in sorted({**inputs, **outputs}.items())}})
     archive = io.BytesIO()

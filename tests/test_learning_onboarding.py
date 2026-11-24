@@ -106,6 +106,8 @@ class LearningStarterTest(unittest.TestCase):
         original = starter.build(self.source)
         record = self.source / 'records/data-drop-in.md'
         record.write_text(record.read_text().replace('12:00', '12:30').replace('description:', 'description: Revised note.'))
+        case = self.source / 'walkthrough.case.json'
+        case.write_text(case.read_text().replace('12:00', '12:30'))
         changed = starter.build(self.source)
         bundle = json.loads(changed['okf-bundle.json'])
         node = bundle['corpora']['study-club']['nodes']['records/data-drop-in.md']
@@ -114,6 +116,72 @@ class LearningStarterTest(unittest.TestCase):
         self.assertIn(node['description'], changed['ai-context.md'].decode())
         self.assertNotEqual(original['checksums.json'], changed['checksums.json'])
         self.assertNotEqual(original['first-bundle.zip'], changed['first-bundle.zip'])
+
+    def test_complete_frontmatter_reaches_reader_context_and_walkthrough(self):
+        record = self.source / 'records/data-drop-in.md'
+        record.write_text(record.read_text().replace('type: Activity', 'type: Activity\nexample_extension:\n  nested: [retained, unchanged]'))
+        outputs = starter.build(self.source)
+        node = json.loads(outputs['okf-bundle.json'])['corpora']['study-club']['nodes']['records/data-drop-in.md']
+        self.assertEqual({'nested': ['retained', 'unchanged']}, node['frontmatter']['example_extension'])
+        self.assertIn('example_extension', outputs['ai-context.md'].decode())
+        data = json.loads(outputs['walkthrough-data.json'])
+        source = next(row for row in data['source_documents'] if row['route'] == 'records/data-drop-in.md')
+        self.assertEqual(node['frontmatter'], source['frontmatter'])
+        self.assertEqual(record.read_text(), source['source_text'])
+
+    def test_walkthrough_refuses_stale_quotations_or_invented_negative_paths(self):
+        case = self.source / 'walkthrough.case.json'
+        original = json.loads(case.read_text())
+        invalid = copy.deepcopy(original)
+        invalid['claims'][0]['quote'] = 'This is not in the source.'
+        case.write_text(json.dumps(invalid))
+        with self.assertRaisesRegex(ValueError, 'quotation'):
+            starter.build(self.source)
+        invalid = copy.deepcopy(original)
+        invalid['no_directed_path'] = [['records/data-drop-in.md', 'records/library-room.md']]
+        case.write_text(json.dumps(invalid))
+        with self.assertRaisesRegex(ValueError, 'absent-path'):
+            starter.build(self.source)
+
+    def test_walkthrough_binds_complete_source_graph_and_descriptor(self):
+        outputs = starter.build(self.source)
+        data = json.loads(outputs['walkthrough-data.json'])
+        bundle = json.loads(outputs['okf-bundle.json'])
+        self.assertEqual('0.3', bundle['okf_version'])
+        self.assertEqual(hashlib.sha256(outputs['okf-bundle.json']).hexdigest(), data['descriptor_sha256'])
+        self.assertEqual(bundle['corpora']['study-club']['relationships'], data['relationships'])
+        self.assertEqual(6, len(data['source_documents']))
+        self.assertEqual(5, len(data['relationships']))
+        self.assertEqual(2, len(data['negative_controls']))
+        for source in data['source_documents']:
+            self.assertEqual((self.source / source['route']).read_bytes(), source['source_text'].encode())
+            self.assertEqual(hashlib.sha256(source['source_text'].encode()).hexdigest(), source['sha256'])
+
+    def test_explicit_legacy_copy_retains_its_declared_core_version(self):
+        index = self.source / 'index.md'
+        index.write_text(index.read_text().replace('okf_version: "0.3"', 'okf_version: "0.2"'))
+        outputs = starter.build(self.source)
+        bundle = json.loads(outputs['okf-bundle.json'])
+        self.assertEqual('0.2', bundle['okf_version'])
+        self.assertEqual('0.2', json.loads(outputs['walkthrough-data.json'])['okf_version'])
+
+    def test_markdown_navigation_handles_reference_style_and_root_relative_links(self):
+        record = self.source / 'records/data-drop-in.md'
+        case = self.source / 'walkthrough.case.json'
+        original_record, original_case = record.read_text(), case.read_text()
+        for link, definition, references in [('[Library room][room]', '\n[room]: library-room.md\n', {'ROOM': 'library-room.md'}),
+                                              ('[Library room](/records/library-room.md)', '', {})]:
+            with self.subTest(link=link):
+                record.write_text(original_record.replace('[Library room](library-room.md)', link) + definition)
+                changed_case = json.loads(original_case)
+                changed_case['claims'][0]['quote'] = changed_case['claims'][0]['quote'].replace('[Library room](library-room.md)', link)
+                case.write_text(json.dumps(changed_case))
+                outputs = starter.build(self.source)
+                node = json.loads(outputs['okf-bundle.json'])['corpora']['study-club']['nodes']['records/data-drop-in.md']
+                self.assertEqual(references, node['markdown_references'])
+                self.assertEqual(['records/library-room.md'], list(node['markdown_links'].values()))
+                journey = json.loads(outputs['walkthrough.explorer-journeys.json'])['journeys'][0]
+                self.assertIn('in the Library room', journey['assertions'][0]['includes'])
 
     def test_corrupted_copy_fails_without_repairing_or_overwriting_outputs(self):
         record = self.source / 'records/data-drop-in.md'
@@ -128,7 +196,7 @@ class LearningStarterTest(unittest.TestCase):
     def test_root_marker_and_index_membership_are_required(self):
         index = self.source / 'index.md'
         original = index.read_text()
-        for invalid in [original.replace('okf_version: "0.2"', 'okf_version: "0.1"'), original.replace('records/booking.md', 'records/missing.md')]:
+        for invalid in [original.replace('okf_version: "0.3"', 'okf_version: "0.1"'), original.replace('records/booking.md', 'records/missing.md')]:
             index.write_text(invalid)
             with self.assertRaises(ValueError):
                 starter.build(self.source)

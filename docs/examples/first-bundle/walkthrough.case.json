@@ -1,0 +1,47 @@
+{
+  "schema": "okf-study-club-walkthrough-case.v1",
+  "id": "study-club-activity-access-and-booking",
+  "question": "Which free activity is available on Thursday, where is it held and what do the notes say about access? Compare it with the reading circle and the repair demonstration: can I confirm the demonstration's price, step-free access and a way to book?",
+  "claims": [
+    {
+      "source": "records/data-drop-in.md",
+      "quote": "The data drop-in meets on Thursday at 12:00 in the [Library room](library-room.md). It is free.",
+      "answer": "The free Thursday activity is the Data drop-in, at 12:00 in the Library room."
+    },
+    {
+      "source": "records/library-room.md",
+      "quote": "The Library room is recorded as step-free.",
+      "answer": "The Library room record says it is step-free. This is fictional source information, not an independently checked access assurance."
+    },
+    {
+      "source": "records/reading-circle.md",
+      "quote": "The reading circle meets on Tuesday at 18:30 in the [Library room](library-room.md). It is free.",
+      "answer": "The Reading circle is also free and uses the Library room, but meets on Tuesday at 18:30, not Thursday."
+    },
+    {
+      "source": "records/repair-demonstration.md",
+      "quote": "The repair demonstration meets on Saturday at 10:00 in the [Workshop room](workshop-room.md). [Booking](booking.md) is required. Its price is not recorded.",
+      "answer": "The Repair demonstration meets on Saturday at 10:00 in the Workshop room and requires booking. Its price is not recorded."
+    },
+    {
+      "source": "records/workshop-room.md",
+      "quote": "Accessibility for the Workshop room is not recorded.",
+      "answer": "Step-free access for the Workshop room is unknown. The Library room's statement cannot be transferred to it."
+    },
+    {
+      "source": "records/booking.md",
+      "quote": "No telephone number, booking URL or availability is recorded.",
+      "answer": "The notes establish a booking requirement, but provide no telephone number, booking URL or availability. They cannot complete a booking."
+    }
+  ],
+  "no_directed_path": [
+    [
+      "records/repair-demonstration.md",
+      "records/library-room.md"
+    ],
+    [
+      "records/data-drop-in.md",
+      "records/booking.md"
+    ]
+  ]
+}

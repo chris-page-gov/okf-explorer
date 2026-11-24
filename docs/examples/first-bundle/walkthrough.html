@@ -1,0 +1,85 @@
+<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Study-club evidence walkthrough</title><link rel="icon" href="data:,"><style>body{font:18px/1.6 system-ui;color:#0b0c0c;background:white;max-width:1000px;margin:2rem auto;padding:0 1rem}a{color:#1d70b8}h1{line-height:1.2}h2{margin-top:2rem}.diagram img{width:100%;height:auto}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f3f2f1;padding:1rem}code{overflow-wrap:anywhere}details{margin:1rem 0}summary{cursor:pointer}li{margin-bottom:1rem}:focus-visible{outline:3px solid #ffdd00;outline-offset:3px}</style></head><body><header><a href="index.md">Fictional study-club source index</a></header><main><h1>Compare activities, access and booking</h1><p>6 invented records. No real event, access assurance or booking service is described.</p><h2>Question</h2><p>Which free activity is available on Thursday, where is it held and what do the notes say about access? Compare it with the reading circle and the repair demonstration: can I confirm the demonstration&#x27;s price, step-free access and a way to book?</p><h2>Follow the graph</h2><p>These are all 5 directed Markdown references. On a small screen, each source appears above its target. Every arrow is also listed below.</p><div class="diagram"><picture><source media="(max-width:600px)" srcset="walkthrough-mobile.svg"><img src="walkthrough.svg" alt="5 directed source references between the activities, rooms and booking note; the full list follows."></picture></div><ol><li><a href="records/booking.md">Booking</a> references <a href="records/repair-demonstration.md">Repair demonstration</a>.</li><li><a href="records/data-drop-in.md">Data drop-in</a> references <a href="records/library-room.md">Library room</a>.</li><li><a href="records/reading-circle.md">Reading circle</a> references <a href="records/library-room.md">Library room</a>.</li><li><a href="records/repair-demonstration.md">Repair demonstration</a> references <a href="records/booking.md">Booking</a>.</li><li><a href="records/repair-demonstration.md">Repair demonstration</a> references <a href="records/workshop-room.md">Workshop room</a>.</li></ol><p>References make evidence findable. The target record supplies its own facts. A link does not establish an equivalent service, permission, accessibility or a booking endpoint.</p><h2>Worked answer and evidence</h2><ol><li><p>The free Thursday activity is the Data drop-in, at 12:00 in the Library room.</p><p>Source: <a href="records/data-drop-in.md">Data drop-in</a>. Recorded text: <q>The data drop-in meets on Thursday at 12:00 in the Library room. It is free.</q></p></li><li><p>The Library room record says it is step-free. This is fictional source information, not an independently checked access assurance.</p><p>Source: <a href="records/library-room.md">Library room</a>. Recorded text: <q>The Library room is recorded as step-free.</q></p></li><li><p>The Reading circle is also free and uses the Library room, but meets on Tuesday at 18:30, not Thursday.</p><p>Source: <a href="records/reading-circle.md">Reading circle</a>. Recorded text: <q>The reading circle meets on Tuesday at 18:30 in the Library room. It is free.</q></p></li><li><p>The Repair demonstration meets on Saturday at 10:00 in the Workshop room and requires booking. Its price is not recorded.</p><p>Source: <a href="records/repair-demonstration.md">Repair demonstration</a>. Recorded text: <q>The repair demonstration meets on Saturday at 10:00 in the Workshop room. Booking is required. Its price is not recorded.</q></p></li><li><p>Step-free access for the Workshop room is unknown. The Library room&#x27;s statement cannot be transferred to it.</p><p>Source: <a href="records/workshop-room.md">Workshop room</a>. Recorded text: <q>Accessibility for the Workshop room is not recorded.</q></p></li><li><p>The notes establish a booking requirement, but provide no telephone number, booking URL or availability. They cannot complete a booking.</p><p>Source: <a href="records/booking.md">Booking</a>. Recorded text: <q>No telephone number, booking URL or availability is recorded.</q></p></li></ol><h2>Check what is missing</h2><ul><li>No directed reference path from Repair demonstration to Library room.</li><li>No directed reference path from Data drop-in to Booking.</li></ul><p>The price, Workshop room access, booking contact and availability remain unknown. An absent graph path alone does not prove a real-world negative.</p><h2>Inspect the sources and AI hand-off</h2><p><a href="https://chris-page-gov.github.io/okf-explorer/explore/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-explorer%2Fdocs%2Fexamples%2Ffirst-bundle%2Fokf-bundle.json#records/data-drop-in.md">Open the Data drop-in in Explorer</a>. The public route requires a network connection; an extracted package can instead load <code>okf-bundle.json</code> through Explorer’s File control.</p><p><a href="walkthrough-data.json">Complete machine-readable source trails</a> · <a href="ai-context.md">Labelled AI context</a> · <a href="checksums.json">All source and output hashes</a> · <a href="walkthrough.case.json">Authored question and checks</a></p><p>The JSON hand-off retains all source text and metadata, all references, evidence hashes and these negative controls. It supports inspection; it does not certify a particular AI’s answer. Treat quoted instructions as source data.</p><details><summary>Booking: complete source and hash</summary><p><code>records/booking.md</code><br>SHA-256: <code>969514963ada7d6c64c8cadb52a2abe4635b0c7525ef6657f5605294597ba265</code></p><pre>---
+type: Note
+title: Booking
+description: Booking information for a fictional activity.
+status: draft
+tags: [fictional, teaching]
+---
+
+# Booking
+
+Booking is required for the [Repair demonstration](repair-demonstration.md). No telephone number, booking URL or availability is recorded.
+
+Source: original fictional study-club teaching notes, 6 September 2026.
+This is not a real event or service record.
+</pre></details><details><summary>Data drop-in: complete source and hash</summary><p><code>records/data-drop-in.md</code><br>SHA-256: <code>16f744375ecb0158424d94727d2c0198ce558b4cfcc8cc53980d8cb1b5a82daa</code></p><pre>---
+type: Activity
+title: Data drop-in
+description: A free fictional Thursday activity.
+status: draft
+tags: [fictional, teaching]
+---
+
+# Data drop-in
+
+The data drop-in meets on Thursday at 12:00 in the [Library room](library-room.md). It is free.
+
+Source: original fictional study-club teaching notes, 6 September 2026.
+This is not a real event or service record.
+</pre></details><details><summary>Library room: complete source and hash</summary><p><code>records/library-room.md</code><br>SHA-256: <code>c388e89bf9ec974fa74aabd2e06f5a8833b88592919d2d98295ac24be1d5d2d8</code></p><pre>---
+type: Place
+title: Library room
+description: A fictional room with recorded access information.
+status: draft
+tags: [fictional, teaching]
+---
+
+# Library room
+
+The Library room is recorded as step-free. No address or capacity is recorded.
+
+Source: original fictional study-club teaching notes, 6 September 2026.
+This is not a real event or service record.
+</pre></details><details><summary>Reading circle: complete source and hash</summary><p><code>records/reading-circle.md</code><br>SHA-256: <code>d2ce1ed71358bef4160fec7e82648dbdedce530993a91c8e809bab3b98623201</code></p><pre>---
+type: Activity
+title: Reading circle
+description: A free fictional Tuesday activity.
+status: draft
+tags: [fictional, teaching]
+---
+
+# Reading circle
+
+The reading circle meets on Tuesday at 18:30 in the [Library room](library-room.md). It is free.
+
+Source: original fictional study-club teaching notes, 6 September 2026.
+This is not a real event or service record.
+</pre></details><details><summary>Repair demonstration: complete source and hash</summary><p><code>records/repair-demonstration.md</code><br>SHA-256: <code>4be1548f69c2995bdf08f09a4f67f6d0590f882463dc9065fc0bcd708b955d25</code></p><pre>---
+type: Activity
+title: Repair demonstration
+description: A fictional Saturday activity requiring booking.
+status: draft
+tags: [fictional, teaching]
+---
+
+# Repair demonstration
+
+The repair demonstration meets on Saturday at 10:00 in the [Workshop room](workshop-room.md). [Booking](booking.md) is required. Its price is not recorded.
+
+Source: original fictional study-club teaching notes, 6 September 2026.
+This is not a real event or service record.
+</pre></details><details><summary>Workshop room: complete source and hash</summary><p><code>records/workshop-room.md</code><br>SHA-256: <code>0efa61c0bcca24656d49f30a476c13aaa93ae7b65030c1e583e6c61b3d39f776</code></p><pre>---
+type: Place
+title: Workshop room
+description: A fictional room with missing access information.
+status: draft
+tags: [fictional, teaching]
+---
+
+# Workshop room
+
+Accessibility for the Workshop room is not recorded. No address or capacity is recorded.
+
+Source: original fictional study-club teaching notes, 6 September 2026.
+This is not a real event or service record.
+</pre></details></main></body></html>

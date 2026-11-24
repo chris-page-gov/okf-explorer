@@ -1,6 +1,6 @@
 {
   "schema": "okf-repository-publication-contract.v1",
-  "modified": "2026-11-23",
+  "modified": "2026-11-24",
   "locale": "en-GB",
   "time_zone": "Europe/London",
   "repository": {
@@ -694,6 +694,66 @@
         ],
         "check_command_ids": [
           "check-reference-core"
+        ]
+      },
+      {
+        "path": "docs/examples/first-bundle/walkthrough.html",
+        "role": "other",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-learning-example"
+        ],
+        "check_command_ids": [
+          "check-learning-example"
+        ]
+      },
+      {
+        "path": "docs/examples/first-bundle/walkthrough.svg",
+        "role": "other",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-learning-example"
+        ],
+        "check_command_ids": [
+          "check-learning-example"
+        ]
+      },
+      {
+        "path": "docs/examples/first-bundle/walkthrough-data.json",
+        "role": "other",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-learning-example"
+        ],
+        "check_command_ids": [
+          "check-learning-example"
+        ]
+      },
+      {
+        "path": "docs/examples/first-bundle/walkthrough.explorer-journeys.json",
+        "role": "other",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-learning-example"
+        ],
+        "check_command_ids": [
+          "check-learning-example"
+        ]
+      },
+      {
+        "path": "docs/examples/first-bundle/walkthrough-mobile.svg",
+        "role": "other",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-learning-example"
+        ],
+        "check_command_ids": [
+          "check-learning-example"
         ]
       }
     ]

@@ -25,7 +25,7 @@
     { number: '02', title: 'Question', text: 'Write the questions your bundle and app must answer before collecting data.', output: 'Question set', time: '45 min', href: './docs/project-studio/02-question.html' },
     { number: '03', title: 'Research', text: 'Find sources and decide authority, rights, privacy, freshness and gaps.', output: 'Source ledger', time: '1–3 hours', href: './docs/project-studio/03-research.html' },
     { number: '04', title: 'Model', text: 'Give things stable identities and add only relationships you can explain and evidence.', output: 'Concept map', time: '1–2 hours', href: './docs/project-studio/04-model.html' },
-    { number: '05', title: 'Build', text: 'Author a small OKF 0.2 bundle, then use exact checks instead of guesswork.', output: 'Valid bundle', time: '1–3 hours', href: './docs/project-studio/05-build.html' },
+    { number: '05', title: 'Build', text: 'Author a small OKF 0.3 bundle, then use exact checks instead of guesswork.', output: 'Valid bundle', time: '1–3 hours', href: './docs/project-studio/05-build.html' },
     { number: '06', title: 'Explore', text: 'Use Reader, Search, Links, Graph, Timeline and Inspect to find defects.', output: 'Journey receipt', time: '45–90 min', href: './docs/project-studio/06-explore.html' },
     { number: '07', title: 'Ground', text: 'Connect your AI and compare its answers with questions you held back.', output: 'Evaluation results', time: '1–2 hours', href: './docs/project-studio/07-ground.html' },
     { number: '08', title: 'Create', text: 'Predict, run, inspect and modify working code before making your own learning UI.', output: 'Tested app', time: '2–6 hours', href: './docs/project-studio/08-create.html' }
