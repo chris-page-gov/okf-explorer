@@ -29,6 +29,8 @@
   workflow templates to use governed uv/Python and pinned Node/pnpm versions.
   Initialise the temporary environment on the runner and persist it through
   `GITHUB_ENV`; runner context is unavailable in a workflow's job environment.
+- Give exported reading pages an explicit icon and `en-GB` locale. This fixes
+  the observed owner-root favicon 404 without changing data or graph inputs.
 - Keep observations outside immutable candidates and retain the independent
   Heritage repository's attested candidate/promotion release gates. Publication
   and formal release acceptance remain separate from local source compilation.
