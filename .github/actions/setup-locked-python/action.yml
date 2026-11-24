@@ -4,10 +4,10 @@ description: Install the governed Python and uv versions and synchronise uv.lock
 runs:
   using: composite
   steps:
-    - name: Set up uv 0.12.2
+    - name: Set up uv 0.13.4
       uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
       with:
-        version: "0.12.2"
+        version: "0.13.4"
         enable-cache: true
         cache-dependency-glob: uv.lock
     - name: Install the governed Python with uv

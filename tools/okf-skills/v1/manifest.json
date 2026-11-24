@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "upstream_commit": "527e81aff55992be21507e97004286789126f88c",
   "launchers": {
-    "okf_skill.py": "3c7fea37e3b4ff9c383c4cf4f6c9e367b337b5175eb329911989303347a04e57",
+    "okf_skill.py": "e9495e35748800e9c7946f8f691d556473fc8f4703e1f1c059481b2fb12a417a",
     "install_okf_skills.py": "5e2dee203c3d65052ec13f13a68cde18c2b501635ea3e50736dc44deb4b2b1e0"
   },
   "files": {

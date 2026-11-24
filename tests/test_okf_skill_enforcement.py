@@ -41,10 +41,17 @@ class SkillEnforcementTests(unittest.TestCase):
             with self.assertRaisesRegex(guard.GuardError, "governed CPython"):
                 guard.verify_runtime()
 
+    def test_vulnerable_uv_is_rejected_before_lock_check(self):
+        result = subprocess.CompletedProcess([], 0, "uv 0.12.2\n", "")
+        with mock.patch.object(guard.subprocess, "run", return_value=result) as run:
+            with self.assertRaisesRegex(guard.GuardError, "uv version"):
+                guard.verify_runtime()
+        self.assertEqual(1, run.call_count)
+
     def test_stale_lock_is_rejected(self):
         def run(args, **kwargs):
             if args[1:] == ["--version"]:
-                return subprocess.CompletedProcess(args, 0, "uv 0.12.2\n", "")
+                return subprocess.CompletedProcess(args, 0, "uv 0.13.4\n", "")
             return subprocess.CompletedProcess(args, 1, "", "lock is stale")
         with mock.patch.object(guard.subprocess, "run", side_effect=run):
             with self.assertRaisesRegex(guard.GuardError, "locked environment is stale"):

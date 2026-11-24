@@ -18,22 +18,22 @@ use [the separate teaching builder](onboarding/first-bundle.md).
 Read [repository roles](repository-guide.md) and the semantic/publication contracts
 before changing generated material.
 
-## Python Toolchain
+## Python toolchain
 
-Install exactly `uv` 0.12.2 with Astral's
+Install exactly `uv` 0.13.4 with Astral's
 [official version-specific installer](https://docs.astral.sh/uv/getting-started/installation/#standalone-installer),
 then create the exact project environment from the committed lock. On macOS
 or Linux:
 
 ```sh
-curl -LsSf https://astral.sh/uv/0.12.2/install.sh | sh
+curl -LsSf https://astral.sh/uv/0.13.4/install.sh | sh
 uv --version
 uv sync --locked
 uv run --locked python -c 'import sys; print(sys.version)'
 ```
 
 The installation guide gives the equivalent version-specific PowerShell
-command for Windows. `uv --version` must report `uv 0.12.2`; the project
+command for Windows. `uv --version` must report `uv 0.13.4`; the project
 refuses a different version rather than silently changing its lock semantics.
 
 The repository pins CPython 3.12.11 in `.python-version`, direct dependencies
