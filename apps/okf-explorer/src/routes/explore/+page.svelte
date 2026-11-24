@@ -23,6 +23,7 @@
   import { BOOKMARK_STORAGE_KEY, addBookmark, readBookmarks, type Bookmark } from '$lib/viewer/bookmarks';
   import { DEFAULT_DETAILS_WIDTH, DEFAULT_NAVIGATION_WIDTH, displayedRoute, type WorkspacePanel } from '$lib/viewer/workspaceNavigation';
   import { routeHash, routeFromHash } from '$lib/viewer/routeHash';
+  import { resolveContextLink } from '$lib/viewer/contextLinks';
   import { pushState, replaceState } from '$app/navigation';
   import type {
     BundleRegistryEntry,
@@ -336,7 +337,13 @@
       };
 
   type AnyLargeRecord = Partial<LargeDataset & SearchResultDoc>;
-  type ContextLink = { label: string; url: string; description?: string };
+  type ContextLink = {
+    label: string;
+    href?: string;
+    description?: string;
+    targetLabel: string;
+    readerTarget: boolean;
+  };
 
   type LargeGraphNode = {
     id: string;
@@ -4346,14 +4353,27 @@
   function contextLinks(record: AnyLargeRecord | undefined): ContextLink[] {
     const links = (record as Record<string, unknown> | undefined)?.context_links;
     if (!Array.isArray(links)) return [];
+    const descriptorUrl = source?.kind === 'large' ? source.url : '';
+    const readerHref = typeof window === 'undefined' ? '' : window.location.href;
     return links
       .map((item) => (item && typeof item === 'object' ? (item as Record<string, unknown>) : null))
-      .filter((item): item is Record<string, unknown> => Boolean(item && typeof item.url === 'string' && typeof item.label === 'string'))
-      .map((item) => ({
-        label: String(item.label),
-        url: String(item.url),
-        description: typeof item.description === 'string' ? item.description : undefined
-      }));
+      .filter((item): item is Record<string, unknown> => Boolean(
+        item && typeof item.label === 'string' &&
+        (typeof item.url === 'string' || (typeof item.bundle === 'string' && typeof item.route === 'string'))
+      ))
+      .map((item) => {
+        const resolved = resolveContextLink(item, descriptorUrl, readerHref);
+        const url = typeof item.url === 'string' ? item.url : '';
+        const title = typeof item.title === 'string' ? item.title : '';
+        const description = typeof item.description === 'string' ? item.description : undefined;
+        return {
+          label: String(item.label),
+          href: resolved?.href,
+          description,
+          targetLabel: description || title || url || 'Open in Explorer',
+          readerTarget: resolved?.readerTarget === true
+        };
+      });
   }
 
   function acronymExpansions(record: AnyLargeRecord | undefined): Array<{ acronym: string; expanded: string; source_url?: string }> {
@@ -9186,7 +9206,7 @@
                       </dd>
                     {/each}
                     {#each contextLinks(largeDetail.dataset) as link}
-                      <dt>{link.label}</dt><dd>{#if isUrl(link.url)}<a href={link.url} target="_blank" rel="noopener">{link.description || link.url}</a>{:else}{displayValue(link.description || link.url)}{/if}</dd>
+                      <dt>{link.label}</dt><dd>{#if link.href}<a href={link.href} target={link.readerTarget ? undefined : '_blank'} rel={link.readerTarget ? undefined : 'noopener'} data-sveltekit-reload={link.readerTarget ? '' : undefined} data-context-link-kind={link.readerTarget ? 'reader' : 'resource'}>{link.targetLabel}</a>{:else}{displayValue(link.targetLabel)}{/if}</dd>
                     {/each}
                   </dl>
                 </details>

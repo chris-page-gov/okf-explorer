@@ -3,9 +3,9 @@
   "bundle_id": "https://chris-page-gov.github.io/okf-explorer/id/bundle/ai-infrastructure-wiki",
   "case_sha256": "3a9cc4806524c0a4f58ad70f1331294946a11aa5b5a16463704413e3e502b413",
   "descriptor": "okf-bundle.json",
-  "descriptor_sha256": "e4101a65ca7d40d71f7d3dddbcc4aabbd06c8db5f4ea916aa295f829d9097198",
+  "descriptor_sha256": "93f0eb4ae96d01aa508a0b9bb14fdf4a3b644482bc5ed6e2ebe48ef0273614f5",
   "graph": "okf-bundle.jsonld",
-  "graph_sha256": "bb6106b5898e6a0d367319ed2906df8fbd54bc507ca34c93a797c7b41cdd8f84",
+  "graph_sha256": "7e9513eef91cefddab8e91158af7333ef1522046dd05497aa20e5b05b98b5b7e",
   "id": "council-agent-consent-and-evidence",
   "negative_controls": [
     {
@@ -160,5 +160,5 @@
       ]
     }
   ],
-  "version": "0.9.1"
+  "version": "0.9.2"
 }

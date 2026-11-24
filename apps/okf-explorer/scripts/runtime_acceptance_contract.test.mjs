@@ -35,6 +35,7 @@ import {
   RUNTIME_GATE_IDS,
   verifyFrozenReleaseBinding
 } from './runtime_acceptance_contract.mjs';
+import { federationOverviewContract } from './federation_overview_contract.mjs';
 import {
   ACCEPTANCE_LIMITS,
   assertAcceptanceServerHealthy,
@@ -365,7 +366,7 @@ test('binds a release receipt to exact candidate and Explorer revisions', () => 
     candidateTree: 'c'.repeat(40),
     candidateBundleTree: SHA,
     explorerCommit: 'd'.repeat(40),
-    explorerTag: 'v0.8.1'
+    explorerTag: 'v0.9.2'
   });
 
   assert.deepEqual(binding, {
@@ -377,12 +378,12 @@ test('binds a release receipt to exact candidate and Explorer revisions', () => 
     },
     explorer: {
       repository: 'https://github.com/chris-page-gov/okf-explorer',
-      tag: 'v0.8.1',
+      tag: 'v0.9.2',
       commit: 'd'.repeat(40)
     }
   });
-  assert.equal(EXPLORER_RELEASE_VERSION, '0.8.1');
-  assert.equal(EXPLORER_RELEASE_TAG, 'v0.8.1');
+  assert.equal(EXPLORER_RELEASE_VERSION, '0.9.2');
+  assert.equal(EXPLORER_RELEASE_TAG, 'v0.9.2');
 });
 
 test('rejects partial or malformed release bindings', () => {
@@ -400,7 +401,52 @@ test('rejects partial or malformed release bindings', () => {
         explorerCommit: 'd'.repeat(40),
         explorerTag: 'v0.8.0'
       }),
-    /requires Explorer v0\.8\.1/
+    /requires Explorer v0\.9\.2/
+  );
+});
+
+test('derives the legislation release binding version from package.json', async () => {
+  const packageDocument = JSON.parse(await readFile(
+    new URL('../package.json', import.meta.url),
+    'utf8'
+  ));
+  assert.equal(EXPLORER_RELEASE_VERSION, packageDocument.version);
+  assert.equal(EXPLORER_RELEASE_TAG, `v${packageDocument.version}`);
+});
+
+test('selects the federation overview from its validated schema and core pair', () => {
+  for (const [schema, okf_version] of [
+    ['okf-explorer-federation.v1', '0.2'],
+    ['okf-explorer-federation.v2', '0.3']
+  ]) {
+    assert.deepEqual(
+      federationOverviewContract(Buffer.from(JSON.stringify({
+        schema,
+        kind: 'okf-federation',
+        okf_version
+      }))),
+      {
+        schema,
+        okf_version,
+        selector: `[data-federation-overview="${schema}"]`
+      }
+    );
+  }
+  assert.throws(
+    () => federationOverviewContract(Buffer.from(JSON.stringify({
+      schema: 'okf-explorer-federation.v2',
+      kind: 'okf-federation',
+      okf_version: '0.2'
+    }))),
+    /requires okf_version 0\.3/
+  );
+  assert.throws(
+    () => federationOverviewContract(Buffer.from(JSON.stringify({
+      schema: 'okf-explorer-federation.v1',
+      kind: 'other',
+      okf_version: '0.2'
+    }))),
+    /unsupported descriptor schema or kind/
   );
 });
 

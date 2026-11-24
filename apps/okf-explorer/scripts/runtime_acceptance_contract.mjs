@@ -5,7 +5,7 @@ import {
   realpath,
   unlink
 } from 'node:fs/promises';
-import { constants as fileConstants } from 'node:fs';
+import { constants as fileConstants, readFileSync } from 'node:fs';
 import path from 'node:path';
 
 import {
@@ -27,7 +27,10 @@ const EXPLORER_BUILD_ROOT = 'explorer-build';
 const EXPLORER_BUILD_INDEX_PATH = 'explorer-build/index.html';
 const EXPLORER_BUILD_MANIFEST_PATH =
   `explorer-build/${BUILD_MANIFEST_FILENAME}`;
-export const EXPLORER_RELEASE_VERSION = '0.8.1';
+const explorerPackage = JSON.parse(
+  readFileSync(new URL('../package.json', import.meta.url), 'utf8')
+);
+export const EXPLORER_RELEASE_VERSION = explorerPackage.version;
 export const EXPLORER_RELEASE_TAG = `v${EXPLORER_RELEASE_VERSION}`;
 export const LEGISLATION_BUNDLE_TREE_ALGORITHM =
   'sha256-canonical-json-inventory-v1';

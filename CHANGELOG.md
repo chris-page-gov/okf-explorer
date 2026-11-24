@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased — portable context navigation and release binding
+
+- Resolve structured context links from the loaded bundle descriptor and open
+  their target record in the current Explorer application path. Keep ordinary
+  absolute web-resource links external, and reject unsafe or malformed targets.
+- Derive the legislation runtime acceptance version from the app package so
+  the release tag and package version cannot drift apart. Prepare the 0.9.2
+  candidate; publication and release remain separate gates.
+
 ## Unreleased — core 0.3 federations
 
 - Add the versioned federation v2 descriptor and Reader support for OKF 0.3.
