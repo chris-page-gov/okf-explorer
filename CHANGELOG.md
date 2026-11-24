@@ -8,6 +8,8 @@
 - Prepare Explorer 0.9.1 and its dependency inventory for the maintenance
   release. Correct the migration note to record the published 0.9.0 release;
   producer acceptance and the next formal release remain separate gates.
+- Keep both citation versions aligned with the active package version, check
+  their dates agree, and retain the dated historical release entries.
 
 ## Unreleased — four profile fixture walkthroughs
 

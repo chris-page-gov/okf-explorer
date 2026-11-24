@@ -16,3 +16,8 @@ This change does not upgrade, rewrite or revalidate historical federation
 descriptors. A producer's successful local schema check is not evidence of
 publication, consumer support or complete source coverage. Validate the exact
 consumer revision and bundle bytes separately.
+
+The 0.9.1 release preparation keeps the package, both citation versions,
+dependency inventory and generated bundle metadata aligned. Historical release
+entries remain dated. A prepared version is separate from a published release;
+the formal release still needs its exact CI, public and asset checks.
