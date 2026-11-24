@@ -21,11 +21,11 @@ HERITAGE_EVALUATION = ROOT / "evaluation-foundry" / "fixtures" / "heritage-warwi
 SEARCH_FILTERING_MANUAL = ROOT / "docs" / "static-search-filtering-manual.md"
 SEARCH_FILTERING_ASSETS = ROOT / "docs" / "assets" / "okf-search-filtering-manual"
 HERITAGE_LOCAL_RECEIPT = HERITAGE_EVALUATION / "evidence" / "local-candidate-receipt.json"
-# The fresh framework results were retained in fcebe238ecd53a18bc0144b5dac2429f31e17073.
-# A later evaluator change cannot change the identity of that execution.
+# The current 0.3 results were executed on 24 November 2026 with this exact
+# evaluator. A later code change cannot change the identity of that execution.
 HERITAGE_RECORDED_EVALUATOR = {
     "path": "scripts/evaluate_okf_explorer.mjs",
-    "sha256": "97b33d963b8ce6a1269adf2e378a0576cd982a6ddd0f0a97c39c9c27dd422d16",
+    "sha256": "391227e6cb78461b6b09de28cfa5378e21ff8c1e19bbed9a648d9f22a2600a76",
 }
 
 
@@ -66,13 +66,20 @@ class OkfExplorerEvaluationSuiteTest(unittest.TestCase):
 
     @staticmethod
     def _producer_materials() -> dict[str, object]:
-        paths = (
+        paths = tuple(sorted((
             "requirements-okf.txt",
             "scripts/build_heritage_evaluation.py",
             "scripts/build_uk_government_api_okf.py",
             "scripts/heritage_build_io.py",
             "scripts/okf_semantic.py",
-        )
+            "scripts/build_heritage_walkthrough.py",
+            "evaluation-foundry/fixtures/heritage-warwickshire/walkthroughs/faithful.case.json",
+            "evaluation-foundry/fixtures/heritage-warwickshire/walkthroughs/tiny.case.json",
+            "evaluation-foundry/fixtures/heritage-warwickshire/walkthroughs/synthetic.case.json",
+            "pyproject.toml",
+            "uv.lock",
+            ".python-version",
+        )))
         materials = []
         for relative in paths:
             raw = (ROOT / relative).read_bytes()

@@ -10,6 +10,13 @@ The public Site is
 Candidate and promotion releases use the two-release closure described in
 `site/release-assurance/release-policy.json`.
 
+The current export includes `site/toolchain/` with its reviewed Python project,
+lockfile and CPython version. CI and Pages use uv 0.13.4 and CPython 3.12.11;
+release and terminal checks use the project at the exact Explorer assurance
+commit. `UV_PROJECT_ENVIRONMENT` places the environment under the runner's
+temporary directory, outside the immutable candidate. Never add an environment,
+cache or observation receipt under `site/`.
+
 Install all five templates as `.github/workflows/ci.yml`, `pages.yml`,
 `candidate-release.yml`, `terminal-assurance.yml`, and
 `promotion-release.yml`. Keep
@@ -41,3 +48,12 @@ byte count and SHA-256 digest.
 Pushes that change only workflows or other root control files do not redeploy
 Pages: the Pages push trigger is limited to `site/**`. A deliberate manual
 Pages dispatch remains available.
+
+## OKF standards and bundle discovery
+
+The [central standards register](https://github.com/chris-page-gov/okf-explorer/blob/main/docs/okf-standards.md)
+records current and historical specifications, version-specific pins and the
+public bundle catalogue. Use its [machine-readable register](https://raw.githubusercontent.com/chris-page-gov/okf-explorer/main/registry/okf-standards.json)
+to resolve the version implemented by this repository. The current three
+bundles declare core 0.3; historical source and profile bytes retain their
+original versions.

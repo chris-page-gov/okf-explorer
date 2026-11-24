@@ -1,0 +1,22 @@
+{
+  "schema": "okf-heritage-walkthrough-case.v1",
+  "snapshot": "heritage-warwickshire-synthetic-capability-v1",
+  "id": "invented-proposal-and-uncertain-attribution",
+  "question": "In this invented scenario, which place does the 2031 intervention propose to protect, who is its possible designer, and what prevents those two relationships from becoming verified real-world claims?",
+  "answer": "The invented 2031 intervention proposes protection for Meridian Dye Works, with confidence 0.45. The invented place is possibly designed by Asha Bennett, with confidence 0.62. Both relationships retain synthetic-fixture scope and their qualifications. A proposal is not a completed intervention, and a possible attribution is not a verified design credit. None of these records establishes a real person, designation or project.",
+  "records": [
+    {"route": "synthetic/event/flood-resilience-2031", "fields": {"assertion_scope": "synthetic-fixture"}},
+    {"route": "synthetic/place/meridian-dye-works", "fields": {"assertion_scope": "synthetic-fixture"}},
+    {"route": "synthetic/person/asha-bennett", "fields": {"assertion_scope": "synthetic-fixture"}}
+  ],
+  "relationships": [
+    {"source": "synthetic/event/flood-resilience-2031", "target": "synthetic/place/meridian-dye-works", "kind": "proposes protection for", "confidence": 0.45},
+    {"source": "synthetic/place/meridian-dye-works", "target": "synthetic/person/asha-bennett", "kind": "possibly designed by", "confidence": 0.62}
+  ],
+  "absent_relationships": [{"source": "synthetic/event/flood-resilience-2031", "target": "synthetic/person/asha-bennett", "kind": "possibly designed by"}],
+  "limitations": [
+    "All three records are invented, default-off and excluded from faithful source counts and search.",
+    "Confidence values and relationship labels are authored fixture values, not measured evidence about real people or places.",
+    "No occurrence, official designation, ownership, permission or completed protection work is established."
+  ]
+}

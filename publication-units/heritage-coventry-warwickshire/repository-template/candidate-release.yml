@@ -31,6 +31,7 @@ jobs:
       ATTESTATION_SOURCE_REF: ${{ github.ref }}
       ATTESTATION_SOURCE_COMMIT: ${{ github.sha }}
       PYTHONDONTWRITEBYTECODE: "1"
+      UV_PROJECT_ENVIRONMENT: ${{ runner.temp }}/heritage-publication-venv
     steps:
       - name: Check out the exact immutable candidate
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -44,10 +45,13 @@ jobs:
           repository: chris-page-gov/okf-explorer
           ref: ${{ inputs.assurance_ref }}
           path: assurance
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+      - uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
         with:
-          python-version: "3.12"
-      - run: python3 -m pip install -r assurance/requirements-okf.txt
+          version: "0.13.4"
+      - name: Synchronise the governed Python environment
+        run: |
+          uv python install 3.12.11
+          uv sync --locked --project assurance
       - name: Separate candidate identity from assurance workflow provenance
         run: |
           test "$GITHUB_EVENT_NAME" = workflow_dispatch
@@ -74,8 +78,8 @@ jobs:
           test "$receipt_count" = 11
       - name: Validate exact candidate and issue a bound receipt
         run: |
-          python3 assurance/scripts/check_publication_unit_manifest.py publication/site
-          python3 assurance/scripts/build_publication_assurance_receipt.py validation \
+          uv run --locked --project assurance python assurance/scripts/check_publication_unit_manifest.py publication/site
+          uv run --locked --project assurance python assurance/scripts/build_publication_assurance_receipt.py validation \
             --publication-root publication/site \
             --repository "$GITHUB_REPOSITORY" \
             --source-commit "$(git -C publication rev-parse HEAD)" \
@@ -95,7 +99,7 @@ jobs:
           subject-path: ${{ runner.temp }}/heritage-coventry-warwickshire.tar.gz
       - name: Build candidate-release identity receipt
         run: >-
-          python3 assurance/scripts/build_publication_assurance_receipt.py release
+          uv run --locked --project assurance python assurance/scripts/build_publication_assurance_receipt.py release
           --validation-receipt "$RUNNER_TEMP/publication-validation-receipt.json"
           --archive "$RUNNER_TEMP/heritage-coventry-warwickshire.tar.gz"
           --attestation-url "${{ steps.archive-attestation.outputs.attestation-url }}"
@@ -109,7 +113,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: >-
-          python3 assurance/scripts/check_release_policy.py
+          uv run --locked --project assurance python assurance/scripts/check_release_policy.py
           --phase candidate
           --tag "$TAG"
           --attested-archive "$RUNNER_TEMP/heritage-coventry-warwickshire.tar.gz"
@@ -150,7 +154,7 @@ jobs:
             test "$attempt" = 6 || sleep 5
           done
           test "$release_verified" = true
-          python3 assurance/scripts/check_release_policy.py \
+          uv run --locked --project assurance python assurance/scripts/check_release_policy.py \
             --phase candidate \
             --tag "$TAG" \
             --attested-archive "$RUNNER_TEMP/heritage-coventry-warwickshire.tar.gz" \

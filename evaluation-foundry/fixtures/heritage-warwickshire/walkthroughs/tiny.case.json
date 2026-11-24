@@ -1,0 +1,19 @@
+{
+  "schema": "okf-heritage-walkthrough-case.v1",
+  "snapshot": "heritage-coventry-warwickshire-20260803-v2-tiny-v1",
+  "id": "three-record-subset-and-risk-identity",
+  "question": "This subset contains two listed buildings and one 2025 risk row. Which building does that row assess, how do their grades differ, and can the three records establish risk coverage for Coventry and Warwickshire?",
+  "answer": "The 2025 risk row assesses Church of St Peter, 1184627, whose designation record is Grade II. Cathedral of St Michael, 1342941, is a separate Grade I record. The encoded assessment does not target the cathedral. This is a three-record assurance subset, so it cannot establish the area's full risk coverage or either building's current condition.",
+  "records": [
+    {"route": "asset/1184627", "fields": {"heritage_category": "Listed Building", "grade": "II", "native_id": "1184627"}},
+    {"route": "asset/1342941", "fields": {"heritage_category": "Listed Building", "grade": "I", "native_id": "1342941"}},
+    {"route": "risk/2025/entry/036682fa45484e9f8975", "fields": {"register_year": "2025", "risk_status": "at risk"}}
+  ],
+  "relationships": [{"source": "risk/2025/entry/036682fa45484e9f8975", "target": "asset/1184627", "kind": "assesses"}],
+  "absent_relationships": [{"source": "risk/2025/entry/036682fa45484e9f8975", "target": "asset/1342941", "kind": "assesses"}],
+  "limitations": [
+    "Three exact source records are retained for assurance; they are not the full geographical denominator.",
+    "An absent relationship within this subset is not a real-world negative or a claim that the cathedral has never been at risk.",
+    "The risk row has year precision and retains 2025. No day, month or current condition is invented."
+  ]
+}

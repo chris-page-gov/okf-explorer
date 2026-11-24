@@ -71,13 +71,20 @@ PRODUCER_MATERIALS_SCHEMA = "okf-heritage-producer-materials.v1"
 PRODUCER_MATERIALS_ALGORITHM = (
     "sha256-over-canonical-json-path-bytes-digest-list-v1"
 )
-PRODUCER_MATERIAL_PATHS = (
+PRODUCER_MATERIAL_PATHS = tuple(sorted((
     "requirements-okf.txt",
     "scripts/build_heritage_evaluation.py",
     "scripts/build_uk_government_api_okf.py",
     "scripts/heritage_build_io.py",
     "scripts/okf_semantic.py",
-)
+    "scripts/build_heritage_walkthrough.py",
+    "evaluation-foundry/fixtures/heritage-warwickshire/walkthroughs/faithful.case.json",
+    "evaluation-foundry/fixtures/heritage-warwickshire/walkthroughs/tiny.case.json",
+    "evaluation-foundry/fixtures/heritage-warwickshire/walkthroughs/synthetic.case.json",
+    "pyproject.toml",
+    "uv.lock",
+    ".python-version",
+)))
 MAX_PRODUCER_MATERIALS = 64
 MAX_PRODUCER_MATERIAL_BYTES = 8 * 1024 * 1024
 MAX_PRODUCER_MATERIALS_BYTES = 32 * 1024 * 1024

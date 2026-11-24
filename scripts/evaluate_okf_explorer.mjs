@@ -29,8 +29,15 @@ const HERITAGE_PRODUCER_MATERIAL_PATHS = [
   'scripts/build_heritage_evaluation.py',
   'scripts/build_uk_government_api_okf.py',
   'scripts/heritage_build_io.py',
-  'scripts/okf_semantic.py'
-];
+  'scripts/okf_semantic.py',
+  'scripts/build_heritage_walkthrough.py',
+  'evaluation-foundry/fixtures/heritage-warwickshire/walkthroughs/faithful.case.json',
+  'evaluation-foundry/fixtures/heritage-warwickshire/walkthroughs/tiny.case.json',
+  'evaluation-foundry/fixtures/heritage-warwickshire/walkthroughs/synthetic.case.json',
+  'pyproject.toml',
+  'uv.lock',
+  '.python-version'
+].sort();
 const MAX_HERITAGE_PRODUCER_MATERIALS = 64;
 const MAX_HERITAGE_PRODUCER_MATERIAL_BYTES = 8 * 1024 * 1024;
 const MAX_HERITAGE_PRODUCER_MATERIALS_BYTES = 32 * 1024 * 1024;

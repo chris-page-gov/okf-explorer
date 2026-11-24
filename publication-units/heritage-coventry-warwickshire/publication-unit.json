@@ -24,6 +24,21 @@
   },
   "materials": [
     {
+      "source": "pyproject.toml",
+      "target": "toolchain/pyproject.toml",
+      "role": "policy"
+    },
+    {
+      "source": "uv.lock",
+      "target": "toolchain/uv.lock",
+      "role": "policy"
+    },
+    {
+      "source": ".python-version",
+      "target": "toolchain/.python-version",
+      "role": "policy"
+    },
+    {
       "source": "evaluation/heritage",
       "target": ".",
       "role": "corpus"
@@ -32,6 +47,11 @@
       "source": "evaluation-foundry/fixtures/heritage-warwickshire",
       "target": "evaluation-foundry/fixtures/heritage-warwickshire",
       "role": "fixture"
+    },
+    {
+      "source": "docs/heritage-0.3-migration.md",
+      "target": "docs/heritage-0.3-migration.md",
+      "role": "documentation"
     },
     {
       "source": "docs/heritage-evaluation-report.md",

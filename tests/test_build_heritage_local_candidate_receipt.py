@@ -339,7 +339,7 @@ class HeritageLocalCandidateReceiptTests(unittest.TestCase):
                 list(materializer.PRODUCER_MATERIAL_PATHS),
                 [material["path"] for material in producer_materials["materials"]],
             )
-            self.assertEqual(5, producer_materials["file_count"])
+            self.assertEqual(12, producer_materials["file_count"])
             self.assertEqual(
                 sum(material["bytes"] for material in producer_materials["materials"]),
                 producer_materials["bytes"],

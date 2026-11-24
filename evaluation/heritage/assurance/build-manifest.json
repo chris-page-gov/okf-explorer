@@ -1,21 +1,27 @@
 {
   "counts": {
-    "bytes": 121649087,
-    "files": 3131,
+    "bytes": 122149461,
+    "files": 3138,
     "planes": {
       "control": 7,
       "data": 887,
-      "presentation": 3,
+      "presentation": 10,
       "search": 2100,
       "semantic": 134
     }
   },
   "entries": [
     {
-      "bytes": 568015,
+      "bytes": 166639,
+      "path": "ai-context.md",
+      "plane": "presentation",
+      "sha256": "3394186b168de05612248945ef4c98315fbc24593f6437d9c5860f464a7d8b49"
+    },
+    {
+      "bytes": 569253,
       "path": "assurance/plane-roots.json",
       "plane": "control",
-      "sha256": "ca1663d45249ac2fe0a28bb5710c580215357823b90896640c7d9285634f8f9d"
+      "sha256": "9a224dc7b4aba3defdc7aebf5c55f76e4a61f325c005fefe20e196797e6e40d1"
     },
     {
       "bytes": 6701,
@@ -18732,10 +18738,10 @@
       "sha256": "24a95562c17e0059d076dc65c68ca8de4e3918cfdeef1291bf58f00792f19ecc"
     },
     {
-      "bytes": 42863,
+      "bytes": 45340,
       "path": "evaluation-profile.yaml",
       "plane": "control",
-      "sha256": "c7f25579e6a5823ebab24bb8f87ededaf4cc27e1c0f9f54cee2daffbf277aed4"
+      "sha256": "87fdcf18771f43fba93dd6ada18bc3dd212996c199d111951a049b9e160cdcb5"
     },
     {
       "bytes": 9100,
@@ -18744,16 +18750,22 @@
       "sha256": "8c5ec68d71b11afa001afd189d23d1d833b7e8a99ff870f7679c896557217cd6"
     },
     {
-      "bytes": 2226,
+      "bytes": 3271,
       "path": "index.md",
       "plane": "presentation",
-      "sha256": "ab927df126b854e61a2a7c61a8bf2666adf1668f069f8589f0f4b9447969fb09"
+      "sha256": "e43b48c4aa58d133fba250b131bf121f551d4b5b40c01dd177a552177bf66a30"
     },
     {
-      "bytes": 29179,
+      "bytes": 29183,
       "path": "journeys.json",
       "plane": "control",
-      "sha256": "04ec3137ecd1e688ac7a9cc69a7b033f42444e5a82af4c9a25e747979f638ecb"
+      "sha256": "c92481f0e803ca0b06ef85c5dbb40c71f1577f6fd5aa082e946ae80a5836b930"
+    },
+    {
+      "bytes": 923,
+      "path": "llms.txt",
+      "plane": "presentation",
+      "sha256": "db64f6dcfbf8ca86e016475c0d783331c576521f90e8d56ebd1032e33054a4a7"
     },
     {
       "bytes": 356,
@@ -18771,7 +18783,7 @@
       "bytes": 2807,
       "path": "methodology.md",
       "plane": "presentation",
-      "sha256": "e16bdb371f8ed580b91e57061e089e0c1d5b844e9ff29193648adbb7beeb0e2f"
+      "sha256": "59ad3237924e2c757aae87868e61e1e2c739393a040f0729f069edb7bfa846b6"
     },
     {
       "bytes": 30225242,
@@ -18786,16 +18798,46 @@
       "sha256": "97a3733b2b5d2dedadba57009c1c4e509b979fcbcba091f1198993142b468cab"
     },
     {
-      "bytes": 26886,
+      "bytes": 27254,
       "path": "okf-explorer.json",
       "plane": "control",
-      "sha256": "97c8c3aa1dbaa48cad06d9a1fec3c1b125a681c7642b418bddbbccc32e27a5da"
+      "sha256": "794ca9d354e09931bb7d91e973fd08a0715be24ee7ab412bd32bd07e06e84c74"
     },
     {
       "bytes": 25984,
       "path": "questions.json",
       "plane": "control",
       "sha256": "2b902715554c8508b5159e7521c78b3e5267b8f952d7a2d121f34db94539620d"
+    },
+    {
+      "bytes": 166456,
+      "path": "walkthrough-data.json",
+      "plane": "presentation",
+      "sha256": "7365843ba59a4850d393c54d5d2825eb87b5e4d74c724d2c5d28d1ae7cedb936"
+    },
+    {
+      "bytes": 3919,
+      "path": "walkthrough.explorer-057-journeys.json",
+      "plane": "presentation",
+      "sha256": "3c6539e3eaf113a96498bd73fdcedfc6bd5808a69b6f23a728cb43510a5215cc"
+    },
+    {
+      "bytes": 4223,
+      "path": "walkthrough.explorer-journeys.json",
+      "plane": "presentation",
+      "sha256": "6d439b8eb035642c1107b47d0ce6dc7e24d055b4341db6dc2731699a3242be10"
+    },
+    {
+      "bytes": 152056,
+      "path": "walkthrough.html",
+      "plane": "presentation",
+      "sha256": "a8df6d9f078e3b8c2e2455656f593836016d1daf1d5292cb2af18f6088d5e275"
+    },
+    {
+      "bytes": 1026,
+      "path": "walkthrough.svg",
+      "plane": "presentation",
+      "sha256": "30cc1970e99ed3be1e51d177deeb314dcbb46bf1ea73ab7f9c64216fde335662"
     }
   ],
   "ownership": "Only listed paths may be changed or removed by the heritage builder.",

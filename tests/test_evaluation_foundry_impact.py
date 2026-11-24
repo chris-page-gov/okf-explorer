@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import fnmatch
 import json
 import subprocess
 import sys
@@ -84,6 +85,13 @@ class EvaluationFoundryImpactTests(unittest.TestCase):
             "scripts/build_uk_government_api_okf.py",
             "scripts/heritage_build_io.py",
             "scripts/okf_semantic.py",
+            "scripts/build_heritage_walkthrough.py",
+            "evaluation-foundry/fixtures/heritage-warwickshire/walkthroughs/faithful.case.json",
+            "evaluation-foundry/fixtures/heritage-warwickshire/walkthroughs/tiny.case.json",
+            "evaluation-foundry/fixtures/heritage-warwickshire/walkthroughs/synthetic.case.json",
+            "pyproject.toml",
+            "uv.lock",
+            ".python-version",
         }
         for profile_path in (PROFILE_PATH, PUBLISHED_PROFILE_PATH):
             with self.subTest(profile=str(profile_path)):
@@ -93,7 +101,9 @@ class EvaluationFoundryImpactTests(unittest.TestCase):
                     for rule in profile["impact_policy"]["path_rules"]
                     if rule["id"] == "IMPACT-PRODUCER"
                 )
-                self.assertTrue(expected.issubset(producer["patterns"]))
+                self.assertTrue(all(any(fnmatch.fnmatchcase(path, pattern)
+                                        for pattern in producer["patterns"])
+                                    for path in expected))
                 for changed_path in sorted(expected):
                     plan = impact.build_impact_plan(profile, [changed_path])
                     self.assertFalse(plan["fail_closed"])
