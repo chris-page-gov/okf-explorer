@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import { execFile } from 'node:child_process';
 import { mkdir, mkdtemp, rename, rm, symlink, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -12,6 +13,7 @@ import {
   ACCEPTANCE_LIMITS,
   captureAttributeObservation,
   descriptorIdentity,
+  descriptorErrors,
   identityErrors,
   inspectSafeOutputDestination,
   isCredentialFreeAbsoluteHttpUrl,
@@ -556,4 +558,34 @@ test('normalises common descriptor identity fields without inventing them', () =
     ),
     ['descriptor identity id was "wrong", expected "urn:example"']
   );
+});
+
+test('pins a legacy descriptor with explicitly absent identity fields to its exact bytes', () => {
+  const descriptor = {schema: 'okf-explorer-large-corpus.v1', title: 'Retained RDF fixture'};
+  const bytes = Buffer.from(JSON.stringify(descriptor));
+  const manifest = structuredClone(valid);
+  manifest.expected_identity = {schema: descriptor.schema, id: null, version: null, snapshot: null};
+  manifest.expected_descriptor_sha256 = createHash('sha256').update(bytes).digest('hex');
+  assert.doesNotThrow(() => validateJourneyManifest(manifest));
+  assert.deepEqual(descriptorErrors(descriptor, manifest, bytes), []);
+  assert.deepEqual(descriptorErrors(descriptor, manifest, Buffer.concat([bytes, Buffer.from('\n')])), ['descriptor bytes differ from expected_descriptor_sha256']);
+});
+
+test('absent metadata never bypasses the digest or schema requirement', () => {
+  const manifest = structuredClone(valid);
+  manifest.expected_identity.version = null;
+  assert.throws(() => validateJourneyManifest(manifest), /expected_descriptor_sha256/);
+  manifest.expected_descriptor_sha256 = 'a'.repeat(63);
+  assert.throws(() => validateJourneyManifest(manifest), /expected_descriptor_sha256/);
+  manifest.expected_descriptor_sha256 = 'a'.repeat(64);
+  manifest.expected_identity.schema = null;
+  assert.throws(() => validateJourneyManifest(manifest), /expected_identity.schema/);
+});
+
+test('a matching digest preserves the checks on every declared identity field', () => {
+  const descriptor = {schema: 'okf-explorer-bundle.v0', '@id': 'urn:changed', version: '1.0.0', snapshot: 'snapshot-1'};
+  const bytes = Buffer.from(JSON.stringify(descriptor));
+  const manifest = structuredClone(valid);
+  manifest.expected_descriptor_sha256 = createHash('sha256').update(bytes).digest('hex');
+  assert.deepEqual(descriptorErrors(descriptor, manifest, bytes), ['descriptor identity id was "urn:changed", expected "urn:example"']);
 });

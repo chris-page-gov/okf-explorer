@@ -94,6 +94,7 @@
       "paths": [
         "registry/**",
         "profiles/publication-method/v1/**",
+        "profiles/federation/v2/**",
         "okf.publication.json",
         "tools/okf-skills/**",
         "scripts/okf_skill.py",
@@ -277,6 +278,65 @@
       "limitations": [
         "Pair inspection is separate from the DfE screener and the candidate analytical-package validator."
       ]
+    },
+    {
+      "id": "profile-fixture-questions",
+      "label": "Questions for retained profile fixtures",
+      "description": "Four authored questions and acceptance cases over unchanged RDF and country boundary fixtures.",
+      "kind": "markdown-tree",
+      "paths": [
+        "profiles/walkthroughs/*.md"
+      ],
+      "formats": [
+        "text/markdown"
+      ],
+      "origin": "authored",
+      "authority": "editorial",
+      "snapshot_policy": "pinned-revision",
+      "inventory": {
+        "method": "pinned-source-register",
+        "manifest_path": "docs/profile-fixture-walkthroughs.md",
+        "identity": [
+          "relative-path",
+          "source-identifier",
+          "source-version"
+        ]
+      },
+      "rights": {
+        "status": "approved",
+        "evidence": [
+          "https://github.com/chris-page-gov/okf-explorer/blob/main/LICENSE.md"
+        ],
+        "limitations": [
+          "Third-party sources retain the rights and attribution recorded beside each source reference."
+        ]
+      },
+      "sensitivity": {
+        "status": "public-no-personal-data",
+        "assessment": "Public vocabulary, provenance hierarchy and country metadata fixtures; no personal records.",
+        "evidence": [
+          "https://github.com/chris-page-gov/okf-explorer/blob/main/docs/profile-fixture-walkthroughs.md"
+        ]
+      },
+      "extraction": {
+        "mode": "none",
+        "network_access": "prohibited",
+        "command_ids": [],
+        "limitations": [
+          "Markdown links contribute derived reference assertions only; they do not confer a domain predicate or external authority."
+        ]
+      },
+      "invalidates": [
+        "source",
+        "runtime",
+        "documentation",
+        "browser",
+        "release",
+        "deployment"
+      ],
+      "limitations": [
+        "Metadata-extension acceptance is separate from Markdown core conformance."
+      ]
     }
   ],
   "boundaries": {
@@ -428,6 +488,11 @@
         "path": "walkthrough.case.json",
         "role": "policy",
         "source_family_id": "ai-infrastructure-markdown"
+      },
+      {
+        "path": "profiles/walkthroughs/*.md",
+        "role": "documentation",
+        "source_family_id": "profile-fixture-questions"
       }
     ],
     "generated": [
@@ -755,6 +820,342 @@
         "check_command_ids": [
           "check-learning-example"
         ]
+      },
+      {
+        "path": "profiles/bounded-inference/v1/ontology/walkthrough.html",
+        "role": "other",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-profile-walkthroughs"
+        ],
+        "check_command_ids": [
+          "check-profile-walkthroughs"
+        ]
+      },
+      {
+        "path": "profiles/bounded-inference/v1/ontology/walkthrough.svg",
+        "role": "other",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-profile-walkthroughs"
+        ],
+        "check_command_ids": [
+          "check-profile-walkthroughs"
+        ]
+      },
+      {
+        "path": "profiles/bounded-inference/v1/ontology/walkthrough-evidence.json",
+        "role": "other",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-profile-walkthroughs"
+        ],
+        "check_command_ids": [
+          "check-profile-walkthroughs"
+        ]
+      },
+      {
+        "path": "profiles/bounded-inference/v1/ontology/walkthrough.explorer-journeys.json",
+        "role": "other",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-profile-walkthroughs"
+        ],
+        "check_command_ids": [
+          "check-profile-walkthroughs"
+        ]
+      },
+      {
+        "path": "profiles/bounded-inference/v1/ontology/walkthrough-source.md",
+        "role": "other",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-profile-walkthroughs"
+        ],
+        "check_command_ids": [
+          "check-profile-walkthroughs"
+        ]
+      },
+      {
+        "path": "profiles/bounded-inference/v1/ontology/ai-context.md",
+        "role": "other",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-profile-walkthroughs"
+        ],
+        "check_command_ids": [
+          "check-profile-walkthroughs"
+        ]
+      },
+      {
+        "path": "profiles/bounded-inference/v1/ontology/llms.txt",
+        "role": "other",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-profile-walkthroughs"
+        ],
+        "check_command_ids": [
+          "check-profile-walkthroughs"
+        ]
+      },
+      {
+        "path": "profiles/governed-vocabulary/v1/examples/vocabulary/walkthrough.html",
+        "role": "other",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-profile-walkthroughs"
+        ],
+        "check_command_ids": [
+          "check-profile-walkthroughs"
+        ]
+      },
+      {
+        "path": "profiles/governed-vocabulary/v1/examples/vocabulary/walkthrough.svg",
+        "role": "other",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-profile-walkthroughs"
+        ],
+        "check_command_ids": [
+          "check-profile-walkthroughs"
+        ]
+      },
+      {
+        "path": "profiles/governed-vocabulary/v1/examples/vocabulary/walkthrough-evidence.json",
+        "role": "other",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-profile-walkthroughs"
+        ],
+        "check_command_ids": [
+          "check-profile-walkthroughs"
+        ]
+      },
+      {
+        "path": "profiles/governed-vocabulary/v1/examples/vocabulary/walkthrough.explorer-journeys.json",
+        "role": "other",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-profile-walkthroughs"
+        ],
+        "check_command_ids": [
+          "check-profile-walkthroughs"
+        ]
+      },
+      {
+        "path": "profiles/governed-vocabulary/v1/examples/vocabulary/walkthrough-source.md",
+        "role": "other",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-profile-walkthroughs"
+        ],
+        "check_command_ids": [
+          "check-profile-walkthroughs"
+        ]
+      },
+      {
+        "path": "profiles/governed-vocabulary/v1/examples/vocabulary/ai-context.md",
+        "role": "other",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-profile-walkthroughs"
+        ],
+        "check_command_ids": [
+          "check-profile-walkthroughs"
+        ]
+      },
+      {
+        "path": "profiles/governed-vocabulary/v1/examples/vocabulary/llms.txt",
+        "role": "other",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-profile-walkthroughs"
+        ],
+        "check_command_ids": [
+          "check-profile-walkthroughs"
+        ]
+      },
+      {
+        "path": "profiles/governed-vocabulary/v1/examples/missing-csv-label/walkthrough.html",
+        "role": "other",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-profile-walkthroughs"
+        ],
+        "check_command_ids": [
+          "check-profile-walkthroughs"
+        ]
+      },
+      {
+        "path": "profiles/governed-vocabulary/v1/examples/missing-csv-label/walkthrough.svg",
+        "role": "other",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-profile-walkthroughs"
+        ],
+        "check_command_ids": [
+          "check-profile-walkthroughs"
+        ]
+      },
+      {
+        "path": "profiles/governed-vocabulary/v1/examples/missing-csv-label/walkthrough-evidence.json",
+        "role": "other",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-profile-walkthroughs"
+        ],
+        "check_command_ids": [
+          "check-profile-walkthroughs"
+        ]
+      },
+      {
+        "path": "profiles/governed-vocabulary/v1/examples/missing-csv-label/walkthrough.explorer-journeys.json",
+        "role": "other",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-profile-walkthroughs"
+        ],
+        "check_command_ids": [
+          "check-profile-walkthroughs"
+        ]
+      },
+      {
+        "path": "profiles/governed-vocabulary/v1/examples/missing-csv-label/walkthrough-source.md",
+        "role": "other",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-profile-walkthroughs"
+        ],
+        "check_command_ids": [
+          "check-profile-walkthroughs"
+        ]
+      },
+      {
+        "path": "profiles/governed-vocabulary/v1/examples/missing-csv-label/ai-context.md",
+        "role": "other",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-profile-walkthroughs"
+        ],
+        "check_command_ids": [
+          "check-profile-walkthroughs"
+        ]
+      },
+      {
+        "path": "profiles/governed-vocabulary/v1/examples/missing-csv-label/llms.txt",
+        "role": "other",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-profile-walkthroughs"
+        ],
+        "check_command_ids": [
+          "check-profile-walkthroughs"
+        ]
+      },
+      {
+        "path": "profiles/geospatial-boundary-pack/v1/examples/uk-countries-december-2025/walkthrough.html",
+        "role": "other",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-profile-walkthroughs"
+        ],
+        "check_command_ids": [
+          "check-profile-walkthroughs"
+        ]
+      },
+      {
+        "path": "profiles/geospatial-boundary-pack/v1/examples/uk-countries-december-2025/walkthrough.svg",
+        "role": "other",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-profile-walkthroughs"
+        ],
+        "check_command_ids": [
+          "check-profile-walkthroughs"
+        ]
+      },
+      {
+        "path": "profiles/geospatial-boundary-pack/v1/examples/uk-countries-december-2025/walkthrough-evidence.json",
+        "role": "other",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-profile-walkthroughs"
+        ],
+        "check_command_ids": [
+          "check-profile-walkthroughs"
+        ]
+      },
+      {
+        "path": "profiles/geospatial-boundary-pack/v1/examples/uk-countries-december-2025/walkthrough.explorer-journeys.json",
+        "role": "other",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-profile-walkthroughs"
+        ],
+        "check_command_ids": [
+          "check-profile-walkthroughs"
+        ]
+      },
+      {
+        "path": "profiles/geospatial-boundary-pack/v1/examples/uk-countries-december-2025/walkthrough-source.md",
+        "role": "other",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-profile-walkthroughs"
+        ],
+        "check_command_ids": [
+          "check-profile-walkthroughs"
+        ]
+      },
+      {
+        "path": "profiles/geospatial-boundary-pack/v1/examples/uk-countries-december-2025/ai-context.md",
+        "role": "other",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-profile-walkthroughs"
+        ],
+        "check_command_ids": [
+          "check-profile-walkthroughs"
+        ]
+      },
+      {
+        "path": "profiles/geospatial-boundary-pack/v1/examples/uk-countries-december-2025/llms.txt",
+        "role": "other",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-profile-walkthroughs"
+        ],
+        "check_command_ids": [
+          "check-profile-walkthroughs"
+        ]
       }
     ]
   },
@@ -867,12 +1268,14 @@
         "docs/**",
         "sources-index.md",
         "AGENTS.md",
-        "llms.txt"
+        "llms.txt",
+        "profiles/walkthroughs/*.md"
       ],
       "command_ids": [
         "check-lockstep",
         "check-british-english",
-        "check-public-access"
+        "check-public-access",
+        "check-profile-walkthroughs"
       ]
     },
     {
@@ -914,7 +1317,8 @@
       ],
       "command_ids": [
         "install-extra-browsers",
-        "test-terminal"
+        "test-terminal",
+        "test-profile-guides"
       ]
     },
     {
@@ -1507,6 +1911,47 @@
         "network": "bounded-read",
         "mutates": "generated-only",
         "timeout_minutes": 5
+      },
+      {
+        "id": "build-profile-walkthroughs",
+        "kind": "build",
+        "planes": [
+          "documentation",
+          "browser"
+        ],
+        "command": "uv run --locked python scripts/build_profile_walkthroughs.py",
+        "source": "docs/profile-fixture-walkthroughs.md",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "generated-only",
+        "timeout_minutes": 5
+      },
+      {
+        "id": "check-profile-walkthroughs",
+        "kind": "check",
+        "planes": [
+          "documentation",
+          "browser"
+        ],
+        "command": "uv run --locked python scripts/build_profile_walkthroughs.py --check",
+        "source": "docs/profile-fixture-walkthroughs.md",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "none",
+        "timeout_minutes": 5
+      },
+      {
+        "id": "test-profile-guides",
+        "kind": "test",
+        "planes": [
+          "browser"
+        ],
+        "command": "node apps/okf-explorer/scripts/verify_profile_walkthroughs.mjs .tmp/profile-guides.json",
+        "source": "docs/profile-fixture-walkthroughs.md",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "none",
+        "timeout_minutes": 10
       }
     ]
   },

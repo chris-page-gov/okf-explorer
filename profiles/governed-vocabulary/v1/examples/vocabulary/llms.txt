@@ -1,0 +1,5 @@
+# Distinguish a format, a licence and a topic
+
+https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/examples/vocabulary/ai-context.md
+https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/examples/vocabulary/okf-explorer.json
+https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/examples/vocabulary/walkthrough-evidence.json

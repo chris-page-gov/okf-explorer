@@ -1,0 +1,145 @@
+{
+  "bundle_descriptor": "okf-explorer.json",
+  "expected_descriptor_sha256": "649cd44560542fead3dc2f91e22caf210cb3707ac7c07141e93fb95d5f29d781",
+  "expected_identity": {
+    "id": "https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/vocabulary.ttl",
+    "schema": "okf-explorer-large-corpus.v1",
+    "snapshot": null,
+    "version": null
+  },
+  "journeys": [
+    {
+      "actions": [
+        {
+          "hash": "#dataset/csv",
+          "params": {
+            "q": "Comma-separated values",
+            "view": "reader"
+          },
+          "type": "goto"
+        },
+        {
+          "selector": ".right-panel h2:text-is(\"Comma-separated values\")",
+          "type": "wait_for"
+        }
+      ],
+      "assertions": [
+        {
+          "type": "console_clean"
+        }
+      ],
+      "id": "inspect-csv"
+    },
+    {
+      "actions": [
+        {
+          "hash": "#dataset/formats",
+          "params": {
+            "q": "Explorer data formats",
+            "view": "reader"
+          },
+          "type": "goto"
+        },
+        {
+          "selector": ".right-panel h2:text-is(\"Explorer data formats\")",
+          "type": "wait_for"
+        }
+      ],
+      "assertions": [
+        {
+          "type": "console_clean"
+        }
+      ],
+      "id": "inspect-formats"
+    },
+    {
+      "actions": [
+        {
+          "hash": "#dataset/cc-by-40",
+          "params": {
+            "q": "Creative Commons Attribution 4.0 International",
+            "view": "reader"
+          },
+          "type": "goto"
+        },
+        {
+          "selector": ".right-panel h2:text-is(\"Creative Commons Attribution 4.0 International\")",
+          "type": "wait_for"
+        }
+      ],
+      "assertions": [
+        {
+          "type": "console_clean"
+        }
+      ],
+      "id": "inspect-cc-by-40"
+    },
+    {
+      "actions": [
+        {
+          "hash": "#dataset/licences",
+          "params": {
+            "q": "Explorer licences",
+            "view": "reader"
+          },
+          "type": "goto"
+        },
+        {
+          "selector": ".right-panel h2:text-is(\"Explorer licences\")",
+          "type": "wait_for"
+        }
+      ],
+      "assertions": [
+        {
+          "type": "console_clean"
+        }
+      ],
+      "id": "inspect-licences"
+    },
+    {
+      "actions": [
+        {
+          "hash": "#dataset/education",
+          "params": {
+            "q": "Education",
+            "view": "reader"
+          },
+          "type": "goto"
+        },
+        {
+          "selector": ".right-panel h2:text-is(\"Education\")",
+          "type": "wait_for"
+        }
+      ],
+      "assertions": [
+        {
+          "type": "console_clean"
+        }
+      ],
+      "id": "inspect-education"
+    },
+    {
+      "actions": [
+        {
+          "hash": "#dataset/topics",
+          "params": {
+            "q": "Explorer topics",
+            "view": "reader"
+          },
+          "type": "goto"
+        },
+        {
+          "selector": ".right-panel h2:text-is(\"Explorer topics\")",
+          "type": "wait_for"
+        }
+      ],
+      "assertions": [
+        {
+          "type": "console_clean"
+        }
+      ],
+      "id": "inspect-topics"
+    }
+  ],
+  "schema": "okf-explorer-journeys.v1"
+}

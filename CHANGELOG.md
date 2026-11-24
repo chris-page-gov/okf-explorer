@@ -1,5 +1,26 @@
 # Changelog
 
+## Unreleased — core 0.3 federations
+
+- Add the versioned federation v2 descriptor and Reader support for OKF 0.3.
+  Preserve the frozen v1 contract for OKF 0.2, reject mismatched version pairs
+  and retain child loading, graph directions and evidence qualifications.
+- Prepare Explorer 0.9.1 and its dependency inventory for the maintenance
+  release. Correct the migration note to record the published 0.9.0 release;
+  producer acceptance and the next formal release remain separate gates.
+- Keep both citation versions aligned with the active package version, check
+  their dates agree, and retain the dated historical release entries.
+
+## Unreleased — four profile fixture walkthroughs
+
+- Give the provenance, vocabulary, missing-label and UK country boundary
+  fixtures distinct source-grounded questions, diagrams, evidence, AI context
+  and record journeys. Preserve the complete retained graphs and negative
+  control; qualify their metadata-extension scope.
+- Accept explicitly missing legacy identity fields in native journeys only
+  with an exact descriptor SHA-256 pin. Keep schema and declared-value checks,
+  and reject changed descriptor bytes before running the browser.
+
 ## Unreleased — selective Heritage walkthrough builds
 
 - Refresh the producer-bound local candidate receipt from a fresh 100-question

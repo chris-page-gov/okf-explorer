@@ -15,7 +15,7 @@ import {
   ACCEPTANCE_LIMITS,
   captureAttributeObservation,
   descriptorIdentity,
-  identityErrors,
+  descriptorErrors,
   inspectSafeOutputDestination,
   receiptFailureReference,
   receiptPageState,
@@ -890,7 +890,7 @@ async function main() {
     );
     const descriptor = JSON.parse(descriptorBytes.toString('utf8'));
     const identity = descriptorIdentity(descriptor);
-    const mismatches = identityErrors(identity, manifest.expected_identity);
+    const mismatches = descriptorErrors(descriptor, manifest, descriptorBytes);
     if (mismatches.length) throw new Error(mismatches.join('; '));
 
     const [

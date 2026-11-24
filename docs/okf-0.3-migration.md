@@ -1,6 +1,11 @@
 # Using OKF 0.3 in Explorer
 
-The upstream project announced OKF 0.3 on **18 November 2026**. Its specification change had merged earlier, on **26 October 2026** at 23:30 UTC. This implementation uses the specification revision of 18 November. The first OKF+ 0.3 Reader implementation on this branch is dated **23 November 2026**. The released Explorer v0.8.2 reference bundle declares OKF 0.2. Explorer 0.9.0 is the formal OKF 0.3 implementation release candidate; exact-revision gates and public acceptance must pass before publication. Each producer retains separate migration and release acceptance. [Official release announcement](https://cloud.google.com/blog/products/data-analytics/introducing-okf-v0-3) · [Earlier specification merge](https://github.com/open-knowledge-format/open-knowledge-format/pull/1) · [Central standards register](okf-standards.md)
+The upstream project announced OKF 0.3 on **18 November 2026**. Its specification change had merged earlier, on **26 October 2026** at 23:30 UTC. This implementation uses the specification revision of 18 November. The first OKF+ 0.3 Reader implementation is dated **23 November 2026**. [Official release announcement](https://cloud.google.com/blog/products/data-analytics/introducing-okf-v0-3) · [Earlier specification merge](https://github.com/open-knowledge-format/open-knowledge-format/pull/1) · [Central standards register](okf-standards.md)
+
+Explorer **0.9.0** was published on **24 November 2026** after exact-revision
+validation and public acceptance. The **0.8.2** release remains the frozen
+OKF 0.2 baseline. Each producer retains separate migration, walkthrough and
+release acceptance. [Explorer 0.9.0 release](https://github.com/chris-page-gov/okf-explorer/releases/tag/v0.9.0)
 
 ## Implementation and acceptance status
 

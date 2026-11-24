@@ -309,7 +309,17 @@ export function validateJourneyManifest(value) {
     'expected_identity must be an object'
   );
   for (const field of ['schema', 'id', 'version', 'snapshot']) {
-    boundedString(value.expected_identity[field], `expected_identity.${field}`, field === 'id' ? 2048 : 512);
+    if (field !== 'schema' && value.expected_identity[field] === null) {
+      invariant(
+        /^[a-f0-9]{64}$/.test(value.expected_descriptor_sha256 || ''),
+        `expected_identity.${field} requires expected_descriptor_sha256 when null`
+      );
+    } else {
+      boundedString(value.expected_identity[field], `expected_identity.${field}`, field === 'id' ? 2048 : 512);
+    }
+  }
+  if (value.expected_descriptor_sha256 !== undefined) {
+    invariant(typeof value.expected_descriptor_sha256 === 'string' && /^[a-f0-9]{64}$/.test(value.expected_descriptor_sha256), 'expected_descriptor_sha256 must be a lowercase SHA-256 digest');
   }
   invariant(
     Array.isArray(value.journeys) && value.journeys.length > 0 && value.journeys.length <= ACCEPTANCE_LIMITS.journeys,
@@ -509,4 +519,12 @@ export function identityErrors(actual, expected) {
   return ['schema', 'id', 'version', 'snapshot']
     .filter((field) => actual[field] !== expected[field])
     .map((field) => `descriptor identity ${field} was ${JSON.stringify(actual[field])}, expected ${JSON.stringify(expected[field])}`);
+}
+
+export function descriptorErrors(descriptor, manifest, bytes) {
+  const errors = identityErrors(descriptorIdentity(descriptor), manifest.expected_identity);
+  if (manifest.expected_descriptor_sha256 && createHash('sha256').update(bytes).digest('hex') !== manifest.expected_descriptor_sha256) {
+    errors.push('descriptor bytes differ from expected_descriptor_sha256');
+  }
+  return errors;
 }

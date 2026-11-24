@@ -188,6 +188,29 @@ function fixture() {
 }
 
 describe('federation overview loader', () => {
+  it('loads a core 0.3 federation without changing its graph or opening children', () => {
+    const old = fixture();
+    const candidate = {...old, schema: 'okf-explorer-federation.v2', okf_version: '0.3', profile: 'https://example.test/profile/federation/v2/'};
+    expect(isFederationDescriptor(candidate)).toBe(true);
+    const legacy = loadFederationOverview(old, 'https://example.test/whole-law/okf-explorer.json');
+    const current = loadFederationOverview(candidate, 'https://example.test/whole-law/okf-explorer.json');
+    expect(current.overview.descriptor.schema).toBe('okf-explorer-federation.v2');
+    expect(current.overview.descriptor.okf_version).toBe('0.3');
+    expect(current.overview.descriptor.children).toEqual(legacy.overview.descriptor.children);
+    expect(current.overview.descriptor.relationships).toEqual(legacy.overview.descriptor.relationships);
+    expect(current.corpus.nodes).toEqual(legacy.corpus.nodes);
+    expect(current.corpus.relationships).toEqual(legacy.corpus.relationships);
+    expect(current.corpus.okfVersion).toBe('0.3');
+    expect(current.corpus.meta?.generated_at).toBe(legacy.corpus.meta?.generated_at);
+  });
+
+  it('rejects mixed core and federation versions before loading a child', () => {
+    const url = 'https://example.test/whole-law/okf-explorer.json';
+    expect(() => loadFederationOverview({...fixture(), okf_version: '0.3'}, url)).toThrow('requires okf_version 0.2');
+    expect(() => loadFederationOverview({...fixture(), schema: 'okf-explorer-federation.v2'}, url)).toThrow('requires okf_version 0.3');
+    expect(isFederationDescriptor({...fixture(), schema: 'okf-explorer-federation.v3'})).toBe(false);
+  });
+
   it('binds a relative child to the fetched local or raw-SHA parent, not canonical public main', () => {
     const candidate = fixture() as ReturnType<typeof fixture> & { '@id'?: string };
     candidate['@id'] = 'https://example.test/whole-law/okf-explorer.json';
