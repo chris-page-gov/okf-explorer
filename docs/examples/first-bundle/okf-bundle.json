@@ -1,4 +1,5 @@
 {
+  "bundle_id": "urn:okf:study-club",
   "corpora": {
     "study-club": {
       "assertion_scope": "synthetic-fixture",
@@ -6,11 +7,28 @@
       "nodes": {
         "records/booking.md": {
           "body": "# Booking\n\nBooking is required for the [Repair demonstration](repair-demonstration.md). No telephone number, booking URL or availability is recorded.\n\nSource: original fictional study-club teaching notes, 6 September 2026.\nThis is not a real event or service record.",
+          "core_role": "concept",
           "description": "Booking information for a fictional activity.",
+          "frontmatter": {
+            "description": "Booking information for a fictional activity.",
+            "status": "draft",
+            "tags": [
+              "fictional",
+              "teaching"
+            ],
+            "title": "Booking",
+            "type": "Note"
+          },
           "id": "records/booking.md",
+          "markdown_links": {
+            "repair-demonstration.md": "records/repair-demonstration.md"
+          },
+          "markdown_references": {},
           "route": "records/booking.md",
           "section": "note",
           "source": "records/booking.md",
+          "source_path": "records/booking.md",
+          "source_sha256": "969514963ada7d6c64c8cadb52a2abe4635b0c7525ef6657f5605294597ba265",
           "status": "draft",
           "tags": [
             "fictional",
@@ -22,11 +40,28 @@
         },
         "records/data-drop-in.md": {
           "body": "# Data drop-in\n\nThe data drop-in meets on Thursday at 12:00 in the [Library room](library-room.md). It is free.\n\nSource: original fictional study-club teaching notes, 6 September 2026.\nThis is not a real event or service record.",
+          "core_role": "concept",
           "description": "A free fictional Thursday activity.",
+          "frontmatter": {
+            "description": "A free fictional Thursday activity.",
+            "status": "draft",
+            "tags": [
+              "fictional",
+              "teaching"
+            ],
+            "title": "Data drop-in",
+            "type": "Activity"
+          },
           "id": "records/data-drop-in.md",
+          "markdown_links": {
+            "library-room.md": "records/library-room.md"
+          },
+          "markdown_references": {},
           "route": "records/data-drop-in.md",
           "section": "activity",
           "source": "records/data-drop-in.md",
+          "source_path": "records/data-drop-in.md",
+          "source_sha256": "16f744375ecb0158424d94727d2c0198ce558b4cfcc8cc53980d8cb1b5a82daa",
           "status": "draft",
           "tags": [
             "fictional",
@@ -38,11 +73,26 @@
         },
         "records/library-room.md": {
           "body": "# Library room\n\nThe Library room is recorded as step-free. No address or capacity is recorded.\n\nSource: original fictional study-club teaching notes, 6 September 2026.\nThis is not a real event or service record.",
+          "core_role": "concept",
           "description": "A fictional room with recorded access information.",
+          "frontmatter": {
+            "description": "A fictional room with recorded access information.",
+            "status": "draft",
+            "tags": [
+              "fictional",
+              "teaching"
+            ],
+            "title": "Library room",
+            "type": "Place"
+          },
           "id": "records/library-room.md",
+          "markdown_links": {},
+          "markdown_references": {},
           "route": "records/library-room.md",
           "section": "place",
           "source": "records/library-room.md",
+          "source_path": "records/library-room.md",
+          "source_sha256": "c388e89bf9ec974fa74aabd2e06f5a8833b88592919d2d98295ac24be1d5d2d8",
           "status": "draft",
           "tags": [
             "fictional",
@@ -54,11 +104,28 @@
         },
         "records/reading-circle.md": {
           "body": "# Reading circle\n\nThe reading circle meets on Tuesday at 18:30 in the [Library room](library-room.md). It is free.\n\nSource: original fictional study-club teaching notes, 6 September 2026.\nThis is not a real event or service record.",
+          "core_role": "concept",
           "description": "A free fictional Tuesday activity.",
+          "frontmatter": {
+            "description": "A free fictional Tuesday activity.",
+            "status": "draft",
+            "tags": [
+              "fictional",
+              "teaching"
+            ],
+            "title": "Reading circle",
+            "type": "Activity"
+          },
           "id": "records/reading-circle.md",
+          "markdown_links": {
+            "library-room.md": "records/library-room.md"
+          },
+          "markdown_references": {},
           "route": "records/reading-circle.md",
           "section": "activity",
           "source": "records/reading-circle.md",
+          "source_path": "records/reading-circle.md",
+          "source_sha256": "d2ce1ed71358bef4160fec7e82648dbdedce530993a91c8e809bab3b98623201",
           "status": "draft",
           "tags": [
             "fictional",
@@ -70,11 +137,29 @@
         },
         "records/repair-demonstration.md": {
           "body": "# Repair demonstration\n\nThe repair demonstration meets on Saturday at 10:00 in the [Workshop room](workshop-room.md). [Booking](booking.md) is required. Its price is not recorded.\n\nSource: original fictional study-club teaching notes, 6 September 2026.\nThis is not a real event or service record.",
+          "core_role": "concept",
           "description": "A fictional Saturday activity requiring booking.",
+          "frontmatter": {
+            "description": "A fictional Saturday activity requiring booking.",
+            "status": "draft",
+            "tags": [
+              "fictional",
+              "teaching"
+            ],
+            "title": "Repair demonstration",
+            "type": "Activity"
+          },
           "id": "records/repair-demonstration.md",
+          "markdown_links": {
+            "booking.md": "records/booking.md",
+            "workshop-room.md": "records/workshop-room.md"
+          },
+          "markdown_references": {},
           "route": "records/repair-demonstration.md",
           "section": "activity",
           "source": "records/repair-demonstration.md",
+          "source_path": "records/repair-demonstration.md",
+          "source_sha256": "4be1548f69c2995bdf08f09a4f67f6d0590f882463dc9065fc0bcd708b955d25",
           "status": "draft",
           "tags": [
             "fictional",
@@ -86,11 +171,26 @@
         },
         "records/workshop-room.md": {
           "body": "# Workshop room\n\nAccessibility for the Workshop room is not recorded. No address or capacity is recorded.\n\nSource: original fictional study-club teaching notes, 6 September 2026.\nThis is not a real event or service record.",
+          "core_role": "concept",
           "description": "A fictional room with missing access information.",
+          "frontmatter": {
+            "description": "A fictional room with missing access information.",
+            "status": "draft",
+            "tags": [
+              "fictional",
+              "teaching"
+            ],
+            "title": "Workshop room",
+            "type": "Place"
+          },
           "id": "records/workshop-room.md",
+          "markdown_links": {},
+          "markdown_references": {},
           "route": "records/workshop-room.md",
           "section": "place",
           "source": "records/workshop-room.md",
+          "source_path": "records/workshop-room.md",
+          "source_sha256": "0efa61c0bcca24656d49f30a476c13aaa93ae7b65030c1e583e6c61b3d39f776",
           "status": "draft",
           "tags": [
             "fictional",
@@ -251,5 +351,8 @@
     "description": "6 fictional teaching records; no real events or service assurances.",
     "title": "Fictional study club"
   },
-  "okf_version": "0.2"
+  "okf_version": "0.3",
+  "schema": "okf-explorer-bundle.v0",
+  "snapshot": "sha256:7658057157bc4c2d46a4da308e9d6956b0586b1af0506dbf6a909a6f923bbe95",
+  "version": "0.3.0"
 }

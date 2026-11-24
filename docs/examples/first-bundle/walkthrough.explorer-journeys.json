@@ -1,0 +1,235 @@
+{
+  "bundle_descriptor": "okf-bundle.json",
+  "expected_identity": {
+    "id": "urn:okf:study-club",
+    "schema": "okf-explorer-bundle.v0",
+    "snapshot": "sha256:7658057157bc4c2d46a4da308e9d6956b0586b1af0506dbf6a909a6f923bbe95",
+    "version": "0.3.0"
+  },
+  "journeys": [
+    {
+      "actions": [
+        {
+          "hash": "#records/data-drop-in.md",
+          "params": {
+            "view": "reader"
+          },
+          "type": "goto"
+        },
+        {
+          "selector": "aside[aria-label=\"Record details\"] h2:text-is(\"Data drop-in\")",
+          "type": "wait_for"
+        }
+      ],
+      "assertions": [
+        {
+          "includes": "The data drop-in meets on Thursday at 12:00 in the Library room. It is free.",
+          "selector": "aside[aria-label=\"Record details\"]",
+          "type": "text"
+        },
+        {
+          "includes": "/bundle/okf-bundle.json",
+          "type": "requested"
+        },
+        {
+          "type": "console_clean"
+        }
+      ],
+      "id": "inspect-data-drop-in"
+    },
+    {
+      "actions": [
+        {
+          "hash": "#records/library-room.md",
+          "params": {
+            "view": "reader"
+          },
+          "type": "goto"
+        },
+        {
+          "selector": "aside[aria-label=\"Record details\"] h2:text-is(\"Library room\")",
+          "type": "wait_for"
+        }
+      ],
+      "assertions": [
+        {
+          "includes": "The Library room is recorded as step-free.",
+          "selector": "aside[aria-label=\"Record details\"]",
+          "type": "text"
+        },
+        {
+          "includes": "/bundle/okf-bundle.json",
+          "type": "requested"
+        },
+        {
+          "type": "console_clean"
+        }
+      ],
+      "id": "inspect-library-room"
+    },
+    {
+      "actions": [
+        {
+          "hash": "#records/reading-circle.md",
+          "params": {
+            "view": "reader"
+          },
+          "type": "goto"
+        },
+        {
+          "selector": "aside[aria-label=\"Record details\"] h2:text-is(\"Reading circle\")",
+          "type": "wait_for"
+        }
+      ],
+      "assertions": [
+        {
+          "includes": "The reading circle meets on Tuesday at 18:30 in the Library room. It is free.",
+          "selector": "aside[aria-label=\"Record details\"]",
+          "type": "text"
+        },
+        {
+          "includes": "/bundle/okf-bundle.json",
+          "type": "requested"
+        },
+        {
+          "type": "console_clean"
+        }
+      ],
+      "id": "inspect-reading-circle"
+    },
+    {
+      "actions": [
+        {
+          "hash": "#records/repair-demonstration.md",
+          "params": {
+            "view": "reader"
+          },
+          "type": "goto"
+        },
+        {
+          "selector": "aside[aria-label=\"Record details\"] h2:text-is(\"Repair demonstration\")",
+          "type": "wait_for"
+        }
+      ],
+      "assertions": [
+        {
+          "includes": "The repair demonstration meets on Saturday at 10:00 in the Workshop room. Booking is required. Its price is not recorded.",
+          "selector": "aside[aria-label=\"Record details\"]",
+          "type": "text"
+        },
+        {
+          "includes": "/bundle/okf-bundle.json",
+          "type": "requested"
+        },
+        {
+          "type": "console_clean"
+        }
+      ],
+      "id": "inspect-repair-demonstration"
+    },
+    {
+      "actions": [
+        {
+          "hash": "#records/workshop-room.md",
+          "params": {
+            "view": "reader"
+          },
+          "type": "goto"
+        },
+        {
+          "selector": "aside[aria-label=\"Record details\"] h2:text-is(\"Workshop room\")",
+          "type": "wait_for"
+        }
+      ],
+      "assertions": [
+        {
+          "includes": "Accessibility for the Workshop room is not recorded.",
+          "selector": "aside[aria-label=\"Record details\"]",
+          "type": "text"
+        },
+        {
+          "includes": "/bundle/okf-bundle.json",
+          "type": "requested"
+        },
+        {
+          "type": "console_clean"
+        }
+      ],
+      "id": "inspect-workshop-room"
+    },
+    {
+      "actions": [
+        {
+          "hash": "#records/booking.md",
+          "params": {
+            "view": "reader"
+          },
+          "type": "goto"
+        },
+        {
+          "selector": "aside[aria-label=\"Record details\"] h2:text-is(\"Booking\")",
+          "type": "wait_for"
+        }
+      ],
+      "assertions": [
+        {
+          "includes": "No telephone number, booking URL or availability is recorded.",
+          "selector": "aside[aria-label=\"Record details\"]",
+          "type": "text"
+        },
+        {
+          "includes": "/bundle/okf-bundle.json",
+          "type": "requested"
+        },
+        {
+          "type": "console_clean"
+        }
+      ],
+      "id": "inspect-booking"
+    },
+    {
+      "actions": [
+        {
+          "hash": "#records/data-drop-in.md",
+          "params": {
+            "view": "reader"
+          },
+          "type": "goto"
+        },
+        {
+          "selector": "aside[aria-label=\"Record details\"] h2:text-is(\"Data drop-in\")",
+          "type": "wait_for"
+        },
+        {
+          "selector": "aside[aria-label=\"Record details\"] section[aria-label=\"Markdown body\"] a:text-is(\"Library room\")",
+          "type": "click"
+        },
+        {
+          "selector": "aside[aria-label=\"Record details\"] h2:text-is(\"Library room\")",
+          "type": "wait_for"
+        }
+      ],
+      "assertions": [
+        {
+          "includes": "The Library room is recorded as step-free.",
+          "selector": "aside[aria-label=\"Record details\"]",
+          "type": "text"
+        },
+        {
+          "equals": "#records/data-drop-in.md",
+          "type": "url_hash"
+        },
+        {
+          "equals": "records/library-room.md",
+          "name": "inspect.node",
+          "type": "url_param"
+        },
+        {
+          "type": "console_clean"
+        }
+      ],
+      "id": "follow-data-drop-in-room-reference"
+    }
+  ],
+  "schema": "okf-explorer-journeys.v1"
+}

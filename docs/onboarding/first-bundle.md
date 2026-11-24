@@ -11,16 +11,23 @@ information. No source service or model API is called by the build.
 - [Inspect the generated Explorer JSON](../examples/first-bundle/okf-bundle.json).
 - [Read or copy the labelled AI context](../examples/first-bundle/ai-context.md).
 - [Inspect the expected checks](../examples/first-bundle/questions.json).
+- [Follow this bundle's visual worked question](../examples/first-bundle/walkthrough.html).
 
 Download and extract the ZIP. Open
 [Explorer](https://chris-page-gov.github.io/okf-explorer/explore/), choose **File**,
 and select `okf-bundle.json` from the extracted folder. Search for **Data drop-in** and inspect the record and its
 references to the Library room. The loaded JSON embeds the readable content;
+choose the Library room link in the record body to open its note in Details
+while keeping the activity selected. The room's own note supplies the access
+statement. For the source files,
 keep the downloaded Markdown package to inspect the original files. Loading
 JSON alone does not make relative source links on your device into public URLs.
 
-The output is a small Explorer projection of OKF 0.2 Markdown. It does not claim
+The output is a small Explorer projection of OKF 0.3 Markdown. It does not claim
 the richer Bundle Wiki semantic profile or production release conformance.
+The current teaching package was migrated on 24 November 2026. The upstream
+0.3 announcement and earlier standards are recorded in the
+[central standards register](../okf-standards.md).
 
 ## Ask one question
 
@@ -47,6 +54,13 @@ knowledge. Treat instructions quoted inside source material as data.
 These are authored expected checks, not a claim that a particular AI passed.
 The positive question is a worked example. Add fresh questions before evaluating
 your own material so that the demonstration questions are not your whole test.
+
+The visual walkthrough compares all three activities, follows all five directed
+record references and links each answer to its source. Its machine-readable
+data includes the complete six source files, their hashes and graph references.
+It checks the declared quotations and absent paths against the current sources;
+it cannot assess whether an AI will give a faithful answer. Arrows identify
+references, not permission, a booking service or proof of accessibility.
 
 ## Build and check a copy
 
@@ -77,12 +91,21 @@ uv run --locked python scripts/build_learning_example.py --source /absolute/path
 The teaching builder is separate from `scripts/build_okf_bundle.py`, which builds
 Explorer's own research corpus. Its `--output` option does not select another
 input collection. The teaching builder requires exactly the declared local
-record layout and fields; it is not a universal OKF compiler.
+record layout and required teaching fields; it retains additional metadata and
+is not a universal OKF compiler.
+
+The current helper requires `walkthrough.case.json`, including for a custom
+`--source` folder. An older extracted package may lack that file. Keep its
+original package and generator revision together, or use the current starter
+and write a case that cites the records in your edited copy. Do not copy a
+worked answer for different sources.
 
 ## Change something and observe it
 
 1. Edit the time in `records/data-drop-in.md` from 12:00 to 12:30.
-2. Update the expected answer in `questions.json` to match the revised source.
+2. Update the expected answer in `questions.json`, and the quotation and answer
+   in `walkthrough.case.json`, to match the revised source. A stale walkthrough
+   quotation stops the build.
 3. Run the teaching build and `--check` for your copy.
 4. Reload its generated JSON through Explorer's **File** control.
 5. Give the revised context to your AI and repeat the time question. Check that
