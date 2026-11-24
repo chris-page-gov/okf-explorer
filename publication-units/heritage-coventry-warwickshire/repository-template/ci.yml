@@ -29,7 +29,7 @@ jobs:
           export UV_PROJECT_ENVIRONMENT="$RUNNER_TEMP/heritage-publication-venv"
           printf 'UV_PROJECT_ENVIRONMENT=%s\n' "$UV_PROJECT_ENVIRONMENT" >> "$GITHUB_ENV"
           uv python install 3.12.11
-          uv sync --locked --project site/toolchain
+          uv sync --locked --project site/toolchain --python 3.12.11
       - name: Validate exact candidate closure
         run: uv run --locked --project site/toolchain python site/scripts/check_publication_unit_manifest.py site
       - name: Reject promotion evidence inside the candidate

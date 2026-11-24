@@ -32,7 +32,8 @@
 - Give exported reading pages an explicit icon and `en-GB` locale. This fixes
   the observed owner-root favicon 404 without changing data or graph inputs.
 - Export the unchanged Python version pin under a visible filename so Pages
-  serves every material listed in the publication manifest.
+  serves every material listed in the publication manifest. Pass the exact
+  Python version to every workflow environment synchronisation.
 - Keep observations outside immutable candidates and retain the independent
   Heritage repository's attested candidate/promotion release gates. Publication
   and formal release acceptance remain separate from local source compilation.

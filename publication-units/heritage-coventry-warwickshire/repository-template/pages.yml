@@ -30,7 +30,7 @@ jobs:
           export UV_PROJECT_ENVIRONMENT="$RUNNER_TEMP/heritage-publication-venv"
           printf 'UV_PROJECT_ENVIRONMENT=%s\n' "$UV_PROJECT_ENVIRONMENT" >> "$GITHUB_ENV"
           uv python install 3.12.11
-          uv sync --locked --project site/toolchain
+          uv sync --locked --project site/toolchain --python 3.12.11
       - name: Validate exact rooted publication candidate
         run: uv run --locked --project site/toolchain python site/scripts/check_publication_unit_manifest.py site
       - uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6

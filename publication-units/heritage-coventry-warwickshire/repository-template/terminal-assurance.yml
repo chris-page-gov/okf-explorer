@@ -55,7 +55,7 @@ jobs:
           export UV_PROJECT_ENVIRONMENT="$RUNNER_TEMP/heritage-publication-venv"
           printf 'UV_PROJECT_ENVIRONMENT=%s\n' "$UV_PROJECT_ENVIRONMENT" >> "$GITHUB_ENV"
           uv python install 3.12.11
-          uv sync --locked --project assurance
+          uv sync --locked --project assurance --python 3.12.11
       - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
         with:
           version: 10.34.7

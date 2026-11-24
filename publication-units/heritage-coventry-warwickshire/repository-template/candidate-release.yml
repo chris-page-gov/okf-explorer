@@ -52,7 +52,7 @@ jobs:
           export UV_PROJECT_ENVIRONMENT="$RUNNER_TEMP/heritage-publication-venv"
           printf 'UV_PROJECT_ENVIRONMENT=%s\n' "$UV_PROJECT_ENVIRONMENT" >> "$GITHUB_ENV"
           uv python install 3.12.11
-          uv sync --locked --project assurance
+          uv sync --locked --project assurance --python 3.12.11
       - name: Separate candidate identity from assurance workflow provenance
         run: |
           test "$GITHUB_EVENT_NAME" = workflow_dispatch
