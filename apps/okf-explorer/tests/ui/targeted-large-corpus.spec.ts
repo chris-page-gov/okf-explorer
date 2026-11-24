@@ -1255,22 +1255,38 @@ test.describe('targeted large-corpus relationship hydration', () => {
 
   test('Reader preserves missing and explicit zero resource counts for a selected record', async ({ page }) => {
     const requests: string[] = [];
-    await installTargetedFixture(page.context(), requests, { omitResourceCount: true });
-    await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}#overview`);
+    await installTargetedFixture(page.context(), requests, {
+      omitResourceCount: true,
+      resourceHydrationSafe: true
+    });
+    await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}&view=reader#overview`);
     await page.getByPlaceholder('Search targeted legislation').fill('Target Act');
+    await page.getByLabel('Views').getByRole('button', { name: 'Graph', exact: true }).click();
+    await expect(page.getByRole('group', { name: 'Large corpus graph' })).toBeVisible();
+    await page.getByLabel('Views').getByRole('button', { name: 'Reader', exact: true }).click();
+    const aggregateCount = page.locator('[data-metric="manifestations"] strong');
+    await expect(aggregateCount).toHaveText('Not recorded');
     await page.locator('.result-list button').filter({ hasText: 'Target Act 1998' }).first().click();
 
     const detail = page.locator('.right-panel');
     const resourceCount = detail.locator('dt').filter({ hasText: /^Manifestations/ })
       .locator('xpath=following-sibling::dd[1]');
     await expect(detail.getByRole('heading', { name: 'Target Act 1998', exact: true })).toBeVisible();
-    await expect(resourceCount).toHaveText('Not recorded');
+    await expect(resourceCount).toHaveText('1 loaded; total not recorded');
     await expect(page.getByRole('heading', { name: '500', exact: true })).toHaveCount(0);
 
+    await page.getByPlaceholder('Search targeted legislation').fill('no matching legislation 929');
+    await expect(aggregateCount).toHaveText('0');
+
     const zeroRequests: string[] = [];
-    await installTargetedFixture(page.context(), zeroRequests, { resourceCount: 0 });
-    await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}#overview`);
+    await installTargetedFixture(page.context(), zeroRequests, {
+      resourceCount: 0,
+      resourceHydrationSafe: true
+    });
+    await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}&view=reader#overview`);
     await page.getByPlaceholder('Search targeted legislation').fill('Target Act');
+    const zeroAggregateCount = page.locator('[data-metric="manifestations"] strong');
+    await expect(zeroAggregateCount).toHaveText('0');
     await page.locator('.result-list button').filter({ hasText: 'Target Act 1998' }).first().click();
 
     const zeroDetail = page.locator('.right-panel');

@@ -4412,8 +4412,11 @@
       const reportedResourceCounts = largeVisibleDatasets
         .map((dataset) => dataset.resource_count)
         .filter(isReportedResourceCount);
-      const resourceCount = reportedResourceCounts.reduce((total, count) => total + count, 0);
-      const resourceCountLabel = reportedResourceCounts.length === largeVisibleDatasets.length
+      const resourceCount = largeVisibleDatasets.length > 0 && reportedResourceCounts.length === 0
+        ? 'Not recorded'
+        : reportedResourceCounts.reduce((total, count) => total + count, 0);
+      const resourceCountLabel = reportedResourceCounts.length === 0
+        || reportedResourceCounts.length === largeVisibleDatasets.length
         ? resourcePlural()
         : `known ${resourcePlural()}`;
       if (hasApiCounts) {
