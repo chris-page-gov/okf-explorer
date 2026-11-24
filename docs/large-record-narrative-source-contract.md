@@ -126,6 +126,15 @@ A resource's optional route must equal `resource/<id>`. If the loaded record
 advertises `resource_count`, it must match the selected count. Omitting a record
 with a positive advertised count is an error, not evidence of zero references.
 
+`resource_count` is optional source metadata. Explorer displays an absent or
+invalid count as **Not recorded** and preserves an explicitly reported zero as
+`0`. A partial set of loaded resources is labelled as loaded, without presenting
+it as the record's total. Filtered aggregate totals show **Not recorded** when
+no visible record reports a count; when only some do, Explorer labels their
+sum as known. An empty result set remains `0`. Bundle-wide aggregate totals use
+the summary or manifest when supplied; if neither reports a total, Explorer
+displays **Not recorded**.
+
 For one record, Explorer accepts at most 16 chunks, 256 selected resources and
 2 MiB of shared chunk bytes. A shared chunk may contain at most 1,024 rows.
 The index is limited to 256 KiB and a bucket to 1 MiB. These files must be

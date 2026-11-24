@@ -1,5 +1,27 @@
 # Changelog
 
+## Unreleased — selective Heritage walkthrough builds
+
+- Refresh the producer-bound local candidate receipt from a fresh 100-question
+  evaluation and three browser journeys after correcting the source copy.
+
+- Normalise frozen records and relationships when rebuilding only the Heritage
+  presentation plane, so all three walkthroughs receive their source evidence.
+  Keep the existing descriptor identity and leave search and semantic outputs
+  unchanged. Reject a source population that differs from the candidate count.
+- Copy nested source fields before normalisation, so repeated builds do not
+  append geometry references to the retained synthetic snapshot in memory.
+
+## Unreleased — preserve optional resource counts
+
+- Keep an absent source `resource_count` distinct from zero throughout large
+  bundle search, summary and detail views. Show **Not recorded** when the source
+  does not report a total, retain explicit zero and empty-result zero, and mark
+  loaded subsets without treating them as complete totals.
+- Add browser coverage for selecting a valid record with no advertised count
+  and for an aggregate with no reported counts, empty results and an explicit
+  zero record.
+
 ## Unreleased — source-backed publisher labels
 
 - Show a large-corpus publisher's title from the full publisher index when it

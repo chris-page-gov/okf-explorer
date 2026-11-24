@@ -90,6 +90,8 @@ async function installTargetedFixture(
     recordRoute?: string;
     reusedResourceId?: boolean;
     sourceReleaseDate?: string;
+    omitResourceCount?: boolean;
+    resourceCount?: number;
     clmlVersion?: string;
     documentUri?: string;
   } = {}
@@ -106,8 +108,8 @@ async function installTargetedFixture(
     notes: 'A deterministic legal work used to prove bounded record and relationship hydration.',
     publisher: 'legislation-gov-uk',
     publisher_title: 'legislation.gov.uk',
-    resource_count: 1,
-    resource_ids: ['target-act-html'],
+    ...(options.omitResourceCount ? {} : { resource_count: options.resourceCount ?? 1 }),
+    resource_ids: options.resourceCount === 0 ? [] : ['target-act-html'],
     formats: ['clml', 'website'],
     tags: ['ukpga', 'year-1998'],
     topics: [],
@@ -471,7 +473,7 @@ async function installTargetedFixture(
       ...(options.omitDeclaredRecordCount
         ? {}
         : { records: options.resourceHydrationSafe ? 4 : 365_786 }),
-      resources: options.reusedResourceId ? 2 : 1,
+      resources: options.resourceCount === 0 ? 0 : options.reusedResourceId ? 2 : 1,
       relationships: 853_883
     },
     vocabulary: {
@@ -697,7 +699,7 @@ async function installTargetedFixture(
         ? json(route, { error: 'Selected references unavailable' }, 503)
         : json(route, targetedResourceRows);
     }
-    if (url.pathname === '/data/resources.json') return json(route, [resource]);
+    if (url.pathname === '/data/resources.json') return json(route, options.resourceCount === 0 ? [] : [resource]);
     if (url.pathname === '/data/adjacency/manifest.json') return json(route, adjacency);
     if (url.pathname === `/data/adjacency/${bucket}.json`) {
       if (options.adjacencyDelayMs) {
@@ -1249,6 +1251,50 @@ test.describe('targeted large-corpus relationship hydration', () => {
     } finally {
       releaseRecord();
     }
+  });
+
+  test('Reader preserves missing and explicit zero resource counts for a selected record', async ({ page }) => {
+    const requests: string[] = [];
+    await installTargetedFixture(page.context(), requests, {
+      omitResourceCount: true,
+      resourceHydrationSafe: true
+    });
+    await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}&view=reader#overview`);
+    await page.getByPlaceholder('Search targeted legislation').fill('Target Act');
+    await page.getByLabel('Views').getByRole('button', { name: 'Graph', exact: true }).click();
+    await expect(page.getByRole('group', { name: 'Large corpus graph' })).toBeVisible();
+    await page.getByLabel('Views').getByRole('button', { name: 'Reader', exact: true }).click();
+    const aggregateCount = page.locator('[data-metric="manifestations"] strong');
+    await expect(aggregateCount).toHaveText('Not recorded');
+    await page.locator('.result-list button').filter({ hasText: 'Target Act 1998' }).first().click();
+
+    const detail = page.locator('.right-panel');
+    const resourceCount = detail.locator('dt').filter({ hasText: /^Manifestations/ })
+      .locator('xpath=following-sibling::dd[1]');
+    await expect(detail.getByRole('heading', { name: 'Target Act 1998', exact: true })).toBeVisible();
+    await expect(resourceCount).toHaveText('1 loaded; total not recorded');
+    await expect(page.getByRole('heading', { name: '500', exact: true })).toHaveCount(0);
+
+    await page.getByPlaceholder('Search targeted legislation').fill('no matching legislation 929');
+    await expect(aggregateCount).toHaveText('0');
+
+    const zeroRequests: string[] = [];
+    await installTargetedFixture(page.context(), zeroRequests, {
+      resourceCount: 0,
+      resourceHydrationSafe: true
+    });
+    await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}&view=reader#overview`);
+    await page.getByPlaceholder('Search targeted legislation').fill('Target Act');
+    const zeroAggregateCount = page.locator('[data-metric="manifestations"] strong');
+    await expect(zeroAggregateCount).toHaveText('0');
+    await page.locator('.result-list button').filter({ hasText: 'Target Act 1998' }).first().click();
+
+    const zeroDetail = page.locator('.right-panel');
+    const zeroResourceCount = zeroDetail.locator('dt').filter({ hasText: /^Manifestations/ })
+      .locator('xpath=following-sibling::dd[1]');
+    await expect(zeroDetail.getByRole('heading', { name: 'Target Act 1998', exact: true })).toBeVisible();
+    await expect(zeroResourceCount).toHaveText('0');
+    await expect(page.getByRole('heading', { name: '500', exact: true })).toHaveCount(0);
   });
 
   test('official search selection hydrates the selected route when Graph opens', async ({ page }) => {

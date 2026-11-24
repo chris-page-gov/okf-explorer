@@ -1111,7 +1111,7 @@ def har_record(row: dict[str, Any], annual: dict[str, Any], index: int, snapshot
 
 def source_records(snapshot: dict[str, Any]) -> list[dict[str, Any]]:
     if isinstance(snapshot.get("normalized_records"), list):
-        records = [dict(record) for record in snapshot["normalized_records"]]
+        records = copy.deepcopy(snapshot["normalized_records"])
     else:
         records = []
         seen_entries: set[str] = set()
@@ -3387,9 +3387,9 @@ def existing_generated_at(output: Path, *, snapshot_id: str = "") -> str:
 
 
 def existing_presentation_core(
-    output: Path, *, snapshot_id: str
+    output: Path, *, snapshot: dict[str, Any]
 ) -> tuple[dict[str, Any], int]:
-    """Load immutable descriptor facts for a presentation-only rebuild."""
+    """Keep candidate identity and normalise the walkthrough's source evidence."""
 
     descriptor_path = output / "okf-explorer.json"
     try:
@@ -3398,14 +3398,23 @@ def existing_presentation_core(
         raise ValueError(
             "presentation-only build requires an existing valid candidate descriptor"
         ) from exc
-    if clean_text(descriptor.get("snapshot")) != snapshot_id:
+    if clean_text(descriptor.get("snapshot")) != clean_text(snapshot.get("snapshot_id")):
         raise ValueError(
             "presentation-only build candidate snapshot does not match the source snapshot"
         )
-    records = descriptor.get("counts", {}).get("records")
-    if not isinstance(records, int) or records < 0:
+    record_count = descriptor.get("counts", {}).get("records")
+    if not isinstance(record_count, int) or record_count < 0:
         raise ValueError("candidate descriptor has no valid record count")
-    return {"descriptor": descriptor}, records
+    records = source_records(snapshot)
+    _, route_to_geo = geojson_files(records)
+    resources = resource_rows(records, snapshot)
+    add_geo_resources(records, resources, route_to_geo, publication_config(snapshot)["public_base"])
+    validate_resource_references(records, resources)
+    relationships = relationship_rows(records, snapshot)
+    enrich_relationship_search_aliases(records, relationships)
+    if len(records) != record_count:
+        raise ValueError("candidate record count does not match the source snapshot")
+    return {"descriptor": descriptor, "records": records, "relationships": relationships}, record_count
 
 
 def fixture_targets(name: str) -> list[tuple[str, Path, Path]]:
@@ -3479,7 +3488,7 @@ def build_target(
         selected_planes = planes or set(PLANE_EMITTERS)
         if selective and selected_planes == {"presentation"}:
             corpus, record_count = existing_presentation_core(
-                output, snapshot_id=clean_text(snapshot.get("snapshot_id"))
+                output, snapshot=snapshot
             )
         else:
             corpus = build_normalized_core(

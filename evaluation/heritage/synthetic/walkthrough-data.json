@@ -474,6 +474,6 @@
   "schema": "okf-heritage-walkthrough-evidence.v1",
   "snapshot": "heritage-warwickshire-synthetic-capability-v1",
   "source_observed_at": "2026-08-02T00:00:00Z",
-  "source_snapshot_canonical_sha256": "5ebcba495cb0730203b1ce63984ebee4c69ba71b234b032dcbf0eb693fe8ddd5",
+  "source_snapshot_canonical_sha256": "ccce5a06fea90f8f9e92a15c07870fabab860cc453dcb7da9aa3733c3a2ad7c6",
   "version": "1.1.0"
 }

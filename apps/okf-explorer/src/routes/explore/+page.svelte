@@ -777,7 +777,7 @@
     const rows: Array<LargeDataset | SearchResultDoc> = largeSearchClient ? largeResults : largeVisibleDatasets;
     return rows.filter(row => (!geospatialFilter || largeVisibleDatasetNames.has(row.name)) && !foldedIds.has(indexed ? String((row as SearchResultDoc).ordinal) : datasetRoute(row))).map(row => ({
       id: indexed ? String((row as SearchResultDoc).ordinal) : datasetRoute(row), route: datasetRoute(row), title: largeDatasetLabel(row), type: apiRecordMeta(row) || 'Record',
-      description: stripHtml(row.notes || '').slice(0, 400), metadata: largeRecordPublisherLabel(row) + ' · ' + (row.resource_count || 0) + ' ' + resourcePlural(),
+      description: stripHtml(row.notes || '').slice(0, 400), metadata: largeRecordPublisherLabel(row) + ' · ' + resourceCountSummary(row.resource_count),
       reason: indexed ? searchMatchReason(row as SearchResultDoc) : '',
       highlighted: indexed ? Boolean((row as SearchResultDoc).highlighted) : hasSelection(largeFacetHighlights) && matchesSelection(largeFacetHighlights, key => largeDatasetFacetValues(row, key)),
       canonicalUrl: rankedResultCanonicalUrl(row)
@@ -4409,7 +4409,16 @@
         ];
       }
       const publisherCount = new Set(largeVisibleDatasets.map((dataset) => dataset.publisher).filter(Boolean)).size;
-      const resourceCount = largeVisibleDatasets.reduce((total, dataset) => total + (dataset.resource_count || 0), 0);
+      const reportedResourceCounts = largeVisibleDatasets
+        .map((dataset) => dataset.resource_count)
+        .filter(isReportedResourceCount);
+      const resourceCount = largeVisibleDatasets.length > 0 && reportedResourceCounts.length === 0
+        ? 'Not recorded'
+        : reportedResourceCounts.reduce((total, count) => total + count, 0);
+      const resourceCountLabel = reportedResourceCounts.length === 0
+        || reportedResourceCounts.length === largeVisibleDatasets.length
+        ? resourcePlural()
+        : `known ${resourcePlural()}`;
       if (hasApiCounts) {
         return [
           { label: 'API products', value: largeVisibleDatasets.filter((dataset) => dataset.record_type === 'API Product').length },
@@ -4420,7 +4429,7 @@
       }
       return [
         { label: recordPlural(), value: responseTotal ?? largeVisibleDatasets.length },
-        { label: resourcePlural(), value: resourceCount },
+        { label: resourceCountLabel, value: resourceCount },
         { label: publisherPlural(), value: publisherCount },
         { label: 'active filters', value: activeLargeFilterCount }
       ];
@@ -4444,7 +4453,7 @@
     }
     return [
       { label: recordPlural(), value: summary?.record_count ?? counts.records ?? counts.datasets ?? 0 },
-      { label: resourcePlural(), value: summary?.resource_count ?? counts.resources ?? 0 },
+      { label: resourcePlural(), value: summary?.resource_count ?? counts.resources ?? 'Not recorded' },
       { label: 'relationships', value: summary?.relationship_count ?? counts.relationships ?? 0 },
       { label: 'active filters', value: activeLargeFilterCount }
     ];
@@ -4467,7 +4476,7 @@
     });
     const recentEntries = (source?.kind === 'large' ? source.overview.recent_datasets || [] : []).slice(0, 6).map((item) => ({
       label: largeDatasetLabel(item),
-      meta: `${largeRecordPublisherLabel(item)} · ${item.resource_count} ${resourcePlural()}`,
+      meta: `${largeRecordPublisherLabel(item)} · ${resourceCountSummary(item.resource_count)}`,
       route: datasetRoute(item)
     }));
     const analysisEntries =
@@ -4603,6 +4612,20 @@
       dataset.publisher,
       dataset.publisher_title || dataset.publisher || `Unknown ${publisherSingular()}`
     );
+  }
+
+  function isReportedResourceCount(value: unknown): value is number {
+    return typeof value === 'number' && Number.isFinite(value) && value >= 0;
+  }
+
+  function displayResourceCount(value: unknown): string {
+    return isReportedResourceCount(value) ? value.toLocaleString('en-GB') : 'Not recorded';
+  }
+
+  function resourceCountSummary(value: unknown): string {
+    return isReportedResourceCount(value)
+      ? `${value.toLocaleString('en-GB')} ${resourcePlural()}`
+      : 'resource count not recorded';
   }
 
   function routeKind(route: string): string {
@@ -5457,8 +5480,8 @@
         for (const format of (result.formats || []).slice(0, 8)) addEdge(center, metadataEndpointRoute('format', format), 'has format');
         for (const topic of (result.topics || []).slice(0, 8)) addEdge(center, metadataEndpointRoute('topic', topic), 'classified as');
         for (const tag of (result.tags || []).slice(0, 8)) addEdge(center, metadataEndpointRoute('tag', tag), 'tagged');
-        const resourceCount = result.resource_count || 0;
-        if (resourceCount > 0) {
+        const resourceCount = result.resource_count;
+        if (isReportedResourceCount(resourceCount) && resourceCount > 0) {
           const stackId = `resource-stack/${center}`;
           addNode(stackId, 'resource-stack', `${capitalise(resourcePlural())} — ${resourceCount}`, resourceCount, center);
           edges.push({ source: center, target: stackId, label: `has ${resourcePlural()}` });
@@ -7133,7 +7156,7 @@
                     {#each largeVisibleDatasets.slice(0, 80) as dataset}
                       <button data-okf-ranked-result data-result-canonical-url={rankedResultCanonicalUrl(dataset)} class:active={datasetRoute(dataset) === largeSelectedRoute} type="button" onclick={() => selectLargeRoute(datasetRoute(dataset))}>
                         <strong>{largeDatasetLabel(dataset)}</strong>
-                        <span>{largeRecordPublisherLabel(dataset)} · {dataset.resource_count || 0} {resourcePlural()}</span>
+                        <span>{largeRecordPublisherLabel(dataset)} · {resourceCountSummary(dataset.resource_count)}</span>
                       </button>
                     {/each}
                   </div>
@@ -7146,7 +7169,7 @@
                     {#each largeResults.slice(0, 80) as result}
                       <button data-okf-ranked-result data-result-canonical-url={rankedResultCanonicalUrl(result)} class:active={datasetRoute(result) === largeSelectedRoute} type="button" onclick={() => chooseLargeResult(result)}>
                         <strong>{largeDatasetLabel(result)}</strong>
-                        <span>{largeRecordPublisherLabel(result)} · {result.resource_count || 0} {resourcePlural()}</span>
+                        <span>{largeRecordPublisherLabel(result)} · {resourceCountSummary(result.resource_count)}</span>
                       </button>
                     {/each}
                   </div>
@@ -7351,7 +7374,7 @@
                 {#each largeVisibleDatasets.slice(0, 160) as dataset}
                   <button class:active={datasetRoute(dataset) === largeSelectedRoute} type="button" onclick={() => selectLargeRoute(datasetRoute(dataset))}>
                     <strong>{largeDatasetLabel(dataset)}</strong>
-                    <span>{largeRecordPublisherLabel(dataset)} · {dataset.resource_count || 0} {resourcePlural()}</span>
+                    <span>{largeRecordPublisherLabel(dataset)} · {resourceCountSummary(dataset.resource_count)}</span>
                     {#if apiContextNote(dataset)}<p class="context-note">{apiContextNote(dataset)}</p>{/if}
                     <p>{stripHtml(dataset.notes || '').slice(0, 220)}</p>
                     {#if apiRecordMeta(dataset)}<small class="result-meta">{apiRecordMeta(dataset)}</small>{/if}
@@ -9115,7 +9138,11 @@
                 <summary>Overview</summary>
                 <dl>
                 <dt>{capitalise(publisherSingular())}</dt><dd><button type="button" onclick={() => largeDetail?.kind === 'dataset' && largeDetail.dataset.publisher && inspectLargeRoute(publisherRoute(largeDetail.dataset.publisher))}>{largeRecordPublisherLabel(largeDetail.dataset)}</button></dd>
-                <dt><span class="label-help">{capitalise(resourcePlural())}<button class="info-icon" type="button" aria-label="Explain evidence count" onclick={() => toggleHelp('api-evidence')} onmouseenter={() => showHelp('api-evidence')} onmouseleave={() => hideHelp('api-evidence')} onfocus={() => showHelp('api-evidence')} onblur={() => hideHelp('api-evidence')}>i</button>{#if activeHelpKey === 'api-evidence'}<span class="info-bubble" role="tooltip">{helpText('api-evidence')}</span>{/if}</span></dt><dd>{(largeDetail.dataset.resource_count || largeDetail.resources.length).toLocaleString()}</dd>
+                <dt><span class="label-help">{capitalise(resourcePlural())}<button class="info-icon" type="button" aria-label="Explain evidence count" onclick={() => toggleHelp('api-evidence')} onmouseenter={() => showHelp('api-evidence')} onmouseleave={() => hideHelp('api-evidence')} onfocus={() => showHelp('api-evidence')} onblur={() => hideHelp('api-evidence')}>i</button>{#if activeHelpKey === 'api-evidence'}<span class="info-bubble" role="tooltip">{helpText('api-evidence')}</span>{/if}</span></dt><dd>{largeDetail.dataset.resource_count !== undefined
+                  ? displayResourceCount(largeDetail.dataset.resource_count)
+                  : largeDetail.resources.length > 0
+                    ? `${largeDetail.resources.length.toLocaleString('en-GB')} loaded; total not recorded`
+                    : 'Not recorded'}</dd>
                 <dt><span class="label-help">Record type<button class="info-icon" type="button" aria-label="Explain record type" onclick={() => toggleHelp('record-type')} onmouseenter={() => showHelp('record-type')} onmouseleave={() => hideHelp('record-type')} onfocus={() => showHelp('record-type')} onblur={() => hideHelp('record-type')}>i</button>{#if activeHelpKey === 'record-type'}<span class="info-bubble" role="tooltip">{helpText('record-type')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.dataset.record_type || largeDetail.dataset.type)}</dd>
                 <dt><span class="label-help">Source<button class="info-icon" type="button" aria-label="Explain source" onclick={() => toggleHelp('source')} onmouseenter={() => showHelp('source')} onmouseleave={() => hideHelp('source')} onfocus={() => showHelp('source')} onblur={() => hideHelp('source')}>i</button>{#if activeHelpKey === 'source'}<span class="info-bubble" role="tooltip">{helpText('source')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.dataset.source_adapter)}</dd>
                 <dt>Source tier</dt><dd>{displayValue(largeDetail.dataset.source_tier)}</dd>
@@ -9358,7 +9385,7 @@
                 <dt>Preferred label</dt><dd>{largeLabelForRoute(largeDetail.route)}</dd>
                 <dt>Concept ID</dt><dd>{displayValue(largeDetail.publisher.concept_id)}</dd>
                 <dt>{capitalise(recordPlural())}</dt><dd>{(largeDetail.publisher.dataset_count || largeDetail.datasets.length).toLocaleString()}</dd>
-                <dt>{capitalise(resourcePlural())}</dt><dd>{(largeDetail.publisher.resource_count || 0).toLocaleString()}</dd>
+                <dt>{capitalise(resourcePlural())}</dt><dd>{displayResourceCount(largeDetail.publisher.resource_count)}</dd>
                 <dt>State</dt><dd>{largeDetail.publisher.state || 'unknown'}</dd>
                 <dt>{capitalise(publisherSingular())} ID</dt><dd>{displayValue(largeDetail.publisher.id)}</dd>
                 <dt>Type</dt><dd>{displayValue(largeDetail.publisher.type)}</dd>
@@ -9424,7 +9451,7 @@
                 <summary>Overview</summary>
                 <dl>
                 <dt>{capitalise(publisherSingular())}</dt><dd>{largeRecordPublisherLabel(largeDetail.result)}</dd>
-                <dt><span class="label-help">{capitalise(resourcePlural())}<button class="info-icon" type="button" aria-label="Explain evidence count" onclick={() => toggleHelp('api-evidence')} onmouseenter={() => showHelp('api-evidence')} onmouseleave={() => hideHelp('api-evidence')} onfocus={() => showHelp('api-evidence')} onblur={() => hideHelp('api-evidence')}>i</button>{#if activeHelpKey === 'api-evidence'}<span class="info-bubble" role="tooltip">{helpText('api-evidence')}</span>{/if}</span></dt><dd>{largeDetail.result.resource_count.toLocaleString()}</dd>
+                <dt><span class="label-help">{capitalise(resourcePlural())}<button class="info-icon" type="button" aria-label="Explain evidence count" onclick={() => toggleHelp('api-evidence')} onmouseenter={() => showHelp('api-evidence')} onmouseleave={() => hideHelp('api-evidence')} onfocus={() => showHelp('api-evidence')} onblur={() => hideHelp('api-evidence')}>i</button>{#if activeHelpKey === 'api-evidence'}<span class="info-bubble" role="tooltip">{helpText('api-evidence')}</span>{/if}</span></dt><dd>{displayResourceCount(largeDetail.result.resource_count)}</dd>
                 <dt><span class="label-help">Record type<button class="info-icon" type="button" aria-label="Explain record type" onclick={() => toggleHelp('record-type')} onmouseenter={() => showHelp('record-type')} onmouseleave={() => hideHelp('record-type')} onfocus={() => showHelp('record-type')} onblur={() => hideHelp('record-type')}>i</button>{#if activeHelpKey === 'record-type'}<span class="info-bubble" role="tooltip">{helpText('record-type')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.result.record_type)}</dd>
                 <dt><span class="label-help">Source<button class="info-icon" type="button" aria-label="Explain source" onclick={() => toggleHelp('source')} onmouseenter={() => showHelp('source')} onmouseleave={() => hideHelp('source')} onfocus={() => showHelp('source')} onblur={() => hideHelp('source')}>i</button>{#if activeHelpKey === 'source'}<span class="info-bubble" role="tooltip">{helpText('source')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.result.source_adapter)}</dd>
                 <dt><span class="label-help">Confidence<button class="info-icon" type="button" aria-label="Explain confidence" onclick={() => toggleHelp('confidence')} onmouseenter={() => showHelp('confidence')} onmouseleave={() => hideHelp('confidence')} onfocus={() => showHelp('confidence')} onblur={() => hideHelp('confidence')}>i</button>{#if activeHelpKey === 'confidence'}<span class="info-bubble" role="tooltip">{helpText('confidence')}</span>{/if}</span></dt><dd>{displayValue(largeDetail.result.confidence)}</dd>
@@ -9504,7 +9531,7 @@
                 {#each routePreviewRecords as record}
                   <button type="button" onclick={() => openMetadataPreviewRecord(record)}>
                     <strong>{largeDatasetLabel(record)}</strong>
-                    <span>{largeRecordPublisherLabel(record)} · {record.resource_count || 0} {resourcePlural()}</span>
+                    <span>{largeRecordPublisherLabel(record)} · {resourceCountSummary(record.resource_count)}</span>
                     {#if apiContextNote(record)}<p class="context-note">{apiContextNote(record)}</p>{/if}
                     <p>{stripHtml(record.notes || '').slice(0, 180)}</p>
                     {#if apiRecordMeta(record)}<small class="result-meta">{apiRecordMeta(record)}</small>{/if}
