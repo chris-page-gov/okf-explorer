@@ -16,6 +16,9 @@ release and terminal checks use the project at the exact Explorer assurance
 commit. `UV_PROJECT_ENVIRONMENT` places the environment under the runner's
 temporary directory, outside the immutable candidate. Never add an environment,
 cache or observation receipt under `site/`.
+The synchronisation step exports the temporary path and writes it to
+`GITHUB_ENV` for later steps. Do not use `runner.temp` in job-level `env`:
+GitHub validates that section before assigning the job to a runner.
 
 Install all five templates as `.github/workflows/ci.yml`, `pages.yml`,
 `candidate-release.yml`, `terminal-assurance.yml`, and

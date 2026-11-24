@@ -27,6 +27,8 @@
   publish the previously restored semantic labels with new graph digests.
 - Carry the locked Python toolchain in the publication unit and update its
   workflow templates to use governed uv/Python and pinned Node/pnpm versions.
+  Initialise the temporary environment on the runner and persist it through
+  `GITHUB_ENV`; runner context is unavailable in a workflow's job environment.
 - Keep observations outside immutable candidates and retain the independent
   Heritage repository's attested candidate/promotion release gates. Publication
   and formal release acceptance remain separate from local source compilation.

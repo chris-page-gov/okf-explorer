@@ -40,7 +40,6 @@ jobs:
       ATTESTATION_SOURCE_REF: ${{ github.ref }}
       ATTESTATION_SOURCE_COMMIT: ${{ github.sha }}
       PYTHONDONTWRITEBYTECODE: "1"
-      UV_PROJECT_ENVIRONMENT: ${{ runner.temp }}/heritage-publication-venv
     steps:
       - name: Check out the exact tagged publication candidate
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -59,6 +58,8 @@ jobs:
           version: "0.13.4"
       - name: Synchronise the governed Python environment
         run: |
+          export UV_PROJECT_ENVIRONMENT="$RUNNER_TEMP/heritage-publication-venv"
+          printf 'UV_PROJECT_ENVIRONMENT=%s\n' "$UV_PROJECT_ENVIRONMENT" >> "$GITHUB_ENV"
           uv python install 3.12.11
           uv sync --locked --project assurance
       - name: Separate candidate identity from assurance workflow provenance

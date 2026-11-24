@@ -28,7 +28,6 @@ jobs:
       EXPLORER_URL: https://chris-page-gov.github.io/okf-explorer/
       PLAYWRIGHT_PACKAGE: ${{ github.workspace }}/assurance/apps/okf-explorer/node_modules/@playwright/test
       PYTHONDONTWRITEBYTECODE: "1"
-      UV_PROJECT_ENVIRONMENT: ${{ runner.temp }}/heritage-publication-venv
     steps:
       - name: Check out exact external candidate
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -53,6 +52,8 @@ jobs:
           version: "0.13.4"
       - name: Synchronise the governed Python environment
         run: |
+          export UV_PROJECT_ENVIRONMENT="$RUNNER_TEMP/heritage-publication-venv"
+          printf 'UV_PROJECT_ENVIRONMENT=%s\n' "$UV_PROJECT_ENVIRONMENT" >> "$GITHUB_ENV"
           uv python install 3.12.11
           uv sync --locked --project assurance
       - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1

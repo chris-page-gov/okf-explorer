@@ -20,7 +20,6 @@ jobs:
       pages: read
     env:
       PYTHONDONTWRITEBYTECODE: "1"
-      UV_PROJECT_ENVIRONMENT: ${{ runner.temp }}/heritage-publication-venv
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
@@ -28,6 +27,8 @@ jobs:
           version: "0.13.4"
       - name: Synchronise the governed Python environment
         run: |
+          export UV_PROJECT_ENVIRONMENT="$RUNNER_TEMP/heritage-publication-venv"
+          printf 'UV_PROJECT_ENVIRONMENT=%s\n' "$UV_PROJECT_ENVIRONMENT" >> "$GITHUB_ENV"
           uv python install 3.12.11
           uv sync --locked --project site/toolchain
       - name: Validate exact rooted publication candidate
