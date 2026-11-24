@@ -92,7 +92,7 @@ Use these rules:
 
 All GitHub Actions workflows use `ubuntu-latest`, including Pages, PR CI,
 scheduled assurance and link observation. The shared setup action installs the
-pinned uv 0.12.2 first, then runs `uv python install` to obtain the CPython
+pinned uv 0.13.4 first, then runs `uv python install` to obtain the CPython
 3.12.11 version declared in `.python-version`, followed by `uv sync --locked`.
 This uses uv-managed Python builds instead of GitHub's Ubuntu-specific
 `actions/setup-python` inventory, which lacks 3.12.11 on Ubuntu 26.04.

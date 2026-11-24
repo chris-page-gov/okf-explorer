@@ -23,7 +23,7 @@ uv run --locked python -I scripts/okf_skill.py scan --bundle /path/to/bundle
 uv run --locked python -I scripts/okf_skill.py validate --bundle /path/to/bundle
 ```
 
-The launcher verifies CPython 3.12.11, uv 0.12.2, the checkout's virtual
+The launcher verifies CPython 3.12.11, uv 0.13.4, the checkout's virtual
 environment, `uv sync --locked --check`, the package inventory, pinned upstream files,
 launcher digests and manual invocation settings. A mismatch stops the operation.
 It never installs dependencies or updates the lockfile.

@@ -21,7 +21,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PACKAGE = ROOT / "tools/okf-skills/v1"
 PYTHON_VERSION = "3.12.11"
-UV_VERSION = "0.12.2"
+UV_VERSION = "0.13.4"
 MAX_FILES = 20_000
 MAX_DOCUMENT_BYTES = 2 * 1024 * 1024
 MAX_TOTAL_BYTES = 64 * 1024 * 1024

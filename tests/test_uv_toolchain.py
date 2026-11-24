@@ -31,7 +31,7 @@ class UvToolchainTests(unittest.TestCase):
         project = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
         self.assertEqual("3.12.11", (ROOT / ".python-version").read_text().strip())
         self.assertEqual(">=3.12.11,<3.13", project["project"]["requires-python"])
-        self.assertEqual("==0.12.2", project["tool"]["uv"]["required-version"])
+        self.assertEqual("==0.13.4", project["tool"]["uv"]["required-version"])
         self.assertFalse(project["tool"]["uv"]["package"])
 
         lock = (ROOT / "uv.lock").read_text(encoding="utf-8")
@@ -104,7 +104,7 @@ class UvToolchainTests(unittest.TestCase):
             "astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9",
             action,
         )
-        self.assertIn('version: "0.12.2"', action)
+        self.assertIn('version: "0.13.4"', action)
         self.assertIn("run: uv sync --locked", action)
 
     def test_foundry_browser_server_uses_the_root_locked_project(self) -> None:

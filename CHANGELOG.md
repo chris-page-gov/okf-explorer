@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased — patched uv certificate trust
+
+- Require uv 0.13.4 in the project, CI bootstrap and isolated command launcher.
+  This removes the compromised emSign root from uv's bundled certificate
+  store ([GHSA-hq85-5cpj-mr62](https://github.com/astral-sh/uv/security/advisories/GHSA-hq85-5cpj-mr62)).
+  Keep CPython 3.12.11, resolved Python dependencies, frozen compatibility
+  receipts and existing release tags unchanged. Update current development
+  and publication guidance with the reviewed version.
+
 ## v0.9.0 - 2026-11-24 - OKF 0.3
 
 - Prepare the formal Explorer implementation release for OKF 0.3. Regenerate

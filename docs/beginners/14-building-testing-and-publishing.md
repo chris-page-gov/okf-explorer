@@ -152,18 +152,18 @@ These are publication invariants rather than individual function tests.
 ## The Required Publication Checks
 
 Explorer uses `uv` so a beginner, an AI agent and GitHub Actions all run the
-same locked environment. Install exactly `uv` 0.12.2 with Astral's
+same locked environment. Install exactly `uv` 0.13.4 with Astral's
 [official version-specific installer](https://docs.astral.sh/uv/getting-started/installation/#standalone-installer).
 On macOS or Linux, run:
 
 ```sh
-curl -LsSf https://astral.sh/uv/0.12.2/install.sh | sh
+curl -LsSf https://astral.sh/uv/0.13.4/install.sh | sh
 uv --version
 uv sync --locked
 ```
 
 The official guide gives the equivalent version-specific PowerShell command
-for Windows. `uv --version` must report `uv 0.12.2`. The committed
+for Windows. `uv --version` must report `uv 0.13.4`. The committed
 `.python-version` selects CPython 3.12.11 and `uv.lock` fixes every package
 artefact; `uv run --locked` then refuses to rewrite a stale lock while running
 a command.
