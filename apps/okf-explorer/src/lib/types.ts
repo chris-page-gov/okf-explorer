@@ -245,7 +245,7 @@ export type FederationRelationshipSummary = {
 export type FederationDescriptor = {
   '@context'?: string | Record<string, unknown> | Array<string | Record<string, unknown>>;
   '@id'?: string;
-  schema: 'okf-explorer-federation.v1';
+  schema: 'okf-explorer-federation.v1' | 'okf-explorer-federation.v2';
   kind: 'okf-federation';
   okf_version: string;
   title: string;

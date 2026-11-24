@@ -94,6 +94,7 @@
       "paths": [
         "registry/**",
         "profiles/publication-method/v1/**",
+        "profiles/federation/v2/**",
         "okf.publication.json",
         "tools/okf-skills/**",
         "scripts/okf_skill.py",

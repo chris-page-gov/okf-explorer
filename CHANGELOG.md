@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased — core 0.3 federations
+
+- Add the versioned federation v2 descriptor and Reader support for OKF 0.3.
+  Preserve the frozen v1 contract for OKF 0.2, reject mismatched version pairs
+  and retain child loading, graph directions and evidence qualifications.
+- Prepare Explorer 0.9.1 and its dependency inventory for the maintenance
+  release. Correct the migration note to record the published 0.9.0 release;
+  producer acceptance and the next formal release remain separate gates.
+
 ## Unreleased — selective Heritage walkthrough builds
 
 - Refresh the producer-bound local candidate receipt from a fresh 100-question

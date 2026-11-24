@@ -543,7 +543,8 @@ export function isFederationDescriptor(value: unknown): value is FederationDescr
     value &&
     typeof value === 'object' &&
     !Array.isArray(value) &&
-    (value as Record<string, unknown>).schema === 'okf-explorer-federation.v1' &&
+    ((value as Record<string, unknown>).schema === 'okf-explorer-federation.v1' ||
+      (value as Record<string, unknown>).schema === 'okf-explorer-federation.v2') &&
     (value as Record<string, unknown>).kind === 'okf-federation'
   );
 }
@@ -560,9 +561,13 @@ export function loadFederationOverview(
   attemptedUrls: string[] = [requestedUrl]
 ): { corpus: NormalizedCorpus; overview: FederationOverview } {
   const record = recordValue(value, 'Federation descriptor');
-  if (record.schema !== 'okf-explorer-federation.v1' || record.kind !== 'okf-federation') {
-    throw new Error(`${resolvedUrl}: expected okf-explorer-federation.v1 / okf-federation`);
+  const schema = record.schema;
+  if ((schema !== 'okf-explorer-federation.v1' && schema !== 'okf-explorer-federation.v2') || record.kind !== 'okf-federation') {
+    throw new Error(`${resolvedUrl}: expected okf-explorer-federation.v1 or v2 / okf-federation`);
   }
+  const coreVersion = stringValue(record, 'okf_version', 'Federation descriptor');
+  const expectedCore = schema === 'okf-explorer-federation.v2' ? '0.3' : '0.2';
+  if (coreVersion !== expectedCore) throw new Error(`${schema} requires okf_version ${expectedCore}`);
   const childrenValue = record.children;
   if (!Array.isArray(childrenValue) || !childrenValue.length) {
     throw new Error('Federation descriptor children must be a non-empty array');
@@ -590,9 +595,9 @@ export function loadFederationOverview(
     }
   }
   const descriptor: FederationDescriptor = {
-    schema: 'okf-explorer-federation.v1',
+    schema,
     kind: 'okf-federation',
-    okf_version: stringValue(record, 'okf_version', 'Federation descriptor'),
+    okf_version: coreVersion,
     title: stringValue(record, 'title', 'Federation descriptor'),
     description: optionalString(record, 'description'),
     version: stringValue(record, 'version', 'Federation descriptor'),
