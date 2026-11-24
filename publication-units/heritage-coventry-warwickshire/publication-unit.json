@@ -35,7 +35,7 @@
     },
     {
       "source": ".python-version",
-      "target": "toolchain/.python-version",
+      "target": "toolchain/python-version.txt",
       "role": "policy"
     },
     {

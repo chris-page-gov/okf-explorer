@@ -9,6 +9,9 @@ Exported reading pages declare the `en-GB` locale and an explicit inline icon.
 Browser acceptance covers the landing pages as well as the worked guides,
 including console and resource errors. This catches the browser's otherwise
 implicit request for an owner-root favicon, outside the publication unit.
+Export the unchanged `.python-version` source as `toolchain/python-version.txt`:
+Pages does not serve dotfiles, and every manifest-listed public material must
+remain accessible. The Python project and CI still pin CPython 3.12.11.
 
 The split has four operational stages, recorded outside this candidate:
 
