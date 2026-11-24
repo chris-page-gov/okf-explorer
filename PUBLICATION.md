@@ -105,6 +105,12 @@ below.
    expansion, persistent pin, narrow/touch fallback, reduced motion and exact
    chapter routing:
 
+   A selected narrow-screen workspace panel must survive optional registry
+   loading. Exercise Details before the registry response arrives, then require
+   the requested record to remain visible when its bundle finishes loading.
+   Preserve failed public receipts; a passing local or CI run does not replace
+   this deployed journey.
+
    ```sh
    cd apps/okf-explorer
    PLAYWRIGHT_BASE_URL=https://chris-page-gov.github.io/okf-explorer/ \

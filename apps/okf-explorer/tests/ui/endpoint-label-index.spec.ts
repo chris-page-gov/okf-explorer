@@ -332,6 +332,35 @@ test.describe('governed endpoint labels', () => {
     await page.addInitScript(() => localStorage.clear());
   });
 
+  test('keeps a requested mobile Details panel while the registry loads', async ({ context, page }) => {
+    const requests: string[] = [];
+    await installFixture(context, requests);
+    let releaseRegistry!: () => void;
+    const registryGate = new Promise<void>(resolve => { releaseRegistry = resolve; });
+    let registryRequested!: () => void;
+    const registryStarted = new Promise<void>(resolve => { registryRequested = resolve; });
+    await context.route('**/okf-registry.json', async route => {
+      registryRequested();
+      await registryGate;
+      await route.continue();
+    });
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}#${DATASET_ROUTE}`);
+    await registryStarted;
+    const details = page.getByRole('navigation', { name: 'Workspace panels' })
+      .getByRole('button', { name: 'Details', exact: true });
+    try {
+      await details.click();
+      await expect(details).toHaveAttribute('aria-current', 'page');
+    } finally {
+      releaseRegistry();
+    }
+    await expect(page.locator('.right-panel').getByRole('heading', {
+      name: 'Applying for probate guidance', exact: true
+    }).first()).toBeVisible();
+    await expect(details).toHaveAttribute('aria-current', 'page');
+  });
+
   test('ordinary overview graph uses exact governed analysis-node labels', async ({ page }) => {
     const requests: string[] = [];
     await installFixture(page.context(), requests);
