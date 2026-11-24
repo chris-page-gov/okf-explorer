@@ -1,0 +1,170 @@
+{
+  "answer": "The CSV identifier and its format-scheme membership remain in the graph. A navigation label does not establish that skos:prefLabel exists in the source. The retained SHACL result does not conform: one minimum-count violation concerns the CSV term's skos:prefLabel. Inspect the review record alongside that finding; the fixture is an intentional negative control.",
+  "assertions": [
+    {
+      "assertion_status": "normalized",
+      "authority": "derived",
+      "kind": "belongs to concept scheme",
+      "predicate": "http://www.w3.org/2004/02/skos/core#inScheme",
+      "source": "dataset/cc-by-40",
+      "source_iri": "https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#cc-by-40",
+      "target": "dataset/licences",
+      "target_iri": "https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#licences"
+    },
+    {
+      "assertion_status": "normalized",
+      "authority": "derived",
+      "kind": "belongs to concept scheme",
+      "predicate": "http://www.w3.org/2004/02/skos/core#inScheme",
+      "source": "dataset/csv",
+      "source_iri": "https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#csv",
+      "target": "dataset/formats",
+      "target_iri": "https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#formats"
+    },
+    {
+      "assertion_status": "normalized",
+      "authority": "derived",
+      "kind": "belongs to concept scheme",
+      "predicate": "http://www.w3.org/2004/02/skos/core#inScheme",
+      "source": "dataset/education",
+      "source_iri": "https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#education",
+      "target": "dataset/topics",
+      "target_iri": "https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#topics"
+    }
+  ],
+  "bundle": "https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/examples/missing-csv-label/okf-explorer.json",
+  "case_sha256": "e78ca8c1d4415abfe519afdd187be712254e38c59b63522b8ddf05c1f3760e12",
+  "id": "missing-csv-label",
+  "implementation_date": "2026-11-24",
+  "limitations": [
+    "The missing preferred label is deliberately retained to exercise validation.",
+    "A visible navigation label does not resolve the source finding.",
+    "This fixture must continue to report its non-conforming validation result."
+  ],
+  "materials": [
+    {
+      "bytes": 273,
+      "path": "data/manifest.json",
+      "sha256": "e446cc13bdbdee04f9626aeca013f14007f867e04cd71802bcb5d384a7d16d53"
+    },
+    {
+      "bytes": 2815,
+      "path": "data/ontology.json",
+      "sha256": "3bcc84d35411cd281790e39e2409ed0a7353c25071faccd7c5489798c219a716"
+    },
+    {
+      "bytes": 2370,
+      "path": "data/records.json",
+      "sha256": "f87c8d6add67bfcb097982a41eb472aebda7a22d4305607bd051d0c03df2458f"
+    },
+    {
+      "bytes": 1218,
+      "path": "data/relationships.json",
+      "sha256": "45927dffee764964a51b90031eaf950e73e052d88b18a43beaab17d906a07beb"
+    },
+    {
+      "bytes": 1017,
+      "path": "data/review.json",
+      "sha256": "29f725ff3c8f13c08b837d9001105cfbdd6c7944929f61b38741163ee079cf44"
+    },
+    {
+      "bytes": 949,
+      "path": "data/shacl.json",
+      "sha256": "ef739c4e0bd70c4080562f331d4bef12dd56b4ef3f22e661b4b3800395c98484"
+    },
+    {
+      "bytes": 1097,
+      "path": "okf-explorer.json",
+      "sha256": "8887c1aa22f6d828665a9d0d60303c27611f60af8a4845a6a39e7d41b8179717"
+    },
+    {
+      "bytes": 5751,
+      "path": "source.nt",
+      "sha256": "6f257a37d72ed401590d8c67f2747d7a33d57070698380f2d4f4d98eed69c4be"
+    }
+  ],
+  "question": "Why can CSV still appear in Reader when its preferred label is missing, which constraint fails, and what does the review evidence establish?",
+  "records": [
+    {
+      "id": "https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#csv",
+      "name": "csv",
+      "ontology_term": "https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#csv",
+      "record_type": "Vocabulary term",
+      "resource_count": 0,
+      "title": "CSV concept with a missing label",
+      "url": "https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#csv"
+    },
+    {
+      "id": "https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#formats",
+      "name": "formats",
+      "ontology_term": "https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#formats",
+      "record_type": "Vocabulary term",
+      "resource_count": 0,
+      "title": "Explorer data formats",
+      "url": "https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#formats"
+    },
+    {
+      "id": "https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#cc-by-40",
+      "name": "cc-by-40",
+      "ontology_term": "https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#cc-by-40",
+      "record_type": "Vocabulary term",
+      "resource_count": 0,
+      "title": "Creative Commons Attribution 4.0 International",
+      "url": "https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#cc-by-40"
+    },
+    {
+      "id": "https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#licences",
+      "name": "licences",
+      "ontology_term": "https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#licences",
+      "record_type": "Vocabulary term",
+      "resource_count": 0,
+      "title": "Explorer licences",
+      "url": "https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#licences"
+    },
+    {
+      "id": "https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#education",
+      "name": "education",
+      "ontology_term": "https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#education",
+      "record_type": "Vocabulary term",
+      "resource_count": 0,
+      "title": "Education",
+      "url": "https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#education"
+    },
+    {
+      "id": "https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#topics",
+      "name": "topics",
+      "ontology_term": "https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#topics",
+      "record_type": "Vocabulary term",
+      "resource_count": 0,
+      "title": "Explorer topics",
+      "url": "https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#topics"
+    }
+  ],
+  "schema": "okf-profile-walkthrough.v1",
+  "scope": "Retained metadata extension. Its graph is supplied as RDF or geospatial metadata; Markdown-core conformance is not asserted.",
+  "validation": {
+    "bundle": "urn:okf:example:missing-csv-label",
+    "conforms": false,
+    "execution": {
+      "graph_sha256": "6f257a37d72ed401590d8c67f2747d7a33d57070698380f2d4f4d98eed69c4be",
+      "profile": "okf-bounded-shacl-core.v1",
+      "shapes_sha256": "669ca6d8ffb85d2b89d9abd008afa284da33dab2815574e0ff99277c06254a4b",
+      "validator": "pySHACL",
+      "validator_version": "0.40.2"
+    },
+    "findings": [
+      {
+        "bundle": "urn:okf:example:missing-csv-label",
+        "constraint": "http://www.w3.org/ns/shacl#MinCountConstraintComponent",
+        "focus": "https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/#csv",
+        "id": "a18e68d84e9c2e75f36d5f448f0450b1d0e1349c0eed24fda3d691b7b3198b8b",
+        "occurrences": 1,
+        "path": "http://www.w3.org/2004/02/skos/core#prefLabel",
+        "severity": "violation",
+        "shape": "https://chris-page-gov.github.io/okf-explorer/profile/governed-vocabulary/v1/shapes.ttl#PreferredLabel"
+      }
+    ],
+    "report_sha256": "449105120251f80fd86132209723b1b9106b4c44afc503ce3906709016e9f336",
+    "schema": "okf-shacl-findings.v1"
+  }
+}

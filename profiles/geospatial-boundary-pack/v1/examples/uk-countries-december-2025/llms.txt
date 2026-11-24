@@ -1,0 +1,5 @@
+# Check country coverage, vintage and cartographic limits
+
+https://chris-page-gov.github.io/okf-explorer/profile/geospatial-boundary-pack/v1/examples/uk-countries-december-2025/ai-context.md
+https://chris-page-gov.github.io/okf-explorer/profile/geospatial-boundary-pack/v1/examples/uk-countries-december-2025/okf-explorer.json
+https://chris-page-gov.github.io/okf-explorer/profile/geospatial-boundary-pack/v1/examples/uk-countries-december-2025/walkthrough-evidence.json

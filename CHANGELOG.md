@@ -9,6 +9,16 @@
   release. Correct the migration note to record the published 0.9.0 release;
   producer acceptance and the next formal release remain separate gates.
 
+## Unreleased — four profile fixture walkthroughs
+
+- Give the provenance, vocabulary, missing-label and UK country boundary
+  fixtures distinct source-grounded questions, diagrams, evidence, AI context
+  and record journeys. Preserve the complete retained graphs and negative
+  control; qualify their metadata-extension scope.
+- Accept explicitly missing legacy identity fields in native journeys only
+  with an exact descriptor SHA-256 pin. Keep schema and declared-value checks,
+  and reject changed descriptor bytes before running the browser.
+
 ## Unreleased — selective Heritage walkthrough builds
 
 - Refresh the producer-bound local candidate receipt from a fresh 100-question

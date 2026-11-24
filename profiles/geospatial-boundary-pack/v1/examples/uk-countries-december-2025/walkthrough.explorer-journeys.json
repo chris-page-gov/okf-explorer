@@ -1,0 +1,101 @@
+{
+  "bundle_descriptor": "okf-explorer.json",
+  "expected_descriptor_sha256": "bf15eb3c6b8bce4453ea1cb520ccabcc822210f4255d70ebeb8a569310f59931",
+  "expected_identity": {
+    "id": null,
+    "schema": "okf-explorer-large-corpus.v1",
+    "snapshot": "2026-11-18T00:00:00Z",
+    "version": null
+  },
+  "journeys": [
+    {
+      "actions": [
+        {
+          "hash": "#dataset/E92000001",
+          "params": {
+            "q": "England",
+            "view": "reader"
+          },
+          "type": "goto"
+        },
+        {
+          "selector": ".right-panel h2:text-is(\"England\")",
+          "type": "wait_for"
+        }
+      ],
+      "assertions": [
+        {
+          "type": "console_clean"
+        }
+      ],
+      "id": "inspect-E92000001"
+    },
+    {
+      "actions": [
+        {
+          "hash": "#dataset/S92000003",
+          "params": {
+            "q": "Scotland",
+            "view": "reader"
+          },
+          "type": "goto"
+        },
+        {
+          "selector": ".right-panel h2:text-is(\"Scotland\")",
+          "type": "wait_for"
+        }
+      ],
+      "assertions": [
+        {
+          "type": "console_clean"
+        }
+      ],
+      "id": "inspect-S92000003"
+    },
+    {
+      "actions": [
+        {
+          "hash": "#dataset/W92000004",
+          "params": {
+            "q": "Wales",
+            "view": "reader"
+          },
+          "type": "goto"
+        },
+        {
+          "selector": ".right-panel h2:text-is(\"Wales\")",
+          "type": "wait_for"
+        }
+      ],
+      "assertions": [
+        {
+          "type": "console_clean"
+        }
+      ],
+      "id": "inspect-W92000004"
+    },
+    {
+      "actions": [
+        {
+          "hash": "#dataset/N92000002",
+          "params": {
+            "q": "Northern Ireland",
+            "view": "reader"
+          },
+          "type": "goto"
+        },
+        {
+          "selector": ".right-panel h2:text-is(\"Northern Ireland\")",
+          "type": "wait_for"
+        }
+      ],
+      "assertions": [
+        {
+          "type": "console_clean"
+        }
+      ],
+      "id": "inspect-N92000002"
+    }
+  ],
+  "schema": "okf-explorer-journeys.v1"
+}

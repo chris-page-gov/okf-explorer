@@ -1,0 +1,145 @@
+{
+  "bundle_descriptor": "okf-explorer.json",
+  "expected_descriptor_sha256": "b45b3f8a271a3fb90de77f4700410131e712d6f8bc66b8224d7cffa6b055f545",
+  "expected_identity": {
+    "id": "https://chris-page-gov.github.io/okf-explorer/profile/bounded-inference/v1/ontology/source.nt",
+    "schema": "okf-explorer-large-corpus.v1",
+    "snapshot": null,
+    "version": null
+  },
+  "journeys": [
+    {
+      "actions": [
+        {
+          "hash": "#dataset/Revision",
+          "params": {
+            "q": "Revision",
+            "view": "reader"
+          },
+          "type": "goto"
+        },
+        {
+          "selector": ".right-panel h2:text-is(\"Revision\")",
+          "type": "wait_for"
+        }
+      ],
+      "assertions": [
+        {
+          "type": "console_clean"
+        }
+      ],
+      "id": "inspect-Revision"
+    },
+    {
+      "actions": [
+        {
+          "hash": "#dataset/Derivation",
+          "params": {
+            "q": "Derivation",
+            "view": "reader"
+          },
+          "type": "goto"
+        },
+        {
+          "selector": ".right-panel h2:text-is(\"Derivation\")",
+          "type": "wait_for"
+        }
+      ],
+      "assertions": [
+        {
+          "type": "console_clean"
+        }
+      ],
+      "id": "inspect-Derivation"
+    },
+    {
+      "actions": [
+        {
+          "hash": "#dataset/EntityInfluence",
+          "params": {
+            "q": "Entity influence",
+            "view": "reader"
+          },
+          "type": "goto"
+        },
+        {
+          "selector": ".right-panel h2:text-is(\"Entity influence\")",
+          "type": "wait_for"
+        }
+      ],
+      "assertions": [
+        {
+          "type": "console_clean"
+        }
+      ],
+      "id": "inspect-EntityInfluence"
+    },
+    {
+      "actions": [
+        {
+          "hash": "#dataset/wasRevisionOf",
+          "params": {
+            "q": "wasRevisionOf",
+            "view": "reader"
+          },
+          "type": "goto"
+        },
+        {
+          "selector": ".right-panel h2:text-is(\"wasRevisionOf\")",
+          "type": "wait_for"
+        }
+      ],
+      "assertions": [
+        {
+          "type": "console_clean"
+        }
+      ],
+      "id": "inspect-wasRevisionOf"
+    },
+    {
+      "actions": [
+        {
+          "hash": "#dataset/wasDerivedFrom",
+          "params": {
+            "q": "wasDerivedFrom",
+            "view": "reader"
+          },
+          "type": "goto"
+        },
+        {
+          "selector": ".right-panel h2:text-is(\"wasDerivedFrom\")",
+          "type": "wait_for"
+        }
+      ],
+      "assertions": [
+        {
+          "type": "console_clean"
+        }
+      ],
+      "id": "inspect-wasDerivedFrom"
+    },
+    {
+      "actions": [
+        {
+          "hash": "#dataset/wasInfluencedBy",
+          "params": {
+            "q": "wasInfluencedBy",
+            "view": "reader"
+          },
+          "type": "goto"
+        },
+        {
+          "selector": ".right-panel h2:text-is(\"wasInfluencedBy\")",
+          "type": "wait_for"
+        }
+      ],
+      "assertions": [
+        {
+          "type": "console_clean"
+        }
+      ],
+      "id": "inspect-wasInfluencedBy"
+    }
+  ],
+  "schema": "okf-explorer-journeys.v1"
+}

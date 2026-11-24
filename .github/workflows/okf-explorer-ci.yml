@@ -529,6 +529,7 @@ jobs:
           uv run --locked python scripts/build_okf_bundle.py --check
           uv run --locked python scripts/update_viewer.py --check
           uv run --locked python scripts/check_okf.py
+          uv run --locked python scripts/build_profile_walkthroughs.py --check
 
   site:
     needs: [impact-plan, adversarial-gate, app]
@@ -662,6 +663,10 @@ jobs:
           --bundle-root "$GITHUB_WORKSPACE/reference-bundle"
           --journeys "$GITHUB_WORKSPACE/reference-bundle/walkthrough.explorer-journeys.json"
           --output "$RUNNER_TEMP/reference-explorer.json" --port 4288
+      - name: Click every profile fixture guide at desktop and mobile sizes
+        run: >-
+          timeout 10m node apps/okf-explorer/scripts/verify_profile_walkthroughs.mjs
+          "$RUNNER_TEMP/profile-guides.json"
       - name: Retain exact consumer evidence
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
@@ -670,6 +675,8 @@ jobs:
           path: |
             ${{ runner.temp }}/reference-client.json
             ${{ runner.temp }}/reference-explorer.json
+            ${{ runner.temp }}/profile-guides.json
+            ${{ runner.temp }}/profile-guides-*.png
 
   release-policy:
     needs: [impact-plan, adversarial-gate]

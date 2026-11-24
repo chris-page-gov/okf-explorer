@@ -1,0 +1,145 @@
+{
+  "bundle_descriptor": "okf-explorer.json",
+  "expected_descriptor_sha256": "8887c1aa22f6d828665a9d0d60303c27611f60af8a4845a6a39e7d41b8179717",
+  "expected_identity": {
+    "id": "urn:okf:example:missing-csv-label",
+    "schema": "okf-explorer-large-corpus.v1",
+    "snapshot": null,
+    "version": null
+  },
+  "journeys": [
+    {
+      "actions": [
+        {
+          "hash": "#dataset/csv",
+          "params": {
+            "q": "CSV concept with a missing label",
+            "view": "reader"
+          },
+          "type": "goto"
+        },
+        {
+          "selector": ".right-panel h2:text-is(\"CSV concept with a missing label\")",
+          "type": "wait_for"
+        }
+      ],
+      "assertions": [
+        {
+          "type": "console_clean"
+        }
+      ],
+      "id": "inspect-csv"
+    },
+    {
+      "actions": [
+        {
+          "hash": "#dataset/formats",
+          "params": {
+            "q": "Explorer data formats",
+            "view": "reader"
+          },
+          "type": "goto"
+        },
+        {
+          "selector": ".right-panel h2:text-is(\"Explorer data formats\")",
+          "type": "wait_for"
+        }
+      ],
+      "assertions": [
+        {
+          "type": "console_clean"
+        }
+      ],
+      "id": "inspect-formats"
+    },
+    {
+      "actions": [
+        {
+          "hash": "#dataset/cc-by-40",
+          "params": {
+            "q": "Creative Commons Attribution 4.0 International",
+            "view": "reader"
+          },
+          "type": "goto"
+        },
+        {
+          "selector": ".right-panel h2:text-is(\"Creative Commons Attribution 4.0 International\")",
+          "type": "wait_for"
+        }
+      ],
+      "assertions": [
+        {
+          "type": "console_clean"
+        }
+      ],
+      "id": "inspect-cc-by-40"
+    },
+    {
+      "actions": [
+        {
+          "hash": "#dataset/licences",
+          "params": {
+            "q": "Explorer licences",
+            "view": "reader"
+          },
+          "type": "goto"
+        },
+        {
+          "selector": ".right-panel h2:text-is(\"Explorer licences\")",
+          "type": "wait_for"
+        }
+      ],
+      "assertions": [
+        {
+          "type": "console_clean"
+        }
+      ],
+      "id": "inspect-licences"
+    },
+    {
+      "actions": [
+        {
+          "hash": "#dataset/education",
+          "params": {
+            "q": "Education",
+            "view": "reader"
+          },
+          "type": "goto"
+        },
+        {
+          "selector": ".right-panel h2:text-is(\"Education\")",
+          "type": "wait_for"
+        }
+      ],
+      "assertions": [
+        {
+          "type": "console_clean"
+        }
+      ],
+      "id": "inspect-education"
+    },
+    {
+      "actions": [
+        {
+          "hash": "#dataset/topics",
+          "params": {
+            "q": "Explorer topics",
+            "view": "reader"
+          },
+          "type": "goto"
+        },
+        {
+          "selector": ".right-panel h2:text-is(\"Explorer topics\")",
+          "type": "wait_for"
+        }
+      ],
+      "assertions": [
+        {
+          "type": "console_clean"
+        }
+      ],
+      "id": "inspect-topics"
+    }
+  ],
+  "schema": "okf-explorer-journeys.v1"
+}
