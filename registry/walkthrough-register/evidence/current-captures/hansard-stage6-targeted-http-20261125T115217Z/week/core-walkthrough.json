@@ -1,0 +1,80 @@
+{
+  "schema": "hansard-compact-core-question.v1",
+  "id": "hansard-week-compact-core",
+  "question": "Using only the compact week entry point, which formal Bill 4030 stages are cited, in which House and date order, and can this bundle prove a complete legislative history?",
+  "answer": "The compact Railways Bill document cites Railways Bill · Third Reading in the Commons on 2026-06-10; Railways Bill · Second Reading in the Lords on 2026-07-07; Railways Bill · Report stage in the Lords on 2026-11-18. These are explicit source citations in one of three typed entry-point documents. The compact projection asserts no graph relationships; it does not prove a complete Bill history, enactment or legal effect.",
+  "negative_controls": [
+    "Three cited stages do not establish that there were no other stages.",
+    "A link or shared name does not establish a governed relationship or legal effect."
+  ],
+  "bundle_descriptor": "okf-core.json",
+  "descriptor_sha256": "be285082c41180015a1f10292e8e479db8fe9339acb1f4be0d566f9a43a54221",
+  "expected_identity": {
+    "schema": "okf-explorer-bundle.v0",
+    "id": "urn:okf:hansard:public-core:a-week-in-parliament",
+    "version": "0.3.0",
+    "snapshot": "hansard-markdown-sha256-4f1f765d6b0c610ff7377e59d9370fa09a14d43ac0684875fca2e61f65ff33bb"
+  },
+  "typed_concepts": 3,
+  "graph_relationships": 0,
+  "source_documents": [
+    {
+      "path": "okf/LICENSE.md",
+      "route": "LICENSE.md",
+      "sha256": "feaf1de96ad0e7b7e1f9c35ce645ce4ddf4e8c077ff88bf59bcc674591646084",
+      "bytes": 216,
+      "role": "extension"
+    },
+    {
+      "path": "okf/index.md",
+      "route": "index.md",
+      "sha256": "6dc4ab90fb3dcebac0b57435d39e86516e67b1cdca665470559452cab1f17e15",
+      "bytes": 1425,
+      "role": "navigation"
+    },
+    {
+      "path": "okf/microsoft-365.md",
+      "route": "microsoft-365.md",
+      "sha256": "9ec27b687378302f96b3625692d73c22cfca11dc68fbc21495528a7d757ef49f",
+      "bytes": 12779,
+      "role": "concept"
+    },
+    {
+      "path": "okf/palantir-nhs.md",
+      "route": "palantir-nhs.md",
+      "sha256": "d8c985d4a2bd2a888c7da855e0f58e0b620d6798ded93bfc806931fa27e37f9e",
+      "bytes": 5305,
+      "role": "concept"
+    },
+    {
+      "path": "okf/railways-bill.md",
+      "route": "railways-bill.md",
+      "sha256": "8eb074b98d1d57bd726a1d37280a7cd2614e6f9b398dddbccdc1eb8ebd2575a2",
+      "bytes": 3688,
+      "role": "concept"
+    }
+  ],
+  "stage_citations_from_core_body": [
+    {
+      "date": "2026-06-10",
+      "house": "Commons",
+      "title": "Railways Bill · Third Reading",
+      "url": "https://hansard.parliament.uk/Commons/2026-06-10/debates/D04D1360-E0F8-4D80-B4B4-E9EF69FA9B39/RailwaysBill"
+    },
+    {
+      "date": "2026-07-07",
+      "house": "Lords",
+      "title": "Railways Bill · Second Reading",
+      "url": "https://hansard.parliament.uk/Lords%E2%80%8F/2026-07-07/debates/28bb8967-c343-4820-9833-f7340b982762/LordsChamber"
+    },
+    {
+      "date": "2026-11-18",
+      "house": "Lords",
+      "title": "Railways Bill · Report stage",
+      "url": "https://hansard.parliament.uk/Lords/2026-11-18/debates/5EE3BF1A-449E-4D6D-A0CE-F725CE734996/RailwaysBill"
+    }
+  ],
+  "scope": "Only the exact compact Markdown source and its explicit citations; full-graph assertions and linked external contents are outside this answer.",
+  "svg_sha256": "8f36ae6818338840b1366667df0e2bdc503da4254307ba4de812039e0802854f",
+  "mobile_svg_sha256": "64a5f0128d88113c5f5034fc617db7521af4587a23eed78504cff8876ba032d3"
+}

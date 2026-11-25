@@ -1,0 +1,49 @@
+{
+  "schema": "okf-api-complex-walkthrough.v1",
+  "id": "notification-catalogue-source-boundary",
+  "title": "Can we safely choose a Notify catalogue entry?",
+  "question": "The catalogue has several similarly named notification entries. Which frozen record reports a public-facing endpoint, what do the source-specific licence and access fields say, and what evidence is still needed before reuse or integration?",
+  "scope": "The real-world API catalogue snapshot is dated 16 July 2026. The separately captured Wayfinder comparison overlay is synthetic and was captured on 24 September 2026.",
+  "answer": [
+    "The GOV.UK API Catalogue row titled GOV.UK Notify is associated with Government Digital Service. Its generated Markdown records https://api.notifications.service.gov.uk/ and documentation at https://www.notifications.service.gov.uk/documentation. It says access model unknown, contract status documentation-only, and licence not specified. Its source row last-modified date is 24 August 2020.",
+    "A different GOV.UK API Catalogue row, GOVUK Notify, is associated with the Department for Work and Pensions. Its record has no endpoint URL, records access model unknown and contract status undocumented-in-catalogue, and states an ISC licence with source-declared basis. Its source row last-modified date is 23 August 2022. This record-level licence cannot be transferred to the Government Digital Service entry.",
+    "The similarly named Government Notify record from Wayfinder is synthetic comparison material. Its .example endpoint, synthetic authority, synthetic-fixture scope and rights-not-specified state do not describe a live UK government service."
+  ],
+  "decision": "Do not merge the records or infer current availability, security, procurement suitability or licence coverage. Confirm the intended provider and obtain current service documentation, contract and rights evidence before reuse.",
+  "reader_boundary": "On the pinned Explorer Reader, the publisher panel heading uses the route slug government-digital-service. The source-backed publisher record still contains the human-readable title Government Digital Service; the panel also reports 9 matching catalogue records and shows a GOV.UK Notify preview. Treat this as a Reader label limitation, not missing publisher identity.",
+  "sources": [
+    {
+      "path": "api-records/government-digital-service-gov-uk-notify.md",
+      "label": "GOV.UK Notify — Government Digital Service",
+      "role": "positive source record"
+    },
+    {
+      "path": "api-records/department-for-work-and-pensions-govuk-notify.md",
+      "label": "GOVUK Notify — Department for Work and Pensions",
+      "role": "distinct source record"
+    },
+    {
+      "path": "api-records/wayfinder-demo-gov-notify.md",
+      "label": "Government Notify — Wayfinder synthetic record",
+      "role": "negative control"
+    },
+    {
+      "path": "data/sources/wayfinder/manifest.json",
+      "label": "Wayfinder capture and admission boundary",
+      "role": "negative-control provenance"
+    }
+  ],
+  "traversal": {
+    "source_route": "dataset/government-digital-service-gov-uk-notify",
+    "target_route": "publisher/government-digital-service",
+    "predicate": "https://chris-page-gov.github.io/okf-uk-government-apis/terms/published-by",
+    "assertion_id": "https://chris-page-gov.github.io/okf-uk-government-apis/assertions/7ba5d4cd3b9a16503fabd351",
+    "search_query": "GOV.UK Notify",
+    "relationship": "source-backed metadata published-by assertion"
+  },
+  "negative_controls": [
+    "Do not attribute the Department for Work and Pensions ISC field to Government Digital Service.",
+    "Do not treat an absent endpoint or unknown access field as proof that no service exists.",
+    "Do not admit Wayfinder's fictional endpoint as a live government service or treat its rights as specified."
+  ]
+}

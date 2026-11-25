@@ -1,0 +1,196 @@
+{
+  "@context": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/context.jsonld",
+  "@id": "https://chris-page-gov.github.io/okf-ons/okf-explorer.json",
+  "authority": {
+    "bundlePublisher": {
+      "id": "https://github.com/chris-page-gov/okf-ons",
+      "name": "OKF ONS project",
+      "url": "https://github.com/chris-page-gov/okf-ons"
+    },
+    "decisionAuthority": "accountable external person or institution",
+    "nonEndorsementStatement": "This experimental metadata bundle is independently published by the OKF ONS project and is not endorsed by the Office for National Statistics or other source producers. Source attribution does not transfer semantic, operational or decision authority to the bundle publisher.",
+    "notEndorsedBySource": true,
+    "operationalAuthority": "external live-data service",
+    "reviewedBy": [],
+    "semanticAuthority": {
+      "id": "https://github.com/chris-page-gov/okf-ons",
+      "name": "OKF ONS project",
+      "scope": "this generated bundle release only",
+      "url": "https://github.com/chris-page-gov/okf-ons"
+    }
+  },
+  "core_conformance": "OKF 0.3 Markdown concept layer",
+  "counts": {
+    "datasets": 5097,
+    "okfConcepts": 12,
+    "providerDatapacks": 1,
+    "publishers": 24,
+    "records": 5097,
+    "relationships": 19735,
+    "resources": 5097,
+    "sources": 4,
+    "standards": 36
+  },
+  "description": "Metadata-only ONS discovery demonstrator with explicit coverage, confusable alternatives, standards evidence and MCP selection bindings.",
+  "entrypoint_integrity": {
+    "core_only_walkthrough_evidence": {
+      "path": "ons-core-walkthrough-evidence.json",
+      "sha256": "7262b564ce29117af042f696125105deb460f592f92499600cf3f8eff38de909"
+    },
+    "okf_core_reader": {
+      "path": "okf-core-explorer.json",
+      "sha256": "a2396eae6d542645594dbff2c2375dac4592ff78721987d64823de16badafff3"
+    },
+    "provider_datapacks": {
+      "path": "data/providers/manifest.json",
+      "sha256": "244cf74ad696211ac11ad7b4fe04096194cde26041df6d6303712cbb7092d0dc"
+    },
+    "semantic_manifest": {
+      "path": "data/semantic/manifest.json",
+      "sha256": "a7abf082d1c83a1a67572a7b9ffe53e169e71c8bcf751a6eec7b12f4fdd0716e"
+    }
+  },
+  "entrypoints": {
+    "analysis_overview": "data/analysis/overview.json",
+    "context_set": "data/governance/context-set.json",
+    "core_only_walkthrough": "core-walkthrough.html",
+    "core_only_walkthrough_evidence": "ons-core-walkthrough-evidence.json",
+    "coverage": "data/coverage/ledger.json",
+    "data_manifest": "data/manifest.json",
+    "evaluation": "data/evaluation/report.json",
+    "governance": "data/governance/release.json",
+    "mcp_bindings": "data/ons/mcp-bindings.json",
+    "okf_conformance": "data/standards/okf-v0.3.json",
+    "okf_core_reader": "okf-core-explorer.json",
+    "okf_index": "index.md",
+    "overview_index": "data/overview.json",
+    "provider_datapacks": "data/providers/manifest.json",
+    "reconciliation": "data/reconciliation/report.json",
+    "sdmx": "data/standards/sdmx.json",
+    "search_manifest": "data/search/manifest.json",
+    "semantic_manifest": "data/semantic/manifest.json",
+    "spatial_index": "data/ons/spatial-index.json",
+    "standards": "data/standards/evaluation.json",
+    "viewer": "https://chris-page-gov.github.io/okf-explorer/"
+  },
+  "extensions": {
+    "okf-core.v0.3": {
+      "conformance": "okf_conformance",
+      "entrypoint": "okf_index",
+      "human_verification_recorded": false,
+      "legacy_v0_1_citations_fallback": true,
+      "legacy_v0_1_timestamp_fallback": true,
+      "reader_projection": "okf_core_reader",
+      "reader_projection_scope": {
+        "extension_graph_entrypoint": "semantic_manifest",
+        "metadata_extension_entities": 5097,
+        "semantic_edges": 0,
+        "typed_markdown_concepts": 12
+      },
+      "status": "aligned",
+      "unknown_fields_allowed": true
+    },
+    "okf-explorer-provider-datapacks.v1": {
+      "entrypoint": "provider_datapacks",
+      "live_validation_performed": false,
+      "pack_count": 1,
+      "reviewed_live_references_are_external": true,
+      "snapshot_state_derived_from_frozen_bundle": true
+    },
+    "okf-governed-knowledge-contract.v1": {
+      "authorises_execution": false,
+      "entrypoint": "governance",
+      "evidence_carried_not_certified": true,
+      "status": "experimental"
+    },
+    "okf-mcp-binding.v1": {
+      "entrypoint": "mcp_bindings",
+      "read_only": true,
+      "secret_values_stored": false
+    },
+    "okf-ons-discovery.v1": {
+      "all_ons_metadata_claim": false,
+      "compare_alternatives": true,
+      "mode": "metadata-only-demonstrator",
+      "not_endorsed_by_source": true,
+      "statistical_accuracy_evaluated": false
+    },
+    "okf-ons-geography.v1": {
+      "entrypoint": "spatial_index",
+      "geometry_included": false
+    },
+    "okf-ons-sdmx.v1": {
+      "entrypoint": "sdmx",
+      "query_tool": "nomis_query",
+      "serialized_as_sdmx": false,
+      "upstream_source_surface": "nomis"
+    },
+    "okf-ons-standards-evidence.v1": {
+      "claim": "Evidence mapping and profile alignment; not certification.",
+      "entrypoint": "standards"
+    },
+    "okf-semantic-relationships.v1": {
+      "assertion_count": 19735,
+      "direct_triples_generated": true,
+      "entrypoint": "semantic_descriptor",
+      "manifest_entrypoint": "semantic_manifest",
+      "predicate_policy": "absolute-iri",
+      "reified_assertions_generated": true,
+      "representation": "gzip-json-ld-graph-shards",
+      "runtime_entrypoint": "data_manifest",
+      "similarity_is_discovery_not_equivalence": true,
+      "triple_set_sha256": "96d8ace4df2bd41f230800ec7ba20888c8bd603a2ec7eb50f4438dd05ffbb9f7"
+    }
+  },
+  "generated_at": "2026-07-25T11:08:21Z",
+  "kind": "okf-large-corpus",
+  "okf_version": "0.3",
+  "performance": {
+    "full_record_hydration": "lazy",
+    "relationship_hydration": "lazy",
+    "search": "static worker-compatible shards",
+    "startup_mode": "overview-first"
+  },
+  "profile": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v2/",
+  "publisher": "https://github.com/chris-page-gov/okf-ons",
+  "rights": {
+    "codeLicense": "https://github.com/chris-page-gov/okf-ons/blob/v0.3.1/LICENSE",
+    "notEvaluatedRecordCount": 108,
+    "recordLevel": true,
+    "statement": "No single licence is asserted for all source metadata. Consult each record's license_id, license_source_id and rights_status fields; some records remain explicitly not evaluated.",
+    "status": "mixed-record-level"
+  },
+  "schema": "okf-explorer-large-corpus.v1",
+  "scope": {
+    "complete_ons_corpus": false,
+    "implemented_source_records": 5097,
+    "kind": "metadata-only-ons-discovery-demonstrator",
+    "planned_source_lanes": 5
+  },
+  "semantic_descriptor": "https://chris-page-gov.github.io/okf-ons/okf-bundle.yamlld",
+  "snapshot": "monday-2026-07-17-r2",
+  "source": {
+    "adapters": [
+      "nomis",
+      "ons-data-api",
+      "ons-explore-local-statistics",
+      "ons-open-geography"
+    ],
+    "metadata_only": true,
+    "snapshot_sha256": "4dca7ae43698bde4b1e8fe33c160713585d17669abe9f94a4c96b0eda2da7acd",
+    "title": "Official ONS public metadata catalogues",
+    "url": "https://www.ons.gov.uk/"
+  },
+  "status": "bounded-demonstrator",
+  "title": "ONS data discovery OKF",
+  "version": "0.3.1",
+  "vocabulary": {
+    "publisher_plural": "publishers",
+    "publisher_singular": "publisher",
+    "record_plural": "ONS metadata records",
+    "record_singular": "ONS metadata record",
+    "resource_plural": "source/access resources",
+    "resource_singular": "source/access resource",
+    "search_placeholder": "Search ONS products, concepts, geographies and identifiers"
+  }
+}

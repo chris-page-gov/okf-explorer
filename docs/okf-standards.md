@@ -48,6 +48,10 @@ not by itself establish that its producer has adopted OKF 0.3.
 
 ## Public bundle catalogues
 
+- [Public OKF walkthrough register](walkthrough-register.md) records the wider
+  public repository/root denominator, declared aliases and dated current
+  descriptor observations. Its walkthrough evidence is hash-checked; pending
+  roots remain visible and are not treated as accepted bundles.
 - [Curated public bundle access directory](public-bundle-access.md) and its
   [machine-readable entries](../registry/public-bundle-access.json): thirteen
   reviewed public producer entries at the directory's recorded observation

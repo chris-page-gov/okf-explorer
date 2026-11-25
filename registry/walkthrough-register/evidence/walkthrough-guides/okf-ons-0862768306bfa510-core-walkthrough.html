@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en-GB"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer"><link rel="icon" href="data:,">
+<meta name="description" content="A core-only, source-linked answer about the ONS OKF 0.3 snapshot boundary.">
+<title>Does OKF 0.3 conformance mean complete or current?</title>
+<style>
+:root{font:16px/1.55 system-ui,sans-serif;color:#14283b;background:#f6f8fb}body{margin:0}main{max-width:1050px;margin:auto;padding:1.5rem 1rem 3rem}h1,h2{line-height:1.2}a{color:#005a8b;text-underline-offset:.15em}a:focus-visible{outline:3px solid #ffbf47;outline-offset:3px}.answer,.limits,.sources{background:white;border:1px solid #b5c4d2;border-radius:.8rem;padding:1rem 1.2rem;margin:1rem 0}.answer{border-left:.35rem solid #216e4e}.limits{border-left:.35rem solid #8a5b00}figure{margin:1.5rem 0}picture img{display:block;width:100%;height:auto}code{overflow-wrap:anywhere;word-break:break-word}li+li{margin-top:.5rem}.muted{color:#334e68}@media(max-width:600px){main{padding:.8rem}}</style>
+</head><body><main>
+<p><a href="index.html">ONS bundle homepage</a> · <a href="https://chris-page-gov.github.io/okf-explorer/explore/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-ons%2Fokf-core-explorer.json#concepts/snapshot.md">Open this core bundle at the snapshot concept in OKF Explorer</a></p>
+<h1>Does OKF 0.3 conformance mean this ONS catalogue is complete, current, or statistically verified?</h1>
+<section class="answer"><h2>Worked answer from the core sources</h2>
+<p>No. The core describes a bounded metadata snapshot across four source lanes, not every ONS dataset, and contains no statistical observations.</p>
+<p>It defines no governed <code>stale_after</code> date; current-value and live-execution claims need provider revalidation.</p>
+<p>Governance says structural validation and frozen-input integrity do not establish statistical truth, while the standards concept separates OKF 0.3 structure from accuracy, legal compliance and certification.</p>
+<p>The conclusion about completeness, currentness and accuracy is an inference from these stated limits.</p></section>
+<h2>Follow the core source trail</h2><figure><picture><source media="(max-width: 600px)" srcset="ons-core-walkthrough-mobile.svg"><img src="ons-core-walkthrough.svg" alt="A reading sequence through the catalogue, snapshot, governance and standards concepts. Dotted connectors are not semantic edges; the core graph has zero edges."></picture><figcaption class="muted">This is a guided reading sequence through four exact Markdown sources. It does not depict graph relationships; the core projection has zero edges.</figcaption></figure>
+<section class="limits"><h2>Negative controls</h2><ul>
+<li>The 5,097 figure is a metadata-record count for this bounded snapshot, not observation coverage or a claim about all ONS datasets.</li>
+<li>No governed freshness interval is defined, so the guide does not invent one.</li>
+<li>Structural conformance does not establish statistical accuracy, legal compliance or certification.</li>
+<li>No metadata-extension entity, individual dataset, observation value or live query is used for this answer.</li>
+</ul></section>
+<section class="sources"><h2>Exact sources and identity</h2><p>Core descriptor <code>okf-core-explorer.json</code>, bundle ID <code>https://chris-page-gov.github.io/okf-ons/okf-core-explorer.json</code>, version <code>0.3.1</code>, snapshot <code>monday-2026-07-17-r2</code>, SHA-256 <code>a2396eae6d542645594dbff2c2375dac4592ff78721987d64823de16badafff3</code>. It contains 12 typed concepts and zero directed core reference pairs.</p>
+<ul><li><a href="concepts/catalogue.md">ONS data discovery catalogue</a> (<code>concepts/catalogue.md</code>), SHA-256 <code>923e21da51804fcf33a6cdfdff2038c8d15ebf43215b97a63ffce8e6f269258f</code>.</li>
+<li><a href="concepts/snapshot.md">Governed ONS metadata snapshot monday-2026-07-17-r2</a> (<code>concepts/snapshot.md</code>), SHA-256 <code>f1487c58f95a5241cfdf4df26a4657d77d791ea2e1305cdb527e21c4c0aef551</code>.</li>
+<li><a href="concepts/governance.md">OKF ONS governed publication boundary</a> (<code>concepts/governance.md</code>), SHA-256 <code>e4249b0f016a0f66d0cdf6f26e8a06910221ba955b28187f507cbfb7a6a8aed4</code>.</li>
+<li><a href="concepts/standards.md">OKF ONS standards and conformance evidence</a> (<code>concepts/standards.md</code>), SHA-256 <code>2cf08039b62acce090defb0dbf142a9ebe89b341b1bcab3579c9c8da893a7783</code>.</li></ul><p>Desktop diagram SHA-256 <code>000db488c1dd6f7093989bf743119587052edf6bd03e74673193af0d0df66241</code>; mobile diagram SHA-256 <code>bffd6b95ba9a539349c65debb3c2845960bbfd08ddd8de437af572ba32c0f47c</code>. <a href="ons-core-walkthrough-evidence.json">Machine-readable evidence</a>, SHA-256 <code>7262b564ce29117af042f696125105deb460f592f92499600cf3f8eff38de909</code>.</p>
+<p>This question uses only the portable OKF core sources. It does not make a claim about a particular dataset or use the 5,097-record metadata extension graph.</p></section>
+</main></body></html>

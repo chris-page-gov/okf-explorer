@@ -1,0 +1,44 @@
+{
+  "schema": "okf-core-source-walkthrough.v1",
+  "id": "uk-government-apis-core-source-limits",
+  "title": "What can the OKF core show about GOV.UK Notify?",
+  "question": "Can an OKF core 0.3 reader establish that the GOV.UK Notify endpoint is currently reachable and licensed for my integration? Trace the authored provider link, dated source row and access and licence fields, then identify what still needs checking.",
+  "scope": "This answer uses only the frozen typed Markdown core and its authored links. It does not use the separate metadata extension graph or call an API.",
+  "answer": [
+    "The GOV.UK Notify Markdown concept names Government Digital Service as provider and records an endpoint and documentation URL. Its source row is dated 24 August 2020; the catalogue snapshot used by this bundle is dated 16 July 2026.",
+    "The same source record says access is unknown, contract status is documentation-only and the licence is not specified. The authored link to the Government Digital Service organisation is a source relationship, not proof of current service ownership, endpoint reachability or licence permission.",
+    "The core therefore supports a traceable reading of these frozen Markdown statements. Before integration, check current service documentation and availability, establish the intended use and obtain applicable rights evidence."
+  ],
+  "decision": "Do not treat a recorded endpoint as a live health check, unknown access as open access, or a missing licence declaration as permission. Keep the source-specific statements qualified and verify them before use.",
+  "sources": [
+    {
+      "path": "api-records/government-digital-service-gov-uk-notify.md",
+      "label": "GOV.UK Notify API product concept",
+      "role": "primary frozen source record"
+    },
+    {
+      "path": "organisations/government-digital-service.md",
+      "label": "Government Digital Service organisation concept",
+      "role": "authored provider-link target"
+    },
+    {
+      "path": "docs/UK-Government-API-OKF.md",
+      "label": "UK Government APIs OKF source and relationship notes",
+      "role": "snapshot and catalogue boundary"
+    }
+  ],
+  "traversal": {
+    "source_path": "api-records/government-digital-service-gov-uk-notify.md",
+    "target_path": "organisations/government-digital-service.md",
+    "kind": "references",
+    "source_fields": ["markdown"],
+    "source_link": "../organisations/government-digital-service.md"
+  },
+  "search_query": "GOV.UK Notify",
+  "negative_controls": [
+    "A recorded endpoint is not evidence that it is currently reachable.",
+    "Unknown access does not mean anonymous or open access.",
+    "A licence not specified for this GDS record cannot be replaced with the repository licence or another provider's licence.",
+    "The authored Markdown provider link does not assert dataset equivalence or current operational ownership."
+  ]
+}

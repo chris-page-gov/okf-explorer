@@ -1,0 +1,610 @@
+{
+  "schema": "okf-explorer-bundle.v0",
+  "bundle_id": "https://chris-page-gov.github.io/okf-ai-capability-governance/bundle/okf-explorer.json",
+  "version": "0.1.0",
+  "snapshot_id": "sha256:7d3eee6176d2d58c083b52aee599da9cc685a192bb77a78996502079b1f08e09",
+  "okf_version": "0.3",
+  "meta": {
+    "title": "AI capability governance — correspondence",
+    "status": "review-candidate",
+    "scope": "correspondence",
+    "upstream_source_commit": "9dd855ecfd8aece1b87c49eff2096b2d13d3fc98",
+    "snapshot_policy": "canonical-source-nodes-and-qualified-edges-sha256"
+  },
+  "title": "AI capability governance — correspondence",
+  "description": "A bounded source projection for the accompanying worked question.",
+  "nodes": {
+    "concepts/draft-only.md": {
+      "type": "Control",
+      "title": "Keep the draft-only limit",
+      "description": "For this variant, a person edits and commits every output.",
+      "status": "draft",
+      "generated": {
+        "by": "process:correspondence-pilot-export",
+        "at": "2026-11-23T14:00:59Z"
+      },
+      "stale_after": "2027-02-13",
+      "sources": [
+        {
+          "id": "send",
+          "title": "Variant where the agent sends its reply",
+          "resource": "https://cyberdudeuk.github.io/ai-capability-governance/#ch-worked"
+        },
+        {
+          "id": "decision",
+          "title": "Mandate / Decision rights",
+          "resource": "https://cyberdudeuk.github.io/ai-capability-governance/#ch-worked"
+        }
+      ],
+      "x-correspondence-iri": "urn:okf:ai-capability-governance:concept:draft-only",
+      "id": "concepts/draft-only.md",
+      "section": "concepts",
+      "source_path": "concepts/draft-only.md",
+      "frontmatter": {
+        "type": "Control",
+        "title": "Keep the draft-only limit",
+        "description": "For this variant, a person edits and commits every output.",
+        "status": "draft",
+        "generated": {
+          "by": "process:correspondence-pilot-export",
+          "at": "2026-11-23T14:00:59Z"
+        },
+        "stale_after": "2027-02-13",
+        "sources": [
+          {
+            "id": "send",
+            "title": "Variant where the agent sends its reply",
+            "resource": "https://cyberdudeuk.github.io/ai-capability-governance/#ch-worked"
+          },
+          {
+            "id": "decision",
+            "title": "Mandate / Decision rights",
+            "resource": "https://cyberdudeuk.github.io/ai-capability-governance/#ch-worked"
+          }
+        ],
+        "x-correspondence-iri": "urn:okf:ai-capability-governance:concept:draft-only"
+      },
+      "body": "\n# Keep the draft-only limit\n\nEm’s worked example keeps the autonomy cap at L1 for the send variant. A person edits and commits each output.[^send] In the baseline mandate, the caseworker commits the action.[^decision]\n\n[^send]: Variant where the agent sends its reply, Em’s public playbook.\n\n[^decision]: Mandate / Decision rights, Em’s public playbook.\n"
+    },
+    "concepts/evidence-brief.md": {
+      "type": "Evidence Template",
+      "title": "Prepare the evidence for review",
+      "description": "Record what changed, the proposed controls, test evidence and the open local decision.",
+      "status": "draft",
+      "generated": {
+        "by": "process:correspondence-pilot-export",
+        "at": "2026-11-23T14:00:59Z"
+      },
+      "stale_after": "2027-02-13",
+      "sources": [
+        {
+          "id": "reassessment",
+          "title": "Reassessment trigger for new actions",
+          "resource": "https://cyberdudeuk.github.io/ai-capability-governance/#ch-raioperate"
+        }
+      ],
+      "x-correspondence-iri": "urn:okf:ai-capability-governance:concept:evidence-brief",
+      "id": "concepts/evidence-brief.md",
+      "section": "concepts",
+      "source_path": "concepts/evidence-brief.md",
+      "frontmatter": {
+        "type": "Evidence Template",
+        "title": "Prepare the evidence for review",
+        "description": "Record what changed, the proposed controls, test evidence and the open local decision.",
+        "status": "draft",
+        "generated": {
+          "by": "process:correspondence-pilot-export",
+          "at": "2026-11-23T14:00:59Z"
+        },
+        "stale_after": "2027-02-13",
+        "sources": [
+          {
+            "id": "reassessment",
+            "title": "Reassessment trigger for new actions",
+            "resource": "https://cyberdudeuk.github.io/ai-capability-governance/#ch-raioperate"
+          }
+        ],
+        "x-correspondence-iri": "urn:okf:ai-capability-governance:concept:evidence-brief"
+      },
+      "body": "\n# Prepare the evidence for review\n\nEm’s playbook calls for reassessment when new actions or permissions are introduced.[^reassessment] The pilot evidence brief asks for the changed mandate, results of draft-only and shadow-mode tests, unresolved issues, and the named local reviewer’s decision. This is an illustrative template. The bundle contains no local appointment, approval or real correspondence.\n\n[^reassessment]: Reassessment trigger for new actions, Em’s public playbook.\n"
+    },
+    "concepts/mandate.md": {
+      "type": "Worked Example",
+      "title": "Correspondence triage mandate",
+      "description": "The agent routes correspondence and drafts replies. A caseworker commits the action.",
+      "status": "draft",
+      "generated": {
+        "by": "process:correspondence-pilot-export",
+        "at": "2026-11-23T14:00:59Z"
+      },
+      "stale_after": "2027-02-13",
+      "sources": [
+        {
+          "id": "baseline",
+          "title": "Worked example opening",
+          "resource": "https://cyberdudeuk.github.io/ai-capability-governance/#ch-worked"
+        },
+        {
+          "id": "scope",
+          "title": "Mandate / In scope",
+          "resource": "https://cyberdudeuk.github.io/ai-capability-governance/#ch-worked"
+        },
+        {
+          "id": "decision",
+          "title": "Mandate / Decision rights",
+          "resource": "https://cyberdudeuk.github.io/ai-capability-governance/#ch-worked"
+        },
+        {
+          "id": "exclusions",
+          "title": "Mandate / Explicitly out of scope",
+          "resource": "https://cyberdudeuk.github.io/ai-capability-governance/#ch-worked"
+        }
+      ],
+      "x-correspondence-iri": "urn:okf:ai-capability-governance:concept:mandate",
+      "id": "concepts/mandate.md",
+      "section": "concepts",
+      "source_path": "concepts/mandate.md",
+      "frontmatter": {
+        "type": "Worked Example",
+        "title": "Correspondence triage mandate",
+        "description": "The agent routes correspondence and drafts replies. A caseworker commits the action.",
+        "status": "draft",
+        "generated": {
+          "by": "process:correspondence-pilot-export",
+          "at": "2026-11-23T14:00:59Z"
+        },
+        "stale_after": "2027-02-13",
+        "sources": [
+          {
+            "id": "baseline",
+            "title": "Worked example opening",
+            "resource": "https://cyberdudeuk.github.io/ai-capability-governance/#ch-worked"
+          },
+          {
+            "id": "scope",
+            "title": "Mandate / In scope",
+            "resource": "https://cyberdudeuk.github.io/ai-capability-governance/#ch-worked"
+          },
+          {
+            "id": "decision",
+            "title": "Mandate / Decision rights",
+            "resource": "https://cyberdudeuk.github.io/ai-capability-governance/#ch-worked"
+          },
+          {
+            "id": "exclusions",
+            "title": "Mandate / Explicitly out of scope",
+            "resource": "https://cyberdudeuk.github.io/ai-capability-governance/#ch-worked"
+          }
+        ],
+        "x-correspondence-iri": "urn:okf:ai-capability-governance:concept:mandate"
+      },
+      "body": "\n# Correspondence triage mandate\n\nEm’s composite example starts at **Tier 3 · Enhanced**.[^baseline] The agent classifies correspondence and drafts a suggested reply from approved templates.[^scope] A caseworker commits the action.[^decision] Sending and deciding cases are outside the mandate.[^exclusions]\n\n## Continue through the case\n\n- [Give the agent the send action](./send-variant.md)\n\n[^baseline]: Worked example opening, Em’s public playbook.\n\n[^scope]: Mandate / In scope, Em’s public playbook.\n\n[^decision]: Mandate / Decision rights, Em’s public playbook.\n\n[^exclusions]: Mandate / Explicitly out of scope, Em’s public playbook.\n"
+    },
+    "concepts/send-variant.md": {
+      "type": "Worked Example",
+      "title": "Give the agent the send action",
+      "description": "Sending introduces an irreversible effect and moves the example to Tier 4 · Critical.",
+      "status": "draft",
+      "generated": {
+        "by": "process:correspondence-pilot-export",
+        "at": "2026-11-23T14:00:59Z"
+      },
+      "stale_after": "2027-02-13",
+      "sources": [
+        {
+          "id": "send",
+          "title": "Variant where the agent sends its reply",
+          "resource": "https://cyberdudeuk.github.io/ai-capability-governance/#ch-worked"
+        }
+      ],
+      "x-correspondence-iri": "urn:okf:ai-capability-governance:concept:send-variant",
+      "id": "concepts/send-variant.md",
+      "section": "concepts",
+      "source_path": "concepts/send-variant.md",
+      "frontmatter": {
+        "type": "Worked Example",
+        "title": "Give the agent the send action",
+        "description": "Sending introduces an irreversible effect and moves the example to Tier 4 · Critical.",
+        "status": "draft",
+        "generated": {
+          "by": "process:correspondence-pilot-export",
+          "at": "2026-11-23T14:00:59Z"
+        },
+        "stale_after": "2027-02-13",
+        "sources": [
+          {
+            "id": "send",
+            "title": "Variant where the agent sends its reply",
+            "resource": "https://cyberdudeuk.github.io/ai-capability-governance/#ch-worked"
+          }
+        ],
+        "x-correspondence-iri": "urn:okf:ai-capability-governance:concept:send-variant"
+      },
+      "body": "\n# Give the agent the send action\n\nIn Em’s published variant, the proposed change is to let the agent send the reply itself. Em treats the new effect as irreversible, moves the composite example to **Tier 4 · Critical**, sets the variant’s cap at **L1 · Draft only**, and requires shadow mode.[^send] This records the published outcome for the example.\n\n## Continue through the case\n\n- [Keep the draft-only limit](./draft-only.md)\n- [Test in shadow mode](./shadow-mode.md)\n- [Prepare the evidence for review](./evidence-brief.md)\n\n[^send]: Variant where the agent sends its reply, Em’s public playbook.\n"
+    },
+    "concepts/shadow-mode.md": {
+      "type": "Control",
+      "title": "Test in shadow mode",
+      "description": "The worked send variant requires shadow mode.",
+      "status": "draft",
+      "generated": {
+        "by": "process:correspondence-pilot-export",
+        "at": "2026-11-23T14:00:59Z"
+      },
+      "stale_after": "2027-02-13",
+      "sources": [
+        {
+          "id": "send",
+          "title": "Variant where the agent sends its reply",
+          "resource": "https://cyberdudeuk.github.io/ai-capability-governance/#ch-worked"
+        }
+      ],
+      "x-correspondence-iri": "urn:okf:ai-capability-governance:concept:shadow-mode",
+      "id": "concepts/shadow-mode.md",
+      "section": "concepts",
+      "source_path": "concepts/shadow-mode.md",
+      "frontmatter": {
+        "type": "Control",
+        "title": "Test in shadow mode",
+        "description": "The worked send variant requires shadow mode.",
+        "status": "draft",
+        "generated": {
+          "by": "process:correspondence-pilot-export",
+          "at": "2026-11-23T14:00:59Z"
+        },
+        "stale_after": "2027-02-13",
+        "sources": [
+          {
+            "id": "send",
+            "title": "Variant where the agent sends its reply",
+            "resource": "https://cyberdudeuk.github.io/ai-capability-governance/#ch-worked"
+          }
+        ],
+        "x-correspondence-iri": "urn:okf:ai-capability-governance:concept:shadow-mode"
+      },
+      "body": "\n# Test in shadow mode\n\nEm’s worked send variant requires shadow mode.[^send] For this pilot, show the agent proposing replies for comparison with human handling while the send action is unavailable. Retain evidence of how the draft-only boundary and escalation worked. These are illustrative test ideas.\n\n[^send]: Variant where the agent sends its reply, Em’s public playbook.\n"
+    }
+  },
+  "edges": [
+    {
+      "id": "urn:okf:ai-capability-governance:assertion:proposed-change",
+      "assertion_id": "urn:okf:ai-capability-governance:assertion:proposed-change",
+      "source": "concepts/mandate.md",
+      "target": "concepts/send-variant.md",
+      "source_iri": "urn:okf:ai-capability-governance:concept:mandate",
+      "target_iri": "urn:okf:ai-capability-governance:concept:send-variant",
+      "predicate": "urn:okf:ai-capability-governance:predicate:hasProposedChange",
+      "kind": "case-relationship",
+      "label": "has proposed change",
+      "inverse_label": "changes mandate",
+      "assertion_status": "normalized",
+      "assertion_scope": "synthetic-fixture",
+      "authority": {
+        "class": "synthetic",
+        "label": "Published composite or pilot interpretation",
+        "source": "https://cyberdudeuk.github.io/ai-capability-governance/#ch-worked"
+      },
+      "derivation": "urn:okf:ai-capability-governance:method:curated-case-normalisation",
+      "observed_at": "2026-11-23T14:00:59Z",
+      "evidence": [
+        {
+          "@id": "urn:okf:ai-capability-governance:evidence:send",
+          "type": "Pinned public source passage",
+          "url": "https://cyberdudeuk.github.io/ai-capability-governance/#ch-worked",
+          "resource": "https://github.com/cyberdudeuk/ai-capability-governance/blob/9dd855ecfd8aece1b87c49eff2096b2d13d3fc98/index.html",
+          "source_artifact": "source/snapshots/em-index.html.gz (uncompressed hash)",
+          "source_sha256": "7576330b94fcdb8bfcd43493d65000f1944fc55312effe085cc0f768877e44a1",
+          "source_field": "#ch-worked",
+          "locator": "Variant where the agent sends its reply",
+          "source_value": "The agent sends the reply itself Tier moves + Irreversible Tier 4 · Critical Q1 · Automate with sampling L1 · Draft only — a person edits and commits every output One word in the mandate — send rather than draft — and an effect exists that no later correction undoes. Autonomy is forced to draft-only regardless of tier, and shadow mode becomes mandatory. This is the most common scope change requested after go-live, and the cheapest one to refuse.",
+          "source_value_sha256": "371ae30faf1c127718431c951a134234b07d0ae434bd9ffc35ed08e2e3ecfb05",
+          "source_value_hash_canonicalization": "UTF-8; collapsed Unicode whitespace; trimmed",
+          "retrieved_at": "2026-11-23T14:00:59Z"
+        }
+      ],
+      "rights": {
+        "source": "https://creativecommons.org/licenses/by/4.0/",
+        "assertion": "CC-BY-4.0",
+        "attribution": "Em (cyberdudeuk) and contributors"
+      },
+      "source_assertion": {
+        "@id": "urn:okf:ai-capability-governance:assertion:proposed-change",
+        "@type": [
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement",
+          "urn:okf:ai-capability-governance:type:QualifiedAssertion"
+        ],
+        "source": "urn:okf:ai-capability-governance:concept:mandate",
+        "predicate": "urn:okf:ai-capability-governance:predicate:hasProposedChange",
+        "target": "urn:okf:ai-capability-governance:concept:send-variant",
+        "kind": "case-relationship",
+        "label": "has proposed change",
+        "inverse_label": "changes mandate",
+        "assertion_status": "normalized",
+        "assertion_scope": "synthetic-fixture",
+        "authority": {
+          "class": "synthetic",
+          "label": "Published composite or pilot interpretation",
+          "source": "https://cyberdudeuk.github.io/ai-capability-governance/#ch-worked"
+        },
+        "derivation": "urn:okf:ai-capability-governance:method:curated-case-normalisation",
+        "observed_at": "2026-11-23T14:00:59Z",
+        "evidence": [
+          {
+            "@id": "urn:okf:ai-capability-governance:evidence:send",
+            "type": "Pinned public source passage",
+            "url": "https://cyberdudeuk.github.io/ai-capability-governance/#ch-worked",
+            "resource": "https://github.com/cyberdudeuk/ai-capability-governance/blob/9dd855ecfd8aece1b87c49eff2096b2d13d3fc98/index.html",
+            "source_artifact": "source/snapshots/em-index.html.gz (uncompressed hash)",
+            "source_sha256": "7576330b94fcdb8bfcd43493d65000f1944fc55312effe085cc0f768877e44a1",
+            "source_field": "#ch-worked",
+            "locator": "Variant where the agent sends its reply",
+            "source_value": "The agent sends the reply itself Tier moves + Irreversible Tier 4 · Critical Q1 · Automate with sampling L1 · Draft only — a person edits and commits every output One word in the mandate — send rather than draft — and an effect exists that no later correction undoes. Autonomy is forced to draft-only regardless of tier, and shadow mode becomes mandatory. This is the most common scope change requested after go-live, and the cheapest one to refuse.",
+            "source_value_sha256": "371ae30faf1c127718431c951a134234b07d0ae434bd9ffc35ed08e2e3ecfb05",
+            "source_value_hash_canonicalization": "UTF-8; collapsed Unicode whitespace; trimmed",
+            "retrieved_at": "2026-11-23T14:00:59Z"
+          }
+        ],
+        "rights": {
+          "source": "https://creativecommons.org/licenses/by/4.0/",
+          "assertion": "CC-BY-4.0",
+          "attribution": "Em (cyberdudeuk) and contributors"
+        }
+      }
+    },
+    {
+      "id": "urn:okf:ai-capability-governance:assertion:retains-draft-only",
+      "assertion_id": "urn:okf:ai-capability-governance:assertion:retains-draft-only",
+      "source": "concepts/send-variant.md",
+      "target": "concepts/draft-only.md",
+      "source_iri": "urn:okf:ai-capability-governance:concept:send-variant",
+      "target_iri": "urn:okf:ai-capability-governance:concept:draft-only",
+      "predicate": "urn:okf:ai-capability-governance:predicate:capsAutonomyAt",
+      "kind": "case-relationship",
+      "label": "caps autonomy at",
+      "inverse_label": "autonomy cap for",
+      "assertion_status": "normalized",
+      "assertion_scope": "synthetic-fixture",
+      "authority": {
+        "class": "synthetic",
+        "label": "Published composite or pilot interpretation",
+        "source": "https://cyberdudeuk.github.io/ai-capability-governance/#ch-worked"
+      },
+      "derivation": "urn:okf:ai-capability-governance:method:curated-case-normalisation",
+      "observed_at": "2026-11-23T14:00:59Z",
+      "evidence": [
+        {
+          "@id": "urn:okf:ai-capability-governance:evidence:send",
+          "type": "Pinned public source passage",
+          "url": "https://cyberdudeuk.github.io/ai-capability-governance/#ch-worked",
+          "resource": "https://github.com/cyberdudeuk/ai-capability-governance/blob/9dd855ecfd8aece1b87c49eff2096b2d13d3fc98/index.html",
+          "source_artifact": "source/snapshots/em-index.html.gz (uncompressed hash)",
+          "source_sha256": "7576330b94fcdb8bfcd43493d65000f1944fc55312effe085cc0f768877e44a1",
+          "source_field": "#ch-worked",
+          "locator": "Variant where the agent sends its reply",
+          "source_value": "The agent sends the reply itself Tier moves + Irreversible Tier 4 · Critical Q1 · Automate with sampling L1 · Draft only — a person edits and commits every output One word in the mandate — send rather than draft — and an effect exists that no later correction undoes. Autonomy is forced to draft-only regardless of tier, and shadow mode becomes mandatory. This is the most common scope change requested after go-live, and the cheapest one to refuse.",
+          "source_value_sha256": "371ae30faf1c127718431c951a134234b07d0ae434bd9ffc35ed08e2e3ecfb05",
+          "source_value_hash_canonicalization": "UTF-8; collapsed Unicode whitespace; trimmed",
+          "retrieved_at": "2026-11-23T14:00:59Z"
+        }
+      ],
+      "rights": {
+        "source": "https://creativecommons.org/licenses/by/4.0/",
+        "assertion": "CC-BY-4.0",
+        "attribution": "Em (cyberdudeuk) and contributors"
+      },
+      "source_assertion": {
+        "@id": "urn:okf:ai-capability-governance:assertion:retains-draft-only",
+        "@type": [
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement",
+          "urn:okf:ai-capability-governance:type:QualifiedAssertion"
+        ],
+        "source": "urn:okf:ai-capability-governance:concept:send-variant",
+        "predicate": "urn:okf:ai-capability-governance:predicate:capsAutonomyAt",
+        "target": "urn:okf:ai-capability-governance:concept:draft-only",
+        "kind": "case-relationship",
+        "label": "caps autonomy at",
+        "inverse_label": "autonomy cap for",
+        "assertion_status": "normalized",
+        "assertion_scope": "synthetic-fixture",
+        "authority": {
+          "class": "synthetic",
+          "label": "Published composite or pilot interpretation",
+          "source": "https://cyberdudeuk.github.io/ai-capability-governance/#ch-worked"
+        },
+        "derivation": "urn:okf:ai-capability-governance:method:curated-case-normalisation",
+        "observed_at": "2026-11-23T14:00:59Z",
+        "evidence": [
+          {
+            "@id": "urn:okf:ai-capability-governance:evidence:send",
+            "type": "Pinned public source passage",
+            "url": "https://cyberdudeuk.github.io/ai-capability-governance/#ch-worked",
+            "resource": "https://github.com/cyberdudeuk/ai-capability-governance/blob/9dd855ecfd8aece1b87c49eff2096b2d13d3fc98/index.html",
+            "source_artifact": "source/snapshots/em-index.html.gz (uncompressed hash)",
+            "source_sha256": "7576330b94fcdb8bfcd43493d65000f1944fc55312effe085cc0f768877e44a1",
+            "source_field": "#ch-worked",
+            "locator": "Variant where the agent sends its reply",
+            "source_value": "The agent sends the reply itself Tier moves + Irreversible Tier 4 · Critical Q1 · Automate with sampling L1 · Draft only — a person edits and commits every output One word in the mandate — send rather than draft — and an effect exists that no later correction undoes. Autonomy is forced to draft-only regardless of tier, and shadow mode becomes mandatory. This is the most common scope change requested after go-live, and the cheapest one to refuse.",
+            "source_value_sha256": "371ae30faf1c127718431c951a134234b07d0ae434bd9ffc35ed08e2e3ecfb05",
+            "source_value_hash_canonicalization": "UTF-8; collapsed Unicode whitespace; trimmed",
+            "retrieved_at": "2026-11-23T14:00:59Z"
+          }
+        ],
+        "rights": {
+          "source": "https://creativecommons.org/licenses/by/4.0/",
+          "assertion": "CC-BY-4.0",
+          "attribution": "Em (cyberdudeuk) and contributors"
+        }
+      }
+    },
+    {
+      "id": "urn:okf:ai-capability-governance:assertion:requires-shadow-mode",
+      "assertion_id": "urn:okf:ai-capability-governance:assertion:requires-shadow-mode",
+      "source": "concepts/send-variant.md",
+      "target": "concepts/shadow-mode.md",
+      "source_iri": "urn:okf:ai-capability-governance:concept:send-variant",
+      "target_iri": "urn:okf:ai-capability-governance:concept:shadow-mode",
+      "predicate": "urn:okf:ai-capability-governance:predicate:requiresTestMode",
+      "kind": "case-relationship",
+      "label": "requires test mode",
+      "inverse_label": "required for",
+      "assertion_status": "normalized",
+      "assertion_scope": "synthetic-fixture",
+      "authority": {
+        "class": "synthetic",
+        "label": "Published composite or pilot interpretation",
+        "source": "https://cyberdudeuk.github.io/ai-capability-governance/#ch-worked"
+      },
+      "derivation": "urn:okf:ai-capability-governance:method:curated-case-normalisation",
+      "observed_at": "2026-11-23T14:00:59Z",
+      "evidence": [
+        {
+          "@id": "urn:okf:ai-capability-governance:evidence:send",
+          "type": "Pinned public source passage",
+          "url": "https://cyberdudeuk.github.io/ai-capability-governance/#ch-worked",
+          "resource": "https://github.com/cyberdudeuk/ai-capability-governance/blob/9dd855ecfd8aece1b87c49eff2096b2d13d3fc98/index.html",
+          "source_artifact": "source/snapshots/em-index.html.gz (uncompressed hash)",
+          "source_sha256": "7576330b94fcdb8bfcd43493d65000f1944fc55312effe085cc0f768877e44a1",
+          "source_field": "#ch-worked",
+          "locator": "Variant where the agent sends its reply",
+          "source_value": "The agent sends the reply itself Tier moves + Irreversible Tier 4 · Critical Q1 · Automate with sampling L1 · Draft only — a person edits and commits every output One word in the mandate — send rather than draft — and an effect exists that no later correction undoes. Autonomy is forced to draft-only regardless of tier, and shadow mode becomes mandatory. This is the most common scope change requested after go-live, and the cheapest one to refuse.",
+          "source_value_sha256": "371ae30faf1c127718431c951a134234b07d0ae434bd9ffc35ed08e2e3ecfb05",
+          "source_value_hash_canonicalization": "UTF-8; collapsed Unicode whitespace; trimmed",
+          "retrieved_at": "2026-11-23T14:00:59Z"
+        }
+      ],
+      "rights": {
+        "source": "https://creativecommons.org/licenses/by/4.0/",
+        "assertion": "CC-BY-4.0",
+        "attribution": "Em (cyberdudeuk) and contributors"
+      },
+      "source_assertion": {
+        "@id": "urn:okf:ai-capability-governance:assertion:requires-shadow-mode",
+        "@type": [
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement",
+          "urn:okf:ai-capability-governance:type:QualifiedAssertion"
+        ],
+        "source": "urn:okf:ai-capability-governance:concept:send-variant",
+        "predicate": "urn:okf:ai-capability-governance:predicate:requiresTestMode",
+        "target": "urn:okf:ai-capability-governance:concept:shadow-mode",
+        "kind": "case-relationship",
+        "label": "requires test mode",
+        "inverse_label": "required for",
+        "assertion_status": "normalized",
+        "assertion_scope": "synthetic-fixture",
+        "authority": {
+          "class": "synthetic",
+          "label": "Published composite or pilot interpretation",
+          "source": "https://cyberdudeuk.github.io/ai-capability-governance/#ch-worked"
+        },
+        "derivation": "urn:okf:ai-capability-governance:method:curated-case-normalisation",
+        "observed_at": "2026-11-23T14:00:59Z",
+        "evidence": [
+          {
+            "@id": "urn:okf:ai-capability-governance:evidence:send",
+            "type": "Pinned public source passage",
+            "url": "https://cyberdudeuk.github.io/ai-capability-governance/#ch-worked",
+            "resource": "https://github.com/cyberdudeuk/ai-capability-governance/blob/9dd855ecfd8aece1b87c49eff2096b2d13d3fc98/index.html",
+            "source_artifact": "source/snapshots/em-index.html.gz (uncompressed hash)",
+            "source_sha256": "7576330b94fcdb8bfcd43493d65000f1944fc55312effe085cc0f768877e44a1",
+            "source_field": "#ch-worked",
+            "locator": "Variant where the agent sends its reply",
+            "source_value": "The agent sends the reply itself Tier moves + Irreversible Tier 4 · Critical Q1 · Automate with sampling L1 · Draft only — a person edits and commits every output One word in the mandate — send rather than draft — and an effect exists that no later correction undoes. Autonomy is forced to draft-only regardless of tier, and shadow mode becomes mandatory. This is the most common scope change requested after go-live, and the cheapest one to refuse.",
+            "source_value_sha256": "371ae30faf1c127718431c951a134234b07d0ae434bd9ffc35ed08e2e3ecfb05",
+            "source_value_hash_canonicalization": "UTF-8; collapsed Unicode whitespace; trimmed",
+            "retrieved_at": "2026-11-23T14:00:59Z"
+          }
+        ],
+        "rights": {
+          "source": "https://creativecommons.org/licenses/by/4.0/",
+          "assertion": "CC-BY-4.0",
+          "attribution": "Em (cyberdudeuk) and contributors"
+        }
+      }
+    },
+    {
+      "id": "urn:okf:ai-capability-governance:assertion:review-evidence",
+      "assertion_id": "urn:okf:ai-capability-governance:assertion:review-evidence",
+      "source": "concepts/send-variant.md",
+      "target": "concepts/evidence-brief.md",
+      "source_iri": "urn:okf:ai-capability-governance:concept:send-variant",
+      "target_iri": "urn:okf:ai-capability-governance:concept:evidence-brief",
+      "predicate": "urn:okf:ai-capability-governance:predicate:informsReviewBrief",
+      "kind": "case-relationship",
+      "label": "informs review brief",
+      "inverse_label": "uses scenario",
+      "assertion_status": "normalized",
+      "assertion_scope": "synthetic-fixture",
+      "authority": {
+        "class": "synthetic",
+        "label": "Published composite or pilot interpretation",
+        "source": "https://cyberdudeuk.github.io/ai-capability-governance/#ch-raioperate"
+      },
+      "derivation": "urn:okf:ai-capability-governance:method:curated-case-normalisation",
+      "observed_at": "2026-11-23T14:00:59Z",
+      "evidence": [
+        {
+          "@id": "urn:okf:ai-capability-governance:evidence:reassessment",
+          "type": "Pinned public source passage",
+          "url": "https://cyberdudeuk.github.io/ai-capability-governance/#ch-raioperate",
+          "resource": "https://github.com/cyberdudeuk/ai-capability-governance/blob/9dd855ecfd8aece1b87c49eff2096b2d13d3fc98/index.html",
+          "source_artifact": "source/snapshots/em-index.html.gz (uncompressed hash)",
+          "source_sha256": "7576330b94fcdb8bfcd43493d65000f1944fc55312effe085cc0f768877e44a1",
+          "source_field": "#ch-raioperate",
+          "locator": "Reassessment trigger for new actions",
+          "source_value": "Action New tools, actions, schedules or agent links. Full",
+          "source_value_sha256": "7573701c34892ca0a6e53971276a5f3cac3a2f2ced8dd298c73b5d5acd132011",
+          "source_value_hash_canonicalization": "UTF-8; collapsed Unicode whitespace; trimmed",
+          "retrieved_at": "2026-11-23T14:00:59Z"
+        }
+      ],
+      "rights": {
+        "source": "https://creativecommons.org/licenses/by/4.0/",
+        "assertion": "CC-BY-4.0",
+        "attribution": "Em (cyberdudeuk) and contributors"
+      },
+      "source_assertion": {
+        "@id": "urn:okf:ai-capability-governance:assertion:review-evidence",
+        "@type": [
+          "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement",
+          "urn:okf:ai-capability-governance:type:QualifiedAssertion"
+        ],
+        "source": "urn:okf:ai-capability-governance:concept:send-variant",
+        "predicate": "urn:okf:ai-capability-governance:predicate:informsReviewBrief",
+        "target": "urn:okf:ai-capability-governance:concept:evidence-brief",
+        "kind": "case-relationship",
+        "label": "informs review brief",
+        "inverse_label": "uses scenario",
+        "assertion_status": "normalized",
+        "assertion_scope": "synthetic-fixture",
+        "authority": {
+          "class": "synthetic",
+          "label": "Published composite or pilot interpretation",
+          "source": "https://cyberdudeuk.github.io/ai-capability-governance/#ch-raioperate"
+        },
+        "derivation": "urn:okf:ai-capability-governance:method:curated-case-normalisation",
+        "observed_at": "2026-11-23T14:00:59Z",
+        "evidence": [
+          {
+            "@id": "urn:okf:ai-capability-governance:evidence:reassessment",
+            "type": "Pinned public source passage",
+            "url": "https://cyberdudeuk.github.io/ai-capability-governance/#ch-raioperate",
+            "resource": "https://github.com/cyberdudeuk/ai-capability-governance/blob/9dd855ecfd8aece1b87c49eff2096b2d13d3fc98/index.html",
+            "source_artifact": "source/snapshots/em-index.html.gz (uncompressed hash)",
+            "source_sha256": "7576330b94fcdb8bfcd43493d65000f1944fc55312effe085cc0f768877e44a1",
+            "source_field": "#ch-raioperate",
+            "locator": "Reassessment trigger for new actions",
+            "source_value": "Action New tools, actions, schedules or agent links. Full",
+            "source_value_sha256": "7573701c34892ca0a6e53971276a5f3cac3a2f2ced8dd298c73b5d5acd132011",
+            "source_value_hash_canonicalization": "UTF-8; collapsed Unicode whitespace; trimmed",
+            "retrieved_at": "2026-11-23T14:00:59Z"
+          }
+        ],
+        "rights": {
+          "source": "https://creativecommons.org/licenses/by/4.0/",
+          "assertion": "CC-BY-4.0",
+          "attribution": "Em (cyberdudeuk) and contributors"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,137 @@
+{
+  "authored_walkthrough_sha256": "d3d72bc88e6913b4e1860e14ed06aa6dfe1e34a64e5279c134475f00f3225e9b",
+  "bundle_id": "https://chris-page-gov.github.io/okf-ai-infrastructure/semantic/ai-infrastructure",
+  "case_sha256": "2baa79ab5abf1e7288a2f306baee6d8e0b86343c088925f531623ac6bf3efc31",
+  "descriptor": "okf-bundle.json",
+  "descriptor_sha256": "42f2e0319f0686cfdee6ccf5e1762cb2ee0c6013aaa1ca3a0a8ec54ddd8abcdf",
+  "graph": "okf-bundle.jsonld",
+  "graph_sha256": "ab3fa502d865e63a0c5c0625257a05fb885a6cfc86bf342401631c6d24f4d192",
+  "id": "federated-rag-evidence",
+  "negative_controls": [
+    {
+      "result": "no-directed-concept-path",
+      "source": "federated/federated-rag.md",
+      "target": "federated/federated-evaluation.md"
+    },
+    {
+      "result": "no-directed-concept-path",
+      "source": "federated/federated-rag.md",
+      "target": "uk-government/ncsc-secure-ai.md"
+    }
+  ],
+  "okf_version": "0.3",
+  "question": "How could public bodies explore federated RAG without centralising their documents, how do secure aggregation and differential privacy relate to that design, what should evaluation cover, and which security references and evidence gaps should a reviewer inspect?",
+  "schema": "okf-bundle-walkthrough-data.v1",
+  "scope": "Local source/graph trail and negative controls only; live browser, remote AI access and release acceptance are separate.",
+  "snapshot": "sha256:7d64ab80f9e9cc7c1577480dbe0058f25cf088c6a357b1604fc7356e9dd2332c",
+  "source_documents": [
+    {
+      "bytes": 714,
+      "route": "federated/federated-rag.md",
+      "semantic_id": "https://chris-page-gov.github.io/okf-ai-infrastructure/id/federated/federated-rag",
+      "sha256": "7ed3f33594cabb9e592d6de2a85b22fd406c36989d5f48f18b86f55b676d4c8d"
+    },
+    {
+      "bytes": 1111,
+      "route": "federated/federated-learning.md",
+      "semantic_id": "https://chris-page-gov.github.io/okf-ai-infrastructure/id/federated/federated-learning",
+      "sha256": "65bc92909b88833d8353a2c513ced2b5bdae01d864a6df2b6ec82800aa258cf6"
+    },
+    {
+      "bytes": 935,
+      "route": "federated/secure-aggregation.md",
+      "semantic_id": "https://chris-page-gov.github.io/okf-ai-infrastructure/id/federated/secure-aggregation",
+      "sha256": "98bf747e02fd42135ca7bcfac12d7cf8c3fba0d2995e73ba371d4068e4ebf537"
+    },
+    {
+      "bytes": 762,
+      "route": "federated/differential-privacy.md",
+      "semantic_id": "https://chris-page-gov.github.io/okf-ai-infrastructure/id/federated/differential-privacy",
+      "sha256": "94cb021ea627a39894d2b41e19c7b71eac697ee11c11760e47a95e7c36f5e561"
+    },
+    {
+      "bytes": 720,
+      "route": "federated/federated-evaluation.md",
+      "semantic_id": "https://chris-page-gov.github.io/okf-ai-infrastructure/id/federated/federated-evaluation",
+      "sha256": "86362a9b219a778e273dae3ab577eaf9d0ef922938312a6a6e6dcf015cfb138e"
+    },
+    {
+      "bytes": 850,
+      "route": "federated/evaluation-rubric.md",
+      "semantic_id": "https://chris-page-gov.github.io/okf-ai-infrastructure/id/federated/evaluation-rubric",
+      "sha256": "8c93394d4e5bedee0f2238709ae2df1fd59815a0e0d989f99c06559f13936295"
+    },
+    {
+      "bytes": 817,
+      "route": "uk-government/ncsc-secure-ai.md",
+      "semantic_id": "https://chris-page-gov.github.io/okf-ai-infrastructure/id/uk-government/ncsc-secure-ai",
+      "sha256": "735fa8b1622a8c6173dec2d4795faec05a0a1e3d7ebe3f91b74bc6dee62b5ec9"
+    }
+  ],
+  "trails": [
+    {
+      "assertions": [
+        {
+          "assertion_status": "normalized",
+          "id": "https://chris-page-gov.github.io/okf-ai-infrastructure/assertions/85fb4f2d93110be552266858",
+          "predicate": "http://purl.org/dc/terms/references",
+          "source": "federated/federated-rag.md",
+          "source_iri": "https://chris-page-gov.github.io/okf-ai-infrastructure/id/federated/federated-rag",
+          "target": "federated/federated-learning.md",
+          "target_iri": "https://chris-page-gov.github.io/okf-ai-infrastructure/id/federated/federated-learning"
+        },
+        {
+          "assertion_status": "normalized",
+          "id": "https://chris-page-gov.github.io/okf-ai-infrastructure/assertions/90dab08a95fb33654e15fb2b",
+          "predicate": "http://purl.org/dc/terms/references",
+          "source": "federated/federated-learning.md",
+          "source_iri": "https://chris-page-gov.github.io/okf-ai-infrastructure/id/federated/federated-learning",
+          "target": "federated/secure-aggregation.md",
+          "target_iri": "https://chris-page-gov.github.io/okf-ai-infrastructure/id/federated/secure-aggregation"
+        },
+        {
+          "assertion_status": "normalized",
+          "id": "https://chris-page-gov.github.io/okf-ai-infrastructure/assertions/fa133bffa6e38b2942155721",
+          "predicate": "http://purl.org/dc/terms/references",
+          "source": "federated/secure-aggregation.md",
+          "source_iri": "https://chris-page-gov.github.io/okf-ai-infrastructure/id/federated/secure-aggregation",
+          "target": "federated/differential-privacy.md",
+          "target_iri": "https://chris-page-gov.github.io/okf-ai-infrastructure/id/federated/differential-privacy"
+        }
+      ],
+      "label": "Follow the privacy-related concept references",
+      "routes": [
+        "federated/federated-rag.md",
+        "federated/federated-learning.md",
+        "federated/secure-aggregation.md",
+        "federated/differential-privacy.md"
+      ]
+    },
+    {
+      "assertions": [
+        {
+          "assertion_status": "normalized",
+          "id": "https://chris-page-gov.github.io/okf-ai-infrastructure/assertions/5985109515d74a320d0b7e3c",
+          "predicate": "http://purl.org/dc/terms/references",
+          "source": "federated/federated-evaluation.md",
+          "source_iri": "https://chris-page-gov.github.io/okf-ai-infrastructure/id/federated/federated-evaluation",
+          "target": "federated/evaluation-rubric.md",
+          "target_iri": "https://chris-page-gov.github.io/okf-ai-infrastructure/id/federated/evaluation-rubric"
+        }
+      ],
+      "label": "Search separately, then follow evaluation references",
+      "routes": [
+        "federated/federated-evaluation.md",
+        "federated/evaluation-rubric.md"
+      ]
+    },
+    {
+      "assertions": [],
+      "label": "Search separately for the official security reference",
+      "routes": [
+        "uk-government/ncsc-secure-ai.md"
+      ]
+    }
+  ],
+  "version": "0.7.1"
+}

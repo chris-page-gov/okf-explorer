@@ -1,0 +1,4011 @@
+{
+  "bundle_id": "https://example.invalid/okf-plus/rehearsal/bundle/core-reference",
+  "edges": [
+    {
+      "kind": "references",
+      "source": "concepts/candidate/c-01.md",
+      "source_fields": [
+        "markdown"
+      ],
+      "target": "concepts/record/e-01.md"
+    },
+    {
+      "kind": "references",
+      "source": "concepts/candidate/c-01.md",
+      "source_fields": [
+        "markdown"
+      ],
+      "target": "concepts/record/h-01.md"
+    },
+    {
+      "kind": "references",
+      "source": "concepts/candidate/c-01.md",
+      "source_fields": [
+        "markdown"
+      ],
+      "target": "concepts/rule/candidate-interpretation.md"
+    },
+    {
+      "kind": "references",
+      "source": "concepts/candidate/c-02.md",
+      "source_fields": [
+        "markdown"
+      ],
+      "target": "concepts/record/e-03.md"
+    },
+    {
+      "kind": "references",
+      "source": "concepts/candidate/c-02.md",
+      "source_fields": [
+        "markdown"
+      ],
+      "target": "concepts/record/h-01.md"
+    },
+    {
+      "kind": "references",
+      "source": "concepts/candidate/c-02.md",
+      "source_fields": [
+        "markdown"
+      ],
+      "target": "concepts/rule/candidate-interpretation.md"
+    },
+    {
+      "kind": "references",
+      "source": "concepts/candidate/c-03.md",
+      "source_fields": [
+        "markdown"
+      ],
+      "target": "concepts/record/e-02.md"
+    },
+    {
+      "kind": "references",
+      "source": "concepts/candidate/c-03.md",
+      "source_fields": [
+        "markdown"
+      ],
+      "target": "concepts/record/h-02.md"
+    },
+    {
+      "kind": "references",
+      "source": "concepts/candidate/c-03.md",
+      "source_fields": [
+        "markdown"
+      ],
+      "target": "concepts/rule/candidate-interpretation.md"
+    },
+    {
+      "kind": "references",
+      "source": "concepts/record/e-01.md",
+      "source_fields": [
+        "markdown"
+      ],
+      "target": "concepts/source/setting.md"
+    },
+    {
+      "kind": "references",
+      "source": "concepts/record/e-02.md",
+      "source_fields": [
+        "markdown"
+      ],
+      "target": "concepts/source/setting.md"
+    },
+    {
+      "kind": "references",
+      "source": "concepts/record/e-03.md",
+      "source_fields": [
+        "markdown"
+      ],
+      "target": "concepts/source/setting.md"
+    },
+    {
+      "kind": "references",
+      "source": "concepts/record/e-04.md",
+      "source_fields": [
+        "markdown"
+      ],
+      "target": "concepts/source/setting.md"
+    },
+    {
+      "kind": "references",
+      "source": "concepts/record/h-01.md",
+      "source_fields": [
+        "markdown"
+      ],
+      "target": "concepts/source/health.md"
+    },
+    {
+      "kind": "references",
+      "source": "concepts/record/h-02.md",
+      "source_fields": [
+        "markdown"
+      ],
+      "target": "concepts/source/health.md"
+    },
+    {
+      "kind": "references",
+      "source": "concepts/record/h-03.md",
+      "source_fields": [
+        "markdown"
+      ],
+      "target": "concepts/source/health.md"
+    },
+    {
+      "kind": "references",
+      "source": "concepts/record/h-04.md",
+      "source_fields": [
+        "markdown"
+      ],
+      "target": "concepts/source/health.md"
+    },
+    {
+      "kind": "references",
+      "source": "concepts/record/r-01.md",
+      "source_fields": [
+        "markdown"
+      ],
+      "target": "concepts/action/a-01.md"
+    },
+    {
+      "kind": "references",
+      "source": "concepts/record/r-01.md",
+      "source_fields": [
+        "markdown"
+      ],
+      "target": "concepts/source/referral.md"
+    },
+    {
+      "kind": "references",
+      "source": "concepts/record/r-02.md",
+      "source_fields": [
+        "markdown"
+      ],
+      "target": "concepts/action/a-02.md"
+    },
+    {
+      "kind": "references",
+      "source": "concepts/record/r-02.md",
+      "source_fields": [
+        "markdown"
+      ],
+      "target": "concepts/source/referral.md"
+    },
+    {
+      "kind": "references",
+      "source": "concepts/record/r-03.md",
+      "source_fields": [
+        "markdown"
+      ],
+      "target": "concepts/action/a-03.md"
+    },
+    {
+      "kind": "references",
+      "source": "concepts/record/r-03.md",
+      "source_fields": [
+        "markdown"
+      ],
+      "target": "concepts/source/referral.md"
+    }
+  ],
+  "kind": "okf-bundle",
+  "meta": {
+    "description": "Fictional records, competing candidate links and action states; no operational authority.",
+    "frontmatter": {
+      "description": "Fictional records, competing candidate links and action states; no operational authority.",
+      "license": "LICENSE-CONTENT.md",
+      "okf_version": "0.3",
+      "title": "Synthetic early-years relationship rehearsal"
+    },
+    "license": "LICENSE-CONTENT.md",
+    "limitations": [
+      "Markdown references establish navigation, not candidate identity or completion of support."
+    ],
+    "profile": "https://example.invalid/okf-plus/rehearsal/profile/v0.2",
+    "source_markdown": "index.md",
+    "title": "Synthetic early-years relationship rehearsal — Markdown reference graph"
+  },
+  "nodes": {
+    "concepts/action/a-01.md": {
+      "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+      "@id": "https://example.invalid/okf-plus/rehearsal/id/action/a-01",
+      "@type": "ey:SupportAction",
+      "assertions": [],
+      "asset_links": {},
+      "body": "# A-01 — Discuss a local support option\n\n**Synthetic rehearsal only — not an official record or decision.**\n\nA proposed action is not a submitted referral or completed support.\n\n## Source facts\n\n```json\n{\n  \"action_id\": \"A-01\",\n  \"action_label\": \"Discuss a local support option\",\n  \"action_status\": \"proposed\"\n}\n```\n\n## Relationships\n\nNo directed relationship is asserted by this page. Incoming relationships may still exist.\n\n## Evidence\n\nSource file: `sources/referrals.csv`. Locator: `csv:record_id=R-01`. SHA-256: `e2130273a639b41320fc7c24b220c373e59f0bfac6f7a369f6b87dd60f8a30d9`. The example.invalid URL is a synthetic identifier, not a retrieved website.",
+      "description": "A proposed action is not a submitted referral or completed support.",
+      "facts": {
+        "action_id": "A-01",
+        "action_label": "Discuss a local support option",
+        "action_status": "proposed"
+      },
+      "fixture_scope": "synthetic-fixture",
+      "frontmatter": {
+        "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+        "@id": "https://example.invalid/okf-plus/rehearsal/id/action/a-01",
+        "@type": "ey:SupportAction",
+        "assertions": [],
+        "description": "A proposed action is not a submitted referral or completed support.",
+        "facts": {
+          "action_id": "A-01",
+          "action_label": "Discuss a local support option",
+          "action_status": "proposed"
+        },
+        "fixture_scope": "synthetic-fixture",
+        "generated": {
+          "at": "2026-09-05T00:00:00Z",
+          "by": "process:rehearsal-authoring-v0.1"
+        },
+        "route": "action/a-01",
+        "sources": [
+          {
+            "locator": "csv:record_id=R-01",
+            "retrieved_at": "2026-09-05T00:00:00Z",
+            "source_artifact": "sources/referrals.csv",
+            "source_sha256": "e2130273a639b41320fc7c24b220c373e59f0bfac6f7a369f6b87dd60f8a30d9",
+            "url": "https://example.invalid/okf-plus/rehearsal/sources/referrals.csv",
+            "url_status": "synthetic-identifier-not-dereferenced"
+          }
+        ],
+        "status": "experimental",
+        "tags": [
+          "synthetic",
+          "early-years",
+          "rehearsal"
+        ],
+        "title": "A-01 — Discuss a local support option",
+        "type": "Support action"
+      },
+      "generated": {
+        "at": "2026-09-05T00:00:00Z",
+        "by": "process:rehearsal-authoring-v0.1"
+      },
+      "id": "concepts/action/a-01.md",
+      "markdown_links": {},
+      "markdown_references": {},
+      "route": "action/a-01",
+      "section": "concepts",
+      "source_path": "concepts/action/a-01.md",
+      "sources": [
+        {
+          "locator": "csv:record_id=R-01",
+          "retrieved_at": "2026-09-05T00:00:00Z",
+          "source_artifact": "sources/referrals.csv",
+          "source_sha256": "e2130273a639b41320fc7c24b220c373e59f0bfac6f7a369f6b87dd60f8a30d9",
+          "url": "https://example.invalid/okf-plus/rehearsal/sources/referrals.csv",
+          "url_status": "synthetic-identifier-not-dereferenced"
+        }
+      ],
+      "status": "experimental",
+      "tags": [
+        "synthetic",
+        "early-years",
+        "rehearsal"
+      ],
+      "title": "A-01 — Discuss a local support option",
+      "type": "Support action"
+    },
+    "concepts/action/a-02.md": {
+      "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+      "@id": "https://example.invalid/okf-plus/rehearsal/id/action/a-02",
+      "@type": "ey:SupportAction",
+      "assertions": [],
+      "asset_links": {},
+      "body": "# A-02 — Send an information leaflet\n\n**Synthetic rehearsal only — not an official record or decision.**\n\nThis fixture records only leaflet dispatch as completed, not support received.\n\n## Source facts\n\n```json\n{\n  \"action_id\": \"A-02\",\n  \"action_label\": \"Send an information leaflet\",\n  \"action_status\": \"completed\"\n}\n```\n\n## Relationships\n\nNo directed relationship is asserted by this page. Incoming relationships may still exist.\n\n## Evidence\n\nSource file: `sources/referrals.csv`. Locator: `csv:record_id=R-02`. SHA-256: `e2130273a639b41320fc7c24b220c373e59f0bfac6f7a369f6b87dd60f8a30d9`. The example.invalid URL is a synthetic identifier, not a retrieved website.",
+      "description": "This fixture records only leaflet dispatch as completed, not support received.",
+      "facts": {
+        "action_id": "A-02",
+        "action_label": "Send an information leaflet",
+        "action_status": "completed"
+      },
+      "fixture_scope": "synthetic-fixture",
+      "frontmatter": {
+        "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+        "@id": "https://example.invalid/okf-plus/rehearsal/id/action/a-02",
+        "@type": "ey:SupportAction",
+        "assertions": [],
+        "description": "This fixture records only leaflet dispatch as completed, not support received.",
+        "facts": {
+          "action_id": "A-02",
+          "action_label": "Send an information leaflet",
+          "action_status": "completed"
+        },
+        "fixture_scope": "synthetic-fixture",
+        "generated": {
+          "at": "2026-09-05T00:00:00Z",
+          "by": "process:rehearsal-authoring-v0.1"
+        },
+        "route": "action/a-02",
+        "sources": [
+          {
+            "locator": "csv:record_id=R-02",
+            "retrieved_at": "2026-09-05T00:00:00Z",
+            "source_artifact": "sources/referrals.csv",
+            "source_sha256": "e2130273a639b41320fc7c24b220c373e59f0bfac6f7a369f6b87dd60f8a30d9",
+            "url": "https://example.invalid/okf-plus/rehearsal/sources/referrals.csv",
+            "url_status": "synthetic-identifier-not-dereferenced"
+          }
+        ],
+        "status": "experimental",
+        "tags": [
+          "synthetic",
+          "early-years",
+          "rehearsal"
+        ],
+        "title": "A-02 — Send an information leaflet",
+        "type": "Support action"
+      },
+      "generated": {
+        "at": "2026-09-05T00:00:00Z",
+        "by": "process:rehearsal-authoring-v0.1"
+      },
+      "id": "concepts/action/a-02.md",
+      "markdown_links": {},
+      "markdown_references": {},
+      "route": "action/a-02",
+      "section": "concepts",
+      "source_path": "concepts/action/a-02.md",
+      "sources": [
+        {
+          "locator": "csv:record_id=R-02",
+          "retrieved_at": "2026-09-05T00:00:00Z",
+          "source_artifact": "sources/referrals.csv",
+          "source_sha256": "e2130273a639b41320fc7c24b220c373e59f0bfac6f7a369f6b87dd60f8a30d9",
+          "url": "https://example.invalid/okf-plus/rehearsal/sources/referrals.csv",
+          "url_status": "synthetic-identifier-not-dereferenced"
+        }
+      ],
+      "status": "experimental",
+      "tags": [
+        "synthetic",
+        "early-years",
+        "rehearsal"
+      ],
+      "title": "A-02 — Send an information leaflet",
+      "type": "Support action"
+    },
+    "concepts/action/a-03.md": {
+      "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+      "@id": "https://example.invalid/okf-plus/rehearsal/id/action/a-03",
+      "@type": "ey:SupportAction",
+      "assertions": [],
+      "asset_links": {},
+      "body": "# A-03 — Arrange an introductory call\n\n**Synthetic rehearsal only — not an official record or decision.**\n\nA cancelled call must not appear as completed support.\n\n## Source facts\n\n```json\n{\n  \"action_id\": \"A-03\",\n  \"action_label\": \"Arrange an introductory call\",\n  \"action_status\": \"cancelled\"\n}\n```\n\n## Relationships\n\nNo directed relationship is asserted by this page. Incoming relationships may still exist.\n\n## Evidence\n\nSource file: `sources/referrals.csv`. Locator: `csv:record_id=R-03`. SHA-256: `e2130273a639b41320fc7c24b220c373e59f0bfac6f7a369f6b87dd60f8a30d9`. The example.invalid URL is a synthetic identifier, not a retrieved website.",
+      "description": "A cancelled call must not appear as completed support.",
+      "facts": {
+        "action_id": "A-03",
+        "action_label": "Arrange an introductory call",
+        "action_status": "cancelled"
+      },
+      "fixture_scope": "synthetic-fixture",
+      "frontmatter": {
+        "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+        "@id": "https://example.invalid/okf-plus/rehearsal/id/action/a-03",
+        "@type": "ey:SupportAction",
+        "assertions": [],
+        "description": "A cancelled call must not appear as completed support.",
+        "facts": {
+          "action_id": "A-03",
+          "action_label": "Arrange an introductory call",
+          "action_status": "cancelled"
+        },
+        "fixture_scope": "synthetic-fixture",
+        "generated": {
+          "at": "2026-09-05T00:00:00Z",
+          "by": "process:rehearsal-authoring-v0.1"
+        },
+        "route": "action/a-03",
+        "sources": [
+          {
+            "locator": "csv:record_id=R-03",
+            "retrieved_at": "2026-09-05T00:00:00Z",
+            "source_artifact": "sources/referrals.csv",
+            "source_sha256": "e2130273a639b41320fc7c24b220c373e59f0bfac6f7a369f6b87dd60f8a30d9",
+            "url": "https://example.invalid/okf-plus/rehearsal/sources/referrals.csv",
+            "url_status": "synthetic-identifier-not-dereferenced"
+          }
+        ],
+        "status": "experimental",
+        "tags": [
+          "synthetic",
+          "early-years",
+          "rehearsal"
+        ],
+        "title": "A-03 — Arrange an introductory call",
+        "type": "Support action"
+      },
+      "generated": {
+        "at": "2026-09-05T00:00:00Z",
+        "by": "process:rehearsal-authoring-v0.1"
+      },
+      "id": "concepts/action/a-03.md",
+      "markdown_links": {},
+      "markdown_references": {},
+      "route": "action/a-03",
+      "section": "concepts",
+      "source_path": "concepts/action/a-03.md",
+      "sources": [
+        {
+          "locator": "csv:record_id=R-03",
+          "retrieved_at": "2026-09-05T00:00:00Z",
+          "source_artifact": "sources/referrals.csv",
+          "source_sha256": "e2130273a639b41320fc7c24b220c373e59f0bfac6f7a369f6b87dd60f8a30d9",
+          "url": "https://example.invalid/okf-plus/rehearsal/sources/referrals.csv",
+          "url_status": "synthetic-identifier-not-dereferenced"
+        }
+      ],
+      "status": "experimental",
+      "tags": [
+        "synthetic",
+        "early-years",
+        "rehearsal"
+      ],
+      "title": "A-03 — Arrange an introductory call",
+      "type": "Support action"
+    },
+    "concepts/candidate/c-01.md": {
+      "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+      "@id": "https://example.invalid/okf-plus/rehearsal/id/candidate/c-01",
+      "@type": "ey:CandidateRecordLink",
+      "assertions": [
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/assertion/17c0e39a33ead5dbcd4ca9f644583e2f5e7b2af57ab1fb392762437b35cc69ca",
+          "@type": [
+            "rdf:Statement",
+            "ey:RelationshipAssertion"
+          ],
+          "assertion_scope": "synthetic-fixture",
+          "assertion_status": "normalized",
+          "authority": {
+            "class": "synthetic",
+            "label": "Authored rehearsal source; no public authority",
+            "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+          },
+          "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+          "evidence": [
+            {
+              "locator": "json:/candidates/0",
+              "retrieved_at": "2026-09-05T00:00:00Z",
+              "source_artifact": "sources/candidate-ledger.json",
+              "source_sha256": "d599a075e99965c6a2a43ca5c6e3e7de0a0b42bb0c1627389b5598b15a538f08",
+              "url": "https://example.invalid/okf-plus/rehearsal/sources/candidate-ledger.json",
+              "url_status": "synthetic-identifier-not-dereferenced"
+            }
+          ],
+          "inverse_label": "is source of candidate",
+          "kind": "has candidate source record",
+          "label": "has candidate source record",
+          "observed_at": "2026-09-05T00:00:00Z",
+          "predicate": "https://example.invalid/okf-plus/rehearsal/vocab/candidateSource",
+          "rights": {
+            "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+            "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+          },
+          "source": "https://example.invalid/okf-plus/rehearsal/id/candidate/c-01",
+          "target": "https://example.invalid/okf-plus/rehearsal/id/record/h-01"
+        },
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/assertion/e9f122124f871d0783a366a3658053e8908a67afcaf9b9533fe4df12b525c0bb",
+          "@type": [
+            "rdf:Statement",
+            "ey:RelationshipAssertion"
+          ],
+          "assertion_scope": "synthetic-fixture",
+          "assertion_status": "normalized",
+          "authority": {
+            "class": "synthetic",
+            "label": "Authored rehearsal source; no public authority",
+            "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+          },
+          "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+          "evidence": [
+            {
+              "locator": "json:/candidates/0",
+              "retrieved_at": "2026-09-05T00:00:00Z",
+              "source_artifact": "sources/candidate-ledger.json",
+              "source_sha256": "d599a075e99965c6a2a43ca5c6e3e7de0a0b42bb0c1627389b5598b15a538f08",
+              "url": "https://example.invalid/okf-plus/rehearsal/sources/candidate-ledger.json",
+              "url_status": "synthetic-identifier-not-dereferenced"
+            }
+          ],
+          "inverse_label": "is target of candidate",
+          "kind": "has candidate target record",
+          "label": "has candidate target record",
+          "observed_at": "2026-09-05T00:00:00Z",
+          "predicate": "https://example.invalid/okf-plus/rehearsal/vocab/candidateTarget",
+          "rights": {
+            "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+            "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+          },
+          "source": "https://example.invalid/okf-plus/rehearsal/id/candidate/c-01",
+          "target": "https://example.invalid/okf-plus/rehearsal/id/record/e-01"
+        },
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/assertion/a34f2c103f589531927c2e418ecae4f0d284fecf76279fa13395324bcdfea755",
+          "@type": [
+            "rdf:Statement",
+            "ey:RelationshipAssertion"
+          ],
+          "assertion_scope": "synthetic-fixture",
+          "assertion_status": "normalized",
+          "authority": {
+            "class": "synthetic",
+            "label": "Authored rehearsal source; no public authority",
+            "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+          },
+          "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+          "evidence": [
+            {
+              "locator": "json:/candidates/0",
+              "retrieved_at": "2026-09-05T00:00:00Z",
+              "source_artifact": "sources/candidate-ledger.json",
+              "source_sha256": "d599a075e99965c6a2a43ca5c6e3e7de0a0b42bb0c1627389b5598b15a538f08",
+              "url": "https://example.invalid/okf-plus/rehearsal/sources/candidate-ledger.json",
+              "url_status": "synthetic-identifier-not-dereferenced"
+            }
+          ],
+          "inverse_label": "governs candidate interpretation",
+          "kind": "uses candidate interpretation rule",
+          "label": "uses candidate interpretation rule",
+          "observed_at": "2026-09-05T00:00:00Z",
+          "predicate": "https://example.invalid/okf-plus/rehearsal/vocab/usesCandidateRule",
+          "rights": {
+            "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+            "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+          },
+          "source": "https://example.invalid/okf-plus/rehearsal/id/candidate/c-01",
+          "target": "https://example.invalid/okf-plus/rehearsal/id/rule/candidate-interpretation"
+        }
+      ],
+      "asset_links": {},
+      "body": "# C-01 — H-01 / E-01\n\n**Synthetic rehearsal only — not an official record or decision.**\n\nAuthored candidate for demonstration only; not computed matching evidence.\n\n## Source facts\n\n```json\n{\n  \"candidate_id\": \"C-01\",\n  \"method\": \"authored-rehearsal-fixture\",\n  \"reason\": \"Authored candidate for demonstration only; not computed matching evidence.\",\n  \"review_status\": \"pending\",\n  \"source_ref\": \"H-01\",\n  \"target_ref\": \"E-01\"\n}\n```\n\n## Relationships\n\nThis concept **has candidate source record** [H-01 — health record](../record/h-01.md). This is a deterministic projection of synthetic source evidence, not an official assertion.\n\nThis concept **has candidate target record** [E-01 — setting record](../record/e-01.md). This is a deterministic projection of synthetic source evidence, not an official assertion.\n\nThis concept **uses candidate interpretation rule** [Candidate links do not assert identity](../rule/candidate-interpretation.md). This is a deterministic projection of synthetic source evidence, not an official assertion.\n\n\n## Evidence\n\nSource file: `sources/candidate-ledger.json`. Locator: `json:/candidates/0`. SHA-256: `d599a075e99965c6a2a43ca5c6e3e7de0a0b42bb0c1627389b5598b15a538f08`. The example.invalid URL is a synthetic identifier, not a retrieved website.",
+      "description": "Authored candidate for demonstration only; not computed matching evidence.",
+      "facts": {
+        "candidate_id": "C-01",
+        "method": "authored-rehearsal-fixture",
+        "reason": "Authored candidate for demonstration only; not computed matching evidence.",
+        "review_status": "pending",
+        "source_ref": "H-01",
+        "target_ref": "E-01"
+      },
+      "fixture_scope": "synthetic-fixture",
+      "frontmatter": {
+        "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+        "@id": "https://example.invalid/okf-plus/rehearsal/id/candidate/c-01",
+        "@type": "ey:CandidateRecordLink",
+        "assertions": [
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/assertion/17c0e39a33ead5dbcd4ca9f644583e2f5e7b2af57ab1fb392762437b35cc69ca",
+            "@type": [
+              "rdf:Statement",
+              "ey:RelationshipAssertion"
+            ],
+            "assertion_scope": "synthetic-fixture",
+            "assertion_status": "normalized",
+            "authority": {
+              "class": "synthetic",
+              "label": "Authored rehearsal source; no public authority",
+              "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+            },
+            "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+            "evidence": [
+              {
+                "locator": "json:/candidates/0",
+                "retrieved_at": "2026-09-05T00:00:00Z",
+                "source_artifact": "sources/candidate-ledger.json",
+                "source_sha256": "d599a075e99965c6a2a43ca5c6e3e7de0a0b42bb0c1627389b5598b15a538f08",
+                "url": "https://example.invalid/okf-plus/rehearsal/sources/candidate-ledger.json",
+                "url_status": "synthetic-identifier-not-dereferenced"
+              }
+            ],
+            "inverse_label": "is source of candidate",
+            "kind": "has candidate source record",
+            "label": "has candidate source record",
+            "observed_at": "2026-09-05T00:00:00Z",
+            "predicate": "https://example.invalid/okf-plus/rehearsal/vocab/candidateSource",
+            "rights": {
+              "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+              "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+            },
+            "source": "https://example.invalid/okf-plus/rehearsal/id/candidate/c-01",
+            "target": "https://example.invalid/okf-plus/rehearsal/id/record/h-01"
+          },
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/assertion/e9f122124f871d0783a366a3658053e8908a67afcaf9b9533fe4df12b525c0bb",
+            "@type": [
+              "rdf:Statement",
+              "ey:RelationshipAssertion"
+            ],
+            "assertion_scope": "synthetic-fixture",
+            "assertion_status": "normalized",
+            "authority": {
+              "class": "synthetic",
+              "label": "Authored rehearsal source; no public authority",
+              "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+            },
+            "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+            "evidence": [
+              {
+                "locator": "json:/candidates/0",
+                "retrieved_at": "2026-09-05T00:00:00Z",
+                "source_artifact": "sources/candidate-ledger.json",
+                "source_sha256": "d599a075e99965c6a2a43ca5c6e3e7de0a0b42bb0c1627389b5598b15a538f08",
+                "url": "https://example.invalid/okf-plus/rehearsal/sources/candidate-ledger.json",
+                "url_status": "synthetic-identifier-not-dereferenced"
+              }
+            ],
+            "inverse_label": "is target of candidate",
+            "kind": "has candidate target record",
+            "label": "has candidate target record",
+            "observed_at": "2026-09-05T00:00:00Z",
+            "predicate": "https://example.invalid/okf-plus/rehearsal/vocab/candidateTarget",
+            "rights": {
+              "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+              "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+            },
+            "source": "https://example.invalid/okf-plus/rehearsal/id/candidate/c-01",
+            "target": "https://example.invalid/okf-plus/rehearsal/id/record/e-01"
+          },
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/assertion/a34f2c103f589531927c2e418ecae4f0d284fecf76279fa13395324bcdfea755",
+            "@type": [
+              "rdf:Statement",
+              "ey:RelationshipAssertion"
+            ],
+            "assertion_scope": "synthetic-fixture",
+            "assertion_status": "normalized",
+            "authority": {
+              "class": "synthetic",
+              "label": "Authored rehearsal source; no public authority",
+              "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+            },
+            "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+            "evidence": [
+              {
+                "locator": "json:/candidates/0",
+                "retrieved_at": "2026-09-05T00:00:00Z",
+                "source_artifact": "sources/candidate-ledger.json",
+                "source_sha256": "d599a075e99965c6a2a43ca5c6e3e7de0a0b42bb0c1627389b5598b15a538f08",
+                "url": "https://example.invalid/okf-plus/rehearsal/sources/candidate-ledger.json",
+                "url_status": "synthetic-identifier-not-dereferenced"
+              }
+            ],
+            "inverse_label": "governs candidate interpretation",
+            "kind": "uses candidate interpretation rule",
+            "label": "uses candidate interpretation rule",
+            "observed_at": "2026-09-05T00:00:00Z",
+            "predicate": "https://example.invalid/okf-plus/rehearsal/vocab/usesCandidateRule",
+            "rights": {
+              "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+              "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+            },
+            "source": "https://example.invalid/okf-plus/rehearsal/id/candidate/c-01",
+            "target": "https://example.invalid/okf-plus/rehearsal/id/rule/candidate-interpretation"
+          }
+        ],
+        "description": "Authored candidate for demonstration only; not computed matching evidence.",
+        "facts": {
+          "candidate_id": "C-01",
+          "method": "authored-rehearsal-fixture",
+          "reason": "Authored candidate for demonstration only; not computed matching evidence.",
+          "review_status": "pending",
+          "source_ref": "H-01",
+          "target_ref": "E-01"
+        },
+        "fixture_scope": "synthetic-fixture",
+        "generated": {
+          "at": "2026-09-05T00:00:00Z",
+          "by": "process:rehearsal-authoring-v0.1"
+        },
+        "https://example.invalid/okf-plus/rehearsal/vocab/candidateSource": [
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/id/record/h-01"
+          }
+        ],
+        "https://example.invalid/okf-plus/rehearsal/vocab/candidateTarget": [
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/id/record/e-01"
+          }
+        ],
+        "https://example.invalid/okf-plus/rehearsal/vocab/usesCandidateRule": [
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/id/rule/candidate-interpretation"
+          }
+        ],
+        "route": "candidate/c-01",
+        "sources": [
+          {
+            "locator": "json:/candidates/0",
+            "retrieved_at": "2026-09-05T00:00:00Z",
+            "source_artifact": "sources/candidate-ledger.json",
+            "source_sha256": "d599a075e99965c6a2a43ca5c6e3e7de0a0b42bb0c1627389b5598b15a538f08",
+            "url": "https://example.invalid/okf-plus/rehearsal/sources/candidate-ledger.json",
+            "url_status": "synthetic-identifier-not-dereferenced"
+          }
+        ],
+        "status": "experimental",
+        "tags": [
+          "synthetic",
+          "early-years",
+          "rehearsal"
+        ],
+        "title": "C-01 — H-01 / E-01",
+        "type": "Candidate record link"
+      },
+      "generated": {
+        "at": "2026-09-05T00:00:00Z",
+        "by": "process:rehearsal-authoring-v0.1"
+      },
+      "https://example.invalid/okf-plus/rehearsal/vocab/candidateSource": [
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/id/record/h-01"
+        }
+      ],
+      "https://example.invalid/okf-plus/rehearsal/vocab/candidateTarget": [
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/id/record/e-01"
+        }
+      ],
+      "https://example.invalid/okf-plus/rehearsal/vocab/usesCandidateRule": [
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/id/rule/candidate-interpretation"
+        }
+      ],
+      "id": "concepts/candidate/c-01.md",
+      "markdown_links": {
+        "../record/e-01.md": "concepts/record/e-01.md",
+        "../record/h-01.md": "concepts/record/h-01.md",
+        "../rule/candidate-interpretation.md": "concepts/rule/candidate-interpretation.md"
+      },
+      "markdown_references": {},
+      "route": "candidate/c-01",
+      "section": "concepts",
+      "source_path": "concepts/candidate/c-01.md",
+      "sources": [
+        {
+          "locator": "json:/candidates/0",
+          "retrieved_at": "2026-09-05T00:00:00Z",
+          "source_artifact": "sources/candidate-ledger.json",
+          "source_sha256": "d599a075e99965c6a2a43ca5c6e3e7de0a0b42bb0c1627389b5598b15a538f08",
+          "url": "https://example.invalid/okf-plus/rehearsal/sources/candidate-ledger.json",
+          "url_status": "synthetic-identifier-not-dereferenced"
+        }
+      ],
+      "status": "experimental",
+      "tags": [
+        "synthetic",
+        "early-years",
+        "rehearsal"
+      ],
+      "title": "C-01 — H-01 / E-01",
+      "type": "Candidate record link"
+    },
+    "concepts/candidate/c-02.md": {
+      "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+      "@id": "https://example.invalid/okf-plus/rehearsal/id/candidate/c-02",
+      "@type": "ey:CandidateRecordLink",
+      "assertions": [
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/assertion/36bc582950aac08705b15d186a1fb4d56c4332f90c562c4f8213b5b14aef285c",
+          "@type": [
+            "rdf:Statement",
+            "ey:RelationshipAssertion"
+          ],
+          "assertion_scope": "synthetic-fixture",
+          "assertion_status": "normalized",
+          "authority": {
+            "class": "synthetic",
+            "label": "Authored rehearsal source; no public authority",
+            "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+          },
+          "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+          "evidence": [
+            {
+              "locator": "json:/candidates/1",
+              "retrieved_at": "2026-09-05T00:00:00Z",
+              "source_artifact": "sources/candidate-ledger.json",
+              "source_sha256": "d599a075e99965c6a2a43ca5c6e3e7de0a0b42bb0c1627389b5598b15a538f08",
+              "url": "https://example.invalid/okf-plus/rehearsal/sources/candidate-ledger.json",
+              "url_status": "synthetic-identifier-not-dereferenced"
+            }
+          ],
+          "inverse_label": "is source of candidate",
+          "kind": "has candidate source record",
+          "label": "has candidate source record",
+          "observed_at": "2026-09-05T00:00:00Z",
+          "predicate": "https://example.invalid/okf-plus/rehearsal/vocab/candidateSource",
+          "rights": {
+            "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+            "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+          },
+          "source": "https://example.invalid/okf-plus/rehearsal/id/candidate/c-02",
+          "target": "https://example.invalid/okf-plus/rehearsal/id/record/h-01"
+        },
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/assertion/2ca43e70fefd95392a553cfd70b63b5b46e805e65d2e497ab876acd3107d979d",
+          "@type": [
+            "rdf:Statement",
+            "ey:RelationshipAssertion"
+          ],
+          "assertion_scope": "synthetic-fixture",
+          "assertion_status": "normalized",
+          "authority": {
+            "class": "synthetic",
+            "label": "Authored rehearsal source; no public authority",
+            "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+          },
+          "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+          "evidence": [
+            {
+              "locator": "json:/candidates/1",
+              "retrieved_at": "2026-09-05T00:00:00Z",
+              "source_artifact": "sources/candidate-ledger.json",
+              "source_sha256": "d599a075e99965c6a2a43ca5c6e3e7de0a0b42bb0c1627389b5598b15a538f08",
+              "url": "https://example.invalid/okf-plus/rehearsal/sources/candidate-ledger.json",
+              "url_status": "synthetic-identifier-not-dereferenced"
+            }
+          ],
+          "inverse_label": "is target of candidate",
+          "kind": "has candidate target record",
+          "label": "has candidate target record",
+          "observed_at": "2026-09-05T00:00:00Z",
+          "predicate": "https://example.invalid/okf-plus/rehearsal/vocab/candidateTarget",
+          "rights": {
+            "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+            "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+          },
+          "source": "https://example.invalid/okf-plus/rehearsal/id/candidate/c-02",
+          "target": "https://example.invalid/okf-plus/rehearsal/id/record/e-03"
+        },
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/assertion/42d5e0647798196d6e03858fced64c3fea86c7ca5dd373d44256e0c8d6c1a7a5",
+          "@type": [
+            "rdf:Statement",
+            "ey:RelationshipAssertion"
+          ],
+          "assertion_scope": "synthetic-fixture",
+          "assertion_status": "normalized",
+          "authority": {
+            "class": "synthetic",
+            "label": "Authored rehearsal source; no public authority",
+            "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+          },
+          "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+          "evidence": [
+            {
+              "locator": "json:/candidates/1",
+              "retrieved_at": "2026-09-05T00:00:00Z",
+              "source_artifact": "sources/candidate-ledger.json",
+              "source_sha256": "d599a075e99965c6a2a43ca5c6e3e7de0a0b42bb0c1627389b5598b15a538f08",
+              "url": "https://example.invalid/okf-plus/rehearsal/sources/candidate-ledger.json",
+              "url_status": "synthetic-identifier-not-dereferenced"
+            }
+          ],
+          "inverse_label": "governs candidate interpretation",
+          "kind": "uses candidate interpretation rule",
+          "label": "uses candidate interpretation rule",
+          "observed_at": "2026-09-05T00:00:00Z",
+          "predicate": "https://example.invalid/okf-plus/rehearsal/vocab/usesCandidateRule",
+          "rights": {
+            "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+            "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+          },
+          "source": "https://example.invalid/okf-plus/rehearsal/id/candidate/c-02",
+          "target": "https://example.invalid/okf-plus/rehearsal/id/rule/candidate-interpretation"
+        }
+      ],
+      "asset_links": {},
+      "body": "# C-02 — H-01 / E-03\n\n**Synthetic rehearsal only — not an official record or decision.**\n\nDeliberate competing candidate; do not choose or merge silently.\n\n## Source facts\n\n```json\n{\n  \"candidate_id\": \"C-02\",\n  \"method\": \"authored-rehearsal-fixture\",\n  \"reason\": \"Deliberate competing candidate; do not choose or merge silently.\",\n  \"review_status\": \"pending\",\n  \"source_ref\": \"H-01\",\n  \"target_ref\": \"E-03\"\n}\n```\n\n## Relationships\n\nThis concept **has candidate source record** [H-01 — health record](../record/h-01.md). This is a deterministic projection of synthetic source evidence, not an official assertion.\n\nThis concept **has candidate target record** [E-03 — setting record](../record/e-03.md). This is a deterministic projection of synthetic source evidence, not an official assertion.\n\nThis concept **uses candidate interpretation rule** [Candidate links do not assert identity](../rule/candidate-interpretation.md). This is a deterministic projection of synthetic source evidence, not an official assertion.\n\n\n## Evidence\n\nSource file: `sources/candidate-ledger.json`. Locator: `json:/candidates/1`. SHA-256: `d599a075e99965c6a2a43ca5c6e3e7de0a0b42bb0c1627389b5598b15a538f08`. The example.invalid URL is a synthetic identifier, not a retrieved website.",
+      "description": "Deliberate competing candidate; do not choose or merge silently.",
+      "facts": {
+        "candidate_id": "C-02",
+        "method": "authored-rehearsal-fixture",
+        "reason": "Deliberate competing candidate; do not choose or merge silently.",
+        "review_status": "pending",
+        "source_ref": "H-01",
+        "target_ref": "E-03"
+      },
+      "fixture_scope": "synthetic-fixture",
+      "frontmatter": {
+        "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+        "@id": "https://example.invalid/okf-plus/rehearsal/id/candidate/c-02",
+        "@type": "ey:CandidateRecordLink",
+        "assertions": [
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/assertion/36bc582950aac08705b15d186a1fb4d56c4332f90c562c4f8213b5b14aef285c",
+            "@type": [
+              "rdf:Statement",
+              "ey:RelationshipAssertion"
+            ],
+            "assertion_scope": "synthetic-fixture",
+            "assertion_status": "normalized",
+            "authority": {
+              "class": "synthetic",
+              "label": "Authored rehearsal source; no public authority",
+              "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+            },
+            "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+            "evidence": [
+              {
+                "locator": "json:/candidates/1",
+                "retrieved_at": "2026-09-05T00:00:00Z",
+                "source_artifact": "sources/candidate-ledger.json",
+                "source_sha256": "d599a075e99965c6a2a43ca5c6e3e7de0a0b42bb0c1627389b5598b15a538f08",
+                "url": "https://example.invalid/okf-plus/rehearsal/sources/candidate-ledger.json",
+                "url_status": "synthetic-identifier-not-dereferenced"
+              }
+            ],
+            "inverse_label": "is source of candidate",
+            "kind": "has candidate source record",
+            "label": "has candidate source record",
+            "observed_at": "2026-09-05T00:00:00Z",
+            "predicate": "https://example.invalid/okf-plus/rehearsal/vocab/candidateSource",
+            "rights": {
+              "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+              "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+            },
+            "source": "https://example.invalid/okf-plus/rehearsal/id/candidate/c-02",
+            "target": "https://example.invalid/okf-plus/rehearsal/id/record/h-01"
+          },
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/assertion/2ca43e70fefd95392a553cfd70b63b5b46e805e65d2e497ab876acd3107d979d",
+            "@type": [
+              "rdf:Statement",
+              "ey:RelationshipAssertion"
+            ],
+            "assertion_scope": "synthetic-fixture",
+            "assertion_status": "normalized",
+            "authority": {
+              "class": "synthetic",
+              "label": "Authored rehearsal source; no public authority",
+              "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+            },
+            "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+            "evidence": [
+              {
+                "locator": "json:/candidates/1",
+                "retrieved_at": "2026-09-05T00:00:00Z",
+                "source_artifact": "sources/candidate-ledger.json",
+                "source_sha256": "d599a075e99965c6a2a43ca5c6e3e7de0a0b42bb0c1627389b5598b15a538f08",
+                "url": "https://example.invalid/okf-plus/rehearsal/sources/candidate-ledger.json",
+                "url_status": "synthetic-identifier-not-dereferenced"
+              }
+            ],
+            "inverse_label": "is target of candidate",
+            "kind": "has candidate target record",
+            "label": "has candidate target record",
+            "observed_at": "2026-09-05T00:00:00Z",
+            "predicate": "https://example.invalid/okf-plus/rehearsal/vocab/candidateTarget",
+            "rights": {
+              "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+              "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+            },
+            "source": "https://example.invalid/okf-plus/rehearsal/id/candidate/c-02",
+            "target": "https://example.invalid/okf-plus/rehearsal/id/record/e-03"
+          },
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/assertion/42d5e0647798196d6e03858fced64c3fea86c7ca5dd373d44256e0c8d6c1a7a5",
+            "@type": [
+              "rdf:Statement",
+              "ey:RelationshipAssertion"
+            ],
+            "assertion_scope": "synthetic-fixture",
+            "assertion_status": "normalized",
+            "authority": {
+              "class": "synthetic",
+              "label": "Authored rehearsal source; no public authority",
+              "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+            },
+            "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+            "evidence": [
+              {
+                "locator": "json:/candidates/1",
+                "retrieved_at": "2026-09-05T00:00:00Z",
+                "source_artifact": "sources/candidate-ledger.json",
+                "source_sha256": "d599a075e99965c6a2a43ca5c6e3e7de0a0b42bb0c1627389b5598b15a538f08",
+                "url": "https://example.invalid/okf-plus/rehearsal/sources/candidate-ledger.json",
+                "url_status": "synthetic-identifier-not-dereferenced"
+              }
+            ],
+            "inverse_label": "governs candidate interpretation",
+            "kind": "uses candidate interpretation rule",
+            "label": "uses candidate interpretation rule",
+            "observed_at": "2026-09-05T00:00:00Z",
+            "predicate": "https://example.invalid/okf-plus/rehearsal/vocab/usesCandidateRule",
+            "rights": {
+              "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+              "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+            },
+            "source": "https://example.invalid/okf-plus/rehearsal/id/candidate/c-02",
+            "target": "https://example.invalid/okf-plus/rehearsal/id/rule/candidate-interpretation"
+          }
+        ],
+        "description": "Deliberate competing candidate; do not choose or merge silently.",
+        "facts": {
+          "candidate_id": "C-02",
+          "method": "authored-rehearsal-fixture",
+          "reason": "Deliberate competing candidate; do not choose or merge silently.",
+          "review_status": "pending",
+          "source_ref": "H-01",
+          "target_ref": "E-03"
+        },
+        "fixture_scope": "synthetic-fixture",
+        "generated": {
+          "at": "2026-09-05T00:00:00Z",
+          "by": "process:rehearsal-authoring-v0.1"
+        },
+        "https://example.invalid/okf-plus/rehearsal/vocab/candidateSource": [
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/id/record/h-01"
+          }
+        ],
+        "https://example.invalid/okf-plus/rehearsal/vocab/candidateTarget": [
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/id/record/e-03"
+          }
+        ],
+        "https://example.invalid/okf-plus/rehearsal/vocab/usesCandidateRule": [
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/id/rule/candidate-interpretation"
+          }
+        ],
+        "route": "candidate/c-02",
+        "sources": [
+          {
+            "locator": "json:/candidates/1",
+            "retrieved_at": "2026-09-05T00:00:00Z",
+            "source_artifact": "sources/candidate-ledger.json",
+            "source_sha256": "d599a075e99965c6a2a43ca5c6e3e7de0a0b42bb0c1627389b5598b15a538f08",
+            "url": "https://example.invalid/okf-plus/rehearsal/sources/candidate-ledger.json",
+            "url_status": "synthetic-identifier-not-dereferenced"
+          }
+        ],
+        "status": "experimental",
+        "tags": [
+          "synthetic",
+          "early-years",
+          "rehearsal"
+        ],
+        "title": "C-02 — H-01 / E-03",
+        "type": "Candidate record link"
+      },
+      "generated": {
+        "at": "2026-09-05T00:00:00Z",
+        "by": "process:rehearsal-authoring-v0.1"
+      },
+      "https://example.invalid/okf-plus/rehearsal/vocab/candidateSource": [
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/id/record/h-01"
+        }
+      ],
+      "https://example.invalid/okf-plus/rehearsal/vocab/candidateTarget": [
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/id/record/e-03"
+        }
+      ],
+      "https://example.invalid/okf-plus/rehearsal/vocab/usesCandidateRule": [
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/id/rule/candidate-interpretation"
+        }
+      ],
+      "id": "concepts/candidate/c-02.md",
+      "markdown_links": {
+        "../record/e-03.md": "concepts/record/e-03.md",
+        "../record/h-01.md": "concepts/record/h-01.md",
+        "../rule/candidate-interpretation.md": "concepts/rule/candidate-interpretation.md"
+      },
+      "markdown_references": {},
+      "route": "candidate/c-02",
+      "section": "concepts",
+      "source_path": "concepts/candidate/c-02.md",
+      "sources": [
+        {
+          "locator": "json:/candidates/1",
+          "retrieved_at": "2026-09-05T00:00:00Z",
+          "source_artifact": "sources/candidate-ledger.json",
+          "source_sha256": "d599a075e99965c6a2a43ca5c6e3e7de0a0b42bb0c1627389b5598b15a538f08",
+          "url": "https://example.invalid/okf-plus/rehearsal/sources/candidate-ledger.json",
+          "url_status": "synthetic-identifier-not-dereferenced"
+        }
+      ],
+      "status": "experimental",
+      "tags": [
+        "synthetic",
+        "early-years",
+        "rehearsal"
+      ],
+      "title": "C-02 — H-01 / E-03",
+      "type": "Candidate record link"
+    },
+    "concepts/candidate/c-03.md": {
+      "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+      "@id": "https://example.invalid/okf-plus/rehearsal/id/candidate/c-03",
+      "@type": "ey:CandidateRecordLink",
+      "assertions": [
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/assertion/ed30f899425dde93d161dfdd6631d9298f6f4e038172a56ee731dff175163a5f",
+          "@type": [
+            "rdf:Statement",
+            "ey:RelationshipAssertion"
+          ],
+          "assertion_scope": "synthetic-fixture",
+          "assertion_status": "normalized",
+          "authority": {
+            "class": "synthetic",
+            "label": "Authored rehearsal source; no public authority",
+            "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+          },
+          "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+          "evidence": [
+            {
+              "locator": "json:/candidates/2",
+              "retrieved_at": "2026-09-05T00:00:00Z",
+              "source_artifact": "sources/candidate-ledger.json",
+              "source_sha256": "d599a075e99965c6a2a43ca5c6e3e7de0a0b42bb0c1627389b5598b15a538f08",
+              "url": "https://example.invalid/okf-plus/rehearsal/sources/candidate-ledger.json",
+              "url_status": "synthetic-identifier-not-dereferenced"
+            }
+          ],
+          "inverse_label": "is source of candidate",
+          "kind": "has candidate source record",
+          "label": "has candidate source record",
+          "observed_at": "2026-09-05T00:00:00Z",
+          "predicate": "https://example.invalid/okf-plus/rehearsal/vocab/candidateSource",
+          "rights": {
+            "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+            "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+          },
+          "source": "https://example.invalid/okf-plus/rehearsal/id/candidate/c-03",
+          "target": "https://example.invalid/okf-plus/rehearsal/id/record/h-02"
+        },
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/assertion/719f08754beb94e8ec934d6600950435eb303f25030bf79646f63fd3474ddc72",
+          "@type": [
+            "rdf:Statement",
+            "ey:RelationshipAssertion"
+          ],
+          "assertion_scope": "synthetic-fixture",
+          "assertion_status": "normalized",
+          "authority": {
+            "class": "synthetic",
+            "label": "Authored rehearsal source; no public authority",
+            "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+          },
+          "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+          "evidence": [
+            {
+              "locator": "json:/candidates/2",
+              "retrieved_at": "2026-09-05T00:00:00Z",
+              "source_artifact": "sources/candidate-ledger.json",
+              "source_sha256": "d599a075e99965c6a2a43ca5c6e3e7de0a0b42bb0c1627389b5598b15a538f08",
+              "url": "https://example.invalid/okf-plus/rehearsal/sources/candidate-ledger.json",
+              "url_status": "synthetic-identifier-not-dereferenced"
+            }
+          ],
+          "inverse_label": "is target of candidate",
+          "kind": "has candidate target record",
+          "label": "has candidate target record",
+          "observed_at": "2026-09-05T00:00:00Z",
+          "predicate": "https://example.invalid/okf-plus/rehearsal/vocab/candidateTarget",
+          "rights": {
+            "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+            "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+          },
+          "source": "https://example.invalid/okf-plus/rehearsal/id/candidate/c-03",
+          "target": "https://example.invalid/okf-plus/rehearsal/id/record/e-02"
+        },
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/assertion/9b9f9cf79103d76aea8c30a4515e08f9b8c1f9ff418de7b815e8d49bc07c968e",
+          "@type": [
+            "rdf:Statement",
+            "ey:RelationshipAssertion"
+          ],
+          "assertion_scope": "synthetic-fixture",
+          "assertion_status": "normalized",
+          "authority": {
+            "class": "synthetic",
+            "label": "Authored rehearsal source; no public authority",
+            "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+          },
+          "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+          "evidence": [
+            {
+              "locator": "json:/candidates/2",
+              "retrieved_at": "2026-09-05T00:00:00Z",
+              "source_artifact": "sources/candidate-ledger.json",
+              "source_sha256": "d599a075e99965c6a2a43ca5c6e3e7de0a0b42bb0c1627389b5598b15a538f08",
+              "url": "https://example.invalid/okf-plus/rehearsal/sources/candidate-ledger.json",
+              "url_status": "synthetic-identifier-not-dereferenced"
+            }
+          ],
+          "inverse_label": "governs candidate interpretation",
+          "kind": "uses candidate interpretation rule",
+          "label": "uses candidate interpretation rule",
+          "observed_at": "2026-09-05T00:00:00Z",
+          "predicate": "https://example.invalid/okf-plus/rehearsal/vocab/usesCandidateRule",
+          "rights": {
+            "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+            "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+          },
+          "source": "https://example.invalid/okf-plus/rehearsal/id/candidate/c-03",
+          "target": "https://example.invalid/okf-plus/rehearsal/id/rule/candidate-interpretation"
+        }
+      ],
+      "asset_links": {},
+      "body": "# C-03 — H-02 / E-02\n\n**Synthetic rehearsal only — not an official record or decision.**\n\nReview dates differ. Date difference is preserved and does not prove different people.\n\n## Source facts\n\n```json\n{\n  \"candidate_id\": \"C-03\",\n  \"method\": \"authored-rehearsal-fixture\",\n  \"reason\": \"Review dates differ. Date difference is preserved and does not prove different people.\",\n  \"review_status\": \"conflict-unresolved\",\n  \"source_ref\": \"H-02\",\n  \"target_ref\": \"E-02\"\n}\n```\n\n## Relationships\n\nThis concept **has candidate source record** [H-02 — health record](../record/h-02.md). This is a deterministic projection of synthetic source evidence, not an official assertion.\n\nThis concept **has candidate target record** [E-02 — setting record](../record/e-02.md). This is a deterministic projection of synthetic source evidence, not an official assertion.\n\nThis concept **uses candidate interpretation rule** [Candidate links do not assert identity](../rule/candidate-interpretation.md). This is a deterministic projection of synthetic source evidence, not an official assertion.\n\n\n## Evidence\n\nSource file: `sources/candidate-ledger.json`. Locator: `json:/candidates/2`. SHA-256: `d599a075e99965c6a2a43ca5c6e3e7de0a0b42bb0c1627389b5598b15a538f08`. The example.invalid URL is a synthetic identifier, not a retrieved website.",
+      "description": "Review dates differ. Date difference is preserved and does not prove different people.",
+      "facts": {
+        "candidate_id": "C-03",
+        "method": "authored-rehearsal-fixture",
+        "reason": "Review dates differ. Date difference is preserved and does not prove different people.",
+        "review_status": "conflict-unresolved",
+        "source_ref": "H-02",
+        "target_ref": "E-02"
+      },
+      "fixture_scope": "synthetic-fixture",
+      "frontmatter": {
+        "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+        "@id": "https://example.invalid/okf-plus/rehearsal/id/candidate/c-03",
+        "@type": "ey:CandidateRecordLink",
+        "assertions": [
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/assertion/ed30f899425dde93d161dfdd6631d9298f6f4e038172a56ee731dff175163a5f",
+            "@type": [
+              "rdf:Statement",
+              "ey:RelationshipAssertion"
+            ],
+            "assertion_scope": "synthetic-fixture",
+            "assertion_status": "normalized",
+            "authority": {
+              "class": "synthetic",
+              "label": "Authored rehearsal source; no public authority",
+              "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+            },
+            "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+            "evidence": [
+              {
+                "locator": "json:/candidates/2",
+                "retrieved_at": "2026-09-05T00:00:00Z",
+                "source_artifact": "sources/candidate-ledger.json",
+                "source_sha256": "d599a075e99965c6a2a43ca5c6e3e7de0a0b42bb0c1627389b5598b15a538f08",
+                "url": "https://example.invalid/okf-plus/rehearsal/sources/candidate-ledger.json",
+                "url_status": "synthetic-identifier-not-dereferenced"
+              }
+            ],
+            "inverse_label": "is source of candidate",
+            "kind": "has candidate source record",
+            "label": "has candidate source record",
+            "observed_at": "2026-09-05T00:00:00Z",
+            "predicate": "https://example.invalid/okf-plus/rehearsal/vocab/candidateSource",
+            "rights": {
+              "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+              "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+            },
+            "source": "https://example.invalid/okf-plus/rehearsal/id/candidate/c-03",
+            "target": "https://example.invalid/okf-plus/rehearsal/id/record/h-02"
+          },
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/assertion/719f08754beb94e8ec934d6600950435eb303f25030bf79646f63fd3474ddc72",
+            "@type": [
+              "rdf:Statement",
+              "ey:RelationshipAssertion"
+            ],
+            "assertion_scope": "synthetic-fixture",
+            "assertion_status": "normalized",
+            "authority": {
+              "class": "synthetic",
+              "label": "Authored rehearsal source; no public authority",
+              "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+            },
+            "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+            "evidence": [
+              {
+                "locator": "json:/candidates/2",
+                "retrieved_at": "2026-09-05T00:00:00Z",
+                "source_artifact": "sources/candidate-ledger.json",
+                "source_sha256": "d599a075e99965c6a2a43ca5c6e3e7de0a0b42bb0c1627389b5598b15a538f08",
+                "url": "https://example.invalid/okf-plus/rehearsal/sources/candidate-ledger.json",
+                "url_status": "synthetic-identifier-not-dereferenced"
+              }
+            ],
+            "inverse_label": "is target of candidate",
+            "kind": "has candidate target record",
+            "label": "has candidate target record",
+            "observed_at": "2026-09-05T00:00:00Z",
+            "predicate": "https://example.invalid/okf-plus/rehearsal/vocab/candidateTarget",
+            "rights": {
+              "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+              "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+            },
+            "source": "https://example.invalid/okf-plus/rehearsal/id/candidate/c-03",
+            "target": "https://example.invalid/okf-plus/rehearsal/id/record/e-02"
+          },
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/assertion/9b9f9cf79103d76aea8c30a4515e08f9b8c1f9ff418de7b815e8d49bc07c968e",
+            "@type": [
+              "rdf:Statement",
+              "ey:RelationshipAssertion"
+            ],
+            "assertion_scope": "synthetic-fixture",
+            "assertion_status": "normalized",
+            "authority": {
+              "class": "synthetic",
+              "label": "Authored rehearsal source; no public authority",
+              "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+            },
+            "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+            "evidence": [
+              {
+                "locator": "json:/candidates/2",
+                "retrieved_at": "2026-09-05T00:00:00Z",
+                "source_artifact": "sources/candidate-ledger.json",
+                "source_sha256": "d599a075e99965c6a2a43ca5c6e3e7de0a0b42bb0c1627389b5598b15a538f08",
+                "url": "https://example.invalid/okf-plus/rehearsal/sources/candidate-ledger.json",
+                "url_status": "synthetic-identifier-not-dereferenced"
+              }
+            ],
+            "inverse_label": "governs candidate interpretation",
+            "kind": "uses candidate interpretation rule",
+            "label": "uses candidate interpretation rule",
+            "observed_at": "2026-09-05T00:00:00Z",
+            "predicate": "https://example.invalid/okf-plus/rehearsal/vocab/usesCandidateRule",
+            "rights": {
+              "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+              "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+            },
+            "source": "https://example.invalid/okf-plus/rehearsal/id/candidate/c-03",
+            "target": "https://example.invalid/okf-plus/rehearsal/id/rule/candidate-interpretation"
+          }
+        ],
+        "description": "Review dates differ. Date difference is preserved and does not prove different people.",
+        "facts": {
+          "candidate_id": "C-03",
+          "method": "authored-rehearsal-fixture",
+          "reason": "Review dates differ. Date difference is preserved and does not prove different people.",
+          "review_status": "conflict-unresolved",
+          "source_ref": "H-02",
+          "target_ref": "E-02"
+        },
+        "fixture_scope": "synthetic-fixture",
+        "generated": {
+          "at": "2026-09-05T00:00:00Z",
+          "by": "process:rehearsal-authoring-v0.1"
+        },
+        "https://example.invalid/okf-plus/rehearsal/vocab/candidateSource": [
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/id/record/h-02"
+          }
+        ],
+        "https://example.invalid/okf-plus/rehearsal/vocab/candidateTarget": [
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/id/record/e-02"
+          }
+        ],
+        "https://example.invalid/okf-plus/rehearsal/vocab/usesCandidateRule": [
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/id/rule/candidate-interpretation"
+          }
+        ],
+        "route": "candidate/c-03",
+        "sources": [
+          {
+            "locator": "json:/candidates/2",
+            "retrieved_at": "2026-09-05T00:00:00Z",
+            "source_artifact": "sources/candidate-ledger.json",
+            "source_sha256": "d599a075e99965c6a2a43ca5c6e3e7de0a0b42bb0c1627389b5598b15a538f08",
+            "url": "https://example.invalid/okf-plus/rehearsal/sources/candidate-ledger.json",
+            "url_status": "synthetic-identifier-not-dereferenced"
+          }
+        ],
+        "status": "experimental",
+        "tags": [
+          "synthetic",
+          "early-years",
+          "rehearsal"
+        ],
+        "title": "C-03 — H-02 / E-02",
+        "type": "Candidate record link"
+      },
+      "generated": {
+        "at": "2026-09-05T00:00:00Z",
+        "by": "process:rehearsal-authoring-v0.1"
+      },
+      "https://example.invalid/okf-plus/rehearsal/vocab/candidateSource": [
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/id/record/h-02"
+        }
+      ],
+      "https://example.invalid/okf-plus/rehearsal/vocab/candidateTarget": [
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/id/record/e-02"
+        }
+      ],
+      "https://example.invalid/okf-plus/rehearsal/vocab/usesCandidateRule": [
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/id/rule/candidate-interpretation"
+        }
+      ],
+      "id": "concepts/candidate/c-03.md",
+      "markdown_links": {
+        "../record/e-02.md": "concepts/record/e-02.md",
+        "../record/h-02.md": "concepts/record/h-02.md",
+        "../rule/candidate-interpretation.md": "concepts/rule/candidate-interpretation.md"
+      },
+      "markdown_references": {},
+      "route": "candidate/c-03",
+      "section": "concepts",
+      "source_path": "concepts/candidate/c-03.md",
+      "sources": [
+        {
+          "locator": "json:/candidates/2",
+          "retrieved_at": "2026-09-05T00:00:00Z",
+          "source_artifact": "sources/candidate-ledger.json",
+          "source_sha256": "d599a075e99965c6a2a43ca5c6e3e7de0a0b42bb0c1627389b5598b15a538f08",
+          "url": "https://example.invalid/okf-plus/rehearsal/sources/candidate-ledger.json",
+          "url_status": "synthetic-identifier-not-dereferenced"
+        }
+      ],
+      "status": "experimental",
+      "tags": [
+        "synthetic",
+        "early-years",
+        "rehearsal"
+      ],
+      "title": "C-03 — H-02 / E-02",
+      "type": "Candidate record link"
+    },
+    "concepts/record/e-01.md": {
+      "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+      "@id": "https://example.invalid/okf-plus/rehearsal/id/record/e-01",
+      "@type": "ey:SourceRecord",
+      "assertions": [
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/assertion/bdbce6922d23bc06bcfecbd9ebec437af7f37bd72bd2fa594fd32ef08119c536",
+          "@type": [
+            "rdf:Statement",
+            "ey:RelationshipAssertion"
+          ],
+          "assertion_scope": "synthetic-fixture",
+          "assertion_status": "normalized",
+          "authority": {
+            "class": "synthetic",
+            "label": "Authored rehearsal source; no public authority",
+            "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+          },
+          "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+          "evidence": [
+            {
+              "locator": "json:/records/0",
+              "retrieved_at": "2026-09-05T00:00:00Z",
+              "source_artifact": "sources/settings.json",
+              "source_sha256": "cc05d735768d8bbab5ee97567af4295aa513cbc53ca3080a7d76ebe77caeca51",
+              "url": "https://example.invalid/okf-plus/rehearsal/sources/settings.json",
+              "url_status": "synthetic-identifier-not-dereferenced"
+            }
+          ],
+          "inverse_label": "contains",
+          "kind": "is part of",
+          "label": "is part of",
+          "observed_at": "2026-09-05T00:00:00Z",
+          "predicate": "http://purl.org/dc/terms/isPartOf",
+          "rights": {
+            "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+            "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+          },
+          "source": "https://example.invalid/okf-plus/rehearsal/id/record/e-01",
+          "target": "https://example.invalid/okf-plus/rehearsal/id/source/setting"
+        }
+      ],
+      "asset_links": {},
+      "body": "# E-01 — setting record\n\n**Synthetic rehearsal only — not an official record or decision.**\n\nA setting record is only a candidate link to H-01.\n\n## Source facts\n\n```json\n{\n  \"capture_state\": \"recorded\",\n  \"concern_state\": \"concern-recorded\",\n  \"local_subject\": \"SYN-E-101\",\n  \"note\": \"A setting record is only a candidate link to H-01.\",\n  \"record_id\": \"E-01\",\n  \"review_date\": \"2026-08-20\"\n}\n```\n\n## Relationships\n\nThis concept **is part of** [Setting synthetic extract](../source/setting.md). This is a deterministic projection of synthetic source evidence, not an official assertion.\n\n\n## Evidence\n\nSource file: `sources/settings.json`. Locator: `json:/records/0`. SHA-256: `cc05d735768d8bbab5ee97567af4295aa513cbc53ca3080a7d76ebe77caeca51`. The example.invalid URL is a synthetic identifier, not a retrieved website.",
+      "description": "A setting record is only a candidate link to H-01.",
+      "facts": {
+        "capture_state": "recorded",
+        "concern_state": "concern-recorded",
+        "local_subject": "SYN-E-101",
+        "note": "A setting record is only a candidate link to H-01.",
+        "record_id": "E-01",
+        "review_date": "2026-08-20"
+      },
+      "fixture_scope": "synthetic-fixture",
+      "frontmatter": {
+        "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+        "@id": "https://example.invalid/okf-plus/rehearsal/id/record/e-01",
+        "@type": "ey:SourceRecord",
+        "assertions": [
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/assertion/bdbce6922d23bc06bcfecbd9ebec437af7f37bd72bd2fa594fd32ef08119c536",
+            "@type": [
+              "rdf:Statement",
+              "ey:RelationshipAssertion"
+            ],
+            "assertion_scope": "synthetic-fixture",
+            "assertion_status": "normalized",
+            "authority": {
+              "class": "synthetic",
+              "label": "Authored rehearsal source; no public authority",
+              "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+            },
+            "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+            "evidence": [
+              {
+                "locator": "json:/records/0",
+                "retrieved_at": "2026-09-05T00:00:00Z",
+                "source_artifact": "sources/settings.json",
+                "source_sha256": "cc05d735768d8bbab5ee97567af4295aa513cbc53ca3080a7d76ebe77caeca51",
+                "url": "https://example.invalid/okf-plus/rehearsal/sources/settings.json",
+                "url_status": "synthetic-identifier-not-dereferenced"
+              }
+            ],
+            "inverse_label": "contains",
+            "kind": "is part of",
+            "label": "is part of",
+            "observed_at": "2026-09-05T00:00:00Z",
+            "predicate": "http://purl.org/dc/terms/isPartOf",
+            "rights": {
+              "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+              "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+            },
+            "source": "https://example.invalid/okf-plus/rehearsal/id/record/e-01",
+            "target": "https://example.invalid/okf-plus/rehearsal/id/source/setting"
+          }
+        ],
+        "description": "A setting record is only a candidate link to H-01.",
+        "facts": {
+          "capture_state": "recorded",
+          "concern_state": "concern-recorded",
+          "local_subject": "SYN-E-101",
+          "note": "A setting record is only a candidate link to H-01.",
+          "record_id": "E-01",
+          "review_date": "2026-08-20"
+        },
+        "fixture_scope": "synthetic-fixture",
+        "generated": {
+          "at": "2026-09-05T00:00:00Z",
+          "by": "process:rehearsal-authoring-v0.1"
+        },
+        "http://purl.org/dc/terms/isPartOf": [
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/id/source/setting"
+          }
+        ],
+        "route": "record/e-01",
+        "sources": [
+          {
+            "locator": "json:/records/0",
+            "retrieved_at": "2026-09-05T00:00:00Z",
+            "source_artifact": "sources/settings.json",
+            "source_sha256": "cc05d735768d8bbab5ee97567af4295aa513cbc53ca3080a7d76ebe77caeca51",
+            "url": "https://example.invalid/okf-plus/rehearsal/sources/settings.json",
+            "url_status": "synthetic-identifier-not-dereferenced"
+          }
+        ],
+        "status": "experimental",
+        "tags": [
+          "synthetic",
+          "early-years",
+          "rehearsal"
+        ],
+        "title": "E-01 — setting record",
+        "type": "Source record"
+      },
+      "generated": {
+        "at": "2026-09-05T00:00:00Z",
+        "by": "process:rehearsal-authoring-v0.1"
+      },
+      "http://purl.org/dc/terms/isPartOf": [
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/id/source/setting"
+        }
+      ],
+      "id": "concepts/record/e-01.md",
+      "markdown_links": {
+        "../source/setting.md": "concepts/source/setting.md"
+      },
+      "markdown_references": {},
+      "route": "record/e-01",
+      "section": "concepts",
+      "source_path": "concepts/record/e-01.md",
+      "sources": [
+        {
+          "locator": "json:/records/0",
+          "retrieved_at": "2026-09-05T00:00:00Z",
+          "source_artifact": "sources/settings.json",
+          "source_sha256": "cc05d735768d8bbab5ee97567af4295aa513cbc53ca3080a7d76ebe77caeca51",
+          "url": "https://example.invalid/okf-plus/rehearsal/sources/settings.json",
+          "url_status": "synthetic-identifier-not-dereferenced"
+        }
+      ],
+      "status": "experimental",
+      "tags": [
+        "synthetic",
+        "early-years",
+        "rehearsal"
+      ],
+      "title": "E-01 — setting record",
+      "type": "Source record"
+    },
+    "concepts/record/e-02.md": {
+      "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+      "@id": "https://example.invalid/okf-plus/rehearsal/id/record/e-02",
+      "@type": "ey:SourceRecord",
+      "assertions": [
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/assertion/69b1aef3db95b38730361dcff096fa554db32eb1e64f06570b5a5cd2b48cd3d1",
+          "@type": [
+            "rdf:Statement",
+            "ey:RelationshipAssertion"
+          ],
+          "assertion_scope": "synthetic-fixture",
+          "assertion_status": "normalized",
+          "authority": {
+            "class": "synthetic",
+            "label": "Authored rehearsal source; no public authority",
+            "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+          },
+          "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+          "evidence": [
+            {
+              "locator": "json:/records/1",
+              "retrieved_at": "2026-09-05T00:00:00Z",
+              "source_artifact": "sources/settings.json",
+              "source_sha256": "cc05d735768d8bbab5ee97567af4295aa513cbc53ca3080a7d76ebe77caeca51",
+              "url": "https://example.invalid/okf-plus/rehearsal/sources/settings.json",
+              "url_status": "synthetic-identifier-not-dereferenced"
+            }
+          ],
+          "inverse_label": "contains",
+          "kind": "is part of",
+          "label": "is part of",
+          "observed_at": "2026-09-05T00:00:00Z",
+          "predicate": "http://purl.org/dc/terms/isPartOf",
+          "rights": {
+            "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+            "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+          },
+          "source": "https://example.invalid/okf-plus/rehearsal/id/record/e-02",
+          "target": "https://example.invalid/okf-plus/rehearsal/id/source/setting"
+        }
+      ],
+      "asset_links": {},
+      "body": "# E-02 — setting record\n\n**Synthetic rehearsal only — not an official record or decision.**\n\nDifferent review date from H-02; both dates must survive the projection.\n\n## Source facts\n\n```json\n{\n  \"capture_state\": \"recorded\",\n  \"concern_state\": \"unknown\",\n  \"local_subject\": \"SYN-E-102\",\n  \"note\": \"Different review date from H-02; both dates must survive the projection.\",\n  \"record_id\": \"E-02\",\n  \"review_date\": \"2026-08-24\"\n}\n```\n\n## Relationships\n\nThis concept **is part of** [Setting synthetic extract](../source/setting.md). This is a deterministic projection of synthetic source evidence, not an official assertion.\n\n\n## Evidence\n\nSource file: `sources/settings.json`. Locator: `json:/records/1`. SHA-256: `cc05d735768d8bbab5ee97567af4295aa513cbc53ca3080a7d76ebe77caeca51`. The example.invalid URL is a synthetic identifier, not a retrieved website.",
+      "description": "Different review date from H-02; both dates must survive the projection.",
+      "facts": {
+        "capture_state": "recorded",
+        "concern_state": "unknown",
+        "local_subject": "SYN-E-102",
+        "note": "Different review date from H-02; both dates must survive the projection.",
+        "record_id": "E-02",
+        "review_date": "2026-08-24"
+      },
+      "fixture_scope": "synthetic-fixture",
+      "frontmatter": {
+        "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+        "@id": "https://example.invalid/okf-plus/rehearsal/id/record/e-02",
+        "@type": "ey:SourceRecord",
+        "assertions": [
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/assertion/69b1aef3db95b38730361dcff096fa554db32eb1e64f06570b5a5cd2b48cd3d1",
+            "@type": [
+              "rdf:Statement",
+              "ey:RelationshipAssertion"
+            ],
+            "assertion_scope": "synthetic-fixture",
+            "assertion_status": "normalized",
+            "authority": {
+              "class": "synthetic",
+              "label": "Authored rehearsal source; no public authority",
+              "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+            },
+            "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+            "evidence": [
+              {
+                "locator": "json:/records/1",
+                "retrieved_at": "2026-09-05T00:00:00Z",
+                "source_artifact": "sources/settings.json",
+                "source_sha256": "cc05d735768d8bbab5ee97567af4295aa513cbc53ca3080a7d76ebe77caeca51",
+                "url": "https://example.invalid/okf-plus/rehearsal/sources/settings.json",
+                "url_status": "synthetic-identifier-not-dereferenced"
+              }
+            ],
+            "inverse_label": "contains",
+            "kind": "is part of",
+            "label": "is part of",
+            "observed_at": "2026-09-05T00:00:00Z",
+            "predicate": "http://purl.org/dc/terms/isPartOf",
+            "rights": {
+              "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+              "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+            },
+            "source": "https://example.invalid/okf-plus/rehearsal/id/record/e-02",
+            "target": "https://example.invalid/okf-plus/rehearsal/id/source/setting"
+          }
+        ],
+        "description": "Different review date from H-02; both dates must survive the projection.",
+        "facts": {
+          "capture_state": "recorded",
+          "concern_state": "unknown",
+          "local_subject": "SYN-E-102",
+          "note": "Different review date from H-02; both dates must survive the projection.",
+          "record_id": "E-02",
+          "review_date": "2026-08-24"
+        },
+        "fixture_scope": "synthetic-fixture",
+        "generated": {
+          "at": "2026-09-05T00:00:00Z",
+          "by": "process:rehearsal-authoring-v0.1"
+        },
+        "http://purl.org/dc/terms/isPartOf": [
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/id/source/setting"
+          }
+        ],
+        "route": "record/e-02",
+        "sources": [
+          {
+            "locator": "json:/records/1",
+            "retrieved_at": "2026-09-05T00:00:00Z",
+            "source_artifact": "sources/settings.json",
+            "source_sha256": "cc05d735768d8bbab5ee97567af4295aa513cbc53ca3080a7d76ebe77caeca51",
+            "url": "https://example.invalid/okf-plus/rehearsal/sources/settings.json",
+            "url_status": "synthetic-identifier-not-dereferenced"
+          }
+        ],
+        "status": "experimental",
+        "tags": [
+          "synthetic",
+          "early-years",
+          "rehearsal"
+        ],
+        "title": "E-02 — setting record",
+        "type": "Source record"
+      },
+      "generated": {
+        "at": "2026-09-05T00:00:00Z",
+        "by": "process:rehearsal-authoring-v0.1"
+      },
+      "http://purl.org/dc/terms/isPartOf": [
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/id/source/setting"
+        }
+      ],
+      "id": "concepts/record/e-02.md",
+      "markdown_links": {
+        "../source/setting.md": "concepts/source/setting.md"
+      },
+      "markdown_references": {},
+      "route": "record/e-02",
+      "section": "concepts",
+      "source_path": "concepts/record/e-02.md",
+      "sources": [
+        {
+          "locator": "json:/records/1",
+          "retrieved_at": "2026-09-05T00:00:00Z",
+          "source_artifact": "sources/settings.json",
+          "source_sha256": "cc05d735768d8bbab5ee97567af4295aa513cbc53ca3080a7d76ebe77caeca51",
+          "url": "https://example.invalid/okf-plus/rehearsal/sources/settings.json",
+          "url_status": "synthetic-identifier-not-dereferenced"
+        }
+      ],
+      "status": "experimental",
+      "tags": [
+        "synthetic",
+        "early-years",
+        "rehearsal"
+      ],
+      "title": "E-02 — setting record",
+      "type": "Source record"
+    },
+    "concepts/record/e-03.md": {
+      "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+      "@id": "https://example.invalid/okf-plus/rehearsal/id/record/e-03",
+      "@type": "ey:SourceRecord",
+      "assertions": [
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/assertion/0a04d613ba0019576a45ba089d1a38aff1911078a4c7adbb43be375bb060bf77",
+          "@type": [
+            "rdf:Statement",
+            "ey:RelationshipAssertion"
+          ],
+          "assertion_scope": "synthetic-fixture",
+          "assertion_status": "normalized",
+          "authority": {
+            "class": "synthetic",
+            "label": "Authored rehearsal source; no public authority",
+            "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+          },
+          "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+          "evidence": [
+            {
+              "locator": "json:/records/2",
+              "retrieved_at": "2026-09-05T00:00:00Z",
+              "source_artifact": "sources/settings.json",
+              "source_sha256": "cc05d735768d8bbab5ee97567af4295aa513cbc53ca3080a7d76ebe77caeca51",
+              "url": "https://example.invalid/okf-plus/rehearsal/sources/settings.json",
+              "url_status": "synthetic-identifier-not-dereferenced"
+            }
+          ],
+          "inverse_label": "contains",
+          "kind": "is part of",
+          "label": "is part of",
+          "observed_at": "2026-09-05T00:00:00Z",
+          "predicate": "http://purl.org/dc/terms/isPartOf",
+          "rights": {
+            "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+            "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+          },
+          "source": "https://example.invalid/okf-plus/rehearsal/id/record/e-03",
+          "target": "https://example.invalid/okf-plus/rehearsal/id/source/setting"
+        }
+      ],
+      "asset_links": {},
+      "body": "# E-03 — setting record\n\n**Synthetic rehearsal only — not an official record or decision.**\n\nSecond candidate for H-01. Similarity does not establish identity.\n\n## Source facts\n\n```json\n{\n  \"capture_state\": \"recorded\",\n  \"concern_state\": \"unknown\",\n  \"local_subject\": \"SYN-E-103\",\n  \"note\": \"Second candidate for H-01. Similarity does not establish identity.\",\n  \"record_id\": \"E-03\",\n  \"review_date\": \"2026-08-20\"\n}\n```\n\n## Relationships\n\nThis concept **is part of** [Setting synthetic extract](../source/setting.md). This is a deterministic projection of synthetic source evidence, not an official assertion.\n\n\n## Evidence\n\nSource file: `sources/settings.json`. Locator: `json:/records/2`. SHA-256: `cc05d735768d8bbab5ee97567af4295aa513cbc53ca3080a7d76ebe77caeca51`. The example.invalid URL is a synthetic identifier, not a retrieved website.",
+      "description": "Second candidate for H-01. Similarity does not establish identity.",
+      "facts": {
+        "capture_state": "recorded",
+        "concern_state": "unknown",
+        "local_subject": "SYN-E-103",
+        "note": "Second candidate for H-01. Similarity does not establish identity.",
+        "record_id": "E-03",
+        "review_date": "2026-08-20"
+      },
+      "fixture_scope": "synthetic-fixture",
+      "frontmatter": {
+        "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+        "@id": "https://example.invalid/okf-plus/rehearsal/id/record/e-03",
+        "@type": "ey:SourceRecord",
+        "assertions": [
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/assertion/0a04d613ba0019576a45ba089d1a38aff1911078a4c7adbb43be375bb060bf77",
+            "@type": [
+              "rdf:Statement",
+              "ey:RelationshipAssertion"
+            ],
+            "assertion_scope": "synthetic-fixture",
+            "assertion_status": "normalized",
+            "authority": {
+              "class": "synthetic",
+              "label": "Authored rehearsal source; no public authority",
+              "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+            },
+            "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+            "evidence": [
+              {
+                "locator": "json:/records/2",
+                "retrieved_at": "2026-09-05T00:00:00Z",
+                "source_artifact": "sources/settings.json",
+                "source_sha256": "cc05d735768d8bbab5ee97567af4295aa513cbc53ca3080a7d76ebe77caeca51",
+                "url": "https://example.invalid/okf-plus/rehearsal/sources/settings.json",
+                "url_status": "synthetic-identifier-not-dereferenced"
+              }
+            ],
+            "inverse_label": "contains",
+            "kind": "is part of",
+            "label": "is part of",
+            "observed_at": "2026-09-05T00:00:00Z",
+            "predicate": "http://purl.org/dc/terms/isPartOf",
+            "rights": {
+              "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+              "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+            },
+            "source": "https://example.invalid/okf-plus/rehearsal/id/record/e-03",
+            "target": "https://example.invalid/okf-plus/rehearsal/id/source/setting"
+          }
+        ],
+        "description": "Second candidate for H-01. Similarity does not establish identity.",
+        "facts": {
+          "capture_state": "recorded",
+          "concern_state": "unknown",
+          "local_subject": "SYN-E-103",
+          "note": "Second candidate for H-01. Similarity does not establish identity.",
+          "record_id": "E-03",
+          "review_date": "2026-08-20"
+        },
+        "fixture_scope": "synthetic-fixture",
+        "generated": {
+          "at": "2026-09-05T00:00:00Z",
+          "by": "process:rehearsal-authoring-v0.1"
+        },
+        "http://purl.org/dc/terms/isPartOf": [
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/id/source/setting"
+          }
+        ],
+        "route": "record/e-03",
+        "sources": [
+          {
+            "locator": "json:/records/2",
+            "retrieved_at": "2026-09-05T00:00:00Z",
+            "source_artifact": "sources/settings.json",
+            "source_sha256": "cc05d735768d8bbab5ee97567af4295aa513cbc53ca3080a7d76ebe77caeca51",
+            "url": "https://example.invalid/okf-plus/rehearsal/sources/settings.json",
+            "url_status": "synthetic-identifier-not-dereferenced"
+          }
+        ],
+        "status": "experimental",
+        "tags": [
+          "synthetic",
+          "early-years",
+          "rehearsal"
+        ],
+        "title": "E-03 — setting record",
+        "type": "Source record"
+      },
+      "generated": {
+        "at": "2026-09-05T00:00:00Z",
+        "by": "process:rehearsal-authoring-v0.1"
+      },
+      "http://purl.org/dc/terms/isPartOf": [
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/id/source/setting"
+        }
+      ],
+      "id": "concepts/record/e-03.md",
+      "markdown_links": {
+        "../source/setting.md": "concepts/source/setting.md"
+      },
+      "markdown_references": {},
+      "route": "record/e-03",
+      "section": "concepts",
+      "source_path": "concepts/record/e-03.md",
+      "sources": [
+        {
+          "locator": "json:/records/2",
+          "retrieved_at": "2026-09-05T00:00:00Z",
+          "source_artifact": "sources/settings.json",
+          "source_sha256": "cc05d735768d8bbab5ee97567af4295aa513cbc53ca3080a7d76ebe77caeca51",
+          "url": "https://example.invalid/okf-plus/rehearsal/sources/settings.json",
+          "url_status": "synthetic-identifier-not-dereferenced"
+        }
+      ],
+      "status": "experimental",
+      "tags": [
+        "synthetic",
+        "early-years",
+        "rehearsal"
+      ],
+      "title": "E-03 — setting record",
+      "type": "Source record"
+    },
+    "concepts/record/e-04.md": {
+      "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+      "@id": "https://example.invalid/okf-plus/rehearsal/id/record/e-04",
+      "@type": "ey:SourceRecord",
+      "assertions": [
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/assertion/e7855bb2e57d3e6c88e972e514d59680a251e5badeaa0473bc8e7c5724507fb5",
+          "@type": [
+            "rdf:Statement",
+            "ey:RelationshipAssertion"
+          ],
+          "assertion_scope": "synthetic-fixture",
+          "assertion_status": "normalized",
+          "authority": {
+            "class": "synthetic",
+            "label": "Authored rehearsal source; no public authority",
+            "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+          },
+          "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+          "evidence": [
+            {
+              "locator": "json:/records/3",
+              "retrieved_at": "2026-09-05T00:00:00Z",
+              "source_artifact": "sources/settings.json",
+              "source_sha256": "cc05d735768d8bbab5ee97567af4295aa513cbc53ca3080a7d76ebe77caeca51",
+              "url": "https://example.invalid/okf-plus/rehearsal/sources/settings.json",
+              "url_status": "synthetic-identifier-not-dereferenced"
+            }
+          ],
+          "inverse_label": "contains",
+          "kind": "is part of",
+          "label": "is part of",
+          "observed_at": "2026-09-05T00:00:00Z",
+          "predicate": "http://purl.org/dc/terms/isPartOf",
+          "rights": {
+            "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+            "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+          },
+          "source": "https://example.invalid/okf-plus/rehearsal/id/record/e-04",
+          "target": "https://example.invalid/okf-plus/rehearsal/id/source/setting"
+        }
+      ],
+      "asset_links": {},
+      "body": "# E-04 — setting record\n\n**Synthetic rehearsal only — not an official record or decision.**\n\nThe supplied extract reports no review record; contact and need remain unknown. <script>window.__fixtureExecuted=true</script>\n\n## Source facts\n\n```json\n{\n  \"capture_state\": \"no-record\",\n  \"concern_state\": \"unknown\",\n  \"local_subject\": \"SYN-E-104\",\n  \"note\": \"The supplied extract reports no review record; contact and need remain unknown. <script>window.__fixtureExecuted=true</script>\",\n  \"record_id\": \"E-04\",\n  \"review_date\": null\n}\n```\n\n## Relationships\n\nThis concept **is part of** [Setting synthetic extract](../source/setting.md). This is a deterministic projection of synthetic source evidence, not an official assertion.\n\n\n## Evidence\n\nSource file: `sources/settings.json`. Locator: `json:/records/3`. SHA-256: `cc05d735768d8bbab5ee97567af4295aa513cbc53ca3080a7d76ebe77caeca51`. The example.invalid URL is a synthetic identifier, not a retrieved website.",
+      "description": "The supplied extract reports no review record; contact and need remain unknown. <script>window.__fixtureExecuted=true</script>",
+      "facts": {
+        "capture_state": "no-record",
+        "concern_state": "unknown",
+        "local_subject": "SYN-E-104",
+        "note": "The supplied extract reports no review record; contact and need remain unknown. <script>window.__fixtureExecuted=true</script>",
+        "record_id": "E-04",
+        "review_date": null
+      },
+      "fixture_scope": "synthetic-fixture",
+      "frontmatter": {
+        "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+        "@id": "https://example.invalid/okf-plus/rehearsal/id/record/e-04",
+        "@type": "ey:SourceRecord",
+        "assertions": [
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/assertion/e7855bb2e57d3e6c88e972e514d59680a251e5badeaa0473bc8e7c5724507fb5",
+            "@type": [
+              "rdf:Statement",
+              "ey:RelationshipAssertion"
+            ],
+            "assertion_scope": "synthetic-fixture",
+            "assertion_status": "normalized",
+            "authority": {
+              "class": "synthetic",
+              "label": "Authored rehearsal source; no public authority",
+              "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+            },
+            "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+            "evidence": [
+              {
+                "locator": "json:/records/3",
+                "retrieved_at": "2026-09-05T00:00:00Z",
+                "source_artifact": "sources/settings.json",
+                "source_sha256": "cc05d735768d8bbab5ee97567af4295aa513cbc53ca3080a7d76ebe77caeca51",
+                "url": "https://example.invalid/okf-plus/rehearsal/sources/settings.json",
+                "url_status": "synthetic-identifier-not-dereferenced"
+              }
+            ],
+            "inverse_label": "contains",
+            "kind": "is part of",
+            "label": "is part of",
+            "observed_at": "2026-09-05T00:00:00Z",
+            "predicate": "http://purl.org/dc/terms/isPartOf",
+            "rights": {
+              "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+              "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+            },
+            "source": "https://example.invalid/okf-plus/rehearsal/id/record/e-04",
+            "target": "https://example.invalid/okf-plus/rehearsal/id/source/setting"
+          }
+        ],
+        "description": "The supplied extract reports no review record; contact and need remain unknown. <script>window.__fixtureExecuted=true</script>",
+        "facts": {
+          "capture_state": "no-record",
+          "concern_state": "unknown",
+          "local_subject": "SYN-E-104",
+          "note": "The supplied extract reports no review record; contact and need remain unknown. <script>window.__fixtureExecuted=true</script>",
+          "record_id": "E-04",
+          "review_date": null
+        },
+        "fixture_scope": "synthetic-fixture",
+        "generated": {
+          "at": "2026-09-05T00:00:00Z",
+          "by": "process:rehearsal-authoring-v0.1"
+        },
+        "http://purl.org/dc/terms/isPartOf": [
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/id/source/setting"
+          }
+        ],
+        "route": "record/e-04",
+        "sources": [
+          {
+            "locator": "json:/records/3",
+            "retrieved_at": "2026-09-05T00:00:00Z",
+            "source_artifact": "sources/settings.json",
+            "source_sha256": "cc05d735768d8bbab5ee97567af4295aa513cbc53ca3080a7d76ebe77caeca51",
+            "url": "https://example.invalid/okf-plus/rehearsal/sources/settings.json",
+            "url_status": "synthetic-identifier-not-dereferenced"
+          }
+        ],
+        "status": "experimental",
+        "tags": [
+          "synthetic",
+          "early-years",
+          "rehearsal"
+        ],
+        "title": "E-04 — setting record",
+        "type": "Source record"
+      },
+      "generated": {
+        "at": "2026-09-05T00:00:00Z",
+        "by": "process:rehearsal-authoring-v0.1"
+      },
+      "http://purl.org/dc/terms/isPartOf": [
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/id/source/setting"
+        }
+      ],
+      "id": "concepts/record/e-04.md",
+      "markdown_links": {
+        "../source/setting.md": "concepts/source/setting.md"
+      },
+      "markdown_references": {},
+      "route": "record/e-04",
+      "section": "concepts",
+      "source_path": "concepts/record/e-04.md",
+      "sources": [
+        {
+          "locator": "json:/records/3",
+          "retrieved_at": "2026-09-05T00:00:00Z",
+          "source_artifact": "sources/settings.json",
+          "source_sha256": "cc05d735768d8bbab5ee97567af4295aa513cbc53ca3080a7d76ebe77caeca51",
+          "url": "https://example.invalid/okf-plus/rehearsal/sources/settings.json",
+          "url_status": "synthetic-identifier-not-dereferenced"
+        }
+      ],
+      "status": "experimental",
+      "tags": [
+        "synthetic",
+        "early-years",
+        "rehearsal"
+      ],
+      "title": "E-04 — setting record",
+      "type": "Source record"
+    },
+    "concepts/record/h-01.md": {
+      "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+      "@id": "https://example.invalid/okf-plus/rehearsal/id/record/h-01",
+      "@type": "ey:SourceRecord",
+      "assertions": [
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/assertion/7d5a7b54d56819605525c6bdeb9107f5ccebded2bc047d74cac3b486796c22f7",
+          "@type": [
+            "rdf:Statement",
+            "ey:RelationshipAssertion"
+          ],
+          "assertion_scope": "synthetic-fixture",
+          "assertion_status": "normalized",
+          "authority": {
+            "class": "synthetic",
+            "label": "Authored rehearsal source; no public authority",
+            "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+          },
+          "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+          "evidence": [
+            {
+              "locator": "csv:record_id=H-01",
+              "retrieved_at": "2026-09-05T00:00:00Z",
+              "source_artifact": "sources/health.csv",
+              "source_sha256": "6f004a84a9d082430a44f8466ccb39f8ffddd811a630a6fe0ee8f7bd90f3d2ce",
+              "url": "https://example.invalid/okf-plus/rehearsal/sources/health.csv",
+              "url_status": "synthetic-identifier-not-dereferenced"
+            }
+          ],
+          "inverse_label": "contains",
+          "kind": "is part of",
+          "label": "is part of",
+          "observed_at": "2026-09-05T00:00:00Z",
+          "predicate": "http://purl.org/dc/terms/isPartOf",
+          "rights": {
+            "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+            "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+          },
+          "source": "https://example.invalid/okf-plus/rehearsal/id/record/h-01",
+          "target": "https://example.invalid/okf-plus/rehearsal/id/source/health"
+        }
+      ],
+      "asset_links": {},
+      "body": "# H-01 — health record\n\n**Synthetic rehearsal only — not an official record or decision.**\n\nSynthetic review recommends discussing support; it records no referral submission.\n\n## Source facts\n\n```json\n{\n  \"capture_state\": \"recorded\",\n  \"concern_state\": \"concern-recorded\",\n  \"local_subject\": \"SYN-H-001\",\n  \"note\": \"Synthetic review recommends discussing support; it records no referral submission.\",\n  \"record_id\": \"H-01\",\n  \"review_date\": \"2026-08-20\"\n}\n```\n\n## Relationships\n\nThis concept **is part of** [Health synthetic extract](../source/health.md). This is a deterministic projection of synthetic source evidence, not an official assertion.\n\n\n## Evidence\n\nSource file: `sources/health.csv`. Locator: `csv:record_id=H-01`. SHA-256: `6f004a84a9d082430a44f8466ccb39f8ffddd811a630a6fe0ee8f7bd90f3d2ce`. The example.invalid URL is a synthetic identifier, not a retrieved website.",
+      "description": "Synthetic review recommends discussing support; it records no referral submission.",
+      "facts": {
+        "capture_state": "recorded",
+        "concern_state": "concern-recorded",
+        "local_subject": "SYN-H-001",
+        "note": "Synthetic review recommends discussing support; it records no referral submission.",
+        "record_id": "H-01",
+        "review_date": "2026-08-20"
+      },
+      "fixture_scope": "synthetic-fixture",
+      "frontmatter": {
+        "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+        "@id": "https://example.invalid/okf-plus/rehearsal/id/record/h-01",
+        "@type": "ey:SourceRecord",
+        "assertions": [
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/assertion/7d5a7b54d56819605525c6bdeb9107f5ccebded2bc047d74cac3b486796c22f7",
+            "@type": [
+              "rdf:Statement",
+              "ey:RelationshipAssertion"
+            ],
+            "assertion_scope": "synthetic-fixture",
+            "assertion_status": "normalized",
+            "authority": {
+              "class": "synthetic",
+              "label": "Authored rehearsal source; no public authority",
+              "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+            },
+            "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+            "evidence": [
+              {
+                "locator": "csv:record_id=H-01",
+                "retrieved_at": "2026-09-05T00:00:00Z",
+                "source_artifact": "sources/health.csv",
+                "source_sha256": "6f004a84a9d082430a44f8466ccb39f8ffddd811a630a6fe0ee8f7bd90f3d2ce",
+                "url": "https://example.invalid/okf-plus/rehearsal/sources/health.csv",
+                "url_status": "synthetic-identifier-not-dereferenced"
+              }
+            ],
+            "inverse_label": "contains",
+            "kind": "is part of",
+            "label": "is part of",
+            "observed_at": "2026-09-05T00:00:00Z",
+            "predicate": "http://purl.org/dc/terms/isPartOf",
+            "rights": {
+              "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+              "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+            },
+            "source": "https://example.invalid/okf-plus/rehearsal/id/record/h-01",
+            "target": "https://example.invalid/okf-plus/rehearsal/id/source/health"
+          }
+        ],
+        "description": "Synthetic review recommends discussing support; it records no referral submission.",
+        "facts": {
+          "capture_state": "recorded",
+          "concern_state": "concern-recorded",
+          "local_subject": "SYN-H-001",
+          "note": "Synthetic review recommends discussing support; it records no referral submission.",
+          "record_id": "H-01",
+          "review_date": "2026-08-20"
+        },
+        "fixture_scope": "synthetic-fixture",
+        "generated": {
+          "at": "2026-09-05T00:00:00Z",
+          "by": "process:rehearsal-authoring-v0.1"
+        },
+        "http://purl.org/dc/terms/isPartOf": [
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/id/source/health"
+          }
+        ],
+        "route": "record/h-01",
+        "sources": [
+          {
+            "locator": "csv:record_id=H-01",
+            "retrieved_at": "2026-09-05T00:00:00Z",
+            "source_artifact": "sources/health.csv",
+            "source_sha256": "6f004a84a9d082430a44f8466ccb39f8ffddd811a630a6fe0ee8f7bd90f3d2ce",
+            "url": "https://example.invalid/okf-plus/rehearsal/sources/health.csv",
+            "url_status": "synthetic-identifier-not-dereferenced"
+          }
+        ],
+        "status": "experimental",
+        "tags": [
+          "synthetic",
+          "early-years",
+          "rehearsal"
+        ],
+        "title": "H-01 — health record",
+        "type": "Source record"
+      },
+      "generated": {
+        "at": "2026-09-05T00:00:00Z",
+        "by": "process:rehearsal-authoring-v0.1"
+      },
+      "http://purl.org/dc/terms/isPartOf": [
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/id/source/health"
+        }
+      ],
+      "id": "concepts/record/h-01.md",
+      "markdown_links": {
+        "../source/health.md": "concepts/source/health.md"
+      },
+      "markdown_references": {},
+      "route": "record/h-01",
+      "section": "concepts",
+      "source_path": "concepts/record/h-01.md",
+      "sources": [
+        {
+          "locator": "csv:record_id=H-01",
+          "retrieved_at": "2026-09-05T00:00:00Z",
+          "source_artifact": "sources/health.csv",
+          "source_sha256": "6f004a84a9d082430a44f8466ccb39f8ffddd811a630a6fe0ee8f7bd90f3d2ce",
+          "url": "https://example.invalid/okf-plus/rehearsal/sources/health.csv",
+          "url_status": "synthetic-identifier-not-dereferenced"
+        }
+      ],
+      "status": "experimental",
+      "tags": [
+        "synthetic",
+        "early-years",
+        "rehearsal"
+      ],
+      "title": "H-01 — health record",
+      "type": "Source record"
+    },
+    "concepts/record/h-02.md": {
+      "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+      "@id": "https://example.invalid/okf-plus/rehearsal/id/record/h-02",
+      "@type": "ey:SourceRecord",
+      "assertions": [
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/assertion/2402fa4a368021168ad33a48e5d2b06e193f671d4a0c02f7519be1bbf22afc83",
+          "@type": [
+            "rdf:Statement",
+            "ey:RelationshipAssertion"
+          ],
+          "assertion_scope": "synthetic-fixture",
+          "assertion_status": "normalized",
+          "authority": {
+            "class": "synthetic",
+            "label": "Authored rehearsal source; no public authority",
+            "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+          },
+          "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+          "evidence": [
+            {
+              "locator": "csv:record_id=H-02",
+              "retrieved_at": "2026-09-05T00:00:00Z",
+              "source_artifact": "sources/health.csv",
+              "source_sha256": "6f004a84a9d082430a44f8466ccb39f8ffddd811a630a6fe0ee8f7bd90f3d2ce",
+              "url": "https://example.invalid/okf-plus/rehearsal/sources/health.csv",
+              "url_status": "synthetic-identifier-not-dereferenced"
+            }
+          ],
+          "inverse_label": "contains",
+          "kind": "is part of",
+          "label": "is part of",
+          "observed_at": "2026-09-05T00:00:00Z",
+          "predicate": "http://purl.org/dc/terms/isPartOf",
+          "rights": {
+            "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+            "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+          },
+          "source": "https://example.invalid/okf-plus/rehearsal/id/record/h-02",
+          "target": "https://example.invalid/okf-plus/rehearsal/id/source/health"
+        }
+      ],
+      "asset_links": {},
+      "body": "# H-02 — health record\n\n**Synthetic rehearsal only — not an official record or decision.**\n\nDate differs from a possible setting record. No identity conclusion is authorised.\n\n## Source facts\n\n```json\n{\n  \"capture_state\": \"recorded\",\n  \"concern_state\": \"unknown\",\n  \"local_subject\": \"SYN-H-002\",\n  \"note\": \"Date differs from a possible setting record. No identity conclusion is authorised.\",\n  \"record_id\": \"H-02\",\n  \"review_date\": \"2026-08-21\"\n}\n```\n\n## Relationships\n\nThis concept **is part of** [Health synthetic extract](../source/health.md). This is a deterministic projection of synthetic source evidence, not an official assertion.\n\n\n## Evidence\n\nSource file: `sources/health.csv`. Locator: `csv:record_id=H-02`. SHA-256: `6f004a84a9d082430a44f8466ccb39f8ffddd811a630a6fe0ee8f7bd90f3d2ce`. The example.invalid URL is a synthetic identifier, not a retrieved website.",
+      "description": "Date differs from a possible setting record. No identity conclusion is authorised.",
+      "facts": {
+        "capture_state": "recorded",
+        "concern_state": "unknown",
+        "local_subject": "SYN-H-002",
+        "note": "Date differs from a possible setting record. No identity conclusion is authorised.",
+        "record_id": "H-02",
+        "review_date": "2026-08-21"
+      },
+      "fixture_scope": "synthetic-fixture",
+      "frontmatter": {
+        "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+        "@id": "https://example.invalid/okf-plus/rehearsal/id/record/h-02",
+        "@type": "ey:SourceRecord",
+        "assertions": [
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/assertion/2402fa4a368021168ad33a48e5d2b06e193f671d4a0c02f7519be1bbf22afc83",
+            "@type": [
+              "rdf:Statement",
+              "ey:RelationshipAssertion"
+            ],
+            "assertion_scope": "synthetic-fixture",
+            "assertion_status": "normalized",
+            "authority": {
+              "class": "synthetic",
+              "label": "Authored rehearsal source; no public authority",
+              "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+            },
+            "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+            "evidence": [
+              {
+                "locator": "csv:record_id=H-02",
+                "retrieved_at": "2026-09-05T00:00:00Z",
+                "source_artifact": "sources/health.csv",
+                "source_sha256": "6f004a84a9d082430a44f8466ccb39f8ffddd811a630a6fe0ee8f7bd90f3d2ce",
+                "url": "https://example.invalid/okf-plus/rehearsal/sources/health.csv",
+                "url_status": "synthetic-identifier-not-dereferenced"
+              }
+            ],
+            "inverse_label": "contains",
+            "kind": "is part of",
+            "label": "is part of",
+            "observed_at": "2026-09-05T00:00:00Z",
+            "predicate": "http://purl.org/dc/terms/isPartOf",
+            "rights": {
+              "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+              "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+            },
+            "source": "https://example.invalid/okf-plus/rehearsal/id/record/h-02",
+            "target": "https://example.invalid/okf-plus/rehearsal/id/source/health"
+          }
+        ],
+        "description": "Date differs from a possible setting record. No identity conclusion is authorised.",
+        "facts": {
+          "capture_state": "recorded",
+          "concern_state": "unknown",
+          "local_subject": "SYN-H-002",
+          "note": "Date differs from a possible setting record. No identity conclusion is authorised.",
+          "record_id": "H-02",
+          "review_date": "2026-08-21"
+        },
+        "fixture_scope": "synthetic-fixture",
+        "generated": {
+          "at": "2026-09-05T00:00:00Z",
+          "by": "process:rehearsal-authoring-v0.1"
+        },
+        "http://purl.org/dc/terms/isPartOf": [
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/id/source/health"
+          }
+        ],
+        "route": "record/h-02",
+        "sources": [
+          {
+            "locator": "csv:record_id=H-02",
+            "retrieved_at": "2026-09-05T00:00:00Z",
+            "source_artifact": "sources/health.csv",
+            "source_sha256": "6f004a84a9d082430a44f8466ccb39f8ffddd811a630a6fe0ee8f7bd90f3d2ce",
+            "url": "https://example.invalid/okf-plus/rehearsal/sources/health.csv",
+            "url_status": "synthetic-identifier-not-dereferenced"
+          }
+        ],
+        "status": "experimental",
+        "tags": [
+          "synthetic",
+          "early-years",
+          "rehearsal"
+        ],
+        "title": "H-02 — health record",
+        "type": "Source record"
+      },
+      "generated": {
+        "at": "2026-09-05T00:00:00Z",
+        "by": "process:rehearsal-authoring-v0.1"
+      },
+      "http://purl.org/dc/terms/isPartOf": [
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/id/source/health"
+        }
+      ],
+      "id": "concepts/record/h-02.md",
+      "markdown_links": {
+        "../source/health.md": "concepts/source/health.md"
+      },
+      "markdown_references": {},
+      "route": "record/h-02",
+      "section": "concepts",
+      "source_path": "concepts/record/h-02.md",
+      "sources": [
+        {
+          "locator": "csv:record_id=H-02",
+          "retrieved_at": "2026-09-05T00:00:00Z",
+          "source_artifact": "sources/health.csv",
+          "source_sha256": "6f004a84a9d082430a44f8466ccb39f8ffddd811a630a6fe0ee8f7bd90f3d2ce",
+          "url": "https://example.invalid/okf-plus/rehearsal/sources/health.csv",
+          "url_status": "synthetic-identifier-not-dereferenced"
+        }
+      ],
+      "status": "experimental",
+      "tags": [
+        "synthetic",
+        "early-years",
+        "rehearsal"
+      ],
+      "title": "H-02 — health record",
+      "type": "Source record"
+    },
+    "concepts/record/h-03.md": {
+      "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+      "@id": "https://example.invalid/okf-plus/rehearsal/id/record/h-03",
+      "@type": "ey:SourceRecord",
+      "assertions": [
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/assertion/c8bf789caede8b3c231cfd3599d9f02aeca2ab640adb88710896b7def565bad8",
+          "@type": [
+            "rdf:Statement",
+            "ey:RelationshipAssertion"
+          ],
+          "assertion_scope": "synthetic-fixture",
+          "assertion_status": "normalized",
+          "authority": {
+            "class": "synthetic",
+            "label": "Authored rehearsal source; no public authority",
+            "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+          },
+          "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+          "evidence": [
+            {
+              "locator": "csv:record_id=H-03",
+              "retrieved_at": "2026-09-05T00:00:00Z",
+              "source_artifact": "sources/health.csv",
+              "source_sha256": "6f004a84a9d082430a44f8466ccb39f8ffddd811a630a6fe0ee8f7bd90f3d2ce",
+              "url": "https://example.invalid/okf-plus/rehearsal/sources/health.csv",
+              "url_status": "synthetic-identifier-not-dereferenced"
+            }
+          ],
+          "inverse_label": "contains",
+          "kind": "is part of",
+          "label": "is part of",
+          "observed_at": "2026-09-05T00:00:00Z",
+          "predicate": "http://purl.org/dc/terms/isPartOf",
+          "rights": {
+            "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+            "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+          },
+          "source": "https://example.invalid/okf-plus/rehearsal/id/record/h-03",
+          "target": "https://example.invalid/okf-plus/rehearsal/id/source/health"
+        }
+      ],
+      "asset_links": {},
+      "body": "# H-03 — health record\n\n**Synthetic rehearsal only — not an official record or decision.**\n\nThe fixture explicitly records no concern at this review; this is not a general health judgement.\n\n## Source facts\n\n```json\n{\n  \"capture_state\": \"recorded\",\n  \"concern_state\": \"no-concern-recorded\",\n  \"local_subject\": \"SYN-H-003\",\n  \"note\": \"The fixture explicitly records no concern at this review; this is not a general health judgement.\",\n  \"record_id\": \"H-03\",\n  \"review_date\": \"2026-08-22\"\n}\n```\n\n## Relationships\n\nThis concept **is part of** [Health synthetic extract](../source/health.md). This is a deterministic projection of synthetic source evidence, not an official assertion.\n\n\n## Evidence\n\nSource file: `sources/health.csv`. Locator: `csv:record_id=H-03`. SHA-256: `6f004a84a9d082430a44f8466ccb39f8ffddd811a630a6fe0ee8f7bd90f3d2ce`. The example.invalid URL is a synthetic identifier, not a retrieved website.",
+      "description": "The fixture explicitly records no concern at this review; this is not a general health judgement.",
+      "facts": {
+        "capture_state": "recorded",
+        "concern_state": "no-concern-recorded",
+        "local_subject": "SYN-H-003",
+        "note": "The fixture explicitly records no concern at this review; this is not a general health judgement.",
+        "record_id": "H-03",
+        "review_date": "2026-08-22"
+      },
+      "fixture_scope": "synthetic-fixture",
+      "frontmatter": {
+        "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+        "@id": "https://example.invalid/okf-plus/rehearsal/id/record/h-03",
+        "@type": "ey:SourceRecord",
+        "assertions": [
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/assertion/c8bf789caede8b3c231cfd3599d9f02aeca2ab640adb88710896b7def565bad8",
+            "@type": [
+              "rdf:Statement",
+              "ey:RelationshipAssertion"
+            ],
+            "assertion_scope": "synthetic-fixture",
+            "assertion_status": "normalized",
+            "authority": {
+              "class": "synthetic",
+              "label": "Authored rehearsal source; no public authority",
+              "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+            },
+            "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+            "evidence": [
+              {
+                "locator": "csv:record_id=H-03",
+                "retrieved_at": "2026-09-05T00:00:00Z",
+                "source_artifact": "sources/health.csv",
+                "source_sha256": "6f004a84a9d082430a44f8466ccb39f8ffddd811a630a6fe0ee8f7bd90f3d2ce",
+                "url": "https://example.invalid/okf-plus/rehearsal/sources/health.csv",
+                "url_status": "synthetic-identifier-not-dereferenced"
+              }
+            ],
+            "inverse_label": "contains",
+            "kind": "is part of",
+            "label": "is part of",
+            "observed_at": "2026-09-05T00:00:00Z",
+            "predicate": "http://purl.org/dc/terms/isPartOf",
+            "rights": {
+              "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+              "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+            },
+            "source": "https://example.invalid/okf-plus/rehearsal/id/record/h-03",
+            "target": "https://example.invalid/okf-plus/rehearsal/id/source/health"
+          }
+        ],
+        "description": "The fixture explicitly records no concern at this review; this is not a general health judgement.",
+        "facts": {
+          "capture_state": "recorded",
+          "concern_state": "no-concern-recorded",
+          "local_subject": "SYN-H-003",
+          "note": "The fixture explicitly records no concern at this review; this is not a general health judgement.",
+          "record_id": "H-03",
+          "review_date": "2026-08-22"
+        },
+        "fixture_scope": "synthetic-fixture",
+        "generated": {
+          "at": "2026-09-05T00:00:00Z",
+          "by": "process:rehearsal-authoring-v0.1"
+        },
+        "http://purl.org/dc/terms/isPartOf": [
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/id/source/health"
+          }
+        ],
+        "route": "record/h-03",
+        "sources": [
+          {
+            "locator": "csv:record_id=H-03",
+            "retrieved_at": "2026-09-05T00:00:00Z",
+            "source_artifact": "sources/health.csv",
+            "source_sha256": "6f004a84a9d082430a44f8466ccb39f8ffddd811a630a6fe0ee8f7bd90f3d2ce",
+            "url": "https://example.invalid/okf-plus/rehearsal/sources/health.csv",
+            "url_status": "synthetic-identifier-not-dereferenced"
+          }
+        ],
+        "status": "experimental",
+        "tags": [
+          "synthetic",
+          "early-years",
+          "rehearsal"
+        ],
+        "title": "H-03 — health record",
+        "type": "Source record"
+      },
+      "generated": {
+        "at": "2026-09-05T00:00:00Z",
+        "by": "process:rehearsal-authoring-v0.1"
+      },
+      "http://purl.org/dc/terms/isPartOf": [
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/id/source/health"
+        }
+      ],
+      "id": "concepts/record/h-03.md",
+      "markdown_links": {
+        "../source/health.md": "concepts/source/health.md"
+      },
+      "markdown_references": {},
+      "route": "record/h-03",
+      "section": "concepts",
+      "source_path": "concepts/record/h-03.md",
+      "sources": [
+        {
+          "locator": "csv:record_id=H-03",
+          "retrieved_at": "2026-09-05T00:00:00Z",
+          "source_artifact": "sources/health.csv",
+          "source_sha256": "6f004a84a9d082430a44f8466ccb39f8ffddd811a630a6fe0ee8f7bd90f3d2ce",
+          "url": "https://example.invalid/okf-plus/rehearsal/sources/health.csv",
+          "url_status": "synthetic-identifier-not-dereferenced"
+        }
+      ],
+      "status": "experimental",
+      "tags": [
+        "synthetic",
+        "early-years",
+        "rehearsal"
+      ],
+      "title": "H-03 — health record",
+      "type": "Source record"
+    },
+    "concepts/record/h-04.md": {
+      "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+      "@id": "https://example.invalid/okf-plus/rehearsal/id/record/h-04",
+      "@type": "ey:SourceRecord",
+      "assertions": [
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/assertion/5c17f12eed196225f771fb1e4a8eb56c09688abc8831f6892a39cc56f39e36e3",
+          "@type": [
+            "rdf:Statement",
+            "ey:RelationshipAssertion"
+          ],
+          "assertion_scope": "synthetic-fixture",
+          "assertion_status": "normalized",
+          "authority": {
+            "class": "synthetic",
+            "label": "Authored rehearsal source; no public authority",
+            "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+          },
+          "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+          "evidence": [
+            {
+              "locator": "csv:record_id=H-04",
+              "retrieved_at": "2026-09-05T00:00:00Z",
+              "source_artifact": "sources/health.csv",
+              "source_sha256": "6f004a84a9d082430a44f8466ccb39f8ffddd811a630a6fe0ee8f7bd90f3d2ce",
+              "url": "https://example.invalid/okf-plus/rehearsal/sources/health.csv",
+              "url_status": "synthetic-identifier-not-dereferenced"
+            }
+          ],
+          "inverse_label": "contains",
+          "kind": "is part of",
+          "label": "is part of",
+          "observed_at": "2026-09-05T00:00:00Z",
+          "predicate": "http://purl.org/dc/terms/isPartOf",
+          "rights": {
+            "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+            "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+          },
+          "source": "https://example.invalid/okf-plus/rehearsal/id/record/h-04",
+          "target": "https://example.invalid/okf-plus/rehearsal/id/source/health"
+        }
+      ],
+      "asset_links": {},
+      "body": "# H-04 — health record\n\n**Synthetic rehearsal only — not an official record or decision.**\n\nNo contact is explicitly recorded. It does not mean no concern.\n\n## Source facts\n\n```json\n{\n  \"capture_state\": \"no-contact\",\n  \"concern_state\": \"unknown\",\n  \"local_subject\": \"SYN-H-004\",\n  \"note\": \"No contact is explicitly recorded. It does not mean no concern.\",\n  \"record_id\": \"H-04\",\n  \"review_date\": \"\"\n}\n```\n\n## Relationships\n\nThis concept **is part of** [Health synthetic extract](../source/health.md). This is a deterministic projection of synthetic source evidence, not an official assertion.\n\n\n## Evidence\n\nSource file: `sources/health.csv`. Locator: `csv:record_id=H-04`. SHA-256: `6f004a84a9d082430a44f8466ccb39f8ffddd811a630a6fe0ee8f7bd90f3d2ce`. The example.invalid URL is a synthetic identifier, not a retrieved website.",
+      "description": "No contact is explicitly recorded. It does not mean no concern.",
+      "facts": {
+        "capture_state": "no-contact",
+        "concern_state": "unknown",
+        "local_subject": "SYN-H-004",
+        "note": "No contact is explicitly recorded. It does not mean no concern.",
+        "record_id": "H-04",
+        "review_date": ""
+      },
+      "fixture_scope": "synthetic-fixture",
+      "frontmatter": {
+        "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+        "@id": "https://example.invalid/okf-plus/rehearsal/id/record/h-04",
+        "@type": "ey:SourceRecord",
+        "assertions": [
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/assertion/5c17f12eed196225f771fb1e4a8eb56c09688abc8831f6892a39cc56f39e36e3",
+            "@type": [
+              "rdf:Statement",
+              "ey:RelationshipAssertion"
+            ],
+            "assertion_scope": "synthetic-fixture",
+            "assertion_status": "normalized",
+            "authority": {
+              "class": "synthetic",
+              "label": "Authored rehearsal source; no public authority",
+              "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+            },
+            "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+            "evidence": [
+              {
+                "locator": "csv:record_id=H-04",
+                "retrieved_at": "2026-09-05T00:00:00Z",
+                "source_artifact": "sources/health.csv",
+                "source_sha256": "6f004a84a9d082430a44f8466ccb39f8ffddd811a630a6fe0ee8f7bd90f3d2ce",
+                "url": "https://example.invalid/okf-plus/rehearsal/sources/health.csv",
+                "url_status": "synthetic-identifier-not-dereferenced"
+              }
+            ],
+            "inverse_label": "contains",
+            "kind": "is part of",
+            "label": "is part of",
+            "observed_at": "2026-09-05T00:00:00Z",
+            "predicate": "http://purl.org/dc/terms/isPartOf",
+            "rights": {
+              "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+              "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+            },
+            "source": "https://example.invalid/okf-plus/rehearsal/id/record/h-04",
+            "target": "https://example.invalid/okf-plus/rehearsal/id/source/health"
+          }
+        ],
+        "description": "No contact is explicitly recorded. It does not mean no concern.",
+        "facts": {
+          "capture_state": "no-contact",
+          "concern_state": "unknown",
+          "local_subject": "SYN-H-004",
+          "note": "No contact is explicitly recorded. It does not mean no concern.",
+          "record_id": "H-04",
+          "review_date": ""
+        },
+        "fixture_scope": "synthetic-fixture",
+        "generated": {
+          "at": "2026-09-05T00:00:00Z",
+          "by": "process:rehearsal-authoring-v0.1"
+        },
+        "http://purl.org/dc/terms/isPartOf": [
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/id/source/health"
+          }
+        ],
+        "route": "record/h-04",
+        "sources": [
+          {
+            "locator": "csv:record_id=H-04",
+            "retrieved_at": "2026-09-05T00:00:00Z",
+            "source_artifact": "sources/health.csv",
+            "source_sha256": "6f004a84a9d082430a44f8466ccb39f8ffddd811a630a6fe0ee8f7bd90f3d2ce",
+            "url": "https://example.invalid/okf-plus/rehearsal/sources/health.csv",
+            "url_status": "synthetic-identifier-not-dereferenced"
+          }
+        ],
+        "status": "experimental",
+        "tags": [
+          "synthetic",
+          "early-years",
+          "rehearsal"
+        ],
+        "title": "H-04 — health record",
+        "type": "Source record"
+      },
+      "generated": {
+        "at": "2026-09-05T00:00:00Z",
+        "by": "process:rehearsal-authoring-v0.1"
+      },
+      "http://purl.org/dc/terms/isPartOf": [
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/id/source/health"
+        }
+      ],
+      "id": "concepts/record/h-04.md",
+      "markdown_links": {
+        "../source/health.md": "concepts/source/health.md"
+      },
+      "markdown_references": {},
+      "route": "record/h-04",
+      "section": "concepts",
+      "source_path": "concepts/record/h-04.md",
+      "sources": [
+        {
+          "locator": "csv:record_id=H-04",
+          "retrieved_at": "2026-09-05T00:00:00Z",
+          "source_artifact": "sources/health.csv",
+          "source_sha256": "6f004a84a9d082430a44f8466ccb39f8ffddd811a630a6fe0ee8f7bd90f3d2ce",
+          "url": "https://example.invalid/okf-plus/rehearsal/sources/health.csv",
+          "url_status": "synthetic-identifier-not-dereferenced"
+        }
+      ],
+      "status": "experimental",
+      "tags": [
+        "synthetic",
+        "early-years",
+        "rehearsal"
+      ],
+      "title": "H-04 — health record",
+      "type": "Source record"
+    },
+    "concepts/record/r-01.md": {
+      "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+      "@id": "https://example.invalid/okf-plus/rehearsal/id/record/r-01",
+      "@type": "ey:SourceRecord",
+      "assertions": [
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/assertion/3312831a30c6ed4c1eec496f815ce29246bebc8169f212fd0ca5d15c22ac37ab",
+          "@type": [
+            "rdf:Statement",
+            "ey:RelationshipAssertion"
+          ],
+          "assertion_scope": "synthetic-fixture",
+          "assertion_status": "normalized",
+          "authority": {
+            "class": "synthetic",
+            "label": "Authored rehearsal source; no public authority",
+            "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+          },
+          "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+          "evidence": [
+            {
+              "locator": "csv:record_id=R-01",
+              "retrieved_at": "2026-09-05T00:00:00Z",
+              "source_artifact": "sources/referrals.csv",
+              "source_sha256": "e2130273a639b41320fc7c24b220c373e59f0bfac6f7a369f6b87dd60f8a30d9",
+              "url": "https://example.invalid/okf-plus/rehearsal/sources/referrals.csv",
+              "url_status": "synthetic-identifier-not-dereferenced"
+            }
+          ],
+          "inverse_label": "contains",
+          "kind": "is part of",
+          "label": "is part of",
+          "observed_at": "2026-09-05T00:00:00Z",
+          "predicate": "http://purl.org/dc/terms/isPartOf",
+          "rights": {
+            "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+            "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+          },
+          "source": "https://example.invalid/okf-plus/rehearsal/id/record/r-01",
+          "target": "https://example.invalid/okf-plus/rehearsal/id/source/referral"
+        },
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/assertion/f8a2c32017297ea69573ecc13459db20ad566a7e6968e5633eced023ac311ccb",
+          "@type": [
+            "rdf:Statement",
+            "ey:RelationshipAssertion"
+          ],
+          "assertion_scope": "synthetic-fixture",
+          "assertion_status": "normalized",
+          "authority": {
+            "class": "synthetic",
+            "label": "Authored rehearsal source; no public authority",
+            "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+          },
+          "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+          "evidence": [
+            {
+              "locator": "csv:record_id=R-01",
+              "retrieved_at": "2026-09-05T00:00:00Z",
+              "source_artifact": "sources/referrals.csv",
+              "source_sha256": "e2130273a639b41320fc7c24b220c373e59f0bfac6f7a369f6b87dd60f8a30d9",
+              "url": "https://example.invalid/okf-plus/rehearsal/sources/referrals.csv",
+              "url_status": "synthetic-identifier-not-dereferenced"
+            }
+          ],
+          "inverse_label": "is proposed in",
+          "kind": "has proposed action",
+          "label": "has proposed action",
+          "observed_at": "2026-09-05T00:00:00Z",
+          "predicate": "https://example.invalid/okf-plus/rehearsal/vocab/hasPlannedAction",
+          "rights": {
+            "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+            "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+          },
+          "source": "https://example.invalid/okf-plus/rehearsal/id/record/r-01",
+          "target": "https://example.invalid/okf-plus/rehearsal/id/action/a-01"
+        }
+      ],
+      "asset_links": {},
+      "body": "# R-01 — referral record\n\n**Synthetic rehearsal only — not an official record or decision.**\n\nA proposed action is not a submitted referral or completed support.\n\n## Source facts\n\n```json\n{\n  \"action_id\": \"A-01\",\n  \"action_label\": \"Discuss a local support option\",\n  \"action_status\": \"proposed\",\n  \"local_subject\": \"SYN-R-201\",\n  \"note\": \"A proposed action is not a submitted referral or completed support.\",\n  \"record_id\": \"R-01\"\n}\n```\n\n## Relationships\n\nThis concept **is part of** [Referral synthetic extract](../source/referral.md). This is a deterministic projection of synthetic source evidence, not an official assertion.\n\nThis concept **has proposed action** [A-01 — Discuss a local support option](../action/a-01.md). This is a deterministic projection of synthetic source evidence, not an official assertion.\n\n\n## Evidence\n\nSource file: `sources/referrals.csv`. Locator: `csv:record_id=R-01`. SHA-256: `e2130273a639b41320fc7c24b220c373e59f0bfac6f7a369f6b87dd60f8a30d9`. The example.invalid URL is a synthetic identifier, not a retrieved website.",
+      "description": "A proposed action is not a submitted referral or completed support.",
+      "facts": {
+        "action_id": "A-01",
+        "action_label": "Discuss a local support option",
+        "action_status": "proposed",
+        "local_subject": "SYN-R-201",
+        "note": "A proposed action is not a submitted referral or completed support.",
+        "record_id": "R-01"
+      },
+      "fixture_scope": "synthetic-fixture",
+      "frontmatter": {
+        "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+        "@id": "https://example.invalid/okf-plus/rehearsal/id/record/r-01",
+        "@type": "ey:SourceRecord",
+        "assertions": [
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/assertion/3312831a30c6ed4c1eec496f815ce29246bebc8169f212fd0ca5d15c22ac37ab",
+            "@type": [
+              "rdf:Statement",
+              "ey:RelationshipAssertion"
+            ],
+            "assertion_scope": "synthetic-fixture",
+            "assertion_status": "normalized",
+            "authority": {
+              "class": "synthetic",
+              "label": "Authored rehearsal source; no public authority",
+              "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+            },
+            "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+            "evidence": [
+              {
+                "locator": "csv:record_id=R-01",
+                "retrieved_at": "2026-09-05T00:00:00Z",
+                "source_artifact": "sources/referrals.csv",
+                "source_sha256": "e2130273a639b41320fc7c24b220c373e59f0bfac6f7a369f6b87dd60f8a30d9",
+                "url": "https://example.invalid/okf-plus/rehearsal/sources/referrals.csv",
+                "url_status": "synthetic-identifier-not-dereferenced"
+              }
+            ],
+            "inverse_label": "contains",
+            "kind": "is part of",
+            "label": "is part of",
+            "observed_at": "2026-09-05T00:00:00Z",
+            "predicate": "http://purl.org/dc/terms/isPartOf",
+            "rights": {
+              "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+              "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+            },
+            "source": "https://example.invalid/okf-plus/rehearsal/id/record/r-01",
+            "target": "https://example.invalid/okf-plus/rehearsal/id/source/referral"
+          },
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/assertion/f8a2c32017297ea69573ecc13459db20ad566a7e6968e5633eced023ac311ccb",
+            "@type": [
+              "rdf:Statement",
+              "ey:RelationshipAssertion"
+            ],
+            "assertion_scope": "synthetic-fixture",
+            "assertion_status": "normalized",
+            "authority": {
+              "class": "synthetic",
+              "label": "Authored rehearsal source; no public authority",
+              "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+            },
+            "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+            "evidence": [
+              {
+                "locator": "csv:record_id=R-01",
+                "retrieved_at": "2026-09-05T00:00:00Z",
+                "source_artifact": "sources/referrals.csv",
+                "source_sha256": "e2130273a639b41320fc7c24b220c373e59f0bfac6f7a369f6b87dd60f8a30d9",
+                "url": "https://example.invalid/okf-plus/rehearsal/sources/referrals.csv",
+                "url_status": "synthetic-identifier-not-dereferenced"
+              }
+            ],
+            "inverse_label": "is proposed in",
+            "kind": "has proposed action",
+            "label": "has proposed action",
+            "observed_at": "2026-09-05T00:00:00Z",
+            "predicate": "https://example.invalid/okf-plus/rehearsal/vocab/hasPlannedAction",
+            "rights": {
+              "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+              "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+            },
+            "source": "https://example.invalid/okf-plus/rehearsal/id/record/r-01",
+            "target": "https://example.invalid/okf-plus/rehearsal/id/action/a-01"
+          }
+        ],
+        "description": "A proposed action is not a submitted referral or completed support.",
+        "facts": {
+          "action_id": "A-01",
+          "action_label": "Discuss a local support option",
+          "action_status": "proposed",
+          "local_subject": "SYN-R-201",
+          "note": "A proposed action is not a submitted referral or completed support.",
+          "record_id": "R-01"
+        },
+        "fixture_scope": "synthetic-fixture",
+        "generated": {
+          "at": "2026-09-05T00:00:00Z",
+          "by": "process:rehearsal-authoring-v0.1"
+        },
+        "http://purl.org/dc/terms/isPartOf": [
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/id/source/referral"
+          }
+        ],
+        "https://example.invalid/okf-plus/rehearsal/vocab/hasPlannedAction": [
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/id/action/a-01"
+          }
+        ],
+        "route": "record/r-01",
+        "sources": [
+          {
+            "locator": "csv:record_id=R-01",
+            "retrieved_at": "2026-09-05T00:00:00Z",
+            "source_artifact": "sources/referrals.csv",
+            "source_sha256": "e2130273a639b41320fc7c24b220c373e59f0bfac6f7a369f6b87dd60f8a30d9",
+            "url": "https://example.invalid/okf-plus/rehearsal/sources/referrals.csv",
+            "url_status": "synthetic-identifier-not-dereferenced"
+          }
+        ],
+        "status": "experimental",
+        "tags": [
+          "synthetic",
+          "early-years",
+          "rehearsal"
+        ],
+        "title": "R-01 — referral record",
+        "type": "Source record"
+      },
+      "generated": {
+        "at": "2026-09-05T00:00:00Z",
+        "by": "process:rehearsal-authoring-v0.1"
+      },
+      "http://purl.org/dc/terms/isPartOf": [
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/id/source/referral"
+        }
+      ],
+      "https://example.invalid/okf-plus/rehearsal/vocab/hasPlannedAction": [
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/id/action/a-01"
+        }
+      ],
+      "id": "concepts/record/r-01.md",
+      "markdown_links": {
+        "../action/a-01.md": "concepts/action/a-01.md",
+        "../source/referral.md": "concepts/source/referral.md"
+      },
+      "markdown_references": {},
+      "route": "record/r-01",
+      "section": "concepts",
+      "source_path": "concepts/record/r-01.md",
+      "sources": [
+        {
+          "locator": "csv:record_id=R-01",
+          "retrieved_at": "2026-09-05T00:00:00Z",
+          "source_artifact": "sources/referrals.csv",
+          "source_sha256": "e2130273a639b41320fc7c24b220c373e59f0bfac6f7a369f6b87dd60f8a30d9",
+          "url": "https://example.invalid/okf-plus/rehearsal/sources/referrals.csv",
+          "url_status": "synthetic-identifier-not-dereferenced"
+        }
+      ],
+      "status": "experimental",
+      "tags": [
+        "synthetic",
+        "early-years",
+        "rehearsal"
+      ],
+      "title": "R-01 — referral record",
+      "type": "Source record"
+    },
+    "concepts/record/r-02.md": {
+      "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+      "@id": "https://example.invalid/okf-plus/rehearsal/id/record/r-02",
+      "@type": "ey:SourceRecord",
+      "assertions": [
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/assertion/58eb39f3081b328036e5579586f26a19243da5d60c654d0c67f0ba65894b95b0",
+          "@type": [
+            "rdf:Statement",
+            "ey:RelationshipAssertion"
+          ],
+          "assertion_scope": "synthetic-fixture",
+          "assertion_status": "normalized",
+          "authority": {
+            "class": "synthetic",
+            "label": "Authored rehearsal source; no public authority",
+            "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+          },
+          "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+          "evidence": [
+            {
+              "locator": "csv:record_id=R-02",
+              "retrieved_at": "2026-09-05T00:00:00Z",
+              "source_artifact": "sources/referrals.csv",
+              "source_sha256": "e2130273a639b41320fc7c24b220c373e59f0bfac6f7a369f6b87dd60f8a30d9",
+              "url": "https://example.invalid/okf-plus/rehearsal/sources/referrals.csv",
+              "url_status": "synthetic-identifier-not-dereferenced"
+            }
+          ],
+          "inverse_label": "contains",
+          "kind": "is part of",
+          "label": "is part of",
+          "observed_at": "2026-09-05T00:00:00Z",
+          "predicate": "http://purl.org/dc/terms/isPartOf",
+          "rights": {
+            "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+            "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+          },
+          "source": "https://example.invalid/okf-plus/rehearsal/id/record/r-02",
+          "target": "https://example.invalid/okf-plus/rehearsal/id/source/referral"
+        },
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/assertion/056edfbdc1af497f5fabe9f7a6ddd7a65401f5f592ab90591c2acdff78715943",
+          "@type": [
+            "rdf:Statement",
+            "ey:RelationshipAssertion"
+          ],
+          "assertion_scope": "synthetic-fixture",
+          "assertion_status": "normalized",
+          "authority": {
+            "class": "synthetic",
+            "label": "Authored rehearsal source; no public authority",
+            "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+          },
+          "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+          "evidence": [
+            {
+              "locator": "csv:record_id=R-02",
+              "retrieved_at": "2026-09-05T00:00:00Z",
+              "source_artifact": "sources/referrals.csv",
+              "source_sha256": "e2130273a639b41320fc7c24b220c373e59f0bfac6f7a369f6b87dd60f8a30d9",
+              "url": "https://example.invalid/okf-plus/rehearsal/sources/referrals.csv",
+              "url_status": "synthetic-identifier-not-dereferenced"
+            }
+          ],
+          "inverse_label": "is recorded completed in",
+          "kind": "records completed action",
+          "label": "records completed action",
+          "observed_at": "2026-09-05T00:00:00Z",
+          "predicate": "https://example.invalid/okf-plus/rehearsal/vocab/hasCompletedAction",
+          "rights": {
+            "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+            "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+          },
+          "source": "https://example.invalid/okf-plus/rehearsal/id/record/r-02",
+          "target": "https://example.invalid/okf-plus/rehearsal/id/action/a-02"
+        }
+      ],
+      "asset_links": {},
+      "body": "# R-02 — referral record\n\n**Synthetic rehearsal only — not an official record or decision.**\n\nThis fixture records only leaflet dispatch as completed, not support received.\n\n## Source facts\n\n```json\n{\n  \"action_id\": \"A-02\",\n  \"action_label\": \"Send an information leaflet\",\n  \"action_status\": \"completed\",\n  \"local_subject\": \"SYN-R-202\",\n  \"note\": \"This fixture records only leaflet dispatch as completed, not support received.\",\n  \"record_id\": \"R-02\"\n}\n```\n\n## Relationships\n\nThis concept **is part of** [Referral synthetic extract](../source/referral.md). This is a deterministic projection of synthetic source evidence, not an official assertion.\n\nThis concept **records completed action** [A-02 — Send an information leaflet](../action/a-02.md). This is a deterministic projection of synthetic source evidence, not an official assertion.\n\n\n## Evidence\n\nSource file: `sources/referrals.csv`. Locator: `csv:record_id=R-02`. SHA-256: `e2130273a639b41320fc7c24b220c373e59f0bfac6f7a369f6b87dd60f8a30d9`. The example.invalid URL is a synthetic identifier, not a retrieved website.",
+      "description": "This fixture records only leaflet dispatch as completed, not support received.",
+      "facts": {
+        "action_id": "A-02",
+        "action_label": "Send an information leaflet",
+        "action_status": "completed",
+        "local_subject": "SYN-R-202",
+        "note": "This fixture records only leaflet dispatch as completed, not support received.",
+        "record_id": "R-02"
+      },
+      "fixture_scope": "synthetic-fixture",
+      "frontmatter": {
+        "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+        "@id": "https://example.invalid/okf-plus/rehearsal/id/record/r-02",
+        "@type": "ey:SourceRecord",
+        "assertions": [
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/assertion/58eb39f3081b328036e5579586f26a19243da5d60c654d0c67f0ba65894b95b0",
+            "@type": [
+              "rdf:Statement",
+              "ey:RelationshipAssertion"
+            ],
+            "assertion_scope": "synthetic-fixture",
+            "assertion_status": "normalized",
+            "authority": {
+              "class": "synthetic",
+              "label": "Authored rehearsal source; no public authority",
+              "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+            },
+            "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+            "evidence": [
+              {
+                "locator": "csv:record_id=R-02",
+                "retrieved_at": "2026-09-05T00:00:00Z",
+                "source_artifact": "sources/referrals.csv",
+                "source_sha256": "e2130273a639b41320fc7c24b220c373e59f0bfac6f7a369f6b87dd60f8a30d9",
+                "url": "https://example.invalid/okf-plus/rehearsal/sources/referrals.csv",
+                "url_status": "synthetic-identifier-not-dereferenced"
+              }
+            ],
+            "inverse_label": "contains",
+            "kind": "is part of",
+            "label": "is part of",
+            "observed_at": "2026-09-05T00:00:00Z",
+            "predicate": "http://purl.org/dc/terms/isPartOf",
+            "rights": {
+              "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+              "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+            },
+            "source": "https://example.invalid/okf-plus/rehearsal/id/record/r-02",
+            "target": "https://example.invalid/okf-plus/rehearsal/id/source/referral"
+          },
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/assertion/056edfbdc1af497f5fabe9f7a6ddd7a65401f5f592ab90591c2acdff78715943",
+            "@type": [
+              "rdf:Statement",
+              "ey:RelationshipAssertion"
+            ],
+            "assertion_scope": "synthetic-fixture",
+            "assertion_status": "normalized",
+            "authority": {
+              "class": "synthetic",
+              "label": "Authored rehearsal source; no public authority",
+              "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+            },
+            "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+            "evidence": [
+              {
+                "locator": "csv:record_id=R-02",
+                "retrieved_at": "2026-09-05T00:00:00Z",
+                "source_artifact": "sources/referrals.csv",
+                "source_sha256": "e2130273a639b41320fc7c24b220c373e59f0bfac6f7a369f6b87dd60f8a30d9",
+                "url": "https://example.invalid/okf-plus/rehearsal/sources/referrals.csv",
+                "url_status": "synthetic-identifier-not-dereferenced"
+              }
+            ],
+            "inverse_label": "is recorded completed in",
+            "kind": "records completed action",
+            "label": "records completed action",
+            "observed_at": "2026-09-05T00:00:00Z",
+            "predicate": "https://example.invalid/okf-plus/rehearsal/vocab/hasCompletedAction",
+            "rights": {
+              "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+              "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+            },
+            "source": "https://example.invalid/okf-plus/rehearsal/id/record/r-02",
+            "target": "https://example.invalid/okf-plus/rehearsal/id/action/a-02"
+          }
+        ],
+        "description": "This fixture records only leaflet dispatch as completed, not support received.",
+        "facts": {
+          "action_id": "A-02",
+          "action_label": "Send an information leaflet",
+          "action_status": "completed",
+          "local_subject": "SYN-R-202",
+          "note": "This fixture records only leaflet dispatch as completed, not support received.",
+          "record_id": "R-02"
+        },
+        "fixture_scope": "synthetic-fixture",
+        "generated": {
+          "at": "2026-09-05T00:00:00Z",
+          "by": "process:rehearsal-authoring-v0.1"
+        },
+        "http://purl.org/dc/terms/isPartOf": [
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/id/source/referral"
+          }
+        ],
+        "https://example.invalid/okf-plus/rehearsal/vocab/hasCompletedAction": [
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/id/action/a-02"
+          }
+        ],
+        "route": "record/r-02",
+        "sources": [
+          {
+            "locator": "csv:record_id=R-02",
+            "retrieved_at": "2026-09-05T00:00:00Z",
+            "source_artifact": "sources/referrals.csv",
+            "source_sha256": "e2130273a639b41320fc7c24b220c373e59f0bfac6f7a369f6b87dd60f8a30d9",
+            "url": "https://example.invalid/okf-plus/rehearsal/sources/referrals.csv",
+            "url_status": "synthetic-identifier-not-dereferenced"
+          }
+        ],
+        "status": "experimental",
+        "tags": [
+          "synthetic",
+          "early-years",
+          "rehearsal"
+        ],
+        "title": "R-02 — referral record",
+        "type": "Source record"
+      },
+      "generated": {
+        "at": "2026-09-05T00:00:00Z",
+        "by": "process:rehearsal-authoring-v0.1"
+      },
+      "http://purl.org/dc/terms/isPartOf": [
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/id/source/referral"
+        }
+      ],
+      "https://example.invalid/okf-plus/rehearsal/vocab/hasCompletedAction": [
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/id/action/a-02"
+        }
+      ],
+      "id": "concepts/record/r-02.md",
+      "markdown_links": {
+        "../action/a-02.md": "concepts/action/a-02.md",
+        "../source/referral.md": "concepts/source/referral.md"
+      },
+      "markdown_references": {},
+      "route": "record/r-02",
+      "section": "concepts",
+      "source_path": "concepts/record/r-02.md",
+      "sources": [
+        {
+          "locator": "csv:record_id=R-02",
+          "retrieved_at": "2026-09-05T00:00:00Z",
+          "source_artifact": "sources/referrals.csv",
+          "source_sha256": "e2130273a639b41320fc7c24b220c373e59f0bfac6f7a369f6b87dd60f8a30d9",
+          "url": "https://example.invalid/okf-plus/rehearsal/sources/referrals.csv",
+          "url_status": "synthetic-identifier-not-dereferenced"
+        }
+      ],
+      "status": "experimental",
+      "tags": [
+        "synthetic",
+        "early-years",
+        "rehearsal"
+      ],
+      "title": "R-02 — referral record",
+      "type": "Source record"
+    },
+    "concepts/record/r-03.md": {
+      "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+      "@id": "https://example.invalid/okf-plus/rehearsal/id/record/r-03",
+      "@type": "ey:SourceRecord",
+      "assertions": [
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/assertion/768604f72b3ee09aa353062e06c8c4670bc3a7ccc6259453c6f1d6147f8db831",
+          "@type": [
+            "rdf:Statement",
+            "ey:RelationshipAssertion"
+          ],
+          "assertion_scope": "synthetic-fixture",
+          "assertion_status": "normalized",
+          "authority": {
+            "class": "synthetic",
+            "label": "Authored rehearsal source; no public authority",
+            "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+          },
+          "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+          "evidence": [
+            {
+              "locator": "csv:record_id=R-03",
+              "retrieved_at": "2026-09-05T00:00:00Z",
+              "source_artifact": "sources/referrals.csv",
+              "source_sha256": "e2130273a639b41320fc7c24b220c373e59f0bfac6f7a369f6b87dd60f8a30d9",
+              "url": "https://example.invalid/okf-plus/rehearsal/sources/referrals.csv",
+              "url_status": "synthetic-identifier-not-dereferenced"
+            }
+          ],
+          "inverse_label": "contains",
+          "kind": "is part of",
+          "label": "is part of",
+          "observed_at": "2026-09-05T00:00:00Z",
+          "predicate": "http://purl.org/dc/terms/isPartOf",
+          "rights": {
+            "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+            "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+          },
+          "source": "https://example.invalid/okf-plus/rehearsal/id/record/r-03",
+          "target": "https://example.invalid/okf-plus/rehearsal/id/source/referral"
+        },
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/assertion/730695d65ba1901948246645a19c34b83e525b66a766f6a4e2be24bde2b94060",
+          "@type": [
+            "rdf:Statement",
+            "ey:RelationshipAssertion"
+          ],
+          "assertion_scope": "synthetic-fixture",
+          "assertion_status": "normalized",
+          "authority": {
+            "class": "synthetic",
+            "label": "Authored rehearsal source; no public authority",
+            "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+          },
+          "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+          "evidence": [
+            {
+              "locator": "csv:record_id=R-03",
+              "retrieved_at": "2026-09-05T00:00:00Z",
+              "source_artifact": "sources/referrals.csv",
+              "source_sha256": "e2130273a639b41320fc7c24b220c373e59f0bfac6f7a369f6b87dd60f8a30d9",
+              "url": "https://example.invalid/okf-plus/rehearsal/sources/referrals.csv",
+              "url_status": "synthetic-identifier-not-dereferenced"
+            }
+          ],
+          "inverse_label": "is recorded cancelled in",
+          "kind": "records cancelled action",
+          "label": "records cancelled action",
+          "observed_at": "2026-09-05T00:00:00Z",
+          "predicate": "https://example.invalid/okf-plus/rehearsal/vocab/hasCancelledAction",
+          "rights": {
+            "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+            "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+          },
+          "source": "https://example.invalid/okf-plus/rehearsal/id/record/r-03",
+          "target": "https://example.invalid/okf-plus/rehearsal/id/action/a-03"
+        }
+      ],
+      "asset_links": {},
+      "body": "# R-03 — referral record\n\n**Synthetic rehearsal only — not an official record or decision.**\n\nA cancelled call must not appear as completed support.\n\n## Source facts\n\n```json\n{\n  \"action_id\": \"A-03\",\n  \"action_label\": \"Arrange an introductory call\",\n  \"action_status\": \"cancelled\",\n  \"local_subject\": \"SYN-R-203\",\n  \"note\": \"A cancelled call must not appear as completed support.\",\n  \"record_id\": \"R-03\"\n}\n```\n\n## Relationships\n\nThis concept **is part of** [Referral synthetic extract](../source/referral.md). This is a deterministic projection of synthetic source evidence, not an official assertion.\n\nThis concept **records cancelled action** [A-03 — Arrange an introductory call](../action/a-03.md). This is a deterministic projection of synthetic source evidence, not an official assertion.\n\n\n## Evidence\n\nSource file: `sources/referrals.csv`. Locator: `csv:record_id=R-03`. SHA-256: `e2130273a639b41320fc7c24b220c373e59f0bfac6f7a369f6b87dd60f8a30d9`. The example.invalid URL is a synthetic identifier, not a retrieved website.",
+      "description": "A cancelled call must not appear as completed support.",
+      "facts": {
+        "action_id": "A-03",
+        "action_label": "Arrange an introductory call",
+        "action_status": "cancelled",
+        "local_subject": "SYN-R-203",
+        "note": "A cancelled call must not appear as completed support.",
+        "record_id": "R-03"
+      },
+      "fixture_scope": "synthetic-fixture",
+      "frontmatter": {
+        "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+        "@id": "https://example.invalid/okf-plus/rehearsal/id/record/r-03",
+        "@type": "ey:SourceRecord",
+        "assertions": [
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/assertion/768604f72b3ee09aa353062e06c8c4670bc3a7ccc6259453c6f1d6147f8db831",
+            "@type": [
+              "rdf:Statement",
+              "ey:RelationshipAssertion"
+            ],
+            "assertion_scope": "synthetic-fixture",
+            "assertion_status": "normalized",
+            "authority": {
+              "class": "synthetic",
+              "label": "Authored rehearsal source; no public authority",
+              "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+            },
+            "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+            "evidence": [
+              {
+                "locator": "csv:record_id=R-03",
+                "retrieved_at": "2026-09-05T00:00:00Z",
+                "source_artifact": "sources/referrals.csv",
+                "source_sha256": "e2130273a639b41320fc7c24b220c373e59f0bfac6f7a369f6b87dd60f8a30d9",
+                "url": "https://example.invalid/okf-plus/rehearsal/sources/referrals.csv",
+                "url_status": "synthetic-identifier-not-dereferenced"
+              }
+            ],
+            "inverse_label": "contains",
+            "kind": "is part of",
+            "label": "is part of",
+            "observed_at": "2026-09-05T00:00:00Z",
+            "predicate": "http://purl.org/dc/terms/isPartOf",
+            "rights": {
+              "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+              "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+            },
+            "source": "https://example.invalid/okf-plus/rehearsal/id/record/r-03",
+            "target": "https://example.invalid/okf-plus/rehearsal/id/source/referral"
+          },
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/assertion/730695d65ba1901948246645a19c34b83e525b66a766f6a4e2be24bde2b94060",
+            "@type": [
+              "rdf:Statement",
+              "ey:RelationshipAssertion"
+            ],
+            "assertion_scope": "synthetic-fixture",
+            "assertion_status": "normalized",
+            "authority": {
+              "class": "synthetic",
+              "label": "Authored rehearsal source; no public authority",
+              "source": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json"
+            },
+            "derivation": "https://example.invalid/okf-plus/rehearsal/rule/explicit-source-projection-v0.1",
+            "evidence": [
+              {
+                "locator": "csv:record_id=R-03",
+                "retrieved_at": "2026-09-05T00:00:00Z",
+                "source_artifact": "sources/referrals.csv",
+                "source_sha256": "e2130273a639b41320fc7c24b220c373e59f0bfac6f7a369f6b87dd60f8a30d9",
+                "url": "https://example.invalid/okf-plus/rehearsal/sources/referrals.csv",
+                "url_status": "synthetic-identifier-not-dereferenced"
+              }
+            ],
+            "inverse_label": "is recorded cancelled in",
+            "kind": "records cancelled action",
+            "label": "records cancelled action",
+            "observed_at": "2026-09-05T00:00:00Z",
+            "predicate": "https://example.invalid/okf-plus/rehearsal/vocab/hasCancelledAction",
+            "rights": {
+              "assertion": "Generated fictional rehearsal material; not a licence statement about event data.",
+              "source": "https://example.invalid/okf-plus/rehearsal/TERMS.md"
+            },
+            "source": "https://example.invalid/okf-plus/rehearsal/id/record/r-03",
+            "target": "https://example.invalid/okf-plus/rehearsal/id/action/a-03"
+          }
+        ],
+        "description": "A cancelled call must not appear as completed support.",
+        "facts": {
+          "action_id": "A-03",
+          "action_label": "Arrange an introductory call",
+          "action_status": "cancelled",
+          "local_subject": "SYN-R-203",
+          "note": "A cancelled call must not appear as completed support.",
+          "record_id": "R-03"
+        },
+        "fixture_scope": "synthetic-fixture",
+        "generated": {
+          "at": "2026-09-05T00:00:00Z",
+          "by": "process:rehearsal-authoring-v0.1"
+        },
+        "http://purl.org/dc/terms/isPartOf": [
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/id/source/referral"
+          }
+        ],
+        "https://example.invalid/okf-plus/rehearsal/vocab/hasCancelledAction": [
+          {
+            "@id": "https://example.invalid/okf-plus/rehearsal/id/action/a-03"
+          }
+        ],
+        "route": "record/r-03",
+        "sources": [
+          {
+            "locator": "csv:record_id=R-03",
+            "retrieved_at": "2026-09-05T00:00:00Z",
+            "source_artifact": "sources/referrals.csv",
+            "source_sha256": "e2130273a639b41320fc7c24b220c373e59f0bfac6f7a369f6b87dd60f8a30d9",
+            "url": "https://example.invalid/okf-plus/rehearsal/sources/referrals.csv",
+            "url_status": "synthetic-identifier-not-dereferenced"
+          }
+        ],
+        "status": "experimental",
+        "tags": [
+          "synthetic",
+          "early-years",
+          "rehearsal"
+        ],
+        "title": "R-03 — referral record",
+        "type": "Source record"
+      },
+      "generated": {
+        "at": "2026-09-05T00:00:00Z",
+        "by": "process:rehearsal-authoring-v0.1"
+      },
+      "http://purl.org/dc/terms/isPartOf": [
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/id/source/referral"
+        }
+      ],
+      "https://example.invalid/okf-plus/rehearsal/vocab/hasCancelledAction": [
+        {
+          "@id": "https://example.invalid/okf-plus/rehearsal/id/action/a-03"
+        }
+      ],
+      "id": "concepts/record/r-03.md",
+      "markdown_links": {
+        "../action/a-03.md": "concepts/action/a-03.md",
+        "../source/referral.md": "concepts/source/referral.md"
+      },
+      "markdown_references": {},
+      "route": "record/r-03",
+      "section": "concepts",
+      "source_path": "concepts/record/r-03.md",
+      "sources": [
+        {
+          "locator": "csv:record_id=R-03",
+          "retrieved_at": "2026-09-05T00:00:00Z",
+          "source_artifact": "sources/referrals.csv",
+          "source_sha256": "e2130273a639b41320fc7c24b220c373e59f0bfac6f7a369f6b87dd60f8a30d9",
+          "url": "https://example.invalid/okf-plus/rehearsal/sources/referrals.csv",
+          "url_status": "synthetic-identifier-not-dereferenced"
+        }
+      ],
+      "status": "experimental",
+      "tags": [
+        "synthetic",
+        "early-years",
+        "rehearsal"
+      ],
+      "title": "R-03 — referral record",
+      "type": "Source record"
+    },
+    "concepts/rule/candidate-interpretation.md": {
+      "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+      "@id": "https://example.invalid/okf-plus/rehearsal/id/rule/candidate-interpretation",
+      "@type": "ey:InterpretationRule",
+      "assertions": [],
+      "asset_links": {},
+      "body": "# Candidate links do not assert identity\n\n**Synthetic rehearsal only — not an official record or decision.**\n\nA fixture rule explaining candidate semantics, not a national matching policy.\n\n## Source facts\n\n```json\n{\n  \"rule\": \"A candidate record link is not identity equivalence.\"\n}\n```\n\n## Relationships\n\nNo directed relationship is asserted by this page. Incoming relationships may still exist.\n\n## Evidence\n\nSource file: `sources/fixture-policy.json`. Locator: `json:/candidate_rule`. SHA-256: `dee3b92aec65287ff032db6c3db7962ca6f8080638962379bf08cc8a2a82683c`. The example.invalid URL is a synthetic identifier, not a retrieved website.",
+      "description": "A fixture rule explaining candidate semantics, not a national matching policy.",
+      "facts": {
+        "rule": "A candidate record link is not identity equivalence."
+      },
+      "fixture_scope": "synthetic-fixture",
+      "frontmatter": {
+        "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+        "@id": "https://example.invalid/okf-plus/rehearsal/id/rule/candidate-interpretation",
+        "@type": "ey:InterpretationRule",
+        "assertions": [],
+        "description": "A fixture rule explaining candidate semantics, not a national matching policy.",
+        "facts": {
+          "rule": "A candidate record link is not identity equivalence."
+        },
+        "fixture_scope": "synthetic-fixture",
+        "generated": {
+          "at": "2026-09-05T00:00:00Z",
+          "by": "process:rehearsal-authoring-v0.1"
+        },
+        "route": "rule/candidate-interpretation",
+        "sources": [
+          {
+            "locator": "json:/candidate_rule",
+            "retrieved_at": "2026-09-05T00:00:00Z",
+            "source_artifact": "sources/fixture-policy.json",
+            "source_sha256": "dee3b92aec65287ff032db6c3db7962ca6f8080638962379bf08cc8a2a82683c",
+            "url": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json",
+            "url_status": "synthetic-identifier-not-dereferenced"
+          }
+        ],
+        "status": "experimental",
+        "tags": [
+          "synthetic",
+          "early-years",
+          "rehearsal"
+        ],
+        "title": "Candidate links do not assert identity",
+        "type": "Interpretation rule"
+      },
+      "generated": {
+        "at": "2026-09-05T00:00:00Z",
+        "by": "process:rehearsal-authoring-v0.1"
+      },
+      "id": "concepts/rule/candidate-interpretation.md",
+      "markdown_links": {},
+      "markdown_references": {},
+      "route": "rule/candidate-interpretation",
+      "section": "concepts",
+      "source_path": "concepts/rule/candidate-interpretation.md",
+      "sources": [
+        {
+          "locator": "json:/candidate_rule",
+          "retrieved_at": "2026-09-05T00:00:00Z",
+          "source_artifact": "sources/fixture-policy.json",
+          "source_sha256": "dee3b92aec65287ff032db6c3db7962ca6f8080638962379bf08cc8a2a82683c",
+          "url": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json",
+          "url_status": "synthetic-identifier-not-dereferenced"
+        }
+      ],
+      "status": "experimental",
+      "tags": [
+        "synthetic",
+        "early-years",
+        "rehearsal"
+      ],
+      "title": "Candidate links do not assert identity",
+      "type": "Interpretation rule"
+    },
+    "concepts/scope/rehearsal.md": {
+      "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+      "@id": "https://example.invalid/okf-plus/rehearsal/id/scope/rehearsal",
+      "@type": "ey:ScopeStatement",
+      "assertions": [],
+      "asset_links": {},
+      "body": "# Synthetic early-years rehearsal\n\n**Synthetic rehearsal only — not an official record or decision.**\n\nInspect meaning, provenance and missingness without real children, live referrals or automatic merges.\n\n## Source facts\n\n```json\n{\n  \"candidate_method\": \"authored-rehearsal-fixture\",\n  \"candidate_rule\": \"A candidate record link is not identity equivalence.\",\n  \"generation_note\": \"All facts, identifiers and relationships in this fixture were invented for this preparation exercise. The snapshot date is fixed for reproducible builds.\",\n  \"limitations\": [\n    \"Not an identity matcher\",\n    \"Not a clinical assessment\",\n    \"Not statutory guidance\",\n    \"No full FHIR or CBDS conformance claim\",\n    \"No live services or permissions\"\n  ],\n  \"production_use\": \"prohibited\",\n  \"public_authority\": \"none\",\n  \"purpose\": \"Inspect the meaning and evidence of relationships in a synthetic early-years rehearsal.\",\n  \"real_personal_data\": \"none supplied\",\n  \"snapshot_date\": \"2026-09-05T00:00:00Z\",\n  \"source_families\": [\n    \"health.csv\",\n    \"settings.json\",\n    \"referrals.csv\"\n  ],\n  \"synthetic\": true\n}\n```\n\n## Relationships\n\nNo directed relationship is asserted by this page. Incoming relationships may still exist.\n\n## Evidence\n\nSource file: `sources/fixture-policy.json`. Locator: `file`. SHA-256: `dee3b92aec65287ff032db6c3db7962ca6f8080638962379bf08cc8a2a82683c`. The example.invalid URL is a synthetic identifier, not a retrieved website.",
+      "description": "Inspect meaning, provenance and missingness without real children, live referrals or automatic merges.",
+      "facts": {
+        "candidate_method": "authored-rehearsal-fixture",
+        "candidate_rule": "A candidate record link is not identity equivalence.",
+        "generation_note": "All facts, identifiers and relationships in this fixture were invented for this preparation exercise. The snapshot date is fixed for reproducible builds.",
+        "limitations": [
+          "Not an identity matcher",
+          "Not a clinical assessment",
+          "Not statutory guidance",
+          "No full FHIR or CBDS conformance claim",
+          "No live services or permissions"
+        ],
+        "production_use": "prohibited",
+        "public_authority": "none",
+        "purpose": "Inspect the meaning and evidence of relationships in a synthetic early-years rehearsal.",
+        "real_personal_data": "none supplied",
+        "snapshot_date": "2026-09-05T00:00:00Z",
+        "source_families": [
+          "health.csv",
+          "settings.json",
+          "referrals.csv"
+        ],
+        "synthetic": true
+      },
+      "fixture_scope": "synthetic-fixture",
+      "frontmatter": {
+        "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+        "@id": "https://example.invalid/okf-plus/rehearsal/id/scope/rehearsal",
+        "@type": "ey:ScopeStatement",
+        "assertions": [],
+        "description": "Inspect meaning, provenance and missingness without real children, live referrals or automatic merges.",
+        "facts": {
+          "candidate_method": "authored-rehearsal-fixture",
+          "candidate_rule": "A candidate record link is not identity equivalence.",
+          "generation_note": "All facts, identifiers and relationships in this fixture were invented for this preparation exercise. The snapshot date is fixed for reproducible builds.",
+          "limitations": [
+            "Not an identity matcher",
+            "Not a clinical assessment",
+            "Not statutory guidance",
+            "No full FHIR or CBDS conformance claim",
+            "No live services or permissions"
+          ],
+          "production_use": "prohibited",
+          "public_authority": "none",
+          "purpose": "Inspect the meaning and evidence of relationships in a synthetic early-years rehearsal.",
+          "real_personal_data": "none supplied",
+          "snapshot_date": "2026-09-05T00:00:00Z",
+          "source_families": [
+            "health.csv",
+            "settings.json",
+            "referrals.csv"
+          ],
+          "synthetic": true
+        },
+        "fixture_scope": "synthetic-fixture",
+        "generated": {
+          "at": "2026-09-05T00:00:00Z",
+          "by": "process:rehearsal-authoring-v0.1"
+        },
+        "route": "scope/rehearsal",
+        "sources": [
+          {
+            "locator": "file",
+            "retrieved_at": "2026-09-05T00:00:00Z",
+            "source_artifact": "sources/fixture-policy.json",
+            "source_sha256": "dee3b92aec65287ff032db6c3db7962ca6f8080638962379bf08cc8a2a82683c",
+            "url": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json",
+            "url_status": "synthetic-identifier-not-dereferenced"
+          }
+        ],
+        "status": "experimental",
+        "tags": [
+          "synthetic",
+          "early-years",
+          "rehearsal"
+        ],
+        "title": "Synthetic early-years rehearsal",
+        "type": "Scope statement"
+      },
+      "generated": {
+        "at": "2026-09-05T00:00:00Z",
+        "by": "process:rehearsal-authoring-v0.1"
+      },
+      "id": "concepts/scope/rehearsal.md",
+      "markdown_links": {},
+      "markdown_references": {},
+      "route": "scope/rehearsal",
+      "section": "concepts",
+      "source_path": "concepts/scope/rehearsal.md",
+      "sources": [
+        {
+          "locator": "file",
+          "retrieved_at": "2026-09-05T00:00:00Z",
+          "source_artifact": "sources/fixture-policy.json",
+          "source_sha256": "dee3b92aec65287ff032db6c3db7962ca6f8080638962379bf08cc8a2a82683c",
+          "url": "https://example.invalid/okf-plus/rehearsal/sources/fixture-policy.json",
+          "url_status": "synthetic-identifier-not-dereferenced"
+        }
+      ],
+      "status": "experimental",
+      "tags": [
+        "synthetic",
+        "early-years",
+        "rehearsal"
+      ],
+      "title": "Synthetic early-years rehearsal",
+      "type": "Scope statement"
+    },
+    "concepts/source/health.md": {
+      "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+      "@id": "https://example.invalid/okf-plus/rehearsal/id/source/health",
+      "@type": "ey:SourceCollection",
+      "assertions": [],
+      "asset_links": {},
+      "body": "# Health synthetic extract\n\n**Synthetic rehearsal only — not an official record or decision.**\n\nA supplied fictional extract, not an official service or national schema.\n\n## Source facts\n\n```json\n{\n  \"scope\": \"synthetic-fixture\",\n  \"source_file\": \"sources/health.csv\"\n}\n```\n\n## Relationships\n\nNo directed relationship is asserted by this page. Incoming relationships may still exist.\n\n## Evidence\n\nSource file: `sources/health.csv`. Locator: `file`. SHA-256: `6f004a84a9d082430a44f8466ccb39f8ffddd811a630a6fe0ee8f7bd90f3d2ce`. The example.invalid URL is a synthetic identifier, not a retrieved website.",
+      "description": "A supplied fictional extract, not an official service or national schema.",
+      "facts": {
+        "scope": "synthetic-fixture",
+        "source_file": "sources/health.csv"
+      },
+      "fixture_scope": "synthetic-fixture",
+      "frontmatter": {
+        "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+        "@id": "https://example.invalid/okf-plus/rehearsal/id/source/health",
+        "@type": "ey:SourceCollection",
+        "assertions": [],
+        "description": "A supplied fictional extract, not an official service or national schema.",
+        "facts": {
+          "scope": "synthetic-fixture",
+          "source_file": "sources/health.csv"
+        },
+        "fixture_scope": "synthetic-fixture",
+        "generated": {
+          "at": "2026-09-05T00:00:00Z",
+          "by": "process:rehearsal-authoring-v0.1"
+        },
+        "route": "source/health",
+        "sources": [
+          {
+            "locator": "file",
+            "retrieved_at": "2026-09-05T00:00:00Z",
+            "source_artifact": "sources/health.csv",
+            "source_sha256": "6f004a84a9d082430a44f8466ccb39f8ffddd811a630a6fe0ee8f7bd90f3d2ce",
+            "url": "https://example.invalid/okf-plus/rehearsal/sources/health.csv",
+            "url_status": "synthetic-identifier-not-dereferenced"
+          }
+        ],
+        "status": "experimental",
+        "tags": [
+          "synthetic",
+          "early-years",
+          "rehearsal"
+        ],
+        "title": "Health synthetic extract",
+        "type": "Source collection"
+      },
+      "generated": {
+        "at": "2026-09-05T00:00:00Z",
+        "by": "process:rehearsal-authoring-v0.1"
+      },
+      "id": "concepts/source/health.md",
+      "markdown_links": {},
+      "markdown_references": {},
+      "route": "source/health",
+      "section": "concepts",
+      "source_path": "concepts/source/health.md",
+      "sources": [
+        {
+          "locator": "file",
+          "retrieved_at": "2026-09-05T00:00:00Z",
+          "source_artifact": "sources/health.csv",
+          "source_sha256": "6f004a84a9d082430a44f8466ccb39f8ffddd811a630a6fe0ee8f7bd90f3d2ce",
+          "url": "https://example.invalid/okf-plus/rehearsal/sources/health.csv",
+          "url_status": "synthetic-identifier-not-dereferenced"
+        }
+      ],
+      "status": "experimental",
+      "tags": [
+        "synthetic",
+        "early-years",
+        "rehearsal"
+      ],
+      "title": "Health synthetic extract",
+      "type": "Source collection"
+    },
+    "concepts/source/referral.md": {
+      "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+      "@id": "https://example.invalid/okf-plus/rehearsal/id/source/referral",
+      "@type": "ey:SourceCollection",
+      "assertions": [],
+      "asset_links": {},
+      "body": "# Referral synthetic extract\n\n**Synthetic rehearsal only — not an official record or decision.**\n\nA supplied fictional extract, not an official service or national schema.\n\n## Source facts\n\n```json\n{\n  \"scope\": \"synthetic-fixture\",\n  \"source_file\": \"sources/referrals.csv\"\n}\n```\n\n## Relationships\n\nNo directed relationship is asserted by this page. Incoming relationships may still exist.\n\n## Evidence\n\nSource file: `sources/referrals.csv`. Locator: `file`. SHA-256: `e2130273a639b41320fc7c24b220c373e59f0bfac6f7a369f6b87dd60f8a30d9`. The example.invalid URL is a synthetic identifier, not a retrieved website.",
+      "description": "A supplied fictional extract, not an official service or national schema.",
+      "facts": {
+        "scope": "synthetic-fixture",
+        "source_file": "sources/referrals.csv"
+      },
+      "fixture_scope": "synthetic-fixture",
+      "frontmatter": {
+        "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+        "@id": "https://example.invalid/okf-plus/rehearsal/id/source/referral",
+        "@type": "ey:SourceCollection",
+        "assertions": [],
+        "description": "A supplied fictional extract, not an official service or national schema.",
+        "facts": {
+          "scope": "synthetic-fixture",
+          "source_file": "sources/referrals.csv"
+        },
+        "fixture_scope": "synthetic-fixture",
+        "generated": {
+          "at": "2026-09-05T00:00:00Z",
+          "by": "process:rehearsal-authoring-v0.1"
+        },
+        "route": "source/referral",
+        "sources": [
+          {
+            "locator": "file",
+            "retrieved_at": "2026-09-05T00:00:00Z",
+            "source_artifact": "sources/referrals.csv",
+            "source_sha256": "e2130273a639b41320fc7c24b220c373e59f0bfac6f7a369f6b87dd60f8a30d9",
+            "url": "https://example.invalid/okf-plus/rehearsal/sources/referrals.csv",
+            "url_status": "synthetic-identifier-not-dereferenced"
+          }
+        ],
+        "status": "experimental",
+        "tags": [
+          "synthetic",
+          "early-years",
+          "rehearsal"
+        ],
+        "title": "Referral synthetic extract",
+        "type": "Source collection"
+      },
+      "generated": {
+        "at": "2026-09-05T00:00:00Z",
+        "by": "process:rehearsal-authoring-v0.1"
+      },
+      "id": "concepts/source/referral.md",
+      "markdown_links": {},
+      "markdown_references": {},
+      "route": "source/referral",
+      "section": "concepts",
+      "source_path": "concepts/source/referral.md",
+      "sources": [
+        {
+          "locator": "file",
+          "retrieved_at": "2026-09-05T00:00:00Z",
+          "source_artifact": "sources/referrals.csv",
+          "source_sha256": "e2130273a639b41320fc7c24b220c373e59f0bfac6f7a369f6b87dd60f8a30d9",
+          "url": "https://example.invalid/okf-plus/rehearsal/sources/referrals.csv",
+          "url_status": "synthetic-identifier-not-dereferenced"
+        }
+      ],
+      "status": "experimental",
+      "tags": [
+        "synthetic",
+        "early-years",
+        "rehearsal"
+      ],
+      "title": "Referral synthetic extract",
+      "type": "Source collection"
+    },
+    "concepts/source/setting.md": {
+      "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+      "@id": "https://example.invalid/okf-plus/rehearsal/id/source/setting",
+      "@type": "ey:SourceCollection",
+      "assertions": [],
+      "asset_links": {},
+      "body": "# Setting synthetic extract\n\n**Synthetic rehearsal only — not an official record or decision.**\n\nA supplied fictional extract, not an official service or national schema.\n\n## Source facts\n\n```json\n{\n  \"scope\": \"synthetic-fixture\",\n  \"source_file\": \"sources/settings.json\"\n}\n```\n\n## Relationships\n\nNo directed relationship is asserted by this page. Incoming relationships may still exist.\n\n## Evidence\n\nSource file: `sources/settings.json`. Locator: `file`. SHA-256: `cc05d735768d8bbab5ee97567af4295aa513cbc53ca3080a7d76ebe77caeca51`. The example.invalid URL is a synthetic identifier, not a retrieved website.",
+      "description": "A supplied fictional extract, not an official service or national schema.",
+      "facts": {
+        "scope": "synthetic-fixture",
+        "source_file": "sources/settings.json"
+      },
+      "fixture_scope": "synthetic-fixture",
+      "frontmatter": {
+        "@context": "https://example.invalid/okf-plus/rehearsal/profile/context.jsonld",
+        "@id": "https://example.invalid/okf-plus/rehearsal/id/source/setting",
+        "@type": "ey:SourceCollection",
+        "assertions": [],
+        "description": "A supplied fictional extract, not an official service or national schema.",
+        "facts": {
+          "scope": "synthetic-fixture",
+          "source_file": "sources/settings.json"
+        },
+        "fixture_scope": "synthetic-fixture",
+        "generated": {
+          "at": "2026-09-05T00:00:00Z",
+          "by": "process:rehearsal-authoring-v0.1"
+        },
+        "route": "source/setting",
+        "sources": [
+          {
+            "locator": "file",
+            "retrieved_at": "2026-09-05T00:00:00Z",
+            "source_artifact": "sources/settings.json",
+            "source_sha256": "cc05d735768d8bbab5ee97567af4295aa513cbc53ca3080a7d76ebe77caeca51",
+            "url": "https://example.invalid/okf-plus/rehearsal/sources/settings.json",
+            "url_status": "synthetic-identifier-not-dereferenced"
+          }
+        ],
+        "status": "experimental",
+        "tags": [
+          "synthetic",
+          "early-years",
+          "rehearsal"
+        ],
+        "title": "Setting synthetic extract",
+        "type": "Source collection"
+      },
+      "generated": {
+        "at": "2026-09-05T00:00:00Z",
+        "by": "process:rehearsal-authoring-v0.1"
+      },
+      "id": "concepts/source/setting.md",
+      "markdown_links": {},
+      "markdown_references": {},
+      "route": "source/setting",
+      "section": "concepts",
+      "source_path": "concepts/source/setting.md",
+      "sources": [
+        {
+          "locator": "file",
+          "retrieved_at": "2026-09-05T00:00:00Z",
+          "source_artifact": "sources/settings.json",
+          "source_sha256": "cc05d735768d8bbab5ee97567af4295aa513cbc53ca3080a7d76ebe77caeca51",
+          "url": "https://example.invalid/okf-plus/rehearsal/sources/settings.json",
+          "url_status": "synthetic-identifier-not-dereferenced"
+        }
+      ],
+      "status": "experimental",
+      "tags": [
+        "synthetic",
+        "early-years",
+        "rehearsal"
+      ],
+      "title": "Setting synthetic extract",
+      "type": "Source collection"
+    }
+  },
+  "okf_version": "0.3",
+  "schema": "okf-explorer-bundle.v0",
+  "snapshot": "sha256:d10e4bf53a82cdbf0a8f7be456d00f1ec089726e40349e7f89809e42032a56bd",
+  "version": "0.2.0"
+}

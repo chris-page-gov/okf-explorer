@@ -1,0 +1,362 @@
+{
+  "schema": "okf-public-root-denominator.v1",
+  "observed_at": [
+    "2026-11-23T17:40:22Z",
+    "2026-11-25T08:24:43.407354+00:00"
+  ],
+  "public_root_count": 76,
+  "public_revision_observation_count": 106,
+  "root_keys_sha256": "2acefdc2f47f413dc721e2551353f1fde877dbd2a7310e795d705b6a7c50a55b",
+  "roots": [
+    {
+      "repository": "chris-page-gov/Awesome-Code-as-Agent-Harness-Papers",
+      "root_path": "_site/wiki"
+    },
+    {
+      "repository": "chris-page-gov/Awesome-Code-as-Agent-Harness-Papers",
+      "root_path": "wiki"
+    },
+    {
+      "repository": "chris-page-gov/OKF-knowledge-catalog",
+      "root_path": "okf/bundles/crypto_bitcoin"
+    },
+    {
+      "repository": "chris-page-gov/OKF-knowledge-catalog",
+      "root_path": "okf/bundles/ga4"
+    },
+    {
+      "repository": "chris-page-gov/OKF-knowledge-catalog",
+      "root_path": "okf/bundles/stackoverflow"
+    },
+    {
+      "repository": "chris-page-gov/ai-engineering-lab-hackathon-london-2026",
+      "root_path": "challenge-2/wiki"
+    },
+    {
+      "repository": "chris-page-gov/ai-engineering-lab-hackathon-london-2026",
+      "root_path": "gov-ckan"
+    },
+    {
+      "repository": "chris-page-gov/ai-engineering-lab-hackathon-london-2026",
+      "root_path": "gov-ckan-sample"
+    },
+    {
+      "repository": "chris-page-gov/ai-engineering-lab-hackathon-london-2026",
+      "root_path": "gov-ckan-sample/wiki"
+    },
+    {
+      "repository": "chris-page-gov/ai-engineering-lab-hackathon-london-2026",
+      "root_path": "gov-ckan/wiki"
+    },
+    {
+      "repository": "chris-page-gov/ai-engineering-lab-hackathon-london-2026",
+      "root_path": "postmortem-public/wiki"
+    },
+    {
+      "repository": "chris-page-gov/ai-infrastructure-wiki",
+      "root_path": "."
+    },
+    {
+      "repository": "chris-page-gov/ai-infrastructure-wiki",
+      "root_path": "data-gov-uk"
+    },
+    {
+      "repository": "chris-page-gov/ai-infrastructure-wiki",
+      "root_path": "data.gov.uk"
+    },
+    {
+      "repository": "chris-page-gov/ai-infrastructure-wiki",
+      "root_path": "gov-ckan"
+    },
+    {
+      "repository": "chris-page-gov/ai-infrastructure-wiki",
+      "root_path": "legislation"
+    },
+    {
+      "repository": "chris-page-gov/ai-infrastructure-wiki",
+      "root_path": "uk-government-apis"
+    },
+    {
+      "repository": "chris-page-gov/ai-infrastructure-wiki",
+      "root_path": "whole-law"
+    },
+    {
+      "repository": "chris-page-gov/for-the-kids-FTK",
+      "root_path": "public/downloads"
+    },
+    {
+      "repository": "chris-page-gov/gds-local-hackathon-20260909-early-years",
+      "root_path": "."
+    },
+    {
+      "repository": "chris-page-gov/gds-local-hackathon-20260909-early-years",
+      "root_path": "baseline"
+    },
+    {
+      "repository": "chris-page-gov/gds-local-hackathon-20260909-early-years",
+      "root_path": "bundle"
+    },
+    {
+      "repository": "chris-page-gov/gis-ai-go",
+      "root_path": "okf-plus"
+    },
+    {
+      "repository": "chris-page-gov/govuk-casa",
+      "root_path": null
+    },
+    {
+      "repository": "chris-page-gov/okf-LandRegistry",
+      "root_path": "."
+    },
+    {
+      "repository": "chris-page-gov/okf-LandRegistry",
+      "root_path": "bundle"
+    },
+    {
+      "repository": "chris-page-gov/okf-LandRegistry",
+      "root_path": "evaluation/fixtures/degraded-descriptor"
+    },
+    {
+      "repository": "chris-page-gov/okf-LandRegistry",
+      "root_path": "evaluation/fixtures/malformed-descriptor"
+    },
+    {
+      "repository": "chris-page-gov/okf-LandRegistry",
+      "root_path": "evaluation/fixtures/tiny-producer"
+    },
+    {
+      "repository": "chris-page-gov/okf-ai-capability-governance",
+      "root_path": "."
+    },
+    {
+      "repository": "chris-page-gov/okf-ai-capability-governance",
+      "root_path": "downloads/correspondence"
+    },
+    {
+      "repository": "chris-page-gov/okf-ai-infrastructure",
+      "root_path": "."
+    },
+    {
+      "repository": "chris-page-gov/okf-ai-infrastructure",
+      "root_path": "bundle"
+    },
+    {
+      "repository": "chris-page-gov/okf-ai-infrastructure",
+      "root_path": "tests/fixtures/semantic_domain"
+    },
+    {
+      "repository": "chris-page-gov/okf-dwp",
+      "root_path": "."
+    },
+    {
+      "repository": "chris-page-gov/okf-dwp",
+      "root_path": "bundle"
+    },
+    {
+      "repository": "chris-page-gov/okf-dwp",
+      "root_path": "combined"
+    },
+    {
+      "repository": "chris-page-gov/okf-dwp",
+      "root_path": "full-dmg"
+    },
+    {
+      "repository": "chris-page-gov/okf-dwp",
+      "root_path": "logical-context"
+    },
+    {
+      "repository": "chris-page-gov/okf-dwp",
+      "root_path": "structured-context"
+    },
+    {
+      "repository": "chris-page-gov/okf-els-api",
+      "root_path": "."
+    },
+    {
+      "repository": "chris-page-gov/okf-els-api",
+      "root_path": "bundle"
+    },
+    {
+      "repository": "chris-page-gov/okf-explorer",
+      "root_path": "."
+    },
+    {
+      "repository": "chris-page-gov/okf-explorer",
+      "root_path": "apps/okf-explorer/tests/fixtures/external-acceptance"
+    },
+    {
+      "repository": "chris-page-gov/okf-explorer",
+      "root_path": "docs/examples/first-bundle"
+    },
+    {
+      "repository": "chris-page-gov/okf-explorer",
+      "root_path": "evaluation/heritage"
+    },
+    {
+      "repository": "chris-page-gov/okf-explorer",
+      "root_path": "evaluation/heritage/synthetic"
+    },
+    {
+      "repository": "chris-page-gov/okf-explorer",
+      "root_path": "evaluation/heritage/tiny"
+    },
+    {
+      "repository": "chris-page-gov/okf-explorer",
+      "root_path": "legislation"
+    },
+    {
+      "repository": "chris-page-gov/okf-explorer",
+      "root_path": "profiles/bounded-inference/v1/ontology"
+    },
+    {
+      "repository": "chris-page-gov/okf-explorer",
+      "root_path": "profiles/geospatial-boundary-pack/v1/examples/uk-countries-december-2025"
+    },
+    {
+      "repository": "chris-page-gov/okf-explorer",
+      "root_path": "profiles/governed-vocabulary/v1/examples/missing-csv-label"
+    },
+    {
+      "repository": "chris-page-gov/okf-explorer",
+      "root_path": "profiles/governed-vocabulary/v1/examples/vocabulary"
+    },
+    {
+      "repository": "chris-page-gov/okf-explorer",
+      "root_path": "reference-bundle"
+    },
+    {
+      "repository": "chris-page-gov/okf-explorer",
+      "root_path": "uk-government-apis"
+    },
+    {
+      "repository": "chris-page-gov/okf-govuk-content",
+      "root_path": "."
+    },
+    {
+      "repository": "chris-page-gov/okf-govuk-content",
+      "root_path": "bundle"
+    },
+    {
+      "repository": "chris-page-gov/okf-hansard",
+      "root_path": "."
+    },
+    {
+      "repository": "chris-page-gov/okf-heritage-coventry-warwickshire",
+      "root_path": "site"
+    },
+    {
+      "repository": "chris-page-gov/okf-heritage-coventry-warwickshire",
+      "root_path": "site/synthetic"
+    },
+    {
+      "repository": "chris-page-gov/okf-heritage-coventry-warwickshire",
+      "root_path": "site/tiny"
+    },
+    {
+      "repository": "chris-page-gov/okf-ons",
+      "root_path": "."
+    },
+    {
+      "repository": "chris-page-gov/okf-planning",
+      "root_path": "."
+    },
+    {
+      "repository": "chris-page-gov/okf-planning",
+      "root_path": "bundle"
+    },
+    {
+      "repository": "chris-page-gov/okf-uk-government-apis",
+      "root_path": "."
+    },
+    {
+      "repository": "chris-page-gov/okf-uk-government-apis",
+      "root_path": "bundle"
+    },
+    {
+      "repository": "chris-page-gov/okf-uk-legislation",
+      "root_path": "."
+    },
+    {
+      "repository": "chris-page-gov/okf-uk-legislation",
+      "root_path": "bundle"
+    },
+    {
+      "repository": "chris-page-gov/okf-uk-legislation",
+      "root_path": "bundle/whole-law"
+    },
+    {
+      "repository": "chris-page-gov/okf-uk-legislation",
+      "root_path": "release-assurance/profile-reconcile-20260927/diagnostic-runtime-attempt-06/bundle"
+    },
+    {
+      "repository": "chris-page-gov/okf-uk-legislation",
+      "root_path": "release-assurance/profile-reconcile-20260927/diagnostic-runtime-attempt-06/bundle/whole-law"
+    },
+    {
+      "repository": "chris-page-gov/okf-uk-legislation",
+      "root_path": "whole-law"
+    },
+    {
+      "repository": "chris-page-gov/okf-uk-living",
+      "root_path": "."
+    },
+    {
+      "repository": "chris-page-gov/okf-uk-living",
+      "root_path": "publication"
+    },
+    {
+      "repository": "chris-page-gov/uk-government-security-learning",
+      "root_path": "site/okf"
+    },
+    {
+      "repository": "chris-page-gov/xgov-soft-eng-com",
+      "root_path": "."
+    }
+  ],
+  "alias_relationships": [
+    {
+      "from": {
+        "repository": "chris-page-gov/okf-explorer",
+        "root_path": "reference-bundle"
+      },
+      "targets": [
+        {
+          "repository": "chris-page-gov/okf-explorer",
+          "root_path": "."
+        }
+      ],
+      "kind": "generated-projection-alias"
+    },
+    {
+      "from": {
+        "repository": "chris-page-gov/okf-govuk-content",
+        "root_path": "."
+      },
+      "targets": [
+        {
+          "repository": "chris-page-gov/okf-govuk-content",
+          "root_path": "bundle"
+        }
+      ],
+      "kind": "repository-alias"
+    },
+    {
+      "from": {
+        "repository": "chris-page-gov/gds-local-hackathon-20260909-early-years",
+        "root_path": "."
+      },
+      "targets": [
+        {
+          "repository": "chris-page-gov/gds-local-hackathon-20260909-early-years",
+          "root_path": "baseline"
+        },
+        {
+          "repository": "chris-page-gov/gds-local-hackathon-20260909-early-years",
+          "root_path": "bundle"
+        }
+      ],
+      "kind": "repository-contract-umbrella"
+    }
+  ],
+  "alias_relationship_count": 3
+}

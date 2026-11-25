@@ -92,6 +92,7 @@ def render(directory: dict) -> dict[Path, str]:
              "returned 200. Later entries give their own verification evidence. No live Voice",
              "conversation has been tested for this directory.", "",
              "[Machine-readable directory](../okf-public-access.json) · [AI access guide](ai-okf-usage.md)", "",
+             "[Central public walkthrough register](walkthrough-register.md) records the wider public root denominator, current descriptor observations and hash-checked walkthrough evidence.", "",
              "[Project discovery JSON](../.well-known/okf.json) · [Text discovery index](../llms.txt)", "",
              "[Dated HTTP check](evidence/public-bundle-access-2026-11-14.json) records the exact checked URLs and descriptor hashes.", "",
              "## Choose a collection", "",
