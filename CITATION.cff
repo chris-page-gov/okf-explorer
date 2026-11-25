@@ -5,7 +5,7 @@ version: "0.9.2"
 authors:
   - family-names: "Page"
     given-names: "Chris"
-date-released: "2026-11-24"
+date-released: "2026-11-25"
 license: "MIT"
 repository-code: "https://github.com/chris-page-gov/okf-explorer"
 url: "https://chris-page-gov.github.io/okf-explorer/"
@@ -16,5 +16,5 @@ preferred-citation:
   authors:
     - family-names: "Page"
       given-names: "Chris"
-  date-released: "2026-11-24"
+  date-released: "2026-11-25"
   license: "MIT"

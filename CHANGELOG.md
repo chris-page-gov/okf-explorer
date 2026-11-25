@@ -8,6 +8,8 @@
 - Derive the legislation runtime acceptance version from the app package so
   the release tag and package version cannot drift apart. Prepare the 0.9.2
   candidate; publication and release remain separate gates.
+- Date the resumed 0.9.2 release candidate 25 November 2026 in both citation
+  records; preserve the original standard and implementation dates.
 
 ## Unreleased — core 0.3 federations
 

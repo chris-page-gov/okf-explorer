@@ -34,5 +34,6 @@ bind target descriptors and source records to their own acceptance evidence.
 The published 0.9.1 release aligned the package, both citation versions,
 dependency inventory and generated bundle metadata. Historical release entries
 remain dated. The 0.9.2 candidate adds descriptor-relative context navigation
-and derives the legislation runtime binding from the package version. Its
+and derives the legislation runtime binding from the package version. Both
+citation records date this resumed candidate 25 November 2026. Its
 publication still needs exact CI, public and release-asset checks.
