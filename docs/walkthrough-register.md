@@ -8,7 +8,7 @@ Questions: 27 walkthroughs, comprising 26 reviewed producer/profile entries and 
 
 [Machine-readable register](../registry/walkthrough-register.json)
 
-Core version is taken from an exact captured public descriptor where one is available. Older index/frontmatter fields are retained as historical field observations only unless their bytes are separately captured and verified. Producer product version, OKF core version, and shared Reader package version are separate.
+Core version is taken from an exact captured public descriptor where one is available. Older index/frontmatter fields are retained as historical field observations only unless their bytes are separately captured and verified. Declared bundle version/edition, OKF core version, and shared Reader package version are separate.
 
 A Pages descriptor capture records the bytes served at that route on its observation date. It does not establish a tagged release, accepted candidate, full-bundle conformance or legal sufficiency. Root inventory commits and dates are discovery observations; they are not publication receipts.
 
@@ -21,7 +21,7 @@ Shared Reader package: 0.9.2. This is a Reader version, not an OKF core declarat
 
 A council wants an agent to discover and invoke tools and delegate work to other agents. What do MCP, A2A and a documentation registry each contribute, where must consent and evidence be recorded, and does this bundle establish that a deployment is authorised or secure?
 
-Core `0.3` from the captured descriptor; producer `0.9.2`; Reader `0.9.2`. The packet, authored question, case, HTML guide and SVG diagram are checked against their recorded SHA-256 values. Status: local hashes match; browser, deployment and conformance acceptance are separate.
+Core `0.3` from the captured descriptor; declared bundle version/edition `0.9.2`; Reader `0.9.2`. The packet, authored question, case, HTML guide and SVG diagram are checked against their recorded SHA-256 values. Status: local hashes match; browser, deployment and conformance acceptance are separate.
 
 [Guide](https://chris-page-gov.github.io/okf-explorer/reference-bundle/walkthrough.html) · [Evidence packet](../reference-bundle/walkthrough-data.json) · [Diagram](../reference-bundle/walkthrough.svg) · [Question source](https://github.com/chris-page-gov/okf-explorer/blob/acf23958aa1ce11ec52c41313649b20d24f17609/walkthrough.md)
 
@@ -33,7 +33,7 @@ Each entry keeps one logical question. Mobile and desktop views are checks of th
 
 How could public bodies explore federated RAG without centralising their documents, how do secure aggregation and differential privacy relate to that design, what should evaluation cover, and which security references and evidence gaps should a reviewer inspect?
 
-**Version:** 0.3; producer 0.7.1; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T08:54:13.288071+00:00: [bundle descriptor](https://chris-page-gov.github.io/okf-ai-infrastructure/okf-bundle.json).
+**Version:** 0.3; declared bundle version/edition 0.7.1; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T08:54:13.288071+00:00: [bundle descriptor](https://chris-page-gov.github.io/okf-ai-infrastructure/okf-bundle.json).
 
 [Guide](https://chris-page-gov.github.io/okf-ai-infrastructure/walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-ai-infrastructure/blob/b5f97ab4ef1d67038b3878264796452c0dba8e9c/bundle/walkthrough-data.json)
 
@@ -45,7 +45,7 @@ Current page: not rechecked.
 
 I need a population trend by age for a named local authority and a stated period. Which ONS dataset and edition should I consider? What nearby series could be confused with it? Which geography vintage, provenance and quality evidence can I inspect, and what must be chosen before a live query is authorised?
 
-**Version:** 0.3; producer 0.3.1; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:05:00Z: [bundle descriptor](https://chris-page-gov.github.io/okf-ons/okf-explorer.json) · [related descriptor](https://chris-page-gov.github.io/okf-ons/okf-core-explorer.json).
+**Version:** 0.3; declared bundle version/edition 0.3.1; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:05:00Z: [bundle descriptor](https://chris-page-gov.github.io/okf-ons/okf-explorer.json) · [related descriptor](https://chris-page-gov.github.io/okf-ons/okf-core-explorer.json).
 
 [Guide](https://chris-page-gov.github.io/okf-ons/walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-ons/blob/7fdac57da06400a1ca837b11506cc27110856da3/docs/okf-03-complex-question-walkthrough.md)
 
@@ -57,7 +57,7 @@ Current page: not rechecked.
 
 Does OKF 0.3 conformance mean this ONS catalogue is complete, current, or statistically verified?
 
-**Version:** 0.3; producer 0.3.1; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:05:00Z: [bundle descriptor](https://chris-page-gov.github.io/okf-ons/okf-core-explorer.json).
+**Version:** 0.3; declared bundle version/edition 0.3.1; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:05:00Z: [bundle descriptor](https://chris-page-gov.github.io/okf-ons/okf-core-explorer.json).
 
 [Guide](https://chris-page-gov.github.io/okf-ons/core-walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-ons/blob/7fdac57da06400a1ca837b11506cc27110856da3/docs/okf-03-core-only-walkthrough.md)
 
@@ -69,7 +69,7 @@ Current page: not rechecked.
 
 Which design-code records should a planner inspect alongside the National Planning Policy Framework, and what can this bundle establish about a proposal’s compliance?
 
-**Version:** 0.3; producer 0.3.1; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:05:00Z: [bundle descriptor](https://chris-page-gov.github.io/okf-planning/okf-explorer.json).
+**Version:** 0.3; declared bundle version/edition 0.3.1; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:05:00Z: [bundle descriptor](https://chris-page-gov.github.io/okf-planning/okf-explorer.json).
 
 [Guide](https://chris-page-gov.github.io/okf-planning/walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-planning/blob/3ed77fac012ae0993815fb6453651c61428040be/walkthroughs/design-code.json)
 
@@ -81,7 +81,7 @@ Current page: not rechecked.
 
 What does this pinned site archive support someone checking before reuse, and what would require current operational evidence?
 
-**Version:** 0.3; producer 0.1.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:04:45Z: [bundle descriptor](https://chris-page-gov.github.io/okf-ai-capability-governance/site-bundle/okf-explorer.json).
+**Version:** 0.3; declared bundle version/edition 0.1.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:04:45Z: [bundle descriptor](https://chris-page-gov.github.io/okf-ai-capability-governance/site-bundle/okf-explorer.json).
 
 [Guide](https://chris-page-gov.github.io/okf-ai-capability-governance/site-bundle/walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-ai-capability-governance/blob/f87ae6037af4b0097b801b8e0f3c5a3686466aac/source/walkthroughs.json)
 
@@ -93,7 +93,7 @@ Current page: not rechecked.
 
 In the published composite example, what changes when the agent is given the send action, and which human control remains in place?
 
-**Version:** 0.3; producer 0.1.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:04:45Z: [bundle descriptor](https://chris-page-gov.github.io/okf-ai-capability-governance/bundle/okf-explorer.json).
+**Version:** 0.3; declared bundle version/edition 0.1.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:04:45Z: [bundle descriptor](https://chris-page-gov.github.io/okf-ai-capability-governance/bundle/okf-explorer.json).
 
 [Guide](https://chris-page-gov.github.io/okf-ai-capability-governance/bundle/walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-ai-capability-governance/blob/f87ae6037af4b0097b801b8e0f3c5a3686466aac/source/walkthroughs.json)
 
@@ -105,7 +105,7 @@ Current page: not rechecked.
 
 Using only the compact week entry point, which formal Bill 4030 stages are cited, in which House and date order, and can this bundle prove a complete legislative history?
 
-**Version:** 0.3; producer 0.3.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T11:52:18.116379+00:00: [bundle descriptor](https://chris-page-gov.github.io/okf-hansard/okf-core.json).
+**Version:** 0.3; declared bundle version/edition 0.3.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T11:52:18.116379+00:00: [bundle descriptor](https://chris-page-gov.github.io/okf-hansard/okf-core.json).
 
 [Guide](https://chris-page-gov.github.io/okf-hansard/core-walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-hansard/blob/586c80b3f73e26500b639f949500328f136ba2b4/scripts/build_walkthrough.py)
 
@@ -117,7 +117,7 @@ Current page: HTTP 200 on 2026-11-25T11:52:18.116379+00:00; Anonymous HTTP 200; 
 
 Which recorded stages of Bill 4030 appear in the Commons and Lords, in date order, and what does this evidence not establish?
 
-**Version:** 0.3; producer 0.3.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T11:52:18.116379+00:00: [bundle descriptor](https://chris-page-gov.github.io/okf-hansard/graph/okf-explorer.json).
+**Version:** 0.3; declared bundle version/edition 0.3.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T11:52:18.116379+00:00: [bundle descriptor](https://chris-page-gov.github.io/okf-hansard/graph/okf-explorer.json).
 
 [Guide](https://chris-page-gov.github.io/okf-hansard/walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-hansard/blob/586c80b3f73e26500b639f949500328f136ba2b4/scripts/build_walkthrough.py)
 
@@ -129,31 +129,31 @@ Current page: HTTP 200 on 2026-11-25T11:52:18.116379+00:00; Anonymous HTTP 200; 
 
 What dates does the compact November entry point declare, can this one-record bundle establish which House debated Bill 4030, and where must I go to check those claims?
 
-**Version:** 0.3; producer 0.3.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T11:52:18.116379+00:00: [bundle descriptor](https://chris-page-gov.github.io/okf-hansard/november/okf-core.json).
+**Version:** 0.3; declared bundle version/edition 0.3.0; shared Reader 0.9.2. Exact descriptor returned HTTP 200 on 2026-11-25T11:52:18.116379+00:00: [bundle descriptor](https://chris-page-gov.github.io/okf-hansard/november/okf-core.json).
 
 [Guide](https://chris-page-gov.github.io/okf-hansard/november/core-walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-hansard/blob/9c3c55c292216b995f7339068c05ae4b3e98d20c/scripts/build_walkthrough.py)
 
-Earlier evidence: passed (2026-11-24T01:16:40.306Z); Current Stage6 public browser journeys passed on desktop and mobile; the exact descriptor identity was selected, with no automated WCAG violations or horizontal overflow.
+Earlier evidence: passed (2026-11-24T01:16:40.306Z); Four-guide public browser proof passed at its recorded producer, Pages and Reader commits.
 
-Current page: HTTP 200 on 2026-11-25T11:52:18.116379+00:00; Anonymous HTTP 200; exact guide, case JSON and descriptor bytes match the served November checksum catalogue. The separate current Stage6 desktop and mobile browser proof passed; full public asset verification is retained separately. Earlier page observations: HTTP 404 on 2026-11-25T09:52:00Z. Current browser proof: passed (2026-11-25T11:45:44.287Z); desktop and mobile journeys for this guide. Complete public-assets gate: passed (2026-11-25T11:49:24.764078+00:00); 8009 catalogue and 8009 served files verified.
+Current page: HTTP 200 on 2026-11-25T11:52:18.116379+00:00; Anonymous HTTP 200; exact guide, case JSON and descriptor bytes match the served November checksum catalogue. The separate current Stage6 desktop and mobile browser proof passed; full public asset verification is retained separately. Earlier page observations: HTTP 404 on 2026-11-25T09:52:00Z. Current browser proof: passed (2026-11-25T11:45:44.287Z); desktop and mobile journeys for this guide using Reader 0.9.2. Complete public-assets gate: passed (2026-11-25T11:49:24.764078+00:00); 8009 catalogue and 8009 served files verified.
 
 ### Hansard: november full guide
 
 On 18 November, which House’s proceedings are linked to Bill 4030, what does the same-date coverage say about Commons and Lords activity, and can those records establish that the Commons debated or the Bill passed? How far does this snapshot cover?
 
-**Version:** 0.3; producer 0.3.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T11:52:18.116379+00:00: [bundle descriptor](https://chris-page-gov.github.io/okf-hansard/november/graph/okf-explorer.json).
+**Version:** 0.3; declared bundle version/edition 0.3.0; shared Reader 0.9.2. Exact descriptor returned HTTP 200 on 2026-11-25T11:52:18.116379+00:00: [bundle descriptor](https://chris-page-gov.github.io/okf-hansard/november/graph/okf-explorer.json).
 
 [Guide](https://chris-page-gov.github.io/okf-hansard/november/walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-hansard/blob/9c3c55c292216b995f7339068c05ae4b3e98d20c/scripts/build_walkthrough.py)
 
-Earlier evidence: passed (2026-11-24T01:16:40.306Z); Current Stage6 public browser journeys passed on desktop and mobile; the exact descriptor identity was selected, with no automated WCAG violations or horizontal overflow.
+Earlier evidence: passed (2026-11-24T01:16:40.306Z); Four-guide public browser proof passed at its recorded producer, Pages and Reader commits.
 
-Current page: HTTP 200 on 2026-11-25T11:52:18.116379+00:00; Anonymous HTTP 200; exact guide, case JSON and descriptor bytes match the served November checksum catalogue. The separate current Stage6 desktop and mobile browser proof passed; full public asset verification is retained separately. Earlier page observations: HTTP 404 on 2026-11-25T09:52:00Z. Current browser proof: passed (2026-11-25T11:45:44.287Z); desktop and mobile journeys for this guide. Complete public-assets gate: passed (2026-11-25T11:49:24.764078+00:00); 8009 catalogue and 8009 served files verified.
+Current page: HTTP 200 on 2026-11-25T11:52:18.116379+00:00; Anonymous HTTP 200; exact guide, case JSON and descriptor bytes match the served November checksum catalogue. The separate current Stage6 desktop and mobile browser proof passed; full public asset verification is retained separately. Earlier page observations: HTTP 404 on 2026-11-25T09:52:00Z. Current browser proof: passed (2026-11-25T11:45:44.287Z); desktop and mobile journeys for this guide using Reader 0.9.2. Complete public-assets gate: passed (2026-11-25T11:49:24.764078+00:00); 8009 catalogue and 8009 served files verified.
 
 ### Heritage: faithful source records
 
 Which Warwick Castle record answers a question about designation, and which record does the 2025 risk row assess? Can its risk finding be transferred to the Grade I listed building or the registered park and garden?
 
-**Version:** 0.3; producer 1.1.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:05:00Z: [bundle descriptor](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/okf-explorer.json).
+**Version:** 0.3; declared bundle version/edition 1.1.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:05:00Z: [bundle descriptor](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/okf-explorer.json).
 
 [Guide](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/blob/032ee17d3abee5922a0844f1b3d1e1bdc6072d42/site/walkthrough-data.json)
 
@@ -165,7 +165,7 @@ Current page: not rechecked.
 
 This subset contains two listed buildings and one 2025 risk row. Which building does that row assess, how do their grades differ, and can the three records establish risk coverage for Coventry and Warwickshire?
 
-**Version:** 0.3; producer 1.1.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:05:00Z: [bundle descriptor](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/tiny/okf-explorer.json).
+**Version:** 0.3; declared bundle version/edition 1.1.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:05:00Z: [bundle descriptor](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/tiny/okf-explorer.json).
 
 [Guide](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/tiny/walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/blob/032ee17d3abee5922a0844f1b3d1e1bdc6072d42/site/tiny/walkthrough-data.json)
 
@@ -177,7 +177,7 @@ Current page: not rechecked.
 
 In this invented scenario, which place does the 2031 intervention propose to protect, who is its possible designer, and what prevents those two relationships from becoming verified real-world claims?
 
-**Version:** 0.3; producer 1.1.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:05:00Z: [bundle descriptor](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/okf-explorer.json).
+**Version:** 0.3; declared bundle version/edition 1.1.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:05:00Z: [bundle descriptor](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/okf-explorer.json).
 
 [Guide](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/synthetic/walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire/blob/032ee17d3abee5922a0844f1b3d1e1bdc6072d42/site/synthetic/walkthrough-data.json)
 
@@ -189,7 +189,7 @@ Current page: not rechecked.
 
 Can an OKF core 0.3 reader establish that the GOV.UK Notify endpoint is currently reachable and licensed for my integration? Trace the authored provider link, dated source row and access and licence fields, then identify what still needs checking.
 
-**Version:** 0.3; producer 0.5.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:05:00Z: [bundle descriptor](https://chris-page-gov.github.io/okf-uk-government-apis/okf-core-explorer.json).
+**Version:** 0.3; declared bundle version/edition 0.5.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:05:00Z: [bundle descriptor](https://chris-page-gov.github.io/okf-uk-government-apis/okf-core-explorer.json).
 
 [Guide](https://chris-page-gov.github.io/okf-uk-government-apiscore-walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-uk-government-apis/blob/c33792abdbc16a6fb4c386a5ad6f10c79e0fbce2/walkthroughs/core-catalogue.json)
 
@@ -201,7 +201,7 @@ Current page: not rechecked.
 
 The catalogue has several similarly named notification entries. Which frozen record reports a public-facing endpoint, what do the source-specific licence and access fields say, and what evidence is still needed before reuse or integration?
 
-**Version:** 0.3; producer 0.5.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:05:00Z: [bundle descriptor](https://chris-page-gov.github.io/okf-uk-government-apis/okf-explorer.json).
+**Version:** 0.3; declared bundle version/edition 0.5.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:05:00Z: [bundle descriptor](https://chris-page-gov.github.io/okf-uk-government-apis/okf-explorer.json).
 
 [Guide](https://chris-page-gov.github.io/okf-uk-government-apisnotification-catalogue-walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-uk-government-apis/blob/c33792abdbc16a6fb4c386a5ad6f10c79e0fbce2/walkthroughs/notification-catalogue.json)
 
@@ -213,7 +213,7 @@ Current page: not rechecked.
 
 In this frozen demonstrator, which parental-leave item is listed under both pregnancy and birth and financial help for children? Which page is linked to it, who is shown as publisher, which organisations are associated with it, and can this snapshot establish a family's current entitlement or pay?
 
-**Version:** 0.3; producer 0.1.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:05:00Z: [bundle descriptor](https://chris-page-gov.github.io/okf-govuk-content/okf-explorer.json).
+**Version:** 0.3; declared bundle version/edition 0.1.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:05:00Z: [bundle descriptor](https://chris-page-gov.github.io/okf-govuk-content/okf-explorer.json).
 
 [Guide](https://chris-page-gov.github.io/okf-govuk-content/walkthroughs/new-child-metadata.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-govuk-content/blob/12a1b4e66e7a2526115f97e76b2811490eaefb6a/bundle/walkthroughs/new-child-metadata.html)
 
@@ -225,7 +225,7 @@ Current page: not rechecked.
 
 What does “Send notifications and messages” and its displayed match count tell a Reader about a repository’s actual notification capability?
 
-**Version:** 0.3; producer 0.6.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:04:45Z: [bundle descriptor](https://chris-page-gov.github.io/xgov-soft-eng-com/okf-core-explorer.json).
+**Version:** 0.3; declared bundle version/edition 0.6.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:04:45Z: [bundle descriptor](https://chris-page-gov.github.io/xgov-soft-eng-com/okf-core-explorer.json).
 
 [Guide](https://chris-page-gov.github.io/xgov-soft-eng-com/walkthrough/core-taxonomy.html) · [Question and evidence source](https://github.com/chris-page-gov/xgov-soft-eng-com/blob/5c9ad7e85e0671ac287f3046dd5c7ce546281504/scripts/core_walkthrough.py)
 
@@ -237,7 +237,7 @@ Current page: not rechecked.
 
 Can these Notify components be reused?
 
-**Version:** 0.3; producer 0.6.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:04:45Z: [bundle descriptor](https://chris-page-gov.github.io/xgov-soft-eng-com/okf-explorer.json).
+**Version:** 0.3; declared bundle version/edition 0.6.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:04:45Z: [bundle descriptor](https://chris-page-gov.github.io/xgov-soft-eng-com/okf-explorer.json).
 
 [Guide](https://chris-page-gov.github.io/xgov-soft-eng-com/walkthrough/notification-software.html) · [Question and evidence source](https://github.com/chris-page-gov/xgov-soft-eng-com/blob/5c9ad7e85e0671ac287f3046dd5c7ce546281504/scripts/notification_walkthrough.py)
 
@@ -249,7 +249,7 @@ Current page: not rechecked.
 
 Can linked records establish that support was delivered?
 
-**Version:** 0.3; producer 0.2.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:04:45Z: [bundle descriptor](https://chris-page-gov.github.io/gds-local-hackathon-20260909-early-years/bundle/core-reference.json).
+**Version:** 0.3; declared bundle version/edition 0.2.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:04:45Z: [bundle descriptor](https://chris-page-gov.github.io/gds-local-hackathon-20260909-early-years/bundle/core-reference.json).
 
 [Guide](https://chris-page-gov.github.io/gds-local-hackathon-20260909-early-years/walkthrough/core.html) · [Question and evidence source](https://github.com/chris-page-gov/gds-local-hackathon-20260909-early-years/blob/e6adf9b6bf013194f6a1c4fbb04b9e07fb310b62/walkthrough/cases.json)
 
@@ -261,7 +261,7 @@ Current page: not rechecked.
 
 How should competing candidate links and different action states be read?
 
-**Version:** 0.3; producer 0.2.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:04:45Z: [bundle descriptor](https://chris-page-gov.github.io/gds-local-hackathon-20260909-early-years/bundle/okf-bundle.json).
+**Version:** 0.3; declared bundle version/edition 0.2.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:04:45Z: [bundle descriptor](https://chris-page-gov.github.io/gds-local-hackathon-20260909-early-years/bundle/okf-bundle.json).
 
 [Guide](https://chris-page-gov.github.io/gds-local-hackathon-20260909-early-years/walkthrough/domain.html) · [Question and evidence source](https://github.com/chris-page-gov/gds-local-hackathon-20260909-early-years/blob/e6adf9b6bf013194f6a1c4fbb04b9e07fb310b62/walkthrough/cases.json)
 
@@ -273,7 +273,7 @@ Current page: not rechecked.
 
 What can the same facts show without structured domain relationships?
 
-**Version:** 0.2; producer 0.1.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:04:45Z: [bundle descriptor](https://chris-page-gov.github.io/gds-local-hackathon-20260909-early-years/baseline/control-explorer.json).
+**Version:** 0.2; declared bundle version/edition 0.1.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:04:45Z: [bundle descriptor](https://chris-page-gov.github.io/gds-local-hackathon-20260909-early-years/baseline/control-explorer.json).
 
 [Guide](https://chris-page-gov.github.io/gds-local-hackathon-20260909-early-years/walkthrough/control.html) · [Question and evidence source](https://github.com/chris-page-gov/gds-local-hackathon-20260909-early-years/blob/e6adf9b6bf013194f6a1c4fbb04b9e07fb310b62/walkthrough/cases.json)
 
@@ -285,7 +285,7 @@ Current page: not rechecked.
 
 Which free activity is available on Thursday, where is it held and what do the notes say about access? Compare it with the reading circle and the repair demonstration: can I confirm the demonstration's price, step-free access and a way to book?
 
-**Version:** 0.3; producer 0.3.0; shared Reader 0.9.2.
+**Version:** 0.3; declared bundle version/edition 0.3.0; shared Reader 0.9.2.
 
 [Guide](https://chris-page-gov.github.io/okf-explorer/docs/examples/first-bundle/walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-explorer/blob/acf23958aa1ce11ec52c41313649b20d24f17609/docs/examples/first-bundle/walkthrough.case.json)
 
@@ -297,7 +297,7 @@ Current page: not rechecked.
 
 How does the retained graph connect revisions to derivations and influences, and can it prove that a particular government document was revised?
 
-**Version:** profile v1; core version not asserted; producer not recorded; shared Reader 0.9.2.
+**Version:** profile v1; core version not asserted; declared bundle version/edition not recorded; shared Reader 0.9.2.
 
 [Guide](https://chris-page-gov.github.io/okf-explorer/profiles/bounded-inference/v1/ontology/walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-explorer/blob/acf23958aa1ce11ec52c41313649b20d24f17609/profiles/walkthroughs/prov-hierarchy.md)
 
@@ -309,7 +309,7 @@ Current page: not rechecked.
 
 How can an AI distinguish the CSV format, a licence term and an education topic, and does their presence establish a dataset's reuse conditions?
 
-**Version:** profile v1; core version not asserted; producer not recorded; shared Reader 0.9.2.
+**Version:** profile v1; core version not asserted; declared bundle version/edition not recorded; shared Reader 0.9.2.
 
 [Guide](https://chris-page-gov.github.io/okf-explorer/profiles/governed-vocabulary/v1/examples/vocabulary/walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-explorer/blob/acf23958aa1ce11ec52c41313649b20d24f17609/profiles/walkthroughs/vocabulary-schemes.md)
 
@@ -321,7 +321,7 @@ Current page: not rechecked.
 
 Why can CSV still appear in Reader when its preferred label is missing, which constraint fails, and what does the review evidence establish?
 
-**Version:** profile v1; core version not asserted; producer not recorded; shared Reader 0.9.2.
+**Version:** profile v1; core version not asserted; declared bundle version/edition not recorded; shared Reader 0.9.2.
 
 [Guide](https://chris-page-gov.github.io/okf-explorer/profiles/governed-vocabulary/v1/examples/missing-csv-label/walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-explorer/blob/acf23958aa1ce11ec52c41313649b20d24f17609/profiles/walkthroughs/missing-csv-label.md)
 
@@ -333,7 +333,7 @@ Current page: not rechecked.
 
 Which UK countries can this pack compare, which boundary vintage and source conditions apply, and can it establish district-level or precise coastline conclusions?
 
-**Version:** profile v1; core version not asserted; producer not recorded; shared Reader 0.9.2.
+**Version:** profile v1; core version not asserted; declared bundle version/edition not recorded; shared Reader 0.9.2.
 
 [Guide](https://chris-page-gov.github.io/okf-explorer/profiles/geospatial-boundary-pack/v1/examples/uk-countries-december-2025/walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-explorer/blob/acf23958aa1ce11ec52c41313649b20d24f17609/profiles/walkthroughs/uk-country-boundaries.md)
 
@@ -346,7 +346,7 @@ Current page: not rechecked.
 
 The table records exact anonymous HTTP descriptor bytes captured on 25 November 2026. A changed digest does not inherit an earlier release or walkthrough acceptance. These captures do not re-run browser or conformance checks.
 
-| Repository | Descriptor core | Producer version | Current bytes | Prior directory digest | Walkthrough evidence |
+| Repository | Descriptor core | Declared bundle version/edition | Current bytes | Prior directory digest | Walkthrough evidence |
 | --- | --- | --- | --- | --- | --- |
 | [AI Infrastructure](https://github.com/chris-page-gov/okf-ai-infrastructure) | 0.3 | 0.7.1 | `42f2e0319f0686cfdee6ccf5e1762cb2ee0c6013aaa1ca3a0a8ec54ddd8abcdf` (2026-11-25T08:54:13.288071+00:00) | same | 1 walkthrough(s) listed above; inspect each dated status |
 | [DWP combined guidance and learning](https://github.com/chris-page-gov/okf-dwp) | 0.2 | 0.1.0 | `4ecb1ee17bf273fbd64170031a9567cabbe83ff08e3994ec4e81dfb78dcf93dc` (2026-11-25T08:54:13.932283+00:00) | same | not listed |

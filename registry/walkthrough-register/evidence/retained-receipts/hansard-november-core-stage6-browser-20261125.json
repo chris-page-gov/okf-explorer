@@ -45,5 +45,6 @@
         "snapshot": "hansard-markdown-sha256-9f646da1e032e4b326b1387fc4cad67b39d4a999a8f5fd147f52aa7c42902768"
       }
     }
-  ]
+  ],
+  "expected_reader_commit": "acf23958aa1ce11ec52c41313649b20d24f17609"
 }

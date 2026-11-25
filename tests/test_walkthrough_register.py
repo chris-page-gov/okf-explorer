@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 from pathlib import Path
 import shutil
@@ -193,6 +194,7 @@ class WalkthroughRegisterTests(unittest.TestCase):
         self.assertEqual(rows["hansard-november-core"]["historical_page_observations"][0]["http_status"], 404)
         self.assertEqual(rows["hansard-week-core"].get("current_publication_proof"), None)
         self.assertEqual(rows["hansard-november-core"]["current_publication_proof"]["status"], "passed")
+        self.assertEqual(rows["hansard-november-core"]["reader_version"], "0.9.2")
         self.assertEqual(rows["hansard-week-core"]["current_page_observation"]["http_status"], 200)
         self.assertEqual(rows["capgov-site-archive"]["okf_core_version"], "0.3")
         self.assertEqual(rows["capgov-site-archive"]["producer_product_version"], "0.1.0")
@@ -326,6 +328,44 @@ class WalkthroughRegisterTests(unittest.TestCase):
                 path.write_text(json.dumps(summary), encoding="utf-8")
                 with self.assertRaises(ValueError):
                     register.load(root)
+
+    def test_hansard_expected_identity_snapshot_is_bound_to_exact_descriptor(self):
+        source = register.load()
+        row = next(w for w in source["review_walkthroughs"] if w["id"] == "hansard-november-core")
+        descriptor = json.loads((ROOT / row["version_evidence_path"]).read_text(encoding="utf-8"))
+        observation = row["current_page_observation"]
+        case = json.loads((ROOT / observation["case_json_path"]).read_text(encoding="utf-8"))
+        register.validate_expected_identity(case["expected_identity"], descriptor)
+        forged_case_identity = copy.deepcopy(case["expected_identity"])
+        forged_case_identity["snapshot"] = "stale-or-forged-snapshot"
+        with self.assertRaisesRegex(ValueError, "exact descriptor fields"):
+            register.validate_expected_identity(forged_case_identity, descriptor)
+
+        temporary, root, fixture_source = self.fixture()
+        fixture_row = next(w for w in fixture_source["review_walkthroughs"] if w["id"] == row["id"])
+        proof = fixture_row["current_publication_proof"]
+        summary_path = root / proof["receipt_summary_path"]
+        summary = json.loads(summary_path.read_text(encoding="utf-8"))
+        summary["cases"][0]["expected_identity"]["snapshot"] = "stale-or-forged-snapshot"
+        summary_bytes = (json.dumps(summary, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+        summary_path.write_bytes(summary_bytes)
+        proof["receipt_summary_sha256"] = hashlib.sha256(summary_bytes).hexdigest()
+        (root / register.SOURCE).write_text(json.dumps(fixture_source), encoding="utf-8")
+        with temporary, self.assertRaisesRegex(ValueError, "exact descriptor fields"):
+            register.load(root)
+
+        temporary, root, fixture_source = self.fixture()
+        fixture_row = next(w for w in fixture_source["review_walkthroughs"] if w["id"] == row["id"])
+        proof = fixture_row["current_publication_proof"]
+        summary_path = root / proof["receipt_summary_path"]
+        summary = json.loads(summary_path.read_text(encoding="utf-8"))
+        summary["expected_reader_commit"] = "0" * 40
+        summary_bytes = (json.dumps(summary, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+        summary_path.write_bytes(summary_bytes)
+        proof["receipt_summary_sha256"] = hashlib.sha256(summary_bytes).hexdigest()
+        (root / register.SOURCE).write_text(json.dumps(fixture_source), encoding="utf-8")
+        with temporary, self.assertRaisesRegex(ValueError, "expected_reader_commit"):
+            register.load(root)
 
 
 if __name__ == "__main__":

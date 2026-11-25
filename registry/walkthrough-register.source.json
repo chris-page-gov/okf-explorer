@@ -3908,12 +3908,12 @@
       "title": "Hansard: november core guide",
       "question": "What dates does the compact November entry point declare, can this one-record bundle establish which House debated Bill 4030, and where must I go to check those claims?",
       "guide_url": "https://chris-page-gov.github.io/okf-hansard/november/core-walkthrough.html",
-      "guide_status": "Current Stage6 public browser journeys passed on desktop and mobile; the exact descriptor identity was selected, with no automated WCAG violations or horizontal overflow.",
+      "guide_status": "Four-guide public browser proof passed at its recorded producer, Pages and Reader commits.",
       "current_page_checked": true,
       "source_url_checked": false,
       "okf_core_version": "0.3",
       "producer_product_version": "0.3.0",
-      "reader_version": null,
+      "reader_version": "0.9.2",
       "current_source_commit": "9c3c55c292216b995f7339068c05ae4b3e98d20c",
       "source_observed_on": "2026-11-25",
       "source_path": "scripts/build_walkthrough.py",
@@ -4004,11 +4004,12 @@
         "producer_product_version": "0.3.0",
         "sha256": "51796d439c08bb90ea27eb9f9c5b9e42e61a1ca0c643925dc6726a69265809c5",
         "receipt_summary_path": "registry/walkthrough-register/evidence/retained-receipts/hansard-november-core-stage6-browser-20261125.json",
-        "receipt_summary_sha256": "48cc90a9807754e95f255fe34f15d406306229b1c74d1e06c7b9adb33cea5bc0",
+        "receipt_summary_sha256": "fc9979cf7d685552e8f143bd85a091accef8ef9bd275d14aafd6885320d00818",
         "scope": "Actual public November walkthrough browser journeys at desktop and mobile; no week browser check.",
         "source_commit": "9c3c55c292216b995f7339068c05ae4b3e98d20c",
         "pages_commit": "7e57fe40b024ad0c5f961474d753ce3d2d78bc42",
-        "walkthrough_id": "hansard-november-core"
+        "walkthrough_id": "hansard-november-core",
+        "expected_reader_commit": "acf23958aa1ce11ec52c41313649b20d24f17609"
       },
       "supporting_receipts": [
         {
@@ -4052,12 +4053,12 @@
       "title": "Hansard: november full guide",
       "question": "On 18 November, which House’s proceedings are linked to Bill 4030, what does the same-date coverage say about Commons and Lords activity, and can those records establish that the Commons debated or the Bill passed? How far does this snapshot cover?",
       "guide_url": "https://chris-page-gov.github.io/okf-hansard/november/walkthrough.html",
-      "guide_status": "Current Stage6 public browser journeys passed on desktop and mobile; the exact descriptor identity was selected, with no automated WCAG violations or horizontal overflow.",
+      "guide_status": "Four-guide public browser proof passed at its recorded producer, Pages and Reader commits.",
       "current_page_checked": true,
       "source_url_checked": false,
       "okf_core_version": "0.3",
       "producer_product_version": "0.3.0",
-      "reader_version": null,
+      "reader_version": "0.9.2",
       "current_source_commit": "9c3c55c292216b995f7339068c05ae4b3e98d20c",
       "source_observed_on": "2026-11-25",
       "source_path": "scripts/build_walkthrough.py",
@@ -4152,11 +4153,12 @@
         "producer_product_version": "0.3.0",
         "sha256": "51796d439c08bb90ea27eb9f9c5b9e42e61a1ca0c643925dc6726a69265809c5",
         "receipt_summary_path": "registry/walkthrough-register/evidence/retained-receipts/hansard-november-full-stage6-browser-20261125.json",
-        "receipt_summary_sha256": "aa1238482fb3f01a4569f514f50a7805f26a8a2e12482e17448f05e2340ee607",
+        "receipt_summary_sha256": "52023b5f96896a833f556fa00284132bf08a7928d8d290fe82c3a262ac657fb0",
         "scope": "Actual public November walkthrough browser journeys at desktop and mobile; no week browser check.",
         "source_commit": "9c3c55c292216b995f7339068c05ae4b3e98d20c",
         "pages_commit": "7e57fe40b024ad0c5f961474d753ce3d2d78bc42",
-        "walkthrough_id": "hansard-november-full"
+        "walkthrough_id": "hansard-november-full",
+        "expected_reader_commit": "acf23958aa1ce11ec52c41313649b20d24f17609"
       },
       "supporting_receipts": [
         {

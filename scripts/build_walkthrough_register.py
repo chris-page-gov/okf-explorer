@@ -67,6 +67,7 @@ def validate_receipt_summary(proof: dict, root: Path) -> dict:
             and proof.get("producer_product_version") != summary["producer_product_version"]):
         raise ValueError("retained receipt product version differs from its evidence summary")
     for field in ("scope", "source_commit", "pages_commit", "checksums_sha256", "walkthrough_id",
+                  "expected_reader_commit",
                   "catalogue_files_verified", "served_files_verified", "all_local_bytes_verified",
                   "all_served_bytes_verified", "catalogue_unchanged_after_retrieval"):
         if field in proof and proof.get(field) != summary.get(field):
@@ -87,6 +88,21 @@ def validate_capture_file(root: Path, base: Path, asset: dict) -> bytes:
             or len(raw) != asset.get("bytes") or sha256(raw) != asset.get("sha256")):
         raise ValueError("current public capture bytes, status or identity encoding changed")
     return raw
+
+
+def validate_expected_identity(observed: dict, descriptor: dict) -> None:
+    aliases = [descriptor[key] for key in ("@id", "bundle_id", "id")
+               if isinstance(descriptor.get(key), str) and descriptor[key]]
+    if len(set(aliases)) > 1:
+        raise ValueError("captured descriptor has conflicting identity aliases")
+    actual = {
+        "schema": descriptor.get("schema"),
+        "id": aliases[0] if aliases else None,
+        "version": descriptor.get("version"),
+        "snapshot": descriptor.get("snapshot"),
+    }
+    if not isinstance(observed, dict) or any(observed.get(key) != value for key, value in actual.items()):
+        raise ValueError("walkthrough expected identity differs from its exact descriptor fields")
 
 
 def validate_page_capture(root: Path, row: dict, observation: dict, summary: dict) -> None:
@@ -150,6 +166,8 @@ def validate_page_capture(root: Path, row: dict, observation: dict, summary: dic
     descriptor_bytes = validate_capture_file(root, base, descriptor_asset)
     if sha256(descriptor_bytes) != row.get("version_evidence_sha256"):
         raise ValueError("current descriptor capture differs from its version evidence")
+    descriptor = json.loads(descriptor_bytes)
+    validate_expected_identity(case.get("expected_identity"), descriptor)
 
     edition = guide.get("edition")
     catalogue = manifest.get("catalogues", {}).get(edition, {})
@@ -640,8 +658,15 @@ def load(root: Path = ROOT) -> dict:
                     or current_summary.get("okf_core_version") != row.get("okf_core_version")
                     or current_summary.get("bundle_identity") != row.get("bundle_identity")
                     or current_summary.get("descriptor_sha256") != row.get("version_evidence_sha256")
-                    or current_summary.get("producer_product_version") != row.get("producer_product_version")):
+                    or current_summary.get("producer_product_version") != row.get("producer_product_version")
+                    or current_summary.get("expected_reader_commit") != source["shared_reader_release"].get("source_commit")
+                    or row.get("reader_version") != source["shared_reader_release"].get("version")):
                 raise ValueError("current public walkthrough proof differs from its current source or descriptor")
+            descriptor_path = row.get("version_evidence_path", "")
+            descriptor_bytes = (root / descriptor_path).read_bytes()
+            if sha256(descriptor_bytes) != row.get("version_evidence_sha256"):
+                raise ValueError("current browser proof descriptor bytes differ from current version evidence")
+            descriptor = json.loads(descriptor_bytes)
             browser_cases = current_summary.get("cases", [])
             if ({case.get("viewport") for case in browser_cases} != {"desktop", "mobile"}
                     or len(browser_cases) != 2
@@ -655,6 +680,8 @@ def load(root: Path = ROOT) -> dict:
                            or case.get("horizontal_overflow") is not False
                            for case in browser_cases)):
                 raise ValueError("current browser cases do not match the walkthrough question and identity")
+            for case in browser_cases:
+                validate_expected_identity(case.get("expected_identity"), descriptor)
         if proof.get("observed_at") is None:
             if proof.get("date_status") not in {"date not present in retained receipt",
                                                "date not present in retained public access entry"}:
@@ -824,12 +851,12 @@ def render(source: dict) -> dict[Path, str]:
              f"Scope: {source['scope']['public_root_count']} repository/root identities across {source['scope']['public_revision_observation_count']} recorded public revision observations. The inventory snapshots were observed on 23 and 25 November 2026.", "",
              f"Questions: {source['scope']['public_walkthrough_count']} walkthroughs, comprising {source['scope']['review_walkthrough_count']} reviewed producer/profile entries and {source['scope']['reference_walkthrough_count']} source-bound Explorer reference walkthrough. These are questions, not a count of independent bundles.", "",
              "[Machine-readable register](../registry/walkthrough-register.json)", "",
-             "Core version is taken from an exact captured public descriptor where one is available. Older index/frontmatter fields are retained as historical field observations only unless their bytes are separately captured and verified. Producer product version, OKF core version, and shared Reader package version are separate.", "",
+             "Core version is taken from an exact captured public descriptor where one is available. Older index/frontmatter fields are retained as historical field observations only unless their bytes are separately captured and verified. Declared bundle version/edition, OKF core version, and shared Reader package version are separate.", "",
              "A Pages descriptor capture records the bytes served at that route on its observation date. It does not establish a tagged release, accepted candidate, full-bundle conformance or legal sufficiency. Root inventory commits and dates are discovery observations; they are not publication receipts.", "",
              f"Shared Reader package: {source['shared_reader_release']['version']}. This is a Reader version, not an OKF core declaration; its revision and evidence are in the machine-readable register.", ""]
     descriptor_lines = ["## Current public descriptor observations", "",
              "The table records exact anonymous HTTP descriptor bytes captured on 25 November 2026. A changed digest does not inherit an earlier release or walkthrough acceptance. These captures do not re-run browser or conformance checks.", "",
-             "| Repository | Descriptor core | Producer version | Current bytes | Prior directory digest | Walkthrough evidence |", "| --- | --- | --- | --- | --- | --- |"]
+             "| Repository | Descriptor core | Declared bundle version/edition | Current bytes | Prior directory digest | Walkthrough evidence |", "| --- | --- | --- | --- | --- | --- |"]
     for d in source["public_bundle_descriptor_observations"]:
         match = "same" if d.get("previous_access_digest_matches") else "changed"
         listed = sum(w["repository"] == d["repository"].removeprefix("https://github.com/")
@@ -841,7 +868,7 @@ def render(source: dict) -> dict[Path, str]:
     if source.get("walkthroughs"):
         for w in source["walkthroughs"]:
             lines.extend([f"### {w['title']}", "", w["question"], "",
-                          f"Core `{w['okf_version']}` from the captured descriptor; producer `{w['producer_product_version']}`; Reader `{source['shared_reader_release']['version']}`. The packet, authored question, case, HTML guide and SVG diagram are checked against their recorded SHA-256 values. Status: {w['status']}.", "",
+                          f"Core `{w['okf_version']}` from the captured descriptor; declared bundle version/edition `{w['producer_product_version']}`; Reader `{source['shared_reader_release']['version']}`. The packet, authored question, case, HTML guide and SVG diagram are checked against their recorded SHA-256 values. Status: {w['status']}.", "",
                           f"[Guide]({w['guide_url']}) · [Evidence packet](../{w['data_path']}) · [Diagram](../{w['diagram_path']}) · [Question source]({w['authored_source_url']})", ""])
     else:
         lines.extend(["No walkthrough has yet passed the local question, evidence packet and guide digest check.", ""])
@@ -870,7 +897,7 @@ def render(source: dict) -> dict[Path, str]:
         browser_status = ""
         if current_browser:
             browser_status = (f" Current browser proof: passed ({current_browser['observed_at']}); "
-                              "desktop and mobile journeys for this guide.")
+                              f"desktop and mobile journeys for this guide using Reader {w.get('reader_version', 'not recorded')}.")
         assets_proof = next((item for item in w.get("supporting_receipts", [])
                              if item.get("id") == "hansard-stage6-public-assets"), None)
         if assets_proof:
@@ -891,7 +918,7 @@ def render(source: dict) -> dict[Path, str]:
             descriptor_note = ""
         guide_status = w["guide_status"].removesuffix("; current page not rechecked")
         lines.extend([f"### {title}", "", q, "",
-                      f"**Version:** {core}; producer {product}; shared Reader {w.get('reader_version') or 'not recorded'}.{descriptor_note}", "",
+                      f"**Version:** {core}; declared bundle version/edition {product}; shared Reader {w.get('reader_version') or 'not recorded'}.{descriptor_note}", "",
                       f"[Guide]({w['guide_url']}) · [Question and evidence source]({w['source_url']})", "",
                       f"Earlier evidence: {proof['status']} ({proof_date}); {guide_status}", "",
                       current_status + prior_page_status + browser_status, ""])

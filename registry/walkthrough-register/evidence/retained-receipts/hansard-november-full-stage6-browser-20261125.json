@@ -45,5 +45,6 @@
         "snapshot": "hansard-sha256-772e4a583f4cf4e53a02d507f61a056c2e0baa8254467c5fa5b07c63f4f6f85d"
       }
     }
-  ]
+  ],
+  "expected_reader_commit": "acf23958aa1ce11ec52c41313649b20d24f17609"
 }

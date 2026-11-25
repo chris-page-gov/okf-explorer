@@ -7,7 +7,7 @@
   history and unresolved walkthroughs. The denominator is explicitly dated
   and does not claim fresh owner discovery or national completeness.
 - Capture the exact current descriptor bytes from the 13 curated public access
-  routes and keep their current core version, producer version, prior digest
+  routes and keep their current core version, declared bundle version/edition, prior digest
   comparison and observation date separate. A changed digest does not inherit
   earlier release or walkthrough acceptance.
 - Verify the Explorer reference walkthrough's question, data packet, case,
@@ -16,7 +16,7 @@
 - Add 21 distinct producer walkthrough questions and links across the
   recorded producer roots. Bind each question source to captured public bytes,
   SHA-256 and the Git blob at its observed checkout commit; retain prior
-  receipt digests, producer versions and Reader versions separately. Add five
+  receipt digests, declared bundle versions/editions and Reader versions separately. Add five
   Reader 0.9.2 owned walkthroughs, including the teaching bundle and four
   profile fixtures; keep profile versions distinct from OKF core declarations.
   Count the source-bound Explorer reference separately: 27 public questions
