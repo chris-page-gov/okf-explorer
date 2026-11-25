@@ -70,6 +70,11 @@ arguments plus a fresh external `--output` path whose basename must be
 `explorer-runtime-acceptance.json`; that run emits
 `okf-explorer-runtime-acceptance.v2`.
 
+The federation selector is derived from the immutable snapshot's captured
+file bytes, using the runtime contract already included in the executable
+material inventory. The real native diagnostic checks this integration before a
+candidate is promoted; a parser unit test alone does not exercise that path.
+
 The release version is derived from `apps/okf-explorer/package.json`, rather
 than duplicated as a runner constant. For the pending 0.9.2 candidate, the
 release-bound run derives the Explorer `HEAD`, tree and v0.9.2 tag object from

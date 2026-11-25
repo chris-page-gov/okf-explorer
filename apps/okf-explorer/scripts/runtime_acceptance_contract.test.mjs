@@ -31,11 +31,11 @@ import {
   canonicalPublicationInventory,
   EXPLORER_RELEASE_TAG,
   EXPLORER_RELEASE_VERSION,
+  federationOverviewContract,
   publishWriteOnce,
   RUNTIME_GATE_IDS,
   verifyFrozenReleaseBinding
 } from './runtime_acceptance_contract.mjs';
-import { federationOverviewContract } from './federation_overview_contract.mjs';
 import {
   ACCEPTANCE_LIMITS,
   assertAcceptanceServerHealthy,

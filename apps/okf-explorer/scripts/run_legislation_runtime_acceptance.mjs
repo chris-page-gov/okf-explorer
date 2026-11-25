@@ -33,12 +33,12 @@ import {
   canonicalPublicationInventory,
   EXPLORER_RELEASE_TAG,
   EXPLORER_RELEASE_VERSION,
+  federationOverviewContract,
   publishWriteOnce,
   verifyFrozenReleaseBinding
 } from './runtime_acceptance_contract.mjs';
 import { verifyAcceptanceInvocationLock } from './acceptance_invocation_lock.mjs';
 import { deterministicBuildRequirement } from './run_acceptance_invocation.mjs';
-import { federationOverviewContract } from './federation_overview_contract.mjs';
 
 const APP_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const REPOSITORY_ROOT = path.resolve(APP_ROOT, '../..');
@@ -2161,7 +2161,7 @@ async function main() {
         'Legislation bundle snapshot'
       )
     ]);
-    const federationContract = federationOverviewContract(federationDescriptor.bytes);
+    const federationContract = federationOverviewContract(federationDescriptor);
 
     if (releaseBound) {
       const observedBinding = buildFrozenReleaseBinding({
