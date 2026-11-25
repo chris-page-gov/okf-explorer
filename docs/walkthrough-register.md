@@ -4,7 +4,7 @@ This dated register covers the recorded public repository roots in its denominat
 
 Scope: 76 repository/root identities across 106 recorded public revision observations. The inventory snapshots were observed on 23 and 25 November 2026.
 
-Questions: 27 walkthroughs, comprising 26 reviewed producer/profile entries and 1 source-bound Explorer reference walkthrough. These are questions, not a count of independent bundles.
+Questions: 28 walkthroughs, comprising 27 reviewed producer/profile entries and 1 source-bound Explorer reference walkthrough. These are questions, not a count of independent bundles.
 
 [Machine-readable register](../registry/walkthrough-register.json)
 
@@ -341,16 +341,28 @@ Earlier evidence: passed (2026-11-25T06:00:04.162Z); Reader 0.9.2 public release
 
 Current page: not rechecked.
 
+### Explore Local Statistics API: geography and date filters
+
+When requesting indicator data, which geography and date filters can a client plan, and what evidence limits apply to an answer?
+
+**Version:** 0.3; declared bundle version/edition 0.3.0; shared Reader 0.9.2. Descriptor bytes are bound to the public asset checksum manifest at 2026-11-25T17:53:29.494Z; no direct HTTP status is recorded: [bundle descriptor](https://chris-page-gov.github.io/okf-els-api/okf-explorer.json).
+
+[Guide](https://chris-page-gov.github.io/okf-els-api/complex-question.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-els-api/blob/f2e7b756b09558f2c94e85cb83bbb44c6c60be94/source/walkthrough.json)
+
+Public proof: passed (2026-11-25T17:53:29.494Z); Public asset hashes and desktop/mobile Chrome journeys passed for the exact producer commit; accessibility automation was not recorded; current page not independently rechecked.
+
+Current page: not rechecked. Public Chrome proof: passed (2026-11-25T17:53:29.494Z); 85 public asset hashes and desktop and mobile journeys passed for Reader 0.9.2. The receipt does not record axe results.
+
 
 ## Current public descriptor observations
 
-The table records exact anonymous HTTP descriptor bytes captured on 25 November 2026. A changed digest does not inherit an earlier release or walkthrough acceptance. These captures do not re-run browser or conformance checks.
+The table records the 13 exact anonymous HTTP descriptor bytes captured in the 25 November access-directory batch. A changed digest does not inherit an earlier release or walkthrough acceptance. These captures do not re-run browser or conformance checks.
 
 | Repository | Descriptor core | Declared bundle version/edition | Current bytes | Prior directory digest | Walkthrough evidence |
 | --- | --- | --- | --- | --- | --- |
 | [AI Infrastructure](https://github.com/chris-page-gov/okf-ai-infrastructure) | 0.3 | 0.7.1 | `42f2e0319f0686cfdee6ccf5e1762cb2ee0c6013aaa1ca3a0a8ec54ddd8abcdf` (2026-11-25T08:54:13.288071+00:00) | same | 1 walkthrough(s) listed above; inspect each dated status |
 | [DWP combined guidance and learning](https://github.com/chris-page-gov/okf-dwp) | 0.2 | 0.1.0 | `4ecb1ee17bf273fbd64170031a9567cabbe83ff08e3994ec4e81dfb78dcf93dc` (2026-11-25T08:54:13.932283+00:00) | same | not listed |
-| [Explore Local Statistics API](https://github.com/chris-page-gov/okf-els-api) | 0.2 | 0.2.0 | `1437c0d0ecbc077873ce6906892630110fda1f59266e14518a6e78f7af39ce91` (2026-11-25T08:54:14.389862+00:00) | same | not listed |
+| [Explore Local Statistics API](https://github.com/chris-page-gov/okf-els-api) | 0.2 | 0.2.0 | `1437c0d0ecbc077873ce6906892630110fda1f59266e14518a6e78f7af39ce91` (2026-11-25T08:54:14.389862+00:00) | same | 1 walkthrough(s) listed above; inspect each dated status |
 | [OKF Explorer reference corpus](https://github.com/chris-page-gov/okf-explorer) | 0.3 | 0.9.2 | `93f0eb4ae96d01aa508a0b9bb14fdf4a3b644482bc5ed6e2ebe48ef0273614f5` (2026-11-25T08:54:14.574337+00:00) | changed | 6 walkthrough(s) listed above; inspect each dated status |
 | [GOV.UK content](https://github.com/chris-page-gov/okf-govuk-content) | 0.3 | 0.1.0 | `bada064e275ed2746766b2c5522ce1f5cc2171f8773e581dcdcb3fdf89b3bcc5` (2026-11-25T08:54:14.877927+00:00) | changed | 1 walkthrough(s) listed above; inspect each dated status |
 | [Coventry and Warwickshire heritage](https://github.com/chris-page-gov/okf-heritage-coventry-warwickshire) | 0.3 | 1.1.0 | `794ca9d354e09931bb7d91e973fd08a0715be24ee7ab412bd32bd07e06e84c74` (2026-11-25T08:54:15.093093+00:00) | changed | 3 walkthrough(s) listed above; inspect each dated status |
@@ -361,6 +373,14 @@ The table records exact anonymous HTTP descriptor bytes captured on 25 November 
 | [UK Government APIs](https://github.com/chris-page-gov/okf-uk-government-apis) | 0.3 | 0.5.0 | `1d2e2c4c6f3944811a32c5fe405cd1403690e4db8401b13d6f093e0a558f6c30` (2026-11-25T08:54:16.451229+00:00) | changed | 2 walkthrough(s) listed above; inspect each dated status |
 | [UK legislation](https://github.com/chris-page-gov/okf-uk-legislation) | 0.2 | 0.4.0 | `6172ef364d5f613669acc9ac45bc58480782d0b683437ba69c4cf0d2385d1fd7` (2026-11-25T08:54:16.667628+00:00) | changed | not listed |
 | [A Life in the UK](https://github.com/chris-page-gov/okf-uk-living) | 0.2 | life-course-population-stage.v1 | `ff69f0162a4ba93156b150ae4eea0070c8c8a81187ed5cc7d2425f37b8db34dc` (2026-11-25T08:54:16.849488+00:00) | same | not listed |
+
+## Later producer-owned public asset observations
+
+These observations are separate from the 13-entry HTTP descriptor batch above. They use the public browser and asset receipts plus the producer's checksum manifest; they do not record a direct HTTP status or extend release approval.
+
+| Producer | Core | Declared edition | Descriptor SHA-256 | Observed | Public evidence |
+| --- | --- | --- | --- | --- | --- |
+| [chris-page-gov/okf-els-api](https://github.com/chris-page-gov/okf-els-api) | 0.3 | 0.3.0 | `f19e8061f25ada836ee808012ef21883adb0b6fc3c505ce9cc200d74143647e0` | 2026-11-25T17:53:29.494Z | `okf-explorer.json` in a passed asset and browser receipt |
 
 ## Repository visibility observation
 
@@ -413,7 +433,7 @@ Every repository/root identity below remains visible. Aliases, contract umbrella
 | `chris-page-gov/okf-dwp` | `logical-context` | generated-distribution-root | not established | 2026-11-23T17:40:22Z, 2026-11-25T08:24:43.407354+00:00 @ `3fee61fb4980f0684443c78cd3806b886eb6b772` | pending |
 | `chris-page-gov/okf-dwp` | `structured-context` | generated-distribution-root | not established | 2026-11-23T17:40:22Z, 2026-11-25T08:24:43.407354+00:00 @ `3fee61fb4980f0684443c78cd3806b886eb6b772` | pending |
 | `chris-page-gov/okf-els-api` | `.` | contracted-producer-root | not established | 2026-11-23T17:40:22Z, 2026-11-25T08:24:43.407354+00:00 @ `e3873eaa0dc8ce560973401b4c01e2aba182161a` | pending |
-| `chris-page-gov/okf-els-api` | `bundle` | markdown-source-bundle | 0.2 (field-only) | 2026-11-23T17:40:22Z, 2026-11-25T08:24:43.407354+00:00 @ `e3873eaa0dc8ce560973401b4c01e2aba182161a` | pending |
+| `chris-page-gov/okf-els-api` | `bundle` | markdown-source-bundle | 0.2 (field-only) | 2026-11-23T17:40:22Z, 2026-11-25T08:24:43.407354+00:00 @ `e3873eaa0dc8ce560973401b4c01e2aba182161a` | 1 review link(s); prior evidence retained |
 | `chris-page-gov/okf-explorer` | `.` | contracted-producer-root | 0.2 (field-only) | 2026-11-23T17:40:22Z @ `0d7f6d8e0097401945d39780609c0ac2efe51771`; 2026-11-25T08:24:43.407354+00:00 @ `acf23958aa1ce11ec52c41313649b20d24f17609` | pending |
 | `chris-page-gov/okf-explorer` | `apps/okf-explorer/tests/fixtures/external-acceptance` | test-or-fixture-root | not established | 2026-11-23T17:40:22Z @ `0d7f6d8e0097401945d39780609c0ac2efe51771`; 2026-11-25T08:24:43.407354+00:00 @ `3b74ef36a2fab974e8fd82519fa77344228140a7` | pending |
 | `chris-page-gov/okf-explorer` | `docs/examples/first-bundle` | test-or-fixture-root | 0.2 (field-only) | 2026-11-23T17:40:22Z @ `0d7f6d8e0097401945d39780609c0ac2efe51771`; 2026-11-25T08:24:43.407354+00:00 @ `acf23958aa1ce11ec52c41313649b20d24f17609` | 1 review link(s); prior evidence retained |

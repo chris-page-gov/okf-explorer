@@ -209,10 +209,11 @@
   },
   "owner_catalogue": {
     "owner": "chris-page-gov",
-    "observed_on": "2026-11-23",
-    "path": "docs/evidence/okf-public-owner-candidates-2026-11-23.json",
+    "observed_on": "2026-11-25",
+    "path": "docs/evidence/okf-public-owner-candidates-2026-11-25.json",
     "human": "https://github.com/chris-page-gov/okf-explorer/blob/main/docs/okf-standards.md#public-bundle-catalogues",
-    "machine": "https://raw.githubusercontent.com/chris-page-gov/okf-explorer/main/docs/evidence/okf-public-owner-candidates-2026-11-23.json",
-    "scope_note": "Public repository candidates only; discovery evidence does not establish a bundle, conformance, completeness, adoption or release."
+    "machine": "https://raw.githubusercontent.com/chris-page-gov/okf-explorer/main/docs/evidence/okf-public-owner-candidates-2026-11-25.json",
+    "scope_note": "Public repository candidates only; discovery evidence does not establish a bundle, conformance, completeness, adoption or release.",
+    "sha256": "079c0f7ad05ec85952a0654dfb00e9c2a42c4340650bcc7dacd1fd88fc3767c5"
   }
 }

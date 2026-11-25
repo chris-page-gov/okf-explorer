@@ -57,11 +57,12 @@ not by itself establish that its producer has adopted OKF 0.3.
   reviewed public producer entries at the directory's recorded observation
   date. It provides access and source-snapshot details, not a completeness or
   conformance decision.
-- [Public owner candidate scan](evidence/okf-public-owner-candidates-2026-11-23.json):
-  discovery evidence from 218 public repositories, with 20 candidate
-  repositories. A candidate can be a declared index or a runtime marker;
-  review is needed before treating it as a bundle. This public scan excludes
-  private repositories and does not prove conformance, adoption or release.
+- [Public owner candidate scan, 25 November 2026](evidence/okf-public-owner-candidates-2026-11-25.json)
+  covers 219 public repositories, with 22 candidate repositories and 77
+  roots with a declared index or bundle marker. Seven retained captures or
+  diagnostic projections are labelled separately. The remaining candidates
+  still need review for ownership, role, conformance and release status.
+  [Earlier public candidate scan](evidence/okf-public-owner-candidates-2026-11-23.json).
 
 The scan and curated directory answer different questions. Use the curated
 directory for the reviewed public access routes. Use the dated scan to inspect

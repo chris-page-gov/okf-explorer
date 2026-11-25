@@ -10,7 +10,7 @@ Verification varies by bundle; read each entry's dated record. Voice access is n
 - [Human guide](https://chris-page-gov.github.io/okf-explorer/docs/public-bundle-access.html): Read order, semantic entrypoints and a Voice prompt.
 - [Admitted Reader bundles](https://chris-page-gov.github.io/okf-explorer/okf-registry.json): Separate curated bundle registry.
 
-- [Public owner candidate catalogue](https://chris-page-gov.github.io/okf-explorer/docs/evidence/okf-public-owner-candidates-2026-11-23.json): Pinned repository trees and discovery coverage.
+- [Public owner candidate catalogue](https://chris-page-gov.github.io/okf-explorer/docs/evidence/okf-public-owner-candidates-2026-11-25.json): Pinned repository trees and discovery coverage.
 
 ## Descriptors
 

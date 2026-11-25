@@ -1,0 +1,438 @@
+{
+  "algorithm": "sha256",
+  "fileCount": 86,
+  "files": [
+    {
+      "bytes": 0,
+      "path": ".nojekyll",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 7886,
+      "path": "complex-question.html",
+      "sha256": "537e52ce3d05774f89b7d1854cbe86635e589845e325c5d21f26a21c753c77d7"
+    },
+    {
+      "bytes": 305,
+      "path": "context/okf-els-api.jsonld",
+      "sha256": "e88f5e90d3dd4f32ca191c18eae818fb1e393c6637b3de0c4bdb3e8eb08280da"
+    },
+    {
+      "bytes": 15117,
+      "path": "data/analysis/overview.json",
+      "sha256": "76ddf8bd3b5ad2fabc3a61c7dfe2b97fb8d3732e78da2ee519db367a3d344ca2"
+    },
+    {
+      "bytes": 1041,
+      "path": "data/coverage/ledger.json",
+      "sha256": "ab3489a06d1e4dcd78e24e922acf94954af921c6f475a33d898e05feb6cb0fd1"
+    },
+    {
+      "bytes": 170597,
+      "path": "data/datasets-0.json",
+      "sha256": "e3cd369bedcfffd9401faf6a4b6540317f088939066385b8f7031d8e8c836e91"
+    },
+    {
+      "bytes": 12569,
+      "path": "data/documents-0.json",
+      "sha256": "7dc43470ddc73d9ff6404d70be184d82963e37343d92496b8f2dcc78c40f71c1"
+    },
+    {
+      "bytes": 4066,
+      "path": "data/facets.json",
+      "sha256": "228312a5797d189e2d7120f604e4ae29e45161ce2a7fea94d66459610d10376f"
+    },
+    {
+      "bytes": 1414,
+      "path": "data/formats.json",
+      "sha256": "30645407c0714fdb632750b0cbb13baeef0a0f3f7b6cbbc0d99c4543ad802f07"
+    },
+    {
+      "bytes": 2326,
+      "path": "data/manifest.json",
+      "sha256": "a8b09a36acab834a1ff3207d7d7bbd739e45cbb902c3892136436307c3ac8988"
+    },
+    {
+      "bytes": 57868,
+      "path": "data/openapi.json",
+      "sha256": "b361cb00c9a8dc07f34cb130602a8f9adf0dd71b2341dcd9393bbfe4b7134d44"
+    },
+    {
+      "bytes": 27056,
+      "path": "data/overview.json",
+      "sha256": "24d96b69a497f8ae773bac5af5fb4482fac9d54a77f10ad20d9a2d1994756a9c"
+    },
+    {
+      "bytes": 4572,
+      "path": "data/parameters.json",
+      "sha256": "c1183275063c3196994f3df3e1cbbb5029ad342d14ab178f69b7fe6e9f0c548b"
+    },
+    {
+      "bytes": 4263,
+      "path": "data/presentation.json",
+      "sha256": "c8454fe26b56de65259826bfed06c6b6c4d62f92607f7cf56a6127d4d8df5977"
+    },
+    {
+      "bytes": 3001,
+      "path": "data/provenance/wiki-snapshot.json",
+      "sha256": "397d82ad0165164eaea30dbf11e174a1c04effe2eee2c136d739d6bb4e63c432"
+    },
+    {
+      "bytes": 730,
+      "path": "data/publishers-0.json",
+      "sha256": "0e5306a7937968ec0cd6197a7be1663702186d22942650bd1f0382e639801303"
+    },
+    {
+      "bytes": 53809,
+      "path": "data/relationships-0.json",
+      "sha256": "bded74de751c028fe8c8d46d27458087ead800e75d4e6bc1d6593aaf1e95d25e"
+    },
+    {
+      "bytes": 32317,
+      "path": "data/resources-0.json",
+      "sha256": "61fc3ace4db93c53370ec7cd5fd8013a8a9a88af153dc914d94bbe646b6a86cb"
+    },
+    {
+      "bytes": 4784,
+      "path": "data/review/issues.json",
+      "sha256": "fb5c534631a751ccde0ad02722e3d8c9d43f8f5650822459712d6d22631ea8c9"
+    },
+    {
+      "bytes": 3566,
+      "path": "data/search/doc-map.json",
+      "sha256": "54ecedd1bc09682ceaee504521a881662d05b170ceec63b529c8ac5152e00161"
+    },
+    {
+      "bytes": 4562,
+      "path": "data/search/facets.json",
+      "sha256": "49c22e29b29287b5664be4e0ae2d59e3ddcf423ab48202e0bcd8343ae0a9e719"
+    },
+    {
+      "bytes": 35677,
+      "path": "data/search/lexicon-_.json",
+      "sha256": "fdc509f114df27a00bc8a412cc379c1b0b9e74a2c4a54094d518dee8172837d5"
+    },
+    {
+      "bytes": 1177,
+      "path": "data/search/manifest.json",
+      "sha256": "2c04d54a3b6d0591e0a737f40ae7911a81b8285a83418956fd90c58634ac2ca5"
+    },
+    {
+      "bytes": 72193,
+      "path": "data/search/postings-0001.json",
+      "sha256": "8150935b8affc3cf9c321c3e93df27b658736b26ca2ccfa23da759c392e18772"
+    },
+    {
+      "bytes": 115377,
+      "path": "data/search/prefix-_.json",
+      "sha256": "4ebfebad67f3f1e62334cdd52d8b6e778d8d5fad75827691d7d6cb2aeb3ea58f"
+    },
+    {
+      "bytes": 94839,
+      "path": "data/search/results-0.json",
+      "sha256": "d6e98f123dc00b0c9d8138435715d369cf277e73be4e3cf31da14a9c17cdd6e6"
+    },
+    {
+      "bytes": 1446,
+      "path": "data/selection-contract.json",
+      "sha256": "c3d1c11d33d4aa5160e2943036b23ec0c08452ab82508c54308bc9983477e706"
+    },
+    {
+      "bytes": 2507,
+      "path": "data/standards/okf-core-0.3.json",
+      "sha256": "b854efde0f98aa0d6679bdc51c816a3c36e7e49338ef992acf9e88760ed03497"
+    },
+    {
+      "bytes": 1381,
+      "path": "data/standards/term-validation.json",
+      "sha256": "c6767e68a95978c8e8f02e400a8946455f58f2181a2a54d6b1492584e80b2014"
+    },
+    {
+      "bytes": 75098,
+      "path": "data/standards/terms.json",
+      "sha256": "20ce91a88349732e96ca12e986d8293eb8aa2293549f663c36c4a8b2ec73b965"
+    },
+    {
+      "bytes": 226,
+      "path": "favicon.svg",
+      "sha256": "c927a66434fb0fc5bbd74e8ae7156f801170694d38370bcbbf1e0b60f9957139"
+    },
+    {
+      "bytes": 6045,
+      "path": "index.html",
+      "sha256": "134f900e0d861932153d040632227fe0d510c874d2cbe58eff339736ab97faac"
+    },
+    {
+      "bytes": 708,
+      "path": "index.md",
+      "sha256": "26f0fe2a474abe08db78bf0b3d42d5d71bf5554aea843a8167834fe0fd429e94"
+    },
+    {
+      "bytes": 2045,
+      "path": "knowledge/artifacts/ai-handoff.md",
+      "sha256": "2aa7401a6cd91927862363990d9649a3200004162123ca2380abda9c0714b9b5"
+    },
+    {
+      "bytes": 1354,
+      "path": "knowledge/artifacts/complex-question.svg",
+      "sha256": "3185a4c92927219e6386f621e69c822a8a2e30439778e37e3a48aa0ba5894b81"
+    },
+    {
+      "bytes": 215,
+      "path": "knowledge/artifacts/index.md",
+      "sha256": "86bc3c7822cc66e53f63a67d917fcd0e903f7bd90d12e0bc0a9299d5f4b54e8f"
+    },
+    {
+      "bytes": 766,
+      "path": "knowledge/artifacts/openapi-review.md",
+      "sha256": "a0a7ec5cda4110a0f64af8accb13fdb6b73fd7d28f7a3ceaaa01fc9247f159ba"
+    },
+    {
+      "bytes": 798,
+      "path": "knowledge/artifacts/selection-plan.md",
+      "sha256": "72e1572c6c9013b51046628fc4f17df307664e67b59ab5af4308f253cea38df2"
+    },
+    {
+      "bytes": 2115,
+      "path": "knowledge/complex-question-guide.md",
+      "sha256": "152fb37060b099475d15293494a86dbb4c384ea3d899ef0aa4057536903c72ae"
+    },
+    {
+      "bytes": 1263,
+      "path": "knowledge/documents/API-overview.md",
+      "sha256": "508ee6a150b9d5d2549a7705ac1d90efa1075d2963c97d5cc001bdbdc6a63af2"
+    },
+    {
+      "bytes": 1264,
+      "path": "knowledge/documents/Data-formats.md",
+      "sha256": "55b82aa1ccd1828881413ba314df4a383e4df872dbf81c73df18f78a20db8b79"
+    },
+    {
+      "bytes": 1213,
+      "path": "knowledge/documents/Home.md",
+      "sha256": "583788cd695559f331045f09927da248685ca066d9422c773fad0ddc4b552b89"
+    },
+    {
+      "bytes": 1279,
+      "path": "knowledge/documents/Requesting-data.md",
+      "sha256": "238a2b3437a44d73ef81ecacaf51eb0bfeec7e8d721ae971da88b6ca81c2f4f7"
+    },
+    {
+      "bytes": 1369,
+      "path": "knowledge/documents/Requesting-geographic-information.md",
+      "sha256": "d2cb6d94c381c9acdb7c341876a8c01676bef7ae4e05ef873214739694ebd638"
+    },
+    {
+      "bytes": 1298,
+      "path": "knowledge/documents/Requesting-metadata.md",
+      "sha256": "d8cd69c719e52f14ef9585873f6682a8cee83e7ea885126850247ec767b91ea4"
+    },
+    {
+      "bytes": 444,
+      "path": "knowledge/documents/index.md",
+      "sha256": "4b90eb3591d5bbeb8de8bf98750a2013bd9c88b4e6679560b1bdccba34a23c32"
+    },
+    {
+      "bytes": 542,
+      "path": "knowledge/index.md",
+      "sha256": "4e7e43ec610cc9d8ca7ce89c0f484eb4ce339f3ce6a3f92ea0991982149b67c7"
+    },
+    {
+      "bytes": 1700,
+      "path": "knowledge/issues/boundary-internal-api.md",
+      "sha256": "022fa1dca1b4c047ec08854ec71c92a836cf2f6f671c92575f665220c225cf77"
+    },
+    {
+      "bytes": 1608,
+      "path": "knowledge/issues/drift-data-hasgeo-default.md",
+      "sha256": "9d72d2507570c11fea31fb50c5f8f2a6732bb6bdc87d0b24650115f7bbd7e007"
+    },
+    {
+      "bytes": 1933,
+      "path": "knowledge/issues/drift-data-includenames.md",
+      "sha256": "605334127b9665afbf46ad60c78f16e3fd894cb7f6b8262776aa323fb91a643e"
+    },
+    {
+      "bytes": 1817,
+      "path": "knowledge/issues/drift-geo-includedates.md",
+      "sha256": "eb04e61ebc54cb37ede865ad1d8e3347631ae2534e9ae7bc1e9ec4473f3e08b6"
+    },
+    {
+      "bytes": 1790,
+      "path": "knowledge/issues/drift-metadata-dimension-route.md",
+      "sha256": "49a92dce8b62e33c5d6666b3ebfbc9a84d14217b92fa9fc40f52b1bc8312cb1f"
+    },
+    {
+      "bytes": 1650,
+      "path": "knowledge/issues/gap-compatibility-policy.md",
+      "sha256": "41cd378f269b89c73066f77c3acac0ed5b332b10bff8e0dbf6377fc2c485af6b"
+    },
+    {
+      "bytes": 1777,
+      "path": "knowledge/issues/gap-data-measure.md",
+      "sha256": "6037442f0fefbfb5455f0577841881455ceda8e5a2b1608b5bcf5834c4e9fc08"
+    },
+    {
+      "bytes": 1829,
+      "path": "knowledge/issues/gap-geo-related-includenames.md",
+      "sha256": "0dbd822aec411faba5db8c7ca5ae93772c1f92a5691584b2c0910c6d4fe7f61a"
+    },
+    {
+      "bytes": 1923,
+      "path": "knowledge/issues/gap-response-schemas.md",
+      "sha256": "90d98f318fbe2fb6188ba714303aaaedf5251b44ab788fe4c43265085b029ffb"
+    },
+    {
+      "bytes": 959,
+      "path": "knowledge/issues/index.md",
+      "sha256": "663cb73c454e67da21894d58fb26ee244c0e390a3688b7d9da1ff268d497bcb0"
+    },
+    {
+      "bytes": 3734,
+      "path": "knowledge/operations/data.md",
+      "sha256": "0e467ef66f4f28f39ae1a7ba1eeb069b14dc4f43d2f2d9140fc199857ba6dbee"
+    },
+    {
+      "bytes": 2247,
+      "path": "knowledge/operations/geo-boundaries.md",
+      "sha256": "ccec148ee252418e0ad8568471f36cdf784844dfb201a7778d0d05100e61d751"
+    },
+    {
+      "bytes": 2193,
+      "path": "knowledge/operations/geo-children.md",
+      "sha256": "775f64a406e99fcc85a915db70633b62e068abd5c630ca206f5cf114e5d5c131"
+    },
+    {
+      "bytes": 2055,
+      "path": "knowledge/operations/geo-levels.md",
+      "sha256": "b2c621b7f34d619f267242517a6eb65d049404169fb01f6cac7d5a6e6f0ae204"
+    },
+    {
+      "bytes": 2843,
+      "path": "knowledge/operations/geo-list.md",
+      "sha256": "37ad863bcb69ec852552eefa9373a04488fe2767f96851a8d228c9fdb284167a"
+    },
+    {
+      "bytes": 1926,
+      "path": "knowledge/operations/geo-lookup.md",
+      "sha256": "8e8a990d2c950d3901fe133fb6429ce887cbdc0fc0ded7029933eae88e071827"
+    },
+    {
+      "bytes": 2090,
+      "path": "knowledge/operations/geo-parents.md",
+      "sha256": "07f6249fa6b2a0447a78c9f87a36c605a302c5dd3ef291c45e16b11446bce3b1"
+    },
+    {
+      "bytes": 2158,
+      "path": "knowledge/operations/geo-postcode-autocomplete.md",
+      "sha256": "9b7449d37a93bbb802784d4a7f15c361a34168895ddc90d2424537c0ebc999b2"
+    },
+    {
+      "bytes": 2275,
+      "path": "knowledge/operations/geo-postcode.md",
+      "sha256": "3d94a6c358a06e0f954c37a21a967003b7682e4dbef9f2bdc43801e02728b0aa"
+    },
+    {
+      "bytes": 2074,
+      "path": "knowledge/operations/geo-related.md",
+      "sha256": "df345e3aa913586400b5e449275a6f0f39da598dfa0158c65e3e951c648abd2a"
+    },
+    {
+      "bytes": 2277,
+      "path": "knowledge/operations/geo-reverse.md",
+      "sha256": "a5f3cdd42e546ba258fb3bb72cb49f897e678be55786790ef95b19335a55d77e"
+    },
+    {
+      "bytes": 2548,
+      "path": "knowledge/operations/geo-search.md",
+      "sha256": "3238182386968e5760a2285ed9e16f36f825944ab356a0e92ab79c92c3d890aa"
+    },
+    {
+      "bytes": 2199,
+      "path": "knowledge/operations/geo-siblings.md",
+      "sha256": "5346f5d2d88997ee9ef7d6e637ba4facaf9832cfb3b993f9692465a554cc7878"
+    },
+    {
+      "bytes": 2132,
+      "path": "knowledge/operations/geo-similar.md",
+      "sha256": "f3f43c7b25c116a901b047ca2caedc02877380c3462ddca93ef422b76985d3c2"
+    },
+    {
+      "bytes": 2155,
+      "path": "knowledge/operations/index.md",
+      "sha256": "5d02dd947ed45814dac3bfcbd30154f593a4464a6e6784cef9edbdde63e81927"
+    },
+    {
+      "bytes": 2142,
+      "path": "knowledge/operations/metadata-dimension.md",
+      "sha256": "78e40ddc0ea22ce0fcaaaff916a543b73cf24385c8d3eb31e23458ea2d6ad4fe"
+    },
+    {
+      "bytes": 2042,
+      "path": "knowledge/operations/metadata-indicator.md",
+      "sha256": "5536d3fee3c1213029fb57941cbb79388013d332640b6bdab6d678f7aaf01211"
+    },
+    {
+      "bytes": 2587,
+      "path": "knowledge/operations/metadata-indicators.md",
+      "sha256": "d7d9b29c2907d98489b4ae24437f50edb34ed502d1ba8a1ffff4c56254462f2d"
+    },
+    {
+      "bytes": 2380,
+      "path": "knowledge/operations/metadata-taxonomy.md",
+      "sha256": "0e9b6f86e80e98be0cc7a05df381e48d62f845d1ed11be5030349051ca83e722"
+    },
+    {
+      "bytes": 1606,
+      "path": "knowledge/service.md",
+      "sha256": "1c44b56eb14ac543baafea1ccd66d201ae65665beb965852eca1e1fad029e010"
+    },
+    {
+      "bytes": 135,
+      "path": "knowledge/snapshots/index.md",
+      "sha256": "fbe3620af48e6f6e9f5b0cc138e5343d469f5507658c1ee8654eb8e8db41d757"
+    },
+    {
+      "bytes": 1782,
+      "path": "knowledge/snapshots/wiki-and-source.md",
+      "sha256": "1969b528c91bfb6a5966b5f98da37769607508c3cc2e1b0d539f0055ab259901"
+    },
+    {
+      "bytes": 2112,
+      "path": "knowledge/standards/governed-terms.md",
+      "sha256": "d8f016e0876651f5fe8226e287c4df079e63a678da537781d6bac0a010779233"
+    },
+    {
+      "bytes": 149,
+      "path": "knowledge/standards/index.md",
+      "sha256": "56ff242d7bd226386cfb64bb24d099ef49111a055d47c18fb07c7d1a6aede756"
+    },
+    {
+      "bytes": 624,
+      "path": "log.md",
+      "sha256": "1185e4a3c6309025463cede466fad9c9ccf18a6b85993ef56e1c4ef7656d4d4e"
+    },
+    {
+      "bytes": 36561,
+      "path": "okf-bundle.jsonld",
+      "sha256": "07803efeffa34b860aeae842c2de0bdb029564bf4ac30c2d0553167298ee68be"
+    },
+    {
+      "bytes": 36561,
+      "path": "okf-bundle.yamlld",
+      "sha256": "07803efeffa34b860aeae842c2de0bdb029564bf4ac30c2d0553167298ee68be"
+    },
+    {
+      "bytes": 6885,
+      "path": "okf-explorer.json",
+      "sha256": "f19e8061f25ada836ee808012ef21883adb0b6fc3c505ce9cc200d74143647e0"
+    },
+    {
+      "bytes": 6605,
+      "path": "site.css",
+      "sha256": "aedf134e4b8c7ea7da36fed63fe7cc12a1cde82887d95c887247f39b05a23d95"
+    }
+  ],
+  "rootSha256": "6d1092fb4e3e2b2afb89786cffdf4b8d9b0ab889a5e9fec8e694d2219350a939",
+  "schema": "okf-els-api.checksums.v1"
+}

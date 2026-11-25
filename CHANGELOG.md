@@ -2,25 +2,34 @@
 
 ## Unreleased — central public walkthrough register
 
+- Refresh the public-only owner candidate catalogue from 25 November 2026.
+  Keep the earlier dated scan and label captured evidence and diagnostic
+  projections separately from candidate bundles. Verify the new catalogue
+  bytes, public visibility and counts against both central references.
 - Add a public-only register covering 76 recorded repository/root identities
   and 106 revision observations, including aliases, contract roots, fixtures,
   history and unresolved walkthroughs. The denominator is explicitly dated
   and does not claim fresh owner discovery or national completeness.
 - Capture the exact current descriptor bytes from the 13 curated public access
-  routes and keep their current core version, declared bundle version/edition, prior digest
-  comparison and observation date separate. A changed digest does not inherit
-  earlier release or walkthrough acceptance.
+  routes and keep their current core version, declared bundle version/edition,
+  prior digest comparison and observation date separate. A changed digest does
+  not inherit earlier release or walkthrough acceptance.
 - Verify the Explorer reference walkthrough's question, data packet, case,
   HTML and SVG digests from local source. Keep browser, deployment, conformance
   and legal acceptance as separate evidence.
-- Add 21 distinct producer walkthrough questions and links across the
+- Add 22 distinct producer walkthrough questions and links across the
   recorded producer roots. Bind each question source to captured public bytes,
   SHA-256 and the Git blob at its observed checkout commit; retain prior
   receipt digests, declared bundle versions/editions and Reader versions separately. Add five
   Reader 0.9.2 owned walkthroughs, including the teaching bundle and four
   profile fixtures; keep profile versions distinct from OKF core declarations.
-  Count the source-bound Explorer reference separately: 27 public questions
+  Count the source-bound Explorer reference separately: 28 public questions
   in total, with deterministic omission and total-count checks.
+- Add the ELS API Core 0.3 walkthrough, binding the producer question, guides,
+  descriptor and checksum manifest to the exact public evidence. Record both
+  Reader 0.9.2 browser journeys and all 85 public asset hashes separately from
+  the earlier Core 0.2 descriptor capture. The new receipt has no automated
+  accessibility result or direct descriptor HTTP status.
 - Preserve the earlier Hansard four-guide browser pass and the 25 November
   09:52 page observations, including the two November HTTP 404s. A later
   Stage6 promotion restored both November guide routes. Fresh anonymous

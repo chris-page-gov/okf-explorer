@@ -1,0 +1,38 @@
+{
+  "schema": "okf-walkthrough-retained-receipt-summary.v1",
+  "source_receipt_id": "els-f2e7b75-public-final-20261125.json",
+  "source_receipt_sha256": "b163dda1e81e84005c331aed9df74fdff6e69356d7c20f2b77315217eeb68da1",
+  "status": "passed",
+  "date": "2026-11-25T17:53:29.494Z",
+  "producer_product_version": "0.3.0",
+  "source_commit": "f2e7b756b09558f2c94e85cb83bbb44c6c60be94",
+  "checksums_sha256": "413c10273185c257fe5ac95bbb1f2d016f56bac83ab3c49c541504b65aaf146e",
+  "walkthrough_id": "els-api-core03-complex-question",
+  "okf_core_version": "0.3",
+  "bundle_identity": "https://chris-page-gov.github.io/okf-els-api/okf-explorer.json",
+  "snapshot": "els-wiki-2026-07-20",
+  "record_count": 38,
+  "reader_version": "0.9.2",
+  "reader_application_tree": "ab0c8afb2823c7945ceae0b977bd648cc17c89bdaf4174086aa1c2306399a388",
+  "public_assets_receipt_sha256": "cf888a0cb1633df97da14ead70fd69833b656300ad91fb5bb9bba85a77d6630b",
+  "public_browser_receipt_sha256": "5143e1c082adc41ccf0b8abb6eb51a8d3ad1c4e56a93cd4194766ccb34977b4d",
+  "descriptor_sha256": "f19e8061f25ada836ee808012ef21883adb0b6fc3c505ce9cc200d74143647e0",
+  "question": "When requesting indicator data, which geography and date filters can a client plan, and what evidence limits apply to an answer?",
+  "journeys": [
+    {
+      "width": 1440,
+      "guide_diagram_and_prompt": true,
+      "reader_record": "operation/data",
+      "reload": true,
+      "page_errors": []
+    },
+    {
+      "width": 390,
+      "guide_diagram_and_prompt": true,
+      "reader_record": "operation/data",
+      "reload": true,
+      "page_errors": []
+    }
+  ],
+  "automated_accessibility_results": "not-recorded-in-receipt"
+}
