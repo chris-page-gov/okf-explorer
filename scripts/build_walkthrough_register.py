@@ -31,9 +31,7 @@ EXPECTED_REVIEW_WALKTHROUGH_IDS = {
     "explorer-first-bundle-teaching", "explorer-profile-prov", "explorer-profile-vocabulary",
     "explorer-profile-missing-label", "explorer-profile-boundaries",
 }
-EXPECTED_GUIDE_SOURCE_CAPTURE_GAPS = {
-    "hansard-week-core", "hansard-week-full", "hansard-november-core", "hansard-november-full",
-}
+EXPECTED_GUIDE_SOURCE_CAPTURE_GAPS: set[str] = set()
 
 
 def sha256(data: bytes) -> str:
@@ -68,7 +66,156 @@ def validate_receipt_summary(proof: dict, root: Path) -> dict:
     if (summary.get("producer_product_version") is not None
             and proof.get("producer_product_version") != summary["producer_product_version"]):
         raise ValueError("retained receipt product version differs from its evidence summary")
+    for field in ("scope", "source_commit", "pages_commit", "checksums_sha256", "walkthrough_id",
+                  "catalogue_files_verified", "served_files_verified", "all_local_bytes_verified",
+                  "all_served_bytes_verified", "catalogue_unchanged_after_retrieval"):
+        if field in proof and proof.get(field) != summary.get(field):
+            raise ValueError(f"retained receipt {field} differs from its evidence summary")
     return summary
+
+
+def validate_capture_file(root: Path, base: Path, asset: dict) -> bytes:
+    relative = asset.get("capture_path", "")
+    if not safe_relative(relative):
+        raise ValueError("current public capture contains an unsafe asset path")
+    path = root / base / relative
+    if path.is_symlink() or not path.is_file():
+        raise ValueError("current public capture asset must be a retained regular file")
+    raw = path.read_bytes()
+    if (asset.get("status") != 200 or asset.get("final_url") != asset.get("url")
+            or str(asset.get("content_encoding", "identity")).lower() != "identity"
+            or len(raw) != asset.get("bytes") or sha256(raw) != asset.get("sha256")):
+        raise ValueError("current public capture bytes, status or identity encoding changed")
+    return raw
+
+
+def validate_page_capture(root: Path, row: dict, observation: dict, summary: dict) -> None:
+    manifest_path = summary.get("capture_manifest_path", "")
+    manifest_sha = summary.get("capture_manifest_sha256", "")
+    if (not safe_relative(manifest_path)
+            or not manifest_path.startswith("registry/walkthrough-register/evidence/current-captures/")
+            or not SHA256.fullmatch(manifest_sha)):
+        raise ValueError("current public HTTP observation needs a retained capture manifest")
+    manifest_file = root / manifest_path
+    if manifest_file.is_symlink() or not manifest_file.is_file():
+        raise ValueError("current public HTTP capture manifest must be a regular file")
+    manifest_bytes = manifest_file.read_bytes()
+    if sha256(manifest_bytes) != manifest_sha:
+        raise ValueError("current public HTTP capture manifest digest mismatch")
+    manifest = json.loads(manifest_bytes)
+    if (manifest.get("schema") != "okf-hansard-targeted-public-http-capture.v1"
+            or manifest.get("receipt_id") != summary.get("source_receipt_id")
+            or manifest.get("receipt_id") != observation.get("receipt_id")):
+        raise ValueError("current public HTTP capture identity differs from its observation")
+    if (observation.get("capture_manifest_path") != manifest_path
+            or observation.get("capture_manifest_sha256") != manifest_sha):
+        raise ValueError("current observation does not bind its exact HTTP capture manifest")
+    base = PurePosixPath(manifest_path).parent
+    assets = manifest.get("assets", [])
+    guide = next((a for a in assets if a.get("walkthrough_id") == row["id"]
+                  and a.get("url") == row["guide_url"] and a.get("path", "").endswith(".html")), None)
+    if (guide is None or guide.get("status") != observation.get("http_status")
+            or guide.get("sha256") != observation.get("response_sha256")):
+        raise ValueError("current page observation differs from the exact captured guide response")
+    guide_bytes = validate_capture_file(root, base, guide)
+    if not question_matches_source(guide.get("path", ""), row.get("question", ""), guide_bytes):
+        raise ValueError("current captured guide does not contain its recorded question")
+    if row.get("descriptor_url") not in declared_bundle_urls(guide_bytes):
+        raise ValueError("current captured guide does not link its exact bundle descriptor")
+
+    case_path = observation.get("case_json_path", "")
+    case_sha = observation.get("case_json_sha256", "")
+    case_asset = next((a for a in assets if a.get("walkthrough_id") == row["id"]
+                       and a.get("path", "").endswith("walkthrough.json")), None)
+    if (case_asset is None or not safe_relative(case_path)
+            or (base / case_asset.get("capture_path", "")) != PurePosixPath(case_path)
+            or case_asset.get("sha256") != case_sha):
+        raise ValueError("current walkthrough case JSON is not bound to its retained public capture")
+    case_bytes = validate_capture_file(root, base, case_asset)
+    case = json.loads(case_bytes)
+    if (case.get("question") != row.get("question")
+            or case.get("descriptor_sha256") != observation.get("descriptor_sha256")):
+        raise ValueError("current case JSON question or descriptor digest differs from the register")
+
+    descriptor_path = observation.get("descriptor_capture_path", "")
+    descriptor_sha = observation.get("descriptor_sha256", "")
+    descriptor_asset = next((a for a in assets if a.get("walkthrough_id") == row["id"]
+                             and a.get("url") == row.get("descriptor_url")
+                             and a.get("sha256") == descriptor_sha), None)
+    if (descriptor_asset is None or not safe_relative(descriptor_path)
+            or (base / descriptor_asset.get("capture_path", "")) != PurePosixPath(descriptor_path)):
+        raise ValueError("current descriptor is not bound to its retained public capture")
+    if descriptor_asset.get("url") != row.get("descriptor_url"):
+        raise ValueError("current descriptor capture does not match the declared public URL")
+    descriptor_bytes = validate_capture_file(root, base, descriptor_asset)
+    if sha256(descriptor_bytes) != row.get("version_evidence_sha256"):
+        raise ValueError("current descriptor capture differs from its version evidence")
+
+    edition = guide.get("edition")
+    catalogue = manifest.get("catalogues", {}).get(edition, {})
+    catalogue_path = catalogue.get("path", "")
+    if not safe_relative(catalogue_path):
+        raise ValueError("current public capture has no safe served checksum catalogue")
+    catalogue_file = root / base / catalogue_path
+    if catalogue_file.is_symlink() or not catalogue_file.is_file():
+        raise ValueError("current public checksum catalogue must be a retained regular file")
+    catalogue_bytes = catalogue_file.read_bytes()
+    if sha256(catalogue_bytes) != catalogue.get("sha256"):
+        raise ValueError("current public checksum catalogue digest mismatch")
+    expected = json.loads(catalogue_bytes)
+    for asset in (guide, case_asset, descriptor_asset):
+        bound = expected.get(asset.get("path"), {})
+        if (bound.get("sha256") != asset.get("sha256") or bound.get("bytes") != asset.get("bytes")
+                or asset.get("served_checksum_match") is not True):
+            raise ValueError("current public capture differs from the served checksum catalogue")
+    if observation.get("checksum_catalogue_sha256") != catalogue.get("sha256"):
+        raise ValueError("current observation does not bind its served checksum catalogue")
+    summary_case = next((item for item in summary.get("cases", [])
+                         if item.get("id") == row.get("id")), None)
+    if (summary_case is None
+            or summary_case.get("case_json_path") != observation.get("case_json_path")
+            or summary_case.get("case_json_sha256") != observation.get("case_json_sha256")
+            or summary_case.get("descriptor_url") != row.get("descriptor_url")
+            or summary_case.get("descriptor_path") != observation.get("descriptor_capture_path")
+            or summary_case.get("descriptor_sha256") != observation.get("descriptor_sha256")
+            or summary_case.get("served_checksum_catalogue_sha256") != catalogue.get("sha256")):
+        raise ValueError("current page summary differs from its captured case, descriptor or checksum catalogue")
+
+
+def validate_page_observation(root: Path, row: dict, observation: dict, *, historical: bool = False) -> None:
+    if (observation.get("http_status") not in {200, 404}
+            or not SHA256.fullmatch(observation.get("receipt_sha256", ""))
+            or not SHA256.fullmatch(observation.get("response_sha256", ""))):
+        raise ValueError("current or historical page observation is incomplete or unsupported")
+    try:
+        datetime.fromisoformat(observation.get("observed_at", "").replace("Z", "+00:00"))
+    except (ValueError, AttributeError):
+        raise ValueError("invalid page observation date") from None
+    evidence_path = observation.get("evidence_path", "")
+    if (not safe_relative(evidence_path)
+            or not evidence_path.startswith("registry/walkthrough-register/evidence/current-observations/")):
+        raise ValueError("page observation needs a retained evidence summary")
+    evidence_file = root / evidence_path
+    if evidence_file.is_symlink() or not evidence_file.is_file():
+        raise ValueError("page observation summary must be a retained regular file")
+    evidence_bytes = evidence_file.read_bytes()
+    if sha256(evidence_bytes) != observation.get("evidence_sha256"):
+        raise ValueError("page observation evidence digest mismatch")
+    evidence = json.loads(evidence_bytes)
+    receipt_id = str(evidence.get("source_receipt_id", "")).split("/", 1)[0]
+    if (evidence.get("schema") != "okf-walkthrough-current-observation-summary.v1"
+            or evidence.get("observed_at") != observation.get("observed_at")
+            or evidence.get("source_receipt_sha256") != observation.get("receipt_sha256")
+            or receipt_id != observation.get("receipt_id")):
+        raise ValueError("page observation receipt identity or date mismatch")
+    case = next((item for item in evidence.get("cases", [])
+                 if item.get("id") == observation.get("case_id")), None)
+    if (case is None or case.get("http_status") != observation.get("http_status")
+            or case.get("response_sha256") != observation.get("response_sha256")
+            or observation.get("case_id") != row.get("id")):
+        raise ValueError("page status or response digest differs from its retained observation")
+    if not historical:
+        validate_page_capture(root, row, observation, evidence)
 
 
 def safe_relative(value: str) -> bool:
@@ -436,6 +583,35 @@ def load(root: Path = ROOT) -> dict:
                     raise ValueError("supplemental descriptor claims an identity absent from its bytes")
                 if walkthrough_guide_bytes and supplemental["url"] not in declared_bundle_urls(walkthrough_guide_bytes):
                     raise ValueError("supplemental descriptor URL is not linked by its walkthrough guide")
+        historical_descriptors = row.get("historical_descriptor_observations", [])
+        historical_descriptor_keys = [(item.get("url"), item.get("observed_at")) for item in historical_descriptors]
+        if len(historical_descriptor_keys) != len(set(historical_descriptor_keys)):
+            raise ValueError("duplicate historical descriptor observation")
+        for item in historical_descriptors:
+            if (not safe_public_url(item.get("url", "")) or item.get("http_status") not in {200, 404}
+                    or not SHA256.fullmatch(item.get("response_sha256") or "")):
+                raise ValueError("historical descriptor observation is incomplete")
+            try:
+                datetime.fromisoformat(item.get("observed_at", "").replace("Z", "+00:00"))
+            except (ValueError, AttributeError):
+                raise ValueError("invalid historical descriptor observation date") from None
+            if item.get("evidence_path"):
+                evidence_path = item["evidence_path"]
+                if (not safe_relative(evidence_path)
+                        or not evidence_path.startswith("registry/walkthrough-register/evidence/bundle-descriptors/")):
+                    raise ValueError("unsafe retained historical descriptor path")
+                historical_bytes = (root / evidence_path).read_bytes()
+                if sha256(historical_bytes) != item.get("evidence_sha256"):
+                    raise ValueError("historical descriptor bytes differ from their retained digest")
+                historical_descriptor = json.loads(historical_bytes)
+                if (item.get("http_status") != 200 or item.get("bytes") != len(historical_bytes)
+                        or historical_descriptor.get("schema") != item.get("schema")
+                        or historical_descriptor.get("version") != item.get("producer_product_version")
+                        or historical_descriptor.get("okf_version") != item.get("okf_core_version")):
+                    raise ValueError("historical descriptor fields differ from their exact retained bytes")
+            elif (item.get("http_status") != 404
+                    or item.get("status_binding") != "recorded HTTP status and response digest; response body not separately retained"):
+                raise ValueError("historical descriptor without response bytes must remain explicitly qualified")
         if row.get("descriptor_http_status") == 404:
             current = row.get("current_page_observation", {})
             if (not safe_public_url(row.get("descriptor_url", ""))
@@ -454,6 +630,31 @@ def load(root: Path = ROOT) -> dict:
             if supporting_proof.get("status") not in {"passed", "failed", "unknown"}:
                 raise ValueError("supporting receipt has an invalid status")
             validate_receipt_summary(supporting_proof, root)
+        current_proof = row.get("current_publication_proof")
+        if current_proof is not None:
+            if current_proof.get("status") != "passed" or not SHA256.fullmatch(current_proof.get("sha256", "")):
+                raise ValueError("current public walkthrough proof must be a passed, hash-bound receipt")
+            current_summary = validate_receipt_summary(current_proof, root)
+            if (current_summary.get("walkthrough_id") != row["id"]
+                    or current_summary.get("source_commit") != row.get("current_source_commit")
+                    or current_summary.get("okf_core_version") != row.get("okf_core_version")
+                    or current_summary.get("bundle_identity") != row.get("bundle_identity")
+                    or current_summary.get("descriptor_sha256") != row.get("version_evidence_sha256")
+                    or current_summary.get("producer_product_version") != row.get("producer_product_version")):
+                raise ValueError("current public walkthrough proof differs from its current source or descriptor")
+            browser_cases = current_summary.get("cases", [])
+            if ({case.get("viewport") for case in browser_cases} != {"desktop", "mobile"}
+                    or len(browser_cases) != 2
+                    or any(case.get("question") != row["question"]
+                           or case.get("descriptor_sha256") != row.get("version_evidence_sha256")
+                           or case.get("expected_identity", {}).get("id") != row.get("bundle_identity")
+                           or case.get("expected_identity", {}).get("schema") != row.get("descriptor_schema")
+                           or case.get("expected_identity", {}).get("version") != row.get("producer_product_version")
+                           or case.get("guide_link_followed") is not True
+                           or case.get("wcag_violations") != 0
+                           or case.get("horizontal_overflow") is not False
+                           for case in browser_cases)):
+                raise ValueError("current browser cases do not match the walkthrough question and identity")
         if proof.get("observed_at") is None:
             if proof.get("date_status") not in {"date not present in retained receipt",
                                                "date not present in retained public access entry"}:
@@ -467,33 +668,15 @@ def load(root: Path = ROOT) -> dict:
         if row.get("current_page_checked") != (current_observation is not None):
             raise ValueError("current page check flag must match its dated observation")
         if current_observation is not None:
-            if (current_observation.get("http_status") not in {200, 404}
-                    or current_observation.get("receipt_id") != "hansard-current-capture-20261125T0952Z"
-                    or not SHA256.fullmatch(current_observation.get("receipt_sha256", ""))
-                    or not SHA256.fullmatch(current_observation.get("response_sha256", ""))):
-                raise ValueError("current page observation is incomplete or unsupported")
-            try:
-                datetime.fromisoformat(current_observation.get("observed_at", "").replace("Z", "+00:00"))
-            except (ValueError, AttributeError):
-                raise ValueError("invalid current page observation date") from None
-            evidence_path = current_observation.get("evidence_path", "")
-            if (not safe_relative(evidence_path)
-                    or not evidence_path.startswith("registry/walkthrough-register/evidence/current-observations/")):
-                raise ValueError("current page observation needs a retained evidence summary")
-            evidence_bytes = (root / evidence_path).read_bytes()
-            if sha256(evidence_bytes) != current_observation.get("evidence_sha256"):
-                raise ValueError("current page observation evidence digest mismatch")
-            evidence = json.loads(evidence_bytes)
-            if (evidence.get("schema") != "okf-walkthrough-current-observation-summary.v1"
-                    or evidence.get("observed_at") != current_observation.get("observed_at")
-                    or evidence.get("source_receipt_sha256") != current_observation.get("receipt_sha256")):
-                raise ValueError("current page observation receipt identity or date mismatch")
-            case = next((item for item in evidence.get("cases", [])
-                         if item.get("id") == current_observation.get("case_id")), None)
-            if (case is None or case.get("http_status") != current_observation.get("http_status")
-                    or case.get("response_sha256") != current_observation.get("response_sha256")
-                    or current_observation.get("case_id") != row.get("id")):
-                raise ValueError("current page status or response digest differs from retained browser observation")
+            validate_page_observation(root, row, current_observation)
+        historical_pages = row.get("historical_page_observations", [])
+        historical_ids = [item.get("receipt_id") for item in historical_pages]
+        if len(historical_ids) != len(set(historical_ids)):
+            raise ValueError("duplicate historical page observation")
+        if current_observation and current_observation.get("receipt_id") in historical_ids:
+            raise ValueError("current page observation is duplicated in its history")
+        for historical_page in historical_pages:
+            validate_page_observation(root, row, historical_page, historical=True)
 
     for descriptor in source.get("public_bundle_descriptor_observations", []):
         old = access_rows[descriptor["repository"].removeprefix("https://github.com/")]
@@ -678,6 +861,22 @@ def render(source: dict) -> dict[Path, str]:
         proof_date = proof.get("observed_at") or "date not present in retained receipt"
         current = w.get("current_page_observation")
         current_status = f"Current page: HTTP {current['http_status']} on {current['observed_at']}; {current['result']}" if current else "Current page: not rechecked."
+        prior_pages = w.get("historical_page_observations", [])
+        prior_page_status = ""
+        if prior_pages:
+            prior = "; ".join(f"HTTP {item['http_status']} on {item['observed_at']}" for item in prior_pages)
+            prior_page_status = f" Earlier page observations: {prior}."
+        current_browser = w.get("current_publication_proof")
+        browser_status = ""
+        if current_browser:
+            browser_status = (f" Current browser proof: passed ({current_browser['observed_at']}); "
+                              "desktop and mobile journeys for this guide.")
+        assets_proof = next((item for item in w.get("supporting_receipts", [])
+                             if item.get("id") == "hansard-stage6-public-assets"), None)
+        if assets_proof:
+            browser_status += (f" Complete public-assets gate: passed ({assets_proof['observed_at']}); "
+                               f"{assets_proof['catalogue_files_verified']} catalogue and "
+                               f"{assets_proof['served_files_verified']} served files verified.")
         if w.get("version_scope") == "profile":
             core = f"profile {w['profile_version']}; core version not asserted"
         descriptor_links = []
@@ -694,7 +893,8 @@ def render(source: dict) -> dict[Path, str]:
         lines.extend([f"### {title}", "", q, "",
                       f"**Version:** {core}; producer {product}; shared Reader {w.get('reader_version') or 'not recorded'}.{descriptor_note}", "",
                       f"[Guide]({w['guide_url']}) · [Question and evidence source]({w['source_url']})", "",
-                      f"Earlier evidence: {proof['status']} ({proof_date}); {guide_status}", "", current_status, ""])
+                      f"Earlier evidence: {proof['status']} ({proof_date}); {guide_status}", "",
+                      current_status + prior_page_status + browser_status, ""])
     lines.extend(["", *descriptor_lines])
     lines.extend(["", "## Repository visibility observation", "",
                   f"Unauthenticated GitHub repository metadata returned HTTP 200 and `public` for all {len(source.get('repository_visibility_observations', []))} distinct repositories in this denominator at {source['scope'].get('current_visibility_observed_at')}. This records repository visibility only; it is not fresh owner discovery, bundle acceptance or walkthrough availability.", ""])

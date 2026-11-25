@@ -1,0 +1,1772 @@
+{
+  "schema": "okf-hansard-targeted-public-http-capture.v1",
+  "receipt_id": "hansard-stage6-targeted-http-20261125T115217Z",
+  "captured_at_started": "2026-11-25T11:52:17.035707+00:00",
+  "request_headers": {
+    "User-Agent": "okf-walkthrough-register/1.0",
+    "Accept-Encoding": "identity",
+    "Cache-Control": "no-cache"
+  },
+  "scope": "Four walkthrough HTML pages, their case JSON files, and the compact and full descriptors; not the full site HTTP sweep.",
+  "catalogues": {
+    "week": {
+      "url": "https://chris-page-gov.github.io/okf-hansard/checksums.json",
+      "final_url": "https://chris-page-gov.github.io/okf-hansard/checksums.json",
+      "status": 200,
+      "headers": [
+        [
+          "connection",
+          "close"
+        ],
+        [
+          "content-length",
+          "388593"
+        ],
+        [
+          "server",
+          "GitHub.com"
+        ],
+        [
+          "content-type",
+          "application/json; charset=utf-8"
+        ],
+        [
+          "x-origin-cache",
+          "HIT"
+        ],
+        [
+          "last-modified",
+          "Wed, 25 Nov 2026 11:44:09 GMT"
+        ],
+        [
+          "access-control-allow-origin",
+          "*"
+        ],
+        [
+          "strict-transport-security",
+          "max-age=31556952"
+        ],
+        [
+          "etag",
+          "\"6b06ca09-5edf1\""
+        ],
+        [
+          "expires",
+          "Wed, 25 Nov 2026 11:59:20 GMT"
+        ],
+        [
+          "cache-control",
+          "max-age=600"
+        ],
+        [
+          "x-proxy-cache",
+          "MISS"
+        ],
+        [
+          "x-github-request-id",
+          "6E74:1A82AD:25B970:27C06D:6B06CB3F"
+        ],
+        [
+          "x-github-edge-region",
+          "uksouth"
+        ],
+        [
+          "accept-ranges",
+          "bytes"
+        ],
+        [
+          "age",
+          "176"
+        ],
+        [
+          "date",
+          "Wed, 25 Nov 2026 11:52:17 GMT"
+        ],
+        [
+          "via",
+          "1.1 varnish"
+        ],
+        [
+          "x-served-by",
+          "cache-lhr-egwu1540022-LHR"
+        ],
+        [
+          "x-cache",
+          "HIT"
+        ],
+        [
+          "x-cache-hits",
+          "0"
+        ],
+        [
+          "x-timer",
+          "S1795607537.084803,VS0,VE1"
+        ],
+        [
+          "vary",
+          "Accept-Encoding"
+        ],
+        [
+          "x-fastly-request-id",
+          "73e2a8b837e2a0e670a3d8e8b3677e5ebc5a9d4a"
+        ]
+      ],
+      "bytes": 388593,
+      "sha256": "5dcd2713f47476564f50698e079c2c65ea6305cba21e47da2af9d035f68eb456",
+      "content_encoding": "identity",
+      "path": "week-checksums.json"
+    },
+    "november": {
+      "url": "https://chris-page-gov.github.io/okf-hansard/november/checksums.json",
+      "final_url": "https://chris-page-gov.github.io/okf-hansard/november/checksums.json",
+      "status": 200,
+      "headers": [
+        [
+          "connection",
+          "close"
+        ],
+        [
+          "content-length",
+          "1186841"
+        ],
+        [
+          "server",
+          "GitHub.com"
+        ],
+        [
+          "content-type",
+          "application/json; charset=utf-8"
+        ],
+        [
+          "x-origin-cache",
+          "HIT"
+        ],
+        [
+          "last-modified",
+          "Wed, 25 Nov 2026 11:44:09 GMT"
+        ],
+        [
+          "access-control-allow-origin",
+          "*"
+        ],
+        [
+          "strict-transport-security",
+          "max-age=31556952"
+        ],
+        [
+          "etag",
+          "\"6b06ca09-121c19\""
+        ],
+        [
+          "expires",
+          "Wed, 25 Nov 2026 11:59:21 GMT"
+        ],
+        [
+          "cache-control",
+          "max-age=600"
+        ],
+        [
+          "x-proxy-cache",
+          "MISS"
+        ],
+        [
+          "x-github-request-id",
+          "2C2C:286C1C:24E653:26ED0E:6B06CB41"
+        ],
+        [
+          "x-github-edge-region",
+          "uksouth"
+        ],
+        [
+          "accept-ranges",
+          "bytes"
+        ],
+        [
+          "age",
+          "175"
+        ],
+        [
+          "date",
+          "Wed, 25 Nov 2026 11:52:17 GMT"
+        ],
+        [
+          "via",
+          "1.1 varnish"
+        ],
+        [
+          "x-served-by",
+          "cache-lhr-egwu1540021-LHR"
+        ],
+        [
+          "x-cache",
+          "HIT"
+        ],
+        [
+          "x-cache-hits",
+          "0"
+        ],
+        [
+          "x-timer",
+          "S1795607537.175705,VS0,VE1"
+        ],
+        [
+          "vary",
+          "Accept-Encoding"
+        ],
+        [
+          "x-fastly-request-id",
+          "2453d79c827e20fdbcb1fd9f581bae14945ef3cc"
+        ]
+      ],
+      "bytes": 1186841,
+      "sha256": "8de0054c2bf514d01be07747c991202b9363ba464ae2fbb21a532efcd5fd8ebb",
+      "content_encoding": "identity",
+      "path": "november-checksums.json"
+    }
+  },
+  "assets": [
+    {
+      "walkthrough_id": "hansard-week-core",
+      "edition": "week",
+      "path": "core-walkthrough.html",
+      "capture_path": "week/core-walkthrough.html",
+      "url": "https://chris-page-gov.github.io/okf-hansard/core-walkthrough.html",
+      "final_url": "https://chris-page-gov.github.io/okf-hansard/core-walkthrough.html",
+      "status": 200,
+      "headers": [
+        [
+          "connection",
+          "close"
+        ],
+        [
+          "content-length",
+          "4347"
+        ],
+        [
+          "server",
+          "GitHub.com"
+        ],
+        [
+          "content-type",
+          "text/html; charset=utf-8"
+        ],
+        [
+          "x-origin-cache",
+          "HIT"
+        ],
+        [
+          "last-modified",
+          "Wed, 25 Nov 2026 11:44:09 GMT"
+        ],
+        [
+          "access-control-allow-origin",
+          "*"
+        ],
+        [
+          "strict-transport-security",
+          "max-age=31556952"
+        ],
+        [
+          "etag",
+          "\"6b06ca09-10fb\""
+        ],
+        [
+          "expires",
+          "Wed, 25 Nov 2026 11:59:20 GMT"
+        ],
+        [
+          "cache-control",
+          "max-age=600"
+        ],
+        [
+          "x-proxy-cache",
+          "MISS"
+        ],
+        [
+          "x-github-request-id",
+          "2C2C:286C1C:24E603:26ECBE:6B06CB40"
+        ],
+        [
+          "x-github-edge-region",
+          "uksouth"
+        ],
+        [
+          "accept-ranges",
+          "bytes"
+        ],
+        [
+          "age",
+          "177"
+        ],
+        [
+          "date",
+          "Wed, 25 Nov 2026 11:52:17 GMT"
+        ],
+        [
+          "via",
+          "1.1 varnish"
+        ],
+        [
+          "x-served-by",
+          "cache-lhr-egwu1540033-LHR"
+        ],
+        [
+          "x-cache",
+          "HIT"
+        ],
+        [
+          "x-cache-hits",
+          "0"
+        ],
+        [
+          "x-timer",
+          "S1795607537.295730,VS0,VE1"
+        ],
+        [
+          "vary",
+          "Accept-Encoding"
+        ],
+        [
+          "x-fastly-request-id",
+          "b55121d2e03a310790afcc0052cda8970b48b407"
+        ]
+      ],
+      "bytes": 4347,
+      "sha256": "9db4c9dc1c38c8006a5c556df789607b19a97e16b1bcc9a918bbc6dd016f7255",
+      "content_encoding": "identity",
+      "served_checksum_match": true,
+      "served_checksum_catalogue_sha256": "5dcd2713f47476564f50698e079c2c65ea6305cba21e47da2af9d035f68eb456"
+    },
+    {
+      "walkthrough_id": "hansard-week-core",
+      "edition": "week",
+      "path": "core-walkthrough.json",
+      "capture_path": "week/core-walkthrough.json",
+      "url": "https://chris-page-gov.github.io/okf-hansard/core-walkthrough.json",
+      "final_url": "https://chris-page-gov.github.io/okf-hansard/core-walkthrough.json",
+      "status": 200,
+      "headers": [
+        [
+          "connection",
+          "close"
+        ],
+        [
+          "content-length",
+          "3523"
+        ],
+        [
+          "server",
+          "GitHub.com"
+        ],
+        [
+          "content-type",
+          "application/json; charset=utf-8"
+        ],
+        [
+          "x-origin-cache",
+          "HIT"
+        ],
+        [
+          "last-modified",
+          "Wed, 25 Nov 2026 11:44:10 GMT"
+        ],
+        [
+          "access-control-allow-origin",
+          "*"
+        ],
+        [
+          "strict-transport-security",
+          "max-age=31556952"
+        ],
+        [
+          "etag",
+          "\"6b06ca0a-dc3\""
+        ],
+        [
+          "expires",
+          "Wed, 25 Nov 2026 11:59:21 GMT"
+        ],
+        [
+          "cache-control",
+          "max-age=600"
+        ],
+        [
+          "x-proxy-cache",
+          "MISS"
+        ],
+        [
+          "x-github-request-id",
+          "6892:141AE0:256855:276F8F:6B06CB40"
+        ],
+        [
+          "x-github-edge-region",
+          "uksouth"
+        ],
+        [
+          "accept-ranges",
+          "bytes"
+        ],
+        [
+          "age",
+          "176"
+        ],
+        [
+          "date",
+          "Wed, 25 Nov 2026 11:52:17 GMT"
+        ],
+        [
+          "via",
+          "1.1 varnish"
+        ],
+        [
+          "x-served-by",
+          "cache-lhr-egwu1540076-LHR"
+        ],
+        [
+          "x-cache",
+          "HIT"
+        ],
+        [
+          "x-cache-hits",
+          "0"
+        ],
+        [
+          "x-timer",
+          "S1795607537.333871,VS0,VE1"
+        ],
+        [
+          "vary",
+          "Accept-Encoding"
+        ],
+        [
+          "x-fastly-request-id",
+          "9c0cf1e37b0c947a4080d0be29a08a40a8261b3c"
+        ]
+      ],
+      "bytes": 3523,
+      "sha256": "6172c62ebff25916d8e166f905a809d5e42aae12d55d80524cd382f7d21d2928",
+      "content_encoding": "identity",
+      "served_checksum_match": true,
+      "served_checksum_catalogue_sha256": "5dcd2713f47476564f50698e079c2c65ea6305cba21e47da2af9d035f68eb456",
+      "question": "Using only the compact week entry point, which formal Bill 4030 stages are cited, in which House and date order, and can this bundle prove a complete legislative history?",
+      "bundle_id": null
+    },
+    {
+      "walkthrough_id": "hansard-week-full",
+      "edition": "week",
+      "path": "walkthrough.html",
+      "capture_path": "week/walkthrough.html",
+      "url": "https://chris-page-gov.github.io/okf-hansard/walkthrough.html",
+      "final_url": "https://chris-page-gov.github.io/okf-hansard/walkthrough.html",
+      "status": 200,
+      "headers": [
+        [
+          "connection",
+          "close"
+        ],
+        [
+          "content-length",
+          "3617"
+        ],
+        [
+          "server",
+          "GitHub.com"
+        ],
+        [
+          "content-type",
+          "text/html; charset=utf-8"
+        ],
+        [
+          "x-origin-cache",
+          "HIT"
+        ],
+        [
+          "last-modified",
+          "Wed, 25 Nov 2026 11:44:10 GMT"
+        ],
+        [
+          "access-control-allow-origin",
+          "*"
+        ],
+        [
+          "strict-transport-security",
+          "max-age=31556952"
+        ],
+        [
+          "etag",
+          "\"6b06ca0a-e21\""
+        ],
+        [
+          "expires",
+          "Wed, 25 Nov 2026 11:59:20 GMT"
+        ],
+        [
+          "cache-control",
+          "max-age=600"
+        ],
+        [
+          "x-proxy-cache",
+          "MISS"
+        ],
+        [
+          "x-github-request-id",
+          "F6C0:2C7292:25492E:27505B:6B06CB40"
+        ],
+        [
+          "x-github-edge-region",
+          "uksouth"
+        ],
+        [
+          "accept-ranges",
+          "bytes"
+        ],
+        [
+          "age",
+          "176"
+        ],
+        [
+          "date",
+          "Wed, 25 Nov 2026 11:52:17 GMT"
+        ],
+        [
+          "via",
+          "1.1 varnish"
+        ],
+        [
+          "x-served-by",
+          "cache-lhr-egwu1540031-LHR"
+        ],
+        [
+          "x-cache",
+          "HIT"
+        ],
+        [
+          "x-cache-hits",
+          "0"
+        ],
+        [
+          "x-timer",
+          "S1795607537.374299,VS0,VE1"
+        ],
+        [
+          "vary",
+          "Accept-Encoding"
+        ],
+        [
+          "x-fastly-request-id",
+          "d0f39e34eb0c1b7d9d1f45fd5f7d7abf40b4ae36"
+        ]
+      ],
+      "bytes": 3617,
+      "sha256": "588259e4345181172144bd23432ba89ca8094c69e7ca16f27a981a6f84544ccb",
+      "content_encoding": "identity",
+      "served_checksum_match": true,
+      "served_checksum_catalogue_sha256": "5dcd2713f47476564f50698e079c2c65ea6305cba21e47da2af9d035f68eb456"
+    },
+    {
+      "walkthrough_id": "hansard-week-full",
+      "edition": "week",
+      "path": "walkthrough.json",
+      "capture_path": "week/walkthrough.json",
+      "url": "https://chris-page-gov.github.io/okf-hansard/walkthrough.json",
+      "final_url": "https://chris-page-gov.github.io/okf-hansard/walkthrough.json",
+      "status": 200,
+      "headers": [
+        [
+          "connection",
+          "close"
+        ],
+        [
+          "content-length",
+          "2991"
+        ],
+        [
+          "server",
+          "GitHub.com"
+        ],
+        [
+          "content-type",
+          "application/json; charset=utf-8"
+        ],
+        [
+          "x-origin-cache",
+          "HIT"
+        ],
+        [
+          "last-modified",
+          "Wed, 25 Nov 2026 11:44:10 GMT"
+        ],
+        [
+          "access-control-allow-origin",
+          "*"
+        ],
+        [
+          "strict-transport-security",
+          "max-age=31556952"
+        ],
+        [
+          "etag",
+          "\"6b06ca0a-baf\""
+        ],
+        [
+          "expires",
+          "Wed, 25 Nov 2026 11:59:21 GMT"
+        ],
+        [
+          "cache-control",
+          "max-age=600"
+        ],
+        [
+          "x-proxy-cache",
+          "MISS"
+        ],
+        [
+          "x-github-request-id",
+          "59B4:121AED:254783:274EB5:6B06CB40"
+        ],
+        [
+          "x-github-edge-region",
+          "uksouth"
+        ],
+        [
+          "accept-ranges",
+          "bytes"
+        ],
+        [
+          "age",
+          "176"
+        ],
+        [
+          "date",
+          "Wed, 25 Nov 2026 11:52:17 GMT"
+        ],
+        [
+          "via",
+          "1.1 varnish"
+        ],
+        [
+          "x-served-by",
+          "cache-lhr-egwu1540060-LHR"
+        ],
+        [
+          "x-cache",
+          "HIT"
+        ],
+        [
+          "x-cache-hits",
+          "0"
+        ],
+        [
+          "x-timer",
+          "S1795607537.499744,VS0,VE1"
+        ],
+        [
+          "vary",
+          "Accept-Encoding"
+        ],
+        [
+          "x-fastly-request-id",
+          "2d330c648ecce07835f1aaadda9f000336a80d96"
+        ]
+      ],
+      "bytes": 2991,
+      "sha256": "fd13a393fd575c005dd6b8d687bed410472f1acd24dd3be31432f9fe15eca135",
+      "content_encoding": "identity",
+      "served_checksum_match": true,
+      "served_checksum_catalogue_sha256": "5dcd2713f47476564f50698e079c2c65ea6305cba21e47da2af9d035f68eb456",
+      "question": "Which recorded stages of Bill 4030 appear in the Commons and Lords, in date order, and what does this evidence not establish?",
+      "bundle_id": null
+    },
+    {
+      "walkthrough_id": "hansard-week-core",
+      "edition": "week",
+      "path": "okf-core.json",
+      "capture_path": "week/okf-core.json",
+      "url": "https://chris-page-gov.github.io/okf-hansard/okf-core.json",
+      "final_url": "https://chris-page-gov.github.io/okf-hansard/okf-core.json",
+      "status": 200,
+      "headers": [
+        [
+          "connection",
+          "close"
+        ],
+        [
+          "content-length",
+          "61315"
+        ],
+        [
+          "server",
+          "GitHub.com"
+        ],
+        [
+          "content-type",
+          "application/json; charset=utf-8"
+        ],
+        [
+          "x-origin-cache",
+          "HIT"
+        ],
+        [
+          "last-modified",
+          "Wed, 25 Nov 2026 11:44:09 GMT"
+        ],
+        [
+          "access-control-allow-origin",
+          "*"
+        ],
+        [
+          "strict-transport-security",
+          "max-age=31556952"
+        ],
+        [
+          "etag",
+          "\"6b06ca09-ef83\""
+        ],
+        [
+          "expires",
+          "Wed, 25 Nov 2026 11:59:21 GMT"
+        ],
+        [
+          "cache-control",
+          "max-age=600"
+        ],
+        [
+          "x-proxy-cache",
+          "MISS"
+        ],
+        [
+          "x-github-request-id",
+          "9C3A:3E4F5:252F16:27367B:6B06CB40"
+        ],
+        [
+          "x-github-edge-region",
+          "uksouth"
+        ],
+        [
+          "accept-ranges",
+          "bytes"
+        ],
+        [
+          "age",
+          "176"
+        ],
+        [
+          "date",
+          "Wed, 25 Nov 2026 11:52:17 GMT"
+        ],
+        [
+          "via",
+          "1.1 varnish"
+        ],
+        [
+          "x-served-by",
+          "cache-lhr-egwu1540026-LHR"
+        ],
+        [
+          "x-cache",
+          "HIT"
+        ],
+        [
+          "x-cache-hits",
+          "0"
+        ],
+        [
+          "x-timer",
+          "S1795607538.539682,VS0,VE2"
+        ],
+        [
+          "vary",
+          "Accept-Encoding"
+        ],
+        [
+          "x-fastly-request-id",
+          "294cf9015bcde2c80b20a91cb335149b55dd52c3"
+        ]
+      ],
+      "bytes": 61315,
+      "sha256": "be285082c41180015a1f10292e8e479db8fe9339acb1f4be0d566f9a43a54221",
+      "content_encoding": "identity",
+      "served_checksum_match": true,
+      "served_checksum_catalogue_sha256": "5dcd2713f47476564f50698e079c2c65ea6305cba21e47da2af9d035f68eb456",
+      "descriptor_identity_fields": {
+        "id": "urn:okf:hansard:public-core:a-week-in-parliament"
+      },
+      "okf_version": "0.3",
+      "bundle_declared_version": "0.3.0",
+      "schema": "okf-explorer-bundle.v0"
+    },
+    {
+      "walkthrough_id": "hansard-week-full",
+      "edition": "week",
+      "path": "graph/okf-explorer.json",
+      "capture_path": "week/graph/okf-explorer.json",
+      "url": "https://chris-page-gov.github.io/okf-hansard/graph/okf-explorer.json",
+      "final_url": "https://chris-page-gov.github.io/okf-hansard/graph/okf-explorer.json",
+      "status": 200,
+      "headers": [
+        [
+          "connection",
+          "close"
+        ],
+        [
+          "content-length",
+          "7518425"
+        ],
+        [
+          "server",
+          "GitHub.com"
+        ],
+        [
+          "content-type",
+          "application/json; charset=utf-8"
+        ],
+        [
+          "x-origin-cache",
+          "HIT"
+        ],
+        [
+          "last-modified",
+          "Wed, 25 Nov 2026 11:44:10 GMT"
+        ],
+        [
+          "access-control-allow-origin",
+          "*"
+        ],
+        [
+          "strict-transport-security",
+          "max-age=31556952"
+        ],
+        [
+          "etag",
+          "\"6b06ca0a-72b8d9\""
+        ],
+        [
+          "expires",
+          "Wed, 25 Nov 2026 11:59:21 GMT"
+        ],
+        [
+          "cache-control",
+          "max-age=600"
+        ],
+        [
+          "x-proxy-cache",
+          "MISS"
+        ],
+        [
+          "x-github-request-id",
+          "0A2A:1FDEF:254423:274B63:6B06CB40"
+        ],
+        [
+          "x-github-edge-region",
+          "uksouth"
+        ],
+        [
+          "accept-ranges",
+          "bytes"
+        ],
+        [
+          "age",
+          "176"
+        ],
+        [
+          "date",
+          "Wed, 25 Nov 2026 11:52:17 GMT"
+        ],
+        [
+          "via",
+          "1.1 varnish"
+        ],
+        [
+          "x-served-by",
+          "cache-lhr-egwu1540077-LHR"
+        ],
+        [
+          "x-cache",
+          "HIT"
+        ],
+        [
+          "x-cache-hits",
+          "0"
+        ],
+        [
+          "x-timer",
+          "S1795607538.597821,VS0,VE1"
+        ],
+        [
+          "vary",
+          "Accept-Encoding"
+        ],
+        [
+          "x-fastly-request-id",
+          "c1c43423f6ce0c4069dce8a97d4c159773a81403"
+        ]
+      ],
+      "bytes": 7518425,
+      "sha256": "65998433e0e435b08d44968f106fcf3fa6b5b535a0e8b9433cf1f065c816f067",
+      "content_encoding": "identity",
+      "served_checksum_match": true,
+      "served_checksum_catalogue_sha256": "5dcd2713f47476564f50698e079c2c65ea6305cba21e47da2af9d035f68eb456",
+      "descriptor_identity_fields": {
+        "id": "urn:okf:hansard:bundle:a-week-in-parliament"
+      },
+      "okf_version": "0.3",
+      "bundle_declared_version": "0.3.0",
+      "schema": "okf-explorer-large-corpus.v1"
+    },
+    {
+      "walkthrough_id": "hansard-november-core",
+      "edition": "november",
+      "path": "core-walkthrough.html",
+      "capture_path": "november/core-walkthrough.html",
+      "url": "https://chris-page-gov.github.io/okf-hansard/november/core-walkthrough.html",
+      "final_url": "https://chris-page-gov.github.io/okf-hansard/november/core-walkthrough.html",
+      "status": 200,
+      "headers": [
+        [
+          "connection",
+          "close"
+        ],
+        [
+          "content-length",
+          "3329"
+        ],
+        [
+          "server",
+          "GitHub.com"
+        ],
+        [
+          "content-type",
+          "text/html; charset=utf-8"
+        ],
+        [
+          "x-origin-cache",
+          "HIT"
+        ],
+        [
+          "last-modified",
+          "Wed, 25 Nov 2026 11:44:11 GMT"
+        ],
+        [
+          "access-control-allow-origin",
+          "*"
+        ],
+        [
+          "strict-transport-security",
+          "max-age=31556952"
+        ],
+        [
+          "etag",
+          "\"6b06ca0b-d01\""
+        ],
+        [
+          "expires",
+          "Wed, 25 Nov 2026 11:59:22 GMT"
+        ],
+        [
+          "cache-control",
+          "max-age=600"
+        ],
+        [
+          "x-proxy-cache",
+          "MISS"
+        ],
+        [
+          "x-github-request-id",
+          "FEF4:1A82AD:25B9DE:27C0E2:6B06CB41"
+        ],
+        [
+          "x-github-edge-region",
+          "uksouth"
+        ],
+        [
+          "accept-ranges",
+          "bytes"
+        ],
+        [
+          "age",
+          "176"
+        ],
+        [
+          "date",
+          "Wed, 25 Nov 2026 11:52:17 GMT"
+        ],
+        [
+          "via",
+          "1.1 varnish"
+        ],
+        [
+          "x-served-by",
+          "cache-lhr-egwu1540021-LHR"
+        ],
+        [
+          "x-cache",
+          "HIT"
+        ],
+        [
+          "x-cache-hits",
+          "0"
+        ],
+        [
+          "x-timer",
+          "S1795607538.797750,VS0,VE1"
+        ],
+        [
+          "vary",
+          "Accept-Encoding"
+        ],
+        [
+          "x-fastly-request-id",
+          "a53a27daf3f3507f84b015bc079c64a9d804c6ab"
+        ]
+      ],
+      "bytes": 3329,
+      "sha256": "5d1b2078739268685d1fd093f4f19ad53ffbd36093a8a979722603130a21debb",
+      "content_encoding": "identity",
+      "served_checksum_match": true,
+      "served_checksum_catalogue_sha256": "8de0054c2bf514d01be07747c991202b9363ba464ae2fbb21a532efcd5fd8ebb",
+      "question": "What dates does the compact November entry point declare, can this one-record bundle establish which House debated Bill 4030, and where must I go to check those claims?",
+      "browser_cases": [
+        {
+          "viewport": "desktop",
+          "question": "What dates does the compact November entry point declare, can this one-record bundle establish which House debated Bill 4030, and where must I go to check those claims?",
+          "selected": "sittings.md",
+          "guide_link_followed": true,
+          "wcag_violations": 0,
+          "horizontal_overflow": false,
+          "descriptor_sha256": "d3725953c44357a10dd388a464e9c8f8e0a595b4de53f6eb95dfc0a5b3feb965",
+          "expected_identity": {
+            "schema": "okf-explorer-bundle.v0",
+            "id": "urn:okf:hansard:public-core:november-in-parliament",
+            "version": "0.3.0",
+            "snapshot": "hansard-markdown-sha256-9f646da1e032e4b326b1387fc4cad67b39d4a999a8f5fd147f52aa7c42902768"
+          }
+        },
+        {
+          "viewport": "mobile",
+          "question": "What dates does the compact November entry point declare, can this one-record bundle establish which House debated Bill 4030, and where must I go to check those claims?",
+          "selected": "sittings.md",
+          "guide_link_followed": true,
+          "wcag_violations": 0,
+          "horizontal_overflow": false,
+          "descriptor_sha256": "d3725953c44357a10dd388a464e9c8f8e0a595b4de53f6eb95dfc0a5b3feb965",
+          "expected_identity": {
+            "schema": "okf-explorer-bundle.v0",
+            "id": "urn:okf:hansard:public-core:november-in-parliament",
+            "version": "0.3.0",
+            "snapshot": "hansard-markdown-sha256-9f646da1e032e4b326b1387fc4cad67b39d4a999a8f5fd147f52aa7c42902768"
+          }
+        }
+      ]
+    },
+    {
+      "walkthrough_id": "hansard-november-core",
+      "edition": "november",
+      "path": "core-walkthrough.json",
+      "capture_path": "november/core-walkthrough.json",
+      "url": "https://chris-page-gov.github.io/okf-hansard/november/core-walkthrough.json",
+      "final_url": "https://chris-page-gov.github.io/okf-hansard/november/core-walkthrough.json",
+      "status": 200,
+      "headers": [
+        [
+          "connection",
+          "close"
+        ],
+        [
+          "content-length",
+          "2314"
+        ],
+        [
+          "server",
+          "GitHub.com"
+        ],
+        [
+          "content-type",
+          "application/json; charset=utf-8"
+        ],
+        [
+          "x-origin-cache",
+          "HIT"
+        ],
+        [
+          "last-modified",
+          "Wed, 25 Nov 2026 11:44:08 GMT"
+        ],
+        [
+          "access-control-allow-origin",
+          "*"
+        ],
+        [
+          "strict-transport-security",
+          "max-age=31556952"
+        ],
+        [
+          "etag",
+          "\"6b06ca08-90a\""
+        ],
+        [
+          "expires",
+          "Wed, 25 Nov 2026 11:59:22 GMT"
+        ],
+        [
+          "cache-control",
+          "max-age=600"
+        ],
+        [
+          "x-proxy-cache",
+          "MISS"
+        ],
+        [
+          "x-github-request-id",
+          "A3AC:2AC37C:25C09F:27C7ED:6B06CB42"
+        ],
+        [
+          "x-github-edge-region",
+          "uksouth"
+        ],
+        [
+          "accept-ranges",
+          "bytes"
+        ],
+        [
+          "age",
+          "175"
+        ],
+        [
+          "date",
+          "Wed, 25 Nov 2026 11:52:17 GMT"
+        ],
+        [
+          "via",
+          "1.1 varnish"
+        ],
+        [
+          "x-served-by",
+          "cache-lhr-egwu1540072-LHR"
+        ],
+        [
+          "x-cache",
+          "HIT"
+        ],
+        [
+          "x-cache-hits",
+          "0"
+        ],
+        [
+          "x-timer",
+          "S1795607538.841832,VS0,VE3"
+        ],
+        [
+          "vary",
+          "Accept-Encoding"
+        ],
+        [
+          "x-fastly-request-id",
+          "fd439d0ab196abe5b5a12632fa65b857a4426f07"
+        ]
+      ],
+      "bytes": 2314,
+      "sha256": "4bb43ab32075000b660b7cb2e9b043b82b04746abc515c712fe2825c1efbb3c3",
+      "content_encoding": "identity",
+      "served_checksum_match": true,
+      "served_checksum_catalogue_sha256": "8de0054c2bf514d01be07747c991202b9363ba464ae2fbb21a532efcd5fd8ebb",
+      "question": "What dates does the compact November entry point declare, can this one-record bundle establish which House debated Bill 4030, and where must I go to check those claims?",
+      "bundle_id": null
+    },
+    {
+      "walkthrough_id": "hansard-november-full",
+      "edition": "november",
+      "path": "walkthrough.html",
+      "capture_path": "november/walkthrough.html",
+      "url": "https://chris-page-gov.github.io/okf-hansard/november/walkthrough.html",
+      "final_url": "https://chris-page-gov.github.io/okf-hansard/november/walkthrough.html",
+      "status": 200,
+      "headers": [
+        [
+          "connection",
+          "close"
+        ],
+        [
+          "content-length",
+          "3547"
+        ],
+        [
+          "server",
+          "GitHub.com"
+        ],
+        [
+          "content-type",
+          "text/html; charset=utf-8"
+        ],
+        [
+          "x-origin-cache",
+          "HIT"
+        ],
+        [
+          "last-modified",
+          "Wed, 25 Nov 2026 11:44:11 GMT"
+        ],
+        [
+          "access-control-allow-origin",
+          "*"
+        ],
+        [
+          "strict-transport-security",
+          "max-age=31556952"
+        ],
+        [
+          "etag",
+          "\"6b06ca0b-ddb\""
+        ],
+        [
+          "expires",
+          "Wed, 25 Nov 2026 11:59:22 GMT"
+        ],
+        [
+          "cache-control",
+          "max-age=600"
+        ],
+        [
+          "x-proxy-cache",
+          "MISS"
+        ],
+        [
+          "x-github-request-id",
+          "70C4:2291E:25A508:27AC2A:6B06CB41"
+        ],
+        [
+          "x-github-edge-region",
+          "uksouth"
+        ],
+        [
+          "accept-ranges",
+          "bytes"
+        ],
+        [
+          "age",
+          "175"
+        ],
+        [
+          "date",
+          "Wed, 25 Nov 2026 11:52:17 GMT"
+        ],
+        [
+          "via",
+          "1.1 varnish"
+        ],
+        [
+          "x-served-by",
+          "cache-lhr-egwu1540058-LHR"
+        ],
+        [
+          "x-cache",
+          "HIT"
+        ],
+        [
+          "x-cache-hits",
+          "0"
+        ],
+        [
+          "x-timer",
+          "S1795607538.886817,VS0,VE1"
+        ],
+        [
+          "vary",
+          "Accept-Encoding"
+        ],
+        [
+          "x-fastly-request-id",
+          "5081513545d00bd7a78df5b1c1acb9330e323d56"
+        ]
+      ],
+      "bytes": 3547,
+      "sha256": "7d857d7d583928fc9495a7ec6b5d5e8ceb6dd8f223e29d12bcdbe2380e80c460",
+      "content_encoding": "identity",
+      "served_checksum_match": true,
+      "served_checksum_catalogue_sha256": "8de0054c2bf514d01be07747c991202b9363ba464ae2fbb21a532efcd5fd8ebb",
+      "question": "On 18 November, which House’s proceedings are linked to Bill 4030, what does the same-date coverage say about Commons and Lords activity, and can those records establish that the Commons debated or the Bill passed? How far does this snapshot cover?",
+      "browser_cases": [
+        {
+          "viewport": "desktop",
+          "question": "On 18 November, which House’s proceedings are linked to Bill 4030, what does the same-date coverage say about Commons and Lords activity, and can those records establish that the Commons debated or the Bill passed? How far does this snapshot cover?",
+          "selected": "dataset/entity/bill-4030.md",
+          "guide_link_followed": true,
+          "wcag_violations": 0,
+          "horizontal_overflow": false,
+          "descriptor_sha256": "f7e0665b485d299b4815fba0e2e274c3c3b7a1c34b49823b5973e0e627767800",
+          "expected_identity": {
+            "schema": "okf-explorer-large-corpus.v1",
+            "id": "urn:okf:hansard:bundle:november-in-parliament",
+            "version": "0.3.0",
+            "snapshot": "hansard-sha256-772e4a583f4cf4e53a02d507f61a056c2e0baa8254467c5fa5b07c63f4f6f85d"
+          }
+        },
+        {
+          "viewport": "mobile",
+          "question": "On 18 November, which House’s proceedings are linked to Bill 4030, what does the same-date coverage say about Commons and Lords activity, and can those records establish that the Commons debated or the Bill passed? How far does this snapshot cover?",
+          "selected": "dataset/entity/bill-4030.md",
+          "guide_link_followed": true,
+          "wcag_violations": 0,
+          "horizontal_overflow": false,
+          "descriptor_sha256": "f7e0665b485d299b4815fba0e2e274c3c3b7a1c34b49823b5973e0e627767800",
+          "expected_identity": {
+            "schema": "okf-explorer-large-corpus.v1",
+            "id": "urn:okf:hansard:bundle:november-in-parliament",
+            "version": "0.3.0",
+            "snapshot": "hansard-sha256-772e4a583f4cf4e53a02d507f61a056c2e0baa8254467c5fa5b07c63f4f6f85d"
+          }
+        }
+      ]
+    },
+    {
+      "walkthrough_id": "hansard-november-full",
+      "edition": "november",
+      "path": "walkthrough.json",
+      "capture_path": "november/walkthrough.json",
+      "url": "https://chris-page-gov.github.io/okf-hansard/november/walkthrough.json",
+      "final_url": "https://chris-page-gov.github.io/okf-hansard/november/walkthrough.json",
+      "status": 200,
+      "headers": [
+        [
+          "connection",
+          "close"
+        ],
+        [
+          "content-length",
+          "7808"
+        ],
+        [
+          "server",
+          "GitHub.com"
+        ],
+        [
+          "content-type",
+          "application/json; charset=utf-8"
+        ],
+        [
+          "x-origin-cache",
+          "HIT"
+        ],
+        [
+          "last-modified",
+          "Wed, 25 Nov 2026 11:44:09 GMT"
+        ],
+        [
+          "access-control-allow-origin",
+          "*"
+        ],
+        [
+          "strict-transport-security",
+          "max-age=31556952"
+        ],
+        [
+          "etag",
+          "\"6b06ca09-1e80\""
+        ],
+        [
+          "expires",
+          "Wed, 25 Nov 2026 11:59:22 GMT"
+        ],
+        [
+          "cache-control",
+          "max-age=600"
+        ],
+        [
+          "x-proxy-cache",
+          "MISS"
+        ],
+        [
+          "x-github-request-id",
+          "9C3A:3E4F5:252F4E:2736B5:6B06CB41"
+        ],
+        [
+          "x-github-edge-region",
+          "uksouth"
+        ],
+        [
+          "accept-ranges",
+          "bytes"
+        ],
+        [
+          "date",
+          "Wed, 25 Nov 2026 11:52:18 GMT"
+        ],
+        [
+          "via",
+          "1.1 varnish"
+        ],
+        [
+          "age",
+          "175"
+        ],
+        [
+          "x-served-by",
+          "cache-lhr-egwu1540037-LHR"
+        ],
+        [
+          "x-cache",
+          "HIT"
+        ],
+        [
+          "x-cache-hits",
+          "1"
+        ],
+        [
+          "x-timer",
+          "S1795607538.016831,VS0,VE1"
+        ],
+        [
+          "vary",
+          "Accept-Encoding"
+        ],
+        [
+          "x-fastly-request-id",
+          "258ed9794d82b855b079904ba979ac01b1b41245"
+        ]
+      ],
+      "bytes": 7808,
+      "sha256": "f4166170874185fdf4f56f8dcb8cd8945cfad23884a42bfd1c5786a490aad5bc",
+      "content_encoding": "identity",
+      "served_checksum_match": true,
+      "served_checksum_catalogue_sha256": "8de0054c2bf514d01be07747c991202b9363ba464ae2fbb21a532efcd5fd8ebb",
+      "question": "On 18 November, which House’s proceedings are linked to Bill 4030, what does the same-date coverage say about Commons and Lords activity, and can those records establish that the Commons debated or the Bill passed? How far does this snapshot cover?",
+      "bundle_id": null
+    },
+    {
+      "walkthrough_id": "hansard-november-core",
+      "edition": "november",
+      "path": "okf-core.json",
+      "capture_path": "november/okf-core.json",
+      "url": "https://chris-page-gov.github.io/okf-hansard/november/okf-core.json",
+      "final_url": "https://chris-page-gov.github.io/okf-hansard/november/okf-core.json",
+      "status": 200,
+      "headers": [
+        [
+          "connection",
+          "close"
+        ],
+        [
+          "content-length",
+          "10108"
+        ],
+        [
+          "server",
+          "GitHub.com"
+        ],
+        [
+          "content-type",
+          "application/json; charset=utf-8"
+        ],
+        [
+          "x-origin-cache",
+          "HIT"
+        ],
+        [
+          "last-modified",
+          "Wed, 25 Nov 2026 11:44:09 GMT"
+        ],
+        [
+          "access-control-allow-origin",
+          "*"
+        ],
+        [
+          "strict-transport-security",
+          "max-age=31556952"
+        ],
+        [
+          "etag",
+          "\"6b06ca09-277c\""
+        ],
+        [
+          "expires",
+          "Wed, 25 Nov 2026 11:59:22 GMT"
+        ],
+        [
+          "cache-control",
+          "max-age=600"
+        ],
+        [
+          "x-proxy-cache",
+          "MISS"
+        ],
+        [
+          "x-github-request-id",
+          "2D36:31B690:2549E7:2750E9:6B06CB42"
+        ],
+        [
+          "x-github-edge-region",
+          "uksouth"
+        ],
+        [
+          "accept-ranges",
+          "bytes"
+        ],
+        [
+          "age",
+          "175"
+        ],
+        [
+          "date",
+          "Wed, 25 Nov 2026 11:52:18 GMT"
+        ],
+        [
+          "via",
+          "1.1 varnish"
+        ],
+        [
+          "x-served-by",
+          "cache-lhr-egwu1540024-LHR"
+        ],
+        [
+          "x-cache",
+          "HIT"
+        ],
+        [
+          "x-cache-hits",
+          "0"
+        ],
+        [
+          "x-timer",
+          "S1795607538.065744,VS0,VE1"
+        ],
+        [
+          "vary",
+          "Accept-Encoding"
+        ],
+        [
+          "x-fastly-request-id",
+          "ef9d92e922450f923148d36f9a59d59a9d9513e3"
+        ]
+      ],
+      "bytes": 10108,
+      "sha256": "d3725953c44357a10dd388a464e9c8f8e0a595b4de53f6eb95dfc0a5b3feb965",
+      "content_encoding": "identity",
+      "served_checksum_match": true,
+      "served_checksum_catalogue_sha256": "8de0054c2bf514d01be07747c991202b9363ba464ae2fbb21a532efcd5fd8ebb",
+      "descriptor_identity_fields": {
+        "id": "urn:okf:hansard:public-core:november-in-parliament"
+      },
+      "okf_version": "0.3",
+      "bundle_declared_version": "0.3.0",
+      "schema": "okf-explorer-bundle.v0"
+    },
+    {
+      "walkthrough_id": "hansard-november-full",
+      "edition": "november",
+      "path": "graph/okf-explorer.json",
+      "capture_path": "november/graph/okf-explorer.json",
+      "url": "https://chris-page-gov.github.io/okf-hansard/november/graph/okf-explorer.json",
+      "final_url": "https://chris-page-gov.github.io/okf-hansard/november/graph/okf-explorer.json",
+      "status": 200,
+      "headers": [
+        [
+          "connection",
+          "close"
+        ],
+        [
+          "content-length",
+          "2000"
+        ],
+        [
+          "server",
+          "GitHub.com"
+        ],
+        [
+          "content-type",
+          "application/json; charset=utf-8"
+        ],
+        [
+          "x-origin-cache",
+          "HIT"
+        ],
+        [
+          "last-modified",
+          "Wed, 25 Nov 2026 11:44:08 GMT"
+        ],
+        [
+          "access-control-allow-origin",
+          "*"
+        ],
+        [
+          "strict-transport-security",
+          "max-age=31556952"
+        ],
+        [
+          "etag",
+          "\"6b06ca08-7d0\""
+        ],
+        [
+          "expires",
+          "Wed, 25 Nov 2026 11:59:22 GMT"
+        ],
+        [
+          "cache-control",
+          "max-age=600"
+        ],
+        [
+          "x-proxy-cache",
+          "MISS"
+        ],
+        [
+          "x-github-request-id",
+          "B4BA:121AED:2547EC:274F20:6B06CB42"
+        ],
+        [
+          "x-github-edge-region",
+          "uksouth"
+        ],
+        [
+          "accept-ranges",
+          "bytes"
+        ],
+        [
+          "age",
+          "175"
+        ],
+        [
+          "date",
+          "Wed, 25 Nov 2026 11:52:18 GMT"
+        ],
+        [
+          "via",
+          "1.1 varnish"
+        ],
+        [
+          "x-served-by",
+          "cache-lhr-egwu1540025-LHR"
+        ],
+        [
+          "x-cache",
+          "HIT"
+        ],
+        [
+          "x-cache-hits",
+          "0"
+        ],
+        [
+          "x-timer",
+          "S1795607538.108751,VS0,VE1"
+        ],
+        [
+          "vary",
+          "Accept-Encoding"
+        ],
+        [
+          "x-fastly-request-id",
+          "417111de5367fbedb845dcdd70d59428be4c6df6"
+        ]
+      ],
+      "bytes": 2000,
+      "sha256": "f7e0665b485d299b4815fba0e2e274c3c3b7a1c34b49823b5973e0e627767800",
+      "content_encoding": "identity",
+      "served_checksum_match": true,
+      "served_checksum_catalogue_sha256": "8de0054c2bf514d01be07747c991202b9363ba464ae2fbb21a532efcd5fd8ebb",
+      "descriptor_identity_fields": {
+        "id": "urn:okf:hansard:bundle:november-in-parliament"
+      },
+      "okf_version": "0.3",
+      "bundle_declared_version": "0.3.0",
+      "schema": "okf-explorer-large-corpus.v1"
+    }
+  ],
+  "publication": {
+    "status": "passed",
+    "source_commit": "9c3c55c292216b995f7339068c05ae4b3e98d20c",
+    "pages_commit": "7e57fe40b024ad0c5f961474d753ce3d2d78bc42",
+    "through": "2026-11-24",
+    "checksums_sha256": "8de0054c2bf514d01be07747c991202b9363ba464ae2fbb21a532efcd5fd8ebb",
+    "receipt_sha256": "f000e23d2fbf2052c7dba1d504940dc3b45beaf61b6baa3d126e12ef1d0cd4c5"
+  },
+  "november_browser_receipt": {
+    "status": "passed",
+    "id": "hansard-stage6-public-browser",
+    "observed_at": "2026-11-25T11:45:44.287Z",
+    "source_receipt_sha256": "51796d439c08bb90ea27eb9f9c5b9e42e61a1ca0c643925dc6726a69265809c5",
+    "cases": [
+      {
+        "kind": "core",
+        "viewport": "desktop",
+        "question": "What dates does the compact November entry point declare, can this one-record bundle establish which House debated Bill 4030, and where must I go to check those claims?",
+        "descriptor_sha256": "d3725953c44357a10dd388a464e9c8f8e0a595b4de53f6eb95dfc0a5b3feb965",
+        "expected_identity": {
+          "schema": "okf-explorer-bundle.v0",
+          "id": "urn:okf:hansard:public-core:november-in-parliament",
+          "version": "0.3.0",
+          "snapshot": "hansard-markdown-sha256-9f646da1e032e4b326b1387fc4cad67b39d4a999a8f5fd147f52aa7c42902768"
+        },
+        "selected": "sittings.md",
+        "guide_link_followed": true,
+        "graph_interaction": null,
+        "reload_preserved": true,
+        "wcag_violations": 0,
+        "horizontal_overflow": false,
+        "candidate_responses_intercepted": 0,
+        "errors": [],
+        "warnings": []
+      },
+      {
+        "kind": "core",
+        "viewport": "mobile",
+        "question": "What dates does the compact November entry point declare, can this one-record bundle establish which House debated Bill 4030, and where must I go to check those claims?",
+        "descriptor_sha256": "d3725953c44357a10dd388a464e9c8f8e0a595b4de53f6eb95dfc0a5b3feb965",
+        "expected_identity": {
+          "schema": "okf-explorer-bundle.v0",
+          "id": "urn:okf:hansard:public-core:november-in-parliament",
+          "version": "0.3.0",
+          "snapshot": "hansard-markdown-sha256-9f646da1e032e4b326b1387fc4cad67b39d4a999a8f5fd147f52aa7c42902768"
+        },
+        "selected": "sittings.md",
+        "guide_link_followed": true,
+        "graph_interaction": null,
+        "reload_preserved": true,
+        "wcag_violations": 0,
+        "horizontal_overflow": false,
+        "candidate_responses_intercepted": 0,
+        "errors": [],
+        "warnings": []
+      },
+      {
+        "kind": "full",
+        "viewport": "desktop",
+        "question": "On 18 November, which House’s proceedings are linked to Bill 4030, what does the same-date coverage say about Commons and Lords activity, and can those records establish that the Commons debated or the Bill passed? How far does this snapshot cover?",
+        "descriptor_sha256": "f7e0665b485d299b4815fba0e2e274c3c3b7a1c34b49823b5973e0e627767800",
+        "expected_identity": {
+          "schema": "okf-explorer-large-corpus.v1",
+          "id": "urn:okf:hansard:bundle:november-in-parliament",
+          "version": "0.3.0",
+          "snapshot": "hansard-sha256-772e4a583f4cf4e53a02d507f61a056c2e0baa8254467c5fa5b07c63f4f6f85d"
+        },
+        "selected": "dataset/entity/bill-4030.md",
+        "guide_link_followed": true,
+        "graph_interaction": "pointer",
+        "reload_preserved": true,
+        "wcag_violations": 0,
+        "horizontal_overflow": false,
+        "candidate_responses_intercepted": 0,
+        "errors": [],
+        "warnings": []
+      },
+      {
+        "kind": "full",
+        "viewport": "mobile",
+        "question": "On 18 November, which House’s proceedings are linked to Bill 4030, what does the same-date coverage say about Commons and Lords activity, and can those records establish that the Commons debated or the Bill passed? How far does this snapshot cover?",
+        "descriptor_sha256": "f7e0665b485d299b4815fba0e2e274c3c3b7a1c34b49823b5973e0e627767800",
+        "expected_identity": {
+          "schema": "okf-explorer-large-corpus.v1",
+          "id": "urn:okf:hansard:bundle:november-in-parliament",
+          "version": "0.3.0",
+          "snapshot": "hansard-sha256-772e4a583f4cf4e53a02d507f61a056c2e0baa8254467c5fa5b07c63f4f6f85d"
+        },
+        "selected": "dataset/entity/bill-4030.md",
+        "guide_link_followed": true,
+        "graph_interaction": "keyboard",
+        "reload_preserved": true,
+        "wcag_violations": 0,
+        "horizontal_overflow": false,
+        "candidate_responses_intercepted": 0,
+        "errors": [],
+        "warnings": []
+      }
+    ]
+  },
+  "captured_at_finished": "2026-11-25T11:52:18.116379+00:00"
+}

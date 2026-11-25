@@ -1,0 +1,55 @@
+{
+  "id": "hansard-week-railways-bill-v1",
+  "question": "Which recorded stages of Bill 4030 appear in the Commons and Lords, in date order, and what does this evidence not establish?",
+  "answer": "The captured trail lists Railways Bill · Third Reading in the Commons on 2026-06-10; Railways Bill · Second Reading in the Lords on 2026-07-07; Railways Bill · Report stage in the Lords on 2026-11-18. These are three linked records, not a complete legal history of the Bill.",
+  "scope": "Three explicit Hansard stage records surfaced by the week bundle's worked Railways Bill example; the 18 November record is within the captured November extension.",
+  "sources": [
+    {
+      "date": "2026-06-10",
+      "house": "Commons",
+      "title": "Railways Bill · Third Reading",
+      "url": "https://hansard.parliament.uk/Commons/2026-06-10/debates/D04D1360-E0F8-4D80-B4B4-E9EF69FA9B39/RailwaysBill"
+    },
+    {
+      "date": "2026-07-07",
+      "house": "Lords",
+      "title": "Railways Bill · Second Reading",
+      "url": "https://hansard.parliament.uk/Lords%E2%80%8F/2026-07-07/debates/28bb8967-c343-4820-9833-f7340b982762/LordsChamber"
+    },
+    {
+      "date": "2026-11-18",
+      "house": "Lords",
+      "title": "Railways Bill · Report stage",
+      "url": "https://hansard.parliament.uk/Lords/2026-11-18/debates/5EE3BF1A-449E-4D6D-A0CE-F725CE734996/RailwaysBill"
+    }
+  ],
+  "negative_control": "A name or alias match alone does not establish substantive relevance. This trail does not establish enactment, legal effect, or that no other stages occurred.",
+  "graph": {
+    "descriptor": "graph/okf-explorer.json",
+    "timeline": "demo-timeline.json",
+    "route": "source/96b539c84f43c43bb949dab2.md",
+    "entry_route": "dataset/debate/lords-2026-11-18-debate-5ee3bf1a-449e-4d6d-a0ce-f725ce734996.md"
+  },
+  "coverage": {
+    "from": "2026-11-16",
+    "through": "2026-11-19",
+    "observed_on": "2026-11-20"
+  },
+  "expected_identity": {
+    "schema": "okf-explorer-large-corpus.v1",
+    "id": "urn:okf:hansard:bundle:a-week-in-parliament",
+    "version": "0.3.0",
+    "snapshot": "hansard-sha256-434c873fa5f8db901e7caa18dc1db9ab49bbe3c8576857030cb79edcabb748cb"
+  },
+  "descriptor_sha256": "65998433e0e435b08d44968f106fcf3fa6b5b535a0e8b9433cf1f065c816f067",
+  "reader_interaction": {
+    "keyboard_navigation": "Focus the target graph node and press Enter to open its record.",
+    "target_route": "dataset/entity/bill-4030.md",
+    "keyboard_acceptance": "replayable",
+    "pointer_selection": "replayable-with-reader-0.9.0",
+    "pointer_requirement": "The Bill card mouse journey was replayed with Reader 0.9.0. Use keyboard activation with an earlier Reader that intercepts the click."
+  },
+  "mobile_svg_sha256": "4bf19964b127258aa5db0db13d7265395fd49bf331d0f393856da05506dda2ef",
+  "svg_sha256": "e853dc108e60b2af842dbfcbda1355b9531f42466f0e1e093256357760dc2b94",
+  "source_projection_sha256": "be285082c41180015a1f10292e8e479db8fe9339acb1f4be0d566f9a43a54221"
+}

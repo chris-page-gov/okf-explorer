@@ -21,10 +21,16 @@
   profile fixtures; keep profile versions distinct from OKF core declarations.
   Count the source-bound Explorer reference separately: 27 public questions
   in total, with deterministic omission and total-count checks.
-- Preserve the prior Hansard four-guide pass and record a fresh browser
-  observation: both week guides return HTTP 200 with working Reader journeys;
-  both November guide URLs return HTTP 404. This current result does not erase
-  the earlier passing receipt.
+- Preserve the earlier Hansard four-guide browser pass and the 25 November
+  09:52 page observations, including the two November HTTP 404s. A later
+  Stage6 promotion restored both November guide routes. Fresh anonymous
+  identity-encoded captures now verify all four guides, case files and exact
+  descriptors against their served checksum catalogues. The November guides
+  also passed current desktop and mobile browser journeys; the week guides
+  have current HTTP evidence only, while their earlier browser proof remains
+  separately dated. The complete Stage6 public-assets gate verified all 8,009
+  catalogue and served files. These current receipts do not rewrite or erase
+  the recorded 404 history.
 - Record anonymous GitHub visibility metadata for all 24 distinct repositories
   in the denominator, observed on 25 November 2026. This is not a new owner
   discovery or bundle acceptance claim.

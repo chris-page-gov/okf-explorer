@@ -1,0 +1,49 @@
+{
+  "schema": "okf-walkthrough-retained-receipt-summary.v1",
+  "source_receipt_id": "hansard-stage6-public-browser-receipt",
+  "source_receipt_sha256": "51796d439c08bb90ea27eb9f9c5b9e42e61a1ca0c643925dc6726a69265809c5",
+  "status": "passed",
+  "date": "2026-11-25T11:45:44.287Z",
+  "date_field": "observed_at",
+  "status_field_present": true,
+  "producer_product_version": "0.3.0",
+  "walkthrough_id": "hansard-november-core",
+  "source_commit": "9c3c55c292216b995f7339068c05ae4b3e98d20c",
+  "pages_commit": "7e57fe40b024ad0c5f961474d753ce3d2d78bc42",
+  "okf_core_version": "0.3",
+  "bundle_identity": "urn:okf:hansard:public-core:november-in-parliament",
+  "descriptor_sha256": "d3725953c44357a10dd388a464e9c8f8e0a595b4de53f6eb95dfc0a5b3feb965",
+  "scope": "Actual public November walkthrough browser journeys at desktop and mobile; no week browser check.",
+  "cases": [
+    {
+      "viewport": "desktop",
+      "question": "What dates does the compact November entry point declare, can this one-record bundle establish which House debated Bill 4030, and where must I go to check those claims?",
+      "selected": "sittings.md",
+      "guide_link_followed": true,
+      "wcag_violations": 0,
+      "horizontal_overflow": false,
+      "descriptor_sha256": "d3725953c44357a10dd388a464e9c8f8e0a595b4de53f6eb95dfc0a5b3feb965",
+      "expected_identity": {
+        "schema": "okf-explorer-bundle.v0",
+        "id": "urn:okf:hansard:public-core:november-in-parliament",
+        "version": "0.3.0",
+        "snapshot": "hansard-markdown-sha256-9f646da1e032e4b326b1387fc4cad67b39d4a999a8f5fd147f52aa7c42902768"
+      }
+    },
+    {
+      "viewport": "mobile",
+      "question": "What dates does the compact November entry point declare, can this one-record bundle establish which House debated Bill 4030, and where must I go to check those claims?",
+      "selected": "sittings.md",
+      "guide_link_followed": true,
+      "wcag_violations": 0,
+      "horizontal_overflow": false,
+      "descriptor_sha256": "d3725953c44357a10dd388a464e9c8f8e0a595b4de53f6eb95dfc0a5b3feb965",
+      "expected_identity": {
+        "schema": "okf-explorer-bundle.v0",
+        "id": "urn:okf:hansard:public-core:november-in-parliament",
+        "version": "0.3.0",
+        "snapshot": "hansard-markdown-sha256-9f646da1e032e4b326b1387fc4cad67b39d4a999a8f5fd147f52aa7c42902768"
+      }
+    }
+  ]
+}

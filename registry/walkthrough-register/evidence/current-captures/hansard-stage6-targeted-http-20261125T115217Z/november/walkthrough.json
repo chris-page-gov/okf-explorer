@@ -1,0 +1,248 @@
+{
+  "id": "hansard-november-coverage-v1",
+  "question": "On 18 November, which House’s proceedings are linked to Bill 4030, what does the same-date coverage say about Commons and Lords activity, and can those records establish that the Commons debated or the Bill passed? How far does this snapshot cover?",
+  "answer": "The graph links the 18 November Lords proceedings section ‘Railways Bill’ to Bill 4030 with a ‘has business concerning’ assertion. Date coverage records 685 Commons and 446 Lords contributions that day. It does not establish that the Commons discussed this Bill or that the Bill passed. The full snapshot records 18,364 contributions across 24 date entries through 2026-11-24; a no-calendar-sitting entry differs from a source gap, and dates after the cutoff remain outside scope.",
+  "scope": "The generated November coverage record has 24 date entries from 2026-11-01 through 2026-11-24; later November dates are outside this snapshot.",
+  "dates": [
+    {
+      "date": "2026-11-01",
+      "contributions": 0,
+      "commons": 0,
+      "lords": 0,
+      "commons_status": "no calendar sitting",
+      "lords_status": "no calendar sitting"
+    },
+    {
+      "date": "2026-11-02",
+      "contributions": 969,
+      "commons": 617,
+      "lords": 352,
+      "commons_status": "captured",
+      "lords_status": "captured"
+    },
+    {
+      "date": "2026-11-03",
+      "contributions": 3760,
+      "commons": 3400,
+      "lords": 360,
+      "commons_status": "captured",
+      "lords_status": "captured"
+    },
+    {
+      "date": "2026-11-04",
+      "contributions": 872,
+      "commons": 490,
+      "lords": 382,
+      "commons_status": "captured",
+      "lords_status": "captured"
+    },
+    {
+      "date": "2026-11-05",
+      "contributions": 0,
+      "commons": 0,
+      "lords": 0,
+      "commons_status": "no calendar sitting",
+      "lords_status": "no calendar sitting"
+    },
+    {
+      "date": "2026-11-06",
+      "contributions": 0,
+      "commons": 0,
+      "lords": 0,
+      "commons_status": "no calendar sitting",
+      "lords_status": "no calendar sitting"
+    },
+    {
+      "date": "2026-11-07",
+      "contributions": 0,
+      "commons": 0,
+      "lords": 0,
+      "commons_status": "no calendar sitting",
+      "lords_status": "no calendar sitting"
+    },
+    {
+      "date": "2026-11-08",
+      "contributions": 0,
+      "commons": 0,
+      "lords": 0,
+      "commons_status": "no calendar sitting",
+      "lords_status": "no calendar sitting"
+    },
+    {
+      "date": "2026-11-09",
+      "contributions": 334,
+      "commons": 0,
+      "lords": 334,
+      "commons_status": "no calendar sitting",
+      "lords_status": "captured"
+    },
+    {
+      "date": "2026-11-10",
+      "contributions": 1076,
+      "commons": 698,
+      "lords": 378,
+      "commons_status": "captured",
+      "lords_status": "captured"
+    },
+    {
+      "date": "2026-11-11",
+      "contributions": 1183,
+      "commons": 766,
+      "lords": 417,
+      "commons_status": "captured",
+      "lords_status": "captured"
+    },
+    {
+      "date": "2026-11-12",
+      "contributions": 1345,
+      "commons": 1172,
+      "lords": 173,
+      "commons_status": "captured",
+      "lords_status": "captured"
+    },
+    {
+      "date": "2026-11-13",
+      "contributions": 265,
+      "commons": 265,
+      "lords": 0,
+      "commons_status": "captured",
+      "lords_status": "no calendar sitting"
+    },
+    {
+      "date": "2026-11-14",
+      "contributions": 0,
+      "commons": 0,
+      "lords": 0,
+      "commons_status": "no calendar sitting",
+      "lords_status": "no calendar sitting"
+    },
+    {
+      "date": "2026-11-15",
+      "contributions": 0,
+      "commons": 0,
+      "lords": 0,
+      "commons_status": "no calendar sitting",
+      "lords_status": "no calendar sitting"
+    },
+    {
+      "date": "2026-11-16",
+      "contributions": 1250,
+      "commons": 791,
+      "lords": 459,
+      "commons_status": "captured",
+      "lords_status": "captured"
+    },
+    {
+      "date": "2026-11-17",
+      "contributions": 1945,
+      "commons": 1497,
+      "lords": 448,
+      "commons_status": "captured",
+      "lords_status": "captured"
+    },
+    {
+      "date": "2026-11-18",
+      "contributions": 1131,
+      "commons": 685,
+      "lords": 446,
+      "commons_status": "captured",
+      "lords_status": "captured"
+    },
+    {
+      "date": "2026-11-19",
+      "contributions": 869,
+      "commons": 673,
+      "lords": 196,
+      "commons_status": "captured",
+      "lords_status": "captured"
+    },
+    {
+      "date": "2026-11-20",
+      "contributions": 74,
+      "commons": 0,
+      "lords": 74,
+      "commons_status": "no calendar sitting",
+      "lords_status": "captured"
+    },
+    {
+      "date": "2026-11-21",
+      "contributions": 0,
+      "commons": 0,
+      "lords": 0,
+      "commons_status": "no calendar sitting",
+      "lords_status": "no calendar sitting"
+    },
+    {
+      "date": "2026-11-22",
+      "contributions": 0,
+      "commons": 0,
+      "lords": 0,
+      "commons_status": "no calendar sitting",
+      "lords_status": "no calendar sitting"
+    },
+    {
+      "date": "2026-11-23",
+      "contributions": 1300,
+      "commons": 846,
+      "lords": 454,
+      "commons_status": "captured",
+      "lords_status": "captured"
+    },
+    {
+      "date": "2026-11-24",
+      "contributions": 1991,
+      "commons": 1561,
+      "lords": 430,
+      "commons_status": "captured",
+      "lords_status": "captured"
+    }
+  ],
+  "sources": [
+    {
+      "title": "18 November Lords Railways Bill proceedings",
+      "url": "https://hansard.parliament.uk/Lords/2026-11-18/debates/5EE3BF1A-449E-4D6D-A0CE-F725CE734996/RailwaysBill"
+    },
+    {
+      "title": "Date-by-date coverage and verification",
+      "url": "coverage.json"
+    },
+    {
+      "title": "November sitting and contribution finder",
+      "url": "history.html"
+    }
+  ],
+  "negative_control": "The presence of Commons activity on 18 November does not establish Commons debate on Bill 4030. A search returning no result after 2026-11-24 is outside this snapshot’s declared coverage.",
+  "graph": {
+    "descriptor": "graph/okf-explorer.json",
+    "history": "history.html",
+    "route": "dataset/debate/lords-2026-11-18-debate-5ee3bf1a-449e-4d6d-a0ce-f725ce734996.md",
+    "entry_route": "dataset/debate/lords-2026-11-18-debate-5ee3bf1a-449e-4d6d-a0ce-f725ce734996.md",
+    "target_route": "dataset/entity/bill-4030.md",
+    "assertion_id": "urn:okf:hansard:assertion:ecd82a3e99ffc64fed6c9d582d030538c042",
+    "assertion_kind": "has business concerning"
+  },
+  "coverage": {
+    "from": "2026-11-01",
+    "through": "2026-11-24",
+    "contributions": 18364,
+    "graph_records": 26780,
+    "assertions": 60870
+  },
+  "expected_identity": {
+    "schema": "okf-explorer-large-corpus.v1",
+    "id": "urn:okf:hansard:bundle:november-in-parliament",
+    "version": "0.3.0",
+    "snapshot": "hansard-sha256-772e4a583f4cf4e53a02d507f61a056c2e0baa8254467c5fa5b07c63f4f6f85d"
+  },
+  "descriptor_sha256": "f7e0665b485d299b4815fba0e2e274c3c3b7a1c34b49823b5973e0e627767800",
+  "reader_interaction": {
+    "keyboard_navigation": "Focus the target graph node and press Enter to open its record.",
+    "target_route": "dataset/entity/bill-4030.md",
+    "keyboard_acceptance": "replayable",
+    "pointer_selection": "replayable-with-reader-0.9.0",
+    "pointer_requirement": "The Bill card mouse journey was replayed with Reader 0.9.0. Use keyboard activation with an earlier Reader that intercepts the click."
+  },
+  "mobile_svg_sha256": "1153d59e6577eb1410bb0bd41bf473d9ed08dc2b47c5ac36fc2558bf542480f0",
+  "svg_sha256": "0195c47d8a2a63cb76dfbbce0b503f7388d0731fa4c4d15baab61961e64a1cf2",
+  "source_projection_sha256": "d3725953c44357a10dd388a464e9c8f8e0a595b4de53f6eb95dfc0a5b3feb965"
+}

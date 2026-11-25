@@ -3,6 +3,7 @@ from __future__ import annotations
 import copy
 import json
 from pathlib import Path
+import shutil
 import sys
 import tempfile
 import unittest
@@ -27,6 +28,14 @@ class WalkthroughRegisterTests(unittest.TestCase):
         (root / register.SOURCE).write_text(json.dumps(source), encoding="utf-8")
         (root / register.DENOMINATOR).write_text(json.dumps(denominator), encoding="utf-8")
         (root / register.ACCESS_DIRECTORY).write_bytes((ROOT / register.ACCESS_DIRECTORY).read_bytes())
+        def copy_evidence(relative):
+            if not relative:
+                return
+            original = ROOT / relative
+            target = root / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            if original.is_file() and not target.exists():
+                shutil.copyfile(original, target)
         reader_path = root / "apps/okf-explorer/package.json"
         reader_path.parent.mkdir(parents=True, exist_ok=True)
         reader_path.symlink_to(ROOT / "apps/okf-explorer/package.json")
@@ -35,35 +44,26 @@ class WalkthroughRegisterTests(unittest.TestCase):
         for original in (ROOT / "registry/walkthrough-register/evidence/descriptors").glob("*.json"):
             (evidence_dir / original.name).symlink_to(original)
         for walk in source.get("review_walkthroughs", []):
-            if walk.get("version_evidence_path"):
-                original = ROOT / walk["version_evidence_path"]
-                target = root / walk["version_evidence_path"]
-                target.parent.mkdir(parents=True, exist_ok=True)
-                target.write_bytes(original.read_bytes())
-            proof_summary = walk["retained_proof"].get("receipt_summary_path")
+            for key in ("version_evidence_path", "source_evidence_path", "guide_evidence_path"):
+                copy_evidence(walk.get(key))
             receipt_records = [walk["retained_proof"], *walk.get("historical_proofs", []), *walk.get("supporting_receipts", [])]
+            if walk.get("current_publication_proof"):
+                receipt_records.append(walk["current_publication_proof"])
             for receipt in receipt_records:
-                proof_summary = receipt.get("receipt_summary_path")
-                if proof_summary:
-                    original = ROOT / proof_summary
-                    target = root / proof_summary
-                    target.parent.mkdir(parents=True, exist_ok=True)
-                    target.write_bytes(original.read_bytes())
-            current = walk.get("current_page_observation")
-            if current:
-                original = ROOT / current["evidence_path"]
-                target = root / current["evidence_path"]
-                target.parent.mkdir(parents=True, exist_ok=True)
-                target.write_bytes(original.read_bytes())
-            original = ROOT / walk["source_evidence_path"]
-            target = root / walk["source_evidence_path"]
-            target.parent.mkdir(parents=True, exist_ok=True)
-            target.write_bytes(original.read_bytes())
-            if walk.get("guide_evidence_path"):
-                original = ROOT / walk["guide_evidence_path"]
-                target = root / walk["guide_evidence_path"]
-                target.parent.mkdir(parents=True, exist_ok=True)
-                target.write_bytes(original.read_bytes())
+                copy_evidence(receipt.get("receipt_summary_path"))
+            observations = [walk.get("current_page_observation"), *walk.get("historical_page_observations", [])]
+            for observation in filter(None, observations):
+                copy_evidence(observation.get("evidence_path"))
+                if observation.get("capture_manifest_path"):
+                    copy_evidence(observation["capture_manifest_path"])
+                    manifest = json.loads((ROOT / observation["capture_manifest_path"]).read_text())
+                    base = Path(observation["capture_manifest_path"]).parent
+                    for asset in manifest.get("assets", []):
+                        copy_evidence((base / asset["capture_path"]).as_posix())
+                    for catalogue in manifest.get("catalogues", {}).values():
+                        copy_evidence((base / catalogue["path"]).as_posix())
+            for descriptor in walk.get("historical_descriptor_observations", []):
+                copy_evidence(descriptor.get("evidence_path"))
         for walk in source.get("walkthroughs", []):
             for key in ("data_path", "authored_path", "case_path", "html_path", "diagram_path"):
                 original = ROOT / walk[key]
@@ -189,7 +189,11 @@ class WalkthroughRegisterTests(unittest.TestCase):
         rows = {row["id"]: row for row in source["review_walkthroughs"]}
         self.assertIn("0.2", [row["okf_version"] for row in source["public_bundle_descriptor_observations"]])
         self.assertEqual(rows["hansard-week-core"]["current_page_checked"], True)
-        self.assertEqual(rows["hansard-november-core"]["current_page_observation"]["http_status"], 404)
+        self.assertEqual(rows["hansard-november-core"]["current_page_observation"]["http_status"], 200)
+        self.assertEqual(rows["hansard-november-core"]["historical_page_observations"][0]["http_status"], 404)
+        self.assertEqual(rows["hansard-week-core"].get("current_publication_proof"), None)
+        self.assertEqual(rows["hansard-november-core"]["current_publication_proof"]["status"], "passed")
+        self.assertEqual(rows["hansard-week-core"]["current_page_observation"]["http_status"], 200)
         self.assertEqual(rows["capgov-site-archive"]["okf_core_version"], "0.3")
         self.assertEqual(rows["capgov-site-archive"]["producer_product_version"], "0.1.0")
         self.assertEqual(rows["xgov-core-notifications"]["okf_core_version"], "0.3")
@@ -207,6 +211,9 @@ class WalkthroughRegisterTests(unittest.TestCase):
         machine = json.loads(output[Path("registry/walkthrough-register.json")])
         md = output[Path("docs/walkthrough-register.md")]
         self.assertEqual(len(machine["review_walkthroughs"]), 26)
+        self.assertIn("Earlier page observations: HTTP 404", md)
+        self.assertIn("Current browser proof: passed", md)
+        self.assertIn("Complete public-assets gate: passed", md)
         for row in rows.values():
             self.assertIn(row["title"], md)
             self.assertIn(row["guide_url"], md)
@@ -286,13 +293,39 @@ class WalkthroughRegisterTests(unittest.TestCase):
         mutations = [
             lambda s, d: next(w for w in s["review_walkthroughs"] if w["id"] == "ons-core-scope-freshness-conformance")["retained_proof"].update(status="failed"),
             lambda s, d: next(w for w in s["review_walkthroughs"] if w["id"] == "planning-design-code-policy-discovery")["retained_proof"].update(observed_at="2026-11-25T00:00:00Z"),
-            lambda s, d: next(w for w in s["review_walkthroughs"] if w["id"] == "hansard-november-core")["current_page_observation"].update(http_status=200),
+            lambda s, d: next(w for w in s["review_walkthroughs"] if w["id"] == "hansard-november-core")["current_page_observation"].update(http_status=404),
             lambda s, d: next(w for w in s["review_walkthroughs"] if w["id"] == "hansard-november-core")["current_page_observation"].update(receipt_sha256="0" * 64),
+            lambda s, d: next(w for w in s["review_walkthroughs"] if w["id"] == "hansard-november-core")["current_page_observation"].update(receipt_id="invented-receipt"),
+            lambda s, d: next(w for w in s["review_walkthroughs"] if w["id"] == "hansard-november-core")["historical_page_observations"][0].update(http_status=200),
+            lambda s, d: next(w for w in s["review_walkthroughs"] if w["id"] == "hansard-november-core")["historical_page_observations"][0].update(response_sha256="0" * 64),
+            lambda s, d: next(w for w in s["review_walkthroughs"] if w["id"] == "hansard-november-core")["current_publication_proof"].update(status="failed"),
+            lambda s, d: next(w for w in s["review_walkthroughs"] if w["id"] == "hansard-november-core")["current_publication_proof"].update(observed_at="2026-11-24T00:00:00Z"),
+            lambda s, d: next(w for w in s["review_walkthroughs"] if w["id"] == "hansard-november-core")["current_publication_proof"].update(sha256="0" * 64),
+            lambda s, d: next(w for w in s["review_walkthroughs"] if w["id"] == "hansard-november-core")["current_publication_proof"].update(walkthrough_id="hansard-week-core"),
+            lambda s, d: next(w for w in s["review_walkthroughs"] if w["id"] == "hansard-november-core")["supporting_receipts"][1].update(catalogue_files_verified=8008),
         ]
         for change in mutations:
             temporary, root, _ = self.fixture(change)
             with temporary, self.assertRaises(ValueError):
                 register.load(root)
+
+    def test_hansard_retained_summary_bytes_bind_status_date_and_receipt_digest(self):
+        source = register.load()
+        proof = next(w for w in source["review_walkthroughs"] if w["id"] == "hansard-november-core")["current_publication_proof"]
+        mutations = (
+            lambda summary: summary.update(status="failed"),
+            lambda summary: summary.update(date="2026-11-24T00:00:00Z"),
+            lambda summary: summary.update(source_receipt_sha256="0" * 64),
+        )
+        for mutate in mutations:
+            temporary, root, _ = self.fixture()
+            with temporary:
+                path = root / proof["receipt_summary_path"]
+                summary = json.loads(path.read_text(encoding="utf-8"))
+                mutate(summary)
+                path.write_text(json.dumps(summary), encoding="utf-8")
+                with self.assertRaises(ValueError):
+                    register.load(root)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,125 @@
+{
+  "schema": "okf-walkthrough-current-observation-summary.v1",
+  "observed_at": "2026-11-25T11:52:18.116379+00:00",
+  "source_receipt_id": "hansard-stage6-targeted-http-20261125T115217Z",
+  "source_receipt_sha256": "754f4825da6e3e29764faaf45f431ebb47420ef72d551433efe1efa118f534ba",
+  "scope": "Targeted anonymous HTTP identity-encoded capture for four Hansard walkthrough pages, their case JSON files and descriptors; complete Stage6 public asset sweep is separately passed and hash-bound.",
+  "capture_manifest_path": "registry/walkthrough-register/evidence/current-captures/hansard-stage6-targeted-http-20261125T115217Z/capture-manifest.json",
+  "capture_manifest_sha256": "754f4825da6e3e29764faaf45f431ebb47420ef72d551433efe1efa118f534ba",
+  "cases": [
+    {
+      "id": "hansard-week-core",
+      "url": "https://chris-page-gov.github.io/okf-hansard/core-walkthrough.html",
+      "http_status": 200,
+      "response_sha256": "9db4c9dc1c38c8006a5c556df789607b19a97e16b1bcc9a918bbc6dd016f7255",
+      "content_type": "text/html; charset=utf-8",
+      "content_encoding": "identity",
+      "question": "Using only the compact week entry point, which formal Bill 4030 stages are cited, in which House and date order, and can this bundle prove a complete legislative history?",
+      "case_json_path": "registry/walkthrough-register/evidence/current-captures/hansard-stage6-targeted-http-20261125T115217Z/week/core-walkthrough.json",
+      "case_json_sha256": "6172c62ebff25916d8e166f905a809d5e42aae12d55d80524cd382f7d21d2928",
+      "descriptor_url": "https://chris-page-gov.github.io/okf-hansard/okf-core.json",
+      "descriptor_path": "registry/walkthrough-register/evidence/current-captures/hansard-stage6-targeted-http-20261125T115217Z/week/okf-core.json",
+      "descriptor_sha256": "be285082c41180015a1f10292e8e479db8fe9339acb1f4be0d566f9a43a54221",
+      "descriptor_schema": "okf-explorer-bundle.v0",
+      "okf_version": "0.3",
+      "bundle_declared_version": "0.3.0",
+      "served_checksum_catalogue_sha256": "5dcd2713f47476564f50698e079c2c65ea6305cba21e47da2af9d035f68eb456"
+    },
+    {
+      "id": "hansard-week-full",
+      "url": "https://chris-page-gov.github.io/okf-hansard/walkthrough.html",
+      "http_status": 200,
+      "response_sha256": "588259e4345181172144bd23432ba89ca8094c69e7ca16f27a981a6f84544ccb",
+      "content_type": "text/html; charset=utf-8",
+      "content_encoding": "identity",
+      "question": "Which recorded stages of Bill 4030 appear in the Commons and Lords, in date order, and what does this evidence not establish?",
+      "case_json_path": "registry/walkthrough-register/evidence/current-captures/hansard-stage6-targeted-http-20261125T115217Z/week/walkthrough.json",
+      "case_json_sha256": "fd13a393fd575c005dd6b8d687bed410472f1acd24dd3be31432f9fe15eca135",
+      "descriptor_url": "https://chris-page-gov.github.io/okf-hansard/graph/okf-explorer.json",
+      "descriptor_path": "registry/walkthrough-register/evidence/current-captures/hansard-stage6-targeted-http-20261125T115217Z/week/graph/okf-explorer.json",
+      "descriptor_sha256": "65998433e0e435b08d44968f106fcf3fa6b5b535a0e8b9433cf1f065c816f067",
+      "descriptor_schema": "okf-explorer-large-corpus.v1",
+      "okf_version": "0.3",
+      "bundle_declared_version": "0.3.0",
+      "served_checksum_catalogue_sha256": "5dcd2713f47476564f50698e079c2c65ea6305cba21e47da2af9d035f68eb456"
+    },
+    {
+      "id": "hansard-november-core",
+      "url": "https://chris-page-gov.github.io/okf-hansard/november/core-walkthrough.html",
+      "http_status": 200,
+      "response_sha256": "5d1b2078739268685d1fd093f4f19ad53ffbd36093a8a979722603130a21debb",
+      "content_type": "text/html; charset=utf-8",
+      "content_encoding": "identity",
+      "question": "What dates does the compact November entry point declare, can this one-record bundle establish which House debated Bill 4030, and where must I go to check those claims?",
+      "case_json_path": "registry/walkthrough-register/evidence/current-captures/hansard-stage6-targeted-http-20261125T115217Z/november/core-walkthrough.json",
+      "case_json_sha256": "4bb43ab32075000b660b7cb2e9b043b82b04746abc515c712fe2825c1efbb3c3",
+      "descriptor_url": "https://chris-page-gov.github.io/okf-hansard/november/okf-core.json",
+      "descriptor_path": "registry/walkthrough-register/evidence/current-captures/hansard-stage6-targeted-http-20261125T115217Z/november/okf-core.json",
+      "descriptor_sha256": "d3725953c44357a10dd388a464e9c8f8e0a595b4de53f6eb95dfc0a5b3feb965",
+      "descriptor_schema": "okf-explorer-bundle.v0",
+      "okf_version": "0.3",
+      "bundle_declared_version": "0.3.0",
+      "served_checksum_catalogue_sha256": "8de0054c2bf514d01be07747c991202b9363ba464ae2fbb21a532efcd5fd8ebb",
+      "browser_receipt_id": "hansard-stage6-public-browser-receipt",
+      "browser_receipt_sha256": "51796d439c08bb90ea27eb9f9c5b9e42e61a1ca0c643925dc6726a69265809c5",
+      "browser_status": "passed",
+      "browser_cases": [
+        {
+          "viewport": "desktop",
+          "selected": "sittings.md",
+          "guide_link_followed": true,
+          "wcag_violations": 0,
+          "horizontal_overflow": false,
+          "descriptor_sha256": "d3725953c44357a10dd388a464e9c8f8e0a595b4de53f6eb95dfc0a5b3feb965"
+        },
+        {
+          "viewport": "mobile",
+          "selected": "sittings.md",
+          "guide_link_followed": true,
+          "wcag_violations": 0,
+          "horizontal_overflow": false,
+          "descriptor_sha256": "d3725953c44357a10dd388a464e9c8f8e0a595b4de53f6eb95dfc0a5b3feb965"
+        }
+      ]
+    },
+    {
+      "id": "hansard-november-full",
+      "url": "https://chris-page-gov.github.io/okf-hansard/november/walkthrough.html",
+      "http_status": 200,
+      "response_sha256": "7d857d7d583928fc9495a7ec6b5d5e8ceb6dd8f223e29d12bcdbe2380e80c460",
+      "content_type": "text/html; charset=utf-8",
+      "content_encoding": "identity",
+      "question": "On 18 November, which House’s proceedings are linked to Bill 4030, what does the same-date coverage say about Commons and Lords activity, and can those records establish that the Commons debated or the Bill passed? How far does this snapshot cover?",
+      "case_json_path": "registry/walkthrough-register/evidence/current-captures/hansard-stage6-targeted-http-20261125T115217Z/november/walkthrough.json",
+      "case_json_sha256": "f4166170874185fdf4f56f8dcb8cd8945cfad23884a42bfd1c5786a490aad5bc",
+      "descriptor_url": "https://chris-page-gov.github.io/okf-hansard/november/graph/okf-explorer.json",
+      "descriptor_path": "registry/walkthrough-register/evidence/current-captures/hansard-stage6-targeted-http-20261125T115217Z/november/graph/okf-explorer.json",
+      "descriptor_sha256": "f7e0665b485d299b4815fba0e2e274c3c3b7a1c34b49823b5973e0e627767800",
+      "descriptor_schema": "okf-explorer-large-corpus.v1",
+      "okf_version": "0.3",
+      "bundle_declared_version": "0.3.0",
+      "served_checksum_catalogue_sha256": "8de0054c2bf514d01be07747c991202b9363ba464ae2fbb21a532efcd5fd8ebb",
+      "browser_receipt_id": "hansard-stage6-public-browser-receipt",
+      "browser_receipt_sha256": "51796d439c08bb90ea27eb9f9c5b9e42e61a1ca0c643925dc6726a69265809c5",
+      "browser_status": "passed",
+      "browser_cases": [
+        {
+          "viewport": "desktop",
+          "selected": "dataset/entity/bill-4030.md",
+          "guide_link_followed": true,
+          "wcag_violations": 0,
+          "horizontal_overflow": false,
+          "descriptor_sha256": "f7e0665b485d299b4815fba0e2e274c3c3b7a1c34b49823b5973e0e627767800"
+        },
+        {
+          "viewport": "mobile",
+          "selected": "dataset/entity/bill-4030.md",
+          "guide_link_followed": true,
+          "wcag_violations": 0,
+          "horizontal_overflow": false,
+          "descriptor_sha256": "f7e0665b485d299b4815fba0e2e274c3c3b7a1c34b49823b5973e0e627767800"
+        }
+      ]
+    }
+  ]
+}

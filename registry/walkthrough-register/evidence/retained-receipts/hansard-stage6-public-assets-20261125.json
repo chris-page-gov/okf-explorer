@@ -1,0 +1,19 @@
+{
+  "schema": "okf-walkthrough-retained-receipt-summary.v1",
+  "source_receipt_id": "hansard-stage6-public-assets",
+  "source_receipt_sha256": "f14ff11956d58057bd7c3451311d1ff3357cdebf649b65d7b4cf11882e0776ed",
+  "status": "passed",
+  "date": "2026-11-25T11:49:24.764078+00:00",
+  "date_field": "observed_at",
+  "status_field_present": true,
+  "producer_product_version": "0.3.0",
+  "source_commit": "9c3c55c292216b995f7339068c05ae4b3e98d20c",
+  "pages_commit": null,
+  "checksums_sha256": "8de0054c2bf514d01be07747c991202b9363ba464ae2fbb21a532efcd5fd8ebb",
+  "scope": "Complete Stage6 November local and public checksum-bound file gate.",
+  "catalogue_files_verified": 8009,
+  "served_files_verified": 8009,
+  "all_local_bytes_verified": true,
+  "all_served_bytes_verified": true,
+  "catalogue_unchanged_after_retrieval": true
+}

@@ -1,0 +1,49 @@
+{
+  "schema": "okf-walkthrough-retained-receipt-summary.v1",
+  "source_receipt_id": "hansard-stage6-public-browser-receipt",
+  "source_receipt_sha256": "51796d439c08bb90ea27eb9f9c5b9e42e61a1ca0c643925dc6726a69265809c5",
+  "status": "passed",
+  "date": "2026-11-25T11:45:44.287Z",
+  "date_field": "observed_at",
+  "status_field_present": true,
+  "producer_product_version": "0.3.0",
+  "walkthrough_id": "hansard-november-full",
+  "source_commit": "9c3c55c292216b995f7339068c05ae4b3e98d20c",
+  "pages_commit": "7e57fe40b024ad0c5f961474d753ce3d2d78bc42",
+  "okf_core_version": "0.3",
+  "bundle_identity": "urn:okf:hansard:bundle:november-in-parliament",
+  "descriptor_sha256": "f7e0665b485d299b4815fba0e2e274c3c3b7a1c34b49823b5973e0e627767800",
+  "scope": "Actual public November walkthrough browser journeys at desktop and mobile; no week browser check.",
+  "cases": [
+    {
+      "viewport": "desktop",
+      "question": "On 18 November, which House’s proceedings are linked to Bill 4030, what does the same-date coverage say about Commons and Lords activity, and can those records establish that the Commons debated or the Bill passed? How far does this snapshot cover?",
+      "selected": "dataset/entity/bill-4030.md",
+      "guide_link_followed": true,
+      "wcag_violations": 0,
+      "horizontal_overflow": false,
+      "descriptor_sha256": "f7e0665b485d299b4815fba0e2e274c3c3b7a1c34b49823b5973e0e627767800",
+      "expected_identity": {
+        "schema": "okf-explorer-large-corpus.v1",
+        "id": "urn:okf:hansard:bundle:november-in-parliament",
+        "version": "0.3.0",
+        "snapshot": "hansard-sha256-772e4a583f4cf4e53a02d507f61a056c2e0baa8254467c5fa5b07c63f4f6f85d"
+      }
+    },
+    {
+      "viewport": "mobile",
+      "question": "On 18 November, which House’s proceedings are linked to Bill 4030, what does the same-date coverage say about Commons and Lords activity, and can those records establish that the Commons debated or the Bill passed? How far does this snapshot cover?",
+      "selected": "dataset/entity/bill-4030.md",
+      "guide_link_followed": true,
+      "wcag_violations": 0,
+      "horizontal_overflow": false,
+      "descriptor_sha256": "f7e0665b485d299b4815fba0e2e274c3c3b7a1c34b49823b5973e0e627767800",
+      "expected_identity": {
+        "schema": "okf-explorer-large-corpus.v1",
+        "id": "urn:okf:hansard:bundle:november-in-parliament",
+        "version": "0.3.0",
+        "snapshot": "hansard-sha256-772e4a583f4cf4e53a02d507f61a056c2e0baa8254467c5fa5b07c63f4f6f85d"
+      }
+    }
+  ]
+}

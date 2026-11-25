@@ -105,49 +105,49 @@ Current page: not rechecked.
 
 Using only the compact week entry point, which formal Bill 4030 stages are cited, in which House and date order, and can this bundle prove a complete legislative history?
 
-**Version:** 0.3; producer 0.3.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:10:06Z: [bundle descriptor](https://chris-page-gov.github.io/okf-hansard/okf-core.json).
+**Version:** 0.3; producer 0.3.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T11:52:18.116379+00:00: [bundle descriptor](https://chris-page-gov.github.io/okf-hansard/okf-core.json).
 
 [Guide](https://chris-page-gov.github.io/okf-hansard/core-walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-hansard/blob/586c80b3f73e26500b639f949500328f136ba2b4/scripts/build_walkthrough.py)
 
-Earlier evidence: passed (2026-11-24T01:16:40.306Z); four-guide public browser proof passed at its recorded producer/pages/Reader commits
+Earlier evidence: passed (2026-11-24T01:16:40.306Z); Prior four-guide browser proof passed at its recorded producer, Pages and Reader commits; this refresh is HTTP-only.
 
-Current page: HTTP 200 on 2026-11-25T09:52:00Z; week guide returned 200; expected question matched; Reader Railways Bill selected; desktop and 390 px width checks passed
+Current page: HTTP 200 on 2026-11-25T11:52:18.116379+00:00; Anonymous HTTP 200; exact guide, case JSON and descriptor bytes match the served weekly checksum catalogue. This refresh is HTTP evidence only; the separately dated earlier browser proof remains distinct. Earlier page observations: HTTP 200 on 2026-11-25T09:52:00Z.
 
 ### Hansard: week full guide
 
 Which recorded stages of Bill 4030 appear in the Commons and Lords, in date order, and what does this evidence not establish?
 
-**Version:** 0.3; producer 0.3.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:10:06Z: [bundle descriptor](https://chris-page-gov.github.io/okf-hansard/graph/okf-explorer.json).
+**Version:** 0.3; producer 0.3.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T11:52:18.116379+00:00: [bundle descriptor](https://chris-page-gov.github.io/okf-hansard/graph/okf-explorer.json).
 
 [Guide](https://chris-page-gov.github.io/okf-hansard/walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-hansard/blob/586c80b3f73e26500b639f949500328f136ba2b4/scripts/build_walkthrough.py)
 
-Earlier evidence: passed (2026-11-24T01:16:40.306Z); four-guide public browser proof passed at its recorded producer/pages/Reader commits
+Earlier evidence: passed (2026-11-24T01:16:40.306Z); Prior four-guide browser proof passed at its recorded producer, Pages and Reader commits; this refresh is HTTP-only.
 
-Current page: HTTP 200 on 2026-11-25T09:52:00Z; week guide returned 200; expected question matched; linked Reader route selected Lords 18 November record; desktop and 390 px width checks passed
+Current page: HTTP 200 on 2026-11-25T11:52:18.116379+00:00; Anonymous HTTP 200; exact guide, case JSON and descriptor bytes match the served weekly checksum catalogue. This refresh is HTTP evidence only; the separately dated earlier browser proof remains distinct. Earlier page observations: HTTP 200 on 2026-11-25T09:52:00Z.
 
 ### Hansard: november core guide
 
 What dates does the compact November entry point declare, can this one-record bundle establish which House debated Bill 4030, and where must I go to check those claims?
 
-**Version:** not established by captured descriptor; producer not recorded; shared Reader not recorded. Descriptor URL returned HTTP 404 on 2026-11-25T10:10:06Z: [bundle descriptor](https://chris-page-gov.github.io/okf-hansard/november/okf-core.json) (version remains unknown).
+**Version:** 0.3; producer 0.3.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T11:52:18.116379+00:00: [bundle descriptor](https://chris-page-gov.github.io/okf-hansard/november/okf-core.json).
 
-[Guide](https://chris-page-gov.github.io/okf-hansard/november/core-walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-hansard/blob/586c80b3f73e26500b639f949500328f136ba2b4/scripts/build_walkthrough.py)
+[Guide](https://chris-page-gov.github.io/okf-hansard/november/core-walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-hansard/blob/9c3c55c292216b995f7339068c05ae4b3e98d20c/scripts/build_walkthrough.py)
 
-Earlier evidence: passed (2026-11-24T01:16:40.306Z); four-guide public browser proof passed at its recorded producer/pages/Reader commits
+Earlier evidence: passed (2026-11-24T01:16:40.306Z); Current Stage6 public browser journeys passed on desktop and mobile; the exact descriptor identity was selected, with no automated WCAG violations or horizontal overflow.
 
-Current page: HTTP 404 on 2026-11-25T09:52:00Z; current November URL returned GitHub Pages 404; no guide layout or Reader link available; earlier release receipt passed
+Current page: HTTP 200 on 2026-11-25T11:52:18.116379+00:00; Anonymous HTTP 200; exact guide, case JSON and descriptor bytes match the served November checksum catalogue. The separate current Stage6 desktop and mobile browser proof passed; full public asset verification is retained separately. Earlier page observations: HTTP 404 on 2026-11-25T09:52:00Z. Current browser proof: passed (2026-11-25T11:45:44.287Z); desktop and mobile journeys for this guide. Complete public-assets gate: passed (2026-11-25T11:49:24.764078+00:00); 8009 catalogue and 8009 served files verified.
 
 ### Hansard: november full guide
 
 On 18 November, which House’s proceedings are linked to Bill 4030, what does the same-date coverage say about Commons and Lords activity, and can those records establish that the Commons debated or the Bill passed? How far does this snapshot cover?
 
-**Version:** 0.3; producer not recorded; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:10:06Z: [bundle descriptor](https://chris-page-gov.github.io/okf-hansard/november/graph/okf-explorer.json).
+**Version:** 0.3; producer 0.3.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T11:52:18.116379+00:00: [bundle descriptor](https://chris-page-gov.github.io/okf-hansard/november/graph/okf-explorer.json).
 
-[Guide](https://chris-page-gov.github.io/okf-hansard/november/walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-hansard/blob/586c80b3f73e26500b639f949500328f136ba2b4/scripts/build_walkthrough.py)
+[Guide](https://chris-page-gov.github.io/okf-hansard/november/walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-hansard/blob/9c3c55c292216b995f7339068c05ae4b3e98d20c/scripts/build_walkthrough.py)
 
-Earlier evidence: passed (2026-11-24T01:16:40.306Z); four-guide public browser proof passed at its recorded producer/pages/Reader commits
+Earlier evidence: passed (2026-11-24T01:16:40.306Z); Current Stage6 public browser journeys passed on desktop and mobile; the exact descriptor identity was selected, with no automated WCAG violations or horizontal overflow.
 
-Current page: HTTP 404 on 2026-11-25T09:52:00Z; current November URL returned GitHub Pages 404; no guide layout or Reader link available; earlier release receipt passed
+Current page: HTTP 200 on 2026-11-25T11:52:18.116379+00:00; Anonymous HTTP 200; exact guide, case JSON and descriptor bytes match the served November checksum catalogue. The separate current Stage6 desktop and mobile browser proof passed; full public asset verification is retained separately. Earlier page observations: HTTP 404 on 2026-11-25T09:52:00Z. Current browser proof: passed (2026-11-25T11:45:44.287Z); desktop and mobile journeys for this guide. Complete public-assets gate: passed (2026-11-25T11:49:24.764078+00:00); 8009 catalogue and 8009 served files verified.
 
 ### Heritage: faithful source records
 
