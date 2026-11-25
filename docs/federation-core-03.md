@@ -17,7 +17,23 @@ descriptors. A producer's successful local schema check is not evidence of
 publication, consumer support or complete source coverage. Validate the exact
 consumer revision and bundle bytes separately.
 
-The 0.9.1 release preparation keeps the package, both citation versions,
-dependency inventory and generated bundle metadata aligned. Historical release
-entries remain dated. A prepared version is separate from a published release;
-the formal release still needs its exact CI, public and asset checks.
+## Descriptor-relative context links
+
+A large-bundle record can expose a structured context link with a bundle path,
+route and title. The Reader resolves the bundle path against the descriptor URL
+that supplied the record, then builds a link using the current Explorer
+application origin and path. This supports a Reader hosted separately from the
+data bundle, including deployments below a path prefix. The link opens the
+target bundle and record in the Reader; an existing absolute HTTP(S) URL
+continues to be shown as an external resource.
+
+These links are navigation metadata. They do not add a semantic relationship
+between bundles or prove that the target is authoritative. Producers should
+bind target descriptors and source records to their own acceptance evidence.
+
+The published 0.9.1 release aligned the package, both citation versions,
+dependency inventory and generated bundle metadata. Historical release entries
+remain dated. The 0.9.2 candidate adds descriptor-relative context navigation
+and derives the legislation runtime binding from the package version. Both
+citation records date this resumed candidate 25 November 2026. Its
+publication still needs exact CI, public and release-asset checks.

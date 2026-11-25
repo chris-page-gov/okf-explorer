@@ -94,6 +94,7 @@ async function installTargetedFixture(
     resourceCount?: number;
     clmlVersion?: string;
     documentUri?: string;
+    contextLinks?: Array<Record<string, unknown>>;
   } = {}
 ) {
   const RECORD_ROUTE = options.recordRoute || DEFAULT_RECORD_ROUTE;
@@ -108,6 +109,7 @@ async function installTargetedFixture(
     notes: 'A deterministic legal work used to prove bounded record and relationship hydration.',
     publisher: 'legislation-gov-uk',
     publisher_title: 'legislation.gov.uk',
+    ...(options.contextLinks ? { context_links: options.contextLinks } : {}),
     ...(options.omitResourceCount ? {} : { resource_count: options.resourceCount ?? 1 }),
     resource_ids: options.resourceCount === 0 ? [] : ['target-act-html'],
     formats: ['clml', 'website'],
@@ -524,6 +526,7 @@ async function installTargetedFixture(
       }
     }
   };
+  const ownerDescriptor = { ...descriptor, title: 'Owning directory fixture' };
   const manifest = {
     title: descriptor.title,
     generated_at: '2026-07-25T00:00:00Z',
@@ -620,6 +623,9 @@ async function installTargetedFixture(
   await context.route(`${ORIGIN}/**`, async (route) => {
     const url = new URL(route.request().url());
     requests.push(url.pathname);
+    const requestPath = url.pathname.startsWith('/owner/')
+      ? url.pathname.slice('/owner'.length)
+      : url.pathname;
     if (url.pathname === '/official-search') {
       return route.fulfill({
         status: 200,
@@ -636,23 +642,28 @@ async function installTargetedFixture(
         body: '<official-source><title>Target Act source response</title></official-source>'
       });
     }
-    if (url.pathname === '/okf-explorer.json') return json(route, descriptor);
-    if (url.pathname === '/data/manifest.json') return json(route, manifest);
-    if (url.pathname === '/data/overview.json') {
+    const requestDescriptor = url.pathname.startsWith('/owner/') ? ownerDescriptor : descriptor;
+    if (requestPath === '/okf-explorer.json') return json(route, requestDescriptor);
+    if (requestPath === '/data/manifest.json') {
+      return json(route, requestDescriptor === descriptor
+        ? manifest
+        : { ...manifest, title: requestDescriptor.title });
+    }
+    if (requestPath === '/data/overview.json') {
       return json(route, {
         schema: 'okf-overview.v1',
-        title: descriptor.title,
+        title: requestDescriptor.title,
         snapshot: SNAPSHOT,
         generated_at: '2026-07-25T00:00:00Z',
         counts: descriptor.counts
       });
     }
-    if (url.pathname === '/data/analysis.json') {
+    if (requestPath === '/data/analysis.json') {
       return json(route, {
         schema: 'okf-explorer-analysis.v1',
         generated_at: '2026-07-25T00:00:00Z',
         summary: {
-          title: descriptor.title,
+          title: requestDescriptor.title,
           ...(options.omitAnalysisRecordCount
             ? {}
             : { record_count: descriptor.counts.records }),
@@ -660,8 +671,8 @@ async function installTargetedFixture(
         }
       });
     }
-    if (url.pathname === '/data/facets.json') return json(route, {});
-    if (url.pathname === '/data/effects/reconciliation.json') {
+    if (requestPath === '/data/facets.json') return json(route, {});
+    if (requestPath === '/data/effects/reconciliation.json') {
       return json(route, {
         schema: 'okf-official-effects-reconciliation.v1',
         snapshot_id: 'effects-fixture-2026-07-25',
@@ -681,45 +692,45 @@ async function installTargetedFixture(
         notice: 'A fixture refresh never rewrites historical evidence.'
       });
     }
-    if (url.pathname === '/search/manifest.json') return json(route, searchManifest);
-    if (url.pathname === '/search/doc-map.json') return json(route, {});
-    if (url.pathname === '/data/records/manifest.json') return json(route, locator);
-    const locatorBucket = Object.entries(locatorBuckets).find(([, path]) => url.pathname === '/' + path)?.[0];
+    if (requestPath === '/search/manifest.json') return json(route, searchManifest);
+    if (requestPath === '/search/doc-map.json') return json(route, {});
+    if (requestPath === '/data/records/manifest.json') return json(route, locator);
+    const locatorBucket = Object.entries(locatorBuckets).find(([, path]) => requestPath === '/' + path)?.[0];
     if (locatorBucket) {
       return json(route, Object.fromEntries(recordRoutes
         .filter((recordRoute) => relationshipBucket(recordRoute) === locatorBucket)
         .map((recordRoute) => [recordRoute, [0, recordRoute === SECOND_RECORD_ROUTE ? 1 : 0]])));
     }
-    if (url.pathname === '/data/works-0.json') return json(route, options.reusedResourceId ? [record, secondRecord] : [record]);
-    if (options.targetedRecordResources && url.pathname === '/' + targetedIndexReference.path) return json(route, targetedResourceIndex);
-    if (options.targetedRecordResources && url.pathname === '/' + targetedBucketPath) return json(route, targetedResourceBucket);
-    if (options.targetedRecordResources && url.pathname === '/' + targetedResourcePath) {
+    if (requestPath === '/data/works-0.json') return json(route, options.reusedResourceId ? [record, secondRecord] : [record]);
+    if (options.targetedRecordResources && requestPath === '/' + targetedIndexReference.path) return json(route, targetedResourceIndex);
+    if (options.targetedRecordResources && requestPath === '/' + targetedBucketPath) return json(route, targetedResourceBucket);
+    if (options.targetedRecordResources && requestPath === '/' + targetedResourcePath) {
       if (options.recordResourceResponseGate) await options.recordResourceResponseGate;
       return options.recordResourceFailure
         ? json(route, { error: 'Selected references unavailable' }, 503)
         : json(route, targetedResourceRows);
     }
-    if (url.pathname === '/data/resources.json') return json(route, options.resourceCount === 0 ? [] : [resource]);
-    if (url.pathname === '/data/adjacency/manifest.json') return json(route, adjacency);
-    if (url.pathname === `/data/adjacency/${bucket}.json`) {
+    if (requestPath === '/data/resources.json') return json(route, options.resourceCount === 0 ? [] : [resource]);
+    if (requestPath === '/data/adjacency/manifest.json') return json(route, adjacency);
+    if (requestPath === `/data/adjacency/${bucket}.json`) {
       if (options.adjacencyDelayMs) {
         await new Promise((resolve) => setTimeout(resolve, options.adjacencyDelayMs));
       }
       return json(route, { [RECORD_ROUTE]: relationships }, 200, true);
     }
-    if (url.pathname === `/${MODEL_MANIFEST_PATH}`) {
+    if (requestPath === `/${MODEL_MANIFEST_PATH}`) {
       return json(route, modelManifest);
     }
-    if (url.pathname === `/${ACCEPTED_MANIFEST_PATH}`) {
+    if (requestPath === `/${ACCEPTED_MANIFEST_PATH}`) {
       return json(route, acceptedManifest);
     }
-    if (url.pathname === `/${AUDIT_PATH}`) {
+    if (requestPath === `/${AUDIT_PATH}`) {
       return json(route, independentAudit);
     }
-    if (url.pathname === `/${REVIEWER_PATH}`) {
+    if (requestPath === `/${REVIEWER_PATH}`) {
       return json(route, reviewerReceipt);
     }
-    const modelChunkIndex = modelChunks.findIndex((chunk) => `/${chunk.path}` === url.pathname);
+    const modelChunkIndex = modelChunks.findIndex((chunk) => `/${chunk.path}` === requestPath);
     if (modelChunkIndex >= 0) {
       if (modelChunkFailuresRemaining > 0) {
         modelChunkFailuresRemaining -= 1;
@@ -742,8 +753,8 @@ async function installTargetedFixture(
         body: nodeBuffer as string
       });
     }
-    if (/^\/data\/works-[1-3]\.json$/.test(url.pathname)) return json(route, []);
-    if (url.pathname === '/data/relationships-full.json') return json(route, relationships);
+    if (/^\/data\/works-[1-3]\.json$/.test(requestPath)) return json(route, []);
+    if (requestPath === '/data/relationships-full.json') return json(route, relationships);
     return json(route, { error: `No fixture route for ${url.pathname}` }, 404);
   });
 }
@@ -756,6 +767,80 @@ function expectNoFullHydration(requests: string[]) {
 test.describe('targeted large-corpus relationship hydration', () => {
   test.beforeEach(async ({ page }) => {
     await page.addInitScript(() => localStorage.clear());
+  });
+
+  test('follows a descriptor-relative context link to its source record', async ({ page }) => {
+    const requests: string[] = [];
+    const targetDescriptor = new URL('owner/okf-explorer.json', BUNDLE_URL).toString();
+    await installTargetedFixture(page.context(), requests, {
+      contextLinks: [{
+        label: 'Owning directory record',
+        description: 'Open Target Act 1998 in its owning data bundle',
+        bundle: 'owner/okf-explorer.json',
+        route: RECORD_ROUTE,
+        title: 'Target Act 1998'
+      }]
+    });
+    for (const viewport of [
+      { width: 1440, height: 1000 },
+      { width: 390, height: 844 }
+    ]) {
+      await page.setViewportSize(viewport);
+      await page.goto(`?bundle=${encodeURIComponent(BUNDLE_URL)}&view=reader#${RECORD_ROUTE}`);
+
+      if (viewport.width < 600) {
+        await page.getByRole('navigation', { name: 'Workspace panels' })
+          .getByRole('button', { name: 'Details', exact: true }).click();
+      }
+      const panel = page.locator('.right-panel');
+      await expect(panel.getByRole('heading', { name: 'Target Act 1998', exact: true })).toBeVisible();
+      const context = panel.locator('details.metadata-section').filter({
+        has: page.locator('summary:text-is("Context")')
+      });
+      await context.locator('summary').click();
+      const ownerLink = context.getByRole('link', {
+        name: 'Open Target Act 1998 in its owning data bundle', exact: true
+      });
+      await expect(ownerLink).toHaveAttribute('data-context-link-kind', 'reader');
+      const appPath = new URL(page.url()).pathname;
+      const linkedUrl = new URL(await ownerLink.getAttribute('href')!);
+      expect(linkedUrl.origin).toBe(new URL(page.url()).origin);
+      expect(linkedUrl.pathname).toBe(appPath);
+      expect(linkedUrl.searchParams.get('bundle')).toBe(targetDescriptor);
+      expect(linkedUrl.searchParams.get('q')).toBe('Target Act 1998');
+      expect(linkedUrl.searchParams.get('view')).toBe('reader');
+      expect(linkedUrl.hash).toBe(`#${RECORD_ROUTE}`);
+
+      await ownerLink.click();
+      await expect.poll(() => new URL(page.url()).searchParams.get('bundle')).toBe(targetDescriptor);
+      expect(new URL(page.url()).hash).toBe(`#${RECORD_ROUTE}`);
+      await expect(page.getByRole('banner').getByText('Owning directory fixture', { exact: true })).toBeVisible();
+      if (viewport.width < 600) {
+        await page.getByRole('navigation', { name: 'Workspace panels' })
+          .getByRole('button', { name: 'Details', exact: true }).click();
+      }
+      await expect(page.locator('.right-panel').getByRole('heading', {
+        name: 'Target Act 1998', exact: true
+      })).toBeVisible();
+      await page.locator('.right-panel').getByRole('tab', { name: 'Data', exact: true }).click();
+      await expect(page.locator('#detail-panel-data')).toContainText('https://www.legislation.gov.uk/id/ukpga/1998/42');
+      expect(requests).toContain('/owner/okf-explorer.json');
+      expect(requests).toContain('/owner/data/works-0.json');
+
+      await page.reload();
+      await expect.poll(() => new URL(page.url()).searchParams.get('bundle')).toBe(targetDescriptor);
+      expect(new URL(page.url()).hash).toBe(`#${RECORD_ROUTE}`);
+      await expect(page.getByRole('banner').getByText('Owning directory fixture', { exact: true })).toBeVisible();
+      if (viewport.width < 600) {
+        await page.getByRole('navigation', { name: 'Workspace panels' })
+          .getByRole('button', { name: 'Details', exact: true }).click();
+      }
+      await expect(page.locator('.right-panel').getByRole('heading', {
+        name: 'Target Act 1998', exact: true
+      })).toBeVisible();
+      await page.locator('.right-panel').getByRole('tab', { name: 'Data', exact: true }).click();
+      await expect(page.locator('#detail-panel-data')).toContainText('https://www.legislation.gov.uk/id/ukpga/1998/42');
+    }
   });
 
   test('overview uses the declared record count rather than the dataset grouping count', async ({

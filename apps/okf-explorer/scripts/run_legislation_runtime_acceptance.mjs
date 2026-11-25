@@ -33,6 +33,7 @@ import {
   canonicalPublicationInventory,
   EXPLORER_RELEASE_TAG,
   EXPLORER_RELEASE_VERSION,
+  federationOverviewContract,
   publishWriteOnce,
   verifyFrozenReleaseBinding
 } from './runtime_acceptance_contract.mjs';
@@ -1840,6 +1841,7 @@ async function runBrowser(
   transfers,
   currentRun,
   capturedScreenshots,
+  federationContract,
   deadline
 ) {
   currentRun.browser = browserName;
@@ -1888,7 +1890,7 @@ async function runBrowser(
     currentRun.phase = 'federation-overview';
     const federationStarted = performance.now();
     await federationPage.goto(`${BASE_URL}/?bundle=${encodeURIComponent(`${BASE_URL}${FEDERATION_PATH}`)}#overview`, { waitUntil: 'domcontentloaded' });
-    const federation = federationPage.locator('[data-federation-overview="okf-explorer-federation.v1"]');
+    const federation = federationPage.locator(federationContract.selector);
     await federation.waitFor({ state: 'visible' });
     await federation.getByText('UK Whole-Law OKF', { exact: true }).waitFor({ state: 'visible' });
     await federation.getByText('36 legal source classes', { exact: true }).waitFor({ state: 'visible' });
@@ -2004,6 +2006,8 @@ async function runBrowser(
       version: browserVersion,
       status: 'passed',
       federation: {
+        descriptor_schema: federationContract.schema,
+        okf_version: federationContract.okf_version,
         overview_elapsed_ms: round(federationMs),
         child_elapsed_ms: round(childMs),
         child_load_completed: true,
@@ -2157,6 +2161,7 @@ async function main() {
         'Legislation bundle snapshot'
       )
     ]);
+    const federationContract = federationOverviewContract(federationDescriptor);
 
     if (releaseBound) {
       const observedBinding = buildFrozenReleaseBinding({
@@ -2215,6 +2220,7 @@ async function main() {
           transfers,
           currentRun,
           capturedScreenshots,
+          federationContract,
           deadline
         );
         retainTelemetry(telemetry, run, `${name} browser evidence`);

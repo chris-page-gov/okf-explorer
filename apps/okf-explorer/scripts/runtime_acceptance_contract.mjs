@@ -5,7 +5,7 @@ import {
   realpath,
   unlink
 } from 'node:fs/promises';
-import { constants as fileConstants } from 'node:fs';
+import { constants as fileConstants, readFileSync } from 'node:fs';
 import path from 'node:path';
 
 import {
@@ -27,8 +27,41 @@ const EXPLORER_BUILD_ROOT = 'explorer-build';
 const EXPLORER_BUILD_INDEX_PATH = 'explorer-build/index.html';
 const EXPLORER_BUILD_MANIFEST_PATH =
   `explorer-build/${BUILD_MANIFEST_FILENAME}`;
-export const EXPLORER_RELEASE_VERSION = '0.8.1';
+const explorerPackage = JSON.parse(
+  readFileSync(new URL('../package.json', import.meta.url), 'utf8')
+);
+export const EXPLORER_RELEASE_VERSION = explorerPackage.version;
 export const EXPLORER_RELEASE_TAG = `v${EXPLORER_RELEASE_VERSION}`;
+const FEDERATION_CORE_PAIRS = Object.freeze({
+  'okf-explorer-federation.v1': '0.2',
+  'okf-explorer-federation.v2': '0.3'
+});
+
+export function federationOverviewContract(bytes) {
+  let descriptor;
+  try {
+    descriptor = JSON.parse(Buffer.from(bytes).toString('utf8'));
+  } catch {
+    throw new Error('Federation acceptance input is not valid JSON');
+  }
+  if (!descriptor || typeof descriptor !== 'object' || Array.isArray(descriptor)) {
+    throw new Error('Federation acceptance input must be an object');
+  }
+  const { schema, kind, okf_version: coreVersion } = descriptor;
+  const expectedCore = FEDERATION_CORE_PAIRS[schema];
+  if (!expectedCore || kind !== 'okf-federation') {
+    throw new Error('Federation acceptance input has an unsupported descriptor schema or kind');
+  }
+  if (coreVersion !== expectedCore) {
+    throw new Error(`${schema} requires okf_version ${expectedCore}`);
+  }
+  return Object.freeze({
+    schema,
+    okf_version: coreVersion,
+    selector: `[data-federation-overview="${schema}"]`
+  });
+}
+
 export const LEGISLATION_BUNDLE_TREE_ALGORITHM =
   'sha256-canonical-json-inventory-v1';
 let temporarySequence = 0;
