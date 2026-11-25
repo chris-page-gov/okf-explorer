@@ -4,10 +4,11 @@ import json
 import tempfile
 import unittest
 from unittest.mock import patch
+from hashlib import sha256
 from pathlib import Path
 from shutil import copyfile
 
-from scripts.check_okf_standards_register import check_register
+from scripts.check_okf_standards_register import check_current_owner_catalogue, check_register
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -40,6 +41,7 @@ class TestOkfStandardsRegister(unittest.TestCase):
             for relative in (
                 "registry/public-bundle-access.json",
                 "docs/evidence/okf-public-owner-candidates-2026-11-23.json",
+                "docs/evidence/okf-public-owner-candidates-2026-11-25.json",
             ):
                 destination = root / relative
                 destination.parent.mkdir(parents=True, exist_ok=True)
@@ -50,6 +52,22 @@ class TestOkfStandardsRegister(unittest.TestCase):
             register_path.write_text(json.dumps(register), encoding="utf-8")
             errors = check_register(root)
             self.assertTrue(any("OKF 0.1" in error for error in errors))
+
+    def test_current_catalogue_rejects_private_row_even_with_resealed_digest(self) -> None:
+        register = json.loads((ROOT / "registry/okf-standards.json").read_text())
+        catalogue = register["bundle_catalogues"]["public_owner_candidates"]
+        access = json.loads((ROOT / "registry/public-bundle-access.json").read_text())["owner_catalogue"]
+        data = json.loads((ROOT / catalogue["path"]).read_text())
+        data["repositories"][0]["visibility"] = "private"
+        raw = json.dumps(data).encode()
+        new_digest = sha256(raw).hexdigest()
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            target = root / catalogue["path"]
+            target.parent.mkdir(parents=True)
+            target.write_bytes(raw)
+            errors = check_current_owner_catalogue(root, {**catalogue, "sha256": new_digest}, {**access, "sha256": new_digest})
+        self.assertEqual(errors, ["Current owner catalogue must contain only verified public discovery rows"])
 
 
 if __name__ == "__main__":

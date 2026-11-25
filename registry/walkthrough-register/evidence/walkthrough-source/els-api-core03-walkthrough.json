@@ -1,0 +1,25 @@
+{
+  "schema": "okf-els-api.walkthrough.v1",
+  "id": "complex-question-els-indicator-filters",
+  "title": "Trace a complex ELS API question",
+  "question": "When requesting indicator data, which geography and date filters can a client plan, and what evidence limits apply to an answer?",
+  "evidence": [
+    "knowledge/documents/Requesting-data.md",
+    "knowledge/documents/Requesting-geographic-information.md",
+    "knowledge/operations/data.md",
+    "knowledge/operations/geo-lookup.md",
+    "knowledge/issues/drift-data-hasgeo-default.md",
+    "knowledge/issues/drift-data-includenames.md",
+    "knowledge/issues/gap-data-measure.md",
+    "knowledge/issues/gap-response-schemas.md",
+    "knowledge/artifacts/selection-plan.md",
+    "knowledge/snapshots/wiki-and-source.md"
+  ],
+  "worked_answer": {
+    "dates": "The reviewed data route records `time` as latest, earliest, all, one date or a comma-separated inclusive range. `timeNearest` selects none, latest, earliest or any when a date falls outside an indicator's range. The recorded defaults are latest and none.",
+    "geography": "The reviewed data route records `geo` as one or more comma-separated geography-level keys or GSS codes, `geoExtent` as a parent GSS code, and `geoCluster` as a statistical cluster. Their recorded defaults are all. A separate `/api/v1/geo/lookup/{code}` route takes a GSS code and is described as returning one GeoJSON feature; it has no query parameters in this review.",
+    "conflicts": "The wiki says the data route's `hasGeo` default is all, while the pinned application review records any. The wiki also contradicts itself about the `includeNames` name/default; the reviewed route accepts `includeNames` and records true. Keep those differences visible rather than choosing a live truth.",
+    "limits": "This is a frozen wiki snapshot and bounded static source review, not a live check. The measure parameter's allowed values and interactions are undocumented, and complete response/error schemas are absent. The bundle cannot establish current behaviour or a safe executable request."
+  },
+  "prompt": "Separate wiki statements from pinned application-source observations. Cite each claim with its local file and source link. Preserve contradictions and unknowns. Do not infer current behaviour, execute requests, invent response values, or treat the selection plan as permission to call the API. If a claim is not supported by these records, say that evidence is insufficient."
+}

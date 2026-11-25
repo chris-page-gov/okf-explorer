@@ -37,6 +37,7 @@ class WalkthroughRegisterTests(unittest.TestCase):
             target.parent.mkdir(parents=True, exist_ok=True)
             if original.is_file() and not target.exists():
                 shutil.copyfile(original, target)
+        copy_evidence(register.RETAINED_ACCESS_DIRECTORY)
         reader_path = root / "apps/okf-explorer/package.json"
         reader_path.parent.mkdir(parents=True, exist_ok=True)
         reader_path.symlink_to(ROOT / "apps/okf-explorer/package.json")
@@ -45,8 +46,12 @@ class WalkthroughRegisterTests(unittest.TestCase):
         for original in (ROOT / "registry/walkthrough-register/evidence/descriptors").glob("*.json"):
             (evidence_dir / original.name).symlink_to(original)
         for walk in source.get("review_walkthroughs", []):
-            for key in ("version_evidence_path", "source_evidence_path", "guide_evidence_path"):
+            for key in ("version_evidence_path", "source_evidence_path", "guide_evidence_path",
+                        "guide_markdown_evidence_path"):
                 copy_evidence(walk.get(key))
+            binding = walk.get("public_browser_binding", {})
+            for key in ("assets_summary_path", "checksum_manifest_path"):
+                copy_evidence(binding.get(key))
             receipt_records = [walk["retained_proof"], *walk.get("historical_proofs", []), *walk.get("supporting_receipts", [])]
             if walk.get("current_publication_proof"):
                 receipt_records.append(walk["current_publication_proof"])
@@ -65,6 +70,8 @@ class WalkthroughRegisterTests(unittest.TestCase):
                         copy_evidence((base / catalogue["path"]).as_posix())
             for descriptor in walk.get("historical_descriptor_observations", []):
                 copy_evidence(descriptor.get("evidence_path"))
+        for descriptor in source.get("post_capture_descriptor_observations", []):
+            copy_evidence(descriptor.get("descriptor_evidence_path"))
         for walk in source.get("walkthroughs", []):
             for key in ("data_path", "authored_path", "case_path", "html_path", "diagram_path"):
                 original = ROOT / walk[key]
@@ -182,9 +189,10 @@ class WalkthroughRegisterTests(unittest.TestCase):
 
     def test_public_walkthrough_coverage_and_captured_sources_are_exact(self):
         source = register.load()
-        self.assertEqual(len(source["review_walkthroughs"]), 26)
-        self.assertEqual(source["scope"]["public_walkthrough_count"], 27)
-        self.assertEqual(source["scope"]["review_walkthrough_count"], 26)
+        self.assertEqual(len(source["review_walkthroughs"]), 27)
+        self.assertEqual(source["scope"]["public_walkthrough_count"], 28)
+        self.assertEqual(source["scope"]["review_walkthrough_count"], 27)
+        self.assertEqual(source["scope"]["public_root_count"], 76)
         self.assertEqual(source["scope"]["reference_walkthrough_count"], 1)
         self.assertEqual(len(source["repository_visibility_observations"]), 24)
         rows = {row["id"]: row for row in source["review_walkthroughs"]}
@@ -212,7 +220,7 @@ class WalkthroughRegisterTests(unittest.TestCase):
         output = register.render(source)
         machine = json.loads(output[Path("registry/walkthrough-register.json")])
         md = output[Path("docs/walkthrough-register.md")]
-        self.assertEqual(len(machine["review_walkthroughs"]), 26)
+        self.assertEqual(len(machine["review_walkthroughs"]), 27)
         self.assertIn("Earlier page observations: HTTP 404", md)
         self.assertIn("Current browser proof: passed", md)
         self.assertIn("Complete public-assets gate: passed", md)
@@ -220,6 +228,37 @@ class WalkthroughRegisterTests(unittest.TestCase):
             self.assertIn(row["title"], md)
             self.assertIn(row["guide_url"], md)
             self.assertEqual(row["current_page_checked"], row.get("current_page_observation") is not None)
+
+    def test_els_core03_public_observation_keeps_the_earlier_descriptor_separate(self):
+        source = register.load()
+        old = next(row for row in source["public_bundle_descriptor_observations"]
+                   if row["repository"].endswith("/okf-els-api"))
+        later = source["post_capture_descriptor_observations"][0]
+        self.assertEqual(old["captured_at"], "2026-11-25T08:54:14.389862+00:00")
+        self.assertEqual(old["okf_version"], "0.2")
+        self.assertEqual(old["descriptor_sha256"], "1437c0d0ecbc077873ce6906892630110fda1f59266e14518a6e78f7af39ce91")
+        self.assertEqual(later["okf_version"], "0.3")
+        self.assertEqual(later["producer_product_version"], "0.3.0")
+        self.assertIsNone(later.get("http_status"))
+        self.assertEqual(source["scope"]["public_root_count"], 76)
+
+    def test_els_public_binding_rejects_wrong_question_descriptor_edition_or_receipt(self):
+        mutations = (
+            lambda row: row.update(question="A different ELS question."),
+            lambda row: row.update(bundle_identity="https://example.invalid/descriptor"),
+            lambda row: row.update(producer_product_version="0.2.0"),
+            lambda row: row["public_browser_binding"].update(
+                source_receipt_sha256="0" * 64
+            ),
+        )
+        for mutate in mutations:
+            def change(source, _denominator, mutate=mutate):
+                row = next(item for item in source["review_walkthroughs"]
+                           if item["id"] == "els-api-core03-complex-question")
+                mutate(row)
+            temporary, root, _ = self.fixture(change)
+            with temporary, self.assertRaises(ValueError):
+                register.load(root)
 
     def test_walkthrough_manifest_omission_surplus_duplicates_and_version_forgery_fail(self):
         mutations = [

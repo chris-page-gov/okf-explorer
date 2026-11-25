@@ -17,6 +17,8 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCE = Path("registry/walkthrough-register.source.json")
 DENOMINATOR = Path("registry/walkthrough-register/public-root-denominator.json")
 ACCESS_DIRECTORY = Path("registry/public-bundle-access.json")
+RETAINED_ACCESS_DIRECTORY = Path(
+    "registry/walkthrough-register/evidence/retained-receipts/public-bundle-access-2026-11-23.json")
 OUTPUTS = (Path("registry/walkthrough-register.json"), Path("docs/walkthrough-register.md"))
 PUBLIC_HOSTS = {"github.com", "raw.githubusercontent.com", "chris-page-gov.github.io", "api.github.com"}
 SHA256 = re.compile(r"[0-9a-f]{64}")
@@ -30,17 +32,23 @@ EXPECTED_REVIEW_WALKTHROUGH_IDS = {
     "early-years-core", "early-years-domain", "early-years-control",
     "explorer-first-bundle-teaching", "explorer-profile-prov", "explorer-profile-vocabulary",
     "explorer-profile-missing-label", "explorer-profile-boundaries",
+    "els-api-core03-complex-question",
 }
 EXPECTED_GUIDE_SOURCE_CAPTURE_GAPS: set[str] = set()
+ELS_WALKTHROUGH_ID = "els-api-core03-complex-question"
 
 
 def sha256(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
+def git_blob_sha1(data: bytes) -> str:
+    return hashlib.sha1(b"blob " + str(len(data)).encode() + b"\0" + data).hexdigest()
+
+
 def validate_receipt_summary(proof: dict, root: Path) -> dict:
     if proof.get("id", "").startswith("public-bundle-access.json#"):
-        raw = (root / ACCESS_DIRECTORY).read_bytes()
+        raw = (root / RETAINED_ACCESS_DIRECTORY).read_bytes()
         repository = proof["id"].split("#", 1)[1]
         entry = next((row for row in json.loads(raw).get("bundles", [])
                       if row.get("repository", "").removeprefix("https://github.com/") == repository), None)
@@ -305,6 +313,127 @@ def declared_bundle_urls(raw: bytes) -> set[str]:
     return values
 
 
+def retain_els_evidence(root: Path, path: str, family: str, digest: str) -> bytes:
+    prefix = f"registry/walkthrough-register/evidence/{family}/"
+    if not safe_relative(path) or not path.startswith(prefix):
+        raise ValueError("unsafe ELS evidence path")
+    target = root / path
+    if target.is_symlink() or not target.is_file():
+        raise ValueError("ELS evidence must be a retained regular file")
+    raw = target.read_bytes()
+    if sha256(raw) != digest:
+        raise ValueError("ELS retained evidence digest differs")
+    return raw
+
+
+def validate_els_public_browser_binding(row: dict, root: Path, source: dict) -> dict | None:
+    if row.get("id") != ELS_WALKTHROUGH_ID:
+        if row.get("public_browser_binding") is not None:
+            raise ValueError("unexpected ELS public browser binding")
+        return None
+
+    binding = row["public_browser_binding"]
+    proof = row["retained_proof"]
+    manifest_sha = binding["checksum_manifest_sha256"]
+    manifest = json.loads(retain_els_evidence(
+        root, binding["checksum_manifest_path"], "public-manifests", manifest_sha))
+    assets = json.loads(retain_els_evidence(
+        root, binding["assets_summary_path"], "retained-receipts", binding["assets_summary_sha256"]))
+    summary = json.loads(retain_els_evidence(
+        root, proof["receipt_summary_path"], "retained-receipts", proof["receipt_summary_sha256"]))
+    descriptor_raw = retain_els_evidence(
+        root, row["version_evidence_path"], "bundle-descriptors", row["version_evidence_sha256"])
+    descriptor = json.loads(descriptor_raw)
+    if (row.get("descriptor_binding") != "els-public-asset-manifest"
+            or row["descriptor_url"] != row["bundle_identity"]
+            or row.get("descriptor_http_status") is not None
+            or row["descriptor_observed_at"] != proof["observed_at"]
+            or row["reader_version"] != source["shared_reader_release"]["version"]
+            or binding["source_receipt_sha256"] != proof["sha256"]
+            or binding["summary_path"] != proof["receipt_summary_path"]
+            or binding["summary_sha256"] != proof["receipt_summary_sha256"]):
+        raise ValueError("ELS register does not bind its public observations to the exact receipt")
+
+    expected = {
+        "status": "passed",
+        "question": row["question"],
+        "walkthrough_id": row["id"],
+        "source_commit": row["current_source_commit"],
+        "okf_core_version": row["okf_core_version"],
+        "producer_product_version": row["producer_product_version"],
+        "bundle_identity": row["bundle_identity"],
+        "snapshot": descriptor["snapshot"],
+        "record_count": descriptor["counts"]["records"],
+        "descriptor_sha256": row["version_evidence_sha256"],
+        "checksums_sha256": manifest_sha,
+        "reader_version": row["reader_version"],
+        "reader_application_tree": "ab0c8afb2823c7945ceae0b977bd648cc17c89bdaf4174086aa1c2306399a388",
+        "public_assets_receipt_sha256": binding["assets_source_receipt_sha256"],
+        "automated_accessibility_results": "not-recorded-in-receipt",
+    }
+    if any(summary.get(field) != value for field, value in expected.items()):
+        raise ValueError("ELS browser receipt differs from the registered question, bundle or Reader")
+    journeys = summary["journeys"]
+    if (sorted(item["width"] for item in journeys) != [390, 1440]
+            or any(item.get("guide_diagram_and_prompt") is not True
+                   or item.get("reader_record") != "operation/data"
+                   or item.get("reload") is not True
+                   or item.get("page_errors") != [] for item in journeys)):
+        raise ValueError("ELS browser receipt lacks a passing desktop or mobile journey")
+
+    checksums = {item["path"]: item for item in manifest["files"]}
+    if (manifest["algorithm"] != "sha256"
+            or len(checksums) != len(manifest["files"]) or len(checksums) != manifest["fileCount"]
+            or assets["status"] != "assets-passed"
+            or assets["commit"] != row["current_source_commit"]
+            or assets["manifest_sha256"] != manifest_sha
+            or assets["source_receipt_sha256"] != summary["public_assets_receipt_sha256"]
+            or sorted(assets["assets"]) != sorted(checksums.keys() - {".nojekyll"})
+            or assets["asset_count"] != len(assets["assets"])):
+        raise ValueError("ELS public asset coverage differs from the checksum manifest")
+
+    guides = {}
+    for prefix in ("guide", "guide_markdown"):
+        raw = retain_els_evidence(
+            root, row[f"{prefix}_evidence_path"], "walkthrough-guides", row[f"{prefix}_sha256"])
+        path = row[f"{prefix}_source_path"]
+        if (not path.startswith("bundle/") or git_blob_sha1(raw) != row[f"{prefix}_git_blob_sha1"]
+                or not question_matches_source(path, row["question"], raw)):
+            raise ValueError("ELS guide differs from its registered Git blob or question")
+        guides[path.removeprefix("bundle/")] = raw
+    if f'snapshot <code>{descriptor["snapshot"]}</code>' not in html.unescape(
+            guides["complex-question.html"].decode("utf-8")):
+        raise ValueError("ELS guide does not print the registered snapshot")
+    asset_path = PurePosixPath(urlsplit(row["descriptor_url"]).path).name
+    for path, raw in (guides | {asset_path: descriptor_raw}).items():
+        if checksums.get(path) != {"path": path, "sha256": sha256(raw), "bytes": len(raw)}:
+            raise ValueError("ELS guide or descriptor differs from the public checksum manifest")
+
+    return {
+        "id": "els-api-core03-public-assets-20261125",
+        "captured_at": row["descriptor_observed_at"],
+        "descriptor_url": row["descriptor_url"],
+        "descriptor_evidence_path": row["version_evidence_path"],
+        "descriptor_sha256": row["version_evidence_sha256"],
+        "descriptor_bytes": len(descriptor_raw),
+        "identity_field": row["descriptor_identity_field"],
+        "descriptor_identity": row["bundle_identity"],
+        "schema": descriptor["schema"],
+        "okf_version": descriptor["okf_version"],
+        "producer_product_version": descriptor["version"],
+        "snapshot": descriptor["snapshot"],
+        "record_count": descriptor["counts"]["records"],
+        "public_asset_path": asset_path,
+        "public_asset_verification": "passed-in-browser-receipt-and-checksum-manifest",
+        "manifest_sha256": manifest_sha,
+        "source_commit": assets["commit"],
+        "source_tree": assets["tree"],
+        "receipt_sha256": proof["sha256"],
+        "receipt_summary_sha256": proof["receipt_summary_sha256"],
+        "repository": f'https://github.com/{row["repository"]}',
+    }
+
+
 def load(root: Path = ROOT) -> dict:
     source = json.loads((root / SOURCE).read_text(encoding="utf-8"))
     denominator = json.loads((root / DENOMINATOR).read_text(encoding="utf-8"))
@@ -438,6 +567,7 @@ def load(root: Path = ROOT) -> dict:
             or len(review_ids) + len(references) != source.get("scope", {}).get("public_walkthrough_count")):
         raise ValueError("public walkthrough total must include the source-bound Explorer reference")
     root_index = {(row["repository"], row["root_path"]): row for row in roots}
+    post_capture = []
     for row in review_walkthroughs:
         walkthrough_guide_bytes = None
         root_key = (row.get("repository"), row.get("root_path"))
@@ -465,9 +595,9 @@ def load(root: Path = ROOT) -> dict:
         if captured_path.is_symlink() or not captured_path.is_file():
             raise ValueError("captured walkthrough source must be a regular local file")
         captured_bytes = captured_path.read_bytes()
-        git_blob_sha1 = hashlib.sha1(b"blob " + str(len(captured_bytes)).encode() + b"\0" + captured_bytes).hexdigest()
+        source_blob_sha1 = git_blob_sha1(captured_bytes)
         if (sha256(captured_bytes) != row.get("source_sha256")
-                or git_blob_sha1 != row.get("source_git_blob_sha1")):
+                or source_blob_sha1 != row.get("source_git_blob_sha1")):
             raise ValueError("captured walkthrough source bytes do not match their SHA-256 and Git blob identity")
         if not question_matches_source(row["source_path"], row["question"], captured_bytes):
             raise ValueError("walkthrough question is not present in its captured authored source")
@@ -485,16 +615,24 @@ def load(root: Path = ROOT) -> dict:
                 raise ValueError("captured walkthrough guide must be a regular local file")
             guide_bytes = guide_file.read_bytes()
             walkthrough_guide_bytes = guide_bytes
-            guide_git_blob = hashlib.sha1(b"blob " + str(len(guide_bytes)).encode() + b"\0" + guide_bytes).hexdigest()
+            guide_git_blob = git_blob_sha1(guide_bytes)
             if (sha256(guide_bytes) != row.get("guide_sha256")
                     or guide_git_blob != row.get("guide_git_blob_sha1")):
                 raise ValueError("captured walkthrough guide bytes do not match their SHA-256 and Git blob identity")
             if not question_matches_source(row["guide_source_path"], row["question"], guide_bytes):
                 raise ValueError("walkthrough question does not match its captured guide HTML")
-            if (row.get("descriptor_url")
-                    and row["descriptor_url"] not in declared_bundle_urls(guide_bytes)
-                    and row.get("descriptor_binding") != "walkthrough-packet-descriptor-sha256"):
-                raise ValueError("walkthrough descriptor URL differs from the guide's exact Reader bundle link")
+            if row.get("descriptor_url") and row["descriptor_url"] not in declared_bundle_urls(guide_bytes):
+                if row.get("descriptor_binding") == "walkthrough-packet-descriptor-sha256":
+                    pass
+                elif (row.get("id") == ELS_WALKTHROUGH_ID
+                      and row.get("descriptor_binding") == "els-public-asset-manifest"):
+                    guide_text = html.unescape(guide_bytes.decode("utf-8"))
+                    if (row["descriptor_url"] not in guide_text
+                            or f'version <code>{row.get("producer_product_version")}</code>' not in guide_text
+                            or f'OKF Core <code>{row.get("okf_core_version")}</code>' not in guide_text):
+                        raise ValueError("ELS guide does not print the exact descriptor identity and edition")
+                else:
+                    raise ValueError("walkthrough descriptor URL differs from the guide's exact Reader bundle link")
         if (not isinstance(row.get("title"), str) or not row["title"].strip()
                 or not isinstance(row.get("question"), str) or not row["question"].strip()):
             raise ValueError("walkthrough review entry needs its actual title and question")
@@ -561,9 +699,14 @@ def load(root: Path = ROOT) -> dict:
                         or packet.get("version") != row.get("producer_product_version")):
                     raise ValueError("walkthrough packet does not bind its exact bundle descriptor bytes")
             if row.get("descriptor_url"):
+                descriptor_status_valid = row.get("descriptor_http_status") == 200 or (
+                    row.get("id") == ELS_WALKTHROUGH_ID
+                    and row.get("descriptor_binding") == "els-public-asset-manifest"
+                    and row.get("descriptor_http_status") is None
+                )
                 if (not safe_public_url(row["descriptor_url"])
                         or bundle_descriptor.get("schema") != row.get("descriptor_schema")
-                        or row.get("descriptor_http_status") != 200
+                        or not descriptor_status_valid
                         or row.get("descriptor_bytes") != len(evidence_bytes)):
                     raise ValueError("walkthrough descriptor observation is incomplete or unsafe")
                 try:
@@ -704,6 +847,8 @@ def load(root: Path = ROOT) -> dict:
             raise ValueError("current page observation is duplicated in its history")
         for historical_page in historical_pages:
             validate_page_observation(root, row, historical_page, historical=True)
+        if row.get("id") == ELS_WALKTHROUGH_ID or row.get("public_browser_binding") is not None:
+            post_capture.append(validate_els_public_browser_binding(row, root, source))
 
     for descriptor in source.get("public_bundle_descriptor_observations", []):
         old = access_rows[descriptor["repository"].removeprefix("https://github.com/")]
@@ -757,6 +902,9 @@ def load(root: Path = ROOT) -> dict:
         if descriptor.get("previous_pinned_source_commit"):
             if not re.fullmatch(r"[0-9a-f]{40}", descriptor["previous_pinned_source_commit"]):
                 raise ValueError("invalid pinned source commit")
+
+    if source.get("post_capture_descriptor_observations", []) != post_capture:
+        raise ValueError("post-capture descriptor observation differs from the public asset proof")
 
     for walkthrough in source.get("walkthroughs", []):
         for key in ("question", "bundle_id", "root_id"):
@@ -833,6 +981,7 @@ def render(source: dict) -> dict[Path, str]:
             for o in r["observations"]
         ]} for r in source["roots"]],
         "public_bundle_descriptor_observations": source["public_bundle_descriptor_observations"],
+        "post_capture_descriptor_observations": source.get("post_capture_descriptor_observations", []),
         "walkthroughs": source.get("walkthroughs", []),
         "repository_visibility_observations": source.get("repository_visibility_observations", []),
         "review_walkthroughs": [
@@ -855,7 +1004,7 @@ def render(source: dict) -> dict[Path, str]:
              "A Pages descriptor capture records the bytes served at that route on its observation date. It does not establish a tagged release, accepted candidate, full-bundle conformance or legal sufficiency. Root inventory commits and dates are discovery observations; they are not publication receipts.", "",
              f"Shared Reader package: {source['shared_reader_release']['version']}. This is a Reader version, not an OKF core declaration; its revision and evidence are in the machine-readable register.", ""]
     descriptor_lines = ["## Current public descriptor observations", "",
-             "The table records exact anonymous HTTP descriptor bytes captured on 25 November 2026. A changed digest does not inherit an earlier release or walkthrough acceptance. These captures do not re-run browser or conformance checks.", "",
+             "The table records the 13 exact anonymous HTTP descriptor bytes captured in the 25 November access-directory batch. A changed digest does not inherit an earlier release or walkthrough acceptance. These captures do not re-run browser or conformance checks.", "",
              "| Repository | Descriptor core | Declared bundle version/edition | Current bytes | Prior directory digest | Walkthrough evidence |", "| --- | --- | --- | --- | --- | --- |"]
     for d in source["public_bundle_descriptor_observations"]:
         match = "same" if d.get("previous_access_digest_matches") else "changed"
@@ -864,6 +1013,16 @@ def render(source: dict) -> dict[Path, str]:
         guide = f"{listed} walkthrough(s) listed above; inspect each dated status" if listed else "not listed"
         title = d["title"].replace("|", "\\|").replace("`", "\\`").replace("[", "\\[").replace("]", "\\]")
         descriptor_lines.append(f"| [{title}]({d['repository']}) | {d['okf_version']} | {d['producer_product_version']} | `{d['descriptor_sha256']}` ({d['captured_at']}) | {match} | {guide} |")
+    descriptor_lines.extend(["", "## Later producer-owned public asset observations", "",
+                             "These observations are separate from the 13-entry HTTP descriptor batch above. They use the public browser and asset receipts plus the producer's checksum manifest; they do not record a direct HTTP status or extend release approval.", "",
+                             "| Producer | Core | Declared edition | Descriptor SHA-256 | Observed | Public evidence |",
+                             "| --- | --- | --- | --- | --- | --- |"])
+    for item in source.get("post_capture_descriptor_observations", []):
+        descriptor_lines.append(
+            f"| [{item['repository'].removeprefix('https://github.com/')}](https://github.com/{item['repository'].removeprefix('https://github.com/')}) | "
+            f"{item['okf_version']} | {item['producer_product_version']} | `{item['descriptor_sha256']}` | "
+            f"{item['captured_at']} | `{item['public_asset_path']}` in a passed asset and browser receipt |"
+        )
     lines.extend(["", "## Explorer reference walkthrough with hash-bound local evidence", ""])
     if source.get("walkthroughs"):
         for w in source["walkthroughs"]:
@@ -898,6 +1057,11 @@ def render(source: dict) -> dict[Path, str]:
         if current_browser:
             browser_status = (f" Current browser proof: passed ({current_browser['observed_at']}); "
                               f"desktop and mobile journeys for this guide using Reader {w.get('reader_version', 'not recorded')}.")
+        public_browser_binding = w.get("public_browser_binding")
+        if public_browser_binding:
+            browser_status = (f" Public Chrome proof: passed ({proof_date}); 85 public asset hashes and "
+                              f"desktop and mobile journeys passed for Reader {w.get('reader_version', 'not recorded')}. "
+                              "The receipt does not record axe results.")
         assets_proof = next((item for item in w.get("supporting_receipts", [])
                              if item.get("id") == "hansard-stage6-public-assets"), None)
         if assets_proof:
@@ -910,17 +1074,22 @@ def render(source: dict) -> dict[Path, str]:
         if w.get("descriptor_url"):
             descriptor_links.append(f"[bundle descriptor]({w['descriptor_url']})")
         descriptor_links.extend(f"[related descriptor]({item['url']})" for item in w.get("supplemental_descriptors", []))
-        if w.get("descriptor_http_status") == 404:
+        if w.get("descriptor_binding") == "els-public-asset-manifest":
+            descriptor_note = (f" Descriptor bytes are bound to the public asset checksum manifest at "
+                               f"{w.get('descriptor_observed_at', '')}; no direct HTTP status is recorded: "
+                               f"{descriptor_links[0]}.") if descriptor_links else ""
+        elif w.get("descriptor_http_status") == 404:
             descriptor_note = f" Descriptor URL returned HTTP 404 on {w.get('descriptor_observed_at', '')}: {descriptor_links[0]} (version remains unknown)." if descriptor_links else ""
         elif descriptor_links:
             descriptor_note = f" Exact descriptor returned HTTP {w.get('descriptor_http_status', 200)} on {w.get('descriptor_observed_at', '')}: " + " · ".join(descriptor_links) + "."
         else:
             descriptor_note = ""
         guide_status = w["guide_status"].removesuffix("; current page not rechecked")
+        proof_label = "Public proof" if public_browser_binding else "Earlier evidence"
         lines.extend([f"### {title}", "", q, "",
                       f"**Version:** {core}; declared bundle version/edition {product}; shared Reader {w.get('reader_version') or 'not recorded'}.{descriptor_note}", "",
                       f"[Guide]({w['guide_url']}) · [Question and evidence source]({w['source_url']})", "",
-                      f"Earlier evidence: {proof['status']} ({proof_date}); {guide_status}", "",
+                      f"{proof_label}: {proof['status']} ({proof_date}); {guide_status}", "",
                       current_status + prior_page_status + browser_status, ""])
     lines.extend(["", *descriptor_lines])
     lines.extend(["", "## Repository visibility observation", "",

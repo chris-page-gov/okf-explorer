@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; img-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <title>Trace a complex ELS API question</title>
+  <link rel="stylesheet" href="site.css">
+</head>
+<body class="question-page">
+  <a class="skip-link" href="#main-content">Skip to the evidence guide</a>
+  <header class="site-header"><div class="shell header-inner">
+    <a class="brand" href="./"><span class="brand-mark" aria-hidden="true">OKF</span><span><strong>Explore Local Statistics API</strong><small>metadata-only discovery bundle</small></span></a>
+    <nav aria-label="Bundle links"><a href="index.html">Bundle home</a><a href="index.md">OKF Core 0.3 source</a></nav>
+  </div></header>
+  <main id="main-content" class="shell question-main">
+    <p class="eyebrow">Source-linked walkthrough · frozen evidence</p>
+    <h1>Trace a complex ELS API question</h1>
+    <p class="question-callout"><strong>Question</strong><br>When requesting indicator data, which geography and date filters can a client plan, and what evidence limits apply to an answer?</p>
+    <p class="warning question-warning">The upstream wiki says this API is internal/private, is not intended for non-ONS web applications, may change without notice, and prevents cross-origin browser requests.</p>
+    <p class="bundle-identity">Bundle identity: <code>https://chris-page-gov.github.io/okf-els-api/okf-explorer.json</code> · version <code>0.3.0</code> · OKF Core <code>0.3</code> · snapshot <code>els-wiki-2026-07-20</code>.</p>
+    <section aria-labelledby="answer-title" class="worked-answer">
+      <h2 id="answer-title">Worked answer from the pinned records</h2>
+      <h3>Date filters</h3>
+      <p>The reviewed data route records `time` as latest, earliest, all, one date or a comma-separated inclusive range. `timeNearest` selects none, latest, earliest or any when a date falls outside an indicator&#x27;s range. The recorded defaults are latest and none. See the pinned <a href="knowledge/documents/Requesting-data.md">wiki page</a> and <a href="knowledge/operations/data.md">reviewed data operation</a>.</p>
+      <h3>Geography filters</h3>
+      <p>The reviewed data route records `geo` as one or more comma-separated geography-level keys or GSS codes, `geoExtent` as a parent GSS code, and `geoCluster` as a statistical cluster. Their recorded defaults are all. A separate `/api/v1/geo/lookup/{code}` route takes a GSS code and is described as returning one GeoJSON feature; it has no query parameters in this review. See the pinned <a href="knowledge/documents/Requesting-geographic-information.md">geography page</a>, <a href="knowledge/operations/data.md">data operation</a> and <a href="knowledge/operations/geo-lookup.md">single-area lookup</a>.</p>
+      <h3>Conflicts and evidence limits</h3>
+      <p>The wiki says the data route&#x27;s `hasGeo` default is all, while the pinned application review records any. The wiki also contradicts itself about the `includeNames` name/default; the reviewed route accepts `includeNames` and records true. Keep those differences visible rather than choosing a live truth. Read the <a href="knowledge/issues/drift-data-hasgeo-default.md">hasGeo default finding</a> and <a href="knowledge/issues/drift-data-includenames.md">includeNames finding</a>.</p>
+      <p>This is a frozen wiki snapshot and bounded static source review, not a live check. The measure parameter&#x27;s allowed values and interactions are undocumented, and complete response/error schemas are absent. The bundle cannot establish current behaviour or a safe executable request. See the <a href="knowledge/issues/gap-data-measure.md">measure documentation gap</a>, <a href="knowledge/issues/gap-response-schemas.md">response-schema gap</a> and <a href="knowledge/snapshots/wiki-and-source.md">snapshot boundary</a>.</p>
+    </section>
+    <figure class="question-diagram">
+      <img src="knowledge/artifacts/complex-question.svg" alt="Four linked evidence stages: pinned wiki claims, operation concepts, preserved conflicts and a non-executing plan shape.">
+      <figcaption>Follow each stage to inspect the source or review record behind it.</figcaption>
+    </figure>
+    <nav class="evidence-controls" aria-label="Evidence stages">
+      <a href="knowledge/documents/Requesting-data.md"><span>1</span><strong>Wiki guidance</strong><small>Data and geography pages</small></a>
+      <a href="knowledge/operations/data.md"><span>2</span><strong>Operation concepts</strong><small>Reviewed route shapes</small></a>
+      <a href="knowledge/issues/index.md"><span>3</span><strong>Known conflicts</strong><small>Findings and evidence gaps</small></a>
+      <a href="knowledge/artifacts/selection-plan.md"><span>4</span><strong>Plan shape</strong><small>No API request is made</small></a>
+    </nav>
+    <section aria-labelledby="source-title" class="source-panel">
+      <h2 id="source-title">Source and rights controls</h2>
+      <details><summary>Wiki snapshot and rights evidence</summary>
+        <p><a href="https://github.com/ONSdigital/explore-local-statistics-app/wiki">Pinned ELS wiki</a>, commit <code>3da822e28d775f1213d328573da34aba8278d79f</code>.</p>
+        <p>The wiki has no separate licence file. The associated application repository licenses software and associated documentation under MIT. <a href="https://github.com/ONSdigital/explore-local-statistics-app/blob/develop/LICENSE.md">View associated licence evidence</a>.</p>
+      </details>
+      <details><summary>Application source review</summary>
+        <p>Static review pinned to application commit <code>795eaf204f47986f6be248a63f857a42afe4fdf2</code>. This does not establish current application or live service behaviour.</p>
+        <p><a href="knowledge/snapshots/wiki-and-source.md">Read the complete snapshot boundary</a>.</p>
+      </details>
+    </section>
+    <section aria-labelledby="handoff-title" class="handoff-panel">
+      <h2 id="handoff-title">Copyable AI handoff</h2>
+      <p>Select the bounded prompt below and copy it with the linked bundle evidence available to your model.</p>
+      <label for="handoff-prompt">Prompt</label>
+      <textarea id="handoff-prompt" readonly rows="10" spellcheck="false">Using only these exact bundle files: knowledge/documents/Requesting-data.md; knowledge/documents/Requesting-geographic-information.md; knowledge/operations/data.md; knowledge/operations/geo-lookup.md; knowledge/issues/drift-data-hasgeo-default.md; knowledge/issues/drift-data-includenames.md; knowledge/issues/gap-data-measure.md; knowledge/issues/gap-response-schemas.md; knowledge/artifacts/selection-plan.md; knowledge/snapshots/wiki-and-source.md. Answer: When requesting indicator data, which geography and date filters can a client plan, and what evidence limits apply to an answer? Separate wiki statements from pinned application-source observations. Cite each claim with its local file and source link. Preserve contradictions and unknowns. Do not infer current behaviour, execute requests, invent response values, or treat the selection plan as permission to call the API. If a claim is not supported by these records, say that evidence is insufficient.</textarea>
+      <p class="boundary-note">The prompt forbids live calls and requires unsupported claims to be labelled as insufficient evidence.</p>
+      <a href="knowledge/artifacts/ai-handoff.md">Open the plain Markdown prompt</a>
+    </section>
+  </main>
+  <footer><div class="shell"><p>Bundle generation and both source snapshot dates remain distinct. Current live state: not checked.</p><a href="./">Return to the bundle</a></div></footer>
+</body>
+</html>

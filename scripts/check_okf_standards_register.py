@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 import re
+from hashlib import sha256
 from pathlib import Path
 from typing import Any
 
@@ -18,6 +19,52 @@ def load_json(path: Path) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise ValueError(f"Expected a JSON object: {path}")
     return value
+
+
+def check_current_owner_catalogue(root: Path, entry: dict[str, Any], access: dict[str, Any]) -> list[str]:
+    """Check the published derivative and distinguish retained evidence from candidates."""
+    day = entry.get("observed_on", "")
+    path = entry.get("path", "")
+    if (not isinstance(day, str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", day)
+            or path != f"docs/evidence/okf-public-owner-candidates-{day}.json"):
+        return ["Invalid current public owner catalogue path"]
+    try:
+        raw = (root / path).read_bytes()
+        catalogue = json.loads(raw)
+        rows = catalogue["repositories"]
+        retained = catalogue["retained_verification_roots"]
+        root_keys = {(row["repository"], item["root"]) for row in rows for item in row["roots"]}
+        retained_keys = {(item["repository"], item["root"]) for item in retained}
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        return [f"Cannot read current public owner catalogue: {exc}"]
+
+    errors = []
+    url = "https://raw.githubusercontent.com/chris-page-gov/okf-explorer/main/" + path
+    if entry.get("url") != url or access.get("machine") != url or access.get("observed_on") != day:
+        errors.append("Current public owner catalogue links or dates do not agree")
+    digest = sha256(raw).hexdigest()
+    if entry.get("sha256") != digest or access.get("sha256") != digest:
+        errors.append("Current public owner catalogue digest does not match both references")
+    if (catalogue.get("owner") != "chris-page-gov" or catalogue.get("visibility") != "public"
+            or catalogue.get("discovery_coverage") != "complete"
+            or not catalogue.get("index_inspection_requested")
+            or not str(catalogue.get("observed_at", "")).startswith(day + "T")
+            or any(row.get("visibility") != "public"
+                   or not re.fullmatch(r"chris-page-gov/[A-Za-z0-9_.-]+", row["repository"]) for row in rows)):
+        errors.append("Current owner catalogue must contain only verified public discovery rows")
+    public_count = catalogue.get("public_repositories")
+    if (public_count != entry.get("public_repositories") or public_count != catalogue.get("repositories_seen")
+            or sum(bool(row["roots"]) for row in rows) != entry.get("candidate_repositories")
+            or entry.get("candidate_repositories") != catalogue.get("candidate_repositories")
+            or len(root_keys) != sum(len(row["roots"]) for row in rows)
+            or len(root_keys) != catalogue.get("marker_root_count") or len(root_keys) != entry.get("marker_roots")
+            or len({row["repository"] for row in rows}) != len(rows)):
+        errors.append("Current public owner catalogue count does not match its rows or reference")
+    if (not retained_keys <= root_keys or len(retained_keys) != len(retained)
+            or len(retained) != entry.get("retained_verification_roots")
+            or any(item.get("role") not in {"captured verification evidence", "retained diagnostic projection"} for item in retained)):
+        errors.append("Retained verification roots must refer to distinct labelled scan rows")
+    return errors
 
 
 def check_register(root: Path = ROOT) -> list[str]:
@@ -70,7 +117,7 @@ def check_register(root: Path = ROOT) -> list[str]:
         errors.append("Bundle Wiki profile v1 must remain separately recorded as frozen over core 0.2")
 
     catalogues = register.get("bundle_catalogues", {})
-    for key in ("public_bundle_access", "public_owner_candidates"):
+    for key in ("public_bundle_access", "public_owner_candidates", "prior_public_owner_candidates"):
         item = catalogues.get(key, {})
         target = root / str(item.get("path", ""))
         if not item.get("url") or not target.is_file():
@@ -93,6 +140,7 @@ def check_register(root: Path = ROOT) -> list[str]:
     owner_path = access.get("owner_catalogue", {}).get("path")
     if owner_path != catalogues.get("public_owner_candidates", {}).get("path"):
         errors.append("Public access directory and standards register disagree on owner catalogue path")
+    errors.extend(check_current_owner_catalogue(root, catalogues.get("public_owner_candidates", {}), access.get("owner_catalogue", {})))
 
     return errors
 

@@ -41,7 +41,7 @@
       "verification": {
         "method": "GitHub path history and immutable raw content",
         "raw_url": "https://raw.githubusercontent.com/GoogleCloudPlatform/knowledge-catalog/ee67a5ca27044ebe7c38385f5b6cffc2305a9c1a/okf/SPEC.md",
-        "content_marker": "Version 0.1 \u2014 Draft",
+        "content_marker": "Version 0.1 — Draft",
         "commit_date_source": "https://api.github.com/repos/GoogleCloudPlatform/knowledge-catalog/commits/ee67a5ca27044ebe7c38385f5b6cffc2305a9c1a"
       },
       "provenance_note": "The pinned document identifies itself as OKF version 0.1. The revision date is the Git commit date; no separate release announcement date is asserted."
@@ -85,6 +85,18 @@
       "scope": "Thirteen reviewed public owner-authored bundle entries at the directory's observation date; this is a discovery catalogue, not a complete owner inventory or conformance decision."
     },
     "public_owner_candidates": {
+      "title": "Public owner repository candidate scan",
+      "path": "docs/evidence/okf-public-owner-candidates-2026-11-25.json",
+      "url": "https://raw.githubusercontent.com/chris-page-gov/okf-explorer/main/docs/evidence/okf-public-owner-candidates-2026-11-25.json",
+      "observed_on": "2026-11-25",
+      "scope": "Public default-branch discovery covering declared indexes and runtime markers. Captures and diagnostic projections are labelled separately. Review each candidate before asserting bundle or release acceptance.",
+      "sha256": "079c0f7ad05ec85952a0654dfb00e9c2a42c4340650bcc7dacd1fd88fc3767c5",
+      "public_repositories": 219,
+      "candidate_repositories": 22,
+      "marker_roots": 77,
+      "retained_verification_roots": 7
+    },
+    "prior_public_owner_candidates": {
       "title": "Public owner repository candidate scan",
       "path": "docs/evidence/okf-public-owner-candidates-2026-11-23.json",
       "url": "https://raw.githubusercontent.com/chris-page-gov/okf-explorer/main/docs/evidence/okf-public-owner-candidates-2026-11-23.json",
