@@ -1,0 +1,164 @@
+{
+  "@context": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/context.jsonld",
+  "@id": "https://chris-page-gov.github.io/okf-els-api/okf-explorer.json",
+  "core_conformance": "Markdown concept layer",
+  "counts": {
+    "datasets": 38,
+    "documents": 6,
+    "formats": 9,
+    "governed_terms": 60,
+    "issues": 9,
+    "operations": 18,
+    "publishers": 2,
+    "records": 38,
+    "relationships": 69,
+    "resources": 18
+  },
+  "description": "Read-only statistical, metadata and geographic operations documented by the Explore Local Statistics application wiki.",
+  "entrypoint_integrity": {
+    "analysis_overview": {
+      "path": "data/analysis/overview.json",
+      "sha256": "9985a0f7f125aa519496269ec731f328e9667d63c1590b329f652385312d8034"
+    },
+    "conformance": {
+      "path": "data/standards/okf-v0.2.json",
+      "sha256": "29b98a85fd2d123f6489adb4ad778de31be9a49667580106188072f78cbde901"
+    },
+    "data_manifest": {
+      "path": "data/manifest.json",
+      "sha256": "647993cb933cafc76213ca1f6eab3ad5a8692045b8d23b70ff0830fcf370705e"
+    },
+    "overview_index": {
+      "path": "data/overview.json",
+      "sha256": "9c8a492d6c861c5912109f7df0cbaf5b8777ada64e344204010270430f8d7369"
+    },
+    "presentation": {
+      "path": "data/presentation.json",
+      "sha256": "c8454fe26b56de65259826bfed06c6b6c4d62f92607f7cf56a6127d4d8df5977"
+    },
+    "search_manifest": {
+      "path": "data/search/manifest.json",
+      "sha256": "459054e99bf8cab21db18dcb3d77e960d81bb21fdc4d14e8eeb8fbeb07df04cd"
+    },
+    "term_validation": {
+      "path": "data/standards/term-validation.json",
+      "sha256": "e1dd04c673e2438dfbe71fdbcc94e1228f722e1560773dc31be03c7006dcf56d"
+    },
+    "terms": {
+      "path": "data/standards/terms.json",
+      "sha256": "380715e67b38f21d12a951acbda106f82d2465a6f996b9ac08f3b446c678dba5"
+    }
+  },
+  "entrypoints": {
+    "analysis_overview": "data/analysis/overview.json",
+    "conformance": "data/standards/okf-v0.2.json",
+    "coverage": "data/coverage/ledger.json",
+    "data_manifest": "data/manifest.json",
+    "documents": "data/documents-0.json",
+    "formats": "data/formats.json",
+    "markdown_index": "index.md",
+    "openapi": "data/openapi.json",
+    "overview_index": "data/overview.json",
+    "parameters": "data/parameters.json",
+    "presentation": "data/presentation.json",
+    "review": "data/review/issues.json",
+    "search_manifest": "data/search/manifest.json",
+    "selection_contract": "data/selection-contract.json",
+    "semantic_jsonld": "okf-bundle.jsonld",
+    "semantic_yamlld": "okf-bundle.yamlld",
+    "snapshot": "data/provenance/wiki-snapshot.json",
+    "term_validation": "data/standards/term-validation.json",
+    "terms": "data/standards/terms.json",
+    "viewer": "https://chris-page-gov.github.io/okf-explorer/"
+  },
+  "extensions": {
+    "okf-api-discovery.v1": {
+      "execution_included": false,
+      "openapi": "openapi",
+      "read_only_documented_method": "GET",
+      "selection_contract": "selection_contract"
+    },
+    "okf-documentation-review.v1": {
+      "conflicts_preserved": true,
+      "live_probe_performed": false,
+      "review": "review"
+    },
+    "okf-explorer-analysis.v1": {
+      "entrypoint": "analysis_overview",
+      "mode": "external"
+    },
+    "okf-explorer-presentation.v1": {
+      "entrypoint": "presentation",
+      "mode": "external"
+    },
+    "okf-pages-publication.v1": {
+      "descriptor": "https://chris-page-gov.github.io/okf-els-api/okf-explorer.json",
+      "explorer": "https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-els-api%2Fokf-explorer.json%3Fversion%3D0.2.0",
+      "site": "https://chris-page-gov.github.io/okf-els-api/"
+    },
+    "okf-semantic-model.v1": {
+      "live_vocabulary_lookup_performed": false,
+      "status": "experimental",
+      "term_registry": "terms",
+      "validation_model": "recognition-provenance-kind-and-bounded-application",
+      "validation_report": "term_validation"
+    },
+    "okf-v0.2": {
+      "attested_computation_execution": "not-included",
+      "normative_entrypoint": "index.md",
+      "specification": "https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/3fcbb9f828c2f23d109c855ee403c3a4c81f3a96/okf/SPEC.md",
+      "trust_model": "derived-from-verified"
+    }
+  },
+  "generated_at": "2026-07-25T12:17:29Z",
+  "kind": "okf-large-corpus",
+  "license": "https://github.com/chris-page-gov/okf-els-api/blob/main/LICENSE",
+  "normative_entrypoint": "index.md",
+  "okf_version": "0.2",
+  "performance": {
+    "full_record_hydration": "single-chunk",
+    "relationship_hydration": "single-chunk",
+    "search": "static browser index",
+    "startup_mode": "eager-small-corpus"
+  },
+  "profile": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/",
+  "publication": {
+    "descriptor": "https://chris-page-gov.github.io/okf-els-api/okf-explorer.json",
+    "okf_explorer": "https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-els-api%2Fokf-explorer.json%3Fversion%3D0.2.0",
+    "site": "https://chris-page-gov.github.io/okf-els-api/"
+  },
+  "publisher": "https://github.com/chris-page-gov/okf-els-api",
+  "schema": "okf-explorer-large-corpus.v1",
+  "scope": {
+    "api_operations": 18,
+    "complete_for_all_els_behaviour": false,
+    "complete_for_declared_source_files": true,
+    "knowledge_concepts": 38,
+    "live_execution_included": false,
+    "metadata_only": true,
+    "observations_included": false,
+    "wiki_pages": 6
+  },
+  "semantic_descriptor": "okf-bundle.yamlld",
+  "snapshot": "els-wiki-2026-07-20",
+  "source": {
+    "application_source_commit": "795eaf204f47986f6be248a63f857a42afe4fdf2",
+    "title": "Explore Local Statistics application wiki",
+    "url": "https://github.com/ONSdigital/explore-local-statistics-app/wiki",
+    "verification_mode": "static-source-review",
+    "wiki_commit": "3da822e28d775f1213d328573da34aba8278d79f"
+  },
+  "status": "bounded-review-draft",
+  "title": "Explore Local Statistics API discovery OKF",
+  "version": "0.2.0",
+  "vocabulary": {
+    "publisher_plural": "publishers",
+    "publisher_singular": "publisher",
+    "record_plural": "knowledge concepts",
+    "record_singular": "knowledge concept",
+    "resource_plural": "endpoint templates",
+    "resource_singular": "endpoint template",
+    "search_placeholder": "Search operations, documents, findings, artifacts and standards terms"
+  },
+  "warning": "The upstream wiki says this API is internal/private, is not intended for non-ONS web applications, may change without notice, and prevents cross-origin browser requests."
+}

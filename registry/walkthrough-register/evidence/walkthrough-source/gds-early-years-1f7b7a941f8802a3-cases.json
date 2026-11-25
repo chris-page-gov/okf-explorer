@@ -1,0 +1,38 @@
+{
+  "schema": "ey-source-linked-walkthroughs.v1",
+  "cases": [
+    {
+      "id": "core",
+      "title": "Can linked records establish that support was delivered?",
+      "descriptor": "bundle/core-reference.json",
+      "source_root": "bundle",
+      "route": "concepts/record/h-01.md",
+      "records": ["record/h-01", "candidate/c-01", "candidate/c-02", "record/e-01", "record/e-03", "record/r-01", "action/a-01"],
+      "answer": "No. H-01 records a recommendation to discuss support and no referral submission. The reference graph helps locate the relevant source concepts; a link is not identity equivalence or evidence that an action was completed. Read the candidate and action source records before drawing a conclusion.",
+      "steps": ["Find H-01 and read its recorded concern and review note.", "Follow the source concepts for C-01 and C-02; both propose links involving H-01.", "Inspect R-01 and A-01. The recorded action is proposed, not completed.", "Keep the records separate and report the evidence gap."],
+      "negative_controls": ["A Markdown reference does not assert that two people are identical.", "A recommendation is not proof of a submitted referral.", "A missing completion record is not proof that no support occurred."]
+    },
+    {
+      "id": "domain",
+      "title": "How should competing candidate links and different action states be read?",
+      "descriptor": "bundle/okf-bundle.json",
+      "source_root": "bundle",
+      "route": "record/h-01",
+      "records": ["record/h-01", "candidate/c-01", "candidate/c-02", "record/e-01", "record/e-03", "record/r-01", "record/r-02", "record/r-03", "action/a-01", "action/a-02", "action/a-03", "rule/candidate-interpretation"],
+      "answer": "H-01 has two competing candidate record links: C-01 points to E-01 and C-02 points to E-03. They remain proposals governed by the candidate interpretation rule, not identity merges. R-01 records A-01 as proposed; R-02 records A-02 as completed; R-03 records A-03 as cancelled. Those action states belong to their own source records and must not be transferred to H-01 through a guessed identity join.",
+      "steps": ["Read H-01 and inspect incoming candidateSource assertions.", "Compare C-01 and C-02, their exact source locators and candidate targets.", "Read the candidate interpretation rule before following a proposed match.", "Compare the three referral assertions and preserve proposed, completed and cancelled states."],
+      "negative_controls": ["Candidate links do not create owl:sameAs identity assertions.", "Do not promote A-01 from proposed to completed.", "Do not transfer R-02's completion to H-01 through a guessed join.", "No confidence value is a calibrated probability of identity."]
+    },
+    {
+      "id": "control",
+      "title": "What can the same facts show without structured domain relationships?",
+      "descriptor": "baseline/control-explorer.json",
+      "source_root": "baseline",
+      "route": "record/h-01",
+      "records": ["record/h-01", "candidate/c-01", "candidate/c-02", "record/r-01", "action/a-01", "rule/candidate-interpretation"],
+      "answer": "The frozen 0.2 control retains the same fictional facts and Markdown prose. A reader can inspect H-01, both candidate proposals and the proposed action manually. Its runtime contains zero structured domain relationships, so an AI must not claim that those typed edges were supplied. Zero encoded edges does not establish that the prose describes no relationships.",
+      "steps": ["Open the historical 0.2 control and confirm its compatibility label.", "Read H-01 and inspect C-01 and C-02 manually.", "Compare the unchanged prose and source facts with the current domain bundle.", "Record the missing structured graph without inventing or denying relationships."],
+      "negative_controls": ["The historical control is not a migrated 0.3 bundle.", "Zero encoded relationships does not mean no relationships are described.", "A comparison control is not evidence of identity or operational authority."]
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "id": "design-code-policy-discovery",
+  "question": "Which design-code records should a planner inspect alongside the National Planning Policy Framework, and what can this bundle establish about a proposal’s compliance?",
+  "answer": "The frozen catalogue links Design code, Design code area and Design code rule to the National Planning Policy Framework through three inferred derived-from-policy links. These links provide a route to source material for further investigation. They do not assess a particular proposal, establish current policy wording or prove compliance. The same qualification applies to all 40 rule-derived links in this bundle.",
+  "primary_route": "dataset/design-code",
+  "source_routes": ["dataset/design-code", "dataset/design-code-area", "dataset/design-code-rule"],
+  "target_route": "dataset/nppf-framework-policy",
+  "kind": "derived-from-policy",
+  "limitations": [
+    "The source snapshot is dated 25 July 2026. The review date of 25 October 2026 is overdue and has not been extended by format migration.",
+    "All 230 concepts are draft records. They have not been recorded as human-verified; source endorsement is not claimed.",
+    "The 40 domain links are inferred deterministic collection rules. They are not OKF Core assertions or qualified Bundle Wiki assertions.",
+    "The 34,391,082 entity figure is catalogue metadata, not a count independently acquired or verified by this pilot.",
+    "Per-record rights and attribution apply. MCP bindings describe discovery metadata and do not provide executable services or access permission."
+  ],
+  "negative_controls": [
+    "Do not conclude that a proposal complies with the NPPF from a derived-from-policy link.",
+    "Do not treat a July snapshot as current policy or a November format migration as source review.",
+    "Do not interpret a dataset record, entity count or MCP binding as permission, live availability or executable access."
+  ]
+}

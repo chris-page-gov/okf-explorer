@@ -20,6 +20,7 @@ access page tools, links or files. Explorer does not itself run an AI model.
 | --- | --- |
 | Get oriented | [Start here](docs/onboarding/index.md) |
 | Find a relevant collection | [Example catalogue](docs/onboarding/examples.md) |
+| Review public roots and walkthrough coverage | [Public OKF walkthrough register](docs/walkthrough-register.md) |
 | Find exact web and GitHub bundle routes | [Public bundle access directory](docs/public-bundle-access.md) |
 | Connect evidence to your tools | [AI access routes](docs/ai-okf-usage.md) |
 | Find an answer, review a subject, work or learn | [Audience journeys](docs/onboarding/audience-journeys.md) |

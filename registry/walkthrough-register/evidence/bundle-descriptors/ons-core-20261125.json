@@ -1,0 +1,974 @@
+{
+  "bundle_id": "https://chris-page-gov.github.io/okf-ons/okf-core-explorer.json",
+  "edges": [],
+  "kind": "okf-bundle",
+  "meta": {
+    "description": "Portable Reader projection of 12 authored OKF Markdown concepts; separate from the metadata extension graph.",
+    "frontmatter": {
+      "okf_version": "0.3"
+    },
+    "navigation": [
+      {
+        "body": "# OKF ONS concepts\n\n* [Catalogue](catalogue.md) - canonical catalogue and Explorer extensions.\n* [Snapshot](snapshot.md) - frozen metadata and freshness boundary.\n* [Sources](sources/) - bounded source lanes.\n* [Provider datapack](provider-datapack.md) - snapshot/reviewed-live state.\n* [Governance](governance.md) - authority, integrity and trust boundary.\n* [Standards](standards.md) - conformance and standards evidence.\n* [MCP selection](mcp-selection.md) - non-executing selection contract.\n",
+        "concepts": [
+          "concepts/catalogue.md",
+          "concepts/governance.md",
+          "concepts/mcp-selection.md",
+          "concepts/provider-datapack.md",
+          "concepts/snapshot.md",
+          "concepts/standards.md"
+        ],
+        "path": "concepts/index.md"
+      },
+      {
+        "body": "# Bounded metadata sources\n\n* [ONS Data API dataset catalogue](ons-data-api.md) - 337 frozen metadata records.\n* [Nomis dataset definitions](nomis-dataset-definitions.md) - 1,617 frozen metadata records.\n* [ONS Open Geography Portal dataset search](ons-open-geography.md) - 3,035 frozen metadata records.\n* [ONS Explore Local Statistics indicator metadata](ons-explore-local-statistics.md) - 108 frozen metadata records.\n",
+        "concepts": [
+          "concepts/sources/nomis-dataset-definitions.md",
+          "concepts/sources/ons-data-api.md",
+          "concepts/sources/ons-explore-local-statistics.md",
+          "concepts/sources/ons-open-geography.md"
+        ],
+        "path": "concepts/sources/index.md"
+      },
+      {
+        "body": "\n# ONS data discovery OKF\n\nThis is the canonical OKF 0.3 entrypoint for a bounded, metadata-only ONS discovery snapshot. It contains no statistical observation values.\n\n# Knowledge concepts\n\n* [Catalogue and extension entrypoints](concepts/catalogue.md) - the metadata catalogue and its large-corpus Explorer projection.\n* [Governed frozen snapshot](concepts/snapshot.md) - snapshot identity, coverage and freshness boundary.\n* [Source lanes](concepts/sources/) - the four bounded metadata sources.\n* [Provider snapshot/live datapack](concepts/provider-datapack.md) - the dated reviewed-live distinction.\n* [Governance](concepts/governance.md) - authority, integrity and non-endorsement boundaries.\n* [Standards evidence](concepts/standards.md) - structural OKF 0.3 conformance and other evidence mappings.\n* [MCP selection contract](concepts/mcp-selection.md) - non-executing selection metadata.\n\n# Compatibility and extensions\n\nThe Markdown concepts are the portable OKF core. [`okf-core-explorer.json`](okf-core-explorer.json) exposes all 12 typed Markdown concepts to a portable Reader. The 5,097-record metadata extension graph is separate at [`okf-explorer.json`](okf-explorer.json) and `data/semantic/manifest.json`; the core projection asserts no concept-to-concept edges. YAML-LD, JSON-LD, static search, facets, federation, integrity files and provider datapacks are additive extensions. Concept documents retain the legacy `timestamp` and `# Citations` forms for best-effort v0.1 consumers; v0.3 consumers must prefer `generated` and `sources`.\n",
+        "concepts": [
+          "concepts/catalogue.md",
+          "concepts/governance.md",
+          "concepts/mcp-selection.md",
+          "concepts/provider-datapack.md",
+          "concepts/snapshot.md",
+          "concepts/standards.md"
+        ],
+        "path": "index.md"
+      }
+    ],
+    "title": "ONS data discovery OKF core concepts"
+  },
+  "nodes": {
+    "accessibility.md": {
+      "body": "# Accessibility statement\n\nLast reviewed: 17 July 2026.\n\nThis statement covers the public `okf-ons` GitHub Pages demonstrator at\n<https://chris-page-gov.github.io/okf-ons/>.\n\n## Accessibility status\n\nThe demonstrator is designed toward the Web Content Accessibility Guidelines\n(WCAG) 2.2 level AA and the UK public-sector accessibility requirements. It has\nnot yet received a formal independent accessibility audit and must not be\ndescribed as certified compliant.\n\n## What should work\n\n- Navigate every control with a keyboard.\n- Use a visible skip link to reach dataset discovery.\n- Read labelled search, facet, tab and comparison controls with assistive\n  technology.\n- Zoom and reflow the interface at narrow widths without losing functions.\n- Use reduced-motion and increased-contrast operating-system preferences.\n- Read a text table containing the same coordinates and geographic metadata as\n  every visual extent diagram.\n- Access every discovery and assurance artefact as an ordinary static JSON\n  link.\n\nThe evidence tabs support Arrow Left, Arrow Right, Home and End as well as\nnormal Tab navigation. No modal keyboard traps are used.\n\n## Known limitations\n\n- The human result list is deliberately bounded. The complete machine-readable\n  search index remains available through the OKF descriptor.\n- Geographic coverage is currently represented by an extent diagram rather\n  than an interactive map. Coordinates, CRS, geography code family, reference\n  vintage and boundary variant are provided as the non-map alternative.\n- Upstream descriptions can contain specialist statistical terminology that\n  this demonstrator does not rewrite into plain language.\n- Automated checks cannot establish every WCAG success criterion. Keyboard,\n  screen-reader, 200% and 400% zoom, contrast and responsive-layout checks need\n  continuing manual review.\n\n## Technical approach\n\nThe site uses semantic HTML, native controls, explicit labels, visible focus,\nstatus announcements and labels that do not depend on colour. The application\nuses progressive enhancement: without JavaScript, direct links to the\ndescriptor, coverage, standards and evaluation JSON remain available.\n\nThe site does not use analytics, advertising, an external map service or\nbrowser storage. It does not request an API key and stores no observations or\npersonal settings.\n\n## Reporting a problem\n\nOpen an issue at <https://github.com/chris-page-gov/okf-ons/issues> and include:\n\n- the page and task;\n- browser and operating system;\n- assistive technology, if applicable;\n- expected and actual behaviour; and\n- steps to reproduce.\n\nDo not include personal information, confidential data or API credentials.\n\n# Citations\n\n- [Web Content Accessibility Guidelines 2.2](https://www.w3.org/TR/WCAG22/)\n- [Public Sector Bodies Accessibility Regulations 2018](https://www.legislation.gov.uk/uksi/2018/952/contents)",
+      "description": "Accessibility scope, status, known limitations and contact route for the public demonstrator.",
+      "frontmatter": {
+        "description": "Accessibility scope, status, known limitations and contact route for the public demonstrator.",
+        "generated": {
+          "at": "2026-07-25T11:08:21Z",
+          "by": "process:okf-ons-bundle-builder"
+        },
+        "resource": "https://chris-page-gov.github.io/okf-ons/accessibility.html",
+        "sources": [
+          {
+            "id": "wcag-22",
+            "resource": "https://www.w3.org/TR/WCAG22/",
+            "title": "Web Content Accessibility Guidelines 2.2"
+          },
+          {
+            "id": "uk-accessibility-regulations",
+            "resource": "https://www.legislation.gov.uk/uksi/2018/952/contents",
+            "title": "Public Sector Bodies Accessibility Regulations 2018"
+          }
+        ],
+        "status": "draft",
+        "tags": [
+          "accessibility",
+          "wcag-2.2",
+          "public-service"
+        ],
+        "timestamp": "2026-07-25T11:08:21Z",
+        "title": "OKF ONS accessibility statement",
+        "type": "Reference"
+      },
+      "generated": {
+        "at": "2026-07-25T11:08:21Z",
+        "by": "process:okf-ons-bundle-builder"
+      },
+      "id": "accessibility.md",
+      "markdown_links": {},
+      "resource": "https://chris-page-gov.github.io/okf-ons/accessibility.html",
+      "section": "root",
+      "source_bytes": 3597,
+      "source_path": "accessibility.md",
+      "source_sha256": "700d015b4e63c52025d3c6ec886f9da436362b5b1b5bf05793387479b60cd313",
+      "sources": [
+        {
+          "id": "wcag-22",
+          "resource": "https://www.w3.org/TR/WCAG22/",
+          "title": "Web Content Accessibility Guidelines 2.2"
+        },
+        {
+          "id": "uk-accessibility-regulations",
+          "resource": "https://www.legislation.gov.uk/uksi/2018/952/contents",
+          "title": "Public Sector Bodies Accessibility Regulations 2018"
+        }
+      ],
+      "status": "draft",
+      "tags": [
+        "accessibility",
+        "wcag-2.2",
+        "public-service"
+      ],
+      "timestamp": "2026-07-25T11:08:21Z",
+      "title": "OKF ONS accessibility statement",
+      "type": "Reference"
+    },
+    "concepts/catalogue.md": {
+      "body": "# Scope\n\nThe governed snapshot exposes 5,097 source-qualified metadata records through the large-corpus Explorer profile. The profile adds bounded shards, search, facets, relationships, JSON-LD, YAML-LD and federation without replacing this OKF Markdown layer.\n\n# Entry points\n\n- [Explorer descriptor](../okf-explorer.json)\n- [Data manifest](../data/manifest.json)\n- [OKF 0.3 conformance report](../data/standards/okf-v0.3.json)\n\n# Claim boundary\n\nThe OKF Markdown layer describes a bounded, metadata-only governed snapshot and its discovery extensions. It contains no statistical observation values and does not certify upstream statistical accuracy.\n\n# Citations\n\n- [ONS Data API dataset catalogue](https://api.beta.ons.gov.uk/v1/datasets)\n- [Nomis dataset definitions](https://www.nomisweb.co.uk/api/v01/dataset/def.sdmx.json)\n- [ONS Open Geography Portal dataset search](https://geoportal.statistics.gov.uk/api/search/v1/collections/dataset/items)\n- [ONS Explore Local Statistics indicator metadata](https://www.ons.gov.uk/explore-local-statistics/api/v1/metadata/indicators)\n- [Open Knowledge Format specification v0.3](https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md)",
+      "description": "A bounded metadata-only catalogue for finding and distinguishing ONS data.",
+      "explorer_profile": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v2/",
+      "frontmatter": {
+        "description": "A bounded metadata-only catalogue for finding and distinguishing ONS data.",
+        "explorer_profile": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v2/",
+        "generated": {
+          "at": "2026-07-25T11:08:21Z",
+          "by": "process:okf-ons-bundle-builder"
+        },
+        "metadata_only": true,
+        "observation_values_included": false,
+        "resource": "../okf-explorer.json",
+        "snapshot_id": "monday-2026-07-17-r2",
+        "sources": [
+          {
+            "id": "ons-data-api",
+            "resource": "https://api.beta.ons.gov.uk/v1/datasets",
+            "title": "ONS Data API dataset catalogue"
+          },
+          {
+            "id": "nomis-dataset-definitions",
+            "resource": "https://www.nomisweb.co.uk/api/v01/dataset/def.sdmx.json",
+            "title": "Nomis dataset definitions"
+          },
+          {
+            "id": "ons-open-geography",
+            "resource": "https://geoportal.statistics.gov.uk/api/search/v1/collections/dataset/items",
+            "title": "ONS Open Geography Portal dataset search"
+          },
+          {
+            "id": "ons-explore-local-statistics",
+            "resource": "https://www.ons.gov.uk/explore-local-statistics/api/v1/metadata/indicators",
+            "title": "ONS Explore Local Statistics indicator metadata"
+          },
+          {
+            "id": "okf-v02-spec",
+            "last_modified": "2026-07-24",
+            "resource": "https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md",
+            "title": "Open Knowledge Format specification v0.3"
+          }
+        ],
+        "status": "draft",
+        "tags": [
+          "ons",
+          "discovery",
+          "metadata-only",
+          "okf-0.2"
+        ],
+        "timestamp": "2026-07-25T11:08:21Z",
+        "title": "ONS data discovery catalogue",
+        "type": "Dataset Catalogue"
+      },
+      "generated": {
+        "at": "2026-07-25T11:08:21Z",
+        "by": "process:okf-ons-bundle-builder"
+      },
+      "id": "concepts/catalogue.md",
+      "markdown_links": {},
+      "metadata_only": true,
+      "observation_values_included": false,
+      "resource": "../okf-explorer.json",
+      "section": "concepts",
+      "snapshot_id": "monday-2026-07-17-r2",
+      "source_bytes": 2653,
+      "source_path": "concepts/catalogue.md",
+      "source_sha256": "923e21da51804fcf33a6cdfdff2038c8d15ebf43215b97a63ffce8e6f269258f",
+      "sources": [
+        {
+          "id": "ons-data-api",
+          "resource": "https://api.beta.ons.gov.uk/v1/datasets",
+          "title": "ONS Data API dataset catalogue"
+        },
+        {
+          "id": "nomis-dataset-definitions",
+          "resource": "https://www.nomisweb.co.uk/api/v01/dataset/def.sdmx.json",
+          "title": "Nomis dataset definitions"
+        },
+        {
+          "id": "ons-open-geography",
+          "resource": "https://geoportal.statistics.gov.uk/api/search/v1/collections/dataset/items",
+          "title": "ONS Open Geography Portal dataset search"
+        },
+        {
+          "id": "ons-explore-local-statistics",
+          "resource": "https://www.ons.gov.uk/explore-local-statistics/api/v1/metadata/indicators",
+          "title": "ONS Explore Local Statistics indicator metadata"
+        },
+        {
+          "id": "okf-v02-spec",
+          "last_modified": "2026-07-24",
+          "resource": "https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md",
+          "title": "Open Knowledge Format specification v0.3"
+        }
+      ],
+      "status": "draft",
+      "tags": [
+        "ons",
+        "discovery",
+        "metadata-only",
+        "okf-0.2"
+      ],
+      "timestamp": "2026-07-25T11:08:21Z",
+      "title": "ONS data discovery catalogue",
+      "type": "Dataset Catalogue"
+    },
+    "concepts/governance.md": {
+      "authenticated_signature": false,
+      "authorises_execution": false,
+      "body": "# Authority\n\nSource producers retain authority for their source publications. The OKF ONS project is bundle publisher and semantic authority only for this transformation. Source attribution is not endorsement.\n\n# Trust\n\nNo `verified` event is emitted because no evidenced human or independent verification event is recorded. Deterministic validation establishes structural conformance and frozen-input integrity, not statistical truth.\n\n# Integrity\n\nChecksums detect changes when obtained through a trusted channel; they are not an authenticated signature.\n\n# Citations\n\n- [Bounded source coverage ledger](../data/coverage/ledger.json)\n- [Generated bundle checksum catalogue](../checksums.json)",
+      "description": "Authority, integrity, non-endorsement and execution boundaries for the bundle.",
+      "frontmatter": {
+        "authenticated_signature": false,
+        "authorises_execution": false,
+        "description": "Authority, integrity, non-endorsement and execution boundaries for the bundle.",
+        "generated": {
+          "at": "2026-07-25T11:08:21Z",
+          "by": "process:okf-ons-bundle-builder"
+        },
+        "human_verification_recorded": false,
+        "resource": "../data/governance/release.json",
+        "sources": [
+          {
+            "id": "coverage-ledger",
+            "resource": "../data/coverage/ledger.json",
+            "title": "Bounded source coverage ledger"
+          },
+          {
+            "id": "integrity-catalogue",
+            "resource": "../checksums.json",
+            "title": "Generated bundle checksum catalogue"
+          }
+        ],
+        "status": "draft",
+        "tags": [
+          "governance",
+          "authority",
+          "integrity",
+          "provenance"
+        ],
+        "timestamp": "2026-07-25T11:08:21Z",
+        "title": "OKF ONS governed publication boundary",
+        "type": "Governance Profile"
+      },
+      "generated": {
+        "at": "2026-07-25T11:08:21Z",
+        "by": "process:okf-ons-bundle-builder"
+      },
+      "human_verification_recorded": false,
+      "id": "concepts/governance.md",
+      "markdown_links": {},
+      "resource": "../data/governance/release.json",
+      "section": "concepts",
+      "source_bytes": 1422,
+      "source_path": "concepts/governance.md",
+      "source_sha256": "e4249b0f016a0f66d0cdf6f26e8a06910221ba955b28187f507cbfb7a6a8aed4",
+      "sources": [
+        {
+          "id": "coverage-ledger",
+          "resource": "../data/coverage/ledger.json",
+          "title": "Bounded source coverage ledger"
+        },
+        {
+          "id": "integrity-catalogue",
+          "resource": "../checksums.json",
+          "title": "Generated bundle checksum catalogue"
+        }
+      ],
+      "status": "draft",
+      "tags": [
+        "governance",
+        "authority",
+        "integrity",
+        "provenance"
+      ],
+      "timestamp": "2026-07-25T11:08:21Z",
+      "title": "OKF ONS governed publication boundary",
+      "type": "Governance Profile"
+    },
+    "concepts/mcp-selection.md": {
+      "body": "# Contract boundary\n\nThe local broker and public binding index produce candidate selection plans only. They make no network request, store no credential and return no statistical observation value.\n\n# Execution\n\nA downstream trusted service must validate all required dimensions, authorisation and live provider state before execution. This document is not an Attested Computation and does not sanction a computation.\n\n# Citations\n\n- [Bounded MCP selection bindings](../data/ons/mcp-bindings.json)\n- [Governed bundle release](../data/governance/release.json)",
+      "description": "A non-executing contract for selecting exact datasets and required parameters.",
+      "frontmatter": {
+        "description": "A non-executing contract for selecting exact datasets and required parameters.",
+        "generated": {
+          "at": "2026-07-25T11:08:21Z",
+          "by": "process:okf-ons-bundle-builder"
+        },
+        "live_execution_available": false,
+        "observation_values_included": false,
+        "read_only": true,
+        "resource": "../data/ons/mcp-bindings.json",
+        "sources": [
+          {
+            "id": "mcp-bindings",
+            "resource": "../data/ons/mcp-bindings.json",
+            "title": "Bounded MCP selection bindings"
+          },
+          {
+            "id": "governed-release",
+            "resource": "../data/governance/release.json",
+            "title": "Governed bundle release"
+          }
+        ],
+        "status": "draft",
+        "tags": [
+          "mcp",
+          "selection",
+          "metadata-only",
+          "non-executing"
+        ],
+        "timestamp": "2026-07-25T11:08:21Z",
+        "title": "Metadata-only ONS MCP selection contract",
+        "type": "MCP Selection Contract"
+      },
+      "generated": {
+        "at": "2026-07-25T11:08:21Z",
+        "by": "process:okf-ons-bundle-builder"
+      },
+      "id": "concepts/mcp-selection.md",
+      "live_execution_available": false,
+      "markdown_links": {},
+      "observation_values_included": false,
+      "read_only": true,
+      "resource": "../data/ons/mcp-bindings.json",
+      "section": "concepts",
+      "source_bytes": 1277,
+      "source_path": "concepts/mcp-selection.md",
+      "source_sha256": "00dc6bf4e6e485eeb828588ecef059e20284c8e6637d07cddfbcb3c9341e143b",
+      "sources": [
+        {
+          "id": "mcp-bindings",
+          "resource": "../data/ons/mcp-bindings.json",
+          "title": "Bounded MCP selection bindings"
+        },
+        {
+          "id": "governed-release",
+          "resource": "../data/governance/release.json",
+          "title": "Governed bundle release"
+        }
+      ],
+      "status": "draft",
+      "tags": [
+        "mcp",
+        "selection",
+        "metadata-only",
+        "non-executing"
+      ],
+      "timestamp": "2026-07-25T11:08:21Z",
+      "title": "Metadata-only ONS MCP selection contract",
+      "type": "MCP Selection Contract"
+    },
+    "concepts/provider-datapack.md": {
+      "body": "# Governed snapshot\n\nThe reproducible bundle remains pinned to `795eaf2`. The provider datapack is bound to the same snapshot and checksum catalogue.\n\n# Reviewed live reference\n\nThe later upstream revision `d5f0ac9` was last checked on 2026-07-23. This is dated review evidence, not a network result or a claim about the provider's present state.\n\n# Known example drift\n\nThe reviewed upstream reference is newer than the governed metadata snapshot. Average house price extends to May 2026 in the reviewed reference and to April 2026 in the snapshot. The comparison is explicitly non-exhaustive and execution still requires live validation.\n\n# Citations\n\n- [Governed ONS Explore Local Statistics provider datapack](../data/providers/ons-explore-local-statistics.json)\n- [Reviewed upstream source revision](https://github.com/ONSdigital/explore-local-statistics-app/tree/d5f0ac948f8f2f5da2dacd0011ef4e4778918b01)",
+      "comparison_status": "known-drift",
+      "description": "A governed snapshot/live distinction for the ONS Explore Local Statistics lane.",
+      "frontmatter": {
+        "comparison_status": "known-drift",
+        "description": "A governed snapshot/live distinction for the ONS Explore Local Statistics lane.",
+        "generated": {
+          "at": "2026-07-25T11:08:21Z",
+          "by": "process:okf-ons-bundle-builder"
+        },
+        "last_checked": "2026-07-23",
+        "live_validation_performed": false,
+        "resource": "../data/providers/ons-explore-local-statistics.json",
+        "reviewed_live_status": "reviewed-reference-not-live-validated",
+        "snapshot_id": "monday-2026-07-17-r2",
+        "sources": [
+          {
+            "id": "governed-provider-pack",
+            "resource": "../data/providers/ons-explore-local-statistics.json",
+            "title": "Governed ONS Explore Local Statistics provider datapack"
+          },
+          {
+            "id": "reviewed-upstream-commit",
+            "last_modified": "2026-07-22",
+            "resource": "https://github.com/ONSdigital/explore-local-statistics-app/tree/d5f0ac948f8f2f5da2dacd0011ef4e4778918b01",
+            "title": "Reviewed upstream source revision"
+          }
+        ],
+        "status": "draft",
+        "tags": [
+          "provider",
+          "snapshot",
+          "live-reference",
+          "drift"
+        ],
+        "timestamp": "2026-07-25T11:08:21Z",
+        "title": "ONS Explore Local Statistics snapshot and reviewed-live state",
+        "type": "Provider Datapack"
+      },
+      "generated": {
+        "at": "2026-07-25T11:08:21Z",
+        "by": "process:okf-ons-bundle-builder"
+      },
+      "id": "concepts/provider-datapack.md",
+      "last_checked": "2026-07-23",
+      "live_validation_performed": false,
+      "markdown_links": {},
+      "resource": "../data/providers/ons-explore-local-statistics.json",
+      "reviewed_live_status": "reviewed-reference-not-live-validated",
+      "section": "concepts",
+      "snapshot_id": "monday-2026-07-17-r2",
+      "source_bytes": 1950,
+      "source_path": "concepts/provider-datapack.md",
+      "source_sha256": "c838034fb6125a842d16a52b83e8feee660d4b917ac6844ff8679f978acb4b4a",
+      "sources": [
+        {
+          "id": "governed-provider-pack",
+          "resource": "../data/providers/ons-explore-local-statistics.json",
+          "title": "Governed ONS Explore Local Statistics provider datapack"
+        },
+        {
+          "id": "reviewed-upstream-commit",
+          "last_modified": "2026-07-22",
+          "resource": "https://github.com/ONSdigital/explore-local-statistics-app/tree/d5f0ac948f8f2f5da2dacd0011ef4e4778918b01",
+          "title": "Reviewed upstream source revision"
+        }
+      ],
+      "status": "draft",
+      "tags": [
+        "provider",
+        "snapshot",
+        "live-reference",
+        "drift"
+      ],
+      "timestamp": "2026-07-25T11:08:21Z",
+      "title": "ONS Explore Local Statistics snapshot and reviewed-live state",
+      "type": "Provider Datapack"
+    },
+    "concepts/snapshot.md": {
+      "body": "# Snapshot boundary\n\nThe snapshot contains 5,097 metadata records across 4 bounded source lanes. It does not contain statistical observation values. Source retrieval or commit times are preserved separately from this concept's generation time.\n\n# Freshness\n\nNo governed `stale_after` date is currently defined, so none is invented in frontmatter. Live execution and current-value claims require revalidation against the relevant provider.\n\n# Evidence\n\n- [Coverage ledger](../data/coverage/ledger.json)\n- [Governed release metadata](../data/governance/release.json)\n- [Integrity catalogue](../checksums.json)\n\n# Citations\n\n- [ONS Data API dataset catalogue](https://api.beta.ons.gov.uk/v1/datasets)\n- [Nomis dataset definitions](https://www.nomisweb.co.uk/api/v01/dataset/def.sdmx.json)\n- [ONS Open Geography Portal dataset search](https://geoportal.statistics.gov.uk/api/search/v1/collections/dataset/items)\n- [ONS Explore Local Statistics indicator metadata](https://www.ons.gov.uk/explore-local-statistics/api/v1/metadata/indicators)",
+      "description": "The immutable metadata input boundary used for this deterministic bundle.",
+      "freshness_policy": {
+        "staleAfter": null,
+        "status": "not-defined"
+      },
+      "frontmatter": {
+        "description": "The immutable metadata input boundary used for this deterministic bundle.",
+        "freshness_policy": {
+          "staleAfter": null,
+          "status": "not-defined"
+        },
+        "generated": {
+          "at": "2026-07-25T11:08:21Z",
+          "by": "process:okf-ons-bundle-builder"
+        },
+        "metadata_only": true,
+        "observation_values_included": false,
+        "resource": "../data/governance/release.json",
+        "snapshot_id": "monday-2026-07-17-r2",
+        "snapshot_sha256": "4dca7ae43698bde4b1e8fe33c160713585d17669abe9f94a4c96b0eda2da7acd",
+        "sources": [
+          {
+            "id": "ons-data-api",
+            "resource": "https://api.beta.ons.gov.uk/v1/datasets",
+            "title": "ONS Data API dataset catalogue"
+          },
+          {
+            "id": "nomis-dataset-definitions",
+            "resource": "https://www.nomisweb.co.uk/api/v01/dataset/def.sdmx.json",
+            "title": "Nomis dataset definitions"
+          },
+          {
+            "id": "ons-open-geography",
+            "resource": "https://geoportal.statistics.gov.uk/api/search/v1/collections/dataset/items",
+            "title": "ONS Open Geography Portal dataset search"
+          },
+          {
+            "id": "ons-explore-local-statistics",
+            "resource": "https://www.ons.gov.uk/explore-local-statistics/api/v1/metadata/indicators",
+            "title": "ONS Explore Local Statistics indicator metadata"
+          }
+        ],
+        "status": "draft",
+        "tags": [
+          "snapshot",
+          "provenance",
+          "metadata-only",
+          "governance"
+        ],
+        "timestamp": "2026-07-25T11:08:21Z",
+        "title": "Governed ONS metadata snapshot monday-2026-07-17-r2",
+        "type": "Frozen Metadata Snapshot"
+      },
+      "generated": {
+        "at": "2026-07-25T11:08:21Z",
+        "by": "process:okf-ons-bundle-builder"
+      },
+      "id": "concepts/snapshot.md",
+      "markdown_links": {},
+      "metadata_only": true,
+      "observation_values_included": false,
+      "resource": "../data/governance/release.json",
+      "section": "concepts",
+      "snapshot_id": "monday-2026-07-17-r2",
+      "snapshot_sha256": "4dca7ae43698bde4b1e8fe33c160713585d17669abe9f94a4c96b0eda2da7acd",
+      "source_bytes": 2318,
+      "source_path": "concepts/snapshot.md",
+      "source_sha256": "f1487c58f95a5241cfdf4df26a4657d77d791ea2e1305cdb527e21c4c0aef551",
+      "sources": [
+        {
+          "id": "ons-data-api",
+          "resource": "https://api.beta.ons.gov.uk/v1/datasets",
+          "title": "ONS Data API dataset catalogue"
+        },
+        {
+          "id": "nomis-dataset-definitions",
+          "resource": "https://www.nomisweb.co.uk/api/v01/dataset/def.sdmx.json",
+          "title": "Nomis dataset definitions"
+        },
+        {
+          "id": "ons-open-geography",
+          "resource": "https://geoportal.statistics.gov.uk/api/search/v1/collections/dataset/items",
+          "title": "ONS Open Geography Portal dataset search"
+        },
+        {
+          "id": "ons-explore-local-statistics",
+          "resource": "https://www.ons.gov.uk/explore-local-statistics/api/v1/metadata/indicators",
+          "title": "ONS Explore Local Statistics indicator metadata"
+        }
+      ],
+      "status": "draft",
+      "tags": [
+        "snapshot",
+        "provenance",
+        "metadata-only",
+        "governance"
+      ],
+      "timestamp": "2026-07-25T11:08:21Z",
+      "title": "Governed ONS metadata snapshot monday-2026-07-17-r2",
+      "type": "Frozen Metadata Snapshot"
+    },
+    "concepts/sources/nomis-dataset-definitions.md": {
+      "body": "# Included metadata\n\n- Dataset key-family identities, names and catalogue annotations\n- Dimension, attribute, measure and code-list references\n- Exact bounded FREQ and TIME codelist values and labels for the frozen dataset-definition cohort, plus explicit TIME period revision-status annotations when supplied\n\n# Explicitly excluded\n\n- Observation values\n- JSON-stat data responses\n- Per-geography statistical cells\n- Nomis codelists other than the exact FREQ and TIME references in the frozen cohort\n- Publication or update cadence inferred from FREQ, and dataset revision status inferred from individual TIME periods\n\n# Temporal evidence\n\nSource state is recorded as `2026-07-17T19:22:49.006464Z` using `acquisition-retrieved-at`. This does not define a general `stale_after` policy.\n\n# Citations\n\n- [Nomis dataset definitions](https://www.nomisweb.co.uk/api/v01/dataset/def.sdmx.json)",
+      "coverage_complete": true,
+      "description": "Bounded metadata source lane represented by 1,617 records in the governed snapshot.",
+      "frontmatter": {
+        "coverage_complete": true,
+        "description": "Bounded metadata source lane represented by 1,617 records in the governed snapshot.",
+        "generated": {
+          "at": "2026-07-25T11:08:21Z",
+          "by": "process:okf-ons-bundle-builder"
+        },
+        "metadata_only": true,
+        "record_count": 1617,
+        "resource": "https://www.nomisweb.co.uk/api/v01/dataset/def.sdmx.json",
+        "source_as_of": "2026-07-17T19:22:49.006464Z",
+        "source_as_of_basis": "acquisition-retrieved-at",
+        "source_id": "nomis-dataset-definitions",
+        "sources": [
+          {
+            "id": "nomis-dataset-definitions",
+            "resource": "https://www.nomisweb.co.uk/api/v01/dataset/def.sdmx.json",
+            "title": "Nomis dataset definitions"
+          }
+        ],
+        "status": "draft",
+        "tags": [
+          "source",
+          "metadata-only",
+          "nomis-sdmx"
+        ],
+        "timestamp": "2026-07-25T11:08:21Z",
+        "title": "Nomis dataset definitions",
+        "type": "Metadata Source"
+      },
+      "generated": {
+        "at": "2026-07-25T11:08:21Z",
+        "by": "process:okf-ons-bundle-builder"
+      },
+      "id": "concepts/sources/nomis-dataset-definitions.md",
+      "markdown_links": {},
+      "metadata_only": true,
+      "record_count": 1617,
+      "resource": "https://www.nomisweb.co.uk/api/v01/dataset/def.sdmx.json",
+      "section": "concepts",
+      "source_as_of": "2026-07-17T19:22:49.006464Z",
+      "source_as_of_basis": "acquisition-retrieved-at",
+      "source_bytes": 1644,
+      "source_id": "nomis-dataset-definitions",
+      "source_path": "concepts/sources/nomis-dataset-definitions.md",
+      "source_sha256": "e2abedd034fde0e274da23ad797b5454d4bc56f2104448510bfde41ad7e6f37f",
+      "sources": [
+        {
+          "id": "nomis-dataset-definitions",
+          "resource": "https://www.nomisweb.co.uk/api/v01/dataset/def.sdmx.json",
+          "title": "Nomis dataset definitions"
+        }
+      ],
+      "status": "draft",
+      "tags": [
+        "source",
+        "metadata-only",
+        "nomis-sdmx"
+      ],
+      "timestamp": "2026-07-25T11:08:21Z",
+      "title": "Nomis dataset definitions",
+      "type": "Metadata Source"
+    },
+    "concepts/sources/ons-data-api.md": {
+      "body": "# Included metadata\n\n- Dataset identities, titles, descriptions, keywords and lifecycle state\n- Official links to editions, latest versions, taxonomy and dataset records\n- Bounded latest-version dimension identities, explicit area-type declarations and dimension quality statements\n\n# Explicitly excluded\n\n- Observations\n- Dimension option values and codelist payloads\n- CSV and other dataset payloads or download descriptors\n\n# Temporal evidence\n\nSource state is recorded as `2026-07-17T19:22:40.002615Z` using `acquisition-retrieved-at`. This does not define a general `stale_after` policy.\n\n# Citations\n\n- [ONS Data API dataset catalogue](https://api.beta.ons.gov.uk/v1/datasets)",
+      "coverage_complete": true,
+      "description": "Bounded metadata source lane represented by 337 records in the governed snapshot.",
+      "frontmatter": {
+        "coverage_complete": true,
+        "description": "Bounded metadata source lane represented by 337 records in the governed snapshot.",
+        "generated": {
+          "at": "2026-07-25T11:08:21Z",
+          "by": "process:okf-ons-bundle-builder"
+        },
+        "metadata_only": true,
+        "record_count": 337,
+        "resource": "https://api.beta.ons.gov.uk/v1/datasets",
+        "source_as_of": "2026-07-17T19:22:40.002615Z",
+        "source_as_of_basis": "acquisition-retrieved-at",
+        "source_id": "ons-data-api",
+        "sources": [
+          {
+            "id": "ons-data-api",
+            "resource": "https://api.beta.ons.gov.uk/v1/datasets",
+            "title": "ONS Data API dataset catalogue"
+          }
+        ],
+        "status": "draft",
+        "tags": [
+          "source",
+          "metadata-only",
+          "ons-data-api"
+        ],
+        "timestamp": "2026-07-25T11:08:21Z",
+        "title": "ONS Data API dataset catalogue",
+        "type": "Metadata Source"
+      },
+      "generated": {
+        "at": "2026-07-25T11:08:21Z",
+        "by": "process:okf-ons-bundle-builder"
+      },
+      "id": "concepts/sources/ons-data-api.md",
+      "markdown_links": {},
+      "metadata_only": true,
+      "record_count": 337,
+      "resource": "https://api.beta.ons.gov.uk/v1/datasets",
+      "section": "concepts",
+      "source_as_of": "2026-07-17T19:22:40.002615Z",
+      "source_as_of_basis": "acquisition-retrieved-at",
+      "source_bytes": 1388,
+      "source_id": "ons-data-api",
+      "source_path": "concepts/sources/ons-data-api.md",
+      "source_sha256": "25e4927e15eeba94474e485b12185cbda10dfff0de539b806a50a8b7f203ef2a",
+      "sources": [
+        {
+          "id": "ons-data-api",
+          "resource": "https://api.beta.ons.gov.uk/v1/datasets",
+          "title": "ONS Data API dataset catalogue"
+        }
+      ],
+      "status": "draft",
+      "tags": [
+        "source",
+        "metadata-only",
+        "ons-data-api"
+      ],
+      "timestamp": "2026-07-25T11:08:21Z",
+      "title": "ONS Data API dataset catalogue",
+      "type": "Metadata Source"
+    },
+    "concepts/sources/ons-explore-local-statistics.md": {
+      "body": "# Included metadata\n\n- Indicator identity, labels, descriptions, topics and dataset-family references\n- Source-producer links and dates, caveats, measure, unit, frequency and declared statistical flags\n- Dimension names, roles, category counts and bounded non-geographic options plus declared and structure-derived geography and time coverage\n\n# Explicitly excluded\n\n- Observation values, status arrays and value domains\n- High-volume area or period category members derived from observation structure\n- Binary downloads, compressed data, full geometry and postcode or request results\n\n# Temporal evidence\n\nSource state is recorded as `2026-07-17T08:35:03Z` using `pinned-source-commit-as-of`. This does not define a general `stale_after` policy.\n\n# Citations\n\n- [ONS Explore Local Statistics indicator metadata](https://www.ons.gov.uk/explore-local-statistics/api/v1/metadata/indicators)",
+      "coverage_complete": true,
+      "description": "Bounded metadata source lane represented by 108 records in the governed snapshot.",
+      "frontmatter": {
+        "coverage_complete": true,
+        "description": "Bounded metadata source lane represented by 108 records in the governed snapshot.",
+        "generated": {
+          "at": "2026-07-25T11:08:21Z",
+          "by": "process:okf-ons-bundle-builder"
+        },
+        "metadata_only": true,
+        "record_count": 108,
+        "resource": "https://www.ons.gov.uk/explore-local-statistics/api/v1/metadata/indicators",
+        "source_as_of": "2026-07-17T08:35:03Z",
+        "source_as_of_basis": "pinned-source-commit-as-of",
+        "source_id": "ons-explore-local-statistics",
+        "sources": [
+          {
+            "id": "ons-explore-local-statistics",
+            "resource": "https://www.ons.gov.uk/explore-local-statistics/api/v1/metadata/indicators",
+            "title": "ONS Explore Local Statistics indicator metadata"
+          }
+        ],
+        "status": "draft",
+        "tags": [
+          "source",
+          "metadata-only",
+          "els-metadata-projection"
+        ],
+        "timestamp": "2026-07-25T11:08:21Z",
+        "title": "ONS Explore Local Statistics indicator metadata",
+        "type": "Metadata Source"
+      },
+      "generated": {
+        "at": "2026-07-25T11:08:21Z",
+        "by": "process:okf-ons-bundle-builder"
+      },
+      "id": "concepts/sources/ons-explore-local-statistics.md",
+      "markdown_links": {},
+      "metadata_only": true,
+      "record_count": 108,
+      "resource": "https://www.ons.gov.uk/explore-local-statistics/api/v1/metadata/indicators",
+      "section": "concepts",
+      "source_as_of": "2026-07-17T08:35:03Z",
+      "source_as_of_basis": "pinned-source-commit-as-of",
+      "source_bytes": 1736,
+      "source_id": "ons-explore-local-statistics",
+      "source_path": "concepts/sources/ons-explore-local-statistics.md",
+      "source_sha256": "a768f3f61d7c49477c20e984331ddb53f056250f592b2d7f659b0e7d860cf205",
+      "sources": [
+        {
+          "id": "ons-explore-local-statistics",
+          "resource": "https://www.ons.gov.uk/explore-local-statistics/api/v1/metadata/indicators",
+          "title": "ONS Explore Local Statistics indicator metadata"
+        }
+      ],
+      "status": "draft",
+      "tags": [
+        "source",
+        "metadata-only",
+        "els-metadata-projection"
+      ],
+      "timestamp": "2026-07-25T11:08:21Z",
+      "title": "ONS Explore Local Statistics indicator metadata",
+      "type": "Metadata Source"
+    },
+    "concepts/sources/ons-open-geography.md": {
+      "body": "# Included metadata\n\n- Dataset catalogue identities, titles, descriptions, ownership and timestamps\n- Keywords, licence statements, item links and catalogue bounding boxes\n\n# Explicitly excluded\n\n- Feature geometry\n- Boundary and lookup downloads\n- Postcode, UPRN and statistical observation rows\n\n# Temporal evidence\n\nSource state is recorded as `2026-07-17T19:26:18.448202Z` using `acquisition-retrieved-at`. This does not define a general `stale_after` policy.\n\n# Citations\n\n- [ONS Open Geography Portal dataset search](https://geoportal.statistics.gov.uk/api/search/v1/collections/dataset/items)",
+      "coverage_complete": true,
+      "description": "Bounded metadata source lane represented by 3,035 records in the governed snapshot.",
+      "frontmatter": {
+        "coverage_complete": true,
+        "description": "Bounded metadata source lane represented by 3,035 records in the governed snapshot.",
+        "generated": {
+          "at": "2026-07-25T11:08:21Z",
+          "by": "process:okf-ons-bundle-builder"
+        },
+        "metadata_only": true,
+        "record_count": 3035,
+        "resource": "https://geoportal.statistics.gov.uk/api/search/v1/collections/dataset/items",
+        "source_as_of": "2026-07-17T19:26:18.448202Z",
+        "source_as_of_basis": "acquisition-retrieved-at",
+        "source_id": "ons-open-geography",
+        "sources": [
+          {
+            "id": "ons-open-geography",
+            "resource": "https://geoportal.statistics.gov.uk/api/search/v1/collections/dataset/items",
+            "title": "ONS Open Geography Portal dataset search"
+          }
+        ],
+        "status": "draft",
+        "tags": [
+          "source",
+          "metadata-only",
+          "open-geography-search"
+        ],
+        "timestamp": "2026-07-25T11:08:21Z",
+        "title": "ONS Open Geography Portal dataset search",
+        "type": "Metadata Source"
+      },
+      "generated": {
+        "at": "2026-07-25T11:08:21Z",
+        "by": "process:okf-ons-bundle-builder"
+      },
+      "id": "concepts/sources/ons-open-geography.md",
+      "markdown_links": {},
+      "metadata_only": true,
+      "record_count": 3035,
+      "resource": "https://geoportal.statistics.gov.uk/api/search/v1/collections/dataset/items",
+      "section": "concepts",
+      "source_as_of": "2026-07-17T19:26:18.448202Z",
+      "source_as_of_basis": "acquisition-retrieved-at",
+      "source_bytes": 1421,
+      "source_id": "ons-open-geography",
+      "source_path": "concepts/sources/ons-open-geography.md",
+      "source_sha256": "42dab3b02ba694ca9e34a4ed89d7887c10989cbd5943794e4260738864fd6705",
+      "sources": [
+        {
+          "id": "ons-open-geography",
+          "resource": "https://geoportal.statistics.gov.uk/api/search/v1/collections/dataset/items",
+          "title": "ONS Open Geography Portal dataset search"
+        }
+      ],
+      "status": "draft",
+      "tags": [
+        "source",
+        "metadata-only",
+        "open-geography-search"
+      ],
+      "timestamp": "2026-07-25T11:08:21Z",
+      "title": "ONS Open Geography Portal dataset search",
+      "type": "Metadata Source"
+    },
+    "concepts/standards.md": {
+      "body": "# OKF 0.3\n\nThe generated producer check enforces parseable frontmatter, a non-empty `type` on every concept, reserved-file rules, and the optional family shapes this bundle uses. Unknown extension fields remain permitted.\n\n# Assurance boundary\n\nStructural conformance is evaluated independently of statistical accuracy, legal compliance or certification of an upstream product.\n\n# Citations\n\n- [Open Knowledge Format specification v0.3](https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md)\n- [OKF ONS standards register](../data/standards/register.json)\n- [Generated OKF 0.3 conformance report](../data/standards/okf-v0.3.json)",
+      "description": "Structural OKF 0.3 conformance plus bounded evidence mappings to other standards.",
+      "frontmatter": {
+        "description": "Structural OKF 0.3 conformance plus bounded evidence mappings to other standards.",
+        "generated": {
+          "at": "2026-07-25T11:08:21Z",
+          "by": "process:okf-ons-bundle-builder"
+        },
+        "okf_conformance_status": "aligned",
+        "registered_standard_count": 36,
+        "resource": "../data/standards/evaluation.json",
+        "sources": [
+          {
+            "id": "okf-v02-spec",
+            "last_modified": "2026-07-24",
+            "resource": "https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md",
+            "title": "Open Knowledge Format specification v0.3"
+          },
+          {
+            "id": "standards-register",
+            "resource": "../data/standards/register.json",
+            "title": "OKF ONS standards register"
+          },
+          {
+            "id": "okf-conformance",
+            "resource": "../data/standards/okf-v0.3.json",
+            "title": "Generated OKF 0.3 conformance report"
+          }
+        ],
+        "statistical_accuracy_evaluated": false,
+        "status": "draft",
+        "tags": [
+          "okf-0.2",
+          "standards",
+          "conformance",
+          "evidence"
+        ],
+        "timestamp": "2026-07-25T11:08:21Z",
+        "title": "OKF ONS standards and conformance evidence",
+        "type": "Standards Evidence"
+      },
+      "generated": {
+        "at": "2026-07-25T11:08:21Z",
+        "by": "process:okf-ons-bundle-builder"
+      },
+      "id": "concepts/standards.md",
+      "markdown_links": {},
+      "okf_conformance_status": "aligned",
+      "registered_standard_count": 36,
+      "resource": "../data/standards/evaluation.json",
+      "section": "concepts",
+      "source_bytes": 1680,
+      "source_path": "concepts/standards.md",
+      "source_sha256": "2cf08039b62acce090defb0dbf142a9ebe89b341b1bcab3579c9c8da893a7783",
+      "sources": [
+        {
+          "id": "okf-v02-spec",
+          "last_modified": "2026-07-24",
+          "resource": "https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/SPEC.md",
+          "title": "Open Knowledge Format specification v0.3"
+        },
+        {
+          "id": "standards-register",
+          "resource": "../data/standards/register.json",
+          "title": "OKF ONS standards register"
+        },
+        {
+          "id": "okf-conformance",
+          "resource": "../data/standards/okf-v0.3.json",
+          "title": "Generated OKF 0.3 conformance report"
+        }
+      ],
+      "statistical_accuracy_evaluated": false,
+      "status": "draft",
+      "tags": [
+        "okf-0.2",
+        "standards",
+        "conformance",
+        "evidence"
+      ],
+      "timestamp": "2026-07-25T11:08:21Z",
+      "title": "OKF ONS standards and conformance evidence",
+      "type": "Standards Evidence"
+    },
+    "demo-guide.md": {
+      "body": "# ONS OKF Monday demonstrator\n\n## Shareable surfaces\n\n- Pages UI: <https://chris-page-gov.github.io/okf-ons/>\n- OKF descriptor: <https://chris-page-gov.github.io/okf-ons/okf-explorer.json>\n- Open in OKF Explorer:\n  <https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-ons%2Fokf-explorer.json>\n- Repository: <https://github.com/chris-page-gov/okf-ons>\n\nThe public site is static, metadata-only and key-free. It does not call an\nupstream API or execute an MCP request.\n\n## Seven-minute route\n\nThe one-sentence framing is:\n\n> OKF makes ONS data findable and distinguishable; a downstream live-data MCP\n> retrieves it only after the dataset-specific choices are explicit.\n\n1. Start with the coverage strip. Explain that “all” is measured with expected,\n   represented, excluded, errored and unexplained counts per official source.\n2. Search for `consumer prices inflation`, `population estimates local\n   authority` or `unemployment claimant count`.\n3. Add one facet and describe the result as a **reduced candidate set**, not an\n   automatically chosen answer.\n4. Open a plausible record and read its decision signature: population,\n   measure, unit, geography, reference period, frequency and version.\n5. Choose **Compare**. Show that easily confused records remain visible and\n   that differences are evidence-backed. Similar titles are never treated as\n   equivalence.\n6. Open **Quality & methodology**, **How produced** and **Standards**. Point to\n   QMI, methodology, provenance, revisions and the explicit\n   `not-evaluated` state.\n7. Open **Dimensions**, then **Access via MCP**. Missing version-specific\n   choices remain explicit; the generated read-only plan is not executable\n   until structurally valid.\n8. Finish with **Open in OKF Explorer** to demonstrate that the UI is reading an\n   interoperable bundle rather than a private application database.\n\n## Safe claims\n\n| Say | Do not say |\n| --- | --- |\n| The frozen build is metadata-only and reproducible. | The bundle proves every observation is accurate. |\n| Similar records expose material discriminators before selection. | Similar titles identify the same statistical product. |\n| Standards alignment is reported with source evidence. | Every source dataset is certified compliant. |\n| A zero-omission ledger supports its stated source scope. | “All ONS” without a measured denominator. |\n| The local OKF broker prepares a non-executing selection plan. | The repository broker retrieves live observations. |\n| A downstream MCP integration may retrieve live data after validation. | GitHub Pages executes authenticated API calls. |\n\nMetadata completeness is evidence availability. It is not proof of statistical\naccuracy, methodological fitness or comparability for a specific analysis.\n\n## Agent entrypoints\n\n| Purpose | Path |\n| --- | --- |\n| OKF 0.3 root index | `index.md` |\n| OKF concepts | `concepts/index.md` |\n| Portable OKF core Reader projection (12 Markdown concepts, no graph edges) | `okf-core-explorer.json` |\n| Bundle descriptor | `okf-explorer.json` |\n| Metadata extension graph (5,097 entities, 19,735 relationships) | `data/semantic/manifest.json` |\n| Bounded comparison records | `data/demo/contrast-records.json` |\n| Coverage ledger | `data/coverage/ledger.json` |\n| Standards evaluation | `data/standards/evaluation.json` |\n| OKF 0.3 conformance | `data/standards/okf-v0.3.json` |\n| Discovery evaluation | `data/evaluation/report.json` |\n| MCP bindings | `data/ons/mcp-bindings.json` |\n| Spatial metadata index | `data/ons/spatial-index.json` |\n\nThese files are ordinary static JSON. Agents do not need to screen-scrape the\nhuman interface.\n\n## Optional AI-client route\n\nFor a technical audience, show the local metadata-only broker after the static\ndemo:\n\n1. Explain that `scripts/okf_ons_mcp.py` exposes bounded descriptor, search,\n   exact-record, comparison, non-executing selection-plan and evaluation\n   submission tools over local stdio.\n2. Point to the repository-scoped `.agents/mcp_config.json` as the AGY example.\n   It was added after the preserved Antigravity trial and is configuration\n   evidence, not a fresh model result.\n3. Use the [MCP rollout guide](mcp-client-rollout.md) to show the separate\n   Codex, Claude, Gemini, VS Code/Copilot, ChatGPT, Microsoft 365 and Inspector\n   routes and their current readiness.\n4. State the boundary: the repository has no deployed remote broker or secure\n   tunnel, makes no live or paid model call in CI, and never retrieves\n   observations. ChatGPT custom apps, Claude Research and remote-session\n   Cowork, and M365 Researcher therefore remain planned integrations; the M365\n   admin connector has not been deployed.\n\nDo not spend the Monday demo authenticating a client. The reproducible proof is\nthe frozen static site, deterministic local protocol tests and explicit\nconnection/readiness register.\n\n## If the network is unreliable\n\nThe discovery records, contrast evidence and evaluation reports are already\npart of the static site. Keep the Pages tab loaded, use the direct JSON links,\nor open the descriptor in OKF Explorer. Live ONS execution is the final MCP\nhand-off and is not needed to demonstrate discovery.\n\n## Suggested follow-up questions for ONS\n\n- Which source register should be treated as the official denominator for each\n  statistical product family?\n- Which distinctions most often lead users to the wrong dataset?\n- Which version, revision, accreditation and methodology fields should be\n  mandatory in a decision signature?\n- Can ONS provide stable cross-references among catalogue, release, QMI, API,\n  SDMX and Open Geography records?\n- Which gold discovery queries and alternatives should an ONS subject expert\n  curate first?\n\n# Citations\n\n- [OKF ONS bundle descriptor](https://chris-page-gov.github.io/okf-ons/okf-explorer.json)\n- [OKF ONS product contract](https://github.com/chris-page-gov/okf-ons/blob/main/docs/product-contract.md)",
+      "description": "A bounded route for demonstrating metadata discovery, comparison and safe MCP hand-off.",
+      "frontmatter": {
+        "description": "A bounded route for demonstrating metadata discovery, comparison and safe MCP hand-off.",
+        "generated": {
+          "at": "2026-07-25T11:08:21Z",
+          "by": "process:okf-ons-bundle-builder"
+        },
+        "resource": "https://chris-page-gov.github.io/okf-ons/demo-guide.html",
+        "sources": [
+          {
+            "id": "okf-ons-bundle",
+            "resource": "https://chris-page-gov.github.io/okf-ons/okf-explorer.json",
+            "title": "OKF ONS bundle descriptor"
+          },
+          {
+            "id": "product-contract",
+            "resource": "https://github.com/chris-page-gov/okf-ons/blob/main/docs/product-contract.md",
+            "title": "OKF ONS product contract"
+          }
+        ],
+        "status": "draft",
+        "tags": [
+          "ons",
+          "demonstrator",
+          "discovery",
+          "mcp"
+        ],
+        "timestamp": "2026-07-25T11:08:21Z",
+        "title": "ONS OKF demonstrator guide",
+        "type": "Playbook"
+      },
+      "generated": {
+        "at": "2026-07-25T11:08:21Z",
+        "by": "process:okf-ons-bundle-builder"
+      },
+      "id": "demo-guide.md",
+      "markdown_links": {},
+      "resource": "https://chris-page-gov.github.io/okf-ons/demo-guide.html",
+      "section": "root",
+      "source_bytes": 6669,
+      "source_path": "demo-guide.md",
+      "source_sha256": "6ba45a764338ef73bb54f2fc52a532d7a41b4c4715b683e76f14eb8fcb7bd0b3",
+      "sources": [
+        {
+          "id": "okf-ons-bundle",
+          "resource": "https://chris-page-gov.github.io/okf-ons/okf-explorer.json",
+          "title": "OKF ONS bundle descriptor"
+        },
+        {
+          "id": "product-contract",
+          "resource": "https://github.com/chris-page-gov/okf-ons/blob/main/docs/product-contract.md",
+          "title": "OKF ONS product contract"
+        }
+      ],
+      "status": "draft",
+      "tags": [
+        "ons",
+        "demonstrator",
+        "discovery",
+        "mcp"
+      ],
+      "timestamp": "2026-07-25T11:08:21Z",
+      "title": "ONS OKF demonstrator guide",
+      "type": "Playbook"
+    }
+  },
+  "okf_version": "0.3",
+  "schema": "okf-explorer-bundle.v0",
+  "snapshot": "monday-2026-07-17-r2",
+  "version": "0.3.1"
+}

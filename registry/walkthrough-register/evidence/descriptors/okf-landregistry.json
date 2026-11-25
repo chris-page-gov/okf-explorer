@@ -1,0 +1,275 @@
+{
+  "@context": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/context.jsonld",
+  "@id": "https://chris-page-gov.github.io/okf-LandRegistry/okf-explorer.json",
+  "authority": {
+    "bundle_authority": "metadata normalisation and this release only",
+    "legal_advice": false,
+    "not_endorsed_by_source": true,
+    "official_source_authority": "external live HM Land Registry and GOV.UK sources"
+  },
+  "core_conformance": "OKF v0.2 Markdown concept layer",
+  "counts": {
+    "curated_records": 55,
+    "datasets": 14,
+    "kinds": 10,
+    "merged_representations": 24,
+    "publishers": 27,
+    "record_types": 77,
+    "records": 2203,
+    "relationships": 22267,
+    "resources": 2203,
+    "source_representations": 2227,
+    "sources": 17,
+    "topics": 314
+  },
+  "data_plane_manifest_root_sha256": "08b4ba44c6c2e007dfc6c44d73f7848c3f594a6ebc94667afbd292e6e5131a3b",
+  "description": "Independent, metadata-only discovery bundle for HM Land Registry publications, services, datasets, APIs and official repositories.",
+  "entrypoint_integrity": {
+    "analysis_overview": {
+      "bytes": 790,
+      "path": "data/explorer/analysis-overview.json",
+      "sha256": "bbf6d19ae0a733b4044c3d4808ae0c499aa1a7fcf1d88d6d9091a652fca989fe"
+    },
+    "data_manifest": {
+      "bytes": 21557,
+      "path": "data/explorer/manifest.json",
+      "sha256": "8c59a3578fad8e5a5e67e70f66db19683bf41826e205fdc53c72ccd0b9a7f5dc"
+    },
+    "entities": {
+      "bytes": 8011,
+      "path": "data/explorer/search/entities.json",
+      "sha256": "67823b619e79208be83c4291ebe20d581bd46c37eaa06e5a76a74b9fd068a732"
+    },
+    "overview_index": {
+      "bytes": 15722,
+      "path": "data/explorer/overview.json",
+      "sha256": "19311056b22c89fde444072fd0b41706a915941a3274b6c5777349f3cf0466aa"
+    },
+    "record_locator": {
+      "bytes": 46811,
+      "path": "data/explorer/locator/manifest.json",
+      "sha256": "3e64031846cae4f10b9425735b85bd3d1e08c668d0d451c209839673b777a45f"
+    },
+    "relationship_adjacency": {
+      "bytes": 44744,
+      "path": "data/explorer/adjacency/manifest.json",
+      "sha256": "b7dd2b31c6035ab66e9bcfff1aa4181ee5cac2bc81f618200b69b5d94c3b4b09"
+    },
+    "relationship_runtime": {
+      "bytes": 42801,
+      "path": "data/semantic/runtime-manifest.json",
+      "sha256": "50f687e7d5fb5bda21bb538103ba24530d99d66bdeccb57d268e035ce8d3f99b"
+    },
+    "search_manifest": {
+      "bytes": 22773,
+      "path": "data/explorer/search/manifest.json",
+      "sha256": "25d47dab9b157dc96b27208e67af12d4ac5c35abfb4fb8dd89062cccba4f8707"
+    }
+  },
+  "entrypoints": {
+    "ai_usage_and_cost": "data/ai-usage.json",
+    "analysis_overview": "data/explorer/analysis-overview.json",
+    "catalogue": "data/catalogue.json",
+    "catalogue_csv": "data/catalogue.csv",
+    "catalogue_html": "catalogue-index.html",
+    "coverage": "data/coverage.json",
+    "data_manifest": "data/explorer/manifest.json",
+    "entities": "data/explorer/search/entities.json",
+    "evaluation": "data/evaluation.json",
+    "inventory_manifest": "data/manifest.json",
+    "iri_route_registry": "data/semantic/iri-route-registry.json",
+    "okf_index": "index.md",
+    "okf_log": "log.md",
+    "overview_index": "data/explorer/overview.json",
+    "predicate_registry": "data/semantic/predicate-registry.json",
+    "provenance": "data/provenance.json",
+    "reconciliation": "data/reconciliation.json",
+    "record_locator": "data/explorer/locator/manifest.json",
+    "relationship_adjacency": "data/explorer/adjacency/manifest.json",
+    "relationship_runtime": {
+      "bytes": 42801,
+      "path": "data/semantic/runtime-manifest.json",
+      "sha256": "50f687e7d5fb5bda21bb538103ba24530d99d66bdeccb57d268e035ce8d3f99b"
+    },
+    "rights": "data/rights.json",
+    "search_manifest": "data/explorer/search/manifest.json",
+    "semantic_context": "data/semantic/semantic-context.jsonld",
+    "semantic_json_ld": "okf-bundle.jsonld",
+    "semantic_model": "data/semantic/model.json",
+    "semantic_validation": "data/semantic/validation.json",
+    "semantic_yaml_ld": "okf-bundle.yamlld",
+    "site": "./",
+    "viewer": "https://chris-page-gov.github.io/okf-explorer/"
+  },
+  "extensions": {
+    "okf-bundle-wiki-semantic.v1": {
+      "assertion_schema": {
+        "bytes": 7308,
+        "path": "data/semantic/semantic-assertion.schema.json",
+        "sha256": "f69480328db4b64d678d9c50b6534d808000f7fb50a30e8cc9e3bf2facbcb8bc"
+      },
+      "cpsv_ap": {
+        "context": {
+          "bytes": 18858,
+          "path": "data/semantic/standards/cpsv-ap/3.2.0/cpsv-ap.jsonld",
+          "sha256": "105ae8fcb89a0990d00c7a4f65499e33463e03547d56c603f4135043b6f3a857"
+        },
+        "official_shacl_execution": "not-run",
+        "service_mapping": {
+          "bytes": 42360,
+          "path": "data/semantic/cpsv-service-mappings.json",
+          "sha256": "01b4e3f5981cb513ac78acafec31704c9175271f685f6e810e145c52dbecf1bd"
+        },
+        "shapes": {
+          "bytes": 86733,
+          "path": "data/semantic/standards/cpsv-ap/3.2.0/cpsv-ap-SHACL.ttl",
+          "sha256": "84c51ca629a8e297fe9276669b9702b31d49dd50495ad065872fca8b326fd0bc"
+        },
+        "vendor_lock": {
+          "bytes": 1700,
+          "path": "data/semantic/standards/cpsv-ap/3.2.0.vendor-lock.json",
+          "sha256": "762c1d4fa53ea9790145609d17b15f7b2c5867648f09c5f6cd7724abcba82885"
+        },
+        "version": "3.2.0",
+        "vocabulary": {
+          "bytes": 53134,
+          "path": "data/semantic/standards/cpsv-ap/3.2.0/cpsv-ap.ttl",
+          "sha256": "f4cbd307f30449a5ebbf507e91b3aa24cf80f9b18c491a44ff04659484e0bc3f"
+        }
+      },
+      "iri_route_registry": {
+        "bytes": 3888859,
+        "path": "data/semantic/iri-route-registry.json",
+        "sha256": "0ba42c4ebc6fb01f09a3603050c85bcb1e863a7b6aff14eafd4c77da0341d16a"
+      },
+      "predicate_registry": {
+        "bytes": 23061,
+        "path": "data/semantic/predicate-registry.json",
+        "sha256": "ad66597b1537c92ee43b664ff61974935514c4ba5c899883526488f8805ee5fb"
+      },
+      "predicate_registry_schema": {
+        "bytes": 7551,
+        "path": "data/semantic/schemas/predicate-registry.v2.schema.json",
+        "sha256": "037151379a1ec0cbfe0666d41592585a891a63929f1fcf2845d1eb3de8dd5069"
+      },
+      "profile": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/",
+      "profile_shapes": {
+        "bytes": 939,
+        "path": "data/semantic/profile-shapes.ttl",
+        "sha256": "bffe0611abae937683d30e7ecb76d81b6b49c20cc87a70e709f83aa6569b074c"
+      },
+      "runtime_row_schema": {
+        "bytes": 5775,
+        "path": "data/semantic/relationship-runtime-row.schema.json",
+        "sha256": "cffb0b01077d210cd1e34140f6feb5c5835f9d1952804759ad3432294a96f3d4"
+      },
+      "semantic_context": {
+        "bytes": 5047,
+        "path": "data/semantic/semantic-context.jsonld",
+        "sha256": "4529e4ffe6acc53bff2746282525ef20eebfddbd205172d8a2a5f398fc1cc25b"
+      },
+      "semantic_model": {
+        "bytes": 3177,
+        "path": "data/semantic/model.json",
+        "sha256": "23245aa707d476426dff5ea1f292c77a7404539174fb1cc91ad704413640f063"
+      },
+      "validation": {
+        "bytes": 14771,
+        "path": "data/semantic/validation.json",
+        "sha256": "12e707461541ddb67d033d2c27eaca2bcd7b4964fe81ce018b43a838d337529d"
+      }
+    },
+    "okf-hmlr-discovery.v1": {
+      "ai_generated_proof_of_concept": true,
+      "authenticated_calls_enabled": false,
+      "mode": "metadata-only",
+      "personal_property_records_included": false,
+      "record_level_rights": true,
+      "release_authority": "Not asserted by bundle bytes; consult exact-digest external release evidence."
+    },
+    "okf-landregistry-class-routing.v1": {
+      "authority": "Deterministic delivery index derived from semantic graph rdf:type facts and the frozen Bundle Wiki v1 IRI registry",
+      "registry": {
+        "bytes": 3348321,
+        "path": "data/semantic/class-route-registry.json",
+        "sha256": "1593955fd056462022cff16f392522b8385a27e1399c6af93335c1df8b356ce5"
+      },
+      "schema": {
+        "bytes": 2444,
+        "path": "data/semantic/schemas/semantic-class-route-registry.schema.json",
+        "sha256": "948520f99fb2751d8b0c0d52f85e8a555ee2dd3a72ef708a20784ec7fa43d209"
+      },
+      "source_plane_roots": {
+        "iri_route_registry_root_sha256": "0a273b35225cce1bb8fc2d2ba0223fa0d99f9361c9c76e12d47d07729e464b68",
+        "semantic_graph_sha256": "68ad7d1ce1b919cbb11f90d79205a14853c1db4b7d9776faebbaac3e64e8489b"
+      }
+    },
+    "okf-pages-publication.v1": {
+      "descriptor": "https://chris-page-gov.github.io/okf-LandRegistry/okf-explorer.json",
+      "site": "https://chris-page-gov.github.io/okf-LandRegistry/"
+    }
+  },
+  "generated_at": "2026-08-11T12:41:04Z",
+  "kind": "okf-large-corpus",
+  "observed_at": "2026-07-29T18:00:00Z",
+  "okf_version": "0.2",
+  "performance": {
+    "full_record_hydration": "integrity-bound chunks",
+    "relationship_hydration": "integrity-bound deterministic chunks",
+    "search": "bounded in-browser index over Explorer record chunks",
+    "startup_mode": "overview-first"
+  },
+  "profile": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v1/",
+  "publication_state": "digest-bound-external-evidence",
+  "publisher": "https://github.com/chris-page-gov/okf-LandRegistry",
+  "release_at": null,
+  "repository": "https://github.com/chris-page-gov/okf-LandRegistry",
+  "rights": {
+    "record_level": true,
+    "statement": "Public accessibility is not treated as blanket permission. Consult each record and its official source for current terms.",
+    "status": "mixed-record-level"
+  },
+  "schema": "okf-explorer-large-corpus.v1",
+  "scope": {
+    "complete_for_govuk_hmlr_filter_at_snapshot": true,
+    "complete_hmlr_public_estate": false,
+    "excludes": [
+      "title-register and title-plan records",
+      "bulk property, ownership, address, polygon and transaction rows",
+      "authenticated, paid and user-submitted service content",
+      "legal advice or determinations"
+    ],
+    "kind": "bounded-public-metadata-discovery",
+    "metadata_only": true,
+    "research_cutoff": "2026-07-29"
+  },
+  "semantic_descriptor": "https://chris-page-gov.github.io/okf-LandRegistry/okf-bundle.yamlld",
+  "semantic_serializations": {
+    "alternates": [
+      {
+        "format": "JSON-LD",
+        "media_type": "application/ld+json",
+        "path": "okf-bundle.jsonld"
+      }
+    ],
+    "canonical": {
+      "format": "YAML-LD",
+      "media_type": "application/ld+yaml",
+      "path": "okf-bundle.yamlld"
+    },
+    "graph_equivalence": "Both files are deterministic serialisations of the same in-memory semantic graph."
+  },
+  "snapshot": "hmlr-public-metadata-v0.2.0",
+  "status": "ai-generated-proof-of-concept",
+  "title": "HM Land Registry public-estate OKF",
+  "version": "0.3.0",
+  "vocabulary": {
+    "publisher_plural": "source publishers",
+    "publisher_singular": "source publisher",
+    "record_plural": "HMLR discovery records",
+    "record_singular": "HMLR discovery record",
+    "resource_plural": "official sources",
+    "resource_singular": "official source",
+    "search_placeholder": "Search guidance, datasets, services, APIs and repositories"
+  }
+}

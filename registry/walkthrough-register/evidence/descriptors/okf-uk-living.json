@@ -1,0 +1,80 @@
+{
+  "assertion_scope": "real-world",
+  "core_conformance": "OKF Explorer large-corpus life-course projection",
+  "counts": {
+    "concepts": 9757,
+    "datasets": 9757,
+    "publishers": 1,
+    "records": 9757,
+    "relationships": 15810,
+    "resources": 879,
+    "service_families": 293
+  },
+  "description": "Population-complete preview of 293 service families with authored narratives, typed official links and governed journey relationships. Specialist review remains incomplete.",
+  "entrypoint_integrity": {
+    "relationship_runtime": {
+      "bytes": 2649,
+      "path": "large/data/relationship-runtime/manifest.json",
+      "sha256": "f76d6f5df8127932a7d58cad28fa8070268cb307b09b5e6f1d3dc2dbac757a62"
+    }
+  },
+  "entrypoints": {
+    "analysis_overview": "large/data/analysis/overview.json",
+    "data_manifest": "large/data/manifest.json",
+    "json_ld": "generated/semantic/life-course-corpus.jsonld",
+    "markdown_index": "generated/browser/index.html",
+    "notes": "generated/browser/evidence/licensing-and-attribution.html",
+    "overview_index": "large/data/overview.json",
+    "presentation": "large/data/presentation.json",
+    "record_locator": "large/data/record-locator.json",
+    "relationship_adjacency": "large/data/relationship-adjacency.json",
+    "relationship_runtime": {
+      "bytes": 2649,
+      "path": "large/data/relationship-runtime/manifest.json",
+      "sha256": "f76d6f5df8127932a7d58cad28fa8070268cb307b09b5e6f1d3dc2dbac757a62"
+    },
+    "search_manifest": "large/data/search/manifest.json",
+    "validation_report": "large/data/validation-report.json",
+    "yaml_ld": "generated/semantic/life-course-corpus.yamlld"
+  },
+  "generated_at": "2026-08-08T00:00:00+01:00",
+  "kind": "okf-large-corpus",
+  "license": "MIT",
+  "okf_version": "0.2",
+  "performance": {
+    "full_record_hydration": "lazy",
+    "search": "static worker shards",
+    "startup_mode": "overview-first"
+  },
+  "publication": {
+    "authorized_at": "2026-08-08T22:40:40+01:00",
+    "candidate_id": "life-course-population-complete-2026-08-08",
+    "candidate_manifest_sha256": "55f8428248b06646e0995f5230207c9006bf4d583d29157fb010ad7e69e416a1",
+    "kind": "population-complete-preview",
+    "publication_url": "https://chris-page-gov.github.io/okf-uk-living/okf-explorer.json",
+    "release_grade": false,
+    "specialist_review_required": 291
+  },
+  "publisher": "owner:chris-page-gov",
+  "schema": "okf-explorer-large-corpus.v1",
+  "snapshot": "life-course-authority-infrastructure-2026-08-08",
+  "source": {
+    "authority_registry": "generated/browser/source/authority-registry.v1.yaml.html",
+    "denominator": "generated/browser/source/service-family-denominator.v1.yaml.html",
+    "mode": "repository-authored-dossiers-plus-linked-references",
+    "policy": "generated/browser/profiles/corpus-acquisition-policy.v1.yaml.html",
+    "publication_authorized": true,
+    "source_snapshots": false,
+    "upstream_content_redistributed": false
+  },
+  "status": "publication-authorized-population-complete-preview",
+  "title": "A Life in the UK — life-course discovery corpus",
+  "version": "life-course-population-stage.v1",
+  "vocabulary": {
+    "publisher_plural": "projects",
+    "publisher_singular": "project",
+    "record_plural": "concepts",
+    "record_singular": "concept",
+    "search_placeholder": "Search 293 families and supporting concepts"
+  }
+}

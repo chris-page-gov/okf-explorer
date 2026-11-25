@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <link rel="icon" href="data:,">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A source-linked, metadata-only walkthrough of a complex population-by-age discovery question through the ONS OKF 0.3 bundle.">
+  <title>Population by age: OKF 0.3 walkthrough</title>
+  <style>
+    :root { color-scheme: light; font-family: system-ui, sans-serif; color: #14283b; background: #f6f8fb; }
+    body { margin: 0; line-height: 1.55; }
+    main { max-width: 1180px; margin: 0 auto; padding: 2rem clamp(1rem, 4vw, 3rem) 4rem; }
+    h1, h2, h3 { line-height: 1.2; }
+    h1 { max-width: 18ch; font-size: clamp(2rem, 5vw, 3.5rem); }
+    h2 { margin-top: 2.5rem; }
+    a { color: #005a8b; text-underline-offset: .15em; }
+    a:focus-visible { outline: 3px solid #ffbf47; outline-offset: 3px; }
+    .eyebrow { color: #334e68; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+    .lede { max-width: 76ch; font-size: 1.15rem; }
+    figure { margin: 2rem 0; }
+    figure img { display: block; width: 100%; height: auto; border-radius: 1rem; box-shadow: 0 4px 18px #14283b18; }
+    figcaption { margin-top: .75rem; color: #334e68; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 1rem; }
+    article, .note { background: #fff; border: 1px solid #b5c4d2; border-radius: .8rem; padding: 1rem 1.2rem; }
+    article h3 { margin-top: .25rem; }
+    .boundary { border-left: .35rem solid #8b5a00; }
+    .safe { border-left: .35rem solid #216e4e; }
+    code { overflow-wrap: anywhere; }
+    table { width: 100%; border-collapse: collapse; background: #fff; }
+    th, td { text-align: left; vertical-align: top; padding: .7rem; border: 1px solid #aebdcb; }
+    th { background: #eaf0f5; }
+    .small { color: #334e68; font-size: .94rem; }
+    @media (max-width: 620px) { main { padding-top: 1rem; } th, td { padding: .45rem; } }
+  </style>
+</head>
+<body>
+<main>
+  <p class="eyebrow">ONS Open Knowledge Format · core 0.3 · metadata only</p>
+  <h1>Population by age: follow the evidence</h1>
+  <p><a href="index.html">ONS bundle homepage</a> · <a href="https://chris-page-gov.github.io/okf-explorer/explore/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-ons%2Fokf-explorer.json&amp;q=NM_2002_1#dataset/nomis-dataset-nm-2002-1">Open the Nomis metadata record in Explorer</a> · <a href="https://chris-page-gov.github.io/okf-explorer/explore/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fokf-ons%2Fokf-core-explorer.json#concepts/sources/nomis-dataset-definitions.md">Open the source definition concept in Explorer</a></p>
+  <p class="lede">This walkthrough follows a realistic question through the frozen ONS metadata bundle. It shows what the source records, which nearby records can be confused with it, and where a live query still needs decisions.</p>
+
+  <figure>
+    <img src="ons-population-by-age-walkthrough.svg" alt="Five-step path from question, through OKF core and metadata graph, to candidate comparison and a non-executing plan; below it, negative controls separate five-year age bands, small-area geography, and metadata from live execution." width="1440" height="600">
+    <figcaption>The graph shows a navigation path and its evidence boundaries. Similarity edges are discovery aids, not claims of equivalence.</figcaption>
+  </figure>
+
+  <section aria-labelledby="question">
+    <h2 id="question">The question</h2>
+    <blockquote class="note">I need a population trend by age for a named local authority and a stated period. Which ONS dataset and edition should I consider? What nearby series could be confused with it? Which geography vintage, provenance and quality evidence can I inspect, and what must be chosen before a live query is authorised?</blockquote>
+  </section>
+
+  <section aria-labelledby="candidate">
+    <h2 id="candidate">Candidate supported by the frozen source</h2>
+    <div class="note">
+      <h3>Nomis <code>NM_2002_1</code></h3>
+      <p><em>Population estimates - local authority based by single year of age</em>. The source describes mid-year estimates for 30 June, based on the latest Census of Population with allowance for under-enumeration, available at local-authority level and above.</p>
+      <p>The record lists six dimensions: age, frequency, gender, geography, measures and time. It records first release on 11 August 2010 and revision on 30 July 2025. Its geography-vintage, frequency, edition and version fields are blank or absent in this snapshot; the walkthrough does not fill them in.</p>
+      <p>It links to the <a href="https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/methodologies/midyearpopulationestimatesqmi">ONS mid-year population estimates quality and methods information</a>. The source record has no separate methodology link. The QMI link is recorded as evidence; this walkthrough does not revalidate its live contents.</p>
+      <p class="small">Source: <a href="https://github.com/chris-page-gov/okf-ons/blob/16a70b6e2dd62a10e7dc891385a7a8235c72fdb1/source/demo-snapshot/nomis-dataset-definitions.json#L128297">frozen Nomis definition, record <code>NM_2002_1</code> (lines 128297–128303)</a>; quality and methods statement at <a href="https://github.com/chris-page-gov/okf-ons/blob/16a70b6e2dd62a10e7dc891385a7a8235c72fdb1/source/demo-snapshot/nomis-dataset-definitions.json#L128185">line 128185</a>. Snapshot: <code>monday-2026-07-17-r2</code>.</p>
+    </div>
+  </section>
+
+  <section aria-labelledby="controls">
+    <h2 id="controls">Negative controls and nearby records</h2>
+    <div class="grid">
+      <article class="boundary">
+        <h3><code>NM_31_1</code>: five-year age band</h3>
+        <p>The title shares population and local-authority wording, but the age grain differs. It must not stand in for a single-year series when the question requires that level of detail.</p>
+      </article>
+      <article class="boundary">
+        <h3><code>NM_2010_1</code>: 2011-based small area</h3>
+        <p>This is a different geographic grain and vintage, despite also describing single-year age estimates.</p>
+      </article>
+      <article class="boundary">
+        <h3><code>NM_2014_1</code>: 2021-based small area</h3>
+        <p>The title identifies a 2021-based small-area series. It is not silently substituted for the local-authority candidate.</p>
+      </article>
+      <article class="boundary">
+        <h3>ONS Data API ageing series</h3>
+        <p><code>ageing-population-estimates</code> is on a different source surface and has different edition, version, frequency and unit metadata.</p>
+      </article>
+    </div>
+    <p class="note"><strong>Similarity is not equivalence.</strong> The graph assertions are inferred and marked discovery-only. They do not establish statistical identity, suitability or endorsement.</p>
+  </section>
+
+  <section aria-labelledby="path">
+    <h2 id="path">Source and graph path</h2>
+    <table>
+      <thead><tr><th scope="col">Step</th><th scope="col">Entry point</th><th scope="col">What it establishes</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Portable core</th><td><code>index.md</code> → <code>concepts/catalogue.md</code></td><td>OKF 0.3 entrypoint and metadata-only scope; 12 typed Markdown concepts.</td></tr>
+        <tr><th scope="row">Explorer index</th><td><code>okf-explorer.json</code> → <code>data/manifest.json</code></td><td>Static search and record chunks for the 5,097 source-backed profile entities. Each runtime record is labelled <code>core_role: extension</code>.</td></tr>
+        <tr><th scope="row">Semantic graph</th><td><code>data/semantic/manifest.json</code> → entity and assertion shards</td><td>Manifest-bound entities and relationships; candidate route <code>dataset/nomis-dataset-nm-2002-1</code>.</td></tr>
+        <tr><th scope="row">One negative edge</th><td><code>dataset/nomis-dataset-nm-2002-1</code> → <code>dataset/nomis-dataset-nm-31-1</code></td><td>Assertion <code>1b7f034fd8099eaf3d51d314f63a170742474ec79781b97a883b278992bd44db</code>; inferred, discovery-only, statistical equivalence false.</td></tr>
+        <tr><th scope="row">AI metadata route</th><td><code>okf.search</code> → <code>okf.get_record</code> → <code>okf.compare</code> → <code>okf.prepare_mcp_plan</code></td><td>Local broker can prepare a snapshot-bound plan and leave all six dimensions unresolved until live schema inspection.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section aria-labelledby="plan">
+    <h2 id="plan">Where the answer stops</h2>
+    <p class="note safe">The local MCP plan is non-executing. It does not return observations or validate live options. A separate accountable service must check the dataset edition, geography and vintage, age, sex, measure, frequency and period against its live schema, then confirm purpose and authority before any retrieval.</p>
+    <p>No paid language model is used in the saved broker replay. The replay tests metadata access and plan construction; it does not test an AI client's answer quality.</p>
+  </section>
+
+  <section aria-labelledby="replay">
+    <h2 id="replay">Replay the Explorer journey</h2>
+    <p>The portable <a href="ons-population-by-age-explorer-journeys.json">Explorer journey manifest</a> binds a local browser acceptance run to descriptor schema, version and snapshot. It covers search, the candidate details, its graph alternative and negative controls for the five-year and 2021-based small-area records.</p>
+    <p>See the machine-readable <a href="ons-population-by-age-source-trail.json">source trail</a> for record identifiers, hashes, assertion IDs and acceptance boundaries.</p>
+  </section>
+</main>
+</body>
+</html>

@@ -98,7 +98,11 @@
         "okf.publication.json",
         "tools/okf-skills/**",
         "scripts/okf_skill.py",
-        "scripts/install_okf_skills.py"
+        "scripts/install_okf_skills.py",
+        "scripts/build_walkthrough_register.py",
+        "scripts/build_public_bundle_access.py",
+        "tests/test_walkthrough_register.py",
+        "tests/test_public_bundle_access.py"
       ],
       "formats": [
         "application/json",
@@ -1156,6 +1160,30 @@
         "check_command_ids": [
           "check-profile-walkthroughs"
         ]
+      },
+      {
+        "path": "registry/walkthrough-register.json",
+        "role": "registry-projection",
+        "plane": "runtime",
+        "required": true,
+        "build_command_ids": [
+          "build-walkthrough-register"
+        ],
+        "check_command_ids": [
+          "check-walkthrough-register"
+        ]
+      },
+      {
+        "path": "docs/walkthrough-register.md",
+        "role": "other",
+        "plane": "documentation",
+        "required": true,
+        "build_command_ids": [
+          "build-walkthrough-register"
+        ],
+        "check_command_ids": [
+          "check-walkthrough-register"
+        ]
       }
     ]
   },
@@ -1193,7 +1221,8 @@
         "check-analytical-data",
         "check-analytical-trial",
         "check-analytical-live-trial",
-        "check-analytical-data-v2"
+        "check-analytical-data-v2",
+        "check-walkthrough-register"
       ]
     },
     {
@@ -1252,7 +1281,9 @@
         "build-public-access",
         "check-public-access",
         "build-reference-bundle",
-        "check-reference-core"
+        "check-reference-core",
+        "build-walkthrough-register",
+        "check-walkthrough-register"
       ]
     },
     {
@@ -1275,7 +1306,9 @@
         "check-lockstep",
         "check-british-english",
         "check-public-access",
-        "check-profile-walkthroughs"
+        "check-profile-walkthroughs",
+        "build-walkthrough-register",
+        "check-walkthrough-register"
       ]
     },
     {
@@ -1952,6 +1985,35 @@
         "network": "none",
         "mutates": "none",
         "timeout_minutes": 10
+      },
+      {
+        "id": "build-walkthrough-register",
+        "kind": "build",
+        "planes": [
+          "runtime",
+          "documentation"
+        ],
+        "command": "uv run --locked python scripts/build_walkthrough_register.py",
+        "source": "registry/walkthrough-register.source.json",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "generated-only",
+        "timeout_minutes": 5
+      },
+      {
+        "id": "check-walkthrough-register",
+        "kind": "check",
+        "planes": [
+          "source",
+          "runtime",
+          "documentation"
+        ],
+        "command": "uv run --locked python scripts/build_walkthrough_register.py --check",
+        "source": "registry/walkthrough-register.source.json",
+        "review_status": "reviewed-local-guidance",
+        "network": "none",
+        "mutates": "none",
+        "timeout_minutes": 5
       }
     ]
   },

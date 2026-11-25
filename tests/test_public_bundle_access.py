@@ -84,6 +84,7 @@ class PublicBundleAccessTests(unittest.TestCase):
     def test_served_discovery_has_the_same_directory(self):
         outputs = access.render(access.load())
         self.assertEqual(outputs[Path("okf-public-access.json")], outputs[Path(".well-known/okf.json")])
+        self.assertIn("[Central public walkthrough register](walkthrough-register.md)", outputs[Path("docs/public-bundle-access.md")])
         for b in access.load()["bundles"]:
             self.assertIn(b["descriptor"], outputs[Path("llms.txt")])
 

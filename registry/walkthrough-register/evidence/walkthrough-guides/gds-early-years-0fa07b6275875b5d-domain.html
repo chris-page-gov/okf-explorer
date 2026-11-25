@@ -1,0 +1,71 @@
+<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>How should competing candidate links and different action states be read?</title><style>*{box-sizing:border-box}body{margin:0;color:#172b3b;background:#f5f7f9;font:1.06rem/1.6 system-ui,sans-serif}header{background:#153847;color:white;padding:2rem max(1rem,calc((100vw - 72rem)/2))}main{max-width:74rem;margin:auto;padding:1.5rem}h1{line-height:1.2;font-size:clamp(1.8rem,4vw,2.6rem);max-width:28ch}h2{line-height:1.3}a{color:#075d74;text-underline-offset:.15em}header a{color:white}a:focus-visible,summary:focus-visible{outline:3px solid #ffdd00;outline-offset:4px;color:#0b0c0c;background:#ffdd00}section,.answer{background:white;padding:1.4rem;margin:1.5rem 0;border:1px solid #bacbd4;border-radius:.35rem}.answer{border-left:6px solid #007f73}picture img{width:100%;height:auto;display:block}li{margin:.6rem 0}code,pre{overflow-wrap:anywhere;white-space:pre-wrap}details{padding:.7rem 0}summary{cursor:pointer;font-weight:650}.warning{background:#fff2d2;border-left:6px solid #9b6500;padding:1rem}.scope{font-size:.9rem;letter-spacing:.04em}footer{padding:1.5rem;border-top:1px solid #bacbd4}small{font-size:.9rem}@media(max-width:600px){main{padding:1rem}section,.answer{padding:1rem}h1{max-width:none}}</style><link rel="icon" type="image/svg+xml" href="../favicon.svg"></head><body><header><p class="scope">Current OKF 0.3 · independent early-years profile</p><h1>How should competing candidate links and different action states be read?</h1><p>Synthetic records · source-linked inspection · no operational authority</p></header><main><p><a href="../index.html">All three bundle walkthroughs</a></p><p class="warning">Every record is fictional. Candidate links do not establish identity. This publication cannot submit a referral or make a decision about a child.</p><section aria-labelledby="journey"><h2 id="journey">Follow the question</h2><picture><source media="(max-width:600px)" srcset="domain-mobile.svg"><img src="domain.svg" alt="Four inspection steps, repeated in the ordered list below."></picture><ol><li>Read H-01 and inspect incoming candidateSource assertions.</li><li>Compare C-01 and C-02, their exact source locators and candidate targets.</li><li>Read the candidate interpretation rule before following a proposed match.</li><li>Compare the three referral assertions and preserve proposed, completed and cancelled states.</li></ol><p><a href="https://chris-page-gov.github.io/okf-explorer/explore/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fgds-local-hackathon-20260909-early-years%2Fbundle%2Fokf-bundle.json&amp;view=reader#record/h-01">Open this bundle and record in OKF Explorer</a></p></section><section class="answer"><h2>Qualified answer</h2><p>H-01 has two competing candidate record links: C-01 points to E-01 and C-02 points to E-03. They remain proposals governed by the candidate interpretation rule, not identity merges. R-01 records A-01 as proposed; R-02 records A-02 as completed; R-03 records A-03 as cancelled. Those action states belong to their own source records and must not be transferred to H-01 through a guessed identity join.</p></section><section><h2>What the evidence does not establish</h2><ul><li>Candidate links do not create owl:sameAs identity assertions.</li><li>Do not promote A-01 from proposed to completed.</li><li>Do not transfer R-02&#x27;s completion to H-01 through a guessed join.</li><li>No confidence value is a calibrated probability of identity.</li></ul></section><section><h2>Source trail</h2><ol><li><a href="../bundle/concepts/record/h-01.md">H-01 — health record</a><details><summary>Inspect source facts and exact file digest</summary><pre>{
+  &quot;record_id&quot;: &quot;H-01&quot;,
+  &quot;local_subject&quot;: &quot;SYN-H-001&quot;,
+  &quot;review_date&quot;: &quot;2026-08-20&quot;,
+  &quot;capture_state&quot;: &quot;recorded&quot;,
+  &quot;concern_state&quot;: &quot;concern-recorded&quot;,
+  &quot;note&quot;: &quot;Synthetic review recommends discussing support; it records no referral submission.&quot;
+}</pre><p>SHA-256: <code>d1f291118460ae451c20425b990641e768056be3eaf9dff89f77c07bc64576de</code></p></details></li><li><a href="../bundle/concepts/candidate/c-01.md">C-01 — H-01 / E-01</a><details><summary>Inspect source facts and exact file digest</summary><pre>{
+  &quot;candidate_id&quot;: &quot;C-01&quot;,
+  &quot;source_ref&quot;: &quot;H-01&quot;,
+  &quot;target_ref&quot;: &quot;E-01&quot;,
+  &quot;review_status&quot;: &quot;pending&quot;,
+  &quot;method&quot;: &quot;authored-rehearsal-fixture&quot;,
+  &quot;reason&quot;: &quot;Authored candidate for demonstration only; not computed matching evidence.&quot;
+}</pre><p>SHA-256: <code>bf89a192063b79dc16014c3af6639f7f4d879004096bd2d771a2aae058e2aa58</code></p></details></li><li><a href="../bundle/concepts/candidate/c-02.md">C-02 — H-01 / E-03</a><details><summary>Inspect source facts and exact file digest</summary><pre>{
+  &quot;candidate_id&quot;: &quot;C-02&quot;,
+  &quot;source_ref&quot;: &quot;H-01&quot;,
+  &quot;target_ref&quot;: &quot;E-03&quot;,
+  &quot;review_status&quot;: &quot;pending&quot;,
+  &quot;method&quot;: &quot;authored-rehearsal-fixture&quot;,
+  &quot;reason&quot;: &quot;Deliberate competing candidate; do not choose or merge silently.&quot;
+}</pre><p>SHA-256: <code>b549fd5f3602d2e0a6511f01c3670e6fcc6ece2a099e0fbc2f2701ecd584b06f</code></p></details></li><li><a href="../bundle/concepts/record/e-01.md">E-01 — setting record</a><details><summary>Inspect source facts and exact file digest</summary><pre>{
+  &quot;record_id&quot;: &quot;E-01&quot;,
+  &quot;local_subject&quot;: &quot;SYN-E-101&quot;,
+  &quot;review_date&quot;: &quot;2026-08-20&quot;,
+  &quot;capture_state&quot;: &quot;recorded&quot;,
+  &quot;concern_state&quot;: &quot;concern-recorded&quot;,
+  &quot;note&quot;: &quot;A setting record is only a candidate link to H-01.&quot;
+}</pre><p>SHA-256: <code>60bd63b720c36ddb05139e26ca536cfcd9fb9ed05c852cc24020ab03b4de1c02</code></p></details></li><li><a href="../bundle/concepts/record/e-03.md">E-03 — setting record</a><details><summary>Inspect source facts and exact file digest</summary><pre>{
+  &quot;record_id&quot;: &quot;E-03&quot;,
+  &quot;local_subject&quot;: &quot;SYN-E-103&quot;,
+  &quot;review_date&quot;: &quot;2026-08-20&quot;,
+  &quot;capture_state&quot;: &quot;recorded&quot;,
+  &quot;concern_state&quot;: &quot;unknown&quot;,
+  &quot;note&quot;: &quot;Second candidate for H-01. Similarity does not establish identity.&quot;
+}</pre><p>SHA-256: <code>3bd3886b2addc9ff038dd84837fb3a90743ede9dff1f07479b047d409d95d543</code></p></details></li><li><a href="../bundle/concepts/record/r-01.md">R-01 — referral record</a><details><summary>Inspect source facts and exact file digest</summary><pre>{
+  &quot;record_id&quot;: &quot;R-01&quot;,
+  &quot;local_subject&quot;: &quot;SYN-R-201&quot;,
+  &quot;action_id&quot;: &quot;A-01&quot;,
+  &quot;action_status&quot;: &quot;proposed&quot;,
+  &quot;action_label&quot;: &quot;Discuss a local support option&quot;,
+  &quot;note&quot;: &quot;A proposed action is not a submitted referral or completed support.&quot;
+}</pre><p>SHA-256: <code>df7a6c65c00b0c458225a3913e1fdd6b2bc87e001a65f578acafbae832951184</code></p></details></li><li><a href="../bundle/concepts/record/r-02.md">R-02 — referral record</a><details><summary>Inspect source facts and exact file digest</summary><pre>{
+  &quot;record_id&quot;: &quot;R-02&quot;,
+  &quot;local_subject&quot;: &quot;SYN-R-202&quot;,
+  &quot;action_id&quot;: &quot;A-02&quot;,
+  &quot;action_status&quot;: &quot;completed&quot;,
+  &quot;action_label&quot;: &quot;Send an information leaflet&quot;,
+  &quot;note&quot;: &quot;This fixture records only leaflet dispatch as completed, not support received.&quot;
+}</pre><p>SHA-256: <code>61855c132c289fa5dd9a4279464fa92b39d3afe9d4c40067985a280c3448ef9e</code></p></details></li><li><a href="../bundle/concepts/record/r-03.md">R-03 — referral record</a><details><summary>Inspect source facts and exact file digest</summary><pre>{
+  &quot;record_id&quot;: &quot;R-03&quot;,
+  &quot;local_subject&quot;: &quot;SYN-R-203&quot;,
+  &quot;action_id&quot;: &quot;A-03&quot;,
+  &quot;action_status&quot;: &quot;cancelled&quot;,
+  &quot;action_label&quot;: &quot;Arrange an introductory call&quot;,
+  &quot;note&quot;: &quot;A cancelled call must not appear as completed support.&quot;
+}</pre><p>SHA-256: <code>cb32b0c5aa6c07ced7ae32b1ac83e68e306f52ce344dc4e5cea6d0b7a7b0cb1f</code></p></details></li><li><a href="../bundle/concepts/action/a-01.md">A-01 — Discuss a local support option</a><details><summary>Inspect source facts and exact file digest</summary><pre>{
+  &quot;action_id&quot;: &quot;A-01&quot;,
+  &quot;action_status&quot;: &quot;proposed&quot;,
+  &quot;action_label&quot;: &quot;Discuss a local support option&quot;
+}</pre><p>SHA-256: <code>ff49bdf7f4965a848b2c1867ca9b5f79d85913c4555c34384997c34f44165c68</code></p></details></li><li><a href="../bundle/concepts/action/a-02.md">A-02 — Send an information leaflet</a><details><summary>Inspect source facts and exact file digest</summary><pre>{
+  &quot;action_id&quot;: &quot;A-02&quot;,
+  &quot;action_status&quot;: &quot;completed&quot;,
+  &quot;action_label&quot;: &quot;Send an information leaflet&quot;
+}</pre><p>SHA-256: <code>ecb14fd9aada16b6a03fb90f52619aa3f82e365287f94558c705d8d22c32b89e</code></p></details></li><li><a href="../bundle/concepts/action/a-03.md">A-03 — Arrange an introductory call</a><details><summary>Inspect source facts and exact file digest</summary><pre>{
+  &quot;action_id&quot;: &quot;A-03&quot;,
+  &quot;action_status&quot;: &quot;cancelled&quot;,
+  &quot;action_label&quot;: &quot;Arrange an introductory call&quot;
+}</pre><p>SHA-256: <code>20ff452d5e7e7da47ddfa303cc20a1c6717c2818b1964b27b8e9bc2f0314b8ff</code></p></details></li><li><a href="../bundle/concepts/rule/candidate-interpretation.md">Candidate links do not assert identity</a><details><summary>Inspect source facts and exact file digest</summary><pre>{
+  &quot;rule&quot;: &quot;A candidate record link is not identity equivalence.&quot;
+}</pre><p>SHA-256: <code>b2935512413232f4d0ee2ad8294c80267ee9200189b244256d6a417e745c9385</code></p></details></li></ol><p><a href="domain-evidence.json">Machine-readable source, graph and negative-control evidence</a> · <a href="../bundle/okf-bundle.json">Exact bundle descriptor</a></p></section></main><footer><a href="../LICENSE.md">Content licence</a> · <a href="../TERMS.md">Terms</a> · <a href="../checksums.json">Publication file hashes</a></footer></body></html>

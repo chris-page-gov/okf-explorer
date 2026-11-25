@@ -1,14 +1,50 @@
 # Changelog
 
-## Unreleased — portable context navigation and release binding
+## Unreleased — central public walkthrough register
+
+- Add a public-only register covering 76 recorded repository/root identities
+  and 106 revision observations, including aliases, contract roots, fixtures,
+  history and unresolved walkthroughs. The denominator is explicitly dated
+  and does not claim fresh owner discovery or national completeness.
+- Capture the exact current descriptor bytes from the 13 curated public access
+  routes and keep their current core version, producer version, prior digest
+  comparison and observation date separate. A changed digest does not inherit
+  earlier release or walkthrough acceptance.
+- Verify the Explorer reference walkthrough's question, data packet, case,
+  HTML and SVG digests from local source. Keep browser, deployment, conformance
+  and legal acceptance as separate evidence.
+- Add 21 distinct producer walkthrough questions and links across the
+  recorded producer roots. Bind each question source to captured public bytes,
+  SHA-256 and the Git blob at its observed checkout commit; retain prior
+  receipt digests, producer versions and Reader versions separately. Add five
+  Reader 0.9.2 owned walkthroughs, including the teaching bundle and four
+  profile fixtures; keep profile versions distinct from OKF core declarations.
+  Count the source-bound Explorer reference separately: 27 public questions
+  in total, with deterministic omission and total-count checks.
+- Preserve the prior Hansard four-guide pass and record a fresh browser
+  observation: both week guides return HTTP 200 with working Reader journeys;
+  both November guide URLs return HTTP 404. This current result does not erase
+  the earlier passing receipt.
+- Record anonymous GitHub visibility metadata for all 24 distinct repositories
+  in the denominator, observed on 25 November 2026. This is not a new owner
+  discovery or bundle acceptance claim.
+- Render walkthroughs as compact review entries before the inventory tables,
+  with full evidence digests in the machine-readable register. Make the
+  deterministic accuracy check reject missing, surplus or duplicate
+  walkthrough entries, unsafe links, unbound core versions, changed question
+  bytes, and repositories lacking a current public visibility observation.
+- Add deterministic denominator, descriptor identity/version, alias, path,
+  URL and evidence-hash checks to the Python plane and CI.
+
+## v0.9.2 — 25 November 2026 — portable context navigation and release binding
 
 - Resolve structured context links from the loaded bundle descriptor and open
   their target record in the current Explorer application path. Keep ordinary
   absolute web-resource links external, and reject unsafe or malformed targets.
 - Derive the legislation runtime acceptance version from the app package so
-  the release tag and package version cannot drift apart. Prepare the 0.9.2
-  candidate; publication and release remain separate gates.
-- Date the resumed 0.9.2 release candidate 25 November 2026 in both citation
+  the release tag and package version cannot drift apart. Reader 0.9.2 is
+  published as an immutable release; producer migration remains separate.
+- Date the 0.9.2 release 25 November 2026 in both citation
   records; preserve the original standard and implementation dates.
 - Parse the immutable federation snapshot bytes directly in the native
   legislation runner, correcting the integration error caught by its real

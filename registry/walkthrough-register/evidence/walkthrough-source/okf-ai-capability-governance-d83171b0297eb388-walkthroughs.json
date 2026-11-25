@@ -1,0 +1,57 @@
+{
+  "schema": "okf-capability-governance-walkthroughs.v1",
+  "scopes": {
+    "full-site": {
+      "route_prefix": "site-bundle",
+      "concept_directory": "sections",
+      "primary_route": "sections/page-shell.md",
+      "question": "What does this pinned site archive support someone checking before reuse, and what would require current operational evidence?",
+      "answer": "This capture contains 30 typed Markdown section concepts and no core graph assertions. Its declared Pages deployment has 13 entries: 12 HTTP files and an empty .nojekyll marker. The separate pinned repository inventory has 90 files, so the deployment count does not describe the whole repository. The archive is a source-linked static capture; it does not establish that calculators, dynamically assembled views or external resources still work, nor does it provide a current service decision.",
+      "limitations": [
+        "The 30 Markdown concepts are a text projection of the pinned main-page snapshot, not a semantic review of every part of the publisher’s repository.",
+        "The complete repository inventory and the Pages deployment inventory are separate sets; 90 repository files must not be described as 90 deployed assets.",
+        "The archive preserves static deployment bytes and source records. It does not demonstrate current live behaviour for calculators, dynamic views or changing external resources.",
+        "An empty .nojekyll marker is a deployment control file, not an HTTP resource or a concept in the semantic graph."
+      ],
+      "negative_controls": [
+        "Do not infer that the 90 inventoried repository files were all deployed.",
+        "Do not infer that zero graph assertions means the publisher has no relationships or governance rules.",
+        "Do not treat this frozen capture as evidence that a live service or calculator currently works."
+      ],
+      "sources": [
+        "site-bundle/index.md",
+        "site-bundle/walkthrough-source.json",
+        "site-bundle/source-bytes/index.html.gz",
+        "site-bundle/evidence/source-inventory.json",
+        "site-bundle/sections/page-shell.md"
+      ]
+    },
+    "correspondence": {
+      "route_prefix": "bundle",
+      "concept_directory": "concepts",
+      "primary_route": "concepts/send-variant.md",
+      "question": "In the published composite example, what changes when the agent is given the send action, and which human control remains in place?",
+      "answer": "The baseline is a Tier 3 example in which the agent classifies correspondence and drafts a suggested reply from approved templates; a caseworker commits the action. In the published send variant, sending is treated as an irreversible effect and the example moves to Tier 4. Its cap remains L1 Draft only and shadow mode is required, so a person still commits the output. The four links in this companion graph are synthetic-fixture interpretations of that composite example, not official mandates.",
+      "limitations": [
+        "This is an illustrative composite adapted from the pinned public playbook, not an account of a real local service or real correspondence.",
+        "The bundle records no local appointment, authorisation, approval or permission to send messages.",
+        "All four graph assertions remain qualified as synthetic-fixture with synthetic authority; they do not become official policy through visualisation.",
+        "The published example is evidence for what its author described, not evidence that a local authority has adopted the same controls."
+      ],
+      "negative_controls": [
+        "Do not infer that Tier 4 or the send action has been approved locally.",
+        "Do not present synthetic-fixture graph edges as official mandates.",
+        "Do not claim the pilot sent real correspondence or observed a live service."
+      ],
+      "sources": [
+        "bundle/walkthrough-source.json",
+        "bundle/index.md",
+        "bundle/concepts/mandate.md",
+        "bundle/concepts/send-variant.md",
+        "site-bundle/source-bytes/index.html.gz",
+        "bundle/relationships.jsonld",
+        "bundle/evidence.json"
+      ]
+    }
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "schema": "okf-bundle-walkthrough-case.v1",
+  "id": "federated-rag-evidence",
+  "trails": [
+    {
+      "label": "Follow the privacy-related concept references",
+      "routes": [
+        "federated/federated-rag.md",
+        "federated/federated-learning.md",
+        "federated/secure-aggregation.md",
+        "federated/differential-privacy.md"
+      ]
+    },
+    {
+      "label": "Search separately, then follow evaluation references",
+      "routes": [
+        "federated/federated-evaluation.md",
+        "federated/evaluation-rubric.md"
+      ]
+    },
+    {
+      "label": "Search separately for the official security reference",
+      "routes": [
+        "uk-government/ncsc-secure-ai.md"
+      ]
+    }
+  ],
+  "no_directed_concept_path": [
+    [
+      "federated/federated-rag.md",
+      "federated/federated-evaluation.md"
+    ],
+    [
+      "federated/federated-rag.md",
+      "uk-government/ncsc-secure-ai.md"
+    ]
+  ],
+  "expected_absent_fields": {
+    "federated/federated-rag.md": [
+      "verified",
+      "stale_after"
+    ],
+    "federated/federated-learning.md": [
+      "verified",
+      "stale_after"
+    ],
+    "federated/secure-aggregation.md": [
+      "verified",
+      "stale_after"
+    ],
+    "federated/differential-privacy.md": [
+      "verified",
+      "stale_after"
+    ],
+    "federated/federated-evaluation.md": [
+      "verified",
+      "stale_after"
+    ],
+    "federated/evaluation-rubric.md": [
+      "verified",
+      "stale_after"
+    ],
+    "uk-government/ncsc-secure-ai.md": [
+      "verified",
+      "stale_after"
+    ]
+  }
+}

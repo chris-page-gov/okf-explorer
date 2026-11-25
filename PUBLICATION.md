@@ -9,6 +9,17 @@ Explorer's ordinary Site rebuild and release closure.
 
 - Repository: canonical OKF Explorer source, sample OKF Markdown corpus,
   provenance, issues, pull requests, and review history.
+- Public walkthrough register: a dated register of the sanitised public
+  repository/root denominator, descriptor observations and locally
+  hash-verified walkthrough evidence. Pending roots and aliases remain
+  explicit. Its deterministic check verifies the fixed guide list, captured
+  question bytes, Git blob bindings, safe links and dated repository visibility;
+  the register does not certify conformance or legal acceptance.
+  Captured public evidence retains original spelling, code and storage examples
+  as intentional editorial exceptions so its hashes remain reproducible. The
+  Explorer descriptor's historical inventory description and the Hansard
+  README's database command retain their already published workspace/storage
+  path examples. Keep authenticated owner inventories outside this register.
 - Root sample data: `okf-bundle.json` is the compatibility runtime projection;
   `okf-bundle.yamlld` and `okf-bundle.jsonld` are synchronised semantic
   representations generated from the same normalised Markdown graph. Site
@@ -234,7 +245,7 @@ and its assurance receipts.
 6. Dispatch `promotion-release.yml` from updated `main` with both tags, the
    successful terminal workflow run ID, and the same exact 40-hex OKF Explorer
    assurance commit. It verifies the run repository,
-   workflow, result, commit, timing and artifact identity; rechecks R1;
+   workflow, result, commit, timing and artefact identity; rechecks R1;
    materialises and attests the promotion envelope; and publishes the complete
    closure from a draft.
 7. Each post-publication gate requires `release.immutable == true`, GitHub's
@@ -254,7 +265,7 @@ already verified Pages deployment.
 
 The external repository templates implement this ordering. See GitHub's
 [immutable release guidance](https://docs.github.com/en/code-security/how-tos/secure-your-supply-chain/establish-provenance-and-integrity/prevent-release-changes)
-and [artifact attestation guidance](https://docs.github.com/en/actions/how-tos/secure-your-supply-chain/use-artifact-attestations/use-artifact-attestations).
+and [guidance on attestations](https://docs.github.com/en/actions/how-tos/secure-your-supply-chain/use-artifact-attestations/use-artifact-attestations).
 
 ## Publication Checks
 
@@ -303,7 +314,7 @@ shadow workflow always runs all three engines and the full Foundry family.
 
 The scheduled link observer rotates over hash shards on its own freshness
 schedule. Bulk official URLs use bounded HTTP observations; protected rich
-pages use a real Chromium journey. Both receipts are workflow artifacts outside
+pages use a real Chromium journey. Both receipts are workflow artefacts outside
 the candidate and cannot trigger a Site rebuild.
 
 ## Current Svelte Coverage
