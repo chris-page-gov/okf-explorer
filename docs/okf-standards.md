@@ -46,6 +46,20 @@ version are separate values. A repository can link to this register without
 changing its core declaration, and a profile or Reader implementation does
 not by itself establish that its producer has adopted OKF 0.3.
 
+## Release-evidence compatibility
+
+Before costly release validation, compare the real producer output and pinned
+producer schemas with the exact consumer's required fields and bindings. The
+Explorer provides a reusable, read-only
+[compatibility harness](../scripts/check_release_evidence_compatibility.py)
+and a [historical failing regression profile](../profiles/release-evidence-compatibility/codex-security-standard-0.1.33.json).
+That profile diagnoses a past producer/consumer mismatch; it is not a live
+release profile. Owners must author and review a profile for their own producer
+and consumer. The harness reports format compatibility only; its `release_readiness` result
+is always `not-assessed`. Each repository's producer-specific verifier remains
+the authority for release acceptance. A bootstrap makes this guidance
+available, but does not install or run the harness in existing producers.
+
 ## Public bundle catalogues
 
 - [Public OKF walkthrough register](walkthrough-register.md) records the wider

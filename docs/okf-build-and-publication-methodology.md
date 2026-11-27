@@ -20,6 +20,54 @@ The repository's own reviewed commands remain authoritative. A shared checker
 may validate or schedule them, but must not silently replace them with commands
 copied from Explorer or another producer.
 
+## Check release-evidence compatibility early
+
+Before a costly scan, rebuild or candidate reproduction, compare the retained
+producer format with the exact release consumer's declared requirements. Use a
+versioned compatibility profile to pin producer schemas and hashes, required
+fields, candidate identity, scope, coverage shape and evidence inventory. Run
+the read-only
+[`check_release_evidence_compatibility.py`](../scripts/check_release_evidence_compatibility.py)
+harness against the pinned schema directory and the retained native output.
+Its profile values are data: the harness never executes command strings from
+contracts or profiles.
+
+Use the repository-reviewed profile and actual producer paths:
+
+```sh
+uv run --locked python scripts/check_release_evidence_compatibility.py \
+  --profile "$PRODUCER_COMPATIBILITY_PROFILE" \
+  --schema-dir "$PRODUCER_SCHEMA_DIR" \
+  --manifest "$SECURITY_SCAN_DIR/scan-manifest.json" \
+  --scan-dir "$SECURITY_SCAN_DIR"
+```
+
+The profile must pin the producer's schema hashes, required output fields and
+artifact inventory paths. The harness hashes every declared artifact against
+the manifest; when `--scan-dir` is omitted, it reads artefacts beside the
+manifest. Never use a fixture or checkpoint as the manifest argument.
+
+For a positive compatibility example, retain authentic sealed producer output
+and pass the same bytes through the repository's real release consumer. A
+partial draft can demonstrate a rejection, but cannot serve as the successful
+fixture; the producer may transform review state when sealing.
+
+The check must reject missing required fields, changed schema or artifact bytes,
+partial review state, missing evidence references, and a `completed` status
+without the profile's required seal and candidate bindings. Keep the producer's
+canonical bytes unchanged; record any consumer-side projection
+as separate evidence. A compatible result means only that the declared format
+and bindings were checked. `release_readiness` remains `not-assessed`; the
+producer-specific verifier and release gates remain authoritative.
+
+Add the profile, harness invocation and smallest negative cases to the
+repository's own check plane before adopting a release workflow. A bootstrap
+can provide this guidance, but existing repositories are not thereby checked
+or adopted. Owners must reconcile the profile with their actual producer and
+consumer contracts, retain real producer output, then wire and verify the
+check in that repository. Do not treat synthetic fixtures or partial drafts as
+evidence that a release contract is compatible.
+
 ## Start with a publication-impact plan
 
 Before editing publication-affecting material, record:
@@ -197,6 +245,8 @@ edited by hand.
 ## Introducing another repository or source type
 
 - add or review the repository reconciliation preset;
+- compare producer and consumer release-evidence formats before authorising
+  expensive validation, using a reviewed profile and real retained output;
 - declare `okf.semantic.json` and `okf.publication.json` independently;
 - add the repository and any public bundle to the appropriate registry;
 - define source-family intake before acquiring or transforming data;
