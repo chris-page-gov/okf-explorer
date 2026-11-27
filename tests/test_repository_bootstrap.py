@@ -145,6 +145,8 @@ class RepositoryBootstrapTests(unittest.TestCase):
             self.assertIn("British English", instructions)
             self.assertIn("`en-GB`", instructions)
             self.assertIn("`Europe/London`", instructions)
+            self.assertIn("producer-specific", instructions)
+            self.assertIn("does not install,", instructions)
             self.assertIn("initialisation commit", readme)
             self.assertNotIn("initialization commit", readme)
 

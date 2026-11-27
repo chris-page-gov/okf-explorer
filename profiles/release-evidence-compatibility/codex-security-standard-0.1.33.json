@@ -1,0 +1,67 @@
+{
+  "schema": "okf-release-evidence-compatibility-profile.v1",
+  "title": "Historical frozen-candidate compatibility regression",
+  "purpose": "Regression-only profile for the a657653 candidate; this deliberately fails against the pinned producer output contract and is not a recommended live-release profile.",
+  "producer": {
+    "name": "codex-security-plugin",
+    "version": "0.1.33"
+  },
+  "schemas": [
+    {
+      "filename": "scan-manifest.schema.json",
+      "sha256": "4bac4a5b898ebe72d9bf1128f3a8530979159b3c3bfe2c37ccd3c651f47ce234",
+      "required_schema_values": [
+        {
+          "pointer": "/properties/scan/properties/target/required",
+          "contains": ["remote"]
+        }
+      ]
+    },
+    {
+      "filename": "findings.schema.json",
+      "sha256": "c53067bf1f17b88de5b555ed4d074f7d17975294345b40f16c7a9f91019c9f67"
+    },
+    {
+      "filename": "coverage.schema.json",
+      "sha256": "3629bdde34e73e13be85d54c81487805677560c6d7c9077a50444715afcf188d"
+    }
+  ],
+  "manifest_expectations": {
+    "producer_pointer": "/scan/producer",
+    "required_paths": [
+      "/documentType",
+      "/schemaVersion",
+      "/scan/id",
+      "/scan/status",
+      "/scan/sealedAt",
+      "/scan/artifacts",
+      "/scan/target/kind",
+      "/scan/target/remote",
+      "/scan/target/revision",
+      "/scan/target/targetId",
+      "/scan/scope/includePaths",
+      "/scan/scope/excludePaths",
+      "/scan/findingsRef"
+    ],
+    "equals": {
+      "/documentType": "codex-security.scan-manifest",
+      "/schemaVersion": "1.0",
+      "/scan/status": "completed",
+      "/scan/mode": "repository",
+      "/scan/target/kind": "git_revision",
+      "/scan/target/remote": "https://github.com/chris-page-gov/okf-uk-legislation",
+      "/scan/target/revision": "a657653abe0f9e0df55bb9f7ec60a6e43890949c",
+      "/scan/scope/includePaths": ["."],
+      "/scan/scope/excludePaths": [],
+      "/scan/findingsRef": "findings.json"
+    },
+    "required_artifact_paths": ["findings.json"],
+    "artifacts_pointer": "/scan/artifacts",
+    "required_non_empty": ["/scan/sealedAt"],
+    "forbidden_paths": [
+      "/scan/target/snapshotDigest",
+      "/scan/target/baseRevision",
+      "/scan/target/headRevision"
+    ]
+  }
+}

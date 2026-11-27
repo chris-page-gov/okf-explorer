@@ -1,5 +1,20 @@
 # Changelog
 
+## Unreleased — release-evidence compatibility preflight
+
+- Add a reusable read-only harness and versioned Codex Security compatibility
+  profile to compare pinned producer schemas and retained output with declared
+  consumer requirements before costly release validation. Check artifact
+  digests and required seal/binding fields; report format compatibility
+  separately from release readiness, which remains not assessed.
+- Extend the publication methodology, standards register and new-repository
+  bootstrap guidance. Bootstrap availability does not claim adoption by existing
+  repositories; each producer must configure and verify its own check and retain
+  its producer-specific release verifier as the acceptance authority.
+- Add negative tests for optional required fields, changed schemas and artefacts,
+  incomplete completion state and synthetic fixtures that cannot report release
+  readiness.
+
 ## Unreleased — central public walkthrough register
 
 - Refresh the public-only owner candidate catalogue from 25 November 2026.

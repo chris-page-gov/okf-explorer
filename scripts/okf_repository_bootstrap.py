@@ -264,6 +264,13 @@ release-assurance/tmp/
 - Check the public bundle catalogue linked by that register. Require a separate
   source-linked complex-question walkthrough and Explorer/AI access evidence
   for each actual bundle before its release.
+- Before costly release validation, compare real producer output and pinned
+  producer schemas with the exact release consumer's required fields and
+  bindings. Review and adopt the Explorer's read-only compatibility harness
+  (scripts/check_release_evidence_compatibility.py) with a producer-specific
+  profile. Its result is not release readiness; keep this repository's own
+  release verifier authoritative. Bootstrap guidance alone does not install,
+  run or adopt the harness in this or any existing producer.
 - Never create remotes, push, publish, or spend money implicitly.
 """,
     "README.md": """# OKF bundle
