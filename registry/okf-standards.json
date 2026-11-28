@@ -86,6 +86,18 @@
     },
     "public_owner_candidates": {
       "title": "Public owner repository candidate scan",
+      "path": "docs/evidence/okf-public-owner-candidates-2026-11-28.json",
+      "url": "https://raw.githubusercontent.com/chris-page-gov/okf-explorer/main/docs/evidence/okf-public-owner-candidates-2026-11-28.json",
+      "observed_on": "2026-11-28",
+      "scope": "Public default-branch discovery covering declared indexes and runtime markers. Captures and diagnostic projections are labelled separately. Review each candidate before asserting bundle or release acceptance.",
+      "sha256": "831365046571f2d63d1b993cfd7530febca046fc0011149716312c84d66c0ea7",
+      "public_repositories": 219,
+      "candidate_repositories": 22,
+      "marker_roots": 77,
+      "retained_verification_roots": 7
+    },
+    "prior_public_owner_candidates": {
+      "title": "Public owner repository candidate scan",
       "path": "docs/evidence/okf-public-owner-candidates-2026-11-25.json",
       "url": "https://raw.githubusercontent.com/chris-page-gov/okf-explorer/main/docs/evidence/okf-public-owner-candidates-2026-11-25.json",
       "observed_on": "2026-11-25",
@@ -95,13 +107,6 @@
       "candidate_repositories": 22,
       "marker_roots": 77,
       "retained_verification_roots": 7
-    },
-    "prior_public_owner_candidates": {
-      "title": "Public owner repository candidate scan",
-      "path": "docs/evidence/okf-public-owner-candidates-2026-11-23.json",
-      "url": "https://raw.githubusercontent.com/chris-page-gov/okf-explorer/main/docs/evidence/okf-public-owner-candidates-2026-11-23.json",
-      "observed_on": "2026-11-23",
-      "scope": "Public repository discovery evidence for chris-page-gov. Candidates include declared indexes and runtime markers and require review; discovery does not establish a bundle, conformance, completeness or adoption."
     }
   },
   "limitations": [

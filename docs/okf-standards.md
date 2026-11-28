@@ -71,12 +71,13 @@ available, but does not install or run the harness in existing producers.
   reviewed public producer entries at the directory's recorded observation
   date. It provides access and source-snapshot details, not a completeness or
   conformance decision.
-- [Public owner candidate scan, 25 November 2026](evidence/okf-public-owner-candidates-2026-11-25.json)
+- [Public owner candidate scan, 28 November 2026](evidence/okf-public-owner-candidates-2026-11-28.json)
   covers 219 public repositories, with 22 candidate repositories and 77
-  roots with a declared index or bundle marker. Seven retained captures or
-  diagnostic projections are labelled separately. The remaining candidates
-  still need review for ownership, role, conformance and release status.
-  [Earlier public candidate scan](evidence/okf-public-owner-candidates-2026-11-23.json).
+  roots with a declared index or bundle marker. The scan labels 7 retained captures or
+  diagnostic projections. Review the remaining candidates for ownership, role,
+  conformance and release status.
+  [25 November scan](evidence/okf-public-owner-candidates-2026-11-25.json) ·
+  [23 November scan](evidence/okf-public-owner-candidates-2026-11-23.json).
 
 The scan and curated directory answer different questions. Use the curated
 directory for the reviewed public access routes. Use the dated scan to inspect
