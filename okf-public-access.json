@@ -43,13 +43,15 @@
       "visibility": "public",
       "home": "https://chris-page-gov.github.io/okf-els-api/",
       "descriptor": "https://chris-page-gov.github.io/okf-els-api/okf-explorer.json",
-      "descriptor_sha256": "1437c0d0ecbc077873ce6906892630110fda1f59266e14518a6e78f7af39ce91",
+      "descriptor_sha256": "f19e8061f25ada836ee808012ef21883adb0b6fc3c505ce9cc200d74143647e0",
       "descriptor_schema": "okf-explorer-large-corpus.v1",
-      "declared_okf_version": "0.2",
+      "declared_okf_version": "0.3",
       "semantic_descriptor": "https://chris-page-gov.github.io/okf-els-api/okf-bundle.yamlld",
       "access_note": "Bounded source-reviewed draft describing an internal/private upstream API. Reading this bundle does not authorise calling that API or establish its current behaviour.",
-      "equivalent_raw_descriptor": "https://raw.githubusercontent.com/chris-page-gov/okf-els-api/811a688183b0cd150a2fd9ccf3d414d48c112da6/bundle/okf-explorer.json",
-      "raw_descriptor_sha256": "1437c0d0ecbc077873ce6906892630110fda1f59266e14518a6e78f7af39ce91"
+      "equivalent_raw_descriptor": "https://raw.githubusercontent.com/chris-page-gov/okf-els-api/f2e7b756b09558f2c94e85cb83bbb44c6c60be94/bundle/okf-explorer.json",
+      "raw_descriptor_sha256": "f19e8061f25ada836ee808012ef21883adb0b6fc3c505ce9cc200d74143647e0",
+      "observed_on": "2026-11-28",
+      "verification": "Public descriptor declares Core 0.3 and bundle version 0.3.0. Its bytes matched the exact pinned GitHub fallback."
     },
     {
       "title": "OKF Explorer reference corpus",
@@ -57,11 +59,11 @@
       "visibility": "public",
       "home": "https://chris-page-gov.github.io/okf-explorer/",
       "descriptor": "https://chris-page-gov.github.io/okf-explorer/okf-bundle.json",
-      "descriptor_sha256": "69214c569cd51e5a63a5f4059315bc51805d26842ee8bcd7564c0d30b4f288ed",
+      "descriptor_sha256": "93f0eb4ae96d01aa508a0b9bb14fdf4a3b644482bc5ed6e2ebe48ef0273614f5",
       "descriptor_schema": "okf-explorer-bundle.v0",
       "declared_okf_version": "0.3",
       "semantic_descriptor": "https://chris-page-gov.github.io/okf-explorer/okf-bundle.yamlld",
-      "access_note": "Explorer 0.9.0 reference bundle: 151 typed core concepts and 14 navigation records. Its own council tool-access walkthrough distinguishes graph references from permission and assurance. The separately pinned agent graph below is the frozen OKF 0.2 baseline for the historical worked example; it is not the current 0.3 descriptor.",
+      "access_note": "Explorer 0.9.2 reference bundle with 151 typed core concepts and 14 navigation records. Its council tool-access walkthrough distinguishes graph references from permission and assurance. The separately pinned agent graph below belongs to the historical Core 0.2 worked example.",
       "agent_graph": {
         "url": "https://raw.githubusercontent.com/chris-page-gov/okf-explorer/954d44a345b31a3142bc69a822295e6420108d93/okf-bundle.jsonld",
         "format": "application/ld+json",
@@ -69,7 +71,12 @@
         "commit": "954d44a345b31a3142bc69a822295e6420108d93",
         "sha256": "29b0ccbc3a6756bd12d2f195311f1424bb91eae43ca3cf5a81319e2b058e1512",
         "bytes": 1484270
-      }
+      },
+      "observed_on": "2026-11-28",
+      "equivalent_raw_descriptor": "https://raw.githubusercontent.com/chris-page-gov/okf-explorer/cd4ff825925d7034dbbbdaa2599cd60f503bfffb/okf-bundle.json",
+      "raw_descriptor_sha256": "93f0eb4ae96d01aa508a0b9bb14fdf4a3b644482bc5ed6e2ebe48ef0273614f5",
+      "verification": "Core 0.3 and bundle version 0.9.2 observed at the public descriptor. The exact pinned GitHub fallback matched the public bytes.",
+      "walkthrough": "https://chris-page-gov.github.io/okf-explorer/reference-bundle/walkthrough.html"
     },
     {
       "title": "GOV.UK content",
@@ -77,13 +84,16 @@
       "visibility": "public",
       "home": "https://chris-page-gov.github.io/okf-govuk-content/",
       "descriptor": "https://chris-page-gov.github.io/okf-govuk-content/okf-explorer.json",
-      "descriptor_sha256": "f4695b19d542789bb5f2a948921e29fc36ab4076859433cc28b73602bf8da1be",
+      "descriptor_sha256": "4059de17e0e72d82619772694de6d92767a0137a2c091fb25ff6828e7d816430",
       "descriptor_schema": "okf-explorer-large-corpus.v1",
-      "declared_okf_version": "0.2",
+      "declared_okf_version": "0.3",
       "semantic_descriptor": "https://chris-page-gov.github.io/okf-govuk-content/okf-bundle.yamlld",
       "access_note": "Metadata collection with a bounded demonstrator. A recorded page is not the complete current GOV.UK guidance.",
-      "equivalent_raw_descriptor": "https://raw.githubusercontent.com/chris-page-gov/okf-govuk-content/ef5575d2dccdab7999fc8fdc3cbdd2e47b4f6247/bundle/okf-explorer.json",
-      "raw_descriptor_sha256": "f4695b19d542789bb5f2a948921e29fc36ab4076859433cc28b73602bf8da1be"
+      "equivalent_raw_descriptor": "https://raw.githubusercontent.com/chris-page-gov/okf-govuk-content/4b0b126d331014965c0ed3b587be2fef5ce2fb54/bundle/okf-explorer.json",
+      "raw_descriptor_sha256": "4059de17e0e72d82619772694de6d92767a0137a2c091fb25ff6828e7d816430",
+      "observed_on": "2026-11-28",
+      "walkthrough": "https://chris-page-gov.github.io/okf-govuk-content/walkthroughs/new-child-metadata.html",
+      "verification": "The bounded preview’s 1,103 served assets matched the exact protected merge. The walkthrough fit at 320 and 390 pixels and opened its intended Reader record on mobile and desktop."
     },
     {
       "title": "Coventry and Warwickshire heritage",
@@ -91,13 +101,15 @@
       "visibility": "public",
       "home": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/",
       "descriptor": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/okf-explorer.json",
-      "descriptor_sha256": "97c8c3aa1dbaa48cad06d9a1fec3c1b125a681c7642b418bddbbccc32e27a5da",
+      "descriptor_sha256": "794ca9d354e09931bb7d91e973fd08a0715be24ee7ab412bd32bd07e06e84c74",
       "descriptor_schema": "okf-explorer-large-corpus.v1",
-      "declared_okf_version": "0.2",
+      "declared_okf_version": "0.3",
       "semantic_descriptor": "https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/okf-bundle.yamlld",
       "access_note": "Frozen faithful publication. Tiny and synthetic supplements are separate products; do not rewrite the released bytes.",
-      "equivalent_raw_descriptor": "https://raw.githubusercontent.com/chris-page-gov/okf-heritage-coventry-warwickshire/2c5c73ac5c54e71a73b4fd3556470bbd9ab9359e/site/okf-explorer.json",
-      "raw_descriptor_sha256": "97c8c3aa1dbaa48cad06d9a1fec3c1b125a681c7642b418bddbbccc32e27a5da"
+      "equivalent_raw_descriptor": "https://raw.githubusercontent.com/chris-page-gov/okf-heritage-coventry-warwickshire/b948fc3611c2f76f920d4f78dfd24ffd521f4b3b/site/okf-explorer.json",
+      "raw_descriptor_sha256": "794ca9d354e09931bb7d91e973fd08a0715be24ee7ab412bd32bd07e06e84c74",
+      "observed_on": "2026-11-28",
+      "verification": "Public descriptor declares Core 0.3 and bundle version 1.1.0. Its bytes matched the exact pinned GitHub fallback."
     },
     {
       "title": "Hansard parliamentary proceedings",
@@ -105,16 +117,16 @@
       "visibility": "public",
       "home": "https://chris-page-gov.github.io/okf-hansard/",
       "descriptor": "https://chris-page-gov.github.io/okf-hansard/graph/okf-explorer.json",
-      "descriptor_sha256": "8142f36983b1eaf1c7e1f6a2d19a9325b30d312167beee468e863e67fdaf1b12",
+      "descriptor_sha256": "65998433e0e435b08d44968f106fcf3fa6b5b535a0e8b9433cf1f065c816f067",
       "descriptor_schema": "okf-explorer-large-corpus.v1",
       "declared_okf_version": "0.3",
       "semantic_descriptor": "https://chris-page-gov.github.io/okf-hansard/okf-bundle.yamlld.gz",
       "access_note": "Open the website for the three demonstration examples and provider-neutral prompt. Use the producer directory for source links, scope, the Markdown entry point and November coverage.",
-      "equivalent_raw_descriptor": "https://raw.githubusercontent.com/chris-page-gov/okf-hansard/89ff017bab2a37df222e58ef6da94a32688144f3/graph/okf-explorer.json",
-      "raw_descriptor_sha256": "8142f36983b1eaf1c7e1f6a2d19a9325b30d312167beee468e863e67fdaf1b12",
+      "equivalent_raw_descriptor": "https://raw.githubusercontent.com/chris-page-gov/okf-hansard/3bbb4b4733346409b309f6af6480106dd5961b84/graph/okf-explorer.json",
+      "raw_descriptor_sha256": "65998433e0e435b08d44968f106fcf3fa6b5b535a0e8b9433cf1f065c816f067",
       "producer_directory": "https://chris-page-gov.github.io/okf-hansard/okf-public-access.json",
-      "observed_on": "2026-11-23",
-      "verification": "Matched exact public Pages bytes to the pinned GitHub descriptor. Checked the Microsoft 365 companion and its focused graph and timeline in a browser."
+      "observed_on": "2026-11-28",
+      "verification": "Core 0.3 and bundle version 0.3.0 observed at the public descriptor. The exact pinned GitHub fallback matched the public bytes."
     },
     {
       "title": "HM Land Registry public metadata",
@@ -136,15 +148,15 @@
       "visibility": "public",
       "home": "https://chris-page-gov.github.io/okf-ons/",
       "descriptor": "https://chris-page-gov.github.io/okf-ons/okf-explorer.json",
-      "descriptor_sha256": "c58ec7bfef8a0e55b2e5d24cdb82697169f3a307ee759794e9006c190a107b8a",
+      "descriptor_sha256": "9b59207f817860c4df664e8150b25a21876d1118e82f6d7d1aab364bd1af93ed",
       "descriptor_schema": "okf-explorer-large-corpus.v1",
       "declared_okf_version": "0.3",
       "semantic_descriptor": "https://chris-page-gov.github.io/okf-ons/okf-bundle.yamlld",
       "access_note": "Frozen metadata-only demonstrator: 12 typed core concepts and 5,097 metadata extension records with 19,735 reconciled assertions. The source snapshot remains monday-2026-07-17-r2. Its own population-by-age walkthrough distinguishes age grain, geography, quality evidence and a non-executing live-query plan. The generated bundle is served on Pages; no equivalent checked-in raw descriptor is claimed.",
-      "observed_on": "2026-11-23",
+      "observed_on": "2026-11-28",
       "walkthrough": "https://chris-page-gov.github.io/okf-ons/walkthrough.html",
-      "release": "https://github.com/chris-page-gov/okf-ons/releases/tag/v0.3.0",
-      "verification": "Exact 0.3.0 main revision fbb0119e84525f18ac3e8b5b267da7b7e4773c46 passed protected CI, five native Reader journeys and full source/graph validation. Public core/metadata journeys, full record access, negative controls, mobile layout and walkthrough accessibility passed. All 2,075 served files match the build. The non-served .nojekyll deployment control is included in the 2,076-file archive; all release assets and archive members were downloaded and reverified."
+      "release": "https://github.com/chris-page-gov/okf-ons/releases/tag/v0.3.1",
+      "verification": "Observed the Core 0.3 and product v0.3.1 descriptor in the public preview. Its metadata walkthrough opened the intended Reader bundle in Chrome at desktop and phone widths."
     },
     {
       "title": "UK planning and housing data",
@@ -152,13 +164,15 @@
       "visibility": "public",
       "home": "https://chris-page-gov.github.io/okf-planning/",
       "descriptor": "https://chris-page-gov.github.io/okf-planning/okf-explorer.json",
-      "descriptor_sha256": "b2296d1b416bf421eea872bdb702bbf3acda87c280f46ab0ec81ef841cab7d02",
+      "descriptor_sha256": "607a4c675a2c5c0c158802c6d338c704e9df79dfb5a08514a6fd87c2084c3b38",
       "descriptor_schema": "okf-explorer-large-corpus.v1",
-      "declared_okf_version": "0.2",
+      "declared_okf_version": "0.3",
       "semantic_descriptor": "https://chris-page-gov.github.io/okf-planning/okf-bundle.yamlld",
       "access_note": "Draft demonstrator. Preserve record-level source, jurisdiction and rights; no planning or housing decision is implied.",
-      "equivalent_raw_descriptor": "https://raw.githubusercontent.com/chris-page-gov/okf-planning/9941f9e4ec17345a26e99421a016f94c69cd2a31/bundle/okf-explorer.json",
-      "raw_descriptor_sha256": "b2296d1b416bf421eea872bdb702bbf3acda87c280f46ab0ec81ef841cab7d02"
+      "equivalent_raw_descriptor": "https://raw.githubusercontent.com/chris-page-gov/okf-planning/15c87a9ea76ec2e8029ce70c9c0d5f84a8ffbb2f/bundle/okf-explorer.json",
+      "raw_descriptor_sha256": "607a4c675a2c5c0c158802c6d338c704e9df79dfb5a08514a6fd87c2084c3b38",
+      "observed_on": "2026-11-28",
+      "verification": "Public descriptor declares Core 0.3 and bundle version 0.3.1. Its bytes matched the exact pinned GitHub fallback."
     },
     {
       "title": "UK Government APIs",
@@ -166,13 +180,15 @@
       "visibility": "public",
       "home": "https://chris-page-gov.github.io/okf-uk-government-apis/",
       "descriptor": "https://chris-page-gov.github.io/okf-uk-government-apis/okf-explorer.json",
-      "descriptor_sha256": "620b790fa27666d9b95230d47a2d863978d159fa59eff4e415e6eedd0c05520b",
+      "descriptor_sha256": "1d2e2c4c6f3944811a32c5fe405cd1403690e4db8401b13d6f093e0a558f6c30",
       "descriptor_schema": "okf-explorer-large-corpus.v1",
-      "declared_okf_version": "0.2",
+      "declared_okf_version": "0.3",
       "semantic_descriptor": "https://chris-page-gov.github.io/okf-uk-government-apis/okf-bundle.yamlld",
       "access_note": "Discovery metadata; endpoint access, execution, credentials and record-level rights remain separate.",
-      "equivalent_raw_descriptor": "https://raw.githubusercontent.com/chris-page-gov/okf-uk-government-apis/61047d3824c3ddc9ff5ac1c0c8c398fd6b2aa261/bundle/okf-explorer.json",
-      "raw_descriptor_sha256": "620b790fa27666d9b95230d47a2d863978d159fa59eff4e415e6eedd0c05520b"
+      "equivalent_raw_descriptor": "https://raw.githubusercontent.com/chris-page-gov/okf-uk-government-apis/d3d84b218f843143a3f0ef50a7bd0f2301823457/bundle/okf-explorer.json",
+      "raw_descriptor_sha256": "1d2e2c4c6f3944811a32c5fe405cd1403690e4db8401b13d6f093e0a558f6c30",
+      "observed_on": "2026-11-28",
+      "verification": "The Core 0.3 descriptor matched the pinned GitHub fallback. Both Notify guides opened their intended records in Reader 0.9.2 on desktop and at phone width."
     },
     {
       "title": "UK legislation",
@@ -180,13 +196,17 @@
       "visibility": "public",
       "home": "https://chris-page-gov.github.io/okf-uk-legislation/",
       "descriptor": "https://chris-page-gov.github.io/okf-uk-legislation/okf-explorer.json",
-      "descriptor_sha256": "65427bc18f0091758a1033c5874e7370b235bbced607e6f736861a290726ae11",
+      "descriptor_sha256": "f6ac88a4b88e155ad4480a8cd0cf07f607b0eee5634ff55368e3b94a5801cb49",
       "descriptor_schema": "okf-explorer-large-corpus.v1",
-      "declared_okf_version": "0.2",
+      "declared_okf_version": "0.3",
       "semantic_descriptor": "https://chris-page-gov.github.io/okf-uk-legislation/okf-bundle.yamlld",
-      "access_note": "Published v0.4.0. Model-assisted discovery is separate from official legal text; Whole-Law has its own child descriptors. This is not legal advice.",
-      "equivalent_raw_descriptor": "https://raw.githubusercontent.com/chris-page-gov/okf-uk-legislation/379ec9e08d8bb07d90ededdff5c6c841f4cf7ffc/bundle/okf-explorer.json",
-      "raw_descriptor_sha256": "65427bc18f0091758a1033c5874e7370b235bbced607e6f736861a290726ae11"
+      "access_note": "Published v0.5.0. Model-assisted discovery is separate from official legal text. The Whole-Law walkthrough uses its own federation descriptor.",
+      "equivalent_raw_descriptor": "https://raw.githubusercontent.com/chris-page-gov/okf-uk-legislation/b5d9cd7a27d8bcf6b0fa971791d893e6f329a3e8/bundle/okf-explorer.json",
+      "raw_descriptor_sha256": "f6ac88a4b88e155ad4480a8cd0cf07f607b0eee5634ff55368e3b94a5801cb49",
+      "observed_on": "2026-11-28",
+      "verification": "Public descriptor declares Core 0.3 and bundle version 0.5.0. Its bytes matched the exact pinned GitHub fallback. Both Legislation and Whole-Law passed their desktop and phone-width Reader journeys.",
+      "walkthrough": "https://chris-page-gov.github.io/okf-uk-legislation/walkthroughs/legislation/",
+      "release": "https://github.com/chris-page-gov/okf-uk-legislation/releases/tag/v0.5.0"
     },
     {
       "title": "A Life in the UK",
@@ -209,11 +229,11 @@
   },
   "owner_catalogue": {
     "owner": "chris-page-gov",
-    "observed_on": "2026-11-25",
-    "path": "docs/evidence/okf-public-owner-candidates-2026-11-25.json",
+    "observed_on": "2026-11-28",
+    "path": "docs/evidence/okf-public-owner-candidates-2026-11-28.json",
     "human": "https://github.com/chris-page-gov/okf-explorer/blob/main/docs/okf-standards.md#public-bundle-catalogues",
-    "machine": "https://raw.githubusercontent.com/chris-page-gov/okf-explorer/main/docs/evidence/okf-public-owner-candidates-2026-11-25.json",
+    "machine": "https://raw.githubusercontent.com/chris-page-gov/okf-explorer/main/docs/evidence/okf-public-owner-candidates-2026-11-28.json",
     "scope_note": "Public repository candidates only; discovery evidence does not establish a bundle, conformance, completeness, adoption or release.",
-    "sha256": "079c0f7ad05ec85952a0654dfb00e9c2a42c4340650bcc7dacd1fd88fc3767c5"
+    "sha256": "831365046571f2d63d1b993cfd7530febca046fc0011149716312c84d66c0ea7"
   }
 }

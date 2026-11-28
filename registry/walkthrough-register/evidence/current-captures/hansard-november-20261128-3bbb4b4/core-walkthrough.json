@@ -1,0 +1,47 @@
+{
+  "schema": "hansard-compact-core-question.v1",
+  "id": "hansard-november-compact-core",
+  "question": "What dates does the compact November entry point declare, can this one-record bundle establish which House debated Bill 4030, and where must I go to check those claims?",
+  "answer": "The sitting entry point declares captured sittings from 2026-11-02 to 2026-11-26. It has one typed evidence index and no graph relationships. It links to the coverage report, contribution finder and full graph. The compact record alone cannot establish which House debated Bill 4030 or that the Bill passed; those questions require separately retrieved evidence.",
+  "negative_controls": [
+    "A linked coverage report is not evidence already read from this compact record.",
+    "No Bill or House relationship can be inferred from its zero-edge core graph."
+  ],
+  "bundle_descriptor": "okf-core.json",
+  "descriptor_sha256": "bda8bfafbeab7f0bcbbaa464be70503e9c2e7d96e693c80a13bd4a2341fba497",
+  "expected_identity": {
+    "schema": "okf-explorer-bundle.v0",
+    "id": "urn:okf:hansard:public-core:november-in-parliament",
+    "version": "0.3.0",
+    "snapshot": "hansard-markdown-sha256-07830b485b42c13a6c1d42e8eb351991b98a6fc0968b7dcba29ecdd67f200a24"
+  },
+  "typed_concepts": 1,
+  "graph_relationships": 0,
+  "source_documents": [
+    {
+      "path": "okf/LICENSE.md",
+      "route": "LICENSE.md",
+      "sha256": "feaf1de96ad0e7b7e1f9c35ce645ce4ddf4e8c077ff88bf59bcc674591646084",
+      "bytes": 216,
+      "role": "extension"
+    },
+    {
+      "path": "okf/index.md",
+      "route": "index.md",
+      "sha256": "eacffd11ffb8b99eb42d0c63b88c2b9808969b7e7bc131512522c629a29d2b28",
+      "bytes": 1708,
+      "role": "navigation"
+    },
+    {
+      "path": "okf/sittings.md",
+      "route": "sittings.md",
+      "sha256": "4f6052b4bbfd19b9a9e84531f904960cba61dc49b1ba4b9e07811ae83e63fe72",
+      "bytes": 1124,
+      "role": "concept"
+    }
+  ],
+  "stage_citations_from_core_body": [],
+  "scope": "Only the exact compact Markdown source and its explicit citations; full-graph assertions and linked external contents are outside this answer.",
+  "svg_sha256": "61a8c3e72f5de31fce2c0f2c29cff263958be930110276ec38fbb6e05f8d6a89",
+  "mobile_svg_sha256": "ede6d8238b5ab7db5b18bf222fd74485d9ae8c758e305d7b4654759289875854"
+}

@@ -96,13 +96,14 @@ def render(directory: dict) -> dict[Path, str]:
              "[Project discovery JSON](../.well-known/okf.json) · [Text discovery index](../llms.txt)", "",
              "[Dated HTTP check](evidence/public-bundle-access-2026-11-14.json) records the exact checked URLs and descriptor hashes.", "",
              "## Choose a collection", "",
-             "| Collection | Website | Descriptor | Exact GitHub fallback |", "| --- | --- | --- | --- |"]
+             "| Collection | Core OKF | Website | Descriptor | Exact GitHub fallback |", "| --- | --- | --- | --- | --- |"]
     for b in directory["bundles"]:
         raw = (f"[Pinned raw descriptor]({b['equivalent_raw_descriptor']})"
                if b.get("equivalent_raw_descriptor") else
                "Descriptor uses GitHub" if urlsplit(b["descriptor"]).hostname == "raw.githubusercontent.com"
                else "See access limit below")
-        lines.append(f"| {b['title']} | [Website]({b['home']}) | [Read descriptor]({b['descriptor']}) | {raw} |")
+        core = b.get("declared_okf_version") or "Not established"
+        lines.append(f"| {b['title']} | {core} | [Website]({b['home']}) | [Read descriptor]({b['descriptor']}) | {raw} |")
     lines.extend(["", "## Access limits and semantic entrypoints", ""])
     for b in directory["bundles"]:
         lines.extend([f"### {b['title']}", "", b["access_note"], "",

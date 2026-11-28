@@ -1,0 +1,45 @@
+{
+  "schema": "okf-walkthrough-retained-receipt-summary.v1",
+  "source_receipt_id": "govuk-bounded-preview-20261128-4b0b126",
+  "source_receipt_sha256": "8d3d44846e142b0e17606de5f93672ef65c0575cd9482693656819d1f5df8c39",
+  "status": "passed",
+  "date": "2026-11-28T06:27:10.020Z",
+  "producer_product_version": "0.1.0",
+  "source_commit": "4b0b126d331014965c0ed3b587be2fef5ce2fb54",
+  "walkthrough_id": "govuk-content-parental-leave",
+  "expected_reader_commit": "acf23958aa1ce11ec52c41313649b20d24f17609",
+  "okf_core_version": "0.3",
+  "bundle_identity": "https://chris-page-gov.github.io/okf-govuk-content/okf-explorer.json",
+  "descriptor_sha256": "4059de17e0e72d82619772694de6d92767a0137a2c091fb25ff6828e7d816430",
+  "cases": [
+    {
+      "viewport": "desktop",
+      "question": "In this frozen demonstrator, which parental-leave item is listed under both pregnancy and birth and financial help for children? Which page is linked to it, who is shown as publisher, which organisations are associated with it, and can this snapshot establish a family's current entitlement or pay?",
+      "descriptor_sha256": "4059de17e0e72d82619772694de6d92767a0137a2c091fb25ff6828e7d816430",
+      "guide_link_followed": true,
+      "wcag_violations": 0,
+      "horizontal_overflow": false,
+      "expected_identity": {
+        "schema": "okf-explorer-large-corpus.v1",
+        "id": "https://chris-page-gov.github.io/okf-govuk-content/okf-explorer.json",
+        "version": "0.1.0",
+        "snapshot": "NEW-CHILD-20260715"
+      }
+    },
+    {
+      "viewport": "mobile",
+      "question": "In this frozen demonstrator, which parental-leave item is listed under both pregnancy and birth and financial help for children? Which page is linked to it, who is shown as publisher, which organisations are associated with it, and can this snapshot establish a family's current entitlement or pay?",
+      "descriptor_sha256": "4059de17e0e72d82619772694de6d92767a0137a2c091fb25ff6828e7d816430",
+      "guide_link_followed": true,
+      "wcag_violations": 0,
+      "horizontal_overflow": false,
+      "expected_identity": {
+        "schema": "okf-explorer-large-corpus.v1",
+        "id": "https://chris-page-gov.github.io/okf-govuk-content/okf-explorer.json",
+        "version": "0.1.0",
+        "snapshot": "NEW-CHILD-20260715"
+      }
+    }
+  ],
+  "guide_sha256": "9d63458c4f38c97edfc83da0daf85b51d08834d3a72a337081802107d519cb34"
+}

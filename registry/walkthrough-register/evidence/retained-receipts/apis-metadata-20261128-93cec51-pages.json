@@ -1,0 +1,45 @@
+{
+  "schema": "okf-walkthrough-retained-receipt-summary.v1",
+  "source_receipt_id": "apis-metadata-20261128-93cec51-pages",
+  "source_receipt_sha256": "b62f7adf6564fa36238d8fb9591c3fb3aebd18492b3eaca805fdbd1eba258488",
+  "status": "passed",
+  "date": "2026-11-28T06:50:24.544Z",
+  "producer_product_version": "0.5.0",
+  "source_commit": "93cec5117b8042772c3e191dfc4efe506975c328",
+  "walkthrough_id": "apis-metadata-guide-to-reader",
+  "expected_reader_commit": "acf23958aa1ce11ec52c41313649b20d24f17609",
+  "okf_core_version": "0.3",
+  "bundle_identity": "https://chris-page-gov.github.io/okf-uk-government-apis/okf-explorer.json",
+  "descriptor_sha256": "1d2e2c4c6f3944811a32c5fe405cd1403690e4db8401b13d6f093e0a558f6c30",
+  "cases": [
+    {
+      "viewport": "desktop",
+      "question": "The catalogue has several similarly named notification entries. Which frozen record reports a public-facing endpoint, what do the source-specific licence and access fields say, and what evidence is still needed before reuse or integration?",
+      "descriptor_sha256": "1d2e2c4c6f3944811a32c5fe405cd1403690e4db8401b13d6f093e0a558f6c30",
+      "guide_link_followed": true,
+      "wcag_violations": 0,
+      "horizontal_overflow": false,
+      "expected_identity": {
+        "schema": "okf-explorer-large-corpus.v1",
+        "id": "https://chris-page-gov.github.io/okf-uk-government-apis/okf-explorer.json",
+        "version": "0.5.0",
+        "snapshot": "2026-07-16T00:00:00Z"
+      }
+    },
+    {
+      "viewport": "mobile",
+      "question": "The catalogue has several similarly named notification entries. Which frozen record reports a public-facing endpoint, what do the source-specific licence and access fields say, and what evidence is still needed before reuse or integration?",
+      "descriptor_sha256": "1d2e2c4c6f3944811a32c5fe405cd1403690e4db8401b13d6f093e0a558f6c30",
+      "guide_link_followed": true,
+      "wcag_violations": 0,
+      "horizontal_overflow": false,
+      "expected_identity": {
+        "schema": "okf-explorer-large-corpus.v1",
+        "id": "https://chris-page-gov.github.io/okf-uk-government-apis/okf-explorer.json",
+        "version": "0.5.0",
+        "snapshot": "2026-07-16T00:00:00Z"
+      }
+    }
+  ],
+  "guide_sha256": "bb7d03939564b2119d49e4c8bc714dc7f3b6dd0b987a92ab1006ce82dea628fe"
+}

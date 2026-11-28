@@ -1,5 +1,22 @@
 # Changelog
 
+## Unreleased — dated catalogue and Hansard observations
+
+- Refresh the November Hansard guide and descriptor observations from the
+  publication through 26 November 2026. Keep the earlier source and browser
+  receipts and bind the new desktop and mobile Reader journeys to the exact
+  served checksums.
+- Show the declared Core version in the public access table. Refresh selected
+  Core 0.3 descriptor pins and preserve the previous directory used by the
+  walkthrough register's dated observations.
+- Refresh the GOV.UK question source and guide after verifying the corrected
+  bounded preview, including 1,103 served assets and its phone-width reflow.
+- Record both UK Government APIs walkthroughs at the verified Pages revision.
+  Bind current browser receipts to the exact guide bytes as well as the
+  Reader and bundle identities.
+- Repeat owner repository and Markdown index discovery. Publish the dated
+  public-only candidate catalogue and keep the earlier catalogue snapshots.
+
 ## Unreleased — walkthrough register corrections
 
 - Restore both UK Government APIs guide routes. Check that each reviewed

@@ -38,16 +38,14 @@ class TestOkfStandardsRegister(unittest.TestCase):
                 destination = root / relative
                 destination.parent.mkdir(parents=True, exist_ok=True)
                 copyfile(ROOT / relative, destination)
-            for relative in (
-                "registry/public-bundle-access.json",
-                "docs/evidence/okf-public-owner-candidates-2026-11-23.json",
-                "docs/evidence/okf-public-owner-candidates-2026-11-25.json",
-            ):
+            register_path = root / "registry/okf-standards.json"
+            register = json.loads(register_path.read_text(encoding="utf-8"))
+            catalogue_paths = [register["bundle_catalogues"][name]["path"]
+                               for name in ("prior_public_owner_candidates", "public_owner_candidates")]
+            for relative in catalogue_paths:
                 destination = root / relative
                 destination.parent.mkdir(parents=True, exist_ok=True)
                 copyfile(ROOT / relative, destination)
-            register_path = root / "registry/okf-standards.json"
-            register = json.loads(register_path.read_text(encoding="utf-8"))
             next(item for item in register["historical_core"] if item["version"] == "0.1")["pinned_commit"] = None
             register_path.write_text(json.dumps(register), encoding="utf-8")
             errors = check_register(root)

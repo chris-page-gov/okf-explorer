@@ -187,6 +187,14 @@ class WalkthroughRegisterTests(unittest.TestCase):
         self.assertEqual(commands["check-walkthrough-register"]["command"],
                          "uv run --locked python scripts/build_walkthrough_register.py --check")
 
+    def test_dated_access_snapshot_is_hash_bound(self):
+        temporary, root, _ = self.fixture()
+        with temporary:
+            snapshot = root / register.ACCESS_DIRECTORY
+            snapshot.write_bytes(snapshot.read_bytes() + b"\n")
+            with self.assertRaisesRegex(ValueError, "dated companion access directory"):
+                register.load(root)
+
     def test_public_walkthrough_coverage_and_captured_sources_are_exact(self):
         source = register.load()
         self.assertEqual(len(source["review_walkthroughs"]), 29)
@@ -410,6 +418,21 @@ class WalkthroughRegisterTests(unittest.TestCase):
         proof["receipt_summary_sha256"] = hashlib.sha256(summary_bytes).hexdigest()
         (root / register.SOURCE).write_text(json.dumps(fixture_source), encoding="utf-8")
         with temporary, self.assertRaisesRegex(ValueError, "expected_reader_commit"):
+            register.load(root)
+
+    def test_current_api_browser_proof_is_bound_to_exact_guide(self):
+        temporary, root, fixture_source = self.fixture()
+        row = next(walk for walk in fixture_source["review_walkthroughs"]
+                   if walk["id"] == "apis-metadata-guide-to-reader")
+        proof = row["current_publication_proof"]
+        summary_path = root / proof["receipt_summary_path"]
+        summary = json.loads(summary_path.read_bytes())
+        summary["guide_sha256"] = "0" * 64
+        summary_bytes = json.dumps(summary).encode("utf-8")
+        summary_path.write_bytes(summary_bytes)
+        proof["receipt_summary_sha256"] = hashlib.sha256(summary_bytes).hexdigest()
+        (root / register.SOURCE).write_text(json.dumps(fixture_source), encoding="utf-8")
+        with temporary, self.assertRaisesRegex(ValueError, "proof guide digest differs"):
             register.load(root)
 
 

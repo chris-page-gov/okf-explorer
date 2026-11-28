@@ -10,7 +10,7 @@ Verification varies by bundle; read each entry's dated record. Voice access is n
 - [Human guide](https://chris-page-gov.github.io/okf-explorer/docs/public-bundle-access.html): Read order, semantic entrypoints and a Voice prompt.
 - [Admitted Reader bundles](https://chris-page-gov.github.io/okf-explorer/okf-registry.json): Separate curated bundle registry.
 
-- [Public owner candidate catalogue](https://chris-page-gov.github.io/okf-explorer/docs/evidence/okf-public-owner-candidates-2026-11-25.json): Pinned repository trees and discovery coverage.
+- [Public owner candidate catalogue](https://chris-page-gov.github.io/okf-explorer/docs/evidence/okf-public-owner-candidates-2026-11-28.json): Pinned repository trees and discovery coverage.
 
 ## Descriptors
 
@@ -18,8 +18,10 @@ Verification varies by bundle; read each entry's dated record. Voice access is n
 - [AI Infrastructure source-linked walkthrough](https://chris-page-gov.github.io/okf-ai-infrastructure/walkthrough.html): Question, qualified answer, evidence and negative controls.
 - [DWP combined guidance and learning](https://raw.githubusercontent.com/chris-page-gov/okf-dwp/3d45b47763c204b1264b5d1d7897d583361f25bd/combined/okf-explorer.json): The Pages site is a learning website. Load the combined experimental bundle from the pinned GitHub descriptor; resolve its relative paths within combined/. This does not establish specialist validation or individual entitlement.
 - [Explore Local Statistics API](https://chris-page-gov.github.io/okf-els-api/okf-explorer.json): Bounded source-reviewed draft describing an internal/private upstream API. Reading this bundle does not authorise calling that API or establish its current behaviour.
-- [OKF Explorer reference corpus](https://chris-page-gov.github.io/okf-explorer/okf-bundle.json): Explorer 0.9.0 reference bundle: 151 typed core concepts and 14 navigation records. Its own council tool-access walkthrough distinguishes graph references from permission and assurance. The separately pinned agent graph below is the frozen OKF 0.2 baseline for the historical worked example; it is not the current 0.3 descriptor.
+- [OKF Explorer reference corpus](https://chris-page-gov.github.io/okf-explorer/okf-bundle.json): Explorer 0.9.2 reference bundle with 151 typed core concepts and 14 navigation records. Its council tool-access walkthrough distinguishes graph references from permission and assurance. The separately pinned agent graph below belongs to the historical Core 0.2 worked example.
+- [OKF Explorer reference corpus source-linked walkthrough](https://chris-page-gov.github.io/okf-explorer/reference-bundle/walkthrough.html): Question, qualified answer, evidence and negative controls.
 - [GOV.UK content](https://chris-page-gov.github.io/okf-govuk-content/okf-explorer.json): Metadata collection with a bounded demonstrator. A recorded page is not the complete current GOV.UK guidance.
+- [GOV.UK content source-linked walkthrough](https://chris-page-gov.github.io/okf-govuk-content/walkthroughs/new-child-metadata.html): Question, qualified answer, evidence and negative controls.
 - [Coventry and Warwickshire heritage](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/okf-explorer.json): Frozen faithful publication. Tiny and synthetic supplements are separate products; do not rewrite the released bytes.
 - [Hansard parliamentary proceedings](https://chris-page-gov.github.io/okf-hansard/graph/okf-explorer.json): Open the website for the three demonstration examples and provider-neutral prompt. Use the producer directory for source links, scope, the Markdown entry point and November coverage.
 - [HM Land Registry public metadata](https://chris-page-gov.github.io/okf-LandRegistry/okf-explorer.json): Metadata-only published v0.3.0; the separate local candidate and release authority remain distinct. No title, ownership, priority or exact-boundary advice.
@@ -27,7 +29,8 @@ Verification varies by bundle; read each entry's dated record. Voice access is n
 - [ONS data discovery source-linked walkthrough](https://chris-page-gov.github.io/okf-ons/walkthrough.html): Question, qualified answer, evidence and negative controls.
 - [UK planning and housing data](https://chris-page-gov.github.io/okf-planning/okf-explorer.json): Draft demonstrator. Preserve record-level source, jurisdiction and rights; no planning or housing decision is implied.
 - [UK Government APIs](https://chris-page-gov.github.io/okf-uk-government-apis/okf-explorer.json): Discovery metadata; endpoint access, execution, credentials and record-level rights remain separate.
-- [UK legislation](https://chris-page-gov.github.io/okf-uk-legislation/okf-explorer.json): Published v0.4.0. Model-assisted discovery is separate from official legal text; Whole-Law has its own child descriptors. This is not legal advice.
+- [UK legislation](https://chris-page-gov.github.io/okf-uk-legislation/okf-explorer.json): Published v0.5.0. Model-assisted discovery is separate from official legal text. The Whole-Law walkthrough uses its own federation descriptor.
+- [UK legislation source-linked walkthrough](https://chris-page-gov.github.io/okf-uk-legislation/walkthroughs/legislation/): Question, qualified answer, evidence and negative controls.
 - [A Life in the UK](https://chris-page-gov.github.io/okf-uk-living/okf-explorer.json): Population-complete preview; specialist review is incomplete. Semantic files use generated/semantic/life-course-corpus.*. The current GitHub descriptor differs from Pages, and the publication-data commit also differs; neither is listed as an equivalent fallback.
 
 ## Pinned graphs

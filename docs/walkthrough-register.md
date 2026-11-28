@@ -129,25 +129,25 @@ Current page: HTTP 200 on 2026-11-25T11:52:18.116379+00:00; Anonymous HTTP 200; 
 
 What dates does the compact November entry point declare, can this one-record bundle establish which House debated Bill 4030, and where must I go to check those claims?
 
-**Version:** 0.3; declared bundle version/edition 0.3.0; shared Reader 0.9.2. Exact descriptor returned HTTP 200 on 2026-11-25T11:52:18.116379+00:00: [bundle descriptor](https://chris-page-gov.github.io/okf-hansard/november/okf-core.json).
+**Version:** 0.3; declared bundle version/edition 0.3.0; shared Reader 0.9.2. Exact descriptor returned HTTP 200 on 2026-11-28T06:10:38Z: [bundle descriptor](https://chris-page-gov.github.io/okf-hansard/november/okf-core.json).
 
 [Guide](https://chris-page-gov.github.io/okf-hansard/november/core-walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-hansard/blob/9c3c55c292216b995f7339068c05ae4b3e98d20c/scripts/build_walkthrough.py)
 
 Earlier evidence: passed (2026-11-24T01:16:40.306Z); Four-guide public browser proof passed at its recorded producer, Pages and Reader commits.
 
-Current page: HTTP 200 on 2026-11-25T11:52:18.116379+00:00; Anonymous HTTP 200; exact guide, case JSON and descriptor bytes match the served November checksum catalogue. The separate current Stage6 desktop and mobile browser proof passed; full public asset verification is retained separately. Earlier page observations: HTTP 404 on 2026-11-25T09:52:00Z. Current browser proof: passed (2026-11-25T11:45:44.287Z); desktop and mobile journeys for this guide using Reader 0.9.2. Complete public-assets gate: passed (2026-11-25T11:49:24.764078+00:00); 8009 catalogue and 8009 served files verified.
+Current page: HTTP 200 on 2026-11-28T06:10:38Z; Anonymous response matched the exact guide, case and descriptor in the served checksum catalogue for the November publication through 26 November 2026. Earlier page observations: HTTP 404 on 2026-11-25T09:52:00Z; HTTP 200 on 2026-11-25T11:52:18.116379+00:00. Current browser proof: passed (2026-11-28T06:14:14.069Z); desktop and mobile journeys for this guide using Reader 0.9.2. Complete public-assets gate: passed (2026-11-25T11:49:24.764078+00:00); 8009 catalogue and 8009 served files verified.
 
 ### Hansard: november full guide
 
 On 18 November, which House’s proceedings are linked to Bill 4030, what does the same-date coverage say about Commons and Lords activity, and can those records establish that the Commons debated or the Bill passed? How far does this snapshot cover?
 
-**Version:** 0.3; declared bundle version/edition 0.3.0; shared Reader 0.9.2. Exact descriptor returned HTTP 200 on 2026-11-25T11:52:18.116379+00:00: [bundle descriptor](https://chris-page-gov.github.io/okf-hansard/november/graph/okf-explorer.json).
+**Version:** 0.3; declared bundle version/edition 0.3.0; shared Reader 0.9.2. Exact descriptor returned HTTP 200 on 2026-11-28T06:10:38Z: [bundle descriptor](https://chris-page-gov.github.io/okf-hansard/november/graph/okf-explorer.json).
 
 [Guide](https://chris-page-gov.github.io/okf-hansard/november/walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-hansard/blob/9c3c55c292216b995f7339068c05ae4b3e98d20c/scripts/build_walkthrough.py)
 
 Earlier evidence: passed (2026-11-24T01:16:40.306Z); Four-guide public browser proof passed at its recorded producer, Pages and Reader commits.
 
-Current page: HTTP 200 on 2026-11-25T11:52:18.116379+00:00; Anonymous HTTP 200; exact guide, case JSON and descriptor bytes match the served November checksum catalogue. The separate current Stage6 desktop and mobile browser proof passed; full public asset verification is retained separately. Earlier page observations: HTTP 404 on 2026-11-25T09:52:00Z. Current browser proof: passed (2026-11-25T11:45:44.287Z); desktop and mobile journeys for this guide using Reader 0.9.2. Complete public-assets gate: passed (2026-11-25T11:49:24.764078+00:00); 8009 catalogue and 8009 served files verified.
+Current page: HTTP 200 on 2026-11-28T06:10:38Z; Anonymous response matched the exact guide, case and descriptor in the served checksum catalogue for the November publication through 26 November 2026. Earlier page observations: HTTP 404 on 2026-11-25T09:52:00Z; HTTP 200 on 2026-11-25T11:52:18.116379+00:00. Current browser proof: passed (2026-11-28T06:14:14.069Z); desktop and mobile journeys for this guide using Reader 0.9.2. Complete public-assets gate: passed (2026-11-25T11:49:24.764078+00:00); 8009 catalogue and 8009 served files verified.
 
 ### Heritage: faithful source records
 
@@ -189,37 +189,37 @@ Current page: not rechecked.
 
 Can an OKF core 0.3 reader establish that the GOV.UK Notify endpoint is currently reachable and licensed for my integration? Trace the authored provider link, dated source row and access and licence fields, then identify what still needs checking.
 
-**Version:** 0.3; declared bundle version/edition 0.5.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:05:00Z: [bundle descriptor](https://chris-page-gov.github.io/okf-uk-government-apis/okf-core-explorer.json).
+**Version:** 0.3; declared bundle version/edition 0.5.0; shared Reader 0.9.2. Exact descriptor returned HTTP 200 on 2026-11-28T06:50:24.544Z: [bundle descriptor](https://chris-page-gov.github.io/okf-uk-government-apis/okf-core-explorer.json).
 
-[Guide](https://chris-page-gov.github.io/okf-uk-government-apis/core-walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-uk-government-apis/blob/c33792abdbc16a6fb4c386a5ad6f10c79e0fbce2/walkthroughs/core-catalogue.json)
+[Guide](https://chris-page-gov.github.io/okf-uk-government-apis/core-walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-uk-government-apis/blob/93cec5117b8042772c3e191dfc4efe506975c328/walkthroughs/core-catalogue.json)
 
-Earlier evidence: passed (2026-11-24T08:27:44.808Z); four desktop/mobile guide journeys passed at recorded release
+Earlier evidence: passed (2026-11-24T08:27:44.808Z); The live guide followed its source link to the intended Reader record on desktop and mobile.
 
-Current page: not rechecked.
+ Current browser proof: passed (2026-11-28T06:50:24.544Z); desktop and mobile journeys for this guide using Reader 0.9.2.
 
 ### UK Government APIs: Can we safely choose a Notify catalogue entry?
 
 The catalogue has several similarly named notification entries. Which frozen record reports a public-facing endpoint, what do the source-specific licence and access fields say, and what evidence is still needed before reuse or integration?
 
-**Version:** 0.3; declared bundle version/edition 0.5.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:05:00Z: [bundle descriptor](https://chris-page-gov.github.io/okf-uk-government-apis/okf-explorer.json).
+**Version:** 0.3; declared bundle version/edition 0.5.0; shared Reader 0.9.2. Exact descriptor returned HTTP 200 on 2026-11-28T06:50:24.544Z: [bundle descriptor](https://chris-page-gov.github.io/okf-uk-government-apis/okf-explorer.json).
 
-[Guide](https://chris-page-gov.github.io/okf-uk-government-apis/notification-catalogue-walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-uk-government-apis/blob/c33792abdbc16a6fb4c386a5ad6f10c79e0fbce2/walkthroughs/notification-catalogue.json)
+[Guide](https://chris-page-gov.github.io/okf-uk-government-apis/notification-catalogue-walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-uk-government-apis/blob/93cec5117b8042772c3e191dfc4efe506975c328/walkthroughs/notification-catalogue.json)
 
-Earlier evidence: passed (2026-11-24T08:27:44.808Z); four desktop/mobile guide journeys passed at recorded release
+Earlier evidence: passed (2026-11-24T08:27:44.808Z); The live guide followed its source link to the intended Reader record on desktop and mobile.
 
-Current page: not rechecked.
+ Current browser proof: passed (2026-11-28T06:50:24.544Z); desktop and mobile journeys for this guide using Reader 0.9.2.
 
 ### GOV.UK content: parental leave across browse paths
 
 In this frozen demonstrator, which parental-leave item is listed under both pregnancy and birth and financial help for children? Which page is linked to it, who is shown as publisher, which organisations are associated with it, and can this snapshot establish a family's current entitlement or pay?
 
-**Version:** 0.3; declared bundle version/edition 0.1.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:05:00Z: [bundle descriptor](https://chris-page-gov.github.io/okf-govuk-content/okf-explorer.json).
+**Version:** 0.3; declared bundle version/edition 0.1.0; shared Reader 0.9.2. Exact descriptor returned HTTP 200 on 2026-11-28T06:27:10.020Z: [bundle descriptor](https://chris-page-gov.github.io/okf-govuk-content/okf-explorer.json).
 
-[Guide](https://chris-page-gov.github.io/okf-govuk-content/walkthroughs/new-child-metadata.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-govuk-content/blob/12a1b4e66e7a2526115f97e76b2811490eaefb6a/bundle/walkthroughs/new-child-metadata.html)
+[Guide](https://chris-page-gov.github.io/okf-govuk-content/walkthroughs/new-child-metadata.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-govuk-content/blob/4b0b126d331014965c0ed3b587be2fef5ce2fb54/questions/new-child-metadata-walkthrough.json)
 
-Earlier evidence: passed (2026-11-24T12:41:11.332Z); bounded public desktop/mobile guide check passed; demonstrator only, current page not rechecked
+Earlier evidence: passed (2026-11-24T12:41:11.332Z); Bounded preview of frozen metadata. Exact public assets and the desktop and mobile guide-to-Reader journeys passed.
 
-Current page: not rechecked.
+ Current browser proof: passed (2026-11-28T06:27:10.020Z); desktop and mobile journeys for this guide using Reader 0.9.2.
 
 ### xGov: core notifications taxonomy
 
