@@ -1,0 +1,45 @@
+{
+  "schema": "okf-gis-lids-core03-live-readback.v1",
+  "scope": "Public descriptor identity and direct Reader record journey only. No data retrieval, identifier join, formal release acceptance or central walkthrough review was tested.",
+  "observed_on": "2026-11-28",
+  "deployment": {
+    "workflow_run": "46147889111",
+    "deployment_job_status": "succeeded",
+    "producer_repository": "https://github.com/chris-page-gov/gis-ai-go",
+    "producer_commit": "2faa2962906c16883aaca824e8503872c6c9d821",
+    "authored_source_core_version": "0.2",
+    "core_version": "0.3",
+    "producer_status": "draft",
+    "snapshot": "okf-plus-baa3200c76050eccf0db9352",
+    "profile_status": "candidate"
+  },
+  "descriptor": {
+    "url": "https://chris-page-gov.github.io/gis-ai-go/gis/explorer/okf-explorer.json",
+    "sha256": "cf4922eed417b7c890d5cc667283d6b98b8a8cf79c627da7afed6fe4315068ae",
+    "records": 30876,
+    "relationships": 137,
+    "context_manifest_sha256": "94f34e4650ec54440c8ad42c78c4885c1591ce62292a62ed7a8630558cccc987"
+  },
+  "source_record": {
+    "path": "okf-plus/records/os-open-products/lids-57fe11f44a92.md",
+    "url": "https://raw.githubusercontent.com/chris-page-gov/gis-ai-go/2faa2962906c16883aaca824e8503872c6c9d821/okf-plus/records/os-open-products/lids-57fe11f44a92.md",
+    "sha256": "7651f22ac11238b425c273e33b1cb45514486c8a479f3b801f4dd186185640ca",
+    "bytes": 5244,
+    "native_identifier": "LIDS",
+    "catalogue_version": "2026-09",
+    "review_status": "not-human-reviewed"
+  },
+  "reader_journey": {
+    "url": "https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fgis-ai-go%2Fgis%2Fexplorer%2Fokf-explorer.json&view=reader#records/os-open-products/lids-57fe11f44a92.md",
+    "widths": [1440, 390],
+    "selected_route": "records/os-open-products/lids-57fe11f44a92.md",
+    "visible_terms": ["UPRNs", "USRNs", "TOIDs"],
+    "layout": "fits",
+    "guide_followed": false
+  },
+  "limitations": [
+    "The live evidence establishes the descriptor and Reader route, not correctness or coverage of a real-world join.",
+    "The visual guide is an Explorer-hosted navigation aid and has not passed the central walkthrough register's source and guide review.",
+    "No native AI application, data retrieval, formal specialist acceptance or release-grade status was tested."
+  ]
+}

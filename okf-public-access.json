@@ -4,7 +4,7 @@
   "observed_on": "2026-11-14",
   "locale": "en-GB",
   "time_zone": "Europe/London",
-  "scope": "Thirteen public, owner-authored okf-* GitHub repositories; excludes private repositories, local non-repositories and the upstream specification fork. Supplemental discovery metadata; not an OKF core extension or a Reader admission decision.",
+  "scope": "Fourteen public, owner-authored GitHub repositories with OKF-producing content, including the GIS publisher gis-ai-go; excludes private repositories, local non-repositories and the upstream specification fork. Supplemental discovery metadata; not an OKF core extension or a Reader admission decision.",
   "verification": "The initial directory observation was 14 November 2026. Later per-entry records identify exact checks and dates; the owner candidate catalogue is discovery evidence. Full record coverage and browser checks are accepted only where the entry says so. Live ChatGPT Voice use is not verified. Pinned raw fallbacks require matching complete descriptor digests.",
   "bundles": [
     {
@@ -218,10 +218,46 @@
       "descriptor_schema": "okf-explorer-large-corpus.v1",
       "declared_okf_version": "0.2",
       "semantic_descriptor": "https://chris-page-gov.github.io/okf-uk-living/generated/semantic/life-course-corpus.yamlld",
-      "access_note": "Population-complete preview; specialist review is incomplete. Semantic files use generated/semantic/life-course-corpus.*. The current GitHub descriptor differs from Pages, and the publication-data commit also differs; neither is listed as an equivalent fallback."
+      "access_note": "Frozen Core 0.2 baseline. The GitHub source descriptor and publication-data commit are not established as equivalent fallbacks. A separate Core 0.3 public review preview is listed below; the producer remains in migration, Bundle Wiki v2 is experimental, and specialist review and release-grade acceptance are not claimed.",
+      "preview": {
+        "landing_page": "https://chris-page-gov.github.io/okf-uk-living/core-0.3-preview/",
+        "descriptor": "https://chris-page-gov.github.io/okf-uk-living/okf-explorer-core-0.3.json",
+        "descriptor_sha256": "fcc1ce2800fdbfc2b6b4aa7b025763e01ad2e2d898f5037e1222537baf872690",
+        "descriptor_schema": "okf-explorer-large-corpus.v1",
+        "declared_okf_version": "0.3",
+        "semantic_descriptor": "https://chris-page-gov.github.io/okf-uk-living/core-0.3-preview/generated/semantic/life-course-corpus.yamlld",
+        "status": "owner-authorised-public-review-preview",
+        "core_status": "migration",
+        "profile": "Bundle Wiki v2",
+        "profile_uri": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v2/",
+        "profile_status": "experimental",
+        "profile_conformance_claim": false,
+        "release_grade": false,
+        "observed_on": "2026-11-28",
+        "producer_merge_commit": "c1a37d95e7a1ce49198439e8213b785c2a78ee30",
+        "deployment_run": "46142919632",
+        "evidence": "https://chris-page-gov.github.io/okf-explorer/docs/evidence/uk-living-core03-live-readback-2026-11-28.json",
+        "verification": "The exact Pages read-back matched the approved base manifest, Core 0.2 descriptor, Core 0.3 descriptor and semantic JSON-LD. The Child Benefit record and its 'supported by source' relationship opened at desktop and phone widths. The receipt notes an incidental favicon 404; no native AI app or specialist acceptance was tested."
+      },
+      "walkthrough": "https://chris-page-gov.github.io/okf-uk-living/core-0.3-preview/"
+    },
+    {
+      "title": "OS and ONS geospatial knowledge",
+      "repository": "https://github.com/chris-page-gov/gis-ai-go",
+      "visibility": "public",
+      "home": "https://chris-page-gov.github.io/gis-ai-go/",
+      "descriptor": "https://chris-page-gov.github.io/gis-ai-go/gis/explorer/okf-explorer.json",
+      "descriptor_sha256": "cf4922eed417b7c890d5cc667283d6b98b8a8cf79c627da7afed6fe4315068ae",
+      "descriptor_schema": "okf-explorer-large-corpus.v1",
+      "declared_okf_version": "0.3",
+      "semantic_descriptor": "https://raw.githubusercontent.com/chris-page-gov/gis-ai-go/2faa2962906c16883aaca824e8503872c6c9d821/okf-plus/okf.semantic.json",
+      "access_note": "The authored OKF+ source declares Core 0.2; its separately generated Explorer projection declares Core 0.3 and remains draft. The owned semantic profile is a candidate, and the LIDS record is not-human-reviewed. Metadata discovery does not provide the data, authorise retrieval or establish that identifier links are suitable for a particular join.",
+      "observed_on": "2026-11-28",
+      "walkthrough": "https://chris-page-gov.github.io/okf-explorer/docs/walkthroughs/gis-lids-identifier-links.html",
+      "verification": "Independent public read-back matched the deployed descriptor at 2faa2962906c16883aaca824e8503872c6c9d821. The LIDS record opened in Explorer at 1,440 and 390 pixels and showed UPRN, USRN and TOID terms. The new guide itself was not followed in that browser check; no retrieval or join was tested."
     }
   ],
-  "browser_verification": "unverified-for-producer-links; ELS Markdown was blocked by Chrome with ERR_BLOCKED_BY_CLIENT despite HTTP 200",
+  "browser_verification": "Per-entry browser checks are limited to the journeys stated in each entry. The ELS Markdown route returned HTTP 200 but Chrome reported ERR_BLOCKED_BY_CLIENT. No live Voice conversation was tested.",
   "voice_verification": "not-tested",
   "standards_register": {
     "human": "https://github.com/chris-page-gov/okf-explorer/blob/main/docs/okf-standards.md",

@@ -1,0 +1,55 @@
+{
+  "schema": "okf-public-access-preview-readback.v1",
+  "observed_at": "2026-11-28T12:07:27.784Z",
+  "scope": "Public OKF UK Living Pages routes and responsive Chrome journeys only. This receipt does not cover a native AI app, specialist acceptance, profile conformance or release-grade status.",
+  "producer": {
+    "repository": "https://github.com/chris-page-gov/okf-uk-living",
+    "merge_commit": "c1a37d95e7a1ce49198439e8213b785c2a78ee30",
+    "pull_request": "https://github.com/chris-page-gov/okf-uk-living/pull/37",
+    "deployment_run": "46142919632",
+    "deployment_url": "https://github.com/chris-page-gov/okf-uk-living/actions/runs/46142919632",
+    "deployment_status": "passed"
+  },
+  "preserved_core_0_2_baseline": {
+    "publication_manifest_sha256": "7ad5714e3462d0e57599f430301b34e916d607ac8afae68a34d9b8567f26832d",
+    "overlay_manifest_sha256": "18f91f91610352829ec252eec02fbcf95bcea3217ac3103ff418d2ed9ae9989f",
+    "authorised_index_replacement_sha256": "59b4e5ce562da5f28708f13a79550d4201540e3868557270b5f203eec63f8258",
+    "descriptor_url": "https://chris-page-gov.github.io/okf-uk-living/okf-explorer.json",
+    "descriptor_sha256": "ff69f0162a4ba93156b150ae4eea0070c8c8a81187ed5cc7d2425f37b8db34dc",
+    "shared_large_data_manifest_sha256": "fe0e11219ceec88702ca8a5d536d6d0ac0425f3bb29c7586884cfb0e56c957b4"
+  },
+  "preview": {
+    "status": "owner-authorised-public-review-preview",
+    "core_status": "migration",
+    "profile": "https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v2/",
+    "profile_status": "experimental implementation profile",
+    "profile_conformance_claim": false,
+    "release_grade": false,
+    "descriptor_url": "https://chris-page-gov.github.io/okf-uk-living/okf-explorer-core-0.3.json",
+    "descriptor_sha256": "fcc1ce2800fdbfc2b6b4aa7b025763e01ad2e2d898f5037e1222537baf872690",
+    "landing_page_url": "https://chris-page-gov.github.io/okf-uk-living/core-0.3-preview/",
+    "landing_page_sha256": "0edac4295fa0f4bf91773c036e0ee18bbe365de2afb615798c51b6b9e69e173f",
+    "closure_sha256": "f30033c7fc2b8d8c42f10c62fbe411fe0d609ae2aad12a2a99f3bd22f784d029",
+    "semantic_json_ld_url": "https://chris-page-gov.github.io/okf-uk-living/core-0.3-preview/generated/semantic/life-course-corpus.jsonld",
+    "semantic_json_ld_sha256": "b6a00983e7f6c9c8ef8bdc1985f56a75e13f51a34a0a240d3feff40cd5031"
+  },
+  "replacement": {
+    "path": "index.html",
+    "sha256": "59b4e5ce562da5f28708f13a79550d4201540e3868557270b5f203eec63f8258",
+    "role": "sole authorised replacement within the additive publication"
+  },
+  "journeys": [
+    {
+      "viewport_width": 1440,
+      "record": "dataset/claim-child-benefit",
+      "relationship": "supported by source",
+      "incidental_browser_observation": "A request for https://chris-page-gov.github.io/favicon.ico returned 404."
+    },
+    {
+      "viewport_width": 390,
+      "record": "dataset/claim-child-benefit",
+      "relationship": "supported by source",
+      "incidental_browser_observation": "A request for https://chris-page-gov.github.io/favicon.ico returned 404."
+    }
+  ]
+}

@@ -12,6 +12,7 @@ from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = Path("registry/public-bundle-access.json")
+ALLOWED_NON_OKF_REPOSITORIES = {"gis-ai-go"}
 OUTPUTS = (Path("okf-public-access.json"), Path(".well-known/okf.json"),
            Path("llms.txt"), Path("docs/public-bundle-access.md"))
 
@@ -28,7 +29,8 @@ def load(root: Path = ROOT) -> dict:
     seen = set()
     for bundle in directory["bundles"]:
         name = bundle["repository"].removeprefix("https://github.com/chris-page-gov/")
-        if not re.fullmatch(r"okf-[A-Za-z0-9-]+", name) or name in seen:
+        if (not (re.fullmatch(r"okf-[A-Za-z0-9-]+", name)
+                 or name in ALLOWED_NON_OKF_REPOSITORIES) or name in seen):
             raise ValueError("public access entries need unique owned OKF repositories")
         seen.add(name)
         if bundle.get("visibility") != "public":
@@ -46,6 +48,33 @@ def load(root: Path = ROOT) -> dict:
                     or parsed.hostname not in {"github.com", "raw.githubusercontent.com", "chris-page-gov.github.io"}
                     or parsed.query or parsed.fragment):
                 raise ValueError(f"{name}: unsafe {key}")
+        preview = bundle.get("preview")
+        if preview is not None:
+            if not isinstance(preview, dict):
+                raise ValueError(f"{name}: preview must be an object")
+            for key in ("landing_page", "descriptor", "semantic_descriptor", "profile_uri", "evidence"):
+                value = preview.get(key)
+                parsed = urlsplit(value) if isinstance(value, str) else None
+                if (parsed is None or parsed.scheme != "https" or parsed.username or parsed.password
+                        or parsed.hostname not in {"github.com", "raw.githubusercontent.com", "chris-page-gov.github.io"}
+                        or parsed.query or parsed.fragment):
+                    raise ValueError(f"{name}: unsafe preview {key}")
+            if not re.fullmatch(r"[0-9a-f]{64}", str(preview.get("descriptor_sha256", ""))):
+                raise ValueError(f"{name}: preview descriptor digest is required")
+            if (preview.get("descriptor_schema") != "okf-explorer-large-corpus.v1"
+                    or preview.get("declared_okf_version") != "0.3"
+                    or preview.get("status") != "owner-authorised-public-review-preview"
+                    or preview.get("core_status") != "migration"
+                    or preview.get("profile") != "Bundle Wiki v2"
+                    or preview.get("profile_status") != "experimental"
+                    or preview.get("profile_conformance_claim") is not False
+                    or preview.get("release_grade") is not False):
+                raise ValueError(f"{name}: preview status or version boundary is unsafe")
+            if (not re.fullmatch(r"[0-9a-f]{40}", str(preview.get("producer_merge_commit", "")))
+                    or not re.fullmatch(r"\d{8,12}", str(preview.get("deployment_run", "")))
+                    or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(preview.get("observed_on", "")))
+                    or not isinstance(preview.get("verification"), str)):
+                raise ValueError(f"{name}: preview evidence is incomplete")
         raw = bundle.get("equivalent_raw_descriptor")
         if raw:
             expected = f"https://raw.githubusercontent.com/chris-page-gov/{name}/"
@@ -96,14 +125,19 @@ def render(directory: dict) -> dict[Path, str]:
              "[Project discovery JSON](../.well-known/okf.json) · [Text discovery index](../llms.txt)", "",
              "[Dated HTTP check](evidence/public-bundle-access-2026-11-14.json) records the exact checked URLs and descriptor hashes.", "",
              "## Choose a collection", "",
-             "| Collection | Core OKF | Website | Descriptor | Exact GitHub fallback |", "| --- | --- | --- | --- | --- |"]
+             "| Collection | Core OKF | Website | Descriptor | Walkthrough | Exact GitHub fallback |", "| --- | --- | --- | --- | --- | --- |"]
     for b in directory["bundles"]:
         raw = (f"[Pinned raw descriptor]({b['equivalent_raw_descriptor']})"
                if b.get("equivalent_raw_descriptor") else
                "Descriptor uses GitHub" if urlsplit(b["descriptor"]).hostname == "raw.githubusercontent.com"
                else "See access limit below")
         core = b.get("declared_okf_version") or "Not established"
-        lines.append(f"| {b['title']} | {core} | [Website]({b['home']}) | [Read descriptor]({b['descriptor']}) | {raw} |")
+        descriptor_link = f"[Read descriptor]({b['descriptor']})"
+        if preview := b.get("preview"):
+            descriptor_link += f"; [Core 0.3 preview page]({preview['landing_page']}); [descriptor]({preview['descriptor']})"
+        walkthrough_link = (f"[Source-linked guide]({b['walkthrough']})"
+                            if b.get("walkthrough") else "—")
+        lines.append(f"| {b['title']} | {core} | [Website]({b['home']}) | {descriptor_link} | {walkthrough_link} | {raw} |")
     lines.extend(["", "## Access limits and semantic entrypoints", ""])
     for b in directory["bundles"]:
         lines.extend([f"### {b['title']}", "", b["access_note"], "",
@@ -117,6 +151,15 @@ def render(directory: dict) -> dict[Path, str]:
         if b.get("verification") and b.get("observed_on"):
             observed = date.fromisoformat(b["observed_on"]).strftime("%-d %B %Y")
             lines.extend([f"Checked on {observed}. {b['verification']}", ""])
+
+        if preview := b.get("preview"):
+            observed = date.fromisoformat(preview["observed_on"]).strftime("%-d %B %Y")
+            lines.extend([
+                "**Separate Core 0.3 public review preview.** The producer remains in migration, the Bundle Wiki v2 implementation profile is experimental, and no profile conformance or release-grade claim is made.",
+                f"[Preview page]({preview['landing_page']}) · [Core 0.3 descriptor]({preview['descriptor']}) · [Semantic descriptor]({preview['semantic_descriptor']}) · [Bundle Wiki v2 profile]({preview['profile_uri']}) · [Public live-readback evidence]({preview['evidence']})",
+                f"Checked on {observed}. Merge `{preview['producer_merge_commit']}`; deployment run `{preview['deployment_run']}` passed. {preview['verification']}",
+                "",
+            ])
 
         if graph := b.get("agent_graph"):
             lines.extend([f"[Open the release graph (JSON-LD)]({graph['url']})",
@@ -158,8 +201,11 @@ def render(directory: dict) -> dict[Path, str]:
             "## Descriptors", ""]
     for b in directory["bundles"]:
         llms.append(f"- [{b['title']}]({b['descriptor']}): {b['access_note']}")
+        if preview := b.get("preview"):
+            llms.append(f"- [{b['title']} Core 0.3 preview page]({preview['landing_page']}) · [descriptor]({preview['descriptor']}): {preview['verification']} The profile remains experimental and the producer remains in migration.")
+            llms.append(f"- [{b['title']} public preview read-back evidence]({preview['evidence']})")
         if b.get("walkthrough"):
-            llms.append(f"- [{b['title']} source-linked walkthrough]({b['walkthrough']}): Question, qualified answer, evidence and negative controls.")
+            llms.append(f"- [{b['title']} source-linked walkthrough]({b['walkthrough']}): Open the source trail and follow the guide's stated limits.")
     llms.extend(["", "## Pinned graphs", ""])
     for b in directory["bundles"]:
         if graph := b.get("agent_graph"):
