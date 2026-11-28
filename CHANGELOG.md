@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased — walkthrough register corrections
+
+- Restore both UK Government APIs guide routes. Check that each reviewed
+  guide URL stays within its producer's GitHub Pages project.
+- Add the Equality Act and Whole-Law walkthroughs from Legislation v0.5.0.
+  Keep the Core 0.3 descriptors, pinned question sources and dated desktop
+  and mobile Reader checks with each entry.
+
 ## Unreleased — release-evidence compatibility preflight
 
 - Add a reusable read-only harness and versioned Codex Security compatibility

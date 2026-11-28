@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import argparse
 import ast
-from datetime import datetime
+from datetime import date, datetime
 import hashlib
 import html
 import json
@@ -22,6 +22,7 @@ RETAINED_ACCESS_DIRECTORY = Path(
 OUTPUTS = (Path("registry/walkthrough-register.json"), Path("docs/walkthrough-register.md"))
 PUBLIC_HOSTS = {"github.com", "raw.githubusercontent.com", "chris-page-gov.github.io", "api.github.com"}
 SHA256 = re.compile(r"[0-9a-f]{64}")
+LEGISLATION_WALKTHROUGH_IDS = {"legislation-equality-act-commencement", "legislation-whole-law-equality-duty"}
 EXPECTED_REVIEW_WALKTHROUGH_IDS = {
     "ai-infrastructure-federated-rag", "ons-population-by-age", "ons-core-scope-freshness-conformance",
     "planning-design-code-policy-discovery",
@@ -33,6 +34,7 @@ EXPECTED_REVIEW_WALKTHROUGH_IDS = {
     "explorer-first-bundle-teaching", "explorer-profile-prov", "explorer-profile-vocabulary",
     "explorer-profile-missing-label", "explorer-profile-boundaries",
     "els-api-core03-complex-question",
+    *LEGISLATION_WALKTHROUGH_IDS,
 }
 EXPECTED_GUIDE_SOURCE_CAPTURE_GAPS: set[str] = set()
 ELS_WALKTHROUGH_ID = "els-api-core03-complex-question"
@@ -578,6 +580,11 @@ def load(root: Path = ROOT) -> dict:
         for key in ("guide_url", "source_url"):
             if not safe_public_url(row.get(key, "")):
                 raise ValueError("unsafe walkthrough review URL")
+        owner, project = row["repository"].split("/", 1)
+        guide_url = urlsplit(row["guide_url"])
+        if (guide_url.hostname != f"{owner}.github.io"
+                or not guide_url.path.startswith(f"/{project}/")):
+            raise ValueError("walkthrough guide URL is outside its producer's Pages site")
         if (not safe_relative(row.get("source_path", ""))
                 or not SHA256.fullmatch(row.get("source_sha256", ""))
                 or not re.fullmatch(r"[0-9a-f]{40}", row.get("current_source_commit", ""))):
@@ -585,8 +592,13 @@ def load(root: Path = ROOT) -> dict:
         if row.get("source_url") != (
                 f"https://github.com/{row['repository']}/blob/{row['current_source_commit']}/{row['source_path']}"):
             raise ValueError("walkthrough source URL is not pinned to its observed source commit")
-        if row.get("source_observed_on") != "2026-11-25":
-            raise ValueError("walkthrough source checkout observation date is missing")
+        try:
+            observed_on = date.fromisoformat(row.get("source_observed_on", ""))
+            modified_on = date.fromisoformat(source["modified"])
+        except (TypeError, ValueError):
+            raise ValueError("walkthrough source checkout observation date is invalid") from None
+        if observed_on.isoformat() != row["source_observed_on"] or observed_on > modified_on:
+            raise ValueError("walkthrough source observation must be dated on or before the register update")
         evidence_path = row.get("source_evidence_path", "")
         if (not safe_relative(evidence_path)
                 or not evidence_path.startswith("registry/walkthrough-register/evidence/walkthrough-source/")):
@@ -782,7 +794,20 @@ def load(root: Path = ROOT) -> dict:
         proof = row.get("retained_proof", {})
         if proof.get("status") not in {"passed", "failed", "unknown"} or not SHA256.fullmatch(proof.get("sha256", "")):
             raise ValueError("walkthrough retained evidence must have a status and valid digest")
-        validate_receipt_summary(proof, root)
+        retained_summary = validate_receipt_summary(proof, root)
+        if row["id"] in LEGISLATION_WALKTHROUGH_IDS:
+            expected_summary = {
+                "source_commit": row["current_source_commit"],
+                "walkthrough_id": row["id"],
+                "okf_core_version": row["okf_core_version"],
+                "guide_url": row["guide_url"],
+                "guide_sha256": row["guide_sha256"],
+                "descriptor_sha256": row["version_evidence_sha256"],
+                "browser_widths": [390, 1440],
+            }
+            if proof["status"] != "passed" or any(retained_summary.get(key) != value
+                    for key, value in expected_summary.items()):
+                raise ValueError("Legislation browser receipt does not match its guide, descriptor and viewports")
         for historical_proof in row.get("historical_proofs", []):
             if historical_proof.get("status") not in {"passed", "failed", "unknown"}:
                 raise ValueError("historical receipt has an invalid status")
@@ -1047,6 +1072,8 @@ def render(source: dict) -> dict[Path, str]:
         proof_date = proof.get("observed_at") or "date not present in retained receipt"
         current = w.get("current_page_observation")
         current_status = f"Current page: HTTP {current['http_status']} on {current['observed_at']}; {current['result']}" if current else "Current page: not rechecked."
+        if current is None and w['id'] in LEGISLATION_WALKTHROUGH_IDS:
+            current_status = ""
         prior_pages = w.get("historical_page_observations", [])
         prior_page_status = ""
         if prior_pages:
@@ -1085,7 +1112,7 @@ def render(source: dict) -> dict[Path, str]:
         else:
             descriptor_note = ""
         guide_status = w["guide_status"].removesuffix("; current page not rechecked")
-        proof_label = "Public proof" if public_browser_binding else "Earlier evidence"
+        proof_label = "Public proof" if public_browser_binding or w["id"] in LEGISLATION_WALKTHROUGH_IDS else "Earlier evidence"
         lines.extend([f"### {title}", "", q, "",
                       f"**Version:** {core}; declared bundle version/edition {product}; shared Reader {w.get('reader_version') or 'not recorded'}.{descriptor_note}", "",
                       f"[Guide]({w['guide_url']}) · [Question and evidence source]({w['source_url']})", "",

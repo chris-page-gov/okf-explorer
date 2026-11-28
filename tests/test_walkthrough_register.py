@@ -189,9 +189,9 @@ class WalkthroughRegisterTests(unittest.TestCase):
 
     def test_public_walkthrough_coverage_and_captured_sources_are_exact(self):
         source = register.load()
-        self.assertEqual(len(source["review_walkthroughs"]), 27)
-        self.assertEqual(source["scope"]["public_walkthrough_count"], 28)
-        self.assertEqual(source["scope"]["review_walkthrough_count"], 27)
+        self.assertEqual(len(source["review_walkthroughs"]), 29)
+        self.assertEqual(source["scope"]["public_walkthrough_count"], 30)
+        self.assertEqual(source["scope"]["review_walkthrough_count"], 29)
         self.assertEqual(source["scope"]["public_root_count"], 76)
         self.assertEqual(source["scope"]["reference_walkthrough_count"], 1)
         self.assertEqual(len(source["repository_visibility_observations"]), 24)
@@ -210,6 +210,10 @@ class WalkthroughRegisterTests(unittest.TestCase):
         self.assertEqual(rows["xgov-core-notifications"]["producer_product_version"], "0.6.0")
         self.assertEqual(rows["early-years-control"]["okf_core_version"], "0.2")
         self.assertEqual(rows["early-years-domain"]["okf_core_version"], "0.3")
+        for key in register.LEGISLATION_WALKTHROUGH_IDS:
+            self.assertEqual(rows[key]["okf_core_version"], "0.3")
+            self.assertEqual(rows[key]["producer_product_version"], "0.5.0")
+            self.assertEqual(rows[key]["reader_version"], "0.9.2")
         self.assertEqual(rows["ons-core-scope-freshness-conformance"]["retained_proof"]["status"], "passed")
         self.assertEqual(rows["ons-core-scope-freshness-conformance"]["retained_proof"]["producer_product_version"], "0.3.1")
         self.assertEqual(rows["ons-core-scope-freshness-conformance"]["historical_proofs"][0]["status"], "failed")
@@ -220,7 +224,7 @@ class WalkthroughRegisterTests(unittest.TestCase):
         output = register.render(source)
         machine = json.loads(output[Path("registry/walkthrough-register.json")])
         md = output[Path("docs/walkthrough-register.md")]
-        self.assertEqual(len(machine["review_walkthroughs"]), 27)
+        self.assertEqual(len(machine["review_walkthroughs"]), 29)
         self.assertIn("Earlier page observations: HTTP 404", md)
         self.assertIn("Current browser proof: passed", md)
         self.assertIn("Complete public-assets gate: passed", md)
@@ -279,6 +283,8 @@ class WalkthroughRegisterTests(unittest.TestCase):
             lambda s: next(w for w in s["review_walkthroughs"] if w["id"] == "explorer-profile-prov").update(bundle_identity="https://example.invalid/forged"),
             lambda s: next(w for w in s["review_walkthroughs"] if w["id"] == "hansard-november-core")["current_page_observation"].update(http_status=403),
             lambda s: next(w for w in s["review_walkthroughs"] if w["id"] == "capgov-site-archive").update(descriptor_url="https://chris-page-gov.github.io/okf-ai-capability-governance/bundle/okf-explorer.json"),
+            lambda s: next(w for w in s["review_walkthroughs"] if w["id"] == "apis-core-guide-to-reader").update(guide_url="https://chris-page-gov.github.io/okf-uk-government-apiscore-walkthrough.html"),
+            lambda s: next(w for w in s["review_walkthroughs"] if w["id"] == "legislation-equality-act-commencement").update(guide_url="https://chris-page-gov.github.io/okf-uk-legislation/other-guide/"),
         ]
         for mutate in mutations:
             def change(source, _denominator, mutate=mutate): mutate(source)

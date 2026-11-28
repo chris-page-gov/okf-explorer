@@ -1,0 +1,19 @@
+{
+  "schema": "okf-walkthrough-retained-receipt-summary.v1",
+  "source_receipt_id": "exact-live-guides-receipt.json",
+  "source_receipt_sha256": "df6a985609923fd9eb802b37e8acceeaf08fc0001dd763ef9107d4e75fa82a9b",
+  "status": "passed",
+  "date": "2026-11-28T03:53:34.954Z",
+  "source_commit": "b5d9cd7a27d8bcf6b0fa971791d893e6f329a3e8",
+  "walkthrough_id": "legislation-whole-law-equality-duty",
+  "producer_product_version": "0.5.0",
+  "okf_core_version": "0.3",
+  "guide_sha256": "93db5c4a4aa8816187f65ad55eb40891d356910073698cc1b32a3942a6264087",
+  "descriptor_sha256": "1576b8fdb1cb68cf5c3ab388dadd3cf5b5de258e482b642c47654a8d923afd5e",
+  "guide_url": "https://chris-page-gov.github.io/okf-uk-legislation/whole-law/walkthrough/",
+  "browser_widths": [
+    390,
+    1440
+  ],
+  "scope": "Exact guide and intended Reader journeys in Chrome, with exact public descriptor and guide bytes."
+}

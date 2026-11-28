@@ -1,0 +1,12 @@
+{
+  "question": "How can a researcher trace a recorded commencement effect on the Equality Act 2010, inspect the provision evidence and establish what still needs checking today?",
+  "primary_route": "dataset/ukpga-2010-15",
+  "effect_id": "urn:okf:official-effect:sha256:006e817fa36efb6526910a953eb46fdc51b9002a3ec9101c0a8428496ab734c7",
+  "source": "https://www.legislation.gov.uk/id/uksi/2010/2317",
+  "target": "https://www.legislation.gov.uk/id/ukpga/2010/15",
+  "negative_controls": [
+    "A recorded effect does not prove that every provision is in force today.",
+    "A parser verification is not a named human legal review.",
+    "The frozen current/applied labels describe the captured source state; they are not a November refresh."
+  ]
+}

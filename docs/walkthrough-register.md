@@ -4,7 +4,7 @@ This dated register covers the recorded public repository roots in its denominat
 
 Scope: 76 repository/root identities across 106 recorded public revision observations. The inventory snapshots were observed on 23 and 25 November 2026.
 
-Questions: 28 walkthroughs, comprising 27 reviewed producer/profile entries and 1 source-bound Explorer reference walkthrough. These are questions, not a count of independent bundles.
+Questions: 30 walkthroughs, comprising 29 reviewed producer/profile entries and 1 source-bound Explorer reference walkthrough. These are questions, not a count of independent bundles.
 
 [Machine-readable register](../registry/walkthrough-register.json)
 
@@ -191,7 +191,7 @@ Can an OKF core 0.3 reader establish that the GOV.UK Notify endpoint is currentl
 
 **Version:** 0.3; declared bundle version/edition 0.5.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:05:00Z: [bundle descriptor](https://chris-page-gov.github.io/okf-uk-government-apis/okf-core-explorer.json).
 
-[Guide](https://chris-page-gov.github.io/okf-uk-government-apiscore-walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-uk-government-apis/blob/c33792abdbc16a6fb4c386a5ad6f10c79e0fbce2/walkthroughs/core-catalogue.json)
+[Guide](https://chris-page-gov.github.io/okf-uk-government-apis/core-walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-uk-government-apis/blob/c33792abdbc16a6fb4c386a5ad6f10c79e0fbce2/walkthroughs/core-catalogue.json)
 
 Earlier evidence: passed (2026-11-24T08:27:44.808Z); four desktop/mobile guide journeys passed at recorded release
 
@@ -203,7 +203,7 @@ The catalogue has several similarly named notification entries. Which frozen rec
 
 **Version:** 0.3; declared bundle version/edition 0.5.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:05:00Z: [bundle descriptor](https://chris-page-gov.github.io/okf-uk-government-apis/okf-explorer.json).
 
-[Guide](https://chris-page-gov.github.io/okf-uk-government-apisnotification-catalogue-walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-uk-government-apis/blob/c33792abdbc16a6fb4c386a5ad6f10c79e0fbce2/walkthroughs/notification-catalogue.json)
+[Guide](https://chris-page-gov.github.io/okf-uk-government-apis/notification-catalogue-walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-uk-government-apis/blob/c33792abdbc16a6fb4c386a5ad6f10c79e0fbce2/walkthroughs/notification-catalogue.json)
 
 Earlier evidence: passed (2026-11-24T08:27:44.808Z); four desktop/mobile guide journeys passed at recorded release
 
@@ -353,6 +353,30 @@ Public proof: passed (2026-11-25T17:53:29.494Z); Public asset hashes and desktop
 
 Current page: not rechecked. Public Chrome proof: passed (2026-11-25T17:53:29.494Z); 85 public asset hashes and desktop and mobile journeys passed for Reader 0.9.2. The receipt does not record axe results.
 
+### Legislation: an Equality Act commencement effect
+
+How can a researcher trace a recorded commencement effect on the Equality Act 2010, inspect the provision evidence and establish what still needs checking today?
+
+**Version:** 0.3; declared bundle version/edition 0.5.0; shared Reader 0.9.2. Exact descriptor returned HTTP 200 on 2026-11-28T03:53:34.954Z: [bundle descriptor](https://chris-page-gov.github.io/okf-uk-legislation/okf-explorer.json).
+
+[Guide](https://chris-page-gov.github.io/okf-uk-legislation/walkthroughs/legislation/) · [Question and evidence source](https://github.com/chris-page-gov/okf-uk-legislation/blob/b5d9cd7a27d8bcf6b0fa971791d893e6f329a3e8/walkthroughs/legislation.json)
+
+Public proof: passed (2026-11-28T03:53:34.954Z); The exact v0.5.0 Pages deployment matched the guide and descriptor bytes. Chrome opened the intended Reader view at 390 and 1,440 pixels.
+
+
+
+### Whole-Law: source families for an equality duty
+
+Which source families should a researcher inspect for legislation, amendments and judicial treatment of an equality duty, and which parts has Whole-Law actually ingested?
+
+**Version:** 0.3; declared bundle version/edition 0.5.0; shared Reader 0.9.2. Exact descriptor returned HTTP 200 on 2026-11-28T03:53:34.954Z: [bundle descriptor](https://chris-page-gov.github.io/okf-uk-legislation/whole-law/okf-explorer.json).
+
+[Guide](https://chris-page-gov.github.io/okf-uk-legislation/whole-law/walkthrough/) · [Question and evidence source](https://github.com/chris-page-gov/okf-uk-legislation/blob/b5d9cd7a27d8bcf6b0fa971791d893e6f329a3e8/walkthroughs/whole-law.json)
+
+Public proof: passed (2026-11-28T03:53:34.954Z); The exact v0.5.0 Pages deployment matched the guide and descriptor bytes. Chrome opened the intended Reader view at 390 and 1,440 pixels.
+
+
+
 
 ## Current public descriptor observations
 
@@ -371,7 +395,7 @@ The table records the 13 exact anonymous HTTP descriptor bytes captured in the 2
 | [ONS data discovery](https://github.com/chris-page-gov/okf-ons) | 0.3 | 0.3.1 | `9b59207f817860c4df664e8150b25a21876d1118e82f6d7d1aab364bd1af93ed` (2026-11-25T08:54:16.013834+00:00) | changed | 2 walkthrough(s) listed above; inspect each dated status |
 | [UK planning and housing data](https://github.com/chris-page-gov/okf-planning) | 0.3 | 0.3.1 | `607a4c675a2c5c0c158802c6d338c704e9df79dfb5a08514a6fd87c2084c3b38` (2026-11-25T08:54:16.274566+00:00) | changed | 1 walkthrough(s) listed above; inspect each dated status |
 | [UK Government APIs](https://github.com/chris-page-gov/okf-uk-government-apis) | 0.3 | 0.5.0 | `1d2e2c4c6f3944811a32c5fe405cd1403690e4db8401b13d6f093e0a558f6c30` (2026-11-25T08:54:16.451229+00:00) | changed | 2 walkthrough(s) listed above; inspect each dated status |
-| [UK legislation](https://github.com/chris-page-gov/okf-uk-legislation) | 0.2 | 0.4.0 | `6172ef364d5f613669acc9ac45bc58480782d0b683437ba69c4cf0d2385d1fd7` (2026-11-25T08:54:16.667628+00:00) | changed | not listed |
+| [UK legislation](https://github.com/chris-page-gov/okf-uk-legislation) | 0.2 | 0.4.0 | `6172ef364d5f613669acc9ac45bc58480782d0b683437ba69c4cf0d2385d1fd7` (2026-11-25T08:54:16.667628+00:00) | changed | 2 walkthrough(s) listed above; inspect each dated status |
 | [A Life in the UK](https://github.com/chris-page-gov/okf-uk-living) | 0.2 | life-course-population-stage.v1 | `ff69f0162a4ba93156b150ae4eea0070c8c8a81187ed5cc7d2425f37b8db34dc` (2026-11-25T08:54:16.849488+00:00) | same | not listed |
 
 ## Later producer-owned public asset observations
@@ -459,8 +483,8 @@ Every repository/root identity below remains visible. Aliases, contract umbrella
 | `chris-page-gov/okf-uk-government-apis` | `.` | contracted-producer-root | not established | 2026-11-25T08:24:43.407354+00:00 @ `d3d84b218f843143a3f0ef50a7bd0f2301823457`; 2026-11-23T17:40:22Z @ `de7317cbdada318f1719064ef0afcdb1c6df4905` | pending |
 | `chris-page-gov/okf-uk-government-apis` | `bundle` | markdown-source-bundle | 0.2 (field-only) | 2026-11-25T08:24:43.407354+00:00 @ `d3d84b218f843143a3f0ef50a7bd0f2301823457`; 2026-11-23T17:40:22Z @ `de7317cbdada318f1719064ef0afcdb1c6df4905` | 2 review link(s); prior evidence retained |
 | `chris-page-gov/okf-uk-legislation` | `.` | contracted-producer-root | not established | 2026-11-23T17:40:22Z, 2026-11-25T08:24:43.407354+00:00 @ `4d1fcb4645c72b7adbd0cd57d0883bf5d024f514` | pending |
-| `chris-page-gov/okf-uk-legislation` | `bundle` | markdown-source-bundle | 0.2 (field-only) | 2026-11-23T17:40:22Z, 2026-11-25T08:24:43.407354+00:00 @ `4d1fcb4645c72b7adbd0cd57d0883bf5d024f514` | pending |
-| `chris-page-gov/okf-uk-legislation` | `bundle/whole-law` | markdown-source-bundle | 0.2 (field-only) | 2026-11-23T17:40:22Z, 2026-11-25T08:24:43.407354+00:00 @ `4d1fcb4645c72b7adbd0cd57d0883bf5d024f514` | pending |
+| `chris-page-gov/okf-uk-legislation` | `bundle` | markdown-source-bundle | 0.2 (field-only) | 2026-11-23T17:40:22Z, 2026-11-25T08:24:43.407354+00:00 @ `4d1fcb4645c72b7adbd0cd57d0883bf5d024f514` | 1 review link(s); prior evidence retained |
+| `chris-page-gov/okf-uk-legislation` | `bundle/whole-law` | markdown-source-bundle | 0.2 (field-only) | 2026-11-23T17:40:22Z, 2026-11-25T08:24:43.407354+00:00 @ `4d1fcb4645c72b7adbd0cd57d0883bf5d024f514` | 1 review link(s); prior evidence retained |
 | `chris-page-gov/okf-uk-legislation` | `release-assurance/profile-reconcile-20260927/diagnostic-runtime-attempt-06/bundle` | frozen-or-generated-root | not established | 2026-11-23T17:40:22Z, 2026-11-25T08:24:43.407354+00:00 @ `4d1fcb4645c72b7adbd0cd57d0883bf5d024f514` | pending |
 | `chris-page-gov/okf-uk-legislation` | `release-assurance/profile-reconcile-20260927/diagnostic-runtime-attempt-06/bundle/whole-law` | frozen-or-generated-root | not established | 2026-11-23T17:40:22Z, 2026-11-25T08:24:43.407354+00:00 @ `4d1fcb4645c72b7adbd0cd57d0883bf5d024f514` | pending |
 | `chris-page-gov/okf-uk-legislation` | `whole-law` | markdown-source-bundle | 0.2 (field-only) | 2026-11-23T17:40:22Z, 2026-11-25T08:24:43.407354+00:00 @ `4d1fcb4645c72b7adbd0cd57d0883bf5d024f514` | pending |

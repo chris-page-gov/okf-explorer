@@ -1,0 +1,14 @@
+{
+  "question": "Which source families should a researcher inspect for legislation, amendments and judicial treatment of an equality duty, and which parts has Whole-Law actually ingested?",
+  "primary_route": "overview",
+  "source_records": [
+    "SRC001",
+    "SRC009",
+    "SRC010"
+  ],
+  "negative_controls": [
+    "A catalogued court source is not an ingested judgments corpus.",
+    "Absence of a case from this bundle does not establish that no relevant case exists.",
+    "Public access does not confer permission for every form of computational analysis."
+  ]
+}
