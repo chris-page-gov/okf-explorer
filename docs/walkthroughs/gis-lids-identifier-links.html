@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A source-linked guide to the OS Open Linked Identifiers metadata record in the GIS Core 0.3 review preview.">
+  <title>Trace OS identifier metadata in Explorer</title>
+  <style>
+    :root { color-scheme: light; font: 1rem/1.55 system-ui, sans-serif; color: #17212b; background: #f4f7f5; }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    main { width: min(100% - 2rem, 52rem); margin: clamp(1rem, 5vw, 3rem) auto; }
+    header, section { padding: clamp(1rem, 4vw, 2rem); margin-block: 1rem; border: 1px solid #c8d5d0; border-radius: .75rem; background: #fff; }
+    h1 { margin-top: 0; font-size: clamp(1.7rem, 5vw, 2.4rem); line-height: 1.15; }
+    a { color: #004e48; text-underline-offset: .18em; overflow-wrap: anywhere; }
+    .notice { border-left: .3rem solid #a95500; background: #fff1d8; padding: .8rem 1rem; }
+    li { margin-block: .8rem; }
+    :focus-visible { outline: 3px solid #ffbf47; outline-offset: 3px; }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <p>GIS metadata review preview · OKF Core 0.3 · draft status</p>
+    <h1>How does LIDS link UPRNs, USRNs and TOIDs?</h1>
+    <p>This guide follows one retained metadata record in the public GIS Reader. It helps inspect the source trail and stated limits; it does not test a data join.</p>
+    <p class="notice"><strong>Review boundary:</strong> the selected record is marked <code>not-human-reviewed</code>. The catalogue is metadata discovery, not a geographic data store or live retrieval service. A lexical match or identifier relationship does not establish identity, equivalent coverage or permission to use a source.</p>
+    <p><a href="https://chris-page-gov.github.io/okf-explorer/?bundle=https%3A%2F%2Fchris-page-gov.github.io%2Fgis-ai-go%2Fgis%2Fexplorer%2Fokf-explorer.json&amp;view=reader#records/os-open-products/lids-57fe11f44a92.md">Open the LIDS record in OKF Explorer</a></p>
+  </header>
+  <section>
+    <h2>Follow the source trail</h2>
+    <ol>
+      <li>In the Explorer record, check the title, native identifier <code>LIDS</code>, source family and review status. The metadata describes the product's links among UPRNs, USRNs and TOIDs; that description is a source claim, not evidence that a particular join is complete or suitable.</li>
+      <li>Open the <a href="https://raw.githubusercontent.com/chris-page-gov/gis-ai-go/2faa2962906c16883aaca824e8503872c6c9d821/okf-plus/records/os-open-products/lids-57fe11f44a92.md">pinned producer source record</a>. Its 2026-09 catalogue version is not a dataset reference period. The record says temporal extent and update frequency are not evidenced.</li>
+      <li>Use the <a href="https://api.os.uk/downloads/v1/products/LIDS">official OS LIDS catalogue</a> to check current product details, licence and attribution terms before any proposed use. The metadata preview does not provide data access or establish a retrieval entitlement.</li>
+    </ol>
+    <p>The live descriptor identifies the collection as Core 0.3 and draft. The descriptor and Reader route were independently checked at 1,440 and 390 pixels. The visual guide itself has not been through the central walkthrough review.</p>
+    <p><a href="../evidence/gis-lids-core03-live-readback-2026-11-28.json">Read the bounded live identity and journey evidence</a> · <a href="https://chris-page-gov.github.io/gis-ai-go/gis/explorer/okf-explorer.json">Open the exact live Reader descriptor</a></p>
+  </section>
+</main>
+</body>
+</html>

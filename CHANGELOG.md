@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased — GIS Core 0.3 public catalogue preview
+
+- Add the live GIS descriptor and an Explorer-hosted LIDS metadata guide to the
+  public access directory. Pin the descriptor, producer revision, source
+  record hash and bounded desktop and mobile Reader evidence.
+- Keep the metadata draft and `not-human-reviewed` status visible. The guide
+  does not claim central walkthrough review, data retrieval, join suitability,
+  specialist acceptance or release-grade status.
+
 ## Unreleased — UK Living Core 0.3 public review preview
 
 - Keep the existing Core 0.2 descriptor and frozen publication as the default

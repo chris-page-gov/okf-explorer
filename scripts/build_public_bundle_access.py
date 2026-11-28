@@ -12,6 +12,7 @@ from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = Path("registry/public-bundle-access.json")
+ALLOWED_NON_OKF_REPOSITORIES = {"gis-ai-go"}
 OUTPUTS = (Path("okf-public-access.json"), Path(".well-known/okf.json"),
            Path("llms.txt"), Path("docs/public-bundle-access.md"))
 
@@ -28,7 +29,8 @@ def load(root: Path = ROOT) -> dict:
     seen = set()
     for bundle in directory["bundles"]:
         name = bundle["repository"].removeprefix("https://github.com/chris-page-gov/")
-        if not re.fullmatch(r"okf-[A-Za-z0-9-]+", name) or name in seen:
+        if (not (re.fullmatch(r"okf-[A-Za-z0-9-]+", name)
+                 or name in ALLOWED_NON_OKF_REPOSITORIES) or name in seen):
             raise ValueError("public access entries need unique owned OKF repositories")
         seen.add(name)
         if bundle.get("visibility") != "public":
@@ -123,7 +125,7 @@ def render(directory: dict) -> dict[Path, str]:
              "[Project discovery JSON](../.well-known/okf.json) · [Text discovery index](../llms.txt)", "",
              "[Dated HTTP check](evidence/public-bundle-access-2026-11-14.json) records the exact checked URLs and descriptor hashes.", "",
              "## Choose a collection", "",
-             "| Collection | Core OKF | Website | Descriptor | Exact GitHub fallback |", "| --- | --- | --- | --- | --- |"]
+             "| Collection | Core OKF | Website | Descriptor | Walkthrough | Exact GitHub fallback |", "| --- | --- | --- | --- | --- | --- |"]
     for b in directory["bundles"]:
         raw = (f"[Pinned raw descriptor]({b['equivalent_raw_descriptor']})"
                if b.get("equivalent_raw_descriptor") else
@@ -133,7 +135,9 @@ def render(directory: dict) -> dict[Path, str]:
         descriptor_link = f"[Read descriptor]({b['descriptor']})"
         if preview := b.get("preview"):
             descriptor_link += f"; [Core 0.3 preview page]({preview['landing_page']}); [descriptor]({preview['descriptor']})"
-        lines.append(f"| {b['title']} | {core} | [Website]({b['home']}) | {descriptor_link} | {raw} |")
+        walkthrough_link = (f"[Source-linked guide]({b['walkthrough']})"
+                            if b.get("walkthrough") else "—")
+        lines.append(f"| {b['title']} | {core} | [Website]({b['home']}) | {descriptor_link} | {walkthrough_link} | {raw} |")
     lines.extend(["", "## Access limits and semantic entrypoints", ""])
     for b in directory["bundles"]:
         lines.extend([f"### {b['title']}", "", b["access_note"], "",
@@ -201,7 +205,7 @@ def render(directory: dict) -> dict[Path, str]:
             llms.append(f"- [{b['title']} Core 0.3 preview page]({preview['landing_page']}) · [descriptor]({preview['descriptor']}): {preview['verification']} The profile remains experimental and the producer remains in migration.")
             llms.append(f"- [{b['title']} public preview read-back evidence]({preview['evidence']})")
         if b.get("walkthrough"):
-            llms.append(f"- [{b['title']} source-linked walkthrough]({b['walkthrough']}): Question, qualified answer, evidence and negative controls.")
+            llms.append(f"- [{b['title']} source-linked walkthrough]({b['walkthrough']}): Open the source trail and follow the guide's stated limits.")
     llms.extend(["", "## Pinned graphs", ""])
     for b in directory["bundles"]:
         if graph := b.get("agent_graph"):

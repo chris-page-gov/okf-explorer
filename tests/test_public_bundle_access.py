@@ -50,6 +50,10 @@ class PublicBundleAccessTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "only explicitly public"):
             self.mutate(lambda b: b.update(visibility="private"))
 
+    def test_non_okf_repository_needs_an_explicit_publisher_allowlist_entry(self):
+        with self.assertRaisesRegex(ValueError, "unique owned OKF repositories"):
+            self.mutate(lambda b: b.update(repository="https://github.com/chris-page-gov/not-an-okf-publisher"))
+
     def test_authenticated_inventory_cannot_be_published_as_a_public_catalogue(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
@@ -85,7 +89,7 @@ class PublicBundleAccessTests(unittest.TestCase):
 
     def test_directory_preserves_known_access_boundaries(self):
         rows = {b["repository"].rsplit("/", 1)[-1]: b for b in access.load()["bundles"]}
-        self.assertEqual(len(rows), 13)
+        self.assertEqual(len(rows), 14)
         self.assertNotIn("equivalent_raw_descriptor", rows["okf-ons"])
         self.assertNotIn("equivalent_raw_descriptor", rows["okf-uk-living"])
         self.assertIn("/combined/okf-explorer.json", rows["okf-dwp"]["descriptor"])
@@ -94,6 +98,27 @@ class PublicBundleAccessTests(unittest.TestCase):
         self.assertEqual(hansard["declared_okf_version"], "0.3")
         self.assertEqual(hansard["raw_descriptor_sha256"], hansard["descriptor_sha256"])
         self.assertTrue(hansard["producer_directory"].endswith("/okf-hansard/okf-public-access.json"))
+
+    def test_gis_core03_entry_is_pinned_and_walkthrough_bounds_are_visible(self):
+        rows = {b["repository"].rsplit("/", 1)[-1]: b for b in access.load()["bundles"]}
+        gis = rows["gis-ai-go"]
+        self.assertEqual("0.3", gis["declared_okf_version"])
+        self.assertEqual("https://chris-page-gov.github.io/gis-ai-go/gis/explorer/okf-explorer.json", gis["descriptor"])
+        self.assertEqual("cf4922eed417b7c890d5cc667283d6b98b8a8cf79c627da7afed6fe4315068ae", gis["descriptor_sha256"])
+        self.assertIn("authored OKF+ source declares Core 0.2", gis["access_note"])
+        self.assertIn("not-human-reviewed", gis["access_note"])
+        self.assertIn("no retrieval or join", gis["verification"])
+        receipt = json.loads((ROOT / "docs/evidence/gis-lids-core03-live-readback-2026-11-28.json").read_text())
+        self.assertEqual(gis["descriptor_sha256"], receipt["descriptor"]["sha256"])
+        self.assertEqual("0.2", receipt["deployment"]["authored_source_core_version"])
+        self.assertEqual("7651f22ac11238b425c273e33b1cb45514486c8a479f3b801f4dd186185640ca", receipt["source_record"]["sha256"])
+        outputs = access.render(access.load())
+        self.assertIn(gis["walkthrough"], outputs[Path("docs/public-bundle-access.md")])
+        self.assertIn(gis["walkthrough"], outputs[Path("llms.txt")])
+        self.assertIn("| Walkthrough |", outputs[Path("docs/public-bundle-access.md")])
+        guide = (ROOT / "docs/walkthroughs/gis-lids-identifier-links.html").read_text()
+        self.assertIn(gis["descriptor"], guide)
+        self.assertIn(receipt["source_record"]["url"], guide)
 
     def test_uk_living_preview_is_separate_and_keeps_the_core_02_baseline(self):
         rows = {b["repository"].rsplit("/", 1)[-1]: b for b in access.load()["bundles"]}
@@ -119,6 +144,7 @@ class PublicBundleAccessTests(unittest.TestCase):
         self.assertIn(preview["descriptor"], outputs[Path("docs/public-bundle-access.md")])
         self.assertIn(preview["landing_page"], outputs[Path("docs/public-bundle-access.md")])
         self.assertIn(preview["evidence"], outputs[Path("llms.txt")])
+        self.assertIn(living["walkthrough"], outputs[Path("docs/public-bundle-access.md")])
 
     def test_uk_living_preview_rejects_unsafe_or_overstated_identity(self):
         with self.assertRaisesRegex(ValueError, "unsafe preview descriptor"):
