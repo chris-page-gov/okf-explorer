@@ -9,6 +9,8 @@
 - Show the declared Core version in the public access table. Refresh selected
   Core 0.3 descriptor pins and preserve the previous directory used by the
   walkthrough register's dated observations.
+- Refresh the GOV.UK question source and guide after verifying the corrected
+  bounded preview, including 1,103 served assets and its phone-width reflow.
 
 ## Unreleased — walkthrough register corrections
 

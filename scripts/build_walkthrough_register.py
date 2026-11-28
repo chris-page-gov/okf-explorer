@@ -1077,7 +1077,7 @@ def render(source: dict) -> dict[Path, str]:
         proof_date = proof.get("observed_at") or "date not present in retained receipt"
         current = w.get("current_page_observation")
         current_status = f"Current page: HTTP {current['http_status']} on {current['observed_at']}; {current['result']}" if current else "Current page: not rechecked."
-        if current is None and w['id'] in LEGISLATION_WALKTHROUGH_IDS:
+        if current is None and (w['id'] in LEGISLATION_WALKTHROUGH_IDS or w.get('current_publication_proof')):
             current_status = ""
         prior_pages = w.get("historical_page_observations", [])
         prior_page_status = ""

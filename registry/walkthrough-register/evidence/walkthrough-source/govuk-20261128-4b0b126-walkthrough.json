@@ -1,0 +1,27 @@
+{
+  "schema": "govuk-okf-source-question.v1",
+  "id": "new-child-cross-route-parental-leave",
+  "title": "Parental leave across two GOV.UK browse paths",
+  "question": "In this frozen demonstrator, which parental-leave item is listed under both pregnancy and birth and financial help for children? Which page is linked to it, who is shown as publisher, which organisations are associated with it, and can this snapshot establish a family's current entitlement or pay?",
+  "primary_route": "dataset/1de204a4-466c-4641-8b93-7c8e6b60ee39-en",
+  "primary_memberships": [
+    "mainstream-browse:childcare-parenting/financial-help-children",
+    "mainstream-browse:childcare-parenting/pregnancy-birth"
+  ],
+  "related_route": "dataset/dc68775c-3df8-4930-ad22-bde7bfbb3b61-en",
+  "publisher_route": "publisher/government-digital-service",
+  "associated_organisation_routes": [
+    "publisher/department-for-business-and-trade",
+    "publisher/department-for-business-energy-and-industrial-strategy"
+  ],
+  "negative_control_route": "dataset/6e2a4012-2448-47fd-b7ec-a47396e4b114-en",
+  "negative_control_memberships": [
+    "mainstream-browse:childcare-parenting/childcare",
+    "mainstream-browse:childcare-parenting/financial-help-children"
+  ],
+  "limits": [
+    "The record is from snapshot NEW-CHILD-20260715, retrieved on 15 July 2026; live GOV.UK may have changed.",
+    "The source metadata does not establish current eligibility or payment amounts.",
+    "The associated organisation records are retained metadata links and do not establish present responsibility."
+  ]
+}

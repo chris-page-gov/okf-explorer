@@ -31,7 +31,7 @@ conversation has been tested for this directory.
 | DWP combined guidance and learning | 0.2 | [Website](https://chris-page-gov.github.io/okf-dwp/) | [Read descriptor](https://raw.githubusercontent.com/chris-page-gov/okf-dwp/3d45b47763c204b1264b5d1d7897d583361f25bd/combined/okf-explorer.json) | Descriptor uses GitHub |
 | Explore Local Statistics API | 0.3 | [Website](https://chris-page-gov.github.io/okf-els-api/) | [Read descriptor](https://chris-page-gov.github.io/okf-els-api/okf-explorer.json) | [Pinned raw descriptor](https://raw.githubusercontent.com/chris-page-gov/okf-els-api/f2e7b756b09558f2c94e85cb83bbb44c6c60be94/bundle/okf-explorer.json) |
 | OKF Explorer reference corpus | 0.3 | [Website](https://chris-page-gov.github.io/okf-explorer/) | [Read descriptor](https://chris-page-gov.github.io/okf-explorer/okf-bundle.json) | See access limit below |
-| GOV.UK content | 0.2 | [Website](https://chris-page-gov.github.io/okf-govuk-content/) | [Read descriptor](https://chris-page-gov.github.io/okf-govuk-content/okf-explorer.json) | [Pinned raw descriptor](https://raw.githubusercontent.com/chris-page-gov/okf-govuk-content/ef5575d2dccdab7999fc8fdc3cbdd2e47b4f6247/bundle/okf-explorer.json) |
+| GOV.UK content | 0.3 | [Website](https://chris-page-gov.github.io/okf-govuk-content/) | [Read descriptor](https://chris-page-gov.github.io/okf-govuk-content/okf-explorer.json) | [Pinned raw descriptor](https://raw.githubusercontent.com/chris-page-gov/okf-govuk-content/4b0b126d331014965c0ed3b587be2fef5ce2fb54/bundle/okf-explorer.json) |
 | Coventry and Warwickshire heritage | 0.3 | [Website](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/) | [Read descriptor](https://chris-page-gov.github.io/okf-heritage-coventry-warwickshire/okf-explorer.json) | [Pinned raw descriptor](https://raw.githubusercontent.com/chris-page-gov/okf-heritage-coventry-warwickshire/b948fc3611c2f76f920d4f78dfd24ffd521f4b3b/site/okf-explorer.json) |
 | Hansard parliamentary proceedings | 0.3 | [Website](https://chris-page-gov.github.io/okf-hansard/) | [Read descriptor](https://chris-page-gov.github.io/okf-hansard/graph/okf-explorer.json) | [Pinned raw descriptor](https://raw.githubusercontent.com/chris-page-gov/okf-hansard/89ff017bab2a37df222e58ef6da94a32688144f3/graph/okf-explorer.json) |
 | HM Land Registry public metadata | 0.2 | [Website](https://chris-page-gov.github.io/okf-LandRegistry/) | [Read descriptor](https://chris-page-gov.github.io/okf-LandRegistry/okf-explorer.json) | [Pinned raw descriptor](https://raw.githubusercontent.com/chris-page-gov/okf-LandRegistry/4580c9e4afef10a102b852b01083ee5cb7d34018/bundle/okf-explorer.json) |
@@ -85,6 +85,10 @@ Follow an assertion from its source to its target and evidence. Resolve source a
 Metadata collection with a bounded demonstrator. A recorded page is not the complete current GOV.UK guidance.
 
 [Semantic descriptor](https://chris-page-gov.github.io/okf-govuk-content/okf-bundle.yamlld) · [Source repository](https://github.com/chris-page-gov/okf-govuk-content)
+
+[Source-linked question walkthrough](https://chris-page-gov.github.io/okf-govuk-content/walkthroughs/new-child-metadata.html)
+
+Checked on 28 November 2026. The bounded preview’s 1,103 served assets matched the exact protected merge. The walkthrough fit at 320 and 390 pixels and opened its intended Reader record on mobile and desktop.
 
 ### Coventry and Warwickshire heritage
 

@@ -213,13 +213,13 @@ Current page: not rechecked.
 
 In this frozen demonstrator, which parental-leave item is listed under both pregnancy and birth and financial help for children? Which page is linked to it, who is shown as publisher, which organisations are associated with it, and can this snapshot establish a family's current entitlement or pay?
 
-**Version:** 0.3; declared bundle version/edition 0.1.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:05:00Z: [bundle descriptor](https://chris-page-gov.github.io/okf-govuk-content/okf-explorer.json).
+**Version:** 0.3; declared bundle version/edition 0.1.0; shared Reader 0.9.2. Exact descriptor returned HTTP 200 on 2026-11-28T06:27:10.020Z: [bundle descriptor](https://chris-page-gov.github.io/okf-govuk-content/okf-explorer.json).
 
-[Guide](https://chris-page-gov.github.io/okf-govuk-content/walkthroughs/new-child-metadata.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-govuk-content/blob/12a1b4e66e7a2526115f97e76b2811490eaefb6a/bundle/walkthroughs/new-child-metadata.html)
+[Guide](https://chris-page-gov.github.io/okf-govuk-content/walkthroughs/new-child-metadata.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-govuk-content/blob/4b0b126d331014965c0ed3b587be2fef5ce2fb54/questions/new-child-metadata-walkthrough.json)
 
-Earlier evidence: passed (2026-11-24T12:41:11.332Z); bounded public desktop/mobile guide check passed; demonstrator only, current page not rechecked
+Earlier evidence: passed (2026-11-24T12:41:11.332Z); Bounded preview of frozen metadata. Exact public assets and the desktop and mobile guide-to-Reader journeys passed.
 
-Current page: not rechecked.
+ Current browser proof: passed (2026-11-28T06:27:10.020Z); desktop and mobile journeys for this guide using Reader 0.9.2.
 
 ### xGov: core notifications taxonomy
 
