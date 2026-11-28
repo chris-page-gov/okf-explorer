@@ -835,6 +835,9 @@ def load(root: Path = ROOT) -> dict:
                     or current_summary.get("expected_reader_commit") != source["shared_reader_release"].get("source_commit")
                     or row.get("reader_version") != source["shared_reader_release"].get("version")):
                 raise ValueError("current public walkthrough proof differs from its current source or descriptor")
+            if (current_summary.get("guide_sha256") != row.get("guide_sha256")
+                    or not SHA256.fullmatch(row.get("guide_sha256", ""))):
+                raise ValueError("current public walkthrough proof guide digest differs from retained guide")
             descriptor_path = row.get("version_evidence_path", "")
             descriptor_bytes = (root / descriptor_path).read_bytes()
             if sha256(descriptor_bytes) != row.get("version_evidence_sha256"):

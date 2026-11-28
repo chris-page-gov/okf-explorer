@@ -4180,7 +4180,7 @@
         "walkthrough_id": "hansard-november-core",
         "expected_reader_commit": "acf23958aa1ce11ec52c41313649b20d24f17609",
         "receipt_summary_path": "registry/walkthrough-register/evidence/retained-receipts/hansard-november-core-3bbb4b4-browser-20261128.json",
-        "receipt_summary_sha256": "d7d8b3167f9611b79c8910e3544c27f9b464d0c3b094dd9a8c54dff8fa54ec20"
+        "receipt_summary_sha256": "d2b7984046be60d12c7c5ef9e2860e51009f80a6139b7faacd64288876e2f7b8"
       },
       "supporting_receipts": [
         {
@@ -4364,7 +4364,7 @@
         "walkthrough_id": "hansard-november-full",
         "expected_reader_commit": "acf23958aa1ce11ec52c41313649b20d24f17609",
         "receipt_summary_path": "registry/walkthrough-register/evidence/retained-receipts/hansard-november-full-3bbb4b4-browser-20261128.json",
-        "receipt_summary_sha256": "9400b94edab0a5c64ce5a3339af696778967ae527583bd2fb82441db47fecce2"
+        "receipt_summary_sha256": "1fea348600051f35925e0344b110193c42d361e7504c143eefc8983fdfdb0e2e"
       },
       "supporting_receipts": [
         {
@@ -4575,20 +4575,20 @@
       "title": "UK Government APIs: What can the OKF core show about GOV.UK Notify?",
       "question": "Can an OKF core 0.3 reader establish that the GOV.UK Notify endpoint is currently reachable and licensed for my integration? Trace the authored provider link, dated source row and access and licence fields, then identify what still needs checking.",
       "guide_url": "https://chris-page-gov.github.io/okf-uk-government-apis/core-walkthrough.html",
-      "guide_status": "four desktop/mobile guide journeys passed at recorded release; current page not rechecked",
+      "guide_status": "The live guide followed its source link to the intended Reader record on desktop and mobile.",
       "current_page_checked": false,
       "source_url_checked": false,
       "okf_core_version": "0.3",
       "producer_product_version": "0.5.0",
-      "reader_version": null,
-      "current_source_commit": "c33792abdbc16a6fb4c386a5ad6f10c79e0fbce2",
-      "source_observed_on": "2026-11-25",
+      "reader_version": "0.9.2",
+      "current_source_commit": "93cec5117b8042772c3e191dfc4efe506975c328",
+      "source_observed_on": "2026-11-28",
       "source_path": "walkthroughs/core-catalogue.json",
       "source_evidence_path": "registry/walkthrough-register/evidence/walkthrough-source/okf-uk-government-apis-7b9312b3afa3d387-core-catalogue.json",
       "source_sha256": "7b9312b3afa3d387a2548896a820764f5f61ba9705b235ac2a8c2c280b21794d",
       "source_git_blob_sha1": "be29de34e5b2bb2db58b0edf03b50bac14246563",
-      "source_url": "https://github.com/chris-page-gov/okf-uk-government-apis/blob/c33792abdbc16a6fb4c386a5ad6f10c79e0fbce2/walkthroughs/core-catalogue.json",
-      "source_revision_note": "Clean local source checkout at the recorded commit; public URL availability and exact release relation are not checked.",
+      "source_url": "https://github.com/chris-page-gov/okf-uk-government-apis/blob/93cec5117b8042772c3e191dfc4efe506975c328/walkthroughs/core-catalogue.json",
+      "source_revision_note": "The authored question and generated guide are pinned to the exact Pages merge.",
       "retained_proof": {
         "id": "api-walkthrough-browser-final.json",
         "status": "passed",
@@ -4607,7 +4607,7 @@
       "version_evidence_path": "registry/walkthrough-register/evidence/bundle-descriptors/apis-core-20261125.json",
       "version_evidence_sha256": "414212c16b796d42dbbf13d5a8d877d431d668ca4908cd4143f4db26fd5c0758",
       "descriptor_url": "https://chris-page-gov.github.io/okf-uk-government-apis/okf-core-explorer.json",
-      "descriptor_observed_at": "2026-11-25T10:05:00Z",
+      "descriptor_observed_at": "2026-11-28T06:50:24.544Z",
       "descriptor_http_status": 200,
       "descriptor_bytes": 13466715,
       "descriptor_schema": "okf-explorer-bundle.v0",
@@ -4615,6 +4615,18 @@
       "descriptor_identity": "https://chris-page-gov.github.io/okf-uk-government-apis/okf-core-explorer.json",
       "version_observation_note": "Anonymous HTTP 200; exact descriptor bytes captured from this walkthrough guide’s declared bundle URL. Release acceptance remains a separate evidence item.",
       "bundle_identity": "https://chris-page-gov.github.io/okf-uk-government-apis/okf-core-explorer.json",
+      "current_publication_proof": {
+        "id": "apis-core-20261128-93cec51-pages",
+        "sha256": "b62f7adf6564fa36238d8fb9591c3fb3aebd18492b3eaca805fdbd1eba258488",
+        "status": "passed",
+        "observed_at": "2026-11-28T06:50:24.544Z",
+        "producer_product_version": "0.5.0",
+        "source_commit": "93cec5117b8042772c3e191dfc4efe506975c328",
+        "walkthrough_id": "apis-core-guide-to-reader",
+        "expected_reader_commit": "acf23958aa1ce11ec52c41313649b20d24f17609",
+        "receipt_summary_path": "registry/walkthrough-register/evidence/retained-receipts/apis-core-20261128-93cec51-pages.json",
+        "receipt_summary_sha256": "990e17b6fecd1b61457239254b7b6c73f76cedf514219c80a28e426c7a80015c"
+      },
       "historical_root_core_version_fields": [
         {
           "value": "0.2",
@@ -4633,20 +4645,20 @@
       "title": "UK Government APIs: Can we safely choose a Notify catalogue entry?",
       "question": "The catalogue has several similarly named notification entries. Which frozen record reports a public-facing endpoint, what do the source-specific licence and access fields say, and what evidence is still needed before reuse or integration?",
       "guide_url": "https://chris-page-gov.github.io/okf-uk-government-apis/notification-catalogue-walkthrough.html",
-      "guide_status": "four desktop/mobile guide journeys passed at recorded release; current page not rechecked",
+      "guide_status": "The live guide followed its source link to the intended Reader record on desktop and mobile.",
       "current_page_checked": false,
       "source_url_checked": false,
       "okf_core_version": "0.3",
       "producer_product_version": "0.5.0",
-      "reader_version": null,
-      "current_source_commit": "c33792abdbc16a6fb4c386a5ad6f10c79e0fbce2",
-      "source_observed_on": "2026-11-25",
+      "reader_version": "0.9.2",
+      "current_source_commit": "93cec5117b8042772c3e191dfc4efe506975c328",
+      "source_observed_on": "2026-11-28",
       "source_path": "walkthroughs/notification-catalogue.json",
       "source_evidence_path": "registry/walkthrough-register/evidence/walkthrough-source/okf-uk-government-apis-26e972049d8e7299-notification-catalogue.json",
       "source_sha256": "26e972049d8e729909b455bd35a1d9b2266d4bc0dd9e3828219a668230ff2d2d",
       "source_git_blob_sha1": "188d2cc45c2f6cbd3c341c3a7a286ad05f159647",
-      "source_url": "https://github.com/chris-page-gov/okf-uk-government-apis/blob/c33792abdbc16a6fb4c386a5ad6f10c79e0fbce2/walkthroughs/notification-catalogue.json",
-      "source_revision_note": "Clean local source checkout at the recorded commit; public URL availability and exact release relation are not checked.",
+      "source_url": "https://github.com/chris-page-gov/okf-uk-government-apis/blob/93cec5117b8042772c3e191dfc4efe506975c328/walkthroughs/notification-catalogue.json",
+      "source_revision_note": "The authored question and generated guide are pinned to the exact Pages merge.",
       "retained_proof": {
         "id": "api-walkthrough-browser-final.json",
         "status": "passed",
@@ -4658,14 +4670,14 @@
         "receipt_summary_sha256": "517595d9bf4752f8f7e9d0f18a18fe0f8e23e8eec770df93f3820c742cdb07a6"
       },
       "guide_source_path": "bundle/notification-catalogue-walkthrough.html",
-      "guide_evidence_path": "registry/walkthrough-register/evidence/walkthrough-guides/okf-uk-government-apis-ce597b23df3da442-notification-catalogue-walkthrough.html",
-      "guide_sha256": "ce597b23df3da442f92d00b0847ee95c22b6e5dbae876be6ecdc8ed2c0fa3d90",
-      "guide_git_blob_sha1": "d92a026bcfc03f3b4f0250e6c329d59f72b2fc33",
+      "guide_evidence_path": "registry/walkthrough-register/evidence/walkthrough-guides/apis-metadata-20261128-93cec51.html",
+      "guide_sha256": "bb7d03939564b2119d49e4c8bc714dc7f3b6dd0b987a92ab1006ce82dea628fe",
+      "guide_git_blob_sha1": "aca34cd5d250216b9f038f7c8a87860445b24472",
       "version_scope": "bundle",
       "version_evidence_path": "registry/walkthrough-register/evidence/bundle-descriptors/apis-metadata-20261125.json",
       "version_evidence_sha256": "1d2e2c4c6f3944811a32c5fe405cd1403690e4db8401b13d6f093e0a558f6c30",
       "descriptor_url": "https://chris-page-gov.github.io/okf-uk-government-apis/okf-explorer.json",
-      "descriptor_observed_at": "2026-11-25T10:05:00Z",
+      "descriptor_observed_at": "2026-11-28T06:50:24.544Z",
       "descriptor_http_status": 200,
       "descriptor_bytes": 9120,
       "descriptor_schema": "okf-explorer-large-corpus.v1",
@@ -4673,6 +4685,18 @@
       "descriptor_identity": "https://chris-page-gov.github.io/okf-uk-government-apis/okf-explorer.json",
       "version_observation_note": "Anonymous HTTP 200; exact descriptor bytes captured from this walkthrough guide’s declared bundle URL. Release acceptance remains a separate evidence item.",
       "bundle_identity": "https://chris-page-gov.github.io/okf-uk-government-apis/okf-explorer.json",
+      "current_publication_proof": {
+        "id": "apis-metadata-20261128-93cec51-pages",
+        "sha256": "b62f7adf6564fa36238d8fb9591c3fb3aebd18492b3eaca805fdbd1eba258488",
+        "status": "passed",
+        "observed_at": "2026-11-28T06:50:24.544Z",
+        "producer_product_version": "0.5.0",
+        "source_commit": "93cec5117b8042772c3e191dfc4efe506975c328",
+        "walkthrough_id": "apis-metadata-guide-to-reader",
+        "expected_reader_commit": "acf23958aa1ce11ec52c41313649b20d24f17609",
+        "receipt_summary_path": "registry/walkthrough-register/evidence/retained-receipts/apis-metadata-20261128-93cec51-pages.json",
+        "receipt_summary_sha256": "670613ad170b3348625a035ea6009c24ac7e637e146ae9d8e03f0d09ec939ae6"
+      },
       "historical_root_core_version_fields": [
         {
           "value": "0.2",
@@ -4741,7 +4765,7 @@
         "walkthrough_id": "govuk-content-parental-leave",
         "expected_reader_commit": "acf23958aa1ce11ec52c41313649b20d24f17609",
         "receipt_summary_path": "registry/walkthrough-register/evidence/retained-receipts/govuk-20261128-4b0b126-public-preview.json",
-        "receipt_summary_sha256": "7c34405c03f82e5f0d21be9411d7a03aad17516c1332c7e868da89f4bb02a9e0"
+        "receipt_summary_sha256": "ce6956ba6fc6d80307a2d1a6c695103a4823ca7e94b9eddcec0ed8364d1bf916"
       },
       "historical_root_core_version_fields": [
         {

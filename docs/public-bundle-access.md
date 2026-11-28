@@ -144,7 +144,7 @@ Discovery metadata; endpoint access, execution, credentials and record-level rig
 
 [Semantic descriptor](https://chris-page-gov.github.io/okf-uk-government-apis/okf-bundle.yamlld) · [Source repository](https://github.com/chris-page-gov/okf-uk-government-apis)
 
-Checked on 28 November 2026. Public descriptor declares Core 0.3 and bundle version 0.5.0. Its bytes matched the exact pinned GitHub fallback.
+Checked on 28 November 2026. The Core 0.3 descriptor matched the pinned GitHub fallback. Both Notify guides opened their intended records in Reader 0.9.2 on desktop and at phone width.
 
 ### UK legislation
 

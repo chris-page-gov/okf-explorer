@@ -188,7 +188,7 @@
       "equivalent_raw_descriptor": "https://raw.githubusercontent.com/chris-page-gov/okf-uk-government-apis/d3d84b218f843143a3f0ef50a7bd0f2301823457/bundle/okf-explorer.json",
       "raw_descriptor_sha256": "1d2e2c4c6f3944811a32c5fe405cd1403690e4db8401b13d6f093e0a558f6c30",
       "observed_on": "2026-11-28",
-      "verification": "Public descriptor declares Core 0.3 and bundle version 0.5.0. Its bytes matched the exact pinned GitHub fallback."
+      "verification": "The Core 0.3 descriptor matched the pinned GitHub fallback. Both Notify guides opened their intended records in Reader 0.9.2 on desktop and at phone width."
     },
     {
       "title": "UK legislation",

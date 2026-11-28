@@ -1,0 +1,45 @@
+{
+  "schema": "okf-walkthrough-retained-receipt-summary.v1",
+  "source_receipt_id": "apis-core-20261128-93cec51-pages",
+  "source_receipt_sha256": "b62f7adf6564fa36238d8fb9591c3fb3aebd18492b3eaca805fdbd1eba258488",
+  "status": "passed",
+  "date": "2026-11-28T06:50:24.544Z",
+  "producer_product_version": "0.5.0",
+  "source_commit": "93cec5117b8042772c3e191dfc4efe506975c328",
+  "walkthrough_id": "apis-core-guide-to-reader",
+  "expected_reader_commit": "acf23958aa1ce11ec52c41313649b20d24f17609",
+  "okf_core_version": "0.3",
+  "bundle_identity": "https://chris-page-gov.github.io/okf-uk-government-apis/okf-core-explorer.json",
+  "descriptor_sha256": "414212c16b796d42dbbf13d5a8d877d431d668ca4908cd4143f4db26fd5c0758",
+  "cases": [
+    {
+      "viewport": "desktop",
+      "question": "Can an OKF core 0.3 reader establish that the GOV.UK Notify endpoint is currently reachable and licensed for my integration? Trace the authored provider link, dated source row and access and licence fields, then identify what still needs checking.",
+      "descriptor_sha256": "414212c16b796d42dbbf13d5a8d877d431d668ca4908cd4143f4db26fd5c0758",
+      "guide_link_followed": true,
+      "wcag_violations": 0,
+      "horizontal_overflow": false,
+      "expected_identity": {
+        "schema": "okf-explorer-bundle.v0",
+        "id": "https://chris-page-gov.github.io/okf-uk-government-apis/okf-core-explorer.json",
+        "version": "0.5.0",
+        "snapshot": "2026-07-16T00:00:00Z"
+      }
+    },
+    {
+      "viewport": "mobile",
+      "question": "Can an OKF core 0.3 reader establish that the GOV.UK Notify endpoint is currently reachable and licensed for my integration? Trace the authored provider link, dated source row and access and licence fields, then identify what still needs checking.",
+      "descriptor_sha256": "414212c16b796d42dbbf13d5a8d877d431d668ca4908cd4143f4db26fd5c0758",
+      "guide_link_followed": true,
+      "wcag_violations": 0,
+      "horizontal_overflow": false,
+      "expected_identity": {
+        "schema": "okf-explorer-bundle.v0",
+        "id": "https://chris-page-gov.github.io/okf-uk-government-apis/okf-core-explorer.json",
+        "version": "0.5.0",
+        "snapshot": "2026-07-16T00:00:00Z"
+      }
+    }
+  ],
+  "guide_sha256": "7746cd2b8c9a946c0b74ff3ee5d8d29c53795508a9cd1206c582d72eda1d2330"
+}

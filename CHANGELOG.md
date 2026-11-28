@@ -11,6 +11,9 @@
   walkthrough register's dated observations.
 - Refresh the GOV.UK question source and guide after verifying the corrected
   bounded preview, including 1,103 served assets and its phone-width reflow.
+- Record both UK Government APIs walkthroughs at the verified Pages revision.
+  Bind current browser receipts to the exact guide bytes as well as the
+  Reader and bundle identities.
 - Repeat owner repository and Markdown index discovery. Publish the dated
   public-only candidate catalogue and keep the earlier catalogue snapshots.
 

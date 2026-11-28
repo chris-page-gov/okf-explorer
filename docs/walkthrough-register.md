@@ -189,25 +189,25 @@ Current page: not rechecked.
 
 Can an OKF core 0.3 reader establish that the GOV.UK Notify endpoint is currently reachable and licensed for my integration? Trace the authored provider link, dated source row and access and licence fields, then identify what still needs checking.
 
-**Version:** 0.3; declared bundle version/edition 0.5.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:05:00Z: [bundle descriptor](https://chris-page-gov.github.io/okf-uk-government-apis/okf-core-explorer.json).
+**Version:** 0.3; declared bundle version/edition 0.5.0; shared Reader 0.9.2. Exact descriptor returned HTTP 200 on 2026-11-28T06:50:24.544Z: [bundle descriptor](https://chris-page-gov.github.io/okf-uk-government-apis/okf-core-explorer.json).
 
-[Guide](https://chris-page-gov.github.io/okf-uk-government-apis/core-walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-uk-government-apis/blob/c33792abdbc16a6fb4c386a5ad6f10c79e0fbce2/walkthroughs/core-catalogue.json)
+[Guide](https://chris-page-gov.github.io/okf-uk-government-apis/core-walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-uk-government-apis/blob/93cec5117b8042772c3e191dfc4efe506975c328/walkthroughs/core-catalogue.json)
 
-Earlier evidence: passed (2026-11-24T08:27:44.808Z); four desktop/mobile guide journeys passed at recorded release
+Earlier evidence: passed (2026-11-24T08:27:44.808Z); The live guide followed its source link to the intended Reader record on desktop and mobile.
 
-Current page: not rechecked.
+ Current browser proof: passed (2026-11-28T06:50:24.544Z); desktop and mobile journeys for this guide using Reader 0.9.2.
 
 ### UK Government APIs: Can we safely choose a Notify catalogue entry?
 
 The catalogue has several similarly named notification entries. Which frozen record reports a public-facing endpoint, what do the source-specific licence and access fields say, and what evidence is still needed before reuse or integration?
 
-**Version:** 0.3; declared bundle version/edition 0.5.0; shared Reader not recorded. Exact descriptor returned HTTP 200 on 2026-11-25T10:05:00Z: [bundle descriptor](https://chris-page-gov.github.io/okf-uk-government-apis/okf-explorer.json).
+**Version:** 0.3; declared bundle version/edition 0.5.0; shared Reader 0.9.2. Exact descriptor returned HTTP 200 on 2026-11-28T06:50:24.544Z: [bundle descriptor](https://chris-page-gov.github.io/okf-uk-government-apis/okf-explorer.json).
 
-[Guide](https://chris-page-gov.github.io/okf-uk-government-apis/notification-catalogue-walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-uk-government-apis/blob/c33792abdbc16a6fb4c386a5ad6f10c79e0fbce2/walkthroughs/notification-catalogue.json)
+[Guide](https://chris-page-gov.github.io/okf-uk-government-apis/notification-catalogue-walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-uk-government-apis/blob/93cec5117b8042772c3e191dfc4efe506975c328/walkthroughs/notification-catalogue.json)
 
-Earlier evidence: passed (2026-11-24T08:27:44.808Z); four desktop/mobile guide journeys passed at recorded release
+Earlier evidence: passed (2026-11-24T08:27:44.808Z); The live guide followed its source link to the intended Reader record on desktop and mobile.
 
-Current page: not rechecked.
+ Current browser proof: passed (2026-11-28T06:50:24.544Z); desktop and mobile journeys for this guide using Reader 0.9.2.
 
 ### GOV.UK content: parental leave across browse paths
 
