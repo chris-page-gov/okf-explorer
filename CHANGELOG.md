@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased — UK Living Core 0.3 public review preview
+
+- Keep the existing Core 0.2 descriptor and frozen publication as the default
+  directory entry. Add the separately authorised Core 0.3 preview descriptor,
+  semantic route and public-only read-back evidence without claiming profile
+  conformance or release-grade acceptance.
+- Record the merged producer commit and passed manual Pages deployment. The
+  desktop and phone-width Reader journeys reached the Child Benefit record and
+  its source relationship; the receipt retains the incidental favicon 404.
+
 ## Unreleased — dated catalogue and Hansard observations
 
 - Refresh the November Hansard guide and descriptor observations from the
@@ -29,7 +39,7 @@
 
 - Add a reusable read-only harness and versioned Codex Security compatibility
   profile to compare pinned producer schemas and retained output with declared
-  consumer requirements before costly release validation. Check artifact
+  consumer requirements before costly release validation. Check artefact
   digests and required seal/binding fields; report format compatibility
   separately from release readiness, which remains not assessed.
 - Extend the publication methodology, standards register and new-repository

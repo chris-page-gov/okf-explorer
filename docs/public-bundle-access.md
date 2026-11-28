@@ -39,7 +39,7 @@ conversation has been tested for this directory.
 | UK planning and housing data | 0.3 | [Website](https://chris-page-gov.github.io/okf-planning/) | [Read descriptor](https://chris-page-gov.github.io/okf-planning/okf-explorer.json) | [Pinned raw descriptor](https://raw.githubusercontent.com/chris-page-gov/okf-planning/15c87a9ea76ec2e8029ce70c9c0d5f84a8ffbb2f/bundle/okf-explorer.json) |
 | UK Government APIs | 0.3 | [Website](https://chris-page-gov.github.io/okf-uk-government-apis/) | [Read descriptor](https://chris-page-gov.github.io/okf-uk-government-apis/okf-explorer.json) | [Pinned raw descriptor](https://raw.githubusercontent.com/chris-page-gov/okf-uk-government-apis/d3d84b218f843143a3f0ef50a7bd0f2301823457/bundle/okf-explorer.json) |
 | UK legislation | 0.3 | [Website](https://chris-page-gov.github.io/okf-uk-legislation/) | [Read descriptor](https://chris-page-gov.github.io/okf-uk-legislation/okf-explorer.json) | [Pinned raw descriptor](https://raw.githubusercontent.com/chris-page-gov/okf-uk-legislation/b5d9cd7a27d8bcf6b0fa971791d893e6f329a3e8/bundle/okf-explorer.json) |
-| A Life in the UK | 0.2 | [Website](https://chris-page-gov.github.io/okf-uk-living/) | [Read descriptor](https://chris-page-gov.github.io/okf-uk-living/okf-explorer.json) | See access limit below |
+| A Life in the UK | 0.2 | [Website](https://chris-page-gov.github.io/okf-uk-living/) | [Read descriptor](https://chris-page-gov.github.io/okf-uk-living/okf-explorer.json); [Core 0.3 preview page](https://chris-page-gov.github.io/okf-uk-living/core-0.3-preview/); [descriptor](https://chris-page-gov.github.io/okf-uk-living/okf-explorer-core-0.3.json) | See access limit below |
 
 ## Access limits and semantic entrypoints
 
@@ -160,9 +160,13 @@ Checked on 28 November 2026. Public descriptor declares Core 0.3 and bundle vers
 
 ### A Life in the UK
 
-Population-complete preview; specialist review is incomplete. Semantic files use generated/semantic/life-course-corpus.*. The current GitHub descriptor differs from Pages, and the publication-data commit also differs; neither is listed as an equivalent fallback.
+Frozen Core 0.2 baseline. The GitHub source descriptor and publication-data commit are not established as equivalent fallbacks. A separate Core 0.3 public review preview is listed below; the producer remains in migration, Bundle Wiki v2 is experimental, and specialist review and release-grade acceptance are not claimed.
 
 [Semantic descriptor](https://chris-page-gov.github.io/okf-uk-living/generated/semantic/life-course-corpus.yamlld) · [Source repository](https://github.com/chris-page-gov/okf-uk-living)
+
+**Separate Core 0.3 public review preview.** The producer remains in migration, the Bundle Wiki v2 implementation profile is experimental, and no profile conformance or release-grade claim is made.
+[Preview page](https://chris-page-gov.github.io/okf-uk-living/core-0.3-preview/) · [Core 0.3 descriptor](https://chris-page-gov.github.io/okf-uk-living/okf-explorer-core-0.3.json) · [Semantic descriptor](https://chris-page-gov.github.io/okf-uk-living/core-0.3-preview/generated/semantic/life-course-corpus.yamlld) · [Bundle Wiki v2 profile](https://chris-page-gov.github.io/okf-explorer/profile/bundle-wiki/v2/) · [Public live-readback evidence](https://chris-page-gov.github.io/okf-explorer/docs/evidence/uk-living-core03-live-readback-2026-11-28.json)
+Checked on 28 November 2026. Merge `c1a37d95e7a1ce49198439e8213b785c2a78ee30`; deployment run `46142919632` passed. The exact Pages read-back matched the approved base manifest, Core 0.2 descriptor, Core 0.3 descriptor and semantic JSON-LD. The Child Benefit record and its 'supported by source' relationship opened at desktop and phone widths. The receipt notes an incidental favicon 404; no native AI app or specialist acceptance was tested.
 
 ## Use with ChatGPT Voice
 
