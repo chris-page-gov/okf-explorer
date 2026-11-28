@@ -27,7 +27,8 @@ Verification varies by bundle; read each entry's dated record. Voice access is n
 - [ONS data discovery source-linked walkthrough](https://chris-page-gov.github.io/okf-ons/walkthrough.html): Question, qualified answer, evidence and negative controls.
 - [UK planning and housing data](https://chris-page-gov.github.io/okf-planning/okf-explorer.json): Draft demonstrator. Preserve record-level source, jurisdiction and rights; no planning or housing decision is implied.
 - [UK Government APIs](https://chris-page-gov.github.io/okf-uk-government-apis/okf-explorer.json): Discovery metadata; endpoint access, execution, credentials and record-level rights remain separate.
-- [UK legislation](https://chris-page-gov.github.io/okf-uk-legislation/okf-explorer.json): Published v0.4.0. Model-assisted discovery is separate from official legal text; Whole-Law has its own child descriptors. This is not legal advice.
+- [UK legislation](https://chris-page-gov.github.io/okf-uk-legislation/okf-explorer.json): Published v0.5.0. Model-assisted discovery is separate from official legal text. The Whole-Law walkthrough uses its own federation descriptor.
+- [UK legislation source-linked walkthrough](https://chris-page-gov.github.io/okf-uk-legislation/walkthroughs/legislation/): Question, qualified answer, evidence and negative controls.
 - [A Life in the UK](https://chris-page-gov.github.io/okf-uk-living/okf-explorer.json): Population-complete preview; specialist review is incomplete. Semantic files use generated/semantic/life-course-corpus.*. The current GitHub descriptor differs from Pages, and the publication-data commit also differs; neither is listed as an equivalent fallback.
 
 ## Pinned graphs

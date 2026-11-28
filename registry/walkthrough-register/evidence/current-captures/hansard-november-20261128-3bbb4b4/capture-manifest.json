@@ -1,0 +1,98 @@
+{
+  "schema": "okf-hansard-targeted-public-http-capture.v1",
+  "receipt_id": "hansard-november-20261128-3bbb4b4",
+  "observed_at": "2026-11-28T06:10:38Z",
+  "publication": {
+    "pages_source": "gh-pages:/",
+    "pages_commit": "3bbb4b4733346409b309f6af6480106dd5961b84",
+    "pages_commit_message": "Publish November Hansard through 2026-11-26",
+    "pages_run": 46069456371,
+    "pages_run_event": "dynamic",
+    "pages_run_status": "success",
+    "pages_deployment": 8119526404,
+    "producer_main_commit": "b8d4f11ca9c7a58a5a9d7d8cdfe555843725a52",
+    "producer_ci_run": 46069193417,
+    "served_checksums_sha256": "00a82f37f6dc22f393f62c343fd7a367df7b38af8831c16667859d1fa9c3fdd2",
+    "public_access_directory_sha256": "a44c08991b1cccb519e4b310e0dbba23d5d532a24542dff8de1ad6a3e35d56b4"
+  },
+  "assets": [
+    {
+      "walkthrough_id": "hansard-november-core",
+      "edition": "november",
+      "path": "core-walkthrough.html",
+      "capture_path": "core-walkthrough.html",
+      "url": "https://chris-page-gov.github.io/okf-hansard/november/core-walkthrough.html",
+      "final_url": "https://chris-page-gov.github.io/okf-hansard/november/core-walkthrough.html",
+      "status": 200,
+      "sha256": "d683a270c4fa9f854a1e354608927a1141b88fa542b9717f80eac85926f973ab",
+      "bytes": 3329,
+      "served_checksum_match": true
+    },
+    {
+      "walkthrough_id": "hansard-november-core",
+      "edition": "november",
+      "path": "core-walkthrough.json",
+      "capture_path": "core-walkthrough.json",
+      "url": "https://chris-page-gov.github.io/okf-hansard/november/core-walkthrough.json",
+      "final_url": "https://chris-page-gov.github.io/okf-hansard/november/core-walkthrough.json",
+      "status": 200,
+      "sha256": "c73c1c0de15cdf8d292923beb3b6344e2635fa48a507f92c4806f6d94a98d91b",
+      "bytes": 2314,
+      "served_checksum_match": true
+    },
+    {
+      "walkthrough_id": "hansard-november-core",
+      "edition": "november",
+      "path": "okf-core.json",
+      "capture_path": "okf-core.json",
+      "url": "https://chris-page-gov.github.io/okf-hansard/november/okf-core.json",
+      "final_url": "https://chris-page-gov.github.io/okf-hansard/november/okf-core.json",
+      "status": 200,
+      "sha256": "bda8bfafbeab7f0bcbbaa464be70503e9c2e7d96e693c80a13bd4a2341fba497",
+      "bytes": 10108,
+      "served_checksum_match": true
+    },
+    {
+      "walkthrough_id": "hansard-november-full",
+      "edition": "november",
+      "path": "walkthrough.html",
+      "capture_path": "walkthrough.html",
+      "url": "https://chris-page-gov.github.io/okf-hansard/november/walkthrough.html",
+      "final_url": "https://chris-page-gov.github.io/okf-hansard/november/walkthrough.html",
+      "status": 200,
+      "sha256": "58dca7c5b64c4bd8bb26c8b8982492bdc2966bb8240647dcfb4729092a246058",
+      "bytes": 3547,
+      "served_checksum_match": true
+    },
+    {
+      "walkthrough_id": "hansard-november-full",
+      "edition": "november",
+      "path": "walkthrough.json",
+      "capture_path": "walkthrough.json",
+      "url": "https://chris-page-gov.github.io/okf-hansard/november/walkthrough.json",
+      "final_url": "https://chris-page-gov.github.io/okf-hansard/november/walkthrough.json",
+      "status": 200,
+      "sha256": "5ac428fa4d143e1b1cc37ed38249f1ffb6b5e13124fe223248fc82e6500973f5",
+      "bytes": 8169,
+      "served_checksum_match": true
+    },
+    {
+      "walkthrough_id": "hansard-november-full",
+      "edition": "november",
+      "path": "graph/okf-explorer.json",
+      "capture_path": "graph/okf-explorer.json",
+      "url": "https://chris-page-gov.github.io/okf-hansard/november/graph/okf-explorer.json",
+      "final_url": "https://chris-page-gov.github.io/okf-hansard/november/graph/okf-explorer.json",
+      "status": 200,
+      "sha256": "0d8cc07000c16c94f36f0180dde3c12d7e540d24ff1c541b733c8f3b939d6cc6",
+      "bytes": 2006,
+      "served_checksum_match": true
+    }
+  ],
+  "catalogues": {
+    "november": {
+      "path": "checksums.json",
+      "sha256": "00a82f37f6dc22f393f62c343fd7a367df7b38af8831c16667859d1fa9c3fdd2"
+    }
+  }
+}

@@ -4091,29 +4091,27 @@
       "guide_git_blob_sha1": "f66b0f73aa0894a1b41e0fc7e30e597262e27db4",
       "current_page_observation": {
         "http_status": 200,
-        "observed_at": "2026-11-25T11:52:18.116379+00:00",
-        "receipt_id": "hansard-stage6-targeted-http-20261125T115217Z",
-        "receipt_sha256": "754f4825da6e3e29764faaf45f431ebb47420ef72d551433efe1efa118f534ba",
-        "response_sha256": "5d1b2078739268685d1fd093f4f19ad53ffbd36093a8a979722603130a21debb",
-        "result": "Anonymous HTTP 200; exact guide, case JSON and descriptor bytes match the served November checksum catalogue. The separate current Stage6 desktop and mobile browser proof passed; full public asset verification is retained separately.",
-        "previous_acceptance_id": "hansard-four-guide-public-release.json",
-        "previous_acceptance_sha256": "227c8fc1d48f1881e6a7129a008600804bc736a2d4e086dbcdd3aef471ee9bb5",
-        "evidence_path": "registry/walkthrough-register/evidence/current-observations/hansard-stage6-20261125T115217Z.json",
-        "evidence_sha256": "4a52179ec0256bf6689a238a1bc7ff8e61dbf48a250347eb597919f2e29e33a4",
+        "observed_at": "2026-11-28T06:10:38Z",
+        "receipt_id": "hansard-november-20261128-3bbb4b4",
+        "receipt_sha256": "8456de86a69666ac8bf65dde9dc0ffa3e31bbabf19b22aadb404617b4b9bcb24",
+        "response_sha256": "d683a270c4fa9f854a1e354608927a1141b88fa542b9717f80eac85926f973ab",
+        "result": "Anonymous response matched the exact guide, case and descriptor in the served checksum catalogue for the November publication through 26 November 2026.",
+        "evidence_path": "registry/walkthrough-register/evidence/current-observations/hansard-november-20261128-3bbb4b4.json",
+        "evidence_sha256": "2c2f67472eb722f936faaae1a66359f44084b40baf587d624ea57206ab213ae6",
         "case_id": "hansard-november-core",
-        "capture_manifest_path": "registry/walkthrough-register/evidence/current-captures/hansard-stage6-targeted-http-20261125T115217Z/capture-manifest.json",
-        "capture_manifest_sha256": "754f4825da6e3e29764faaf45f431ebb47420ef72d551433efe1efa118f534ba",
-        "case_json_path": "registry/walkthrough-register/evidence/current-captures/hansard-stage6-targeted-http-20261125T115217Z/november/core-walkthrough.json",
-        "case_json_sha256": "4bb43ab32075000b660b7cb2e9b043b82b04746abc515c712fe2825c1efbb3c3",
-        "descriptor_capture_path": "registry/walkthrough-register/evidence/current-captures/hansard-stage6-targeted-http-20261125T115217Z/november/okf-core.json",
-        "descriptor_sha256": "d3725953c44357a10dd388a464e9c8f8e0a595b4de53f6eb95dfc0a5b3feb965",
-        "checksum_catalogue_sha256": "8de0054c2bf514d01be07747c991202b9363ba464ae2fbb21a532efcd5fd8ebb"
+        "capture_manifest_path": "registry/walkthrough-register/evidence/current-captures/hansard-november-20261128-3bbb4b4/capture-manifest.json",
+        "capture_manifest_sha256": "8456de86a69666ac8bf65dde9dc0ffa3e31bbabf19b22aadb404617b4b9bcb24",
+        "case_json_path": "registry/walkthrough-register/evidence/current-captures/hansard-november-20261128-3bbb4b4/core-walkthrough.json",
+        "case_json_sha256": "c73c1c0de15cdf8d292923beb3b6344e2635fa48a507f92c4806f6d94a98d91b",
+        "descriptor_capture_path": "registry/walkthrough-register/evidence/current-captures/hansard-november-20261128-3bbb4b4/okf-core.json",
+        "descriptor_sha256": "bda8bfafbeab7f0bcbbaa464be70503e9c2e7d96e693c80a13bd4a2341fba497",
+        "checksum_catalogue_sha256": "00a82f37f6dc22f393f62c343fd7a367df7b38af8831c16667859d1fa9c3fdd2"
       },
       "version_scope": "bundle",
       "descriptor_url": "https://chris-page-gov.github.io/okf-hansard/november/okf-core.json",
-      "descriptor_observed_at": "2026-11-25T11:52:18.116379+00:00",
+      "descriptor_observed_at": "2026-11-28T06:10:38Z",
       "descriptor_http_status": 200,
-      "version_observation_note": "Anonymous HTTP 200; exact descriptor bytes fetched from this guide's declared URL at 2026-11-25T11:52:18.116379+00:00. Core `okf_version` is 0.3; descriptor `version` 0.3.0 is recorded as the declared bundle edition, not inferred to be a software product version.",
+      "version_observation_note": "Current November descriptor captured from protected Pages deployment 8119526404; prior source and browser observations remain available.",
       "historical_page_observations": [
         {
           "http_status": 404,
@@ -4127,6 +4125,26 @@
           "evidence_path": "registry/walkthrough-register/evidence/current-observations/hansard-20261125.json",
           "evidence_sha256": "7b1a77a5b5596818df3ab5b5cd13e6d0b657cf2cdc06d5e9327f683e9ad87ac6",
           "case_id": "hansard-november-core"
+        },
+        {
+          "http_status": 200,
+          "observed_at": "2026-11-25T11:52:18.116379+00:00",
+          "receipt_id": "hansard-stage6-targeted-http-20261125T115217Z",
+          "receipt_sha256": "754f4825da6e3e29764faaf45f431ebb47420ef72d551433efe1efa118f534ba",
+          "response_sha256": "5d1b2078739268685d1fd093f4f19ad53ffbd36093a8a979722603130a21debb",
+          "result": "Anonymous HTTP 200; exact guide, case JSON and descriptor bytes match the served November checksum catalogue. The separate current Stage6 desktop and mobile browser proof passed; full public asset verification is retained separately.",
+          "previous_acceptance_id": "hansard-four-guide-public-release.json",
+          "previous_acceptance_sha256": "227c8fc1d48f1881e6a7129a008600804bc736a2d4e086dbcdd3aef471ee9bb5",
+          "evidence_path": "registry/walkthrough-register/evidence/current-observations/hansard-stage6-20261125T115217Z.json",
+          "evidence_sha256": "4a52179ec0256bf6689a238a1bc7ff8e61dbf48a250347eb597919f2e29e33a4",
+          "case_id": "hansard-november-core",
+          "capture_manifest_path": "registry/walkthrough-register/evidence/current-captures/hansard-stage6-targeted-http-20261125T115217Z/capture-manifest.json",
+          "capture_manifest_sha256": "754f4825da6e3e29764faaf45f431ebb47420ef72d551433efe1efa118f534ba",
+          "case_json_path": "registry/walkthrough-register/evidence/current-captures/hansard-stage6-targeted-http-20261125T115217Z/november/core-walkthrough.json",
+          "case_json_sha256": "4bb43ab32075000b660b7cb2e9b043b82b04746abc515c712fe2825c1efbb3c3",
+          "descriptor_capture_path": "registry/walkthrough-register/evidence/current-captures/hansard-stage6-targeted-http-20261125T115217Z/november/okf-core.json",
+          "descriptor_sha256": "d3725953c44357a10dd388a464e9c8f8e0a595b4de53f6eb95dfc0a5b3feb965",
+          "checksum_catalogue_sha256": "8de0054c2bf514d01be07747c991202b9363ba464ae2fbb21a532efcd5fd8ebb"
         }
       ],
       "historical_descriptor_observations": [
@@ -4143,26 +4161,26 @@
           "status_binding": "recorded HTTP status and response digest; response body not separately retained"
         }
       ],
-      "version_evidence_path": "registry/walkthrough-register/evidence/current-captures/hansard-stage6-targeted-http-20261125T115217Z/november/okf-core.json",
-      "version_evidence_sha256": "d3725953c44357a10dd388a464e9c8f8e0a595b4de53f6eb95dfc0a5b3feb965",
+      "version_evidence_path": "registry/walkthrough-register/evidence/current-captures/hansard-november-20261128-3bbb4b4/okf-core.json",
+      "version_evidence_sha256": "bda8bfafbeab7f0bcbbaa464be70503e9c2e7d96e693c80a13bd4a2341fba497",
       "descriptor_bytes": 10108,
       "descriptor_schema": "okf-explorer-bundle.v0",
       "descriptor_identity_field": "id",
       "descriptor_identity": "urn:okf:hansard:public-core:november-in-parliament",
       "bundle_identity": "urn:okf:hansard:public-core:november-in-parliament",
       "current_publication_proof": {
-        "id": "hansard-stage6-public-browser-receipt",
+        "id": "hansard-november-20261128-3bbb4b4-browser",
         "status": "passed",
-        "observed_at": "2026-11-25T11:45:44.287Z",
+        "observed_at": "2026-11-28T06:14:14.069Z",
         "producer_product_version": "0.3.0",
-        "sha256": "51796d439c08bb90ea27eb9f9c5b9e42e61a1ca0c643925dc6726a69265809c5",
-        "receipt_summary_path": "registry/walkthrough-register/evidence/retained-receipts/hansard-november-core-stage6-browser-20261125.json",
-        "receipt_summary_sha256": "fc9979cf7d685552e8f143bd85a091accef8ef9bd275d14aafd6885320d00818",
-        "scope": "Actual public November walkthrough browser journeys at desktop and mobile; no week browser check.",
+        "sha256": "69c448bed367f6e7ebb5101d36f4d20905e98e54bbd12165de00ffef6b8a6e42",
+        "scope": "Exact public November guides and frozen v0.9.2 Reader; Chrome at desktop and mobile widths.",
         "source_commit": "9c3c55c292216b995f7339068c05ae4b3e98d20c",
-        "pages_commit": "7e57fe40b024ad0c5f961474d753ce3d2d78bc42",
+        "pages_commit": "3bbb4b4733346409b309f6af6480106dd5961b84",
         "walkthrough_id": "hansard-november-core",
-        "expected_reader_commit": "acf23958aa1ce11ec52c41313649b20d24f17609"
+        "expected_reader_commit": "acf23958aa1ce11ec52c41313649b20d24f17609",
+        "receipt_summary_path": "registry/walkthrough-register/evidence/retained-receipts/hansard-november-core-3bbb4b4-browser-20261128.json",
+        "receipt_summary_sha256": "d7d8b3167f9611b79c8910e3544c27f9b464d0c3b094dd9a8c54dff8fa54ec20"
       },
       "supporting_receipts": [
         {
@@ -4195,6 +4213,22 @@
           "all_local_bytes_verified": true,
           "all_served_bytes_verified": true,
           "catalogue_unchanged_after_retrieval": true
+        }
+      ],
+      "historical_proofs": [
+        {
+          "id": "hansard-stage6-public-browser-receipt",
+          "status": "passed",
+          "observed_at": "2026-11-25T11:45:44.287Z",
+          "producer_product_version": "0.3.0",
+          "sha256": "51796d439c08bb90ea27eb9f9c5b9e42e61a1ca0c643925dc6726a69265809c5",
+          "receipt_summary_path": "registry/walkthrough-register/evidence/retained-receipts/hansard-november-core-stage6-browser-20261125.json",
+          "receipt_summary_sha256": "fc9979cf7d685552e8f143bd85a091accef8ef9bd275d14aafd6885320d00818",
+          "scope": "Actual public November walkthrough browser journeys at desktop and mobile; no week browser check.",
+          "source_commit": "9c3c55c292216b995f7339068c05ae4b3e98d20c",
+          "pages_commit": "7e57fe40b024ad0c5f961474d753ce3d2d78bc42",
+          "walkthrough_id": "hansard-november-core",
+          "expected_reader_commit": "acf23958aa1ce11ec52c41313649b20d24f17609"
         }
       ],
       "historical_root_core_version_fields": []
@@ -4237,35 +4271,33 @@
       "guide_git_blob_sha1": "3ee1c53dab9ff13310c8549e95b44f6603edf70a",
       "current_page_observation": {
         "http_status": 200,
-        "observed_at": "2026-11-25T11:52:18.116379+00:00",
-        "receipt_id": "hansard-stage6-targeted-http-20261125T115217Z",
-        "receipt_sha256": "754f4825da6e3e29764faaf45f431ebb47420ef72d551433efe1efa118f534ba",
-        "response_sha256": "7d857d7d583928fc9495a7ec6b5d5e8ceb6dd8f223e29d12bcdbe2380e80c460",
-        "result": "Anonymous HTTP 200; exact guide, case JSON and descriptor bytes match the served November checksum catalogue. The separate current Stage6 desktop and mobile browser proof passed; full public asset verification is retained separately.",
-        "previous_acceptance_id": "hansard-four-guide-public-release.json",
-        "previous_acceptance_sha256": "227c8fc1d48f1881e6a7129a008600804bc736a2d4e086dbcdd3aef471ee9bb5",
-        "evidence_path": "registry/walkthrough-register/evidence/current-observations/hansard-stage6-20261125T115217Z.json",
-        "evidence_sha256": "4a52179ec0256bf6689a238a1bc7ff8e61dbf48a250347eb597919f2e29e33a4",
+        "observed_at": "2026-11-28T06:10:38Z",
+        "receipt_id": "hansard-november-20261128-3bbb4b4",
+        "receipt_sha256": "8456de86a69666ac8bf65dde9dc0ffa3e31bbabf19b22aadb404617b4b9bcb24",
+        "response_sha256": "58dca7c5b64c4bd8bb26c8b8982492bdc2966bb8240647dcfb4729092a246058",
+        "result": "Anonymous response matched the exact guide, case and descriptor in the served checksum catalogue for the November publication through 26 November 2026.",
+        "evidence_path": "registry/walkthrough-register/evidence/current-observations/hansard-november-20261128-3bbb4b4.json",
+        "evidence_sha256": "2c2f67472eb722f936faaae1a66359f44084b40baf587d624ea57206ab213ae6",
         "case_id": "hansard-november-full",
-        "capture_manifest_path": "registry/walkthrough-register/evidence/current-captures/hansard-stage6-targeted-http-20261125T115217Z/capture-manifest.json",
-        "capture_manifest_sha256": "754f4825da6e3e29764faaf45f431ebb47420ef72d551433efe1efa118f534ba",
-        "case_json_path": "registry/walkthrough-register/evidence/current-captures/hansard-stage6-targeted-http-20261125T115217Z/november/walkthrough.json",
-        "case_json_sha256": "f4166170874185fdf4f56f8dcb8cd8945cfad23884a42bfd1c5786a490aad5bc",
-        "descriptor_capture_path": "registry/walkthrough-register/evidence/current-captures/hansard-stage6-targeted-http-20261125T115217Z/november/graph/okf-explorer.json",
-        "descriptor_sha256": "f7e0665b485d299b4815fba0e2e274c3c3b7a1c34b49823b5973e0e627767800",
-        "checksum_catalogue_sha256": "8de0054c2bf514d01be07747c991202b9363ba464ae2fbb21a532efcd5fd8ebb"
+        "capture_manifest_path": "registry/walkthrough-register/evidence/current-captures/hansard-november-20261128-3bbb4b4/capture-manifest.json",
+        "capture_manifest_sha256": "8456de86a69666ac8bf65dde9dc0ffa3e31bbabf19b22aadb404617b4b9bcb24",
+        "case_json_path": "registry/walkthrough-register/evidence/current-captures/hansard-november-20261128-3bbb4b4/walkthrough.json",
+        "case_json_sha256": "5ac428fa4d143e1b1cc37ed38249f1ffb6b5e13124fe223248fc82e6500973f5",
+        "descriptor_capture_path": "registry/walkthrough-register/evidence/current-captures/hansard-november-20261128-3bbb4b4/graph/okf-explorer.json",
+        "descriptor_sha256": "0d8cc07000c16c94f36f0180dde3c12d7e540d24ff1c541b733c8f3b939d6cc6",
+        "checksum_catalogue_sha256": "00a82f37f6dc22f393f62c343fd7a367df7b38af8831c16667859d1fa9c3fdd2"
       },
       "version_scope": "bundle",
-      "version_evidence_path": "registry/walkthrough-register/evidence/current-captures/hansard-stage6-targeted-http-20261125T115217Z/november/graph/okf-explorer.json",
-      "version_evidence_sha256": "f7e0665b485d299b4815fba0e2e274c3c3b7a1c34b49823b5973e0e627767800",
+      "version_evidence_path": "registry/walkthrough-register/evidence/current-captures/hansard-november-20261128-3bbb4b4/graph/okf-explorer.json",
+      "version_evidence_sha256": "0d8cc07000c16c94f36f0180dde3c12d7e540d24ff1c541b733c8f3b939d6cc6",
       "descriptor_url": "https://chris-page-gov.github.io/okf-hansard/november/graph/okf-explorer.json",
-      "descriptor_observed_at": "2026-11-25T11:52:18.116379+00:00",
+      "descriptor_observed_at": "2026-11-28T06:10:38Z",
       "descriptor_http_status": 200,
-      "descriptor_bytes": 2000,
+      "descriptor_bytes": 2006,
       "descriptor_schema": "okf-explorer-large-corpus.v1",
       "descriptor_identity_field": "id",
       "descriptor_identity": "urn:okf:hansard:bundle:november-in-parliament",
-      "version_observation_note": "Anonymous HTTP 200; exact descriptor bytes fetched from this guide's declared URL at 2026-11-25T11:52:18.116379+00:00. Core `okf_version` is 0.3; descriptor `version` 0.3.0 is recorded as the declared bundle edition, not inferred to be a software product version.",
+      "version_observation_note": "Current November descriptor captured from protected Pages deployment 8119526404; prior source and browser observations remain available.",
       "historical_page_observations": [
         {
           "http_status": 404,
@@ -4279,6 +4311,26 @@
           "evidence_path": "registry/walkthrough-register/evidence/current-observations/hansard-20261125.json",
           "evidence_sha256": "7b1a77a5b5596818df3ab5b5cd13e6d0b657cf2cdc06d5e9327f683e9ad87ac6",
           "case_id": "hansard-november-full"
+        },
+        {
+          "http_status": 200,
+          "observed_at": "2026-11-25T11:52:18.116379+00:00",
+          "receipt_id": "hansard-stage6-targeted-http-20261125T115217Z",
+          "receipt_sha256": "754f4825da6e3e29764faaf45f431ebb47420ef72d551433efe1efa118f534ba",
+          "response_sha256": "7d857d7d583928fc9495a7ec6b5d5e8ceb6dd8f223e29d12bcdbe2380e80c460",
+          "result": "Anonymous HTTP 200; exact guide, case JSON and descriptor bytes match the served November checksum catalogue. The separate current Stage6 desktop and mobile browser proof passed; full public asset verification is retained separately.",
+          "previous_acceptance_id": "hansard-four-guide-public-release.json",
+          "previous_acceptance_sha256": "227c8fc1d48f1881e6a7129a008600804bc736a2d4e086dbcdd3aef471ee9bb5",
+          "evidence_path": "registry/walkthrough-register/evidence/current-observations/hansard-stage6-20261125T115217Z.json",
+          "evidence_sha256": "4a52179ec0256bf6689a238a1bc7ff8e61dbf48a250347eb597919f2e29e33a4",
+          "case_id": "hansard-november-full",
+          "capture_manifest_path": "registry/walkthrough-register/evidence/current-captures/hansard-stage6-targeted-http-20261125T115217Z/capture-manifest.json",
+          "capture_manifest_sha256": "754f4825da6e3e29764faaf45f431ebb47420ef72d551433efe1efa118f534ba",
+          "case_json_path": "registry/walkthrough-register/evidence/current-captures/hansard-stage6-targeted-http-20261125T115217Z/november/walkthrough.json",
+          "case_json_sha256": "f4166170874185fdf4f56f8dcb8cd8945cfad23884a42bfd1c5786a490aad5bc",
+          "descriptor_capture_path": "registry/walkthrough-register/evidence/current-captures/hansard-stage6-targeted-http-20261125T115217Z/november/graph/okf-explorer.json",
+          "descriptor_sha256": "f7e0665b485d299b4815fba0e2e274c3c3b7a1c34b49823b5973e0e627767800",
+          "checksum_catalogue_sha256": "8de0054c2bf514d01be07747c991202b9363ba464ae2fbb21a532efcd5fd8ebb"
         }
       ],
       "historical_descriptor_observations": [
@@ -4301,18 +4353,18 @@
       ],
       "bundle_identity": "urn:okf:hansard:bundle:november-in-parliament",
       "current_publication_proof": {
-        "id": "hansard-stage6-public-browser-receipt",
+        "id": "hansard-november-20261128-3bbb4b4-browser",
         "status": "passed",
-        "observed_at": "2026-11-25T11:45:44.287Z",
+        "observed_at": "2026-11-28T06:14:14.069Z",
         "producer_product_version": "0.3.0",
-        "sha256": "51796d439c08bb90ea27eb9f9c5b9e42e61a1ca0c643925dc6726a69265809c5",
-        "receipt_summary_path": "registry/walkthrough-register/evidence/retained-receipts/hansard-november-full-stage6-browser-20261125.json",
-        "receipt_summary_sha256": "52023b5f96896a833f556fa00284132bf08a7928d8d290fe82c3a262ac657fb0",
-        "scope": "Actual public November walkthrough browser journeys at desktop and mobile; no week browser check.",
+        "sha256": "69c448bed367f6e7ebb5101d36f4d20905e98e54bbd12165de00ffef6b8a6e42",
+        "scope": "Exact public November guides and frozen v0.9.2 Reader; Chrome at desktop and mobile widths.",
         "source_commit": "9c3c55c292216b995f7339068c05ae4b3e98d20c",
-        "pages_commit": "7e57fe40b024ad0c5f961474d753ce3d2d78bc42",
+        "pages_commit": "3bbb4b4733346409b309f6af6480106dd5961b84",
         "walkthrough_id": "hansard-november-full",
-        "expected_reader_commit": "acf23958aa1ce11ec52c41313649b20d24f17609"
+        "expected_reader_commit": "acf23958aa1ce11ec52c41313649b20d24f17609",
+        "receipt_summary_path": "registry/walkthrough-register/evidence/retained-receipts/hansard-november-full-3bbb4b4-browser-20261128.json",
+        "receipt_summary_sha256": "9400b94edab0a5c64ce5a3339af696778967ae527583bd2fb82441db47fecce2"
       },
       "supporting_receipts": [
         {
@@ -4345,6 +4397,22 @@
           "all_local_bytes_verified": true,
           "all_served_bytes_verified": true,
           "catalogue_unchanged_after_retrieval": true
+        }
+      ],
+      "historical_proofs": [
+        {
+          "id": "hansard-stage6-public-browser-receipt",
+          "status": "passed",
+          "observed_at": "2026-11-25T11:45:44.287Z",
+          "producer_product_version": "0.3.0",
+          "sha256": "51796d439c08bb90ea27eb9f9c5b9e42e61a1ca0c643925dc6726a69265809c5",
+          "receipt_summary_path": "registry/walkthrough-register/evidence/retained-receipts/hansard-november-full-stage6-browser-20261125.json",
+          "receipt_summary_sha256": "52023b5f96896a833f556fa00284132bf08a7928d8d290fe82c3a262ac657fb0",
+          "scope": "Actual public November walkthrough browser journeys at desktop and mobile; no week browser check.",
+          "source_commit": "9c3c55c292216b995f7339068c05ae4b3e98d20c",
+          "pages_commit": "7e57fe40b024ad0c5f961474d753ce3d2d78bc42",
+          "walkthrough_id": "hansard-november-full",
+          "expected_reader_commit": "acf23958aa1ce11ec52c41313649b20d24f17609"
         }
       ],
       "historical_root_core_version_fields": []

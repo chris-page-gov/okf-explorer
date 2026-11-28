@@ -16,7 +16,9 @@ from urllib.parse import parse_qs, urlsplit
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = Path("registry/walkthrough-register.source.json")
 DENOMINATOR = Path("registry/walkthrough-register/public-root-denominator.json")
-ACCESS_DIRECTORY = Path("registry/public-bundle-access.json")
+ACCESS_DIRECTORY = Path(
+    "registry/walkthrough-register/evidence/retained-receipts/public-bundle-access-2026-11-25.json")
+ACCESS_DIRECTORY_SHA256 = "aa512f434d169d8634c4a63c0b76ad9d1137559338038b828a5694a005515034"
 RETAINED_ACCESS_DIRECTORY = Path(
     "registry/walkthrough-register/evidence/retained-receipts/public-bundle-access-2026-11-23.json")
 OUTPUTS = (Path("registry/walkthrough-register.json"), Path("docs/walkthrough-register.md"))
@@ -482,14 +484,17 @@ def load(root: Path = ROOT) -> dict:
         raise ValueError("public root aliases differ from the independent relationship denominator")
     if len(aliases) != source.get("scope", {}).get("alias_relationship_count"):
         raise ValueError("public alias relationship count does not match scope")
-    access = json.loads((root / ACCESS_DIRECTORY).read_text(encoding="utf-8"))
+    access_bytes = (root / ACCESS_DIRECTORY).read_bytes()
+    if sha256(access_bytes) != ACCESS_DIRECTORY_SHA256:
+        raise ValueError("dated companion access directory differs from its recorded digest")
+    access = json.loads(access_bytes)
     access_rows = {b["repository"].removeprefix("https://github.com/"): b for b in access.get("bundles", [])
                    if b.get("visibility") == "public"}
     descriptors = source.get("public_bundle_descriptor_observations", [])
     descriptor_repos = [d.get("repository", "").removeprefix("https://github.com/") for d in descriptors]
     if (len(descriptor_repos) != len(set(descriptor_repos)) or set(descriptor_repos) != set(access_rows)
             or len(descriptor_repos) != 13):
-        raise ValueError("public descriptor observations differ from the curated 13-entry access scope")
+        raise ValueError("public descriptor observations differ from the dated 13-entry access scope")
     source_serialised = json.dumps(source, ensure_ascii=False)
     if any(token in source_serialised for token in ("/Users/", "/Volumes/", "phase2_matrix_path", "local_private_path")):
         raise ValueError("private local inventory paths cannot enter the public register")

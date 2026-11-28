@@ -1,0 +1,60 @@
+{
+  "schema": "okf-walkthrough-retained-receipt-summary.v1",
+  "source_receipt_id": "hansard-november-20261128-3bbb4b4-browser",
+  "source_receipt_sha256": "69c448bed367f6e7ebb5101d36f4d20905e98e54bbd12165de00ffef6b8a6e42",
+  "status": "passed",
+  "date": "2026-11-28T06:14:14.069Z",
+  "producer_product_version": "0.3.0",
+  "scope": "Exact public November guides and frozen v0.9.2 Reader; Chrome at desktop and mobile widths.",
+  "source_commit": "9c3c55c292216b995f7339068c05ae4b3e98d20c",
+  "pages_commit": "3bbb4b4733346409b309f6af6480106dd5961b84",
+  "walkthrough_id": "hansard-november-core",
+  "expected_reader_commit": "acf23958aa1ce11ec52c41313649b20d24f17609",
+  "okf_core_version": "0.3",
+  "bundle_identity": "urn:okf:hansard:public-core:november-in-parliament",
+  "descriptor_sha256": "bda8bfafbeab7f0bcbbaa464be70503e9c2e7d96e693c80a13bd4a2341fba497",
+  "cases": [
+    {
+      "kind": "core",
+      "viewport": "desktop",
+      "question": "What dates does the compact November entry point declare, can this one-record bundle establish which House debated Bill 4030, and where must I go to check those claims?",
+      "descriptor_sha256": "bda8bfafbeab7f0bcbbaa464be70503e9c2e7d96e693c80a13bd4a2341fba497",
+      "expected_identity": {
+        "schema": "okf-explorer-bundle.v0",
+        "id": "urn:okf:hansard:public-core:november-in-parliament",
+        "version": "0.3.0",
+        "snapshot": "hansard-markdown-sha256-07830b485b42c13a6c1d42e8eb351991b98a6fc0968b7dcba29ecdd67f200a24"
+      },
+      "selected": "sittings.md",
+      "guide_link_followed": true,
+      "graph_interaction": null,
+      "reload_preserved": true,
+      "wcag_violations": 0,
+      "horizontal_overflow": false,
+      "candidate_responses_intercepted": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "kind": "core",
+      "viewport": "mobile",
+      "question": "What dates does the compact November entry point declare, can this one-record bundle establish which House debated Bill 4030, and where must I go to check those claims?",
+      "descriptor_sha256": "bda8bfafbeab7f0bcbbaa464be70503e9c2e7d96e693c80a13bd4a2341fba497",
+      "expected_identity": {
+        "schema": "okf-explorer-bundle.v0",
+        "id": "urn:okf:hansard:public-core:november-in-parliament",
+        "version": "0.3.0",
+        "snapshot": "hansard-markdown-sha256-07830b485b42c13a6c1d42e8eb351991b98a6fc0968b7dcba29ecdd67f200a24"
+      },
+      "selected": "sittings.md",
+      "guide_link_followed": true,
+      "graph_interaction": null,
+      "reload_preserved": true,
+      "wcag_violations": 0,
+      "horizontal_overflow": false,
+      "candidate_responses_intercepted": 0,
+      "errors": [],
+      "warnings": []
+    }
+  ]
+}

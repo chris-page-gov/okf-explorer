@@ -129,25 +129,25 @@ Current page: HTTP 200 on 2026-11-25T11:52:18.116379+00:00; Anonymous HTTP 200; 
 
 What dates does the compact November entry point declare, can this one-record bundle establish which House debated Bill 4030, and where must I go to check those claims?
 
-**Version:** 0.3; declared bundle version/edition 0.3.0; shared Reader 0.9.2. Exact descriptor returned HTTP 200 on 2026-11-25T11:52:18.116379+00:00: [bundle descriptor](https://chris-page-gov.github.io/okf-hansard/november/okf-core.json).
+**Version:** 0.3; declared bundle version/edition 0.3.0; shared Reader 0.9.2. Exact descriptor returned HTTP 200 on 2026-11-28T06:10:38Z: [bundle descriptor](https://chris-page-gov.github.io/okf-hansard/november/okf-core.json).
 
 [Guide](https://chris-page-gov.github.io/okf-hansard/november/core-walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-hansard/blob/9c3c55c292216b995f7339068c05ae4b3e98d20c/scripts/build_walkthrough.py)
 
 Earlier evidence: passed (2026-11-24T01:16:40.306Z); Four-guide public browser proof passed at its recorded producer, Pages and Reader commits.
 
-Current page: HTTP 200 on 2026-11-25T11:52:18.116379+00:00; Anonymous HTTP 200; exact guide, case JSON and descriptor bytes match the served November checksum catalogue. The separate current Stage6 desktop and mobile browser proof passed; full public asset verification is retained separately. Earlier page observations: HTTP 404 on 2026-11-25T09:52:00Z. Current browser proof: passed (2026-11-25T11:45:44.287Z); desktop and mobile journeys for this guide using Reader 0.9.2. Complete public-assets gate: passed (2026-11-25T11:49:24.764078+00:00); 8009 catalogue and 8009 served files verified.
+Current page: HTTP 200 on 2026-11-28T06:10:38Z; Anonymous response matched the exact guide, case and descriptor in the served checksum catalogue for the November publication through 26 November 2026. Earlier page observations: HTTP 404 on 2026-11-25T09:52:00Z; HTTP 200 on 2026-11-25T11:52:18.116379+00:00. Current browser proof: passed (2026-11-28T06:14:14.069Z); desktop and mobile journeys for this guide using Reader 0.9.2. Complete public-assets gate: passed (2026-11-25T11:49:24.764078+00:00); 8009 catalogue and 8009 served files verified.
 
 ### Hansard: november full guide
 
 On 18 November, which House’s proceedings are linked to Bill 4030, what does the same-date coverage say about Commons and Lords activity, and can those records establish that the Commons debated or the Bill passed? How far does this snapshot cover?
 
-**Version:** 0.3; declared bundle version/edition 0.3.0; shared Reader 0.9.2. Exact descriptor returned HTTP 200 on 2026-11-25T11:52:18.116379+00:00: [bundle descriptor](https://chris-page-gov.github.io/okf-hansard/november/graph/okf-explorer.json).
+**Version:** 0.3; declared bundle version/edition 0.3.0; shared Reader 0.9.2. Exact descriptor returned HTTP 200 on 2026-11-28T06:10:38Z: [bundle descriptor](https://chris-page-gov.github.io/okf-hansard/november/graph/okf-explorer.json).
 
 [Guide](https://chris-page-gov.github.io/okf-hansard/november/walkthrough.html) · [Question and evidence source](https://github.com/chris-page-gov/okf-hansard/blob/9c3c55c292216b995f7339068c05ae4b3e98d20c/scripts/build_walkthrough.py)
 
 Earlier evidence: passed (2026-11-24T01:16:40.306Z); Four-guide public browser proof passed at its recorded producer, Pages and Reader commits.
 
-Current page: HTTP 200 on 2026-11-25T11:52:18.116379+00:00; Anonymous HTTP 200; exact guide, case JSON and descriptor bytes match the served November checksum catalogue. The separate current Stage6 desktop and mobile browser proof passed; full public asset verification is retained separately. Earlier page observations: HTTP 404 on 2026-11-25T09:52:00Z. Current browser proof: passed (2026-11-25T11:45:44.287Z); desktop and mobile journeys for this guide using Reader 0.9.2. Complete public-assets gate: passed (2026-11-25T11:49:24.764078+00:00); 8009 catalogue and 8009 served files verified.
+Current page: HTTP 200 on 2026-11-28T06:10:38Z; Anonymous response matched the exact guide, case and descriptor in the served checksum catalogue for the November publication through 26 November 2026. Earlier page observations: HTTP 404 on 2026-11-25T09:52:00Z; HTTP 200 on 2026-11-25T11:52:18.116379+00:00. Current browser proof: passed (2026-11-28T06:14:14.069Z); desktop and mobile journeys for this guide using Reader 0.9.2. Complete public-assets gate: passed (2026-11-25T11:49:24.764078+00:00); 8009 catalogue and 8009 served files verified.
 
 ### Heritage: faithful source records
 

@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased — dated catalogue and Hansard observations
+
+- Refresh the November Hansard guide and descriptor observations from the
+  publication through 26 November 2026. Keep the earlier source and browser
+  receipts and bind the new desktop and mobile Reader journeys to the exact
+  served checksums.
+- Show the declared Core version in the public access table. Refresh selected
+  Core 0.3 descriptor pins and preserve the previous directory used by the
+  walkthrough register's dated observations.
+
 ## Unreleased — walkthrough register corrections
 
 - Restore both UK Government APIs guide routes. Check that each reviewed

@@ -1,0 +1,32 @@
+{
+  "schema": "okf-walkthrough-current-observation-summary.v1",
+  "source_receipt_id": "hansard-november-20261128-3bbb4b4",
+  "source_receipt_sha256": "8456de86a69666ac8bf65dde9dc0ffa3e31bbabf19b22aadb404617b4b9bcb24",
+  "observed_at": "2026-11-28T06:10:38Z",
+  "capture_manifest_path": "registry/walkthrough-register/evidence/current-captures/hansard-november-20261128-3bbb4b4/capture-manifest.json",
+  "capture_manifest_sha256": "8456de86a69666ac8bf65dde9dc0ffa3e31bbabf19b22aadb404617b4b9bcb24",
+  "cases": [
+    {
+      "id": "hansard-november-core",
+      "http_status": 200,
+      "response_sha256": "d683a270c4fa9f854a1e354608927a1141b88fa542b9717f80eac85926f973ab",
+      "case_json_path": "registry/walkthrough-register/evidence/current-captures/hansard-november-20261128-3bbb4b4/core-walkthrough.json",
+      "case_json_sha256": "c73c1c0de15cdf8d292923beb3b6344e2635fa48a507f92c4806f6d94a98d91b",
+      "descriptor_url": "https://chris-page-gov.github.io/okf-hansard/november/okf-core.json",
+      "descriptor_path": "registry/walkthrough-register/evidence/current-captures/hansard-november-20261128-3bbb4b4/okf-core.json",
+      "descriptor_sha256": "bda8bfafbeab7f0bcbbaa464be70503e9c2e7d96e693c80a13bd4a2341fba497",
+      "served_checksum_catalogue_sha256": "00a82f37f6dc22f393f62c343fd7a367df7b38af8831c16667859d1fa9c3fdd2"
+    },
+    {
+      "id": "hansard-november-full",
+      "http_status": 200,
+      "response_sha256": "58dca7c5b64c4bd8bb26c8b8982492bdc2966bb8240647dcfb4729092a246058",
+      "case_json_path": "registry/walkthrough-register/evidence/current-captures/hansard-november-20261128-3bbb4b4/walkthrough.json",
+      "case_json_sha256": "5ac428fa4d143e1b1cc37ed38249f1ffb6b5e13124fe223248fc82e6500973f5",
+      "descriptor_url": "https://chris-page-gov.github.io/okf-hansard/november/graph/okf-explorer.json",
+      "descriptor_path": "registry/walkthrough-register/evidence/current-captures/hansard-november-20261128-3bbb4b4/graph/okf-explorer.json",
+      "descriptor_sha256": "0d8cc07000c16c94f36f0180dde3c12d7e540d24ff1c541b733c8f3b939d6cc6",
+      "served_checksum_catalogue_sha256": "00a82f37f6dc22f393f62c343fd7a367df7b38af8831c16667859d1fa9c3fdd2"
+    }
+  ]
+}

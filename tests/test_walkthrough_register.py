@@ -187,6 +187,14 @@ class WalkthroughRegisterTests(unittest.TestCase):
         self.assertEqual(commands["check-walkthrough-register"]["command"],
                          "uv run --locked python scripts/build_walkthrough_register.py --check")
 
+    def test_dated_access_snapshot_is_hash_bound(self):
+        temporary, root, _ = self.fixture()
+        with temporary:
+            snapshot = root / register.ACCESS_DIRECTORY
+            snapshot.write_bytes(snapshot.read_bytes() + b"\n")
+            with self.assertRaisesRegex(ValueError, "dated companion access directory"):
+                register.load(root)
+
     def test_public_walkthrough_coverage_and_captured_sources_are_exact(self):
         source = register.load()
         self.assertEqual(len(source["review_walkthroughs"]), 29)
